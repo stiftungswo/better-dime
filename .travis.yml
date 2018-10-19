@@ -25,16 +25,16 @@ jobs:
     name: "Check formatting of backend"
 
   # run the deployment step
-  - stage: deploy
-    script: skip
-    env:
-    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod"; else echo "test"; fi)
-    deploy:
-    - provider: script
-      script: ci/deploy.sh $DEPLOY_SYSTEM
-      skip_cleanup: true
-      on:
-        all_branches: true
+#  - stage: deploy
+#    script: skip
+#    env:
+#    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod"; else echo "test"; fi)
+#    deploy:
+#    - provider: script
+#      script: ci/deploy.sh $DEPLOY_SYSTEM
+#      skip_cleanup: true
+#      on:
+#        all_branches: true
 
 env:
   global:
