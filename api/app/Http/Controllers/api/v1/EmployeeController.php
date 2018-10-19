@@ -34,5 +34,8 @@ class EmployeeController extends Controller
     public function delete($id)
     {
         Employee::findOrFail($id)->delete();
+        return "Entity deleted";
     }
+
+    // TODO implement validation
 }
