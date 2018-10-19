@@ -5,8 +5,8 @@ php:
 
 stages:
 - test
-- name: deploy
-  if: branch = master OR branch = production OR branch =~ \b-DEPLOY\b
+#- name: deploy
+#  if: branch = master OR branch = production OR branch =~ \b-DEPLOY\b
 
 cache:
   directories:
@@ -22,7 +22,7 @@ jobs:
     script: ./ci/test_backend.sh
     name: "Run automated tests for backend"
   - script: ./ci/check_format.sh
-    name: "Check formatting of front- and backend"
+    name: "Check formatting of backend"
 
   # run the deployment step
   - stage: deploy

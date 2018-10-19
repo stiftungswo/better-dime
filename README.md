@@ -1,6 +1,6 @@
 # Better Dime #
-[![Build Status](https://travis-ci.org/stiftungswo/Dime.svg?branch=better-dime)](https://travis-ci.org/stiftungswo/Dime)
-[![codecov](https://codecov.io/gh/stiftungswo/Dime/branch/better-dime/graph/badge.svg)](https://travis-ci.org/stiftungswo/Dime)
+[![Build Status](https://travis-ci.org/stiftungswo/betterDime.svg?branch=master)](https://travis-ci.org/stiftungswo/betterDime)
+[![codecov](https://codecov.io/gh/stiftungswo/betterDime/branch/master/graph/badge.svg)](https://codecov.io/gh/stiftungswo/betterDime)
 
 ## Installation
 ### Vorbereitung
