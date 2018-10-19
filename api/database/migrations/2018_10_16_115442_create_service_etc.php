@@ -33,7 +33,8 @@ class CreateServiceEtc extends Migration
 
         Schema::create('rate_units', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('unit');
+            $table->string('billing_unit');
+            $table->string('effort_unit');
             $table->double('factor')->default(1);
             $table->boolean('archived'); //TODO extract trait?
             $table->timestamps();
