@@ -17,7 +17,8 @@ class RateUnit extends Model
         'billing_unit', 'factor', 'archived', 'effort_unit'
     ];
 
-    protected $cast = [
+    protected $casts = [
+        'archived' => 'boolean',
         'factor' => 'double'
     ];
 }

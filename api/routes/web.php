@@ -24,20 +24,28 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
 
         $router->group(['middleware' => 'auth'], function () use ($router) {
 
-            $router->group(['prefix'=>'employees'], function () use ($router) {
-                $router->get('/', [ 'uses' => 'EmployeeController@index' ]);
-                $router->post('/', [ 'uses' => 'EmployeeController@post' ]);
-                $router->get('/{id}', [ 'uses' => 'EmployeeController@get' ]);
-                $router->put('/{id}', [ 'uses' => 'EmployeeController@put' ]);
-                $router->delete('/{id}', [ 'uses' => 'EmployeeController@delete' ]);
+            $router->group(['prefix' => 'employees'], function () use ($router) {
+                $router->get('/', ['uses' => 'EmployeeController@index']);
+                $router->post('/', ['uses' => 'EmployeeController@post']);
+                $router->get('/{id}', ['uses' => 'EmployeeController@get']);
+                $router->put('/{id}', ['uses' => 'EmployeeController@put']);
+                $router->delete('/{id}', ['uses' => 'EmployeeController@delete']);
             });
 
-            $router->group(['prefix'=>'services'], function () use ($router) {
-                $router->get('/', [ 'uses' => 'ServiceController@index' ]);
-                $router->post('/', [ 'uses' => 'ServiceController@post' ]);
-                $router->get('/{id}', [ 'uses' => 'ServiceController@get' ]);
-                $router->put('/{id}', [ 'uses' => 'ServiceController@put' ]);
-                $router->delete('/{id}', [ 'uses' => 'ServiceController@delete' ]);
+            $router->group(['prefix' => 'rate_units'], function () use ($router) {
+                $router->get('/', ['uses' => 'RateUnitController@index']);
+                $router->post('/', ['uses' => 'RateUnitController@post']);
+                $router->get('/{id}', ['uses' => 'RateUnitController@get']);
+                $router->put('/{id}', ['uses' => 'RateUnitController@put']);
+                $router->delete('/{id}', ['uses' => 'RateUnitController@delete']);
+            });
+
+            $router->group(['prefix' => 'services'], function () use ($router) {
+                $router->get('/', ['uses' => 'ServiceController@index']);
+                $router->post('/', ['uses' => 'ServiceController@post']);
+                $router->get('/{id}', ['uses' => 'ServiceController@get']);
+                $router->put('/{id}', ['uses' => 'ServiceController@put']);
+                $router->delete('/{id}', ['uses' => 'ServiceController@delete']);
             });
         });
     });
