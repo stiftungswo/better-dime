@@ -2,7 +2,7 @@
 
 namespace Tests\Integrations;
 
-use App\Modules\Service\Models\RateUnit;
+use App\Models\Service\RateUnit;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class RateUnitControllerTest extends \TestCase

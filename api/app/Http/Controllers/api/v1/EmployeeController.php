@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Modules\Employee\Models\Employee;
+use App\Models\Employee\Employee;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Routing\Controller;
 

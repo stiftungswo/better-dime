@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Employee\Models\Employee;
+use App\Models\Employee\Employee;
 
 abstract class TestCase extends Laravel\Lumen\Testing\TestCase
 {

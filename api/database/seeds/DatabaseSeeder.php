@@ -1,9 +1,5 @@
 <?php
 
-use App\Modules\Employee\Models\Employee;
-use App\Modules\Service\Models\ServiceRate;
-use App\Modules\Service\Models\RateGroup;
-use App\Modules\Service\Models\Service;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,12 +12,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         app(\Faker\Generator::class)->seed();
-        factory(Employee::class, 'admin')->create();
-        factory(\App\Modules\Employee\Models\Holiday::class)->times(10)->create();
-        $kanton = factory(RateGroup::class, 'kanton')->create();
-        $andere = factory(RateGroup::class, 'andere')->create();
+        factory(\App\Models\Employee\Employee::class, 'admin')->create();
+        factory(\App\Models\Employee\Holiday::class)->times(10)->create();
+        $kanton = factory(\App\Models\Service\RateGroup::class, 'kanton')->create();
+        $andere = factory(\App\Models\Service\RateGroup::class, 'andere')->create();
 
-        $rateUnits = factory(\App\Modules\Service\Models\RateUnit::class)
+        $rateUnits = factory(\App\Models\Service\RateUnit::class)
             ->times(5)
             ->create()
             ->map(function ($r) {
@@ -29,17 +25,17 @@ class DatabaseSeeder extends Seeder
             })
             ->toArray();
 
-        factory(Service::class)->times(10)->create()->each(function ($s) use ($kanton, $andere, $rateUnits) {
+        factory(\App\Models\Service\Service::class)->times(10)->create()->each(function ($s) use ($kanton, $andere, $rateUnits) {
 
             $rateUnit = array_random($rateUnits);
 
-            factory(ServiceRate::class)->create([
+            factory(\App\Models\Service\ServiceRate::class)->create([
                 'rate_group_id' => $kanton,
                 'service_id' => $s,
                 'rate_unit_id' => $rateUnit
             ]);
 
-            factory(ServiceRate::class)->create([
+            factory(\App\Models\Service\ServiceRate::class)->create([
                 'rate_group_id' => $andere,
                 'service_id' => $s,
                 'rate_unit_id' => $rateUnit

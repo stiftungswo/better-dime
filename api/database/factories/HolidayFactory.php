@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Employee\Models\Holiday;
+use App\Models\Employee\Holiday;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */

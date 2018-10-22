@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Service\Models\Service;
+use App\Models\Service\Service;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

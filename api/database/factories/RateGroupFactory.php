@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Service\Models\RateGroup;
+use App\Models\Service\RateGroup;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */

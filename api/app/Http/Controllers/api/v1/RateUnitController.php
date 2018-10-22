@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Modules\Service\Models\RateUnit;
+use App\Models\Service\RateUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Service\Models\RateUnit;
+use App\Models\Service\RateUnit;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

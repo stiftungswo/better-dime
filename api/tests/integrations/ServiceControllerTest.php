@@ -2,11 +2,10 @@
 
 namespace tests\integrations;
 
-use App\Modules\Employee\Models\Employee;
-use App\Modules\Service\Models\RateGroup;
-use App\Modules\Service\Models\RateUnit;
-use App\Modules\Service\Models\Service;
-use App\Modules\Service\Models\ServiceRate;
+use App\Models\Service\RateGroup;
+use App\Models\Service\RateUnit;
+use App\Models\Service\Service;
+use App\Models\Service\ServiceRate;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ServiceControllerTest extends \TestCase

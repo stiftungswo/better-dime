@@ -1,8 +1,8 @@
 <?php
 
-use App\Modules\Service\Models\ServiceRate;
-use App\Modules\Service\Models\RateGroup;
-use App\Modules\Service\Models\Service;
+use App\Models\Service\RateGroup;
+use App\Models\Service\Service;
+use App\Models\Service\ServiceRate;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

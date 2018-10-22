@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Modules\Service\Models\Service;
-use App\Modules\Service\Models\ServiceRate;
+use App\Models\Service\Service;
+use App\Models\Service\ServiceRate;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;

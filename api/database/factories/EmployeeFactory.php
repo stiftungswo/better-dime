@@ -1,6 +1,6 @@
 <?php
 
-use App\Modules\Employee\Models\Employee;
+use App\Models\Employee\Employee;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 

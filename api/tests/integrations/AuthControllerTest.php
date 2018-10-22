@@ -2,7 +2,7 @@
 
 namespace tests\integrations;
 
-use App\Modules\Employee\Models\Employee;
+use App\Models\Employee\Employee;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class AuthControllerTest extends \TestCase

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Modules\Employee\Models\Holiday;
+use App\Models\Employee\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Routing\Controller;

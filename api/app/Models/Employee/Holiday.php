@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Employee\Models;
+namespace App\Models\Employee;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

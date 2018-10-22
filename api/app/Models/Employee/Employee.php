@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Employee\Models;
+namespace App\Models\Employee;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;

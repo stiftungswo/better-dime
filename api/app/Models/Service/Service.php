@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Service\Models;
+namespace App\Models\Service;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,16 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class RateUnit extends Model
+class Service extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'billing_unit', 'factor', 'archived', 'effort_unit'
+        'name', 'description', 'chargeable', 'vat', 'archived'
     ];
 
-    protected $casts = [
-        'archived' => 'boolean',
-        'factor' => 'double'
-    ];
+    public function serviceRates()
+    {
+        return $this->hasMany(ServiceRate::class);
+    }
 }

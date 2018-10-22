@@ -2,7 +2,7 @@
 
 namespace Tests\Integrations;
 
-use App\Modules\Employee\Models\Holiday;
+use App\Models\Employee\Holiday;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class HolidayControllerTest extends \TestCase
