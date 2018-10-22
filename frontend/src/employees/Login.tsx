@@ -16,7 +16,7 @@ import dimeTheme from '../utilities/DimeTheme';
 import { Theme } from '@material-ui/core';
 import { InjectedNotistackProps, withSnackbar } from 'notistack';
 import compose from '../compose';
-import { Api } from '../store/api';
+import { MainStore } from '../store/mainStore';
 
 const loginSchema = yup.object({
   email: yup.string().required(),
@@ -59,10 +59,10 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
   });
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps, WithStyles<typeof styles> {
-  api?: Api;
+  mainStore?: MainStore;
 }
 
-@inject('api')
+@inject('mainStore')
 @observer
 class Login extends React.Component<Props> {
   constructor(props: any) {
@@ -70,7 +70,7 @@ class Login extends React.Component<Props> {
   }
 
   public handleSubmit(values: { email: string; password: string }) {
-    this.props.api!
+    this.props.mainStore!
       .postLogin({ ...values })
       .then(() => {
         this.props.history.replace('/');
