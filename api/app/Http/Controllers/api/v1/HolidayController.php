@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\BaseController;
 use App\Models\Employee\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Laravel\Lumen\Routing\Controller;
 
-class HolidayController extends Controller
+class HolidayController extends BaseController
 {
     public function delete($id)
     {

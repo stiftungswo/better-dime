@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\BaseController;
 use App\Models\Service\Service;
 use App\Models\Service\ServiceRate;
 use Illuminate\Database\QueryException;
@@ -9,9 +10,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Laravel\Lumen\Routing\Controller;
 
-class ServiceController extends Controller
+class ServiceController extends BaseController
 {
 
     public function index()
@@ -49,32 +49,21 @@ class ServiceController extends Controller
             $currentServiceRates = $s->serviceRates->map(function ($r) {
                 return $r->id;
             });
-            $updatedServiceRates = [];
 
-            foreach (Input::get('service_rates') as $rate) {
-                if (!array_has($rate, 'id')) {
-                    //insert
-                    $r = ServiceRate::make($rate);
-                    $r->service_id = $s->id;
-                    $r->save();
-                } elseif ($currentServiceRates->contains($rate['id'])) {
-                    //edit
-                    $updatedServiceRates[] = $rate['id'];
-                    ServiceRate::findOrFail($rate['id'])->update($rate);
-                } else {
-                    DB::rollBack();
-                    return new Response("Tarif mit der id " . $rate['id'] . " existiert nicht", 400);
-                }
-            }
-
-            $deletedServiceRates = $currentServiceRates->diff($updatedServiceRates);
-            foreach ($deletedServiceRates as $deleted) {
-                ServiceRate::destroy($deleted);
-            }
+            $this->executeNestedUpdate(
+                Input::get('service_rates'),
+                $currentServiceRates,
+                ServiceRate::class,
+                'service_id',
+                $s->id
+            );
         } catch (QueryException $e) {
             if (str_contains($e->getMessage(), 'service_rates_service_id_rate_group_id_unique')) {
                 return new Response('Einer der neuen Tarife ist bereits erfasst', 400);
             }
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
         }

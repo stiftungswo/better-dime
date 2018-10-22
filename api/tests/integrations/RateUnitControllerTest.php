@@ -26,8 +26,8 @@ class RateUnitControllerTest extends \TestCase
 
     public function testValidDelete()
     {
-        $employeeId = factory(RateUnit::class)->create()->id;
-        $this->asAdmin()->json('DELETE', 'api/v1/rate_units/' . $employeeId)->assertResponseOk();
+        $rateUnitId = factory(RateUnit::class)->create()->id;
+        $this->asAdmin()->json('DELETE', 'api/v1/rate_units/' . $rateUnitId)->assertResponseOk();
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 

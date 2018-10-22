@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\BaseController;
 use App\Models\Service\RateUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class RateUnitController extends \Laravel\Lumen\Routing\Controller
+class RateUnitController extends BaseController
 {
 
     public function delete($id)
