@@ -18,6 +18,7 @@ import { Navigation } from './Navigation';
 import compose from '../compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../store/mainStore';
+import { Fragment } from 'react';
 
 const drawerWidth = 240;
 
@@ -182,5 +183,20 @@ class DimeLayout extends React.Component<Props> {
     );
   }
 }
+
+const hasContent = (value: any) => {
+  if (!value) {
+    return false;
+  }
+  if (value.size === 0) {
+    return false;
+  }
+  return true;
+};
+export const Loading = compose(withStyles(styles(DimeTheme)))(
+  ({ entity, children, classes }: { entity: any; children: any; classes: any }) => (
+    <Fragment>{hasContent(entity) ? children : <CircularProgress className={classes.progress} />}</Fragment>
+  )
+);
 
 export default compose(withStyles(styles(DimeTheme)))(DimeLayout);

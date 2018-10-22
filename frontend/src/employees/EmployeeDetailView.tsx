@@ -13,6 +13,7 @@ import {
   TextFieldWithValidation,
 } from '../form/common';
 import Grid from '@material-ui/core/Grid/Grid';
+import { Loading } from '../utilities/DimeLayout';
 
 export interface Props {
   handleSubmit: ((employee: Employee) => Promise<any>);
@@ -36,8 +37,8 @@ export default class EmployeeDetailView extends React.Component<Props> {
     const { employee } = this.props;
     console.log(employee);
 
-    if (employee) {
-      return (
+    return (
+      <Loading entity={employee}>
         <EditForm
           header={'Mitarbeiter Bearbeiten'}
           validationSchema={employeeSchema}
@@ -110,9 +111,7 @@ export default class EmployeeDetailView extends React.Component<Props> {
             </Fragment>
           )}
         />
-      );
-    } else {
-      return <p>Lade ...</p>;
-    }
+      </Loading>
+    );
   }
 }
