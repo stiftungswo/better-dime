@@ -56,7 +56,7 @@ export default class EmployeeDetailView extends React.Component<Props> {
                 </Grid>
 
                 <Grid item={true} container={true} xs={12} sm={6} justify={'flex-end'}>
-                  <Button variant={'contained'} color={'primary'} onClick={() => props.handleSubmit()}>
+                  <Button variant={'contained'} color={'primary'} onClick={() => props.handleSubmit()} disabled={props.isSubmitting}>
                     Speichern
                     <SaveIcon />
                   </Button>

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Modules\Employee\Models\Employee;
+use App\Models\Employee\Employee;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Gate;
