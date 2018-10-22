@@ -32,6 +32,13 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'EmployeeController@delete']);
             });
 
+            $router->group(['prefix' => 'holidays'], function () use ($router) {
+                $router->get('/', ['uses' => 'HolidayController@index']);
+                $router->post('/', ['uses' => 'HolidayController@post']);
+                $router->put('/{id}', ['uses' => 'HolidayController@put']);
+                $router->delete('/{id}', ['uses' => 'HolidayController@delete']);
+            });
+
             $router->group(['prefix' => 'rate_units'], function () use ($router) {
                 $router->get('/', ['uses' => 'RateUnitController@index']);
                 $router->post('/', ['uses' => 'RateUnitController@post']);

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         app(\Faker\Generator::class)->seed();
         factory(Employee::class, 'admin')->create();
+        factory(\App\Modules\Employee\Models\Holiday::class)->times(10)->create();
         $kanton = factory(RateGroup::class, 'kanton')->create();
         $andere = factory(RateGroup::class, 'andere')->create();
 
