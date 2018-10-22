@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { Fragment } from 'react';
 import { Employee } from '../types';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
-import { Field, Formik } from 'formik';
+import { Field, FormikProps } from 'formik';
 import {
+  EditForm,
   EmailFieldWithValidation,
   NumberFieldWithValidation,
   PasswordFieldWithValidation,
@@ -11,11 +13,9 @@ import {
   TextFieldWithValidation,
 } from '../form/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import Button from '@material-ui/core/Button/Button';
-import SaveIcon from '@material-ui/icons/Save';
 
 export interface Props {
-  handleSubmit: ((employee: Employee) => void);
+  handleSubmit: ((employee: Employee) => Promise<any>);
   employee: Employee | undefined;
 }
 
@@ -32,38 +32,19 @@ const employeeSchema = yup.object({
 });
 
 export default class EmployeeDetailView extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   public render() {
     const { employee } = this.props;
     console.log(employee);
 
     if (employee) {
       return (
-        <Formik
+        <EditForm
+          header={'Mitarbeiter Bearbeiten'}
           validationSchema={employeeSchema}
           initialValues={{ ...employee, password: '', password_repeat: '' }}
           onSubmit={this.props.handleSubmit}
-          render={props => (
-            <div>
-              <Grid container={true}>
-                <Grid item={true} xs={12} sm={6}>
-                  <Typography component="h1" variant="h4" align={'left'}>
-                    Mitarbeiter bearbeiten
-                  </Typography>
-                </Grid>
-
-                <Grid item={true} container={true} xs={12} sm={6} justify={'flex-end'}>
-                  <Button variant={'contained'} color={'primary'} onClick={() => props.handleSubmit()} disabled={props.isSubmitting}>
-                    Speichern
-                    <SaveIcon />
-                  </Button>
-                </Grid>
-              </Grid>
-
-              <br />
+          render={(props: FormikProps<any>) => (
+            <Fragment>
               <Typography component="h4" variant="h5" align={'left'}>
                 Allgemeine Informationen
               </Typography>
@@ -126,7 +107,7 @@ export default class EmployeeDetailView extends React.Component<Props> {
                   </Grid>
                 </Grid>
               </form>
-            </div>
+            </Fragment>
           )}
         />
       );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ErrorMessage, FieldProps } from 'formik';
+import { ErrorMessage, FieldProps, Formik, FormikBag, FormikConfig, FormikProps, FormikState } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,6 +7,10 @@ import Input from '@material-ui/core/Input/Input';
 import { ReactNode } from 'react';
 import Switch from '@material-ui/core/Switch/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
+import Button from '@material-ui/core/Button/Button';
+import SaveIcon from '@material-ui/icons/Save';
 
 export type InputFieldProps = { type: string } & FormProps;
 export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
@@ -56,3 +60,52 @@ export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = fa
 export const TextFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
   <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
 );
+
+interface EditFormProps<T> {
+  header: string;
+  onSubmit: (values: any) => Promise<any>;
+  render: (props: FormikProps<T>) => React.ReactNode;
+}
+
+export class EditForm<Values = object, ExtraProps = {}> extends React.Component<
+  FormikConfig<Values> & ExtraProps & EditFormProps<Values>,
+  FormikState<Values>
+> {
+  private submit = async (values: any, formikBag: FormikBag<any, any>) => {
+    await this.props.onSubmit(values);
+    formikBag.setSubmitting(false);
+  };
+
+  public render() {
+    const bla: any = this.props;
+
+    return (
+      <Formik
+        {...bla}
+        onSubmit={this.submit}
+        render={props => (
+          <div>
+            <Grid container={true}>
+              <Grid item={true} xs={12} sm={6}>
+                <Typography component="h1" variant="h4" align={'left'}>
+                  {this.props.header}
+                </Typography>
+              </Grid>
+
+              <Grid item={true} container={true} xs={12} sm={6} justify={'flex-end'}>
+                <Button variant={'contained'} color={'primary'} onClick={() => props.handleSubmit()} disabled={props.isSubmitting}>
+                  Speichern
+                  <SaveIcon />
+                </Button>
+              </Grid>
+            </Grid>
+
+            <br />
+
+            {this.props.render(props as any)}
+          </div>
+        )}
+      />
+    );
+  }
+}

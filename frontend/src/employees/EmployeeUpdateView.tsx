@@ -25,17 +25,17 @@ class EmployeeUpdateView extends React.Component<Props> {
     props.employeeStore!.fetchEmployee(Number(props.match.params.id));
   }
 
-  public handleSubmit(employee: Employee) {
-    this.props.employeeStore!
+  public handleSubmit = (employee: Employee) => {
+    return this.props.employeeStore!
       .putEmployee(employee)
       .then(() => this.props.enqueueSnackbar('Mitarbeiter wurde erfolgreich aktualisiert.', { variant: 'success' }))
       .catch(() => this.props.enqueueSnackbar('Mitarbeiter konnte nicht gespeichert werden.', { variant: 'error' }));
-  }
+  };
 
   public render() {
     const employee: Employee | undefined = this.props!.employeeStore!.employee;
 
-    return <EmployeeDetailView handleSubmit={this.handleSubmit.bind(this)} employee={employee} />;
+    return <EmployeeDetailView handleSubmit={this.handleSubmit} employee={employee} />;
   }
 }
 
