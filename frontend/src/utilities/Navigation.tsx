@@ -6,31 +6,40 @@ import UnstyledLink from './UnstyledLink';
 
 import PeopleIcon from '@material-ui/icons/People';
 import DriveFile from '@material-ui/icons/InsertDriveFile';
+import { Route, RouteComponentProps } from 'react-router';
 
 interface NavItemProps {
-  link: string;
   label: string;
   icon: any;
+  to: string;
+  exact?: boolean;
+  query?: string;
 }
 
-export const NavItem = ({ link, label, icon }: NavItemProps) => {
+export const NavItem = ({ to, exact = false, query = '', label, icon }: NavItemProps) => {
   const Icon = icon;
 
   return (
-    <UnstyledLink to={link}>
-      <ListItem button={true}>
-        <ListItemIcon>
-          <Icon />
-        </ListItemIcon>
-        <ListItemText primary={label} />
-      </ListItem>
-    </UnstyledLink>
+    <Route
+      path={to}
+      exact={exact}
+      children={({ match }: RouteComponentProps) => (
+        <UnstyledLink to={to + query}>
+          <ListItem button={true} selected={!!match}>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={label} />
+          </ListItem>
+        </UnstyledLink>
+      )}
+    />
   );
 };
 
 export const Navigation = () => (
   <React.Fragment>
-    <NavItem link={'/'} label={'Offerten'} icon={DriveFile} />
-    <NavItem link={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
+    <NavItem to={'/'} exact label={'Offerten'} icon={DriveFile} />
+    <NavItem to={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
   </React.Fragment>
 );
