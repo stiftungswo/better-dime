@@ -20,6 +20,12 @@
     },
     "comment-format": {
       "severity": "off"
+    },
+    "jsx-boolean-value": {
+      "severity": "off"
+    },
+    "no-any": {
+      "severity": "warning"
     }
   }
 }

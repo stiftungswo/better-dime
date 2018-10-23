@@ -1,45 +1,24 @@
-import ListItem from '@material-ui/core/ListItem/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import * as React from 'react';
-import UnstyledLink from './UnstyledLink';
 
 import PeopleIcon from '@material-ui/icons/People';
 import DriveFile from '@material-ui/icons/InsertDriveFile';
-import { Route, RouteComponentProps } from 'react-router';
+import ListIcon from '@material-ui/icons/List';
+import EuroSymbol from '@material-ui/icons/EuroSymbol';
+import { NavItem } from './NavItem';
+import { Collapsible } from './Collapsible';
 
-interface NavItemProps {
-  label: string;
-  icon: any;
-  to: string;
-  exact?: boolean;
-  query?: string;
+interface NavigationProps {
+  handleDrawerOpen: () => void;
+  drawerOpen: boolean;
 }
 
-export const NavItem = ({ to, exact = false, query = '', label, icon }: NavItemProps) => {
-  const Icon = icon;
-
-  return (
-    <Route
-      path={to}
-      exact={exact}
-      children={({ match }: RouteComponentProps) => (
-        <UnstyledLink to={to + query}>
-          <ListItem button={true} selected={!!match}>
-            <ListItemIcon>
-              <Icon />
-            </ListItemIcon>
-            <ListItemText primary={label} />
-          </ListItem>
-        </UnstyledLink>
-      )}
-    />
-  );
-};
-
-export const Navigation = () => (
+export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) => (
   <React.Fragment>
     <NavItem to={'/'} exact label={'Offerten'} icon={DriveFile} />
     <NavItem to={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
+    <Collapsible icon={ListIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
+      <NavItem nested to={'/services'} label={'Services'} />
+      <NavItem nested to={'/service_rates'} label={'Tarif-Einheiten'} icon={EuroSymbol} />
+    </Collapsible>
   </React.Fragment>
 );

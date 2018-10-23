@@ -171,7 +171,7 @@ class DimeLayout extends React.Component<Props> {
 
             <Divider />
 
-            <Navigation />
+            <Navigation handleDrawerOpen={this.handleDrawerOpen} drawerOpen={this.state.open} />
           </Drawer>
 
           <main className={classes.content}>
