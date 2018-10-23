@@ -24,6 +24,21 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
 
         $router->group(['middleware' => 'auth'], function () use ($router) {
 
+            $router->group(['prefix' => 'companies'], function () use ($router) {
+                $router->get('/', ['uses' => 'CompanyController@index']);
+                $router->post('/', ['uses' => 'CompanyController@post']);
+                $router->get('/{id}', ['uses' => 'CompanyController@get']);
+                $router->put('/{id}', ['uses' => 'CompanyController@put']);
+                $router->delete('/{id}', ['uses' => 'CompanyController@delete']);
+            });
+
+            $router->group(['prefix' => 'customer_tags'], function () use ($router) {
+                $router->get('/', ['uses' => 'CustomerTagController@index']);
+                $router->post('/', ['uses' => 'CustomerTagController@post']);
+                $router->put('/{id}', ['uses' => 'CustomerTagController@put']);
+                $router->delete('/{id}', ['uses' => 'CustomerTagController@delete']);
+            });
+
             $router->group(['prefix' => 'employees'], function () use ($router) {
                 $router->get('/', ['uses' => 'EmployeeController@index']);
                 $router->post('/', ['uses' => 'EmployeeController@post']);
@@ -37,6 +52,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->post('/', ['uses' => 'HolidayController@post']);
                 $router->put('/{id}', ['uses' => 'HolidayController@put']);
                 $router->delete('/{id}', ['uses' => 'HolidayController@delete']);
+            });
+
+            $router->group(['prefix' => 'people'], function () use ($router) {
+                $router->get('/', ['uses' => 'PersonController@index']);
+                $router->post('/', ['uses' => 'PersonController@post']);
+                $router->get('/{id}', ['uses' => 'PersonController@get']);
+                $router->put('/{id}', ['uses' => 'PersonController@put']);
+                $router->delete('/{id}', ['uses' => 'PersonController@delete']);
             });
 
             $router->group(['prefix' => 'rate_units'], function () use ($router) {

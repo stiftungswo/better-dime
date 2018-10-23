@@ -41,5 +41,25 @@ class DatabaseSeeder extends Seeder
                 'rate_unit_id' => $rateUnit
             ]);
         });
+
+        factory(\App\Models\Customer\Company::class)->times(5)->create([
+            'rate_group_id' => $kanton
+        ]);
+
+        factory(\App\Models\Customer\Company::class)->times(5)->create([
+            'rate_group_id' => $andere])->each(function ($c) {
+                /** @var \App\Models\Customer\Company $c */
+                $c->customerTags()->saveMany(factory(\App\Models\Customer\CustomerTag::class)->times(2)->make());
+            });
+
+        factory(\App\Models\Customer\Person::class)->times(5)->create([
+            'rate_group_id' => $kanton
+        ]);
+
+        factory(\App\Models\Customer\Person::class)->times(5)->create([
+            'rate_group_id' => $andere])->each(function ($c) {
+            /** @var \App\Models\Customer\Company $c */
+                $c->customerTags()->saveMany(factory(\App\Models\Customer\CustomerTag::class)->times(2)->make());
+            });
     }
 }
