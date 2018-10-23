@@ -77,6 +77,13 @@ class AuthController extends BaseController
             ], 400);
         }
 
+        // verify the user is even allowed to login
+        if (!$user->can_login) {
+            return response()->json([
+                'error' => 'Employee has no permissions to login'
+            ], 400);
+        }
+
         // Verify the password and generate the token
         if (Hash::check($this->request->input('password'), $user->password)) {
             return response()->json([

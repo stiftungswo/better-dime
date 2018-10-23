@@ -34,6 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('jwt-auth', function ($request) {
+            /** @var \Laravel\Lumen\Http\Request $request */
             $token = $request->header('Authorization');
 
             if (!$token) {
@@ -47,7 +48,14 @@ class AuthServiceProvider extends ServiceProvider
                 return null;
             }
 
-            return Employee::find($credentials->sub);
+            $employee = Employee::find($credentials->sub);
+
+            // handle case if somebody's access to Dime got blocked recently and its token is still valid
+            if ($employee->can_login) {
+                return $employee->id;
+            } else {
+                return null;
+            }
         });
     }
 }

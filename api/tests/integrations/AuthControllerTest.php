@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integrations;
+namespace Tests\Integrations;
 
 use App\Models\Employee\Employee;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -29,10 +29,24 @@ class AuthControllerTest extends \TestCase
         ])->assertResponseStatus(400);
     }
 
+    public function testBlockedLogin()
+    {
+        $employee = factory(Employee::class)->create([
+            'can_login' => false,
+            'password' => 'VeryGudPassword'
+        ]);
+
+        $this->json('POST', 'api/v1/employees/login', [
+            'email' =>  $employee->email,
+            'password' => 'VeryGudPassword'
+        ])->assertResponseStatus(400);
+    }
+
     public function testValidUserLogin()
     {
         // should work
         $user = factory(Employee::class)->create([
+            'can_login' => true,
             'password' => 'VeryGudPassword'
         ]);
         $this->json('POST', 'api/v1/employees/login', [

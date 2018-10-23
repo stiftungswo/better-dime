@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
-import { Field, Formik } from 'formik';
+import { Field, Formik, FormikBag } from 'formik';
 import { EmailFieldWithValidation, PasswordFieldWithValidation } from '../form/common';
 import { RouteComponentProps, withRouter } from 'react-router';
 import dimeTheme from '../utilities/DimeTheme';
@@ -69,13 +69,14 @@ class Login extends React.Component<Props> {
     super(props);
   }
 
-  public handleSubmit(values: { email: string; password: string }) {
-    this.props.mainStore!
-      .postLogin({ ...values })
+  public handleSubmit(values: { email: string; password: string }, formikBag: FormikBag<any, any>) {
+    this.props
+      .mainStore!.postLogin({ ...values })
       .then(() => {
         this.props.history.replace('/');
       })
-      .catch(e => this.props.enqueueSnackbar('Anmeldung fehlgeschlagen', { variant: 'error' }));
+      .catch(e => this.props.enqueueSnackbar('Anmeldung fehlgeschlagen', { variant: 'error' }))
+      .then(() => formikBag.setSubmitting(false));
   }
 
   public render() {
@@ -98,7 +99,7 @@ class Login extends React.Component<Props> {
                 email: '',
                 password: '',
               }}
-              onSubmit={values => this.handleSubmit(values)}
+              onSubmit={(values, formikBag: any) => this.handleSubmit(values, formikBag)}
               render={props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
                   <Field component={EmailFieldWithValidation} name="email" label="E-Mail" fullWidth={true} />
@@ -124,4 +125,8 @@ class Login extends React.Component<Props> {
   }
 }
 
-export default compose(withStyles(styles(dimeTheme)), withSnackbar, withRouter)(Login);
+export default compose(
+  withStyles(styles(dimeTheme)),
+  withSnackbar,
+  withRouter
+)(Login);
