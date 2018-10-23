@@ -26,6 +26,9 @@
     },
     "no-any": {
       "severity": "warning"
+    },
+    "jsx-no-lambda": {
+      "severity": "off"
     }
   }
 }

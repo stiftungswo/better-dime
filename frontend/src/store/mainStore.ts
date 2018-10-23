@@ -18,6 +18,21 @@ function setAuthHeader(client: AxiosInstance, token: string|null){
 }
 
 export class MainStore{
+  private _api: AxiosInstance;
+  @observable private openRequests = 0;
+  @observable private _token: string = "";
+
+  @computed public get loading() { return this.openRequests > 0; }
+
+  @computed public get token() { return this._token; };
+  public set token(token){
+    this._token = token;
+    localStorage.setItem(KEY_TOKEN, token);
+    setAuthHeader(this._api, token);
+  }
+
+  public get api(){ return this._api; }
+
     constructor(private history: History, private enqueueSnackbar: (message: string, options?: OptionsObject)=>void){
 
         const token = localStorage.getItem(KEY_TOKEN);
@@ -30,14 +45,14 @@ export class MainStore{
         })
         setAuthHeader(this._api, token);
 
-        this._api.interceptors.request.use((config: any)=>{
+        this._api.interceptors.request.use((config)=>{
             this.openRequests += 1;
             return config;
-        }, (error: any)=>{
+        }, (error: AxiosError)=>{
             return Promise.reject(error);
         })
 
-        this._api.interceptors.response.use((response: any)=>{
+        this._api.interceptors.response.use((response)=>{
             this.openRequests -= 1;
             return response;
         }, (error: AxiosError)=>{
@@ -49,21 +64,6 @@ export class MainStore{
             return Promise.reject(error);
         })
     }
-
-    private _api: AxiosInstance;
-    @observable private openRequests = 0;
-    @observable private _token: string = "";
-
-    @computed public get loading() { return this.openRequests > 0; }
-
-    @computed public get token() { return this._token; };
-    public set token(token){
-        this._token = token;
-        localStorage.setItem(KEY_TOKEN, token);
-        setAuthHeader(this._api, token);
-    }
-
-    public get api(){ return this._api; }
 
     @action public async postLogin(values: {email: string, password: string}){
         const { email, password } = values

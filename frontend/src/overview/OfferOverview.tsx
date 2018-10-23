@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { OfferStore } from '../store/offerStore';
+import { OfferListing, OfferStore } from '../store/offerStore';
 import { Link } from 'react-router-dom';
 
 export interface Props {
@@ -18,7 +18,7 @@ export default class OfferOverview extends React.Component<Props> {
     return (
       <ul>
         {this.props!.offerStore!.offers.length === 0 && <p>Keine Offerten.</p>}
-        {this.props!.offerStore!.offers.map((offer: any) => (
+        {this.props!.offerStore!.offers.map((offer: OfferListing) => (
           <li key={offer.id}>
             <Link to={`/offer/${offer.id}`}>
               <h3>{offer.name}</h3>

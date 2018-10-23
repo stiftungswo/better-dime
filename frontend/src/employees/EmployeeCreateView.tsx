@@ -11,24 +11,18 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps {
   employeeStore?: EmployeeStore;
 }
 
-@inject((stores: any) => ({
-  employeeStore: stores.employeeStore as EmployeeStore,
-}))
+@inject('employeeStore')
 @observer
 class EmployeeCreateView extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  public handleSubmit(employee: Employee) {
-    this.props.employeeStore!
+  public handleSubmit = (employee: Employee) => {
+    return this.props.employeeStore!
       .postEmployee(employee)
       .then(() => {
         const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
         this.props.history.replace('/employees/' + idOfNewEmployee);
       })
       .catch(() => this.props.enqueueSnackbar('Mitarbeiter konnte nicht gespeichert werden.', { variant: 'error' }));
-  }
+  };
 
   public render() {
     const employee: Employee = {
@@ -49,7 +43,7 @@ class EmployeeCreateView extends React.Component<Props> {
       password: '',
     };
 
-    return <EmployeeDetailView handleSubmit={this.handleSubmit.bind(this)} employee={employee} />;
+    return <EmployeeDetailView handleSubmit={this.handleSubmit} employee={employee} />;
   }
 }
 

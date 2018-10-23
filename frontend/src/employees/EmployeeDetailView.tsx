@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { Loading } from '../utilities/DimeLayout';
 
 export interface Props {
-  handleSubmit: ((employee: Employee) => Promise<any>);
+  handleSubmit: ((employee: Employee) => Promise<any>); // tslint:disable-line
   employee: Employee | undefined;
 }
 
@@ -35,7 +35,6 @@ const employeeSchema = yup.object({
 export default class EmployeeDetailView extends React.Component<Props> {
   public render() {
     const { employee } = this.props;
-    console.log(employee);
 
     return (
       <Loading entity={employee}>
@@ -44,7 +43,9 @@ export default class EmployeeDetailView extends React.Component<Props> {
           validationSchema={employeeSchema}
           initialValues={{ ...employee, password: '', password_repeat: '' }}
           onSubmit={this.props.handleSubmit}
-          render={(props: FormikProps<any>) => (
+          render={(
+            props: FormikProps<any> // tslint:disable-line
+          ) => (
             <Fragment>
               <Typography component="h4" variant="h5" align={'left'}>
                 Allgemeine Informationen

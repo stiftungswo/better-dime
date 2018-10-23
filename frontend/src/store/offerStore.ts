@@ -2,7 +2,7 @@ import {observable} from "mobx";
 import {Offer} from "../types";
 import {MainStore} from "./mainStore";
 
-interface OfferListing{
+export interface OfferListing{
     id: number;
     name: string;
     shortDescription: string

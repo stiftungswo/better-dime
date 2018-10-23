@@ -185,6 +185,7 @@ class DimeLayout extends React.Component<Props> {
 }
 
 const hasContent = (value: any) => {
+  // tslint:disable-line:no-any
   if (!value) {
     return false;
   }
@@ -193,10 +194,14 @@ const hasContent = (value: any) => {
   }
   return true;
 };
-export const Loading = compose(withStyles(styles(DimeTheme)))(
-  ({ entity, children, classes }: { entity: any; children: any; classes: any }) => (
-    <Fragment>{hasContent(entity) ? children : <CircularProgress className={classes.progress} />}</Fragment>
-  )
-);
+
+interface LoadingProps {
+  entity: any; // tslint:disable-line:no-any
+  children: React.ReactNode;
+  classes: any; // tslint:disable-line:no-any
+}
+export const Loading = compose(withStyles(styles(DimeTheme)))(({ entity, children, classes }: LoadingProps) => (
+  <Fragment>{hasContent(entity) ? children : <CircularProgress className={classes.progress} />}</Fragment>
+));
 
 export default compose(withStyles(styles(DimeTheme)))(DimeLayout);

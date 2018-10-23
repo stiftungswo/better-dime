@@ -65,11 +65,8 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps, With
 @inject('mainStore')
 @observer
 class Login extends React.Component<Props> {
-  constructor(props: any) {
-    super(props);
-  }
-
-  public handleSubmit(values: { email: string; password: string }, formikBag: FormikBag<any, any>) {
+  public handleSubmit = (values: { email: string; password: string }, formikBag: FormikBag<any, any>) => {
+    // tslint:disable-line:no-any
     this.props.mainStore!
       .postLogin({ ...values })
       .then(() => {
@@ -99,7 +96,7 @@ class Login extends React.Component<Props> {
                 email: '',
                 password: '',
               }}
-              onSubmit={(values, formikBag: any) => this.handleSubmit(values, formikBag)}
+              onSubmit={this.handleSubmit}
               render={props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
                   <Field component={EmailFieldWithValidation} name="email" label="E-Mail" fullWidth={true} />

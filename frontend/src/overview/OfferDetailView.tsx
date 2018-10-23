@@ -48,10 +48,7 @@ const offerPositionTemplate = {
   },
 };
 
-@inject((stores: any) => ({
-  offerStore: stores.offerStore as OfferStore,
-  serviceStore: stores.serviceStore as ServiceStore,
-}))
+@inject('offerStore', 'serviceStore')
 @observer
 export default class OfferDetailView extends React.Component<Props> {
   constructor(props: Props) {

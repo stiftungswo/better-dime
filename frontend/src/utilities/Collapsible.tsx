@@ -19,11 +19,11 @@ interface CollapsibleState {
 }
 
 export class Collapsible extends React.Component<CollapsibleProps, CollapsibleState> {
-  state = {
+  public state = {
     open: false,
   };
 
-  handleClick = () => {
+  public handleClick = () => {
     if (!this.props.drawerOpen) {
       this.setState({ open: true });
     } else {
@@ -32,7 +32,7 @@ export class Collapsible extends React.Component<CollapsibleProps, CollapsibleSt
     this.props.handleDrawerOpen();
   };
 
-  get open() {
+  public get open() {
     return this.state.open && this.props.drawerOpen;
   }
 

@@ -15,9 +15,7 @@ export interface Props extends RouteComponentProps<EmployeeDetailRouterProps>, I
   employeeStore?: EmployeeStore;
 }
 
-@inject((stores: any) => ({
-  employeeStore: stores.employeeStore as EmployeeStore,
-}))
+@inject('employeeStore')
 @observer
 class EmployeeUpdateView extends React.Component<Props> {
   constructor(props: Props) {
