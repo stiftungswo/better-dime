@@ -11,7 +11,7 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
      */
     public function createApplication()
     {
-        return require __DIR__.'/../bootstrap/app.php';
+        return require __DIR__ . '/../bootstrap/app.php';
     }
 
     public function asAdmin()
@@ -39,8 +39,12 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
     {
         $decodedResponse = $this->responseToArray();
 
+        if (!is_array($decodedResponse)) {
+            throw new \PHPUnit\Framework\ExpectationFailedException('Response is not an Array. This usually means that Lumen sent a HTTP response because an internal error occurred.');
+        }
+
         foreach ($template as $key => $value) {
-            $this->assertArraySubset([$key => $value], $decodedResponse);
+            $this->assertArraySubset([$key => $value], $decodedResponse, false, 'Unable to find ' . $key . ' in Response.');
         }
     }
 }

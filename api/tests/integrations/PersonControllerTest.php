@@ -5,11 +5,11 @@ namespace Tests\Integrations;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Person;
+use App\Models\Customer\Phone;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class PersonControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
 
     public function testIndex()
@@ -54,51 +54,15 @@ class PersonControllerTest extends \TestCase
 
     public function testValidPost()
     {
-        $idsOfTags = factory(CustomerTag::class)->times(2)->create()->map(function ($t) {
-            return $t->id;
-        });
-        $companyId = factory(Company::class)->create()->id;
-
-        $template = [
-            'comment' => 'Dies ist ein Kunde der SWO.',
-            'company_id' => $companyId,
-            'chargeable' => false,
-            'department' => 'Landwirtschaft und Natur',
-            'email' => 'kunde@der.swo',
-            'first_name' => 'Max',
-            'hidden' => false,
-            'last_name' => 'Mustermann',
-            'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
-            'salutation' => 'Prof. Dr.',
-            'tags' => $idsOfTags->toArray()
-
-        ];
+        $template = $this->personTemplate();
         $this->asAdmin()->json('POST', 'api/v1/people', $template);
         $this->assertResponseMatchesTemplate($template);
     }
 
     public function testInvalidObjectPut()
     {
-        $idsOfTags = factory(CustomerTag::class)->times(2)->create()->map(function ($t) {
-            return $t->id;
-        });
-        $companyId = factory(Company::class)->create()->id;
-
         // can't update because object does not exist
-        $this->asAdmin()->json('PUT', 'api/v1/people/1789764', [
-            'comment' => 'Dies ist ein Kunde der SWO.',
-            'company_id' => $companyId,
-            'chargeable' => false,
-            'department' => 'Landwirtschaft und Natur',
-            'email' => 'kunde@der.swo',
-            'first_name' => 'Max',
-            'hidden' => false,
-            'last_name' => 'Mustermann',
-            'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
-            'salutation' => 'Prof. Dr.',
-            'tags' => $idsOfTags->toArray()
-
-        ])->assertResponseStatus(404);
+        $this->asAdmin()->json('PUT', 'api/v1/people/1789764', $this->personTemplate())->assertResponseStatus(404);
     }
 
     public function testInvalidParamsPut()
@@ -108,30 +72,60 @@ class PersonControllerTest extends \TestCase
         $this->asAdmin()->json('PUT', 'api/v1/people/' . $personId, [])->assertResponseStatus(422);
     }
 
+    public function testInvalidNestedPut()
+    {
+        // can't update because parameters are invalid
+        $personId = factory(Person::class)->create()->id;
+        $template = $this->personTemplate();
+        unset($template['phone_numbers']);
+        $template['phone_numbers'] = ['werqwer'];
+
+        $this->asAdmin()->json('PUT', 'api/v1/people/' . $personId, $template)->assertResponseStatus(500);
+    }
+
     public function testValidPut()
     {
-        $personId = factory(Person::class)->create()->id;
+        $person = factory(Person::class)->create();
+        $phone = factory(Phone::class)->make();
+        $person->phone_numbers()->save($phone);
+
+        $template = $this->personTemplate();
+        $template['phone_numbers']['0']['id'] = $phone->id;
+
+        $this->asAdmin()->json('PUT', 'api/v1/people/' . $person->id, $template);
+        file_put_contents('hello.html', $this->response->getContent());
+        $this->assertResponseMatchesTemplate($template);
+    }
+
+    private function personTemplate()
+    {
         $idsOfTags = factory(CustomerTag::class)->times(2)->create()->map(function ($t) {
             return $t->id;
         });
-        $companyId = factory(Company::class)->create()->id;
+        $personId = factory(Company::class)->create()->id;
 
-        $template = [
+        return [
             'comment' => 'Dies ist ein Kunde der SWO.',
-            'company_id' => $companyId,
+            'company_id' => $personId,
             'chargeable' => false,
             'department' => 'Landwirtschaft und Natur',
             'email' => 'kunde@der.swo',
             'first_name' => 'Max',
             'hidden' => false,
             'last_name' => 'Mustermann',
+            'phone_numbers' => [
+                [
+                    'category' => 1,
+                    'number' => '043 355 58 44'
+                ], [
+                    'category' => 4,
+                    'number' => '078 777 44 22'
+                ]
+            ],
             'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
             'salutation' => 'Prof. Dr.',
             'tags' => $idsOfTags->toArray()
 
         ];
-
-        $this->asAdmin()->json('PUT', 'api/v1/people/' . $personId, $template);
-        $this->assertResponseMatchesTemplate($template);
     }
 }

@@ -22,7 +22,7 @@ class CompanyTest extends \TestCase
     public function testGetPopulatedTagAttribute()
     {
         $company = factory(Company::class)->create();
-        $company->customerTags()->saveMany(factory(CustomerTag::class)->times(5)->make());
+        $company->customer_tags()->saveMany(factory(CustomerTag::class)->times(5)->make());
         $this->assertCount(5, $company->tags);
     }
 

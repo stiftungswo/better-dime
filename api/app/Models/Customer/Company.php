@@ -32,16 +32,16 @@ class Company extends Model
      */
     public function getTagsAttribute()
     {
-        if ($this->customerTags->isEmpty()) {
+        if ($this->customer_tags->isEmpty()) {
             return [];
         } else {
-            return $this->customerTags->map(function ($t) {
+            return $this->customer_tags->map(function ($t) {
                 return $t->id;
             })->toArray();
         }
     }
 
-    public function customerTags()
+    public function customer_tags()
     {
         return $this->morphToMany(CustomerTag::class, 'customer_taggable');
     }
@@ -49,6 +49,11 @@ class Company extends Model
     public function people()
     {
         return $this->hasMany(Person::class);
+    }
+
+    public function phone_numbers()
+    {
+        return $this->morphMany(Phone::class, 'customer');
     }
 
     public function rateGroup()

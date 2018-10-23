@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Customer\Person;
 use App\Models\Customer\CustomerTag;
+use App\Models\Customer\Person;
+use App\Models\Customer\Phone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class PersonController extends BaseController
@@ -19,12 +21,12 @@ class PersonController extends BaseController
 
     public function index()
     {
-        return Person::all();
+        return Person::with('phone_numbers')->get();
     }
 
     public function get($id)
     {
-        return Person::findOrFail($id);
+        return Person::with('phone_numbers')->findOrFail($id);
     }
 
     public function post(Request $request)
@@ -33,10 +35,21 @@ class PersonController extends BaseController
         $person = Person::create(Input::toArray());
 
         // tags is an array of existing CustomerTag ids
-        foreach (Input::get('tags') as $tag) {
-            /** @var CustomerTag $t */
-            $t = CustomerTag::findOrFail($tag);
-            $t->people()->save($person);
+        if (Input::get('tags')) {
+            foreach (Input::get('tags') as $tag) {
+                /** @var CustomerTag $t */
+                $t = CustomerTag::findOrFail($tag);
+                $t->people()->save($person);
+            }
+        }
+
+        if (Input::get('phone_numbers')) {
+            foreach (Input::get('phone_numbers') as $phoneNumber) {
+                /** @var Phone $pn */
+                $pn = Phone::make($phoneNumber);
+                $pn->customer()->associate($person);
+                $pn->save();
+            }
         }
 
         return self::get($person->id);
@@ -46,13 +59,26 @@ class PersonController extends BaseController
     {
         // input tags has to be a list of existing CustomerTag ids
         $this->validateRequest($request);
+
         /** @var Person $p */
         $p = Person::findOrFail($id);
-        $p->update(Input::toArray());
+        try {
+            DB::beginTransaction();
+            $p->update(Input::toArray());
 
-        if (Input::get('tags')) {
-            $p->customerTags()->sync(Input::get('tags'));
+            if (Input::get('tags')) {
+                $p->customer_tags()->sync(Input::get('tags'));
+            }
+
+            if (Input::get('phone_numbers')) {
+                $this->executeNestedUpdate(Input::get('phone_numbers'), $p->phone_numbers, Phone::class, 'customer', $p);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
+        DB::commit();
+
 
         return self::get($id);
     }

@@ -22,7 +22,7 @@ class PersonTest extends \TestCase
     public function testGetPopulatedTagAttribute()
     {
         $person = factory(Person::class)->create();
-        $person->customerTags()->saveMany(factory(CustomerTag::class)->times(5)->make());
+        $person->customer_tags()->saveMany(factory(CustomerTag::class)->times(5)->make());
         $this->assertCount(5, $person->tags);
     }
 
