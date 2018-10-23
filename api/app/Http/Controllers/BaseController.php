@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Laravel\Lumen\Routing\Controller;
 
@@ -17,15 +18,16 @@ class BaseController extends Controller
      * @param int $idOfParentElement
      * @throws \Exception
      */
-    protected function executeNestedUpdate(array $arrayOfNestedAttributes, Collection $currentElements, string $nestedAttributeClass, string $relationName, int $idOfParentElement)
+    protected function executeNestedUpdate(array $arrayOfNestedAttributes, Collection $currentElements, string $nestedAttributeClass, string $relationName, Model $parentElement)
     {
         $updatedElements = [];
 
         foreach ($arrayOfNestedAttributes as $nestedAttribute) {
             if (!array_has($nestedAttribute, 'id')) {
-                //insert
+                /** @var Model $r */
                 $r = $nestedAttributeClass::make($nestedAttribute);
-                $r->$relationName = $idOfParentElement;
+                // associate works for polymorphic as well as "normal" belongsTo
+                $r->$relationName()->associate($parentElement);
                 $r->save();
             } elseif ($currentElements->contains($nestedAttribute['id'])) {
                 //edit
@@ -36,7 +38,11 @@ class BaseController extends Controller
             }
         }
 
-        $deletedElements = $currentElements->diff($updatedElements);
+        $currentElementIds = $currentElements->map(function ($r) {
+            return $r->id;
+        });
+
+        $deletedElements = $currentElementIds->diff($updatedElements);
         foreach ($deletedElements as $deleted) {
             $nestedAttributeClass::destroy($deleted);
         }

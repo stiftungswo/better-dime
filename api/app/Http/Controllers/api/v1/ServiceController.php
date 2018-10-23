@@ -45,17 +45,12 @@ class ServiceController extends BaseController
             $s = Service::findOrFail($id);
             $s->update(Input::toArray());
 
-            /** @var Collection $currentServiceRates */
-            $currentServiceRates = $s->serviceRates->map(function ($r) {
-                return $r->id;
-            });
-
             $this->executeNestedUpdate(
                 Input::get('service_rates'),
-                $currentServiceRates,
+                $s->serviceRates,
                 ServiceRate::class,
-                'service_id',
-                $s->id
+                'service',
+                $s
             );
         } catch (QueryException $e) {
             if (str_contains($e->getMessage(), 'service_rates_service_id_rate_group_id_unique')) {
