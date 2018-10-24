@@ -1,5 +1,6 @@
 import { action, observable } from 'mobx';
 import { MainStore } from './mainStore';
+import { AbstractStore } from './abstractStore';
 
 export interface Holiday {
   id: number;
@@ -8,35 +9,41 @@ export interface Holiday {
   name: string;
 }
 
-export class HolidayStore {
+export class HolidayStore extends AbstractStore<Holiday> {
+  protected get entityName() {
+    return {
+      singular: 'Der Feiertag',
+      plural: 'Die Feiertage',
+    };
+  }
+
   @observable public holidays: Holiday[] = [];
 
-  constructor(private mainStore: MainStore) {}
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+  }
 
   @action
-  public async fetchHolidays() {
+  protected async doFetchAll() {
     const res = await this.mainStore.api.get<Holiday[]>('/holidays');
     this.holidays = res.data;
   }
 
   @action
-  public async postHoliday(holiday: Holiday) {
+  protected async doPost(holiday: Holiday) {
     await this.mainStore.api.post('/holidays', holiday);
-    this.mainStore.displaySuccess('Der Feiertag wurde hinzugefügt.');
-    await this.fetchHolidays();
+    await this.doFetchAll();
   }
 
   @action
-  public async putHoliday(holiday: Holiday) {
+  protected async doPut(holiday: Holiday) {
     await this.mainStore.api.put('/holidays/' + holiday.id, holiday);
-    this.mainStore.displaySuccess('Der Feiertag wurde angepasst.');
-    await this.fetchHolidays();
+    await this.doFetchAll();
   }
 
   @action
-  public async deleteHoliday(id: number) {
+  protected async doDelete(id: number) {
     await this.mainStore.api.delete('/holidays/' + id);
-    await this.fetchHolidays();
-    this.mainStore.displaySuccess('Der Feiertag wurde entfernt.');
+    await this.doFetchAll();
   }
 }

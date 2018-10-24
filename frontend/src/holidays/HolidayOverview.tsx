@@ -31,12 +31,12 @@ const schema = yup.object({
 export default class HolidayOverview extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.holidayStore!.fetchHolidays();
+    props.holidayStore!.fetchAll();
   }
 
   public updateHoliday = (values: Holiday, formikBag: FormikBag<any, any>) => {
     console.log('update holoday: ', values);
-    this.props.holidayStore!.putHoliday(values).then(() => formikBag.setSubmitting(false));
+    this.props.holidayStore!.put(values).then(() => formikBag.setSubmitting(false));
   };
 
   public render() {
@@ -95,7 +95,7 @@ export default class HolidayOverview extends React.Component<Props> {
                           <Button variant={'text'} disabled={props.isSubmitting} onClick={props.submitForm}>
                             <SaveIcon />
                           </Button>
-                          <Button variant={'text'} onClick={() => this.props.holidayStore!.deleteHoliday(holiday.id)}>
+                          <Button variant={'text'} onClick={() => this.props.holidayStore!.delete(holiday.id)}>
                             <DeleteIcon />
                           </Button>
                         </TableCell>
