@@ -74,7 +74,7 @@ class Login extends React.Component<Props> {
       })
       .catch(e => this.props.enqueueSnackbar('Anmeldung fehlgeschlagen', { variant: 'error' }))
       .then(() => formikBag.setSubmitting(false));
-  }
+  };
 
   public render() {
     const { classes } = this.props;

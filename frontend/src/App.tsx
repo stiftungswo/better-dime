@@ -15,7 +15,7 @@ import EmployeeUpdateView from './employees/EmployeeUpdateView';
 import EmployeeCreateView from './employees/EmployeeCreateView';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
 import { StoreProvider } from './utilities/StoreProvider';
-import HolidayOverview from "./holidays/HolidayOverview";
+import HolidayOverview from './holidays/HolidayOverview';
 
 const browserHistory = createBrowserHistory();
 

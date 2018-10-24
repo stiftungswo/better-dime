@@ -20,7 +20,7 @@ export const ValidatedFormGroupWithLabel = ({ label, field, form: { touched, err
 
   return (
     <FormControl margin={'normal'} error={hasErrors} fullWidth={fullWidth}>
-      <InputLabel htmlFor={field.name}>{label}</InputLabel>
+      {label && <InputLabel htmlFor={field.name}>{label}</InputLabel>}
       {children}
       <ErrorMessage name={field.name} render={error => <FormHelperText error={true}>{error}</FormHelperText>} />
     </FormControl>

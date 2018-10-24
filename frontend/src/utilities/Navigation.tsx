@@ -19,6 +19,7 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
     <Collapsible icon={ListIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} />
       <NavItem nested to={'/service_rates'} label={'Tarif-Einheiten'} icon={EuroSymbol} />
+      <NavItem nested to={'/holidays'} label={'Feiertage'} />
     </Collapsible>
   </React.Fragment>
 );
