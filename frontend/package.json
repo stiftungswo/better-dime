@@ -27,7 +27,7 @@
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "format": "prettier --write \"{src,cypress}/**/*.ts?\""
+    "format": "prettier --write \"{src,cypress}/**/*.ts\" \"{src,cypress}/**/*.tsx\""
   },
   "devDependencies": {
     "@types/history": "^4.7.0",
