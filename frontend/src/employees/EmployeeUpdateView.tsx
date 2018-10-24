@@ -20,14 +20,11 @@ export interface Props extends RouteComponentProps<EmployeeDetailRouterProps>, I
 class EmployeeUpdateView extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.employeeStore!.fetchEmployee(Number(props.match.params.id));
+    props.employeeStore!.fetchOne(Number(props.match.params.id));
   }
 
   public handleSubmit = (employee: Employee) => {
-    return this.props.employeeStore!
-      .putEmployee(employee)
-      .then(() => this.props.enqueueSnackbar('Mitarbeiter wurde erfolgreich aktualisiert.', { variant: 'success' }))
-      .catch(() => this.props.enqueueSnackbar('Mitarbeiter konnte nicht gespeichert werden.', { variant: 'error' }));
+    return this.props.employeeStore!.put(employee);
   };
 
   public render() {

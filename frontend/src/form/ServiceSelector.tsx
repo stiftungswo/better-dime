@@ -12,7 +12,7 @@ interface Props extends FormProps {
 export class ServiceSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.serviceStore!.fetchServices();
+    props.serviceStore!.fetchAll();
   }
 
   public render() {

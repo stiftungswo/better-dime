@@ -28,7 +28,7 @@ interface Props {
 export default class EmployeeOverview extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.employeeStore!.fetchEmployees();
+    props.employeeStore!.fetchAll();
   }
 
   public render() {

@@ -15,13 +15,10 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps {
 @observer
 class EmployeeCreateView extends React.Component<Props> {
   public handleSubmit = (employee: Employee) => {
-    return this.props.employeeStore!
-      .postEmployee(employee)
-      .then(() => {
-        const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
-        this.props.history.replace('/employees/' + idOfNewEmployee);
-      })
-      .catch(() => this.props.enqueueSnackbar('Mitarbeiter konnte nicht gespeichert werden.', { variant: 'error' }));
+    return this.props.employeeStore!.post(employee).then(() => {
+      const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
+      this.props.history.replace('/employees/' + idOfNewEmployee);
+    });
   };
 
   public render() {

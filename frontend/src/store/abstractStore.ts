@@ -22,6 +22,19 @@ export class AbstractStore<T> {
   }
 
   @action
+  public async fetchOne(id: number) {
+    try {
+      await this.doFetchOne(id);
+    } catch (e) {
+      this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
+    }
+  }
+
+  protected async doFetchOne(id: number) {
+    throw new Error('Not implemented');
+  }
+
+  @action
   public async post(entity: T) {
     try {
       await this.doPost(entity);

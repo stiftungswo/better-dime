@@ -53,8 +53,8 @@ const offerPositionTemplate = {
 export default class OfferDetailView extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.offerStore!.fetchOffer(Number(props.match.params.id));
-    props.serviceStore!.fetchServices();
+    props.offerStore!.fetchOne(Number(props.match.params.id));
+    props.serviceStore!.fetchAll();
   }
   public render() {
     const offer: Offer | undefined = this.props!.offerStore!.offer;

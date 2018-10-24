@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
 import { Offer } from '../types';
 import { MainStore } from './mainStore';
+import { AbstractStore } from './abstractStore';
 
 export interface OfferListing {
   id: number;
@@ -8,19 +9,28 @@ export interface OfferListing {
   shortDescription: string;
 }
 
-export class OfferStore {
+export class OfferStore extends AbstractStore<Offer> {
+  protected get entityName(): { singular: string; plural: string } {
+    return {
+      singular: 'die Offerte',
+      plural: 'die Offerten',
+    };
+  }
+
   @observable public offers: OfferListing[] = [];
   @observable public offer?: Offer = undefined;
 
-  constructor(private api: MainStore) {}
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+  }
 
-  public async fetchOffers() {
-    const res = await this.api.api.get<OfferListing[]>('/offers');
+  protected async doFetchAll(): Promise<void> {
+    const res = await this.mainStore.api.get<OfferListing[]>('/offers');
     this.offers = res.data;
   }
 
-  public async fetchOffer(id: number) {
-    const res = await this.api.api.get<Offer>('/offers/' + id);
+  protected async doFetchOne(id: number) {
+    const res = await this.mainStore.api.get<Offer>('/offers/' + id);
     this.offer = res.data;
   }
 }

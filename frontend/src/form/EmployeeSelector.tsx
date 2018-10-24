@@ -12,7 +12,7 @@ interface Props extends FormProps {
 export class EmployeeSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.employeeStore!.fetchEmployees(true);
+    props.employeeStore!.fetchAll();
   }
 
   public render() {

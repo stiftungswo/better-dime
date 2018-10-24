@@ -12,7 +12,7 @@ export interface Props {
 export default class OfferOverview extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.offerStore!.fetchOffers();
+    props.offerStore!.fetchAll();
   }
   public render() {
     return (
