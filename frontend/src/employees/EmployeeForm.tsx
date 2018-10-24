@@ -32,7 +32,7 @@ const employeeSchema = yup.object({
   password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
 });
 
-export default class EmployeeDetailView extends React.Component<Props> {
+export default class EmployeeForm extends React.Component<Props> {
   public render() {
     const { employee } = this.props;
 

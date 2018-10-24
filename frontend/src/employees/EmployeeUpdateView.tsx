@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { EmployeeStore } from '../store/employeeStore';
 import { RouteComponentProps } from 'react-router';
 import { InjectedNotistackProps, withSnackbar } from 'notistack';
-import EmployeeDetailView from './EmployeeDetailView';
+import EmployeeForm from './EmployeeForm';
 import compose from '../compose';
 
 interface EmployeeDetailRouterProps {
@@ -33,7 +33,7 @@ class EmployeeUpdateView extends React.Component<Props> {
   public render() {
     const employee: Employee | undefined = this.props!.employeeStore!.employee;
 
-    return <EmployeeDetailView handleSubmit={this.handleSubmit} employee={employee} />;
+    return <EmployeeForm handleSubmit={this.handleSubmit} employee={employee} />;
   }
 }
 

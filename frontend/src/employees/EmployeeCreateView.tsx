@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { EmployeeStore } from '../store/employeeStore';
 import { RouteComponentProps } from 'react-router';
 import { InjectedNotistackProps, withSnackbar } from 'notistack';
-import EmployeeDetailView from './EmployeeDetailView';
+import EmployeeForm from './EmployeeForm';
 import compose from '../compose';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
@@ -43,7 +43,7 @@ class EmployeeCreateView extends React.Component<Props> {
       password: '',
     };
 
-    return <EmployeeDetailView handleSubmit={this.handleSubmit} employee={employee} />;
+    return <EmployeeForm handleSubmit={this.handleSubmit} employee={employee} />;
   }
 }
 
