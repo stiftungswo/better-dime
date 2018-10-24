@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
+use App\Models\Customer\Address;
 use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Person;
 use App\Models\Customer\Phone;
@@ -21,12 +22,12 @@ class PersonController extends BaseController
 
     public function index()
     {
-        return Person::with('phone_numbers')->get();
+        return Person::with(['addresses', 'phone_numbers'])->get();
     }
 
     public function get($id)
     {
-        return Person::with('phone_numbers')->findOrFail($id);
+        return Person::with(['addresses', 'phone_numbers'])->findOrFail($id);
     }
 
     public function post(Request $request)
@@ -52,6 +53,15 @@ class PersonController extends BaseController
             }
         }
 
+        if (Input::get('addresses')) {
+            foreach (Input::get('addresses') as $address) {
+                /** @var Address $a */
+                $a = Address::make($address);
+                $a->customer()->associate($person);
+                $a->save();
+            }
+        }
+
         return self::get($person->id);
     }
 
@@ -73,6 +83,10 @@ class PersonController extends BaseController
             if (Input::get('phone_numbers')) {
                 $this->executeNestedUpdate(Input::get('phone_numbers'), $p->phone_numbers, Phone::class, 'customer', $p);
             }
+
+            if (Input::get('addresses')) {
+                $this->executeNestedUpdate(Input::get('addresses'), $p->addresses, Address::class, 'customer', $p);
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -86,6 +100,7 @@ class PersonController extends BaseController
     private function validateRequest(Request $request)
     {
         $this->validate($request, [
+            'addresses' => 'array',
             'comment' => 'string|nullable',
             'company_id' => 'integer|nullable',
             'chargable' => 'boolean',

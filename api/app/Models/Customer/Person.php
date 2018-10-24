@@ -41,6 +41,11 @@ class Person extends Model
         }
     }
 
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'customer');
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class);

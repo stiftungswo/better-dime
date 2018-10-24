@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
+use App\Models\Customer\Address;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Phone;
@@ -21,12 +22,12 @@ class CompanyController extends BaseController
 
     public function index()
     {
-        return Company::with('phone_numbers')->get();
+        return Company::with(['addresses', 'phone_numbers'])->get();
     }
 
     public function get($id)
     {
-        return Company::with('phone_numbers')->findOrFail($id);
+        return Company::with(['addresses', 'phone_numbers'])->findOrFail($id);
     }
 
     public function post(Request $request)
@@ -45,9 +46,19 @@ class CompanyController extends BaseController
 
         if (Input::get('phone_numbers')) {
             foreach (Input::get('phone_numbers') as $phoneNumber) {
+                /** @var Phone $pn */
                 $pn = Phone::make($phoneNumber);
                 $pn->customer()->associate($company);
                 $pn->save();
+            }
+        }
+
+        if (Input::get('addresses')) {
+            foreach (Input::get('addresses') as $address) {
+                /** @var Address $a */
+                $a = Address::make($address);
+                $a->customer()->associate($company);
+                $a->save();
             }
         }
 
@@ -71,6 +82,10 @@ class CompanyController extends BaseController
             if (Input::get('phone_numbers')) {
                 $this->executeNestedUpdate(Input::get('phone_numbers'), $c->phone_numbers, Phone::class, 'customer', $c);
             }
+
+            if (Input::get('addresses')) {
+                $this->executeNestedUpdate(Input::get('addresses'), $c->addresses, Address::class, 'customer', $c);
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -83,6 +98,7 @@ class CompanyController extends BaseController
     private function validateRequest(Request $request)
     {
         $this->validate($request, [
+            'addresses' => 'array',
             'comment' => 'string|nullable',
             'chargable' => 'boolean',
             'email' => 'email|nullable|max:255',

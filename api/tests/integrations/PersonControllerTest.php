@@ -2,6 +2,7 @@
 
 namespace Tests\Integrations;
 
+use App\Models\Customer\Address;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Person;
@@ -85,12 +86,16 @@ class PersonControllerTest extends \TestCase
 
     public function testValidPut()
     {
+        // also add one nested relation, delete one and update one
         $person = factory(Person::class)->create();
-        $phone = factory(Phone::class)->make();
-        $person->phone_numbers()->save($phone);
+        $phonesList = factory(Phone::class)->times(2)->make();
+        $addressesList = factory(Address::class)->times(2)->make();
+        $person->phone_numbers()->saveMany($phonesList);
+        $person->addresses()->saveMany($addressesList);
 
         $template = $this->personTemplate();
-        $template['phone_numbers']['0']['id'] = $phone->id;
+        $template['phone_numbers']['0']['id'] = $phonesList[0]->id;
+        $template['addresses']['0']['id'] = $addressesList[0]->id;
 
         $this->asAdmin()->json('PUT', 'api/v1/people/' . $person->id, $template);
         file_put_contents('hello.html', $this->response->getContent());
@@ -105,6 +110,24 @@ class PersonControllerTest extends \TestCase
         $personId = factory(Company::class)->create()->id;
 
         return [
+            'addresses' => [
+                [
+                    'description' => 'Hauptstandort',
+                    'street' => 'Im Schatzacker 5',
+                    'supplement' => 'Kein Postfach',
+                    'postcode' => 8600,
+                    'city' => 'Dübendorf-Gfenn',
+                    'country' => 'Schweiz'
+                ],
+                [
+                    'description' => 'Alter Standort',
+                    'street' => 'Bahnstrasse 18b',
+                    'supplement' => 'Kein Postfach',
+                    'postcode' => 8603,
+                    'city' => 'Schwerzenbach',
+                    'country' => 'Schweiz'
+                ]
+            ],
             'comment' => 'Dies ist ein Kunde der SWO.',
             'company_id' => $personId,
             'chargeable' => false,

@@ -15,7 +15,7 @@ class BaseController extends Controller
      * @param Collection $currentElements
      * @param string $nestedAttributeClass
      * @param string $relationName
-     * @param int $idOfParentElement
+     * @param Model $parentElement
      * @throws \Exception
      */
     protected function executeNestedUpdate(array $arrayOfNestedAttributes, Collection $currentElements, string $nestedAttributeClass, string $relationName, Model $parentElement)

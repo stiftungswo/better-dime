@@ -2,8 +2,10 @@
 
 namespace Tests\Integrations;
 
+use App\Models\Customer\Address;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
+use App\Models\Customer\Phone;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class CompanyControllerTest extends \TestCase
@@ -83,9 +85,18 @@ class CompanyControllerTest extends \TestCase
 
     public function testValidPut()
     {
-        $companyId = factory(Company::class)->create()->id;
+        // also add one nested relation, delete one and update one
+        $company = factory(Company::class)->create();
+        $phonesList = factory(Phone::class)->times(2)->make();
+        $addressesList = factory(Address::class)->times(2)->make();
+        $company->phone_numbers()->saveMany($phonesList);
+        $company->addresses()->saveMany($addressesList);
+
         $template = $this->companyTemplate();
-        $this->asAdmin()->json('PUT', 'api/v1/companies/' . $companyId, $template);
+        $template['phone_numbers']['0']['id'] = $phonesList[0]->id;
+        $template['addresses']['0']['id'] = $addressesList[0]->id;
+        
+        $this->asAdmin()->json('PUT', 'api/v1/companies/' . $company->id, $template);
         $this->assertResponseMatchesTemplate($template);
     }
 
@@ -96,6 +107,24 @@ class CompanyControllerTest extends \TestCase
         });
 
         return [
+            'addresses' => [
+                [
+                    'description' => 'Hauptstandort',
+                    'street' => 'Im Schatzacker 5',
+                    'supplement' => 'Kein Postfach',
+                    'postcode' => 8600,
+                    'city' => 'Dübendorf-Gfenn',
+                    'country' => 'Schweiz'
+                ],
+                [
+                    'description' => 'Alter Standort',
+                    'street' => 'Bahnstrasse 18b',
+                    'supplement' => 'Kein Postfach',
+                    'postcode' => 8603,
+                    'city' => 'Schwerzenbach',
+                    'country' => 'Schweiz'
+                ]
+            ],
             'comment' => 'Dies ist ein Kunde der SWO.',
             'chargeable' => false,
             'email' => 'kunde@der.swo',

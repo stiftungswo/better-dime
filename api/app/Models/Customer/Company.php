@@ -41,6 +41,11 @@ class Company extends Model
         }
     }
 
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'customer');
+    }
+
     public function customer_tags()
     {
         return $this->morphToMany(CustomerTag::class, 'customer_taggable');

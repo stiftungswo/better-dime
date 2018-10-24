@@ -49,14 +49,16 @@ class DatabaseSeeder extends Seeder
         ])->each(function ($c) use ($customerTags) {
             /** @var \App\Models\Customer\Company $c */
             $c->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-            $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(1, 3))->make());
+            $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
+            $c->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
         });
 
         factory(\App\Models\Customer\Company::class)->times(5)->create([
             'rate_group_id' => $andere])->each(function ($c) use ($customerTags) {
             /** @var \App\Models\Customer\Company $c */
                 $c->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-                $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(1, 3))->make());
+                $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
+                $c->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
             });
 
         factory(\App\Models\Customer\Person::class)->times(5)->create([
@@ -64,14 +66,16 @@ class DatabaseSeeder extends Seeder
         ])->each(function ($p) use ($customerTags) {
             /** @var \App\Models\Customer\Person $p */
             $p->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-            $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(1, 3))->make());
+            $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
+            $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
         });
 
         factory(\App\Models\Customer\Person::class)->times(5)->create([
             'rate_group_id' => $andere])->each(function ($p) use ($customerTags) {
             /** @var \App\Models\Customer\Person $p */
                 $p->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-                $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(1, 3))->make());
+                $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
+                $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
             });
     }
 }
