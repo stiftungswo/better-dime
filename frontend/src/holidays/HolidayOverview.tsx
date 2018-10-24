@@ -10,11 +10,11 @@ import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Holiday, HolidayStore } from '../store/holidayStore';
 import * as yup from 'yup';
 import { Field, Formik, FormikBag } from 'formik';
 import { NumberFieldWithValidation, TextFieldWithValidation } from '../form/common';
+import { DeleteButton } from '../utilities/ConfirmationDialog';
 
 interface Props {
   holidayStore?: HolidayStore;
@@ -95,9 +95,7 @@ export default class HolidayOverview extends React.Component<Props> {
                           <Button variant={'text'} disabled={props.isSubmitting} onClick={props.submitForm}>
                             <SaveIcon />
                           </Button>
-                          <Button variant={'text'} onClick={() => this.props.holidayStore!.delete(holiday.id)}>
-                            <DeleteIcon />
-                          </Button>
+                          <DeleteButton onConfirm={() => this.props.holidayStore!.delete(holiday.id)} />
                         </TableCell>
                       </TableRow>
                     )}
