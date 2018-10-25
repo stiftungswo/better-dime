@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
+import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 
 export type InputFieldProps = { type: string } & FormProps;
 export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
@@ -62,6 +63,53 @@ export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = fa
 export const TextFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
   <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
 );
+
+export class DurationField extends React.Component<FormProps & { children: ReactNode }> {
+  constructor(props: any) {
+    super(props);
+    this.state.value = this.format;
+  }
+
+  public state = {
+    value: 0,
+  };
+
+  private mode = {
+    factor: 60,
+    sign: 'h',
+  };
+
+  public get format() {
+    return this.props.field.value / this.mode.factor;
+  }
+
+  public handleChange = (e: any) => {
+    const value = e.target.value;
+    this.setState({ value });
+    if (value === '') {
+      this.props.form.setFieldValue(this.props.field.name, null);
+    } else {
+      this.props.form.setFieldValue(this.props.field.name, value * this.mode.factor);
+    }
+  };
+
+  public render = () => {
+    const { label, field, form, fullWidth = false } = this.props;
+    return (
+      <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
+        <Input
+          id={field.name}
+          name={field.name}
+          type={'number'}
+          fullWidth={fullWidth}
+          value={this.state.value}
+          onChange={this.handleChange}
+          endAdornment={<InputAdornment position={'end'}>{this.mode.sign}</InputAdornment>}
+        />
+      </ValidatedFormGroupWithLabel>
+    );
+  };
+}
 
 export const DatePickerWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
   <DatePicker
