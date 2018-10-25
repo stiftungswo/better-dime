@@ -54,6 +54,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'HolidayController@delete']);
             });
 
+            $router->group(['prefix' => 'offers'], function () use ($router) {
+                $router->get('/', ['uses' => 'OfferController@index']);
+                $router->post('/', ['uses' => 'OfferController@post']);
+                $router->get('/{id}', ['uses' => 'OfferController@get']);
+                $router->put('/{id}', ['uses' => 'OfferController@put']);
+                $router->delete('/{id}', ['uses' => 'OfferController@delete']);
+            });
+
             $router->group(['prefix' => 'people'], function () use ($router) {
                 $router->get('/', ['uses' => 'PersonController@index']);
                 $router->post('/', ['uses' => 'PersonController@post']);

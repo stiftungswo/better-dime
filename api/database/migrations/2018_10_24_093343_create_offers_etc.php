@@ -15,17 +15,17 @@ class CreateOffersEtc extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('accountant_id');
-            $table->foreign('accountant_id')->references('id')->on('employees');
-            $table->unsignedInteger('address_id');
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->unsignedInteger('accountant_id')->nullable();
+            $table->foreign('accountant_id')->references('id')->on('employees')->onDelete('set null');
+            $table->unsignedInteger('address_id')->nullable();
+            $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
             $table->integer('customer_id');
             $table->string('customer_type');
             $table->text('description');
             $table->integer('fixed_price')->nullable();
             $table->string('name');
-            $table->unsignedInteger('rate_group_id');
-            $table->foreign('rate_group_id')->references('id')->on('rate_groups');
+            $table->unsignedInteger('rate_group_id')->nullable();
+            $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
             $table->text('short_description');
             $table->tinyInteger('status');
             $table->softDeletes();
@@ -36,13 +36,13 @@ class CreateOffersEtc extends Migration
             $table->increments('id');
             $table->decimal('amount');
             $table->unsignedInteger('offer_id');
-            $table->foreign('offer_id')->references('id')->on('offers');
+            $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->integer('order');
             $table->integer('price_per_rate');
-            $table->unsignedInteger('rate_unit_id');
-            $table->foreign('rate_unit_id')->references('id')->on('rate_units');
-            $table->unsignedInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->unsignedInteger('rate_unit_id')->nullable();
+            $table->foreign('rate_unit_id')->references('id')->on('rate_units')->onDelete('set null');
+            $table->unsignedInteger('service_id')->nullable();
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('set null');
             $table->decimal('vat', 4, 3);
             $table->softDeletes();
             $table->timestamps();
@@ -52,7 +52,7 @@ class CreateOffersEtc extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedInteger('offer_id');
-            $table->foreign('offer_id')->references('id')->on('offers');
+            $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->boolean('percentage');
             $table->decimal('value', 10, 3);
             $table->softDeletes();

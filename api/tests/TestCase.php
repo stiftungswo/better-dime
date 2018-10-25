@@ -40,7 +40,7 @@ abstract class TestCase extends Laravel\Lumen\Testing\TestCase
         $decodedResponse = $this->responseToArray();
 
         if (!is_array($decodedResponse)) {
-            throw new \PHPUnit\Framework\ExpectationFailedException('Response is not an Array. This usually means that Lumen sent a HTTP response because an internal error occurred.');
+            throw new \PHPUnit\Framework\ExpectationFailedException('Response is not an Array. This usually means that Lumen sent an HTML response because an internal error occurred.');
         }
 
         foreach ($template as $key => $value) {
