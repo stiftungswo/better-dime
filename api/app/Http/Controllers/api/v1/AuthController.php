@@ -43,7 +43,7 @@ class AuthController extends BaseController
             'sub' => $user->id, // Subject of the token
             'is_admin' => $user->is_admin,
             'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + 60*60 // Expiration time
+            'exp' => time() + 60*60*24 // Expiration time
         ];
 
         // As you can see we are passing `JWT_SECRET` as the second parameter that will
