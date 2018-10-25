@@ -98,7 +98,6 @@ class PersonControllerTest extends \TestCase
         $template['addresses']['0']['id'] = $addressesList[0]->id;
 
         $this->asAdmin()->json('PUT', 'api/v1/people/' . $person->id, $template);
-        file_put_contents('hello.html', $this->response->getContent());
         $this->assertResponseMatchesTemplate($template);
     }
 

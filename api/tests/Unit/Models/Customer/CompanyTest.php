@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Models\Customer;
 
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
