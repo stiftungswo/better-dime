@@ -17,8 +17,10 @@ export class OfferStore extends AbstractStore<Offer> {
     };
   }
 
-  @observable public offers: OfferListing[] = [];
-  @observable public offer?: Offer = undefined;
+  @observable
+  public offers: OfferListing[] = [];
+  @observable
+  public offer?: Offer = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);

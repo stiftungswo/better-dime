@@ -67,8 +67,8 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps, With
 class Login extends React.Component<Props> {
   public handleSubmit = (values: { email: string; password: string }, formikBag: FormikBag<any, any>) => {
     // tslint:disable-line:no-any
-    this.props.mainStore!
-      .postLogin({ ...values })
+    this.props
+      .mainStore!.postLogin({ ...values })
       .then(() => {
         this.props.history.replace('/');
       })
@@ -122,4 +122,8 @@ class Login extends React.Component<Props> {
   }
 }
 
-export default compose(withStyles(styles(dimeTheme)), withSnackbar, withRouter)(Login);
+export default compose(
+  withStyles(styles(dimeTheme)),
+  withSnackbar,
+  withRouter
+)(Login);

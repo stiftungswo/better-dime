@@ -1,16 +1,18 @@
 import * as React from 'react';
+import { ReactNode } from 'react';
 import { ErrorMessage, FieldProps, Formik, FormikBag, FormikConfig, FormikProps, FormikState } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input/Input';
-import { ReactNode } from 'react';
 import Switch from '@material-ui/core/Switch/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Grid from '@material-ui/core/Grid/Grid';
 import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { DatePicker } from 'material-ui-pickers';
+import { Moment } from 'moment';
 
 export type InputFieldProps = { type: string } & FormProps;
 export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
@@ -59,6 +61,22 @@ export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = fa
 
 export const TextFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
   <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
+);
+
+export const DatePickerWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
+  <DatePicker
+    keyboard
+    autoOk
+    fullWidth={fullWidth}
+    label={label}
+    format="DD.MM.YYYY"
+    placeholder="10.10.2018"
+    mask={(value: any) => (value ? [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/] : [])}
+    value={new Date(field.value)}
+    onChange={(date: Moment) => form.setFieldValue(field.name, date.format('YYYY-MM-DD'))}
+    disableOpenOnEnter
+    animateYearScrolling={false}
+  />
 );
 
 interface EditFormProps<T> {

@@ -10,8 +10,10 @@ interface ServiceListing {
 }
 
 export class ServiceStore extends AbstractStore<Service> {
-  @observable public services: ServiceListing[] = [];
-  @observable public service?: Service = undefined;
+  @observable
+  public services: ServiceListing[] = [];
+  @observable
+  public service?: Service = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);

@@ -19,8 +19,10 @@ function setAuthHeader(client: AxiosInstance, token: string | null) {
 
 export class MainStore {
   private _api: AxiosInstance;
-  @observable private openRequests = 0;
-  @observable private _token: string = '';
+  @observable
+  private openRequests = 0;
+  @observable
+  private _token: string = '';
 
   @computed
   public get loading() {

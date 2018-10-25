@@ -13,7 +13,7 @@ import TableBody from '@material-ui/core/TableBody/TableBody';
 import { Holiday, HolidayStore } from '../store/holidayStore';
 import * as yup from 'yup';
 import { Field, Formik, FormikBag } from 'formik';
-import { NumberFieldWithValidation, TextFieldWithValidation } from '../form/common';
+import { DatePickerWithValidation, NumberFieldWithValidation, TextFieldWithValidation } from '../form/common';
 import { DeleteButton } from '../utilities/ConfirmationDialog';
 
 interface Props {
@@ -86,7 +86,7 @@ export default class HolidayOverview extends React.Component<Props> {
                           <Field component={TextFieldWithValidation} name={'name'} fullWidth />
                         </TableCell>
                         <TableCell>
-                          <Field component={TextFieldWithValidation} name={'date'} fullWidth />
+                          <Field component={DatePickerWithValidation} name={'date'} fullWidth />
                         </TableCell>
                         <TableCell>
                           <Field component={NumberFieldWithValidation} name={'duration'} fullWidth />

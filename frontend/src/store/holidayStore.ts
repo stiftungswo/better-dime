@@ -17,7 +17,8 @@ export class HolidayStore extends AbstractStore<Holiday> {
     };
   }
 
-  @observable public holidays: Holiday[] = [];
+  @observable
+  public holidays: Holiday[] = [];
 
   constructor(mainStore: MainStore) {
     super(mainStore);

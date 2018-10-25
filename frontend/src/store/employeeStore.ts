@@ -11,8 +11,10 @@ interface EmployeeListing {
 }
 
 export class EmployeeStore extends AbstractStore<Employee> {
-  @observable public employees: EmployeeListing[] = [];
-  @observable public employee?: Employee = undefined;
+  @observable
+  public employees: EmployeeListing[] = [];
+  @observable
+  public employee?: Employee = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
