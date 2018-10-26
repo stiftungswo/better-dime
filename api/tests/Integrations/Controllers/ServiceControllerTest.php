@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integrations;
+namespace Tests\Integrations\Controllers;
 
 use App\Models\Service\RateGroup;
 use App\Models\Service\RateUnit;

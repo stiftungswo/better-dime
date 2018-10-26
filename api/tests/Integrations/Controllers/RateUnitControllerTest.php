@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integrations;
+namespace Tests\Integrations\Controllers;
 
 use App\Models\Service\RateUnit;
 use Laravel\Lumen\Testing\DatabaseTransactions;

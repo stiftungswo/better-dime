@@ -44,11 +44,10 @@ class AuthServiceProvider extends ServiceProvider
 
             try {
                 $credentials = JWT::decode(explode(' ', $token, 2)[1], env('JWT_SECRET'), ['HS256']);
+                $employee = Employee::findOrFail($credentials->sub);
             } catch (Exception $e) {
                 return null;
             }
-
-            $employee = Employee::find($credentials->sub);
 
             // handle case if somebody's access to Dime got blocked recently and its token is still valid
             if ($employee->can_login) {

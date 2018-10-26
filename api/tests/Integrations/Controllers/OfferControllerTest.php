@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Integrations;
+namespace Tests\Integrations\Controllers;
 
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
