@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Services;
+
+class GroupMarkdownToDiv
+{
+
+    // TODO add unit testing
+    public static function group($string)
+    {
+        $string = "<div>" . $string . "</div>";
+        $xml = simplexml_load_string($string);
+        $dom = dom_import_simplexml($xml);
+        $doc = new \DOMDocument('1.0');
+        $newRoot = $doc->createElement("div");
+        $newRoot = $doc->appendChild($newRoot);
+        $node = $dom->firstChild;
+
+        while ($node->nextSibling != null) {
+            $myNode = $doc->importNode($node, true);
+            switch ($myNode->nodeName) {
+                case "h1":
+                case "h2":
+                case "h3":
+                    $container = $doc->createElement("div");
+                    $container->appendChild($myNode);
+
+                    do {
+                        if (is_null($node->nextSibling)) {
+                            break;
+                        }
+                        $node = $node->nextSibling;
+                    } while (!($node instanceof \DOMElement));
+                    $myNode = $doc->importNode($node, true);
+                    $container->appendChild($myNode);
+
+                    $newRoot->appendChild($container);
+                    break;
+                default:
+                    $newRoot->appendChild($myNode);
+            }
+            $node = $node->nextSibling;
+
+            if ($node == null) {
+                break;
+            }
+        }
+        return $doc->saveHTML();
+    }
+}

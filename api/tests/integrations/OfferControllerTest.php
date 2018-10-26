@@ -60,7 +60,6 @@ class OfferControllerTest extends \TestCase
     {
         $template = $this->offerTemplate();
         $this->asAdmin()->json('POST', 'api/v1/offers', $template);
-        file_put_contents('hello.html', $this->response->getContent());
         $this->assertResponseMatchesTemplate($template);
     }
 
@@ -109,8 +108,21 @@ class OfferControllerTest extends \TestCase
         $template['positions']['0']['id'] = $offerPositionList[0]->id;
 
         $this->asAdmin()->json('PUT', 'api/v1/offers/' . $offer->id, $template);
-        file_put_contents('hello.html', $this->response->getContent());
         $this->assertResponseMatchesTemplate($template);
+    }
+
+    public function testValidPrint()
+    {
+        $offer = factory(\App\Models\Offer\Offer::class)->create([
+            'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
+            'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
+            'customer_id' => factory(\App\Models\Customer\Company::class)->create()->id,
+            'customer_type' => \App\Models\Customer\Company::class,
+            'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
+        ]);
+        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class)->times(rand(0, 5))->make());
+        $offer->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 5))->make());
+        $this->asAdmin()->json('GET', 'api/v1/offers/' . $offer->id . '/print')->assertResponseOk();
     }
 
     private function offerTemplate()

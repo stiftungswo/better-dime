@@ -9,7 +9,7 @@ class CostBreakdown
     public static function calculate($breakdownable)
     {
         /** @var Collection $positions */
-        $positions = $breakdownable->positions;
+        $positions = $breakdownable->positions->load(['service', 'rate_unit']);
 
         // calculate subtotal without VAT
         $subtotal = intval($positions->map(function ($position) {
@@ -24,7 +24,7 @@ class CostBreakdown
         $discountsTotal = intval($discounts->sum('value'));
 
         // calculate VATs
-        $totalWithDiscounts = $subtotal - $discountsTotal;
+        $totalWithDiscounts = $subtotal + $discountsTotal;
         $vats = self::vats($positions, $totalWithDiscounts);
         $vatTotal = intval($vats->sum('value'));
 
@@ -34,6 +34,7 @@ class CostBreakdown
         return [
             'discounts' => $discounts,
             'discountTotal' => $discountsTotal,
+            'positions' => $positions,
             'rawTotal' => $totalWithDiscounts,
             'subtotal' => $subtotal,
             'total' => $total,
@@ -68,8 +69,8 @@ class CostBreakdown
     private static function applyDiscountFactor(float $subtotal, $discount)
     {
         return [
-            'name' => $discount->name . ' (' . $discount->value . ')',
-            'value' => intval($subtotal * $discount->value)
+            'name' => $discount->name . ' (' . $discount->value * 100 . '%)',
+            'value' => intval($subtotal * $discount->value * -1)
         ];
     }
 
@@ -83,7 +84,7 @@ class CostBreakdown
     {
         return [
             'name' => $discount->name,
-            'value' => intval($discount->value)
+            'value' => intval($discount->value * -1)
         ];
     }
 

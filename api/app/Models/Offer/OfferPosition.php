@@ -11,6 +11,10 @@ class OfferPosition extends Model
 {
     use SoftDeletes;
 
+    protected $casts = [
+        'amount' => 'float',
+    ];
+
     protected $fillable = ['amount', 'offer_id', 'order', 'price_per_rate', 'rate_unit_id', 'service_id', 'vat'];
 
     public function offer()

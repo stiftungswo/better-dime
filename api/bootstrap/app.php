@@ -87,6 +87,7 @@ $app->middleware([
 
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
