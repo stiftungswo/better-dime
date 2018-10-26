@@ -189,7 +189,7 @@ const hasContent = (value: any) => {
   if (!value) {
     return false;
   }
-  if (value.size === 0) {
+  if (value.length === 0) {
     return false;
   }
   return true;

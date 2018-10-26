@@ -15,7 +15,7 @@ import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 
-export type InputFieldProps = { type: string } & FormProps;
+export type InputFieldProps = { type: string; unit?: string } & FormProps;
 export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
 
 export const ValidatedFormGroupWithLabel = ({ label, field, form: { touched, errors }, children, fullWidth }: FormProps) => {
@@ -42,9 +42,16 @@ export const SwitchField = ({ label, field }: FormProps) => (
   <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
 );
 
-export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, type = 'text' }: InputFieldProps) => (
+export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined }: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
-    <Input id={field.name} name={field.name} type={type} fullWidth={fullWidth} {...field} />
+    <Input
+      id={field.name}
+      name={field.name}
+      type={type}
+      fullWidth={fullWidth}
+      endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
+      {...field}
+    />
   </ValidatedFormGroupWithLabel>
 );
 
@@ -52,8 +59,15 @@ export const EmailFieldWithValidation = ({ label, field, form, fullWidth = false
   <InputFieldWithValidation type={'email'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
 );
 
-export const NumberFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
-  <InputFieldWithValidation type={'number'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
+export const NumberFieldWithValidation = ({
+  label,
+  field,
+  form,
+  fullWidth = false,
+  children,
+  unit = undefined,
+}: FormProps & { children: ReactNode; unit?: string }) => (
+  <InputFieldWithValidation type={'number'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} unit={unit} />
 );
 
 export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (

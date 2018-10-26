@@ -18,6 +18,9 @@ import { StoreProvider } from './utilities/StoreProvider';
 import HolidayOverview from './holidays/HolidayOverview';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import ServiceOverview from './services/ServiceOverview';
+import ServiceUpdate from './services/ServiceUpdate';
+import ServiceCreate from './services/ServiceCreate';
 
 const browserHistory = createBrowserHistory();
 
@@ -39,6 +42,9 @@ class App extends React.Component {
                       <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
                       <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />
                       <ProtectedRoute exact path="/holidays" component={HolidayOverview} />
+                      <ProtectedRoute exact path="/services" component={ServiceOverview} />
+                      <ProtectedRoute exact path="/services/new" component={ServiceCreate} />
+                      <ProtectedRoute exact path="/services/:id" component={ServiceUpdate} />
                       <Route>
                         <p>404</p>
                       </Route>

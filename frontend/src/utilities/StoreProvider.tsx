@@ -8,6 +8,8 @@ import { ServiceStore } from '../store/serviceStore';
 import { Provider } from 'mobx-react';
 import { History } from 'history';
 import { HolidayStore } from '../store/holidayStore';
+import { RateUnitStore } from '../store/rateUnitStore';
+import { RateGroupStore } from '../store/rateGroupStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -21,6 +23,8 @@ export const StoreProvider = compose(withSnackbar)(
       employeeStore: EmployeeStore;
       serviceStore: ServiceStore;
       holidayStore: HolidayStore;
+      rateUnitStore: RateUnitStore;
+      rateGroupStore: RateGroupStore;
     };
 
     constructor(props: Props) {
@@ -34,6 +38,8 @@ export const StoreProvider = compose(withSnackbar)(
         employeeStore: new EmployeeStore(mainStore),
         serviceStore: new ServiceStore(mainStore),
         holidayStore: new HolidayStore(mainStore),
+        rateUnitStore: new RateUnitStore(mainStore),
+        rateGroupStore: new RateGroupStore(mainStore),
       };
     }
 

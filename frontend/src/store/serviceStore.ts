@@ -1,15 +1,16 @@
 import { observable } from 'mobx';
-import { Service } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-interface ServiceListing {
-  id: number;
-  name: string;
-  shortDescription: string;
-}
+import { Service, ServiceListing } from '../services/types';
 
 export class ServiceStore extends AbstractStore<Service> {
+  protected get entityName() {
+    return {
+      singular: 'Der Service',
+      plural: 'Die Services',
+    };
+  }
+
   @observable
   public services: ServiceListing[] = [];
   @observable
@@ -27,5 +28,13 @@ export class ServiceStore extends AbstractStore<Service> {
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<Service>('/services/' + id);
     this.service = res.data;
+  }
+
+  protected async doPost(entity: Service): Promise<void> {
+    await this.mainStore.api.post('/services', entity);
+  }
+
+  protected async doPut(entity: Service): Promise<void> {
+    await this.mainStore.api.put(`/services/${entity.id}`, entity);
   }
 }

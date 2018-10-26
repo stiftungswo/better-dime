@@ -14,6 +14,7 @@ export class AbstractStore<T> {
       await this.doFetchAll();
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
+      console.error(e);
     }
   }
 
@@ -27,6 +28,7 @@ export class AbstractStore<T> {
       await this.doFetchOne(id);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
+      console.error(e);
     }
   }
 
@@ -41,6 +43,7 @@ export class AbstractStore<T> {
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gespeichert.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gespeichert werden.`);
+      console.error(e);
     }
   }
 
@@ -55,6 +58,7 @@ export class AbstractStore<T> {
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gespeichert.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gespeichert werden.`);
+      console.error(e);
     }
   }
 
@@ -70,6 +74,7 @@ export class AbstractStore<T> {
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gelöscht.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gelöscht werden.`);
+      console.error(e);
     }
   }
 

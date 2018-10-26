@@ -92,6 +92,11 @@ export class MainStore {
     });
   }
 
+  @action
+  public navigateTo(path: string): void {
+    this.history.replace(path);
+  }
+
   @computed
   public get isLoggedIn() {
     return !!this._token;

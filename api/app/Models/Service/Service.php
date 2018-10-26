@@ -17,6 +17,11 @@ class Service extends Model
         'name', 'description', 'chargeable', 'vat', 'archived'
     ];
 
+    protected $casts = [
+        'chargeable' => 'boolean',
+        'archived' => 'boolean'
+    ];
+
     public function serviceRates()
     {
         return $this->hasMany(ServiceRate::class);

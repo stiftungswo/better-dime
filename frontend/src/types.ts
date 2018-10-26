@@ -1,4 +1,6 @@
 // tslint:disable
+import { Service } from './services/types';
+
 export interface Offer {
   id: number;
   user: Employee;
@@ -125,20 +127,6 @@ export enum RateUnitTypeName {
 }
 
 export interface User {}
-
-export interface Service {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  name: Alias;
-  alias: Alias;
-  description: ServiceDescription;
-  rates: any[];
-  tags: any[];
-  chargeable: boolean;
-  vat: number;
-  archived: boolean;
-}
 
 export enum Alias {
   Consulting = 'consulting',

@@ -21,7 +21,7 @@ class ServiceController extends BaseController
 
     public function get($id)
     {
-        return Service::find($id);
+        return Service::with('serviceRates')->find($id);
     }
 
     public function post()

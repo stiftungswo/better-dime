@@ -79,6 +79,10 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'RateUnitController@delete']);
             });
 
+            $router->group(['prefix' => 'rate_groups'], function () use ($router) {
+                $router->get('/', ['uses' => 'RateGroupController@index']);
+            });
+
             $router->group(['prefix' => 'services'], function () use ($router) {
                 $router->get('/', ['uses' => 'ServiceController@index']);
                 $router->post('/', ['uses' => 'ServiceController@post']);
