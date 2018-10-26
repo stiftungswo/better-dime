@@ -1,50 +1,49 @@
-import compose from '../compose';
+import compose from './compose';
 import { InjectedNotistackProps, withSnackbar } from 'notistack';
 import * as React from 'react';
-import { MainStore } from '../store/mainStore';
-import { OfferStore } from '../store/offerStore';
-import { EmployeeStore } from '../store/employeeStore';
-import { ServiceStore } from '../store/serviceStore';
+import { MainStore } from '../stores/mainStore';
+import { OfferStore } from '../stores/offerStore';
+import { EmployeeStore } from '../stores/employeeStore';
+import { ServiceStore } from '../stores/serviceStore';
 import { Provider } from 'mobx-react';
 import { History } from 'history';
-import { HolidayStore } from '../store/holidayStore';
-import { RateUnitStore } from '../store/rateUnitStore';
-import { RateGroupStore } from '../store/rateGroupStore';
+import { HolidayStore } from '../stores/holidayStore';
+import { RateUnitStore } from '../stores/rateUnitStore';
+import { RateGroupStore } from '../stores/rateGroupStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
 }
 
-export const StoreProvider = compose(withSnackbar)(
-  class extends React.Component<Props> {
-    private stores: {
-      mainStore: MainStore;
-      offerStore: OfferStore;
-      employeeStore: EmployeeStore;
-      serviceStore: ServiceStore;
-      holidayStore: HolidayStore;
-      rateUnitStore: RateUnitStore;
-      rateGroupStore: RateGroupStore;
-    };
+@compose(withSnackbar)
+export class StoreProvider extends React.Component<Props | any> {
+  private stores: {
+    mainStore: MainStore;
+    offerStore: OfferStore;
+    employeeStore: EmployeeStore;
+    serviceStore: ServiceStore;
+    holidayStore: HolidayStore;
+    rateUnitStore: RateUnitStore;
+    rateGroupStore: RateGroupStore;
+  };
 
-    constructor(props: Props) {
-      super(props);
+  constructor(props: Props) {
+    super(props);
 
-      const mainStore = new MainStore(this.props.history, this.props.enqueueSnackbar);
+    const mainStore = new MainStore(this.props.history, this.props.enqueueSnackbar);
 
-      this.stores = {
-        mainStore,
-        offerStore: new OfferStore(mainStore),
-        employeeStore: new EmployeeStore(mainStore),
-        serviceStore: new ServiceStore(mainStore),
-        holidayStore: new HolidayStore(mainStore),
-        rateUnitStore: new RateUnitStore(mainStore),
-        rateGroupStore: new RateGroupStore(mainStore),
-      };
-    }
-
-    public render = () => {
-      return <Provider {...this.stores}>{this.props.children}</Provider>;
+    this.stores = {
+      mainStore,
+      offerStore: new OfferStore(mainStore),
+      employeeStore: new EmployeeStore(mainStore),
+      serviceStore: new ServiceStore(mainStore),
+      holidayStore: new HolidayStore(mainStore),
+      rateUnitStore: new RateUnitStore(mainStore),
+      rateGroupStore: new RateGroupStore(mainStore),
     };
   }
-);
+
+  public render = () => {
+    return <Provider {...this.stores}>{this.props.children}</Provider>;
+  };
+}

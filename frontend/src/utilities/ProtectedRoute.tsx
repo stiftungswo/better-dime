@@ -1,15 +1,18 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps, RouteProps } from 'react-router';
-import { MainStore } from '../store/mainStore';
+import { MainStore } from '../stores/mainStore';
+import compose from './compose';
 
 interface ProtectedRouteProps extends RouteProps {
   mainStore?: MainStore;
   component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>; // tslint:disable-line
 }
 
-@inject('mainStore')
-@observer
+@compose(
+  inject('mainStore'),
+  observer
+)
 export class ProtectedRoute extends React.Component<ProtectedRouteProps> {
   public protect = (props: RouteComponentProps) => {
     const login = {

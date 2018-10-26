@@ -29,6 +29,12 @@
     },
     "jsx-no-lambda": {
       "severity": "off"
+    },
+    "no-unused-expression": {
+      "severity": "warning"
+    },
+    "no-unused-variable": {
+      "severity": "warning"
     }
   }
 }

@@ -1,5 +1,5 @@
 // tslint:disable
-import { Service } from './services/types';
+import { Service } from './views/services/types';
 
 export interface Offer {
   id: number;
