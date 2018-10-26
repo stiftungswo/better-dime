@@ -16,6 +16,7 @@ export class ServiceSelector extends React.Component<Props> {
   }
 
   public render() {
+    //TODO use new custom Select component
     return (
       <ValidatedFormGroupWithLabel label={this.props.label} field={this.props.field} form={this.props.form} fullWidth={false}>
         <select {...this.props.field}>

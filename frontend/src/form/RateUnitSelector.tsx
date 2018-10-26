@@ -1,7 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { RateUnitStore } from '../store/rateUnitStore';
-import { FormProps, ValidatedFormGroupWithLabel } from './common';
+import { FormProps } from './common';
 import { inject, observer } from 'mobx-react';
+import Select from './Select';
 
 interface Props extends FormProps {
   rateUnitStore?: RateUnitStore;
@@ -15,17 +16,14 @@ export class RateUnitSelector extends React.Component<Props> {
     props.rateUnitStore!.fetchAll();
   }
 
+  public get options() {
+    return this.props.rateUnitStore!.rateUnits.map(e => ({
+      value: e.id,
+      label: e.billing_unit,
+    }));
+  }
+
   public render() {
-    return (
-      <ValidatedFormGroupWithLabel label={this.props.label} field={this.props.field} form={this.props.form} fullWidth={false}>
-        <select {...this.props.field}>
-          {this.props.rateUnitStore!.rateUnits.map(e => (
-            <option key={e.id} value={e.id}>
-              {e.billing_unit}
-            </option>
-          ))}
-        </select>
-      </ValidatedFormGroupWithLabel>
-    );
+    return <Select options={this.options} field={this.props.field} form={this.props.form} label={this.props.label} />;
   }
 }
