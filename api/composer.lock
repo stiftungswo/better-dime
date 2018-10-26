@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ef924b62c94e16dd36e814d350dc11a",
+    "content-hash": "252adec935eccca28d141fc2457b1f8b",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2697,6 +2697,94 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "davidbadura/faker-markdown-generator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DavidBadura/FakerMarkdownGenerator.git",
+                "reference": "acfeeedb3d3f2bd9092823818c65733360d71b5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DavidBadura/FakerMarkdownGenerator/zipball/acfeeedb3d3f2bd9092823818c65733360d71b5d",
+                "reference": "acfeeedb3d3f2bd9092823818c65733360d71b5d",
+                "shasum": ""
+            },
+            "require": {
+                "davidbadura/markdown-builder": "^1.0",
+                "fzaninotto/faker": "^1.6",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DavidBadura\\FakerMarkdownGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DavidBadura",
+                    "email": "d.badura@gmx.de"
+                }
+            ],
+            "description": "Faker Markdown Generator",
+            "keywords": [
+                "faker",
+                "generator",
+                "markdown"
+            ],
+            "time": "2016-06-28T18:33:06+00:00"
+        },
+        {
+            "name": "davidbadura/markdown-builder",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DavidBadura/markdown-builder.git",
+                "reference": "7e5a9106522d513dcd138afad714da1188556a0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DavidBadura/markdown-builder/zipball/7e5a9106522d513dcd138afad714da1188556a0d",
+                "reference": "7e5a9106522d513dcd138afad714da1188556a0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DavidBadura\\MarkdownBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "DavidBadura",
+                    "email": "d.badura@gmx.de"
+                }
+            ],
+            "description": "Markdown Builder",
+            "keywords": [
+                "builder",
+                "markdown",
+                "render",
+                "writer"
+            ],
+            "time": "2018-05-21T09:17:46+00:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.1.0",
