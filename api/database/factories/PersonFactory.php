@@ -3,7 +3,9 @@
 /** @var Factory $factory */
 use Illuminate\Database\Eloquent\Factory;
 
-$factory->define(\App\Models\Customer\Person::class, function (Faker\Generator $faker) {
+$factory->define(\App\Models\Customer\Person::class, function () {
+    $faker = Faker\Factory::create('de_CH');
+
     return [
         'comment' => $faker->sentence,
         'chargeable' => $faker->boolean,
@@ -11,7 +13,6 @@ $factory->define(\App\Models\Customer\Person::class, function (Faker\Generator $
         'first_name' => $faker->firstName,
         'hidden' => $faker->boolean,
         'last_name' => $faker->lastName,
-        'rate_group_id' => factory(\App\Models\Service\RateGroup::class),
         'salutation' => $faker->title
     ];
 });

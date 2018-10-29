@@ -1,11 +1,12 @@
 <?php
 
 use App\Models\Service\Service;
-use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-$factory->define(Service::class, function (Generator $faker) {
+$factory->define(Service::class, function () {
+    $faker = Faker\Factory::create('de_CH');
+
     return [
         'name' => $faker->words(3, true),
         'description' => $faker->sentence,

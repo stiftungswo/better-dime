@@ -1,10 +1,10 @@
 <?php
 
-use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-$factory->define(\App\Models\Offer\OfferDiscount::class, function (Generator $faker) {
+$factory->define(\App\Models\Offer\OfferDiscount::class, function () {
+    $faker = Faker\Factory::create('de_CH');
     $percentage = $faker->boolean;
 
     return [

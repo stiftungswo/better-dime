@@ -39,7 +39,7 @@
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
-        "format": "phpcbf --standard=psr2 --ignore=vendor,test-coverage --extensions=php ."
+        "format": "phpcbf --standard=psr2 --ignore=vendor,test-coverage,resources/views --extensions=php ."
     },
     "config": {
         "preferred-install": "dist",

@@ -4,7 +4,9 @@ use App\Models\Service\RateGroup;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-$factory->define(RateGroup::class, function (Faker\Generator $faker) {
+$factory->define(RateGroup::class, function () {
+    $faker = Faker\Factory::create('de_CH');
+
     return [
         'name' => $faker->word,
         'description' => $faker->sentence,

@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Service\RateUnit;
-use Faker\Generator;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-$factory->define(RateUnit::class, function (Generator $faker) {
+$factory->define(RateUnit::class, function () {
+    $faker = Faker\Factory::create('de_CH');
     $unit = $faker->lexify("??");
+
     return [
         'billing_unit' => "CHF / $unit",
         'effort_unit' => $unit,
