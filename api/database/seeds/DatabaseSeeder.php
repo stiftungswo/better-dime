@@ -99,5 +99,8 @@ class DatabaseSeeder extends Seeder
             $o->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class)->times(rand(0, 2))->make());
             $o->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->make());
         });
+
+        print("Seeding project categories ...\n");
+        $projectCategories = factory(\App\Models\Project\ProjectCategory::class)->times(10)->create();
     }
 }
