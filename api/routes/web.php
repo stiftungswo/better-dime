@@ -71,6 +71,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'PersonController@delete']);
             });
 
+            $router->group(['prefix' => 'projects'], function () use ($router) {
+                $router->get('/', ['uses' => 'ProjectController@index']);
+                $router->post('/', ['uses' => 'ProjectController@post']);
+                $router->get('/{id}', ['uses' => 'ProjectController@get']);
+                $router->put('/{id}', ['uses' => 'ProjectController@put']);
+                $router->delete('/{id}', ['uses' => 'ProjectController@delete']);
+            });
+
             $router->group(['prefix' => 'project_categories'], function () use ($router) {
                 $router->get('/', ['uses' => 'ProjectCategoryController@index']);
                 $router->post('/', ['uses' => 'ProjectCategoryController@post']);

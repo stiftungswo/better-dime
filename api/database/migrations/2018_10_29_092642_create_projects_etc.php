@@ -19,14 +19,14 @@ class CreateProjectsEtc extends Migration
             $table->foreign('accountant_id')->references('id')->on('employees')->onDelete('set null');
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
-            $table->boolean('archived');
+            $table->boolean('archived')->default(false);
             $table->integer('budget_price')->nullable();
             $table->integer('budget_time')->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('project_categories')->onDelete('set null');
             $table->boolean('chargeable')->default(true);
             $table->date('deadline')->nullable();
-            $table->string('description');
+            $table->text('description');
             $table->integer('fixed_price')->nullable();
             $table->string('name');
             $table->unsignedInteger('offer_id')->nullable();
@@ -41,7 +41,7 @@ class CreateProjectsEtc extends Migration
 
         Schema::create('project_positions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('price_per_rate');
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

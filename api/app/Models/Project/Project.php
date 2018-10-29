@@ -19,8 +19,8 @@ class Project extends Model
 
     protected $fillable = [
         'accountant_id', 'address_id', 'archived', 'budget_price', 'budget_time', 'chargeable',
-        'deadline', 'description', 'fixed_price', 'name', 'offer_id',
-        'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'];
+        'category_id', 'deadline', 'description', 'fixed_price', 'name',
+        'offer_id', 'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'];
 
     public function accountant()
     {
