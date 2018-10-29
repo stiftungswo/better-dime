@@ -19,8 +19,6 @@ class CreateOffersEtc extends Migration
             $table->foreign('accountant_id')->references('id')->on('employees')->onDelete('set null');
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
-            $table->integer('customer_id');
-            $table->string('customer_type');
             $table->text('description');
             $table->integer('fixed_price')->nullable();
             $table->string('name');

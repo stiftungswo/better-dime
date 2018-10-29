@@ -69,21 +69,11 @@ class DatabaseSeeder extends Seeder
         $rateGroups = \App\Models\Service\RateGroup::all();
 
         print("Seeding offers ...\n");
-        $offers = collect([]);
-
-        $offers = $offers->merge(factory(\App\Models\Offer\Offer::class)->times(10)->create([
+        $offers = factory(\App\Models\Offer\Offer::class)->times(20)->create([
             'accountant_id' => $employees->random()->id,
             'address_id' => $addresses->random()->id,
             'rate_group_id' => $rateGroups->random()->id
-        ]));
-
-        $offers = $offers->merge(factory(\App\Models\Offer\Offer::class)->times(10)->create([
-            'accountant_id' => $employees->random()->id,
-            'address_id' => $addresses->random()->id,
-            'customer_id' => $companies->random()->id,
-            'customer_type' => \App\Models\Customer\Company::class,
-            'rate_group_id' => $rateGroups->random()->id
-        ]));
+        ]);
 
         print("Seeding offer positions and discounts ...\n");
         $offers->each(function ($o) {

@@ -27,14 +27,6 @@ class OfferTest extends \TestCase
         $this->assertEquals($address, $offer->address);
     }
 
-    public function testCustomerAssignment()
-    {
-        $person = factory(Person::class)->make();
-        $offer = factory(Offer::class)->make();
-        $offer->customer()->associate($person);
-        $this->assertEquals($person, $offer->customer);
-    }
-
     public function testRateGroupAssignment()
     {
         $rateGroup = factory(RateGroup::class)->make();

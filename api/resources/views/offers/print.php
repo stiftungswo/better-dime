@@ -39,8 +39,8 @@ if ( isset($pdf) ) {
 
 <div class="clear-float">
     <div class="recipient-address float-right">
-        <? echo $offer['customer']['salutation'] ?><br>
-        <? echo $offer['customer']['first_name'] . ' ' . $offer['customer']['last_name'] ?><br>
+        <? echo $customer['salutation'] ?><br>
+        <? echo $customer['first_name'] . ' ' . $customer['last_name'] ?><br>
         <? echo $offer['address']['street'] ?><br>
         <? if (!is_null($offer['address']['supplement'])) {
             echo $offer['address']['supplement'];

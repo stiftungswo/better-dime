@@ -36,8 +36,6 @@ class OfferController extends BaseController
     public function post(Request $request)
     {
         $this->validateRequest($request);
-        $inputParams = Input::toArray();
-        $inputParams['customer_type'] = $inputParams['customer_type'] == 'company' ? \App\Models\Customer\Company::class : \App\Models\Customer\Person::class;
         $offer = Offer::create(Input::toArray());
 
         if (Input::get('discounts')) {
@@ -90,9 +88,10 @@ class OfferController extends BaseController
         // TODO extract common things (styles, images, etc.) into own PDFController as soon as Invoice print is ported
         // TODO fetch offer with project to pass project id to print
         // TODO make new general config with information about who created the invoice
+        // TODO render receiving address differently based on is customer company or person
         // intialize stuff
         $app = new Application();
-        $offer = Offer::with(['accountant', 'customer'])->findOrFail($id);
+        $offer = Offer::with(['accountant', 'address'])->findOrFail($id);
         $parsedown = new Parsedown();
         /** @var \Barryvdh\DomPDF\PDF $pdf */
         $pdf = App::make('dompdf.wrapper');
@@ -104,6 +103,7 @@ class OfferController extends BaseController
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
         $pdf->loadView('offers.print', [
             'offer' => $offer,
+            'customer' => $offer->address->customer,
             'breakdown' => CostBreakdown::calculate($offer),
             'basePath' => $app->basepath(),
             'description' => $description])->setPaper('a4', 'portrait');
@@ -115,8 +115,6 @@ class OfferController extends BaseController
         $this->validate($request, [
             'accountant_id' => 'required|integer',
             'address_id' => 'required|integer',
-            'customer_id' => 'required|integer',
-            'customer_type' => 'required|string|max:255',
             'description' => 'required|string',
             'discounts.*.name' => 'required|string|max:255',
             'discounts.*.percentage' => 'required|boolean',

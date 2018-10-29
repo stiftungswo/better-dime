@@ -116,8 +116,6 @@ class OfferControllerTest extends \TestCase
         $offer = factory(\App\Models\Offer\Offer::class)->create([
             'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
             'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
-            'customer_id' => factory(\App\Models\Customer\Company::class)->create()->id,
-            'customer_type' => \App\Models\Customer\Company::class,
             'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
         ]);
         $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class)->times(rand(0, 5))->make());
@@ -130,8 +128,6 @@ class OfferControllerTest extends \TestCase
         return [
             'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
             'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
-            'customer_id' => factory(\App\Models\Customer\Company::class)->create()->id,
-            'customer_type' => 'company',
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'discounts' => [
                 [

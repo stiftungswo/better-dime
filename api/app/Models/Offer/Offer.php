@@ -12,7 +12,7 @@ class Offer extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['accountant_id', 'address_id', 'customer_id', 'customer_type', 'description', 'fixed_price', 'name', 'short_description', 'rate_group_id', 'status'];
+    protected $fillable = ['accountant_id', 'address_id', 'description', 'fixed_price', 'name', 'short_description', 'rate_group_id', 'status'];
 
     public function accountant()
     {
@@ -22,11 +22,6 @@ class Offer extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
-    }
-
-    public function customer()
-    {
-        return $this->morphTo();
     }
 
     public function discounts()
