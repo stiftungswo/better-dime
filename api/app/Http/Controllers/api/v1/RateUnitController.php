@@ -46,8 +46,8 @@ class RateUnitController extends BaseController
             'archived' => 'boolean',
             'billing_unit' => 'required|max:255',
             'effort_unit' => 'required|max:255',
-            'factor' => 'required|numeric'
-
+            'factor' => 'required|numeric',
+            'is_time' => 'required|boolean'
         ]);
     }
 }

@@ -52,12 +52,7 @@ class RateUnitControllerTest extends \TestCase
 
     public function testValidPost()
     {
-        $template = [
-            'archived' => true,
-            'billing_unit' => 'CHF / h',
-            'effort_unit' => 'h',
-            'factor' => 2
-        ];
+        $template = $this->rateUnitTemplate();
         $this->asAdmin()->json('POST', 'api/v1/rate_units', $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
     }
@@ -65,12 +60,7 @@ class RateUnitControllerTest extends \TestCase
     public function testInvalidObjectPut()
     {
         // can't update because object does not exist
-        $this->asAdmin()->json('PUT', 'api/v1/rate_units/1789764', [
-            'archived' => true,
-            'billing_unit' => 'CHF / h',
-            'effort_unit' => 'h',
-            'factor' => 2
-        ])->assertResponseStatus(404);
+        $this->asAdmin()->json('PUT', 'api/v1/rate_units/1789764', $this->rateUnitTemplate())->assertResponseStatus(404);
     }
 
     public function testInvalidParamsPut()
@@ -83,13 +73,19 @@ class RateUnitControllerTest extends \TestCase
     public function testValidPut()
     {
         $rateUnitId = factory(RateUnit::class)->create()->id;
-        $template = [
+        $template = $this->rateUnitTemplate();
+        $this->asAdmin()->json('PUT', 'api/v1/rate_units/' . $rateUnitId, $template)->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template);
+    }
+
+    private function rateUnitTemplate()
+    {
+        return [
             'archived' => true,
             'billing_unit' => 'CHF / h',
             'effort_unit' => 'h',
-            'factor' => 2
+            'factor' => 2,
+            'is_time' => true
         ];
-        $this->asAdmin()->json('PUT', 'api/v1/rate_units/' . $rateUnitId, $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
     }
 }

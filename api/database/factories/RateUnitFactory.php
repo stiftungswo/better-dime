@@ -12,6 +12,7 @@ $factory->define(RateUnit::class, function () {
         'billing_unit' => "CHF / $unit",
         'effort_unit' => $unit,
         'factor' => $faker->optional(0.5, 1)->numberBetween(1, 1000),
+        'is_time' => $faker->boolean,
         'archived' => $faker->randomElement([true, false, false, false, false]),
     ];
 });

@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         $employees = factory(\App\Models\Employee\Employee::class, 20)->create();
         factory(\App\Models\Employee\Holiday::class)->times(10)->create();
 
-        print("Seeding rate units ...\n");
+        print("Seeding rate groups ...\n");
         $kanton = factory(\App\Models\Service\RateGroup::class, 'kanton')->create();
         $andere = factory(\App\Models\Service\RateGroup::class, 'andere')->create();
 
-        print("Seeding rate groups ...\n");
+        print("Seeding rate units ...\n");
         $rateUnits = factory(\App\Models\Service\RateUnit::class)->times(5)->create();
 
         print("Seeding services and service rates ...\n");
