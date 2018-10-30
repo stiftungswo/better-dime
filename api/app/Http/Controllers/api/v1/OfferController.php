@@ -7,6 +7,7 @@ use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
 use App\Services\CostBreakdown;
+use App\Services\CreateProjectFromOffer;
 use App\Services\GroupMarkdownToDiv;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -108,6 +109,13 @@ class OfferController extends BaseController
             'basePath' => $app->basepath(),
             'description' => $description])->setPaper('a4', 'portrait');
         return $pdf->stream();
+    }
+
+    public function createProject($id)
+    {
+        $offer = Offer::findOrFail($id);
+        $creator = new CreateProjectFromOffer($offer);
+        return $creator->create();
     }
 
     private function validateRequest(Request $request)

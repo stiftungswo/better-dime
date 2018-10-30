@@ -44,4 +44,17 @@ class OfferPosition extends Model
             return 0;
         }
     }
+
+    /**
+     * Returns amount of this position if associated rate unit is a time unit
+     * @return float
+     */
+    public function estimatedWorkHours()
+    {
+        if ($this->rate_unit->is_time) {
+            return $this->amount;
+        } else {
+            return 0;
+        }
+    }
 }

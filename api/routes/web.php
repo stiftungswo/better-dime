@@ -61,6 +61,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'OfferController@put']);
                 $router->delete('/{id}', ['uses' => 'OfferController@delete']);
                 $router->get('/{id}/print', ['uses' => 'OfferController@print']);
+                $router->post('/{id}/create_project', ['uses' => 'OfferController@createProject']);
             });
 
             $router->group(['prefix' => 'people'], function () use ($router) {

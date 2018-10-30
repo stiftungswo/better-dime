@@ -123,6 +123,14 @@ class OfferControllerTest extends \TestCase
         $this->asAdmin()->json('GET', 'api/v1/offers/' . $offer->id . '/print')->assertResponseOk();
     }
 
+    public function testValidCreateProject()
+    {
+        $template = $this->offerTemplate();
+        $this->asAdmin()->json('POST', 'api/v1/offers', $template);
+        $id = $this->responseToArray()['id'];
+        $this->asAdmin()->json('POST', 'api/v1/offers/' . $id . '/create_project')->assertResponseOk();
+    }
+
     private function offerTemplate()
     {
         return [
