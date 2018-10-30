@@ -87,6 +87,13 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'ProjectCategoryController@delete']);
             });
 
+            $router->group(['prefix' => 'project_comments'], function () use ($router) {
+                $router->delete('/{id}', ['uses' => 'ProjectCommentController@delete']);
+                $router->get('/', ['uses' => 'ProjectCommentController@index']);
+                $router->post('/', ['uses' => 'ProjectCommentController@post']);
+                $router->put('/{id}', ['uses' => 'ProjectCommentController@put']);
+            });
+
             $router->group(['prefix' => 'rate_units'], function () use ($router) {
                 $router->get('/', ['uses' => 'RateUnitController@index']);
                 $router->post('/', ['uses' => 'RateUnitController@post']);

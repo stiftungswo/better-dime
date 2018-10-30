@@ -92,4 +92,6 @@ class ProjectController extends BaseController
 
         return self::get($id);
     }
+
+    // TODO reimplement "Projects with potential invoices" after invoices are implemented
 }
