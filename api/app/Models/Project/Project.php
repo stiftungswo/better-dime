@@ -13,7 +13,10 @@ class Project extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['current_price', 'current_time'];
+
     protected $casts = [
+        'archived' => 'boolean',
         'chargeable' => 'boolean'
     ];
 
@@ -55,5 +58,38 @@ class Project extends Model
     public function rate_group()
     {
         return $this->belongsTo(RateGroup::class);
+    }
+
+    /**
+     * Returns the current costs for this project (based on the rates of each position)
+     * @return int
+     */
+    public function getCurrentPriceAttribute()
+    {
+        $price = 0;
+
+        foreach ($this->positions as $position) {
+            $price += $position->charge;
+        }
+
+        return $price;
+    }
+
+    /**
+     * Returns the current recorded time efforts in minutes
+     * @return int
+     */
+    public function getCurrentTimeAttribute()
+    {
+        $duration = 0;
+
+        foreach ($this->positions as $position) {
+            if (!is_null($position->rate_unit) && $position->rate_unit->is_time) {
+                /** @var \App\Models\Project\ProjectPosition $position */
+                $duration += $position->effortsValueSum();
+            }
+        }
+
+        return $duration;
     }
 }

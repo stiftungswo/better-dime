@@ -11,6 +11,8 @@ class ProjectPosition extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['charge', 'calculated_vat'];
+
     protected $casts = [
         'vat' => 'float'
     ];
@@ -19,7 +21,7 @@ class ProjectPosition extends Model
 
     public function efforts()
     {
-        return $this->hasMany(ProjectEffort::class);
+        return $this->hasMany(ProjectEffort::class, 'position_id');
     }
 
     public function project()
@@ -35,5 +37,43 @@ class ProjectPosition extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * Returns the total costs of this position, including VAT
+     * @return float
+     */
+    public function getChargeAttribute()
+    {
+        $total = 0;
+
+        if ($this->effortsValueSum() != 0) {
+            $total = $this->price_per_rate * $this->effortsValueSum();
+        }
+
+        $total += $this->calculated_vat;
+
+        return $total;
+    }
+
+    /**
+     * Returns the sum of all efforts for this position
+     * @return float
+     */
+    public function effortsValueSum()
+    {
+        return $this->efforts->map(function ($e) {
+            /** @var ProjectEffort $e */
+            return $e->value;
+        })->sum();
+    }
+
+    /**
+     * Returns the amount of vat for the current position
+     * @return float
+     */
+    public function getCalculatedVatAttribute()
+    {
+        return $this->price_per_rate * $this->effortsValueSum() * $this->vat;
     }
 }

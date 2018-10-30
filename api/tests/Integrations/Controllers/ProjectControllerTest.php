@@ -40,11 +40,14 @@ class ProjectControllerTest extends \TestCase
     public function testValidGet()
     {
         $project = factory(Project::class)->create();
-        $this->asAdmin()->json('GET', 'api/v1/projects/' . $project->id)->assertResponseOk();
+        $project->positions()->save(factory(ProjectPosition::class)->make());
+        $this->asAdmin()->json('GET', 'api/v1/projects/' . $project->id);
         $decodedResponse = $this->responseToArray();
 
         $this->assertEquals($project->name, $decodedResponse['name']);
         $this->assertArrayHasKey('positions', $decodedResponse);
+        $this->assertArrayHasKey('charge', $decodedResponse['positions'][0]);
+        $this->assertArrayHasKey('calculated_vat', $decodedResponse['positions'][0]);
     }
 
     public function testInvalidPost()

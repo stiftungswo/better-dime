@@ -59,8 +59,8 @@ class CreateProjectsEtc extends Migration
             $table->date('date');
             $table->unsignedInteger('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
-            $table->unsignedInteger('project_position_id')->nullable();
-            $table->foreign('project_position_id')->references('id')->on('project_positions')->onDelete('cascade');
+            $table->unsignedInteger('position_id')->nullable();
+            $table->foreign('position_id')->references('id')->on('project_positions')->onDelete('cascade');
             $table->decimal('value', 10, 3);
             $table->softDeletes();
             $table->timestamps();

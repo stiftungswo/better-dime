@@ -23,6 +23,6 @@ class ProjectEffort extends Model
 
     public function position()
     {
-        return $this->belongsTo(ProjectPosition::class);
+        return $this->belongsTo(ProjectPosition::class, 'position_id');
     }
 }
