@@ -24,12 +24,12 @@ if ( isset($pdf) ) {
 
 <div class="clear-float">
     <div class="float-left">
-        <p>Stiftung Wirtschaft und Ökologie SWO<br>
-            Bahnstrasse 18b<br>
-            8603 Schwerzenbach<br>
-            Telefon: 043 355 58 44<br>
-            Mail: swo@stiftungswo.ch<br>
-            www.stiftungswo.ch</p>
+        <p><? env('SENDER_NAME') ?><br>
+            <? env('SENDER_STREET') ?><br>
+            <? env('SENDER_PLZ') ?> <? env('SENDER_CITY') ?><br>
+            Telefon: <? env('SENDER_PHONE') ?><br>
+            Mail: <? env('SENDER_MAIL') ?><br>
+            <? env('SENDER_WEB') ?></p>
     </div>
 
     <div class="float-right">
@@ -54,7 +54,7 @@ if ( isset($pdf) ) {
 
 <div class="header clear-float">
     <div>
-        Schwerzenbach, <? echo date("d.m.Y") ?>
+        <? env('SENDER_CITY') ?>, <? echo date("d.m.Y") ?>
     </div>
 
     <div>
@@ -179,7 +179,7 @@ if ( isset($pdf) ) {
         <div class="signature">
             <div class="bold">Unterschrift des Auftragsnehmers:</div>
             <div class="date_location">Ort / Datum:</div>
-            <div class="dateline">Schwerzenbach, <? echo date("d.m.Y") ?></div>
+            <div class="dateline"><? env('SENDER_CITY') ?>, <? echo date("d.m.Y") ?></div>
         </div>
         <div class="signature">
             <div class="bold">Unterschrift des Auftraggebers:</div>

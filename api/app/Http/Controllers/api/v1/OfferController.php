@@ -88,9 +88,8 @@ class OfferController extends BaseController
     {
         // TODO extract common things (styles, images, etc.) into own PDFController as soon as Invoice print is ported
         // TODO fetch offer with project to pass project id to print
-        // TODO make new general config with information about who created the invoice
         // TODO render receiving address differently based on is customer company or person
-        // intialize stuff
+        // initialize stuff
         $app = new Application();
         $offer = Offer::with(['accountant', 'address'])->findOrFail($id);
         $parsedown = new Parsedown();
