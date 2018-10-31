@@ -88,11 +88,11 @@ class DatabaseSeeder extends Seeder
         $projectCategories = factory(\App\Models\Project\ProjectCategory::class, 10)->create();
 
         print("Seeding projects ...\n");
-
         $projects = factory(\App\Models\Project\Project::class, 20)->create([
             'accountant_id' => $employees->random()->id,
             'address_id' => $addresses->random()->id,
             'category_id' => $projectCategories->random()->id,
+            'holiday_project' => false,
             'offer_id' => $offers->random()->id,
             'rate_group_id' => $rateGroups->random()->id
         ]);
@@ -111,5 +111,14 @@ class DatabaseSeeder extends Seeder
                 ]));
             });
         });
+
+        print("Seeding holiday project ...\n");
+        factory(\App\Models\Project\Project::class)->create([
+            'accountant_id' => $employees->random()->id,
+            'address_id' => $addresses->random()->id,
+            'category_id' => $projectCategories->random()->id,
+            'holiday_project' => true,
+            'rate_group_id' => $rateGroups->random()->id
+        ]);
     }
 }

@@ -204,6 +204,7 @@ class ProjectControllerTest extends \TestCase
             'deadline' => '2019-12-31',
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'fixed_price' => 5678420,
+            'holiday_project' => false,
             'name' => 'Neuanpflanzung Meier / Tobler 2018 / 2019',
             'offer_id' => factory(\App\Models\Offer\Offer::class)->create()->id,
             'positions' => [

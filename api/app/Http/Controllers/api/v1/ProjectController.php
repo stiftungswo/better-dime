@@ -90,6 +90,7 @@ class ProjectController extends BaseController
             'deadline' => 'date',
             'description' => 'required|string',
             'fixed_price' => 'integer',
+            'holiday_project' => 'boolean',
             'name' => 'required|string',
             'offer_id' => 'integer',
             'positions.*.description' => 'string',

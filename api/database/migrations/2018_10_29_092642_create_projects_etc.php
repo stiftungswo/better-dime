@@ -28,6 +28,7 @@ class CreateProjectsEtc extends Migration
             $table->date('deadline')->nullable();
             $table->text('description');
             $table->integer('fixed_price')->nullable();
+            $table->boolean('holiday_project')->default(false);
             $table->string('name');
             $table->unsignedInteger('offer_id')->nullable();
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('set null');

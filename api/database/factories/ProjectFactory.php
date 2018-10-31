@@ -16,6 +16,7 @@ $factory->define(\App\Models\Project\Project::class, function () {
         'deadline' => $faker->dateTimeBetween('+30 days', '+270 days'),
         'description' => $faker->sentence,
         'fixed_price' => $hasFixedPrice ? $price : null,
+        'holiday_project' => false,
         'name' => $faker->sentence,
         'started_at' => $faker->dateTimeBetween('-270 days', '-90 days'),
         'stopped_at' => $faker->dateTimeBetween('+30 days', '+270 days'),
