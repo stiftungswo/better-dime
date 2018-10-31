@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Employee\Employee;
+use App\Models\Employee\EmployeeSetting;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,7 +87,12 @@ class AuthController extends BaseController
 
         // Verify the password and generate the token
         if (Hash::check($this->request->input('password'), $user->password)) {
+            EmployeeSetting::updateOrCreate([
+                'employee_id' => $user->id
+            ]);
+
             return response()->json([
+                'settings' => $user->fresh(['settings'])->settings,
                 'token' => $this->jwt($user)
             ], 200);
         }

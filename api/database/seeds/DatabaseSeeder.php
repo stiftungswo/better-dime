@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        app(\Faker\Generator::class)->seed();
         factory(\App\Models\Employee\Employee::class, 'admin')->create();
         $employees = factory(\App\Models\Employee\Employee::class, 20)->create();
         factory(\App\Models\Employee\Holiday::class)->times(10)->create();
@@ -42,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $customerTags = factory(App\Models\Customer\CustomerTag::class)->times(10)->create();
 
         print("Seeding companies ...\n");
-        $companies =  factory(\App\Models\Customer\Company::class)->times(10)->create([
+        $companies = factory(\App\Models\Customer\Company::class)->times(10)->create([
             'rate_group_id' => \App\Models\Service\RateGroup::all()->random()->id
         ]);
         $companies->each(function ($c) use ($customerTags) {

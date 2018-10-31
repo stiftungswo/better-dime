@@ -49,4 +49,9 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
 
         $this->attributes['password'] = app('hash')->make($value);
     }
+
+    public function settings()
+    {
+        return $this->hasOne(EmployeeSetting::class);
+    }
 }
