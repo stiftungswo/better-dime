@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         print("Seeding offer positions and discounts ...\n");
-        $offers->each(function ($o) use($rateUnits, $services) {
+        $offers->each(function ($o) use ($rateUnits, $services) {
             /** @var \App\Models\Offer\Offer $o */
             $o->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class)->times(rand(0, 5))->make([
                 'rate_unit_id' => $rateUnits->random()->id,

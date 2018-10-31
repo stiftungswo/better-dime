@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Project\Project;
+use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,42 @@ class ProjectController extends BaseController
         }
 
         return self::get($project->id);
+    }
+
+    public function moveEfforts($id)
+    {
+        $targetProject = Project::findOrFail($id);
+        $efforts = ProjectEffort::with(['position'])->findMany(Input::get('efforts'));
+
+        foreach ($efforts as $effort) {
+            $targetProject = $targetProject->fresh();
+            $service = $effort->service;
+
+            $targetPosition = null;
+
+            if (is_null($service)) {
+                return response('Position ' . $effort->position->id . ' has no service assigned!', 422);
+            } else {
+                foreach ($targetProject->positions as $position) {
+                    if ($position->service->id == $service->id) {
+                        $targetPosition = $position;
+                        break;
+                    }
+                }
+            }
+
+            if ($targetPosition == null) {
+                // create new position for target project
+                $targetPosition = $effort->position->replicate();
+                $targetPosition->project()->associate($targetProject);
+                $targetPosition->save();
+            }
+
+            $effort->position()->associate($targetPosition);
+            $effort->save();
+        }
+
+        return null;
     }
 
     private function validateRequest(Request $request)

@@ -78,6 +78,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/{id}', ['uses' => 'ProjectController@get']);
                 $router->put('/{id}', ['uses' => 'ProjectController@put']);
                 $router->delete('/{id}', ['uses' => 'ProjectController@delete']);
+                $router->put('/{id}/move_efforts', ['uses' => 'ProjectController@moveEfforts']);
             });
 
             $router->group(['prefix' => 'project_categories'], function () use ($router) {
