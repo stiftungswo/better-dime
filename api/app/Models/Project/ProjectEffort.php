@@ -14,7 +14,7 @@ class ProjectEffort extends Model
         'value' => 'float'
     ];
 
-    protected $fillable = ['date', 'employee_id', 'project_position_id', 'value'];
+    protected $fillable = ['date', 'employee_id', 'position_id', 'value'];
 
     public function employee()
     {
