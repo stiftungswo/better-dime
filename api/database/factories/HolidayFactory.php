@@ -9,7 +9,7 @@ $factory->define(Holiday::class, function () {
 
     return [
         'name' => $faker->word,
-        'date' => $faker->date(),
+        'date' => $faker->dateTimeBetween('-2 years'),
         'duration' => $faker->numberBetween(60, 504),
     ];
 });

@@ -125,6 +125,13 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'ServiceController@put']);
                 $router->delete('/{id}', ['uses' => 'ServiceController@delete']);
             });
+
+            $router->group(['prefix' => 'work_periods'], function () use ($router) {
+                $router->delete('/{id}', ['uses' => 'WorkPeriodController@delete']);
+                $router->get('/', ['uses' => 'WorkPeriodController@index']);
+                $router->post('/', ['uses' => 'WorkPeriodController@post']);
+                $router->put('/{id}', ['uses' => 'WorkPeriodController@put']);
+            });
         });
     });
 });

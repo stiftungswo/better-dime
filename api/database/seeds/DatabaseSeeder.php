@@ -11,8 +11,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Faker\Factory::create('de_CH');
+        print("Seeding employees ...\n");
         factory(\App\Models\Employee\Employee::class, 'admin')->create();
         $employees = factory(\App\Models\Employee\Employee::class, 20)->create();
+        $employees->each(function ($e) {
+            /** @var \App\Models\Employee\Employee $e */
+            $e->work_periods()->saveMany(factory(\App\Models\Employee\WorkPeriod::class, rand(1, 3))->make());
+        });
+
+        print("Seeding public holidays ...\n");
         factory(\App\Models\Employee\Holiday::class)->times(10)->create();
 
         print("Seeding rate groups ...\n");
@@ -92,7 +100,7 @@ class DatabaseSeeder extends Seeder
             'accountant_id' => $employees->random()->id,
             'address_id' => $addresses->random()->id,
             'category_id' => $projectCategories->random()->id,
-            'holiday_project' => false,
+            'vacation_project' => false,
             'offer_id' => $offers->random()->id,
             'rate_group_id' => $rateGroups->random()->id
         ]);
@@ -104,21 +112,36 @@ class DatabaseSeeder extends Seeder
                 'service_id' => $services->random()->id
             ]));
             $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 5))->make());
-            $p->positions()->each(function ($pp) use ($employees) {
-                /** @var \App\Models\Project\ProjectPosition $pp */
-                $pp->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class)->times(rand(0, 5))->make([
-                    'employee_id' => $employees->random()->id
-                ]));
-            });
         });
 
-        print("Seeding holiday project ...\n");
-        factory(\App\Models\Project\Project::class)->create([
+        print("Seeding holiday projects ...\n");
+        $holidayProject = factory(\App\Models\Project\Project::class)->create([
             'accountant_id' => $employees->random()->id,
             'address_id' => $addresses->random()->id,
             'category_id' => $projectCategories->random()->id,
-            'holiday_project' => true,
+            'vacation_project' => true,
             'rate_group_id' => $rateGroups->random()->id
         ]);
+
+        $holidayProject->positions()->save(factory(\App\Models\Project\ProjectPosition::class)->make([
+            'rate_unit_id' => $rateUnits->firstWhere('is_time', true)->id,
+            'service_id' => $services->random()->id
+        ]));
+
+        $projects = $projects->merge([$holidayProject]);
+
+        print("Seeding project efforts ...\n");
+        \App\Models\Employee\WorkPeriod::all()->each(function ($wp) use ($faker, $projects) {
+            $projects->map(function ($p) {
+                return $p->positions;
+            })->flatten()->each(function ($pp) use ($faker, $wp) {
+                $date = $faker->dateTimeBetween($wp->start, $wp->end);
+
+                $pp->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class)->times(rand(0, 2))->make([
+                    'employee_id' => $wp->employee->id,
+                    'date' => $date
+                ]));
+            });
+        });
     }
 }

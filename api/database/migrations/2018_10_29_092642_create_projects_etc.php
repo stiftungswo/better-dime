@@ -28,7 +28,6 @@ class CreateProjectsEtc extends Migration
             $table->date('deadline')->nullable();
             $table->text('description');
             $table->integer('fixed_price')->nullable();
-            $table->boolean('holiday_project')->default(false);
             $table->string('name');
             $table->unsignedInteger('offer_id')->nullable();
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('set null');
@@ -36,6 +35,7 @@ class CreateProjectsEtc extends Migration
             $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
             $table->date('started_at')->nullable();
             $table->date('stopped_at')->nullable();
+            $table->boolean('vacation_project')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

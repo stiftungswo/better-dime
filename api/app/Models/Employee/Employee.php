@@ -54,4 +54,9 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasOne(EmployeeSetting::class);
     }
+
+    public function work_periods()
+    {
+        return $this->hasMany(WorkPeriod::class);
+    }
 }
