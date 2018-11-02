@@ -51,6 +51,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'EmployeeSettingController@put']);
             });
 
+            $router->group(['prefix' => 'invoices'], function () use ($router) {
+                $router->get('/', ['uses' => 'InvoiceController@index']);
+                $router->post('/', ['uses' => 'InvoiceController@post']);
+                $router->get('/{id}', ['uses' => 'InvoiceController@get']);
+                $router->put('/{id}', ['uses' => 'InvoiceController@put']);
+                $router->delete('/{id}', ['uses' => 'InvoiceController@delete']);
+            });
+
             $router->group(['prefix' => 'holidays'], function () use ($router) {
                 $router->get('/', ['uses' => 'HolidayController@index']);
                 $router->post('/', ['uses' => 'HolidayController@post']);

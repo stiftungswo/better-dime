@@ -4,6 +4,7 @@ namespace App\Models\Project;
 
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
+use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
 use App\Models\Service\RateGroup;
 use Illuminate\Database\Eloquent\Model;
@@ -44,6 +45,11 @@ class Project extends Model
     public function comments()
     {
         return $this->hasMany(ProjectComment::class);
+    }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 
     public function offer()

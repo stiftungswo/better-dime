@@ -2,6 +2,7 @@
 
 namespace App\Models\Project;
 
+use App\Models\Invoice\InvoicePosition;
 use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,11 @@ class ProjectPosition extends Model
     public function efforts()
     {
         return $this->hasMany(ProjectEffort::class, 'position_id');
+    }
+
+    public function invoice_positions()
+    {
+        return $this->hasMany(InvoicePosition::class);
     }
 
     public function project()

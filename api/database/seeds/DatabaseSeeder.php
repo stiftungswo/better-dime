@@ -143,5 +143,7 @@ class DatabaseSeeder extends Seeder
                 ]));
             });
         });
+
+        // TODO seed projects and invoices with CreateProjectFromOffer and Create InvoiceFromProject
     }
 }
