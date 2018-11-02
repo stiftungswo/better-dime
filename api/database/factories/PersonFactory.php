@@ -8,7 +8,6 @@ $factory->define(\App\Models\Customer\Person::class, function () {
 
     return [
         'comment' => $faker->sentence,
-        'chargeable' => $faker->boolean,
         'email' => $faker->companyEmail,
         'first_name' => $faker->firstName,
         'hidden' => $faker->boolean,

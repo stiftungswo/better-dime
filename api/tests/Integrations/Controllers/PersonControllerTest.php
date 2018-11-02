@@ -129,7 +129,6 @@ class PersonControllerTest extends \TestCase
             ],
             'comment' => 'Dies ist ein Kunde der SWO.',
             'company_id' => $personId,
-            'chargeable' => false,
             'department' => 'Landwirtschaft und Natur',
             'email' => 'kunde@der.swo',
             'first_name' => 'Max',

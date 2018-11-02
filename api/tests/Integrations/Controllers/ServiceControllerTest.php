@@ -52,7 +52,6 @@ class ServiceControllerTest extends \TestCase
             'name' => 'Rasen Mähen',
             'description' => 'Verkürzen der Länge von Grashalmen auf Flächen.',
             'vat' => 0.077,
-            'chargeable' => true,
             'archived' => false,
             'service_rates' => [[
                 'rate_group_id' => $rateGroup->id,
@@ -87,7 +86,6 @@ class ServiceControllerTest extends \TestCase
             'name' => 'Rasen Mähen',
             'description' => 'Verkürzen der Länge von Grashalmen auf Flächen.',
             'vat' => 0.077,
-            'chargeable' => true,
             'archived' => false,
             'service_rates' => [[
                 'id' => $serviceRate->id,
@@ -131,7 +129,6 @@ class ServiceControllerTest extends \TestCase
             'name' => $rateGroup->name,
             'description' => $rateGroup->description,
             'vat' => $rateGroup->vat,
-            'chargeable' => $rateGroup->chargeable,
             'archived' => $rateGroup->archived,
             'service_rates' => [[
                 'id' => $serviceRateA->id,
@@ -165,7 +162,6 @@ class ServiceControllerTest extends \TestCase
             'name' => $rateGroup->name,
             'description' => $rateGroup->description,
             'vat' => $rateGroup->vat,
-            'chargeable' => $rateGroup->chargeable,
             'archived' => $rateGroup->archived,
             'service_rates' => [[
                 'id' => $serviceRateA->id,
@@ -204,7 +200,6 @@ class ServiceControllerTest extends \TestCase
             'name' => $rateGroup->name,
             'description' => $rateGroup->description,
             'vat' => $rateGroup->vat,
-            'chargeable' => $rateGroup->chargeable,
             'archived' => $rateGroup->archived,
             'service_rates' => [[
                 'id' => $serviceRateA->id,

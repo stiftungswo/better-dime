@@ -13,7 +13,6 @@ class Company extends Model
     protected $appends = ['tags'];
 
     protected $casts = [
-        'chargeable' => 'boolean',
         'hidden' => 'boolean',
     ];
 
@@ -22,7 +21,7 @@ class Company extends Model
     ];
 
     protected $fillable = [
-        'comment', 'chargeable', 'email', 'hidden', 'name', 'rate_group_id'
+        'comment', 'email', 'hidden', 'name', 'rate_group_id'
     ];
 
     /**

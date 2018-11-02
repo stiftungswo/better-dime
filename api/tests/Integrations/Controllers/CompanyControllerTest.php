@@ -126,7 +126,6 @@ class CompanyControllerTest extends \TestCase
                 ]
             ],
             'comment' => 'Dies ist ein Kunde der SWO.',
-            'chargeable' => false,
             'email' => 'kunde@der.swo',
             'hidden' => false,
             'name' => 'SWO Kunde',

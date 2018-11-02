@@ -14,11 +14,10 @@ class Service extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'description', 'chargeable', 'vat', 'archived'
+        'name', 'description', 'vat', 'archived'
     ];
 
     protected $casts = [
-        'chargeable' => 'boolean',
         'archived' => 'boolean'
     ];
 

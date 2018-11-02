@@ -13,7 +13,6 @@ class Person extends Model
     protected $appends = ['tags'];
 
     protected $casts = [
-        'chargeable' => 'boolean',
         'hidden' => 'boolean',
     ];
 
@@ -22,7 +21,7 @@ class Person extends Model
     ];
 
     protected $fillable = [
-        'comment', 'chargeable', 'company_id', 'department', 'email', 'first_name', 'hidden', 'last_name', 'rate_group_id', 'salutation'
+        'comment', 'company_id', 'department', 'email', 'first_name', 'hidden', 'last_name', 'rate_group_id', 'salutation'
     ];
 
     /**

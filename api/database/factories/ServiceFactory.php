@@ -11,7 +11,6 @@ $factory->define(Service::class, function () {
         'name' => $faker->words(3, true),
         'description' => $faker->sentence,
         'vat' => $faker->randomElement([0.025, 0.077]),
-        'chargeable' => $faker->randomElement([true, false]),
-        'archived' => $faker->randomElement([true, false, false, false, false]),
+        'archived' => $faker->boolean(20),
     ];
 });

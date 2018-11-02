@@ -9,6 +9,6 @@ $factory->define(\App\Models\Offer\OfferPosition::class, function () {
     return [
         'amount' => $faker->numberBetween(1, 40),
         'price_per_rate' => $faker->numberBetween(3000, 18000),
-        'vat' => $faker->randomFloat(3, 0.025, 0.077)
+        'vat' => $faker->randomElement([0.025, 0.077]),
     ];
 });

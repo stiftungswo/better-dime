@@ -25,7 +25,6 @@ class CreateServiceEtc extends Migration
             $table->string('name');
             $table->string('description');
             $table->double('vat');
-            $table->boolean('chargeable');
             $table->boolean('archived'); //TODO extract trait?
             $table->timestamps();
             $table->softDeletes();

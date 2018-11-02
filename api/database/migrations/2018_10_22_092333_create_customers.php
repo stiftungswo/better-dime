@@ -15,7 +15,6 @@ class CreateCustomers extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('chargeable')->default(true);
             $table->text('comment');
             $table->string('email');
             $table->boolean('hidden')->default(false);
@@ -28,7 +27,6 @@ class CreateCustomers extends Migration
 
         Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('chargeable')->default(true);
             $table->text('comment');
             $table->unsignedInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
