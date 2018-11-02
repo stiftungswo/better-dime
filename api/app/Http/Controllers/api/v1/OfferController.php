@@ -113,8 +113,13 @@ class OfferController extends BaseController
     public function createProject($id)
     {
         $offer = Offer::findOrFail($id);
-        $creator = new CreateProjectFromOffer($offer);
-        return $creator->create();
+
+        if (is_null($offer->project)) {
+            $creator = new CreateProjectFromOffer($offer);
+            return $creator->create();
+        } else {
+            return $offer->project;
+        }
     }
 
     private function validateRequest(Request $request)

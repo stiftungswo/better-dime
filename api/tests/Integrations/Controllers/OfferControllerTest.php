@@ -5,6 +5,7 @@ namespace Tests\Integrations\Controllers;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
+use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class OfferControllerTest extends \TestCase
@@ -129,6 +130,17 @@ class OfferControllerTest extends \TestCase
         $this->asAdmin()->json('POST', 'api/v1/offers', $template);
         $id = $this->responseToArray()['id'];
         $this->asAdmin()->json('POST', 'api/v1/offers/' . $id . '/create_project')->assertResponseOk();
+    }
+
+    public function testDuplicateCreateProject()
+    {
+        $offer = factory(Offer::class)->create();
+        $project = factory(Project::class)->create([
+            'offer_id' => $offer->id
+        ]);
+
+        $this->asAdmin()->json('POST', 'api/v1/offers/' . $offer->id . '/create_project')->assertResponseOk();
+        $this->assertEquals($project->id, $this->responseToArray()['id']);
     }
 
     private function offerTemplate()
