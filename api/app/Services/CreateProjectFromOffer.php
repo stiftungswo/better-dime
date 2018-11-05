@@ -7,7 +7,7 @@ use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectPosition;
 
-class CreateProjectFromOffer
+class CreateProjectFromOffer extends BaseBreakdown
 {
 
     /**
@@ -55,10 +55,13 @@ class CreateProjectFromOffer
 
         $budgetTime = 0;
 
+        $this->project->offer()->associate($this->offer);
+        $this->project->save();
+
         foreach ($this->offer->positions as $offerPosition) {
             /** @var OfferPosition $offerPosition */
             // create project position
-            $attributes = ['service_id', 'price_per_rate', 'rate_unit_id', 'vat'];
+            $attributes = ['description', 'service_id', 'price_per_rate', 'rate_unit_id', 'vat'];
             $projectPosition = new ProjectPosition();
 
             foreach ($attributes as $attribute) {
@@ -71,7 +74,6 @@ class CreateProjectFromOffer
         }
 
         $this->project->budget_time = $budgetTime;
-        $this->project->offer()->associate($this->offer);
         $this->project->save();
 
         return $this->project;
@@ -80,19 +82,5 @@ class CreateProjectFromOffer
     private function checkAndAssignProjectProperty(string $property, $oldPropertyName = null)
     {
         return $this->throwExceptionIfNull($this->offer, $this->project, $property, $oldPropertyName);
-    }
-
-    private function throwExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
-    {
-        if (is_null($oldPropertyName)) {
-            $oldPropertyName = $property;
-        }
-
-        if (is_null($object1->$oldPropertyName)) {
-            throw new \InvalidArgumentException('Cant create project from offer because property ' . $oldPropertyName . ' is null.');
-        } else {
-            $object2->$property = $object1->$oldPropertyName;
-        }
-        return $object2;
     }
 }

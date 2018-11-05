@@ -10,6 +10,6 @@ $factory->define(\App\Models\Offer\OfferDiscount::class, function () {
     return [
         'name' => $faker->word . ' Rabatt',
         'percentage' => $percentage,
-        'value' => $percentage ? $faker->randomFloat(2) : $faker->numberBetween(50000, 100000)
+        'value' => $percentage ? $faker->randomFloat(2, 0.01, 0.25) : $faker->numberBetween(50000, 100000)
     ];
 });

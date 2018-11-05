@@ -76,11 +76,14 @@ class DatabaseSeeder extends Seeder
         $rateGroups = \App\Models\Service\RateGroup::all();
 
         print("Seeding offers ...\n");
-        $offers = factory(\App\Models\Offer\Offer::class)->times(20)->create([
-            'accountant_id' => $employees->random()->id,
-            'address_id' => $addresses->random()->id,
-            'rate_group_id' => $rateGroups->random()->id
-        ]);
+        $offers = collect([]);
+        for ($i = 0; $i < 20; $i++) {
+            $offers->push(factory(\App\Models\Offer\Offer::class)->create([
+                'accountant_id' => $employees->random()->id,
+                'address_id' => $addresses->random()->id,
+                'rate_group_id' => $rateGroups->random()->id
+            ]));
+        }
 
         print("Seeding offer positions and discounts ...\n");
         $offers->each(function ($o) use ($rateUnits, $services) {
@@ -96,21 +99,17 @@ class DatabaseSeeder extends Seeder
         $projectCategories = factory(\App\Models\Project\ProjectCategory::class, 10)->create();
 
         print("Seeding projects ...\n");
-        $projects = factory(\App\Models\Project\Project::class, 20)->create([
-            'accountant_id' => $employees->random()->id,
-            'address_id' => $addresses->random()->id,
-            'category_id' => $projectCategories->random()->id,
-            'vacation_project' => false,
-            'offer_id' => $offers->random()->id,
-            'rate_group_id' => $rateGroups->random()->id
-        ]);
+        $projects = collect([]);
+        $offers->each(function ($o) use ($projects) {
+            $creator = new \App\Services\CreateProjectFromOffer($o);
+            $projects[] = $creator->create();
+        });
 
-        $projects->each(function ($p) use ($services, $rateUnits, $employees) {
+        $projects->each(function ($p) use ($projectCategories) {
             /** @var \App\Models\Project\Project $p */
-            $p->positions()->saveMany(factory(\App\Models\Project\ProjectPosition::class)->times(rand(0, 5))->make([
-                'rate_unit_id' => $rateUnits->random()->id,
-                'service_id' => $services->random()->id
-            ]));
+            $p->update([
+                'category_id' => $projectCategories->random()->id,
+            ]);
             $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 5))->make());
         });
 
@@ -144,6 +143,10 @@ class DatabaseSeeder extends Seeder
             });
         });
 
-        // TODO seed projects and invoices with CreateProjectFromOffer and Create InvoiceFromProject
+        print("Seeding invoices ...\n");
+        $projects->each(function ($p) {
+            $creator = new \App\Services\CreateInvoiceFromProject($p);
+            $creator->create();
+        });
     }
 }

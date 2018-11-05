@@ -57,4 +57,13 @@ class OfferPosition extends Model
             return 0;
         }
     }
+
+    public function getDescriptionAttribute()
+    {
+        if($this->service && $this->service->name) {
+            return $this->service->name;
+        } else {
+            return "No service assigned";
+        }
+    }
 }
