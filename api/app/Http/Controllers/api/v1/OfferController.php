@@ -69,11 +69,23 @@ class OfferController extends BaseController
             $offer->update(Input::toArray());
 
             if (Input::get('discounts')) {
-                $this->executeNestedUpdate(Input::get('discounts'), $offer->discounts, OfferDiscount::class, 'offer', $offer);
+                $this->executeNestedUpdate(
+                    Input::get('discounts'),
+                    $offer->discounts,
+                    OfferDiscount::class,
+                    'offer',
+                    $offer
+                );
             }
 
             if (Input::get('positions')) {
-                $this->executeNestedUpdate(Input::get('positions'), $offer->positions, OfferPosition::class, 'offer', $offer);
+                $this->executeNestedUpdate(
+                    Input::get('positions'),
+                    $offer->positions,
+                    OfferPosition::class,
+                    'offer',
+                    $offer
+                );
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -86,24 +98,29 @@ class OfferController extends BaseController
 
     public function print($id)
     {
-        // TODO extract common things (styles, images, etc.) into own PDFController as soon as Invoice print is ported
         // TODO fetch offer with project to pass project id to print
         // TODO render receiving address differently based on is customer company or person
         // initialize stuff
         $app = new Application();
-        $offer = Offer::with(['accountant', 'address'])->findOrFail($id);
+        $offer = Offer::with(['accountant', 'address', 'project:id'])->findOrFail($id);
         $parsedown = new Parsedown();
-        /** @var \Barryvdh\DomPDF\PDF $pdf */
-        $pdf = App::make('dompdf.wrapper');
 
         // group h1 / h2 / h3 and the following tags to divs
         $description = GroupMarkdownToDiv::group($parsedown->text($offer->description));
 
-        // initialize DomPDF, render view and pass it back
+        // initialize PDFController, render view and pass it back
+        $pdf = new PDFController(
+            'offers',
+            [
+                'offer' => $offer,
+                'breakdown' => CostBreakdown::calculate($offer),
+                'basePath' => $app->basepath(),
+                'description' => $description
+            ]
+        );
 
-        // $pdf->getDomPDF()->set_option("isPhpEnabled", true);
-        // $pdf->loadView(
-        //     'offers.print',
+        // return $pdf->debug(
+        //     'offers',
         //     [
         //         'offer' => $offer,
         //         'customer' => $offer->address->customer,
@@ -111,19 +128,7 @@ class OfferController extends BaseController
         //         'basePath' => $app->basepath(),
         //         'description' => $description
         //     ]
-        // )->setPaper('a4', 'portrait');
-        // return $pdf->stream();
-
-        $pdf = new PDFController(
-            'offers',
-            [
-                'offer' => $offer,
-                'customer' => $offer->address->customer,
-                'breakdown' => CostBreakdown::calculate($offer),
-                'basePath' => $app->basepath(),
-                'description' => $description
-            ]
-        );
+        // );
 
         return $pdf->print();
     }

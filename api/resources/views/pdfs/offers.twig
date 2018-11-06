@@ -1,5 +1,9 @@
 {% extends 'pdfs/static/base' %}
 
+{% block title %}
+<title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}vom {{ "now"|date("d.m.Y") }}</title>
+{% endblock %}
+
 {% block content %}
 <div class="header clear-float">
     <div>
@@ -31,90 +35,107 @@
 
 <div class="force-page-break"></div>
 <b style="font-size: 16px;">Kostenübersicht</b>
-<table class="table">
-    <thead>
-    <tr>
-        <th class="first-row">Bezeichnung</th>
-        <th class="second-row text-align-right">Ansatz CHF</th>
-        <th class="third-row">Einheit</th>
-        <th class="fourth-row">Anzahl</th>
-        <th class="fifth-row text-align-right">MwSt. Satz</th>
-        <th class="sixth-row text-align-right">Teilbetrag CHF exkl. MwSt.</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for offerPosition in breakdown.positions %}
-        <tr>
-            <td>{{ offerPosition.service.name }}</td>
-            <td class="text-align-right">{{ (offerPosition.price_per_rate / 100)|number_format(2, '.', "'")   }}</td>
-            <td>{{ offerPosition.rate_unit.billing_unit }}</td>
-            <td>{{ offerPosition.amount + 0 }}</td>
-            <td class="text-align-right">{{ offerPosition.vat * 100 }}%</td>
-            <td class="text-align-right">{{ (offerPosition.calculatedTotal() / 100)|number_format(2, '.', "'") }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr class="bold-cells">
-        <td colspan="5" class="text-align-right">Subtotal</td>
-        <td class="text-align-right">{{ (breakdown.subtotal / 100) |number_format(2, '.', "'") }} </td>
-    </tr>
-    </tfoot>
-</table>
+{{ 
+    tableGen(
+        {
+            "table": {
+                "class": "table"
+            },
+            "tfoot-tr": {
+                "class": "bold-cells"
+            }
+        },
+        {
+            "Bezeichnung": {"attr": { "class": "first-row" }},
+            "Ansatz CHF": {"attr": { "class": "second-row text-align-right" }},
+            "Einheit": {"attr": { "class": "third-row" }},
+            "Anzahl": {"attr": { "class": "fourth-row" }},
+            "MwSt. Satz": {"attr": { "class": "fifth-row text-align-right" }},
+            "Teilbetrag CHF exkl. MwSt.": {"attr": { "class": "sixth-row text-align-right" }}
+        },
+        breakdown.positions,
+        {
+            "service.name": {},
+            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "chf"},
+            "rate_unit.billing_unit": {},
+            "amount": {},
+            "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
+            "calculatedTotal()": {"attr": {"class": "text-align-right" }, "format": "chf"}
+        },
+        [
+            {
+                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            }
+        ]
+    )
+}}
 
-<table class="table" style="margin-top: 30px;">
-    <thead>
-    <tr>
-        <td colspan="5" class="text-align-right">Abzug</td>
-        <th class="sixth-row text-align-right">Betrag CHF</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for offerDiscount in breakdown.discounts %}
-        <tr>
-            <td colspan="5" class="text-align-right">{{ offerDiscount.name }}</td>
-            <td class="text-align-right">{{ (offerDiscount.value / 100) | number_format(2, '.', "'") }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="5" class="text-align-right">Abzüge Total</td>
-        <td class="text-align-right">{{ (breakdown.discountTotal / 100) | number_format(2, '.', "'") }}</td>
-    </tr>
-    <tr class="bold-cells">
-        <td colspan="5" class="text-align-right">Subtotal</td>
-        <td class="text-align-right">{{ (breakdown.rawTotal / 100) | number_format(2, '.', "'") }}</td>
-    </tr>
-    </tfoot>
-</table>
+{{ 
+    tableGen(
+        {
+            "table": {
+                "class": "table",
+                "style": "margin-top: 30px;"
+            },
+            "tfoot-tr-1": {
+                "class": "bold-cells"
+            }
+        },
+        {
+            "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
+            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+        },
+        breakdown.discounts,
+        {
+            "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
+            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+        },
+        [
+            {
+                "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            },
+            {
+                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            }
+        ]
+    )
+}}
 
-<table class="table" style="margin-top: 30px;">
-    <thead>
-    <tr>
-        <td colspan="5" class="text-align-right">MwSt. Satz</td>
-        <th class="sixth-row text-align-right">Betrag CHF</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for vat in breakdown.vats %}
-        <tr>
-            <td colspan="5" class="text-align-right">{{ vat.vat * 100 }}</td>
-            <td class="text-align-right">{{ (vat.value / 100) | number_format(2, '.', "'") }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="5" class="text-align-right">Mehrwertsteuer Total</td>
-        <td class="text-align-right">{{ (breakdown.vatTotal / 100) | number_format(2, '.', "'") }}</td>
-    </tr>
-    <tr class="bold-cells">
-        <td colspan="5" class="text-align-right">Total</td>
-        <td class="text-align-right">{{ (breakdown.total / 100) | number_format(2, '.', "'") }}</td>
-    </tr>
-    </tfoot>
-</table>
+{{ 
+    tableGen(
+        {
+            "table": {
+                "class": "table",
+                "style": "margin-top: 30px;"
+            },
+            "tfoot-tr-1": {
+                "class": "bold-cells"
+            }
+        },
+        {
+            "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
+            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+        },
+        breakdown.vats,
+        {
+            "vat": {"attr": {"colspan": "5", "class": "text-align-right"}, "format": "percent"},
+            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+        },
+        [
+            {
+                "Mehrwertsteuer Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            },
+            {
+                "Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
+            }
+        ]
+    )
+}}
 
 <div>
     <p class="bold">Bitte unterschrieben retournieren bis {{ "now" | date_modify("+30 days") | date("d.m.Y") }}.</p>
