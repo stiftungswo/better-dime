@@ -85,7 +85,8 @@ class RateUnitControllerTest extends \TestCase
             'billing_unit' => 'CHF / h',
             'effort_unit' => 'h',
             'factor' => 2,
-            'is_time' => true
+            'is_time' => true,
+            'name' => "Huba Banana"
         ];
     }
 }

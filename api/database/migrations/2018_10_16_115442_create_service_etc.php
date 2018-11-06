@@ -36,6 +36,7 @@ class CreateServiceEtc extends Migration
             $table->string('effort_unit');
             $table->double('factor')->default(1);
             $table->boolean('is_time');
+            $table->string('name');
             $table->boolean('archived')->default(false); //TODO extract trait?
             $table->timestamps();
             $table->softDeletes();
