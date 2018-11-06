@@ -31,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
                 throw new \Exception('Needed config variable ' . $config . ' is not set! Check your .env in the application root');
             }
         }
+
+        if (!is_dir(base_path('storage/fonts'))) {
+            mkdir(base_path('storage/fonts'));
+        }
     }
 }
