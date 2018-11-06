@@ -71,6 +71,12 @@ class DatabaseSeeder extends Seeder
             $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
         });
 
+        print("Attaching some people to a company ...\n");
+        $people->slice(ceil(count($people) / 2))->each(function ($p) use($companies) {
+            $p->company()->associate($companies->random());
+            $p->save();
+        });
+
         print("Fetching entites for later seeding steps ...\n");
         $addresses = \App\Models\Customer\Address::all();
         $rateGroups = \App\Models\Service\RateGroup::all();
