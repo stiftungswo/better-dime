@@ -21,16 +21,19 @@ $router->get('/', function () use ($router) {
 $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($router) {
     $router->group(['namespace' => 'v1', 'prefix' => 'v1'], function () use ($router) {
         $router->post('employees/login', 'AuthController@authenticate');
+        $router->get('offers/{id}/print', ['uses' => 'OfferController@print']);
 
         $router->group(['middleware' => 'auth'], function () use ($router) {
 
-            $router->group(['prefix' => 'companies'], function () use ($router) {
-                $router->get('/', ['uses' => 'CompanyController@index']);
-                $router->post('/', ['uses' => 'CompanyController@post']);
-                $router->get('/{id}', ['uses' => 'CompanyController@get']);
-                $router->put('/{id}', ['uses' => 'CompanyController@put']);
-                $router->delete('/{id}', ['uses' => 'CompanyController@delete']);
-            });
+            $router->group(
+                ['prefix' => 'companies'], function () use ($router) {
+                    $router->get('/', ['uses' => 'CompanyController@index']);
+                    $router->post('/', ['uses' => 'CompanyController@post']);
+                    $router->get('/{id}', ['uses' => 'CompanyController@get']);
+                    $router->put('/{id}', ['uses' => 'CompanyController@put']);
+                    $router->delete('/{id}', ['uses' => 'CompanyController@delete']);
+                }
+            );
 
             $router->group(['prefix' => 'customer_tags'], function () use ($router) {
                 $router->get('/', ['uses' => 'CustomerTagController@index']);
@@ -72,7 +75,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/{id}', ['uses' => 'OfferController@get']);
                 $router->put('/{id}', ['uses' => 'OfferController@put']);
                 $router->delete('/{id}', ['uses' => 'OfferController@delete']);
-                $router->get('/{id}/print', ['uses' => 'OfferController@print']);
+                // $router->get('/{id}/print', ['uses' => 'OfferController@print']);
                 $router->post('/{id}/create_project', ['uses' => 'OfferController@createProject']);
             });
 

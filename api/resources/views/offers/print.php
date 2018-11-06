@@ -24,12 +24,12 @@ if ( isset($pdf) ) {
 
 <div class="clear-float">
     <div class="float-left">
-        <p><? env('SENDER_NAME') ?><br>
-            <? env('SENDER_STREET') ?><br>
-            <? env('SENDER_PLZ') ?> <? env('SENDER_CITY') ?><br>
-            Telefon: <? env('SENDER_PHONE') ?><br>
-            Mail: <? env('SENDER_MAIL') ?><br>
-            <? env('SENDER_WEB') ?></p>
+        <p><?= env('SENDER_NAME', 'Test') ?><br>
+            <?= env('SENDER_STREET') ?><br>
+            <?= env('SENDER_PLZ') ?> <? env('SENDER_CITY') ?><br>
+            Telefon: <?= env('SENDER_PHONE') ?><br>
+            Mail: <?= env('SENDER_MAIL') ?><br>
+            <?= env('SENDER_WEB') ?></p>
     </div>
 
     <div class="float-right">

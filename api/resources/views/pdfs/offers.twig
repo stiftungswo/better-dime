@@ -1,0 +1,135 @@
+{% extends 'pdfs/static/base' %}
+
+{% block content %}
+<div class="header clear-float">
+    <div>
+        {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+    </div>
+
+    <div>
+        Sachbearbeiter: {{ offer.accountant.first_name ~ ' ' ~ offer.accountant.last_name }}
+    </div>
+
+    <div class="offer-title">
+        <b>Offerte:<br>{{ offer.name }}</b>
+    </div>
+
+    <div style="padding-top: -10px;">
+        <p>Leistungsangebot Nr. {{ offer.id }}
+        {% if offer.project %}<br>Projekt Nr. {{ offer.project.id }}{% endif %}
+        </p>
+    </div>
+
+    <div class="bold">
+        {% if offer.short_description %}{{ offer.short_description }}{% endif %}
+    </div>
+
+    <div class="offer_description">
+        {{ description | raw }}
+    </div>
+</div>
+
+<div class="force-page-break"></div>
+<b style="font-size: 16px;">Kostenübersicht</b>
+<table class="table">
+    <thead>
+    <tr>
+        <th class="first-row">Bezeichnung</th>
+        <th class="second-row text-align-right">Ansatz CHF</th>
+        <th class="third-row">Einheit</th>
+        <th class="fourth-row">Anzahl</th>
+        <th class="fifth-row text-align-right">MwSt. Satz</th>
+        <th class="sixth-row text-align-right">Teilbetrag CHF exkl. MwSt.</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for offerPosition in breakdown.positions %}
+        <tr>
+            <td>{{ offerPosition.service.name }}</td>
+            <td class="text-align-right">{{ (offerPosition.price_per_rate / 100)|number_format(2, '.', "'")   }}</td>
+            <td>{{ offerPosition.rate_unit.billing_unit }}</td>
+            <td>{{ offerPosition.amount + 0 }}</td>
+            <td class="text-align-right">{{ offerPosition.vat * 100 }}%</td>
+            <td class="text-align-right">{{ (offerPosition.calculatedTotal() / 100)|number_format(2, '.', "'") }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr class="bold-cells">
+        <td colspan="5" class="text-align-right">Subtotal</td>
+        <td class="text-align-right">{{ (breakdown.subtotal / 100) |number_format(2, '.', "'") }} </td>
+    </tr>
+    </tfoot>
+</table>
+
+<table class="table" style="margin-top: 30px;">
+    <thead>
+    <tr>
+        <td colspan="5" class="text-align-right">Abzug</td>
+        <th class="sixth-row text-align-right">Betrag CHF</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for offerDiscount in breakdown.discounts %}
+        <tr>
+            <td colspan="5" class="text-align-right">{{ offerDiscount.name }}</td>
+            <td class="text-align-right">{{ (offerDiscount.value / 100) | number_format(2, '.', "'") }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5" class="text-align-right">Abzüge Total</td>
+        <td class="text-align-right">{{ (breakdown.discountTotal / 100) | number_format(2, '.', "'") }}</td>
+    </tr>
+    <tr class="bold-cells">
+        <td colspan="5" class="text-align-right">Subtotal</td>
+        <td class="text-align-right">{{ (breakdown.rawTotal / 100) | number_format(2, '.', "'") }}</td>
+    </tr>
+    </tfoot>
+</table>
+
+<table class="table" style="margin-top: 30px;">
+    <thead>
+    <tr>
+        <td colspan="5" class="text-align-right">MwSt. Satz</td>
+        <th class="sixth-row text-align-right">Betrag CHF</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for vat in breakdown.vats %}
+        <tr>
+            <td colspan="5" class="text-align-right">{{ vat.vat * 100 }}</td>
+            <td class="text-align-right">{{ (vat.value / 100) | number_format(2, '.', "'") }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5" class="text-align-right">Mehrwertsteuer Total</td>
+        <td class="text-align-right">{{ (breakdown.vatTotal / 100) | number_format(2, '.', "'") }}</td>
+    </tr>
+    <tr class="bold-cells">
+        <td colspan="5" class="text-align-right">Total</td>
+        <td class="text-align-right">{{ (breakdown.total / 100) | number_format(2, '.', "'") }}</td>
+    </tr>
+    </tfoot>
+</table>
+
+<div>
+    <p class="bold">Bitte unterschrieben retournieren bis {{ "now" | date_modify("+30 days") | date("d.m.Y") }}.</p>
+
+    <div class="clear-float signing-area">
+        <div class="signature">
+            <div class="bold">Unterschrift des Auftragsnehmers:</div>
+            <div class="date_location">Ort / Datum:</div>
+            <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }}</div
+        </div>
+        <div class="signature">
+            <div class="bold">Unterschrift des Auftraggebers:</div>
+            <div class="date_location">Ort / Datum:</div>
+            <div class="dateline" style="border-bottom: 1px dotted black;"><p></p></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

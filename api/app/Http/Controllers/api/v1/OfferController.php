@@ -100,14 +100,32 @@ class OfferController extends BaseController
         $description = GroupMarkdownToDiv::group($parsedown->text($offer->description));
 
         // initialize DomPDF, render view and pass it back
-        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
-        $pdf->loadView('offers.print', [
-            'offer' => $offer,
-            'customer' => $offer->address->customer,
-            'breakdown' => CostBreakdown::calculate($offer),
-            'basePath' => $app->basepath(),
-            'description' => $description])->setPaper('a4', 'portrait');
-        return $pdf->stream();
+
+        // $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        // $pdf->loadView(
+        //     'offers.print',
+        //     [
+        //         'offer' => $offer,
+        //         'customer' => $offer->address->customer,
+        //         'breakdown' => CostBreakdown::calculate($offer),
+        //         'basePath' => $app->basepath(),
+        //         'description' => $description
+        //     ]
+        // )->setPaper('a4', 'portrait');
+        // return $pdf->stream();
+
+        $pdf = new PDFController(
+            'offers',
+            [
+                'offer' => $offer,
+                'customer' => $offer->address->customer,
+                'breakdown' => CostBreakdown::calculate($offer),
+                'basePath' => $app->basepath(),
+                'description' => $description
+            ]
+        );
+
+        return $pdf->print();
     }
 
     public function createProject($id)
