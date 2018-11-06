@@ -140,6 +140,9 @@
             }
         </style>
     {% endblock %}
+    {% block title %}
+        <title>{{  env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}</title>
+    {% endblock %}
 </head>
 <body>
     {% block header %}
@@ -155,7 +158,7 @@
             </div>
 
             <div class="float-right">
-                <img class="logo" src="{{ base.path }}/resources/views/offers/swo_logo_big.png">
+                <img class="logo" src="{{ base.path }}/resources/views/pdfs/static/swo_logo_big.png">
             </div>
         </div>
     {% endblock %}
@@ -163,12 +166,7 @@
     {% block customer %}
         <div class="clear-float">
             <div class="recipient-address float-right">
-                {{ customer.salutation }}<br>
-                {{ customer.first_name }} {{ customer.last_name }}<br>
-                {{ offer.address.street }}<br>
-                {% if offer.address.supplement %}{{ offer.address.supplement }}{% endif %}
-                {{ offer.address.postcode }} {{ offer.address.city }}<br>
-                {% if offer.address.country %}{{ offer.address.country }}{% endif %}
+                {{ offer.address.dropdown_label | replace({',': "<br>"}) | raw }}
             </div>
         </div>
     {% endblock %}

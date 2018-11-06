@@ -179,7 +179,13 @@ return [
             'head',
             'last',
             'mix',
-            'env'
+            'env',
+            'tableGen' => [
+                'callback' => 'App\Services\TableGenerator::generate',
+                'is_safe'  => [
+                    'html'
+                ]
+            ]
         ],
 
         /*
