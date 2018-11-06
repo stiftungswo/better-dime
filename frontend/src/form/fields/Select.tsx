@@ -187,14 +187,15 @@ class IntegrationReactSelect extends React.Component<any> {
     };
 
     return (
-      <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} fullWidth={true}>
+      <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} fullWidth>
         <Select
+          menuPortalTarget={document.body}
           classes={classes}
           styles={selectStyles}
           components={components}
           value={this.value}
           onChange={this.handleChange}
-          label={myLabel}
+          textFieldProps={myLabel}
           {...rest}
         />
       </ValidatedFormGroupWithLabel>

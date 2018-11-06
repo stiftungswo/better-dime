@@ -36,7 +36,15 @@ export const SwitchField = ({ label, field }: FormProps) => (
   <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
 );
 
-export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined }: InputFieldProps) => (
+export const InputFieldWithValidation = ({
+  label,
+  field,
+  form,
+  fullWidth = false,
+  type = 'text',
+  unit = undefined,
+  ...rest
+}: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
     <Input
       id={field.name}
@@ -45,6 +53,7 @@ export const InputFieldWithValidation = ({ label, field, form, fullWidth = false
       fullWidth={fullWidth}
       endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
       {...field}
+      {...rest}
     />
   </ValidatedFormGroupWithLabel>
 );
@@ -68,6 +77,29 @@ export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = fa
   <InputFieldWithValidation type={'password'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
 );
 
-export const TextFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
-  <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
+export const TextFieldWithValidation = ({
+  label,
+  field,
+  form,
+  fullWidth = false,
+  children,
+  ...rest
+}: FormProps & { children: ReactNode; multiline: boolean }) => (
+  <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} {...rest} />
 );
+
+export const TodoField = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined }: InputFieldProps) => {
+  console.warn('TodoField used! Implement a custom field type for this.');
+  return (
+    <ValidatedFormGroupWithLabel label={`[TODO] ${label || ''}`} field={field} form={form} fullWidth={fullWidth}>
+      <Input
+        id={field.name}
+        name={field.name}
+        type={type}
+        fullWidth={fullWidth}
+        endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
+        {...field}
+      />
+    </ValidatedFormGroupWithLabel>
+  );
+};

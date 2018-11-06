@@ -148,20 +148,28 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
     },
   });
 
-interface DimeContentProps extends WithStyles<typeof styles> {
-  children?: React.ReactNode;
-  loading?: boolean;
-}
-
 export const LoadingSpinner = compose(withStyles(styles(DimeTheme)))(({ classes }: any) => (
   <CircularProgress className={classes.progress} />
 ));
 
-export const DimeContent = compose(withStyles(styles(DimeTheme)))(({ classes, children, loading }: DimeContentProps) => (
-  <main className={classes.content}>
-    <div className={classes.appBarSpacer} />
-    <Paper className={classes.mainContent}>{loading ? <LoadingSpinner /> : children}</Paper>
-  </main>
+interface DimeContentProps extends WithStyles<typeof styles> {
+  children?: React.ReactNode;
+  loading?: boolean;
+  paper?: boolean;
+}
+
+export const DimeContent = compose(withStyles(styles(DimeTheme)))(({ classes, children, loading, paper = true }: DimeContentProps) => {
+  const content = loading ? <LoadingSpinner /> : children;
+  return (
+    <main className={classes.content}>
+      <div className={classes.appBarSpacer} />
+      {paper ? <Paper className={classes.mainContent}>{content}</Paper> : content}
+    </main>
+  );
+});
+
+export const DimePaper = compose(withStyles(styles(DimeTheme)))(({ children, classes }: any) => (
+  <Paper className={classes.mainContent}>{children}</Paper>
 ));
 
 interface Props extends WithStyles<typeof styles> {

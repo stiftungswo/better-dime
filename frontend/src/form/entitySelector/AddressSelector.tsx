@@ -1,28 +1,28 @@
 import * as React from 'react';
-import { EmployeeStore } from '../../stores/employeeStore';
+import { AddressStore } from '../../stores/addressStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
 
 interface Props extends FormProps {
-  employeeStore?: EmployeeStore;
+  addressStore?: AddressStore;
 }
 
 @compose(
-  inject('employeeStore'),
+  inject('addressStore'),
   observer
 )
-export class EmployeeSelector extends React.Component<Props> {
+export class AddressSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.employeeStore!.fetchAll();
+    props.addressStore!.fetchAll();
   }
 
   public get options() {
-    return this.props.employeeStore!.employees.map(e => ({
+    return this.props.addressStore!.entities.map(e => ({
       value: e.id,
-      label: `${e.first_name} ${e.last_name}`,
+      label: e.dropdown_label,
     }));
   }
 

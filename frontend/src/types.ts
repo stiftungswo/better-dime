@@ -1,27 +1,45 @@
 // tslint:disable
-import { Service } from './views/services/types';
 
 export interface Offer {
-  id: number;
-  user: Employee;
-  createdAt: string;
-  updatedAt: string;
-  subtotal: string;
-  totalVAT: string;
-  totalDiscounts: string;
-  total: string;
-  offerPositions: OfferPosition[];
-  name: string;
-  project: Project;
-  status: Status;
-  rateGroup: CustomerRateGroup;
-  customer: Customer;
-  accountant: Employee;
-  shortDescription: string;
+  id?: number;
+  accountant_id: number;
+  address_id: number;
   description: string;
-  offerDiscounts: any[];
-  tags: any[];
-  address: Address;
+  fixed_price: number | null;
+  name: string;
+  rate_group_id: number;
+  short_description: string;
+  status: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  discounts: OfferDiscount[];
+  positions: OfferPosition[];
+}
+
+export interface OfferDiscount {
+  id: number;
+  name: string;
+  offer_id: number;
+  percentage: boolean;
+  value: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OfferPosition {
+  id: number;
+  amount: number;
+  offer_id: number;
+  order: number;
+  price_per_rate: number;
+  rate_unit_id: number;
+  service_id: number;
+  vat: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Employee {
@@ -81,24 +99,6 @@ export interface CustomerRateGroup {
 
 export enum RateGroupName {
   Kanton = 'Kanton',
-}
-
-export interface OfferPosition {
-  id: number;
-  user: User;
-  createdAt: string;
-  updatedAt: string;
-  serviceRate: ServiceRate;
-  calculatedRateValue: string;
-  total: string;
-  calculatedVAT: string;
-  service: Service;
-  order: number;
-  amount: number;
-  rateValue: string;
-  rateUnit: RateUnit;
-  rateUnitType: RateUnitType;
-  vat: number;
 }
 
 export enum RateUnit {

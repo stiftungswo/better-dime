@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { EmployeeStore } from '../../stores/employeeStore';
+import React from 'react';
+import { RateGroupStore } from '../../stores/rateGroupStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
 import Select from '../fields/Select';
+import compose from '../../utilities/compose';
 
 interface Props extends FormProps {
-  employeeStore?: EmployeeStore;
+  rateGroupStore?: RateGroupStore;
 }
 
 @compose(
-  inject('employeeStore'),
+  inject('rateGroupStore'),
   observer
 )
-export class EmployeeSelector extends React.Component<Props> {
+export class RateGroupSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.employeeStore!.fetchAll();
+    props.rateGroupStore!.fetchAll();
   }
 
   public get options() {
-    return this.props.employeeStore!.employees.map(e => ({
+    return this.props.rateGroupStore!.rateGroups.map(e => ({
       value: e.id,
-      label: `${e.first_name} ${e.last_name}`,
+      label: e.name,
     }));
   }
 

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ServiceStore } from '../../stores/serviceStore';
-import { FormProps, ValidatedFormGroupWithLabel } from '../fields/common';
+import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
+import Select from '../fields/Select';
 
 interface Props extends FormProps {
   serviceStore?: ServiceStore;
@@ -18,18 +19,14 @@ export class ServiceSelector extends React.Component<Props> {
     props.serviceStore!.fetchAll();
   }
 
+  public get options() {
+    return this.props.serviceStore!.entities.map(e => ({
+      value: e.id,
+      label: e.name,
+    }));
+  }
+
   public render() {
-    //TODO use new custom Select component
-    return (
-      <ValidatedFormGroupWithLabel label={this.props.label} field={this.props.field} form={this.props.form} fullWidth={false}>
-        <select {...this.props.field}>
-          {this.props.serviceStore!.services.map(e => (
-            <option key={e.id} value={e.id}>
-              {e.name}
-            </option>
-          ))}
-        </select>
-      </ValidatedFormGroupWithLabel>
-    );
+    return <Select options={this.options} field={this.props.field} form={this.props.form} label={this.props.label} />;
   }
 }

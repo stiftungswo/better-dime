@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import OfferOverview from './views/offers/OfferOverview';
-import { Route, Switch } from 'react-router-dom';
-import OfferDetailView from './views/offers/OfferDetailView';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Login from './views/Login';
 import DimeLayout from './layout/DimeLayout';
 import EmployeeOverview from './views/employees/EmployeeOverview';
@@ -13,6 +12,8 @@ import HolidayOverview from './views/holidays/HolidayOverview';
 import ServiceOverview from './views/services/ServiceOverview';
 import ServiceUpdate from './views/services/ServiceUpdate';
 import ServiceCreate from './views/services/ServiceCreate';
+import OfferCreate from './views/offers/OfferCreate';
+import OfferUpdate from './views/offers/OfferUpdate';
 
 class App extends React.Component {
   public render() {
@@ -21,8 +22,12 @@ class App extends React.Component {
         <Route exact path="/login" component={Login} />
         <DimeLayout>
           <Switch>
-            <ProtectedRoute exact path="/" component={OfferOverview} />
-            <ProtectedRoute exact path="/offer/:id" component={OfferDetailView} />
+            <Route exact path="/">
+              <Redirect to={'/offers'} />
+            </Route>
+            <ProtectedRoute exact path="/offers" component={OfferOverview} />
+            <ProtectedRoute exact path="/offers/new" component={OfferCreate} />
+            <ProtectedRoute exact path="/offers/:id" component={OfferUpdate} />
             <ProtectedRoute exact path="/employees" component={EmployeeOverview} />
             <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />

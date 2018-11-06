@@ -64,7 +64,7 @@ export default class ServiceForm extends React.Component<Props> {
         loading={!hasContent(service) || this.props.loading}
         title={this.props.title}
         validationSchema={schema}
-        initialValues={{ ...service, password: '', password_repeat: '' }}
+        initialValues={service}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         render={(

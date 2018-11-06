@@ -30,7 +30,7 @@ export default class EmployeeUpdate extends React.Component<Props> {
 
   public render() {
     const employee: Employee | undefined = this.props!.employeeStore!.employee;
-    const title = employee ? `Mitarbeiter "${employee.first_name} ${employee.last_name}"` : 'Mitarbeiter bearbeiten';
+    const title = employee ? `${employee.first_name} ${employee.last_name} - Mitarbeiter` : 'Mitarbeiter bearbeiten';
 
     return <EmployeeForm title={title} onSubmit={this.handleSubmit} employee={employee} />;
   }

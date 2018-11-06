@@ -127,6 +127,8 @@ export class MainStore {
     }
   };
 
+  public formatCurrency = (amount: number) => (amount / 100).toFixed(2) + ' CHF';
+
   public displayInfo(message: string, options: OptionsObject = {}) {
     this.enqueueSnackbar(message, { variant: 'info', ...options });
   }

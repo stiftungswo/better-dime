@@ -17,7 +17,7 @@ export interface Props extends RouteComponentProps<ServiceDetailRouterProps>, In
 }
 
 @compose(
-  inject('serviceStore'),
+  inject('offerStore'),
   observer
 )
 export default class ServiceUpdate extends React.Component<Props> {
@@ -32,7 +32,7 @@ export default class ServiceUpdate extends React.Component<Props> {
 
   public render() {
     const service: Service | undefined = this.props.serviceStore!.service;
-    const title = service ? `Service "${service.name}"` : 'Service bearbeiten';
+    const title = service ? `${service.name} - Services` : 'Service bearbeiten';
 
     return <ServiceForm title={title} onSubmit={this.handleSubmit} service={service} />;
   }

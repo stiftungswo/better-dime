@@ -11,6 +11,7 @@ export interface FormViewProps<T> {
   onSubmit: (values: any) => Promise<any>;
   submitted?: boolean;
   loading?: boolean;
+  paper?: boolean;
 }
 
 interface Props<T> extends FormViewProps<T> {
@@ -46,7 +47,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
             <DimeAppBar title={this.props.title}>
               <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={props.handleSubmit} disabled={props.isSubmitting} />
             </DimeAppBar>
-            <DimeContent>{this.props.render(props as any)}</DimeContent>
+            <DimeContent paper={this.props.paper}>{this.props.render(props as any)}</DimeContent>
           </Fragment>
         )}
       />
