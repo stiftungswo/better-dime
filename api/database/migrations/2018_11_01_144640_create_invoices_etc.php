@@ -28,7 +28,7 @@ class CreateInvoicesEtc extends Migration
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
             $table->text('description');
             $table->date('end');
-            $table->integer('fixed_price');
+            $table->integer('fixed_price')->nullable();
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('set null');
             $table->string('name');
@@ -50,7 +50,7 @@ class CreateInvoicesEtc extends Migration
             $table->string('description');
             $table->unsignedInteger('invoice_id')->nullable();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->integer('price_per_rate');
             $table->unsignedInteger('project_position_id')->nullable();
             $table->foreign('project_position_id')->references('id')->on('project_positions')->onDelete('restrict');
@@ -66,7 +66,7 @@ class CreateInvoicesEtc extends Migration
             $table->unsignedInteger('invoice_id')->nullable();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->string('name');
-            $table->boolean('percentage');
+            $table->boolean('percentage')->default(false);
             $table->decimal('value', 10, 3);
             $table->softDeletes();
             $table->timestamps();

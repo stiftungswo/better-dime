@@ -47,6 +47,11 @@ class Project extends Model
         return $this->hasMany(ProjectComment::class);
     }
 
+    public function efforts()
+    {
+        return $this->hasManyThrough(ProjectEffort::class, ProjectPosition::class, 'project_id', 'position_id');
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class);

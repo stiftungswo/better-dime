@@ -112,7 +112,7 @@ class CreateProjectFromOfferTest extends \TestCase
     private function setupAndCatchException($offer, $a)
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cant create project from offer because property ' . $a . ' is null.');
+        $this->expectExceptionMessage('Cant create new entity because property ' . $a . ' is null.');
         $creator = new CreateProjectFromOffer($offer);
         $creator->create();
     }

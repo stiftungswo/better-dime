@@ -51,7 +51,7 @@ class CreateOffersEtc extends Migration
             $table->string('name');
             $table->unsignedInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
-            $table->boolean('percentage');
+            $table->boolean('percentage')->default(false);
             $table->decimal('value', 10, 3);
             $table->softDeletes();
             $table->timestamps();

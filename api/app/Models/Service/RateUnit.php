@@ -14,7 +14,7 @@ class RateUnit extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'billing_unit', 'factor', 'archived', 'effort_unit', 'is_time'
+        'billing_unit', 'factor', 'archived', 'effort_unit', 'is_time', 'name'
     ];
 
     protected $casts = [
