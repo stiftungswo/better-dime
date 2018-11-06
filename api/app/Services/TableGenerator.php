@@ -238,6 +238,10 @@ class TableGenerator
 
     private static function loadContent($object, $path)
     {
+        if (is_null($object)) {
+            return "";
+        }
+        
         $splits = explode('.', $path);
 
         if (count($splits) > 1) {
@@ -258,7 +262,7 @@ class TableGenerator
         } elseif (is_array($object)) {
             return $object[$path];
         } else {
-            throw Exception("Neither object nor array, not traversavble");
+            throw new \Exception("Neither object nor array, not traversavble");
         }
     }
 
