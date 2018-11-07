@@ -24,17 +24,35 @@ export const ValidatedFormGroupWithLabel = ({ label, field, form: { touched, err
   );
 };
 
-export const FieldWithValidation = ({ label, field, type = 'text', form, fullWidth = false }: FormProps & { type: string }) => {
-  return (
-    <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
-      <input {...field} type={type} />
-    </ValidatedFormGroupWithLabel>
-  );
-};
-
 export const SwitchField = ({ label, field }: FormProps) => (
   <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
 );
+
+/**
+ * This component tries to improve Formik performance by delaying the onChange call until the input field is blurred.
+ * Formik's <FastField> is supposed to do this already, but it didn't seem to work. This _might_ introduce some issues
+ * like the value of the last input of the form not being synced back into formik before hitting enter.
+ */
+class DelayedInput extends React.Component<any> {
+  state = {
+    value: '',
+  };
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      value: props.value,
+    };
+  }
+
+  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: e.target.value });
+
+  public handleBlur = this.props.onChange;
+
+  public render = () => {
+    return <Input {...this.props} value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} />;
+  };
+}
 
 export const InputFieldWithValidation = ({
   label,
@@ -46,7 +64,7 @@ export const InputFieldWithValidation = ({
   ...rest
 }: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
-    <Input
+    <DelayedInput
       id={field.name}
       name={field.name}
       type={type}
