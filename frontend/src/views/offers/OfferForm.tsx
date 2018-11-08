@@ -2,25 +2,21 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
-import { Field, FieldArray, FormikProps } from 'formik';
-import { NumberFieldWithValidation, SwitchField, TextFieldWithValidation, TodoField } from '../../form/fields/common';
+import { Field, FormikProps } from 'formik';
+import { NumberFieldWithValidation, TextFieldWithValidation } from '../../form/fields/common';
 import Grid, { GridSize } from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Offer, OfferPosition } from '../../types';
+import { Offer } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import OfferPositionSubform from './OfferPositionSubform';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
+import OfferDiscountSubform from './OfferDiscountSubform';
 
 //TODO extract these
 export const FormHeader = ({ children }: any) => (
@@ -138,40 +134,7 @@ export default class OfferForm extends React.Component<Props> {
               <Grid container={true}>
                 <Grid item={true} xs={12} lg={6}>
                   <DimePaper>
-                    <FormHeader>Abzüge</FormHeader>
-                    <FieldArray
-                      name="discounts"
-                      render={arrayHelpers => (
-                        <Table>
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Name</TableCell>
-                              <TableCell>Prozent</TableCell>
-                              <TableCell>Abzug</TableCell>
-                              <TableCell>Aktionen</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {props.values.discounts.map((p: OfferPosition, index: number) => {
-                              return (
-                                <TableRow key={index}>
-                                  <TableCell>
-                                    <Field component={TextFieldWithValidation} name={`discounts.${index}.name`} />
-                                  </TableCell>
-                                  <TableCell>
-                                    <Field component={SwitchField} name={`discounts.${index}.percentage`} />
-                                  </TableCell>
-                                  <TableCell>
-                                    <Field component={TodoField} name={`discounts.${index}.value`} />
-                                  </TableCell>
-                                  <TableCell>...</TableCell>
-                                </TableRow>
-                              );
-                            })}
-                          </TableBody>
-                        </Table>
-                      )}
-                    />
+                    <OfferDiscountSubform formikProps={props} name={'discounts'} />
                   </DimePaper>
                 </Grid>
                 <Grid item={true} xs={12} lg={6}>
