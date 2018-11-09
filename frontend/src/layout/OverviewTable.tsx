@@ -7,6 +7,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { Column } from './Overview';
+import { observer } from 'mobx-react';
 
 function desc(a: any, b: any, orderBy: string): number {
   if (b[orderBy] < a[orderBy]) {
@@ -44,8 +45,9 @@ interface TableProps<T> {
   columns: Array<Column<T>>;
   renderActions?: (e: T) => React.ReactNode;
   data: Array<T>;
-  onClickRow?: (e: T) => void;
+  onClickRow?: (e: T, index: number) => void;
   searchFilter?: (e: T) => boolean;
+  noSort?: boolean;
 }
 
 interface TableState {
@@ -55,6 +57,7 @@ interface TableState {
 
 type Direction = 'asc' | 'desc';
 
+@observer
 export class OverviewTable<T> extends React.Component<TableProps<T>, TableState> {
   constructor(props: TableProps<T>) {
     super(props);
@@ -79,9 +82,9 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
     this.handleRequestSort(event, property);
   };
 
-  public handleRowClick = (row: T) => (e: React.MouseEvent<HTMLElement>) => {
+  public handleRowClick = (row: T, index: number) => (e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onClickRow) {
-      this.props.onClickRow(row);
+      this.props.onClickRow(row, index);
     }
   };
 
@@ -94,8 +97,9 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
   };
 
   public render() {
-    const { columns, data } = this.props;
+    const { columns, data, noSort } = this.props;
     const { order, orderBy } = this.state;
+    const sortedData = noSort ? data : stableSort(this.filterSearch(data), getSorting(order, orderBy));
     return (
       <Table>
         <TableHead>
@@ -111,8 +115,8 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
           </TableRow>
         </TableHead>
         <TableBody>
-          {stableSort(this.filterSearch(data), getSorting(order, orderBy)).map((row, index) => (
-            <TableRow hover key={index} onClick={this.handleRowClick(row)} component={SafeClickableTableRow}>
+          {sortedData.map((row, index) => (
+            <TableRow hover key={index} onClick={this.handleRowClick(row, index)} component={SafeClickableTableRow}>
               {columns.map(col => (
                 <TableCell key={col.id} numeric={col.numeric}>
                   {format(col, row)}

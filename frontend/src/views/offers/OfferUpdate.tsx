@@ -6,6 +6,7 @@ import OfferForm from './OfferForm';
 import compose from '../../utilities/compose';
 import { OfferStore } from '../../stores/offerStore';
 import { Offer } from '../../types';
+import { toJS } from 'mobx';
 
 interface OfferDetailRouterProps {
   id?: string;
@@ -33,7 +34,8 @@ export default class OfferUpdate extends React.Component<Props> {
     const offer = this.props.offerStore!.offer;
     if (offer) {
       return {
-        ...offer,
+        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+        ...toJS(offer),
         fixed_price: offer.fixed_price || '',
       };
     } else {

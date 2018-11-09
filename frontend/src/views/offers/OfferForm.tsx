@@ -24,7 +24,11 @@ import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 
 //TODO extract these
-export const FormHeader = ({ children }: any) => (
+interface FormHeaderProps {
+  children: React.ReactNode;
+}
+
+export const FormHeader = ({ children }: FormHeaderProps) => (
   <Typography component="h4" variant="h5" align={'left'}>
     {children}
   </Typography>
@@ -59,11 +63,11 @@ interface NavigatorProps extends RouteComponentProps {
 const Navigator = withRouter(({ projects, invoices, id, history }: NavigatorProps) => (
   <Tabs value={0}>
     <Tab label={`Offerte ${id}`} />
-    {projects.map(id => (
-      <Tab key={id} onClick={() => history.push(`/projects/${id}`)} label={`Projekt ${id}`} />
+    {projects.map(pId => (
+      <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Projekt ${pId}`} />
     ))}
-    {invoices.map(id => (
-      <Tab key={id} onClick={() => history.push(`/invoices/${id}`)} label={`Rechnung ${id}`} />
+    {invoices.map(pId => (
+      <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
     ))}
   </Tabs>
 ));

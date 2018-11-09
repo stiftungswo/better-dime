@@ -11,7 +11,7 @@ interface DialogFormProps<T> {
   title: string;
   onSubmit: (values: any) => Promise<any>;
   validationSchema?: any;
-  render: (props: FormikProps<T>) => React.ReactNode;
+  render: (props: FormikProps<T>, id: number) => React.ReactNode;
   loading?: boolean;
   open: boolean;
   onClose: () => void;
@@ -42,14 +42,14 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
       <Formik
         {...this.props as any}
         onSubmit={this.submit}
-        render={props => (
+        render={formikProps => (
           <>
-            <Prompt when={props.dirty} message={() => 'Änderungen verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(props)}>
-              <DialogContent>{this.props.render(props as any)}</DialogContent>
+            <Prompt when={formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
+            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)}>
+              <DialogContent>{this.props.render(formikProps as any)}</DialogContent>
               <DialogActions>
-                <Button onClick={this.handleClose(props)}>Abbruch</Button>
-                <Button onClick={props.submitForm} disabled={props.isSubmitting}>
+                <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
+                <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
                   Speichern
                 </Button>
               </DialogActions>
