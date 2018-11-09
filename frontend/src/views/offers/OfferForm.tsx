@@ -17,6 +17,9 @@ import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
 import OfferDiscountSubform from './OfferDiscountSubform';
+import Tabs from '@material-ui/core/Tabs/Tabs';
+import Tab from '@material-ui/core/Tab/Tab';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 //TODO extract these
 export const FormHeader = ({ children }: any) => (
@@ -29,6 +32,8 @@ interface FormControlProps {
   half?: boolean;
   children: React.ReactNode;
 }
+
+// FIXME i think i'm using way too much grid here. Can this be simplified?
 const FormControl = ({ half = false, children }: FormControlProps) => {
   let lg: GridSize = 12;
   if (half) {
@@ -42,6 +47,24 @@ const FormControl = ({ half = false, children }: FormControlProps) => {
     </Grid>
   );
 };
+
+interface NavigatorProps extends RouteComponentProps {
+  projects: number[];
+  invoices: number[];
+  id?: number;
+}
+
+const Navigator = withRouter(({ projects, invoices, id, history }: NavigatorProps) => (
+  <Tabs value={0}>
+    <Tab label={`Offerte ${id}`} />
+    {projects.map(id => (
+      <Tab key={id} onClick={() => history.push(`/projects/${id}`)} label={`Projekt ${id}`} />
+    ))}
+    {invoices.map(id => (
+      <Tab key={id} onClick={() => history.push(`/invoices/${id}`)} label={`Rechnung ${id}`} />
+    ))}
+  </Tabs>
+));
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -102,6 +125,8 @@ export default class OfferForm extends React.Component<Props> {
         ) => (
           <Fragment>
             <form onSubmit={props.handleSubmit}>
+              {/*TODO add projects/invoices to backend model*/}
+              {offer && <Navigator projects={[]} invoices={[]} id={offer.id} />}
               <DimePaper>
                 <FormControl half>
                   <Field fullWidth component={TextFieldWithValidation} name={'name'} label={'Name'} />
