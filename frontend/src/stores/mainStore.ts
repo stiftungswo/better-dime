@@ -6,7 +6,7 @@ import moment from 'moment';
 
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
-const BASE_URL = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
+const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
 
 const KEY_TOKEN = 'dime_token';
 
@@ -54,7 +54,7 @@ export class MainStore {
     }
 
     this._api = axios.create({
-      baseURL: BASE_URL,
+      baseURL: baseUrl,
     });
     setAuthHeader(this._api, token);
 
