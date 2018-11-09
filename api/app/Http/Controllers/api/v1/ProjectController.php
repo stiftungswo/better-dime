@@ -83,8 +83,6 @@ class ProjectController extends BaseController
             'accountant_id' => 'required|integer',
             'address_id' => 'required|integer',
             'archived' => 'boolean',
-            'budget_price' => 'integer',
-            'budget_time' => 'integer',
             'category_id' => 'required|integer',
             'chargeable' => 'boolean',
             'deadline' => 'date',
@@ -106,7 +104,7 @@ class ProjectController extends BaseController
 
     public function get($id)
     {
-        return Project::with(['positions'])->findOrFail($id);
+        return Project::with(['positions'])->findOrFail($id)->append(['budget_price', 'budget_time', 'current_price', 'current_time']);
     }
 
     public function put($id, Request $request)

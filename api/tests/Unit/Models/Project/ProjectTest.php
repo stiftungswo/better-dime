@@ -58,6 +58,81 @@ class ProjectTest extends \TestCase
         $this->assertEquals($rateGroup, $project->rate_group);
     }
 
+    public function testBudgetPriceWithoutOffer()
+    {
+        $this->assertNull(factory(Project::class)->create()->budget_price);
+    }
+
+    public function testBudgetPriceWithOfferFixedPrice()
+    {
+        $offer = factory(Offer::class)->create([
+            'fixed_price' => 13377337
+        ]);
+        $project = factory(Project::class)->create([
+            'offer_id' => $offer->id
+        ]);
+        $this->assertEquals(13377337, $project->budget_price);
+    }
+
+    public function testBudgetPriceCalculation()
+    {
+        $offer = factory(Offer::class)->create([
+            'fixed_price' => null
+        ]);
+        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
+            'amount' => 1337,
+            'price_per_rate' => 50,
+            'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
+                'factor' => 1,
+                'is_time' => true
+            ])->id,
+        ]));
+        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
+            'amount' => 1337,
+            'price_per_rate' => 50,
+            'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
+                'factor' => 1,
+                'is_time' => false
+            ])->id,
+        ]));
+
+        $project = factory(Project::class)->create([
+            'offer_id' => $offer->id
+        ]);
+
+        $this->assertEquals(50*1337*4, $project->budget_price);
+    }
+
+    public function testBudgetTimeWithoutOffer()
+    {
+        $this->assertNull(factory(Project::class)->create()->budget_time);
+    }
+
+    public function testBudgetTime()
+    {
+        $offer = factory(Offer::class)->create();
+        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
+            'amount' => 1337,
+            'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
+                'factor' => 1,
+                'is_time' => true
+            ])->id,
+        ]));
+        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
+            'amount' => 1337,
+            'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
+                'factor' => 1,
+                'is_time' => false
+            ])->id,
+        ]));
+
+        $project = factory(Project::class)->create([
+            'offer_id' => $offer->id
+        ]);
+
+        $this->assertEquals(2674, $project->budget_time);
+    }
+
     public function testGetCurrentPriceAttribute()
     {
         $project = factory(Project::class)->create();

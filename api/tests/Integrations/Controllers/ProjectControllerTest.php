@@ -50,6 +50,10 @@ class ProjectControllerTest extends \TestCase
         $this->assertArrayHasKey('positions', $decodedResponse);
         $this->assertArrayHasKey('charge', $decodedResponse['positions'][0]);
         $this->assertArrayHasKey('calculated_vat', $decodedResponse['positions'][0]);
+        $this->assertArrayHasKey('budget_price', $decodedResponse);
+        $this->assertArrayHasKey('budget_time', $decodedResponse);
+        $this->assertArrayHasKey('current_price', $decodedResponse);
+        $this->assertArrayHasKey('current_time', $decodedResponse);
     }
 
     public function testInvalidPost()
@@ -197,8 +201,6 @@ class ProjectControllerTest extends \TestCase
             'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
             'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
             'archived' => false,
-            'budget_price' => 5678420,
-            'budget_time' => 3528,
             'category_id' => factory(\App\Models\Project\ProjectCategory::class)->create()->id,
             'chargeable' => true,
             'deadline' => '2019-12-31',

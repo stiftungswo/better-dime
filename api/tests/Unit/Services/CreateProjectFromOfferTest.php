@@ -22,30 +22,6 @@ class CreateProjectFromOfferTest extends \TestCase
         $this->assertEquals(900000, $project->fixed_price);
     }
 
-    public function testShouldCalculateBudgetTime()
-    {
-        $offer = factory(Offer::class)->create(
-            [
-                'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
-                'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
-                'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
-            ]
-        );
-
-        $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
-            'amount' => 1337,
-            'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
-                'factor' => 1,
-                'is_time' => true
-            ])->id,
-            'service_id' => factory(\App\Models\Service\Service::class)->create()->id,
-        ]));
-
-        $creator = new CreateProjectFromOffer($offer);
-        $project = $creator->create();
-        $this->assertEquals(2674, $project->budget_time);
-    }
-
     public function testEmptyAccountant()
     {
         $this->expectOfferError('accountant_id');

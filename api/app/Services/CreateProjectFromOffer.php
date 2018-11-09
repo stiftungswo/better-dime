@@ -46,14 +46,9 @@ class CreateProjectFromOffer extends BaseBreakdown
 
         $this->project->chargeable = true;
 
-        if ($this->offer->fixed_price == null || $this->offer->fixed_price == 0) {
-            $this->project->budget_price = $this->offerBreakdown['subtotal'];
-        } else {
-            $this->checkAndAssignProjectProperty('budget_price', 'fixed_price');
+        if ($this->offer->fixed_price != null || $this->offer->fixed_price != 0) {
             $this->checkAndAssignProjectProperty('fixed_price');
         }
-
-        $budgetTime = 0;
 
         $this->project->offer()->associate($this->offer);
         $this->project->save();
@@ -69,11 +64,8 @@ class CreateProjectFromOffer extends BaseBreakdown
             }
 
             $this->project->positions()->save($projectPosition);
-
-            $budgetTime += $offerPosition->estimatedWorkHours();
         }
 
-        $this->project->budget_time = $budgetTime;
         $this->project->save();
 
         return $this->project;
