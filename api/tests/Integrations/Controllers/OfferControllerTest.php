@@ -47,6 +47,7 @@ class OfferControllerTest extends \TestCase
         // answer should also include discounts and positions
         $decodedResponse = $this->responseToArray();
         $this->assertEquals($offer->description, $decodedResponse['description']);
+        $this->assertArrayHasKey('breakdown', $decodedResponse);
         $this->assertArrayHasKey('discounts', $decodedResponse);
         $this->assertArrayHasKey('positions', $decodedResponse);
     }

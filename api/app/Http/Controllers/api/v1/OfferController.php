@@ -31,7 +31,7 @@ class OfferController extends BaseController
 
     public function get($id)
     {
-        return Offer::with(['discounts', 'positions'])->findOrFail($id);
+        return Offer::with(['discounts', 'positions'])->findOrFail($id)->append(['breakdown']);
     }
 
     public function post(Request $request)
@@ -111,7 +111,7 @@ class OfferController extends BaseController
             'offers',
             [
                 'offer' => $offer,
-                'breakdown' => CostBreakdown::calculate($offer),
+                'breakdown' => $offer->breakdown,
                 'basePath' => $app->basepath(),
                 'description' => $description
             ]

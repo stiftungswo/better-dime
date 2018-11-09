@@ -44,4 +44,9 @@ class Offer extends Model
     {
         return $this->belongsTo(RateGroup::class);
     }
+
+    public function getBreakdownAttribute()
+    {
+        return \App\Services\CostBreakdown::calculate($this);
+    }
 }
