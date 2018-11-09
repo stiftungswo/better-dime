@@ -21,7 +21,7 @@ export class MarkdownField extends React.Component<any> {
   render = () => {
     const { label, field, form } = this.props;
     return (
-      <Grid container={true}>
+      <Grid container={true} spacing={24}>
         <Grid item={true} xs={12} lg={6}>
           <ValidatedFormGroupWithLabel label={label} fullWidth field={field} form={form}>
             <Input {...field} fullWidth multiline rowsMax={14} />

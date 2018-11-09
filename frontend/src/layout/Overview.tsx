@@ -2,13 +2,14 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import AddIcon from '@material-ui/icons/Add';
-import { AppBarSearch, DimeContent } from './DimeLayout';
+import { DimeContent } from './DimeLayout';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
 import { AbstractStore } from '../stores/abstractStore';
 import { ActionButtonAction } from './ActionButton';
 import { OverviewTable } from './OverviewTable';
 import { inject } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
+import { AppBarSearch } from './AppBarSearch';
 
 export type SearchFilter<T> = (e: T, qry: string) => boolean;
 

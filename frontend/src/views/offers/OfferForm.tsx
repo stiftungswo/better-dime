@@ -126,43 +126,47 @@ export default class OfferForm extends React.Component<Props> {
         ) => (
           <Fragment>
             <form onSubmit={props.handleSubmit}>
-              {/*TODO add projects/invoices to backend model*/}
-              {offer && <Navigator projects={[]} invoices={[]} id={offer.id} />}
-              <DimePaper>
-                <FormControl half>
-                  <Field fullWidth component={TextFieldWithValidation} name={'name'} label={'Name'} />
-                </FormControl>
-                <FormControl half>
-                  <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
-                </FormControl>
-                <FormControl half>
-                  <Field fullWidth component={StatusSelector} name={'status'} label={'Status'} />
-                </FormControl>
-                <FormControl half>
-                  <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
-                </FormControl>
-                <FormControl half>
-                  <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
-                </FormControl>
-                <FormControl half>
-                  <Field fullWidth component={TextFieldWithValidation} name={'short_description'} label={'Kurzbeschreibung'} />
-                </FormControl>
-                <FormControl>
-                  <Field fullWidth component={MarkdownField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
-                </FormControl>
-              </DimePaper>
-              <DimePaper>
-                <OfferPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
-              </DimePaper>
+              <Grid container spacing={24}>
+                {/*TODO add projects/invoices to backend model*/}
+                <Grid item xs={12}>
+                  {offer && <Navigator projects={[]} invoices={[]} id={offer.id} />}
+                  <DimePaper>
+                    <FormControl half>
+                      <Field fullWidth component={TextFieldWithValidation} name={'name'} label={'Name'} />
+                    </FormControl>
+                    <FormControl half>
+                      <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                    </FormControl>
+                    <FormControl half>
+                      <Field fullWidth component={StatusSelector} name={'status'} label={'Status'} />
+                    </FormControl>
+                    <FormControl half>
+                      <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                    </FormControl>
+                    <FormControl half>
+                      <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                    </FormControl>
+                    <FormControl half>
+                      <Field fullWidth component={TextFieldWithValidation} name={'short_description'} label={'Kurzbeschreibung'} />
+                    </FormControl>
+                    <FormControl>
+                      <Field fullWidth component={MarkdownField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
+                    </FormControl>
+                  </DimePaper>
+                </Grid>
 
-              {/*TODO fix spacing of papers*/}
-              <Grid container={true}>
-                <Grid item={true} xs={12} lg={6}>
+                <Grid item xs={12}>
+                  <DimePaper>
+                    <OfferPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                  </DimePaper>
+                </Grid>
+
+                <Grid item xs={12} lg={6}>
                   <DimePaper>
                     <OfferDiscountSubform formikProps={props} name={'discounts'} />
                   </DimePaper>
                 </Grid>
-                <Grid item={true} xs={12} lg={6}>
+                <Grid item xs={12} lg={6}>
                   <DimePaper>
                     <FormHeader>Berechnung</FormHeader>
                     <p>TODO</p>

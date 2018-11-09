@@ -15,8 +15,6 @@ import { Navigation } from './Navigation';
 import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
-import InputBase from '@material-ui/core/InputBase/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 const drawerWidth = 240;
@@ -237,26 +235,4 @@ interface LoadingProps {
 }
 export const Loading = compose(withStyles(styles(DimeTheme)))(({ entity, children, classes }: LoadingProps) => (
   <Fragment>{hasContent(entity) ? children : <CircularProgress className={classes.progress} />}</Fragment>
-));
-
-interface AppBarSearchProps extends WithStyles<typeof styles> {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export const AppBarSearch = withStyles(styles(DimeTheme))(({ classes, value, onChange }: AppBarSearchProps) => (
-  <div className={classes.search}>
-    <div className={classes.searchIcon}>
-      <SearchIcon />
-    </div>
-    <InputBase
-      value={value}
-      onChange={onChange}
-      placeholder="Suche…"
-      classes={{
-        root: classes.inputRoot,
-        input: classes.inputInput,
-      }}
-    />
-  </div>
 ));
