@@ -222,6 +222,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/showdown@^1.7.5":
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/@types/showdown/-/showdown-1.7.5.tgz#91061f2f16d5bdf66b186185999ed675a8908b6a"
+  integrity sha512-uUSUP6XtyTclRzTH0NLkEIiEowxYXOWDeulpngrPltEceOmsGdhfrl8xr3D4QfJA7FuUUyHwFQuWWURLFg3hgg==
+
 "@types/yup@^0.24.9":
   version "0.24.9"
   resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.24.9.tgz#da98f4b38eec7ca72146e7042679c8c8628896fa"
@@ -7920,6 +7925,13 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
+
+showdown@^1.8.7:
+  version "1.8.7"
+  resolved "https://registry.yarnpkg.com/showdown/-/showdown-1.8.7.tgz#c4ccf300063adb0ef75a1b94b29a6cb6f7c36008"
+  integrity sha512-S1wyj80vu2lZZ7xm2ijr6e3VxHxPu8WfhTH7R6nelbIQeyl2g0ioEohS0YtFim8yAFMbQ8sQuXxiKvr10rKbTg==
+  dependencies:
+    yargs "^10.0.3"
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"

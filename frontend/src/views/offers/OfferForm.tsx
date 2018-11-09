@@ -20,6 +20,7 @@ import OfferDiscountSubform from './OfferDiscountSubform';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { MarkdownField } from '../../form/fields/MarkdownField';
 
 //TODO extract these
 export const FormHeader = ({ children }: any) => (
@@ -147,8 +148,7 @@ export default class OfferForm extends React.Component<Props> {
                   <Field fullWidth component={TextFieldWithValidation} name={'short_description'} label={'Kurzbeschreibung'} />
                 </FormControl>
                 <FormControl>
-                  {/*TODO custom component with markdown preview*/}
-                  <Field fullWidth component={TextFieldWithValidation} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
+                  <Field fullWidth component={MarkdownField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
                 </FormControl>
               </DimePaper>
               <DimePaper>
