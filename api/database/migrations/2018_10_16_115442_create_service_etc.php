@@ -45,11 +45,11 @@ class CreateServiceEtc extends Migration
         Schema::create('service_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('rate_group_id');
-            $table->foreign('rate_group_id')->references('id')->on('rate_groups');
+            $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('cascade');
             $table->unsignedInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->unsignedInteger('rate_unit_id');
-            $table->foreign('rate_unit_id')->references('id')->on('rate_units');
+            $table->foreign('rate_unit_id')->references('id')->on('rate_units')->onDelete('cascade');
             $table->integer("value");
             $table->timestamps();
 

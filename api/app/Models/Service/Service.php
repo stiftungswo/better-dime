@@ -21,7 +21,7 @@ class Service extends Model
         'archived' => 'boolean'
     ];
 
-    public function serviceRates()
+    public function service_rates()
     {
         return $this->hasMany(ServiceRate::class);
     }

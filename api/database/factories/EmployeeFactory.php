@@ -15,6 +15,7 @@ $factory->define(Employee::class, function () {
         'can_login' => $faker->boolean,
         'email' => $email,
         'first_name' => $firstName,
+        'holidays_per_year' => $faker->numberBetween(20, 25),
         'last_name' => $lastName,
         'password' => $faker->password,
         'is_admin' => false
