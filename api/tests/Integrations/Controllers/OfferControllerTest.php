@@ -48,8 +48,10 @@ class OfferControllerTest extends \TestCase
         $decodedResponse = $this->responseToArray();
         $this->assertEquals($offer->description, $decodedResponse['description']);
         $this->assertArrayHasKey('breakdown', $decodedResponse);
+        $this->assertArrayHasKey('invoice_ids', $decodedResponse);
         $this->assertArrayHasKey('discounts', $decodedResponse);
         $this->assertArrayHasKey('positions', $decodedResponse);
+        $this->assertArrayHasKey('project_id', $decodedResponse);
     }
 
     public function testInvalidPost()
