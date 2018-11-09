@@ -4,16 +4,24 @@ php:
 - 7.2
 
 stages:
-- test
-#- name: deploy
-#  if: branch = master OR branch = production OR branch =~ \b-DEPLOY\b
+- name: test
+  if: commit_message =~ ^((?!skip-tests).)*$
+- name: deploy
+  if: branch = master OR branch = production OR branch =~ \b-DEPLOY\b
 
 cache:
   directories:
   - $HOME/.composer/cache/files
+  - $HOME/.cache/yarn
+
+# install programming languages
+before_install:
+- nvm install 10
 
 install:
 - composer install -d api $COMPOSER_FLAGS
+- npm install -g yarn
+- yarn --cwd frontend install
 
 jobs:
   include:
@@ -24,17 +32,17 @@ jobs:
   - script: ./ci/check_format.sh
     name: "Check formatting of backend"
 
-  # run the deployment step
-#  - stage: deploy
-#    script: skip
-#    env:
-#    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod"; else echo "test"; fi)
-#    deploy:
-#    - provider: script
-#      script: ci/deploy.sh $DEPLOY_SYSTEM
-#      skip_cleanup: true
-#      on:
-#        all_branches: true
+    # run the deployment step
+  - stage: deploy
+    script: skip
+    env:
+    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "master" ]; then echo "prod"; else echo "test"; fi)
+    deploy:
+    - provider: script
+      script: ci/deploy.sh $DEPLOY_SYSTEM
+      skip_cleanup: true
+      on:
+        all_branches: true
 
 env:
   global:
