@@ -96,6 +96,7 @@ $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
 
 $app->configure('twigbridge');
 $app->register(\TwigBridge\ServiceProvider::class);
+$app->register('Sentry\SentryLaravel\SentryLumenServiceProvider');
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

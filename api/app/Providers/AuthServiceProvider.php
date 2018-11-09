@@ -51,6 +51,14 @@ class AuthServiceProvider extends ServiceProvider
 
             // handle case if somebody's access to Dime got blocked recently and its token is still valid
             if ($employee->can_login) {
+                if (app()->bound('sentry')) {
+                    /** @var \Raven_Client $sentry */
+                    $sentry = app('sentry');
+                    $sentry->user_context([
+                        'id' => $employee->id,
+                        'email' => $employee->email
+                    ]);
+                }
                 return $employee->id;
             } else {
                 return null;
