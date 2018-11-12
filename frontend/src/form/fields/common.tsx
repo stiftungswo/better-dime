@@ -30,8 +30,8 @@ export const SwitchField = ({ label, field }: FormProps) => (
 
 /**
  * This component tries to improve Formik performance by delaying the onChange call until the input field is blurred.
- * Formik's <FastField> is supposed to do this already, but it didn't seem to work. This _might_ introduce some issues
- * like the value of the last input of the form not being synced back into formik before hitting enter.
+ * Formik's <FastField> is supposed to do this already, but it seemed to be syncing onChange anyway. This _might_ introduce some issues
+ * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
  */
 class DelayedInput extends React.Component<any> {
   state = {

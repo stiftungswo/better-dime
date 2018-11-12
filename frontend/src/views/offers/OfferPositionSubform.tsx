@@ -15,6 +15,7 @@ import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
+import CurrencyField from '../../form/fields/CurrencyField';
 
 const template = {
   amount: '',
@@ -70,7 +71,7 @@ export default class OfferPositionSubform extends React.Component<Props> {
                         <Field component={ServiceSelector} name={name('service_id')} />
                       </TableCell>
                       <TableCell>
-                        <Field component={NumberFieldWithValidation} name={name('price_per_rate')} />
+                        <Field component={CurrencyField} name={name('price_per_rate')} />
                       </TableCell>
                       <TableCell>
                         <Field component={RateUnitSelector} name={name('rate_unit_id')} />
