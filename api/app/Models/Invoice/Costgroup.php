@@ -14,9 +14,4 @@ class Costgroup extends Model
     protected $primaryKey = 'number';
 
     public $incrementing = false;
-
-    public function invoices()
-    {
-        return $this->belongsToMany(Invoice::class);
-    }
 }

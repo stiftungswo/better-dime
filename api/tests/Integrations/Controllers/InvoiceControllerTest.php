@@ -33,12 +33,13 @@ class InvoiceControllerTest extends \TestCase
 
     public function testValidGet()
     {
-        $offer = factory(Invoice::class)->create();
-        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $offer->id)->assertResponseOk();
+        $invoice = factory(Invoice::class)->create();
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoice->id);
 
         // answer should also include discounts and positions
         $decodedResponse = $this->responseToArray();
-        $this->assertEquals($offer->description, $decodedResponse['description']);
+        $this->assertEquals($invoice->description, $decodedResponse['description']);
+        $this->assertArrayHasKey('costgroup_distributions', $decodedResponse);
         $this->assertArrayHasKey('discounts', $decodedResponse);
         $this->assertArrayHasKey('positions', $decodedResponse);
     }
@@ -59,7 +60,7 @@ class InvoiceControllerTest extends \TestCase
     public function testValidPost()
     {
         $template = $this->invoiceTemplate();
-        $this->asAdmin()->json('POST', 'api/v1/invoices', $template);
+        $this->asAdmin()->json('POST', 'api/v1/invoices', $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
     }
 
@@ -111,9 +112,16 @@ class InvoiceControllerTest extends \TestCase
         return [
             'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
             'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
-            'costgroups' => factory(\App\Models\Invoice\Costgroup::class, 2)->create()->map(function ($c) {
-                return $c->number;
-            })->sort()->values()->all(),
+            'costgroup_distributions' => [
+                [
+                    'costgroup_number' => factory(\App\Models\Invoice\Costgroup::class)->create()->number,
+                    'weight' => 80
+                ],
+                [
+                    'costgroup_number' => factory(\App\Models\Invoice\Costgroup::class)->create()->number,
+                    'weight' => 20
+                ]
+            ],
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'discounts' => [
                 [
