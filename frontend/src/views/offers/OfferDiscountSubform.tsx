@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
-import { NumberFieldWithValidation, SwitchField, TextFieldWithValidation } from '../../form/fields/common';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
@@ -55,7 +55,7 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <Field component={TextFieldWithValidation} name={name('name')} />
+                        <Field component={TextField} name={name('name')} />
                       </TableCell>
                       <TableCell>
                         <Field component={SwitchField} name={name('percentage')} />
@@ -64,7 +64,7 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                         {p.percentage ? (
                           <Field component={PercentageField} unit={'%'} name={name('value')} />
                         ) : (
-                          <Field component={NumberFieldWithValidation} unit={'CHF'} name={name('value')} />
+                          <Field component={NumberField} unit={'CHF'} name={name('value')} />
                         )}
                       </TableCell>
                       <TableCell>

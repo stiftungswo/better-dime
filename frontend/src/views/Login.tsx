@@ -10,7 +10,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
 import { Field, Formik, FormikBag } from 'formik';
-import { EmailFieldWithValidation, PasswordFieldWithValidation } from '../form/fields/common';
+import { EmailField, PasswordField } from '../form/fields/common';
 import { RouteComponentProps, withRouter } from 'react-router';
 import dimeTheme from '../layout/DimeTheme';
 import { Theme } from '@material-ui/core';
@@ -103,8 +103,8 @@ class Login extends React.Component<Props> {
               onSubmit={this.handleSubmit}
               render={props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
-                  <Field component={EmailFieldWithValidation} name="email" label="E-Mail" fullWidth={true} />
-                  <Field component={PasswordFieldWithValidation} name="password" label="Passwort" fullWidth={true} />
+                  <Field component={EmailField} name="email" label="E-Mail" fullWidth={true} />
+                  <Field component={PasswordField} name="password" label="Passwort" fullWidth={true} />
                   <Button
                     type="submit"
                     disabled={props.isSubmitting}

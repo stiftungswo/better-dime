@@ -8,25 +8,7 @@ import Input from '@material-ui/core/Input/Input';
 import Switch from '@material-ui/core/Switch/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-
-export type InputFieldProps = { type: string; unit?: string } & FormProps;
-export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
-
-export const ValidatedFormGroupWithLabel = ({ label, field, form: { touched, errors }, children, fullWidth }: FormProps) => {
-  const hasErrors: boolean = !!errors[field.name] && !!touched[field.name];
-
-  return (
-    <FormControl margin={'normal'} error={hasErrors} fullWidth={fullWidth}>
-      {label && <InputLabel htmlFor={field.name}>{label}</InputLabel>}
-      {children}
-      <ErrorMessage name={field.name} render={error => <FormHelperText error={true}>{error}</FormHelperText>} />
-    </FormControl>
-  );
-};
-
-export const SwitchField = ({ label, field }: FormProps) => (
-  <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
-);
+import { PropTypes } from '@material-ui/core';
 
 /**
  * This component tries to improve Formik performance by delaying the onChange call until the input field is blurred.
@@ -54,20 +36,31 @@ class DelayedInput extends React.Component<any> {
   };
 }
 
-export const InputFieldWithValidation = ({
+export type FormProps = { label: string; children: ReactNode; fullWidth: boolean; margin?: PropTypes.Margin } & FieldProps;
+export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any } & FormProps;
+
+export const ValidatedFormGroupWithLabel = ({
   label,
   field,
-  form,
-  fullWidth = false,
-  type = 'text',
-  unit = undefined,
-  ...rest
-}: InputFieldProps) => (
-  <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
+  form: { touched, errors },
+  children,
+  fullWidth,
+  margin = 'normal',
+}: FormProps) => {
+  const hasErrors: boolean = !!errors[field.name] && !!touched[field.name];
+
+  return (
+    <FormControl margin={margin} error={hasErrors} fullWidth={fullWidth}>
+      {label && <InputLabel htmlFor={field.name}>{label}</InputLabel>}
+      {children}
+      <ErrorMessage name={field.name} render={error => <FormHelperText error={true}>{error}</FormHelperText>} />
+    </FormControl>
+  );
+};
+
+export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, unit = undefined, margin, ...rest }: InputFieldProps) => (
+  <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin}>
     <DelayedInput
-      id={field.name}
-      name={field.name}
-      type={type}
       fullWidth={fullWidth}
       endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
       {...field}
@@ -76,48 +69,19 @@ export const InputFieldWithValidation = ({
   </ValidatedFormGroupWithLabel>
 );
 
-export const EmailFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
-  <InputFieldWithValidation type={'email'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
+export const SwitchField = ({ label, field }: FormProps) => (
+  <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
 );
 
-export const NumberFieldWithValidation = ({
-  label,
-  field,
-  form,
-  fullWidth = false,
-  children,
-  unit = undefined,
-}: FormProps & { children: ReactNode; unit?: string }) => (
-  <InputFieldWithValidation type={'number'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} unit={unit} />
-);
+export const EmailField = (props: InputFieldProps) => <InputFieldWithValidation type={'email'} {...props} />;
 
-export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
-  <InputFieldWithValidation type={'password'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
-);
+export const NumberField = (props: InputFieldProps) => <InputFieldWithValidation type={'number'} {...props} />;
 
-export const TextFieldWithValidation = ({
-  label,
-  field,
-  form,
-  fullWidth = false,
-  children,
-  ...rest
-}: FormProps & { children: ReactNode; multiline: boolean }) => (
-  <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} {...rest} />
-);
+export const PasswordField = (props: InputFieldProps) => <InputFieldWithValidation type={'password'} {...props} />;
 
-export const TodoField = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined }: InputFieldProps) => {
+export const TextField = (props: InputFieldProps & { multiline?: boolean }) => <InputFieldWithValidation type={'text'} {...props} />;
+
+export const TodoField = (props: InputFieldProps) => {
   console.warn('TodoField used! Implement a custom field type for this.');
-  return (
-    <ValidatedFormGroupWithLabel label={`[TODO] ${label || ''}`} field={field} form={form} fullWidth={fullWidth}>
-      <Input
-        id={field.name}
-        name={field.name}
-        type={type}
-        fullWidth={fullWidth}
-        endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
-        {...field}
-      />
-    </ValidatedFormGroupWithLabel>
-  );
+  return <TextField {...props} />;
 };

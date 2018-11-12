@@ -37,6 +37,7 @@ const styles = (theme: Theme) => ({
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
   },
   singleValue: {
+    whiteSpace: 'nowrap',
     fontSize: 16,
   },
   placeholder: {

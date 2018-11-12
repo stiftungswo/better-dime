@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import Input from '@material-ui/core/Input/Input';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import { FormProps, ValidatedFormGroupWithLabel } from './common';
+import { FormProps, InputFieldWithValidation } from './common';
 
 const factor = 0.01;
 
@@ -31,19 +29,6 @@ export default class PercentageField extends React.Component<FormProps & { child
   };
 
   public render = () => {
-    const { label, field, form, fullWidth = false } = this.props;
-    return (
-      <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
-        <Input
-          id={field.name}
-          name={field.name}
-          type={'number'}
-          fullWidth={fullWidth}
-          value={this.state.value}
-          onChange={this.handleChange}
-          endAdornment={<InputAdornment position={'end'}>%</InputAdornment>}
-        />
-      </ValidatedFormGroupWithLabel>
-    );
+    return <InputFieldWithValidation {...this.props} type={'number'} value={this.state.value} onChange={this.handleChange} unit={'%'} />;
   };
 }

@@ -4,13 +4,7 @@ import { Employee } from '../../types';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import {
-  EmailFieldWithValidation,
-  NumberFieldWithValidation,
-  PasswordFieldWithValidation,
-  SwitchField,
-  TextFieldWithValidation,
-} from '../../form/fields/common';
+import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -53,30 +47,25 @@ export default class EmployeeForm extends React.Component<Props> {
             <form onSubmit={props.handleSubmit}>
               <Grid container={true} spacing={16}>
                 <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextFieldWithValidation} name={'first_name'} label={'Vorname'} fullWidth={true} />
+                  <Field component={TextField} name={'first_name'} label={'Vorname'} fullWidth={true} />
                 </Grid>
                 <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextFieldWithValidation} name={'last_name'} label={'Nachname'} fullWidth={true} />
+                  <Field component={TextField} name={'last_name'} label={'Nachname'} fullWidth={true} />
                 </Grid>
               </Grid>
 
               <Grid container={true}>
                 <Grid item={true} xs={12}>
-                  <Field component={EmailFieldWithValidation} name={'email'} label={'E-Mail'} fullWidth={true} />
+                  <Field component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
                 </Grid>
               </Grid>
 
               <Grid container={true} spacing={16}>
                 <Grid item={true} xs={12} sm={6}>
-                  <Field component={PasswordFieldWithValidation} name={'password'} label={'Neues Passwort'} fullWidth={true} />
+                  <Field component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
                 </Grid>
                 <Grid item={true} xs={12} sm={6}>
-                  <Field
-                    component={PasswordFieldWithValidation}
-                    name={'password_repeat'}
-                    label={'Neues Passwort wiederholen'}
-                    fullWidth={true}
-                  />
+                  <Field component={PasswordField} name={'password_repeat'} label={'Neues Passwort wiederholen'} fullWidth={true} />
                 </Grid>
               </Grid>
 
@@ -88,7 +77,7 @@ export default class EmployeeForm extends React.Component<Props> {
 
               <Grid container={true} spacing={16}>
                 <Grid item={true} xs={12} sm={6}>
-                  <Field component={NumberFieldWithValidation} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
+                  <Field component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
                 </Grid>
               </Grid>
 

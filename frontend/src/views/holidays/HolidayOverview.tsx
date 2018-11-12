@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Holiday, HolidayStore } from '../../stores/holidayStore';
 import { Field } from 'formik';
 import { Column } from '../../layout/Overview';
-import { TextFieldWithValidation } from '../../form/fields/common';
+import { TextField } from '../../form/fields/common';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
@@ -77,7 +77,7 @@ export default class HolidayOverview extends React.Component<Props> {
         renderActions={this.renderActions}
         renderForm={props => (
           <>
-            <Field component={TextFieldWithValidation} name={'name'} label={'Name'} fullWidth />
+            <Field component={TextField} name={'name'} label={'Name'} fullWidth />
             <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
             <Field component={DurationField} name={'duration'} label={'Dauer'} fullWidth />
           </>

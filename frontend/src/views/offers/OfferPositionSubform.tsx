@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
-import { NumberFieldWithValidation } from '../../form/fields/common';
+import { NumberField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
@@ -45,7 +45,7 @@ export default class OfferPositionSubform extends React.Component<Props> {
         render={arrayHelpers => (
           <>
             <TableToolbar title={'Services'} numSelected={0} addAction={() => arrayHelpers.push(template)} />
-            <Table>
+            <Table padding={'dense'}>
               <TableHead>
                 <TableRow>
                   <TableCell>Reihenfolge</TableCell>
@@ -65,22 +65,22 @@ export default class OfferPositionSubform extends React.Component<Props> {
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <Field component={NumberFieldWithValidation} name={`positions.${index}.order`} />
+                        <Field component={NumberField} name={`positions.${index}.order`} margin={'none'} />
                       </TableCell>
                       <TableCell>
-                        <Field component={ServiceSelector} name={name('service_id')} />
+                        <Field component={ServiceSelector} name={name('service_id')} margin={'none'} />
                       </TableCell>
                       <TableCell>
-                        <Field component={CurrencyField} name={name('price_per_rate')} />
+                        <Field component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                       </TableCell>
                       <TableCell>
-                        <Field component={RateUnitSelector} name={name('rate_unit_id')} />
+                        <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                       </TableCell>
                       <TableCell>
-                        <Field component={NumberFieldWithValidation} name={name('amount')} />
+                        <Field component={NumberField} name={name('amount')} margin={'none'} />
                       </TableCell>
                       <TableCell>
-                        <Field component={PercentageField} name={name('vat')} />
+                        <Field component={PercentageField} name={name('vat')} margin={'none'} />
                       </TableCell>
                       <TableCell>{this.props.mainStore!.formatCurrency(total)}</TableCell>
                       <TableCell>

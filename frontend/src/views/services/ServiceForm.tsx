@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FieldArray, FormikProps } from 'formik';
-import { NumberFieldWithValidation, SwitchField, TextFieldWithValidation } from '../../form/fields/common';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { hasContent } from '../../layout/DimeLayout';
 import { Service, ServiceRate } from './types';
@@ -77,20 +77,20 @@ export default class ServiceForm extends React.Component<Props> {
             <form onSubmit={props.handleSubmit}>
               <Grid container={true}>
                 <Grid item={true} xs={12}>
-                  <Field component={TextFieldWithValidation} name={'name'} label={'Name'} fullWidth />
+                  <Field component={TextField} name={'name'} label={'Name'} fullWidth />
                 </Grid>
               </Grid>
 
               <Grid container={true}>
                 <Grid item={true} xs={12}>
-                  <Field component={TextFieldWithValidation} name={'description'} label={'Beschreibung'} fullWidth />
+                  <Field component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
                 </Grid>
               </Grid>
 
               <Grid container={true}>
                 <Grid item={true} xs={12}>
                   {/*TODO custom input*/}
-                  <Field component={NumberFieldWithValidation} name={'vat'} label={'Mehrwertsteuer'} fullWidth />
+                  <Field component={NumberField} name={'vat'} label={'Mehrwertsteuer'} fullWidth />
                 </Grid>
               </Grid>
 
@@ -129,7 +129,7 @@ export default class ServiceForm extends React.Component<Props> {
                           </TableCell>
                           <TableCell>
                             {/*TODO adornment should use configured app curency */}
-                            <Field component={NumberFieldWithValidation} name={`service_rates.${index}.value`} unit={'CHF'} />
+                            <Field component={NumberField} name={`service_rates.${index}.value`} unit={'CHF'} />
                           </TableCell>
                         </TableRow>
                       ))}

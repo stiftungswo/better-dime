@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import Input from '@material-ui/core/Input/Input';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import { FormProps, ValidatedFormGroupWithLabel } from './common';
+import { InputFieldProps, InputFieldWithValidation } from './common';
 
 const factor = 100;
 
-export default class CurrencyField extends React.Component<FormProps & { children: ReactNode }> {
+//TODO extract this behavior into a TransformingField and use it for this, vat, percentage
+export default class CurrencyField extends React.Component<InputFieldProps> {
   constructor(props: any) {
     super(props);
     this.state.value = this.format;
@@ -31,19 +29,6 @@ export default class CurrencyField extends React.Component<FormProps & { childre
   };
 
   public render = () => {
-    const { label, field, form, fullWidth = false } = this.props;
-    return (
-      <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
-        <Input
-          id={field.name}
-          name={field.name}
-          type={'number'}
-          fullWidth={fullWidth}
-          value={this.state.value}
-          onChange={this.handleChange}
-          endAdornment={<InputAdornment position={'end'}>CHF</InputAdornment>}
-        />
-      </ValidatedFormGroupWithLabel>
-    );
+    return <InputFieldWithValidation {...this.props} type={'number'} value={this.state.value} onChange={this.handleChange} unit={'CHF'} />;
   };
 }

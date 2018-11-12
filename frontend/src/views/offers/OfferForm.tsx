@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import { NumberFieldWithValidation, TextFieldWithValidation } from '../../form/fields/common';
+import { NumberField, TextField } from '../../form/fields/common';
 import Grid, { GridSize } from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
@@ -132,7 +132,7 @@ export default class OfferForm extends React.Component<Props> {
                   {offer && <Navigator projects={[]} invoices={[]} id={offer.id} />}
                   <DimePaper>
                     <FormControl half>
-                      <Field fullWidth component={TextFieldWithValidation} name={'name'} label={'Name'} />
+                      <Field fullWidth component={TextField} name={'name'} label={'Name'} />
                     </FormControl>
                     <FormControl half>
                       <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
@@ -147,7 +147,7 @@ export default class OfferForm extends React.Component<Props> {
                       <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
                     </FormControl>
                     <FormControl half>
-                      <Field fullWidth component={TextFieldWithValidation} name={'short_description'} label={'Kurzbeschreibung'} />
+                      <Field fullWidth component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
                     </FormControl>
                     <FormControl>
                       <Field fullWidth component={MarkdownField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
@@ -170,7 +170,7 @@ export default class OfferForm extends React.Component<Props> {
                   <DimePaper>
                     <FormHeader>Berechnung</FormHeader>
                     <p>TODO</p>
-                    <Field component={NumberFieldWithValidation} name={'fixed_price'} label={'Fixpreis'} />
+                    <Field component={NumberField} name={'fixed_price'} label={'Fixpreis'} />
                   </DimePaper>
                 </Grid>
               </Grid>
