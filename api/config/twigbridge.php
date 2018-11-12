@@ -181,7 +181,7 @@ return [
             'mix',
             'env',
             'tableGen' => [
-                'callback' => 'App\Services\TableGenerator::generate',
+                'callback' => 'App\Services\PDF\TableGenerator::generate',
                 'is_safe'  => [
                     'html'
                 ]

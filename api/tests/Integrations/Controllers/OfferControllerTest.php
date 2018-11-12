@@ -3,8 +3,6 @@
 namespace Tests\Integrations\Controllers;
 
 use App\Models\Offer\Offer;
-use App\Models\Offer\OfferDiscount;
-use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
@@ -102,8 +100,8 @@ class OfferControllerTest extends \TestCase
     {
         // also add one nested relation, delete one and update one
         $offer = factory(Offer::class)->create();
-        $offerDiscountList = factory(OfferDiscount::class)->times(2)->make();
-        $offerPositionList = factory(OfferPosition::class)->times(2)->make();
+        $offerDiscountList = factory(\App\Models\Offer\OfferDiscount::class)->times(2)->make();
+        $offerPositionList = factory(\App\Models\Offer\OfferPosition::class)->times(2)->make();
         $offer->discounts()->saveMany($offerDiscountList);
         $offer->positions()->saveMany($offerPositionList);
 

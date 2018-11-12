@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Creator;
 
-class BaseBreakdown
+class BaseCreator
 {
     protected function throwExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
     {

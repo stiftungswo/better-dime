@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Creator;
 
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
@@ -10,7 +10,7 @@ use App\Models\Project\ProjectPosition;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class CreateInvoiceFromProject extends BaseBreakdown
+class CreateInvoiceFromProject extends BaseCreator
 {
     /**
      * @var Project $project

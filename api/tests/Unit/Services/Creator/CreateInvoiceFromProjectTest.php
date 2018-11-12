@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Creator;
 
 use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
@@ -9,7 +9,7 @@ use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateUnit;
-use App\Services\CreateInvoiceFromProject;
+use App\Services\Creator\CreateInvoiceFromProject;
 use Carbon\Carbon;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 

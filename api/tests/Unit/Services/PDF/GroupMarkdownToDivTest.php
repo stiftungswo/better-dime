@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\PDF;
 
-use App\Services\GroupMarkdownToDiv;
+use App\Services\PDF\GroupMarkdownToDiv;
 
 class GroupMarkdownToDivTest extends \TestCase
 {

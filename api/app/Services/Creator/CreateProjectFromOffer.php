@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Creator;
 
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectPosition;
 
-class CreateProjectFromOffer extends BaseBreakdown
+class CreateProjectFromOffer extends BaseCreator
 {
 
     /**
      * @var Offer $offer ;
      */
     protected $offer;
-
-    /**
-     * @var array $offerBreakdown
-     */
-    protected $offerBreakdown;
 
     /**
      * @var Project $project
@@ -28,7 +23,6 @@ class CreateProjectFromOffer extends BaseBreakdown
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
-        $this->offerBreakdown = CostBreakdown::calculate($offer);
         $this->project = new Project();
     }
 

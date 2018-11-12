@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
         print("Seeding projects ...\n");
         $projects = collect([]);
         $offers->each(function ($o) use ($projects) {
-            $creator = new \App\Services\CreateProjectFromOffer($o);
+            $creator = new \App\Services\Creator\CreateProjectFromOffer($o);
             $projects[] = $creator->create();
         });
 
@@ -151,7 +151,7 @@ class DatabaseSeeder extends Seeder
 
         print("Seeding invoices ...\n");
         $projects->each(function ($p) {
-            $creator = new \App\Services\CreateInvoiceFromProject($p);
+            $creator = new \App\Services\Creator\CreateInvoiceFromProject($p);
             $creator->create();
         });
     }

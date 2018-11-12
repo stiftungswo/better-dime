@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Creator;
 
 use App\Models\Offer\Offer;
-use App\Services\CreateProjectFromOffer;
+use App\Services\Creator\CreateProjectFromOffer;
 use InvalidArgumentException;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 

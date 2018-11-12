@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Services\PDF;
 
 use Illuminate\Support\Facades\App;
 use Laravel\Lumen\Application;
-use Twig;
+use TwigBridge\Facade\Twig;
 
-class PDFController
+class PDF
 {
 
     private $pdf;

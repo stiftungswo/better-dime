@@ -6,11 +6,10 @@ use App\Http\Controllers\BaseController;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
-use App\Services\CostBreakdown;
-use App\Services\CreateProjectFromOffer;
-use App\Services\GroupMarkdownToDiv;
+use App\Services\Creator\CreateProjectFromOffer;
+use App\Services\PDF\GroupMarkdownToDiv;
+use App\Services\PDF\PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Application;
@@ -107,7 +106,7 @@ class OfferController extends BaseController
         $description = GroupMarkdownToDiv::group($parsedown->text($offer->description));
 
         // initialize PDFController, render view and pass it back
-        $pdf = new PDFController(
+        $pdf = new PDF(
             'offers',
             [
                 'offer' => $offer,

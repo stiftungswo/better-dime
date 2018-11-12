@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\PDF;
 
 /**
  * the TableGenerator class provides a twig function called tableGen
