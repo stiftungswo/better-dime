@@ -61,6 +61,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/{id}', ['uses' => 'InvoiceController@get']);
                 $router->put('/{id}', ['uses' => 'InvoiceController@put']);
                 $router->delete('/{id}', ['uses' => 'InvoiceController@delete']);
+                $router->get('/{id}/print', ['uses' => 'InvoiceController@print']);
             });
 
             $router->group(['prefix' => 'holidays'], function () use ($router) {

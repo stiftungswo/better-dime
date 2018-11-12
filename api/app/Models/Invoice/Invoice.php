@@ -34,6 +34,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceDiscount::class);
     }
 
+    public function offer()
+    {
+        return $this->project->offer();
+    }
+
     public function positions()
     {
         return $this->hasMany(InvoicePosition::class);

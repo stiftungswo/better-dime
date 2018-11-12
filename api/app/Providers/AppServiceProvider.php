@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $neededConfig = ['SENDER_NAME', 'SENDER_STREET', 'SENDER_PLZ', 'SENDER_CITY', 'SENDER_PHONE', 'SENDER_MAIL', 'SENDER_WEB'];
+        $neededConfig = ['SENDER_NAME', 'SENDER_STREET', 'SENDER_PLZ', 'SENDER_CITY', 'SENDER_PHONE', 'SENDER_MAIL', 'SENDER_WEB', 'SENDER_MWST', 'SENDER_BANK_ACCOUNT_NR'];
 
         foreach ($neededConfig as $config) {
             if (is_null(env($config)) || empty(env($config))) {

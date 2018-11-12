@@ -9,10 +9,6 @@
                 line-height: 110%;
             }
 
-            body {
-                padding: .03in .2in .2in .2in;
-            }
-
             div.recipient-address {
                 margin-right: 12%;
                 margin-top: -20px;
@@ -37,12 +33,21 @@
                 width: 100%
             }
 
-            div.offer-description h1 {
+            div.description h1 {
                 text-decoration: underline;
             }
 
-            div.offer-description div div {
+            div.description div div {
                 page-break-inside: avoid;
+            }
+
+            table.top_table {
+                padding-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            table.top_table tr td {
+                padding: 0 10px 0 0;
             }
 
             table.table {
@@ -90,6 +95,10 @@
 
             th.sixth-row {
                 width: 15%;
+            }
+
+            .text-align-center {
+                text-align: center;
             }
 
             .text-align-right {
@@ -162,14 +171,6 @@
             </div>
         </div>
     {% endblock %}
-
-    {% block customer %}
-        <div class="clear-float">
-            <div class="recipient-address float-right">
-                {{ offer.address.dropdown_label | replace({',': "<br>"}) | raw }}
-            </div>
-        </div>
-    {% endblock %}
-
+    {% block customer %}{%  endblock %}
     {% block content %}{% endblock %}
 </body>

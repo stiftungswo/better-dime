@@ -4,6 +4,14 @@
 <title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}vom {{ "now"|date("d.m.Y") }}</title>
 {% endblock %}
 
+{% block customer %}
+    <div class="clear-float">
+        <div class="recipient-address float-right">
+            {{ offer.address.dropdown_label | replace({',': "<br>"}) | raw }}
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
 <div class="header clear-float">
     <div>
@@ -28,14 +36,14 @@
         {% if offer.short_description %}{{ offer.short_description }}{% endif %}
     </div>
 
-    <div class="offer_description">
+    <div class="description">
         {{ description | raw }}
     </div>
 </div>
 
 <div class="force-page-break"></div>
 <b style="font-size: 16px;">Kostenübersicht</b>
-{{ 
+{{
     tableGen(
         {
             "table": {
@@ -60,7 +68,7 @@
             "rate_unit.billing_unit": {},
             "amount": {},
             "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
-            "calculatedTotal()": {"attr": {"class": "text-align-right" }, "format": "chf"}
+            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "chf"}
         },
         [
             {
@@ -71,40 +79,40 @@
     )
 }}
 
-{{ 
-    tableGen(
+{% if breakdown.discounts is not empty %}
+{{ tableGen(
+    {
+        "table": {
+        "class": "table",
+        "style": "margin-top: 30px;"
+    },
+        "tfoot-tr-1": {
+        "class": "bold-cells"
+    }
+    },
+    {
+        "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
+        "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+    },
+    breakdown.discounts,
+    {
+        "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
+        "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+    },
+    [
         {
-            "table": {
-                "class": "table",
-                "style": "margin-top: 30px;"
-            },
-            "tfoot-tr-1": {
-                "class": "bold-cells"
-            }
+            "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+            (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
         },
         {
-            "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
-            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
-        },
-        breakdown.discounts,
-        {
-            "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
-            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
-        },
-        [
-            {
-                "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
-                (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-            },
-            {
-                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
-                (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-            }
-        ]
-    )
-}}
+            "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+            (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+        }
+    ]
+) }}
+{% endif %}
 
-{{ 
+{{
     tableGen(
         {
             "table": {

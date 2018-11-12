@@ -7,9 +7,14 @@ use App\Models\Invoice\CostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
+use App\Services\CostBreakdown;
+use App\Services\PDF\GroupMarkdownToDiv;
+use App\Services\PDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Laravel\Lumen\Application;
+use Parsedown;
 
 class InvoiceController extends BaseController
 {
@@ -61,6 +66,30 @@ class InvoiceController extends BaseController
         }
 
         return self::get($invoice->id);
+    }
+
+    public function print($id)
+    {
+        // initialize stuff
+        $app = new Application();
+        $invoice = Invoice::with(['accountant', 'address', 'costgroup_distributions', 'project'])->findOrFail($id);
+        $parsedown = new Parsedown();
+
+        // group h1 / h2 / h3 and the following tags to divs
+        $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
+
+        // initialize PDF, render view and pass it back
+        $pdf = new PDF(
+            'invoice',
+            [
+                'breakdown' => CostBreakdown::calculate($invoice),
+                'invoice' => $invoice,
+                'basePath' => $app->basepath(),
+                'description' => $description
+            ]
+        );
+
+        return $pdf->print();
     }
 
     public function put($id, Request $request)

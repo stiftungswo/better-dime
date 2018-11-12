@@ -31,4 +31,17 @@ class InvoicePosition extends Model
     {
         return $this->belongsTo(RateUnit::class);
     }
+
+    /**
+     * Returns the multiplication of amount and price_per_rate, if both values are numeric
+     * @return float|int
+     */
+    public function getCalculatedTotalAttribute()
+    {
+        if (is_numeric($this->price_per_rate) && is_numeric($this->amount)) {
+            return $this->price_per_rate * $this->amount;
+        } else {
+            return 0;
+        }
+    }
 }

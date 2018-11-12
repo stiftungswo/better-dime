@@ -9,6 +9,8 @@ class CostgroupDistribution extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['ratio'];
+
     protected $fillable = ['costgroup_number', 'invoice_id', 'weight'];
 
     public function invoice()
@@ -19,5 +21,11 @@ class CostgroupDistribution extends Model
     public function costgroup()
     {
         return $this->belongsTo(Costgroup::class);
+    }
+
+    public function getRatioAttribute()
+    {
+        $sum = $this->invoice->costgroup_distributions->sum('weight');
+        return round(($this->weight / $sum) * 100, 0);
     }
 }
