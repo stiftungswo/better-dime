@@ -26,6 +26,8 @@ class Project extends Model
         'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'
     ];
 
+    protected $hidden = ['efforts', 'offer'];
+
     public function accountant()
     {
         return $this->belongsTo(Employee::class);

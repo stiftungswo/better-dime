@@ -20,6 +20,8 @@ class ProjectPosition extends Model
 
     protected $fillable = ['description', 'price_per_rate', 'project_id', 'rate_unit_id', 'service_id', 'vat'];
 
+    protected $hidden = ['efforts', 'rate_unit'];
+
     public function efforts()
     {
         return $this->hasMany(ProjectEffort::class, 'position_id');
