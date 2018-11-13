@@ -44,10 +44,11 @@ class RateUnitController extends BaseController
     {
         $this->validate($request, [
             'archived' => 'boolean',
-            'billing_unit' => 'required|max:255',
-            'effort_unit' => 'required|max:255',
+            'billing_unit' => 'required|string|max:255',
+            'effort_unit' => 'required|string|max:255',
             'factor' => 'required|numeric',
-            'is_time' => 'required|boolean'
+            'is_time' => 'required|boolean',
+            'name' => 'required|string'
         ]);
     }
 }

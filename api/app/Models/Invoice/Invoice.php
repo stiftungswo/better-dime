@@ -12,8 +12,6 @@ class Invoice extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['costgroups'];
-
     protected $fillable = ['accountant_id', 'address_id', 'description', 'end', 'fixed_price', 'name', 'project_id', 'start'];
 
     public function accountant()
@@ -26,14 +24,19 @@ class Invoice extends Model
         return $this->belongsTo(Address::class);
     }
 
+    public function costgroup_distributions()
+    {
+        return $this->hasMany(CostgroupDistribution::class);
+    }
+
     public function discounts()
     {
         return $this->hasMany(InvoiceDiscount::class);
     }
 
-    public function invoice_costgroups()
+    public function offer()
     {
-        return $this->belongsToMany(Costgroup::class);
+        return $this->project->offer();
     }
 
     public function positions()
@@ -46,19 +49,19 @@ class Invoice extends Model
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * Magic method for the appended "costgroups" attribute
-     *
-     * @return array
-     */
-    public function getCostgroupsAttribute()
+    public function getDistributionOfCostgroupsAttribute()
     {
-        if ($this->invoice_costgroups->isEmpty()) {
+        if ($this->costgroup_distributions->isEmpty()) {
             return [];
         } else {
-            return $this->invoice_costgroups->map(function ($ic) {
-                return $ic->number;
-            })->sort()->toArray();
+            $sum = $this->costgroup_distributions->sum('weight');
+
+            return $this->costgroup_distributions->map(function ($cd) use ($sum) {
+                return [
+                    "costgroup_number" => $cd->costgroup_number,
+                    "ratio" => round($cd->weight / $sum * 100, 0)
+                ];
+            });
         }
     }
 }

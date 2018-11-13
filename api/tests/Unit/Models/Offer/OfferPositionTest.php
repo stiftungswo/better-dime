@@ -36,7 +36,7 @@ class OfferPositionTest extends \TestCase
     public function testValidCalculatedTotal()
     {
         $offerPosition = factory(OfferPosition::class)->make();
-        $this->assertEquals($offerPosition->price_per_rate * $offerPosition->amount, $offerPosition->calculatedTotal());
+        $this->assertEquals($offerPosition->price_per_rate * $offerPosition->amount, $offerPosition->calculated_total);
     }
 
     public function testInvalidCalculatedTotal()
@@ -44,10 +44,10 @@ class OfferPositionTest extends \TestCase
         $offerPosition = factory(OfferPosition::class)->make();
         $offerPosition->price_per_rate = '???';
         $offerPosition->amount = 12;
-        $this->assertEquals(0, $offerPosition->calculatedTotal());
+        $this->assertEquals(0, $offerPosition->calculated_total);
 
         $offerPosition->price_per_rate = 12000;
         $offerPosition->amount = '???';
-        $this->assertEquals(0, $offerPosition->calculatedTotal());
+        $this->assertEquals(0, $offerPosition->calculated_total);
     }
 }

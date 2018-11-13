@@ -11,8 +11,18 @@ import DimeTheme from './layout/DimeTheme';
 import { StoreProvider } from './utilities/StoreProvider';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import * as Sentry from '@sentry/browser';
 
 const browserHistory = createBrowserHistory();
+const sentryDSN = 'SENTRY_DSN';
+
+if (sentryDSN.startsWith('https')) {
+  console.log('yes raven');
+  Sentry.init({ dsn: sentryDSN });
+} else {
+  console.log('no raven');
+}
+// TODO implement in Dime Layout to change scope to current user, observed from mainState
 
 ReactDOM.render(
   <SnackbarProvider maxSnack={1}>

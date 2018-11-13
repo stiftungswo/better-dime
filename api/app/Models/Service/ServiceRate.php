@@ -10,7 +10,7 @@ class ServiceRate extends Model
         'value', 'rate_group_id', 'service_id', 'rate_unit_id'
     ];
 
-    public function rateGroup()
+    public function rate_group()
     {
         return $this->belongsTo(RateGroup::class);
     }
@@ -20,8 +20,8 @@ class ServiceRate extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function rateUnit()
+    public function rate_unit()
     {
-        return $this->hasOne(RateUnit::class);
+        return $this->belongsTo(RateUnit::class);
     }
 }

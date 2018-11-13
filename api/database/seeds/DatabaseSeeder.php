@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
         print("Seeding projects ...\n");
         $projects = collect([]);
         $offers->each(function ($o) use ($projects) {
-            $creator = new \App\Services\CreateProjectFromOffer($o);
+            $creator = new \App\Services\Creator\CreateProjectFromOffer($o);
             $projects[] = $creator->create();
         });
 
@@ -149,10 +149,22 @@ class DatabaseSeeder extends Seeder
             });
         });
 
+        $invoices = collect([]);
         print("Seeding invoices ...\n");
-        $projects->each(function ($p) {
-            $creator = new \App\Services\CreateInvoiceFromProject($p);
-            $creator->create();
+        $projects->each(function ($p) use ($invoices) {
+            $creator = new \App\Services\Creator\CreateInvoiceFromProject($p);
+            $invoices[] = $creator->create();
+        });
+
+        print("Seeding costgroups ...\n");
+        $costgroups = factory(\App\Models\Invoice\Costgroup::class, 6)->create();
+
+        $invoices->each(function ($i) use ($costgroups) {
+            $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
+                'costgroup_number' => $costgroups->random()->number
+            ]), factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
+                'costgroup_number' => $costgroups->random()->number
+            ])]);
         });
     }
 }

@@ -37,11 +37,14 @@ class CreateInvoicesEtc extends Migration
             $table->timestamps();
         });
 
-        Schema::create('costgroup_invoice', function ($table) {
-            $table->integer('costgroup_number')->unsigned();
-            $table->foreign('costgroup_number')->references('number')->on('costgroups')->onDelete('cascade');
+        Schema::create('costgroup_distributions', function (Blueprint $table) {
+            $table->integer('costgroup_number')->unsigned()->nullable();
+            $table->foreign('costgroup_number')->references('number')->on('costgroups')->onDelete('set null');
             $table->integer('invoice_id')->unsigned();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->integer('weight');
+            $table->softDeletes();
+            $table->timestamps();
         });
 
         Schema::create('invoice_positions', function (Blueprint $table) {
@@ -67,7 +70,7 @@ class CreateInvoicesEtc extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->string('name');
             $table->boolean('percentage')->default(false);
-            $table->decimal('value', 10, 3);
+            $table->decimal('value', 11, 3);
             $table->softDeletes();
             $table->timestamps();
         });

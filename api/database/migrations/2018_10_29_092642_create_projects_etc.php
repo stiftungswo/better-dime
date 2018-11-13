@@ -20,8 +20,6 @@ class CreateProjectsEtc extends Migration
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
             $table->boolean('archived')->default(false);
-            $table->integer('budget_price')->nullable();
-            $table->integer('budget_time')->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('project_categories')->onDelete('set null');
             $table->boolean('chargeable')->default(true);

@@ -44,4 +44,37 @@ class Offer extends Model
     {
         return $this->belongsTo(RateGroup::class);
     }
+
+    public function getBreakdownAttribute()
+    {
+        return \App\Services\CostBreakdown::calculate($this);
+    }
+
+    /**
+     * Returns the project id for the current Offer (used for the navigation in frontend)
+     * @return null|int
+     */
+    public function getProjectIdAttribute()
+    {
+        if (is_null($this->project)) {
+            return null;
+        } else {
+            return $this->project->id;
+        }
+    }
+
+    /**
+     * Returns the invoices for the current Offer (used for the navigation in frontend)
+     * @return array
+     */
+    public function getInvoiceIdsAttribute()
+    {
+        if (is_null($this->project)) {
+            return [];
+        } else {
+            return $this->project->invoices->map(function ($i) {
+                return $i->id;
+            });
+        }
+    }
 }

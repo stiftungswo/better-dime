@@ -5,28 +5,14 @@ namespace Tests\Unit\Models\Invoice;
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
 use App\Models\Invoice\Costgroup;
+use App\Models\Invoice\CostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class InvoiceTest extends \TestCase
 {
-
     use DatabaseTransactions;
-
-    public function testGetEmptyCostgroupsAttribute()
-    {
-        // should return empty array if no costgroups are assigned
-        $invoice = factory(Invoice::class)->create();
-        $this->assertEmpty($invoice->costgroups);
-    }
-
-    public function testGetPopulatedCostgroupsAttribute()
-    {
-        $invoice = factory(Invoice::class)->create();
-        $invoice->invoice_costgroups()->saveMany(factory(Costgroup::class)->times(5)->make());
-        $this->assertCount(5, $invoice->costgroups);
-    }
 
     public function testAccountantAssignment()
     {
@@ -50,5 +36,37 @@ class InvoiceTest extends \TestCase
         $invoice = factory(Invoice::class)->make();
         $invoice->project()->associate($project);
         $this->assertEquals($project, $invoice->project);
+    }
+
+    public function testEmptyDistributionOfCostgroup()
+    {
+        $invoice = factory(Invoice::class)->create();
+        $this->assertEmpty($invoice->distribution_of_costgroups);
+    }
+
+    public function testPopulatedDistributionOfCostgroup()
+    {
+        $invoice = factory(Invoice::class)->create();
+        $costgroup1 = factory(Costgroup::class)->create();
+        $costgroup2 = factory(Costgroup::class)->create();
+        factory(CostgroupDistribution::class)->create([
+            'invoice_id' => $invoice->id,
+            'costgroup_number' => $costgroup1->number,
+            'weight' => 60
+        ]);
+        factory(CostgroupDistribution::class)->create([
+            'invoice_id' => $invoice->id,
+            'costgroup_number' => $costgroup2->number,
+            'weight' => 40
+        ]);
+
+        $this->assertContains([
+            'costgroup_number' => $costgroup1->number,
+            'ratio' => 60
+        ], $invoice->distribution_of_costgroups);
+        $this->assertContains([
+            'costgroup_number' => $costgroup2->number,
+            'ratio' => 40
+        ], $invoice->distribution_of_costgroups);
     }
 }

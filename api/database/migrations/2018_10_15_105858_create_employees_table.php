@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->increments('id');
             $table->string('email')->unique()->nullable(false);
             $table->string('password', 60)->nullable(false);
-            $table->boolean('is_admin');
+            $table->boolean('is_admin')->default(false);
             $table->timestamps();
         });
     }

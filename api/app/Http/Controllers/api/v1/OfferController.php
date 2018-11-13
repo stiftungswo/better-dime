@@ -6,11 +6,10 @@ use App\Http\Controllers\BaseController;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
-use App\Services\CostBreakdown;
-use App\Services\CreateProjectFromOffer;
-use App\Services\GroupMarkdownToDiv;
+use App\Services\Creator\CreateProjectFromOffer;
+use App\Services\PDF\GroupMarkdownToDiv;
+use App\Services\PDF\PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Application;
@@ -31,7 +30,7 @@ class OfferController extends BaseController
 
     public function get($id)
     {
-        return Offer::with(['discounts', 'positions'])->findOrFail($id);
+        return Offer::with(['discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'invoice_ids', 'project_id']);
     }
 
     public function post(Request $request)
@@ -69,11 +68,23 @@ class OfferController extends BaseController
             $offer->update(Input::toArray());
 
             if (Input::get('discounts')) {
-                $this->executeNestedUpdate(Input::get('discounts'), $offer->discounts, OfferDiscount::class, 'offer', $offer);
+                $this->executeNestedUpdate(
+                    Input::get('discounts'),
+                    $offer->discounts,
+                    OfferDiscount::class,
+                    'offer',
+                    $offer
+                );
             }
 
             if (Input::get('positions')) {
-                $this->executeNestedUpdate(Input::get('positions'), $offer->positions, OfferPosition::class, 'offer', $offer);
+                $this->executeNestedUpdate(
+                    Input::get('positions'),
+                    $offer->positions,
+                    OfferPosition::class,
+                    'offer',
+                    $offer
+                );
             }
         } catch (\Exception $e) {
             DB::rollBack();
@@ -86,28 +97,37 @@ class OfferController extends BaseController
 
     public function print($id)
     {
-        // TODO extract common things (styles, images, etc.) into own PDFController as soon as Invoice print is ported
-        // TODO fetch offer with project to pass project id to print
-        // TODO render receiving address differently based on is customer company or person
         // initialize stuff
         $app = new Application();
-        $offer = Offer::with(['accountant', 'address'])->findOrFail($id);
+        $offer = Offer::with(['accountant', 'address', 'project:id'])->findOrFail($id);
         $parsedown = new Parsedown();
-        /** @var \Barryvdh\DomPDF\PDF $pdf */
-        $pdf = App::make('dompdf.wrapper');
 
         // group h1 / h2 / h3 and the following tags to divs
         $description = GroupMarkdownToDiv::group($parsedown->text($offer->description));
 
-        // initialize DomPDF, render view and pass it back
-        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
-        $pdf->loadView('offers.print', [
-            'offer' => $offer,
-            'customer' => $offer->address->customer,
-            'breakdown' => CostBreakdown::calculate($offer),
-            'basePath' => $app->basepath(),
-            'description' => $description])->setPaper('a4', 'portrait');
-        return $pdf->stream();
+        // initialize PDFController, render view and pass it back
+        $pdf = new PDF(
+            'offers',
+            [
+                'offer' => $offer,
+                'breakdown' => $offer->breakdown,
+                'basePath' => $app->basepath(),
+                'description' => $description
+            ]
+        );
+
+        // return $pdf->debug(
+        //     'offers',
+        //     [
+        //         'offer' => $offer,
+        //         'customer' => $offer->address->customer,
+        //         'breakdown' => CostBreakdown::calculate($offer),
+        //         'basePath' => $app->basepath(),
+        //         'description' => $description
+        //     ]
+        // );
+
+        return $pdf->print();
     }
 
     public function createProject($id)

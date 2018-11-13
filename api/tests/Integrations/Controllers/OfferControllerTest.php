@@ -3,8 +3,6 @@
 namespace Tests\Integrations\Controllers;
 
 use App\Models\Offer\Offer;
-use App\Models\Offer\OfferDiscount;
-use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
@@ -47,8 +45,11 @@ class OfferControllerTest extends \TestCase
         // answer should also include discounts and positions
         $decodedResponse = $this->responseToArray();
         $this->assertEquals($offer->description, $decodedResponse['description']);
+        $this->assertArrayHasKey('breakdown', $decodedResponse);
+        $this->assertArrayHasKey('invoice_ids', $decodedResponse);
         $this->assertArrayHasKey('discounts', $decodedResponse);
         $this->assertArrayHasKey('positions', $decodedResponse);
+        $this->assertArrayHasKey('project_id', $decodedResponse);
     }
 
     public function testInvalidPost()
@@ -99,8 +100,8 @@ class OfferControllerTest extends \TestCase
     {
         // also add one nested relation, delete one and update one
         $offer = factory(Offer::class)->create();
-        $offerDiscountList = factory(OfferDiscount::class)->times(2)->make();
-        $offerPositionList = factory(OfferPosition::class)->times(2)->make();
+        $offerDiscountList = factory(\App\Models\Offer\OfferDiscount::class)->times(2)->make();
+        $offerPositionList = factory(\App\Models\Offer\OfferPosition::class)->times(2)->make();
         $offer->discounts()->saveMany($offerDiscountList);
         $offer->positions()->saveMany($offerPositionList);
 

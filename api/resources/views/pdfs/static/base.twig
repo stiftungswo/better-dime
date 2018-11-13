@@ -1,0 +1,176 @@
+<head>
+    {% block style %}
+        <style>
+            @import url('https://fonts.googleapis.com/css?family=Roboto');
+
+            * {
+                font-family: 'Roboto', sans-serif;
+                font-size: 14px;
+                line-height: 110%;
+            }
+
+            div.recipient-address {
+                margin-right: 12%;
+                margin-top: -20px;
+                width: 25%;
+            }
+
+            div.header {
+                padding-top: 5%;
+                width: 100%;
+            }
+
+            div.header .offer-title {
+                font-size: 16px;
+                margin-top: 30px;
+            }
+
+            div.header b {
+                font-size: 16px;
+            }
+
+            div.header div {
+                width: 100%
+            }
+
+            div.description h1 {
+                text-decoration: underline;
+            }
+
+            div.description div div {
+                page-break-inside: avoid;
+            }
+
+            table.top_table {
+                padding-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            table.top_table tr td {
+                padding: 0 10px 0 0;
+            }
+
+            table.table {
+                width: 100%;
+                border-style: none;
+            }
+
+            table.table thead {
+                border-style: none none solid none;
+                border-width: 1px;
+                font-weight: bold;
+            }
+
+            table.table tfoot {
+                border-style: solid none none none;
+                border-width: 1px;
+            }
+
+            tbody tr td, thead tr th {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                padding-left: 10px;
+                padding-bottom: 5px;
+            }
+
+            th.first-row {
+                width: 35%;
+            }
+
+            th.second-row {
+                width: 15%;
+            }
+
+            th.third-row {
+                width: 15%;
+            }
+
+            th.fourth-row {
+                width: 10%;
+            }
+
+            th.fifth-row {
+                width: 10%;
+            }
+
+            th.sixth-row {
+                width: 15%;
+            }
+
+            .text-align-center {
+                text-align: center;
+            }
+
+            .text-align-right {
+                text-align: right;
+            }
+
+            .force-page-break {
+                page-break-after: always;
+            }
+
+            tr.bold-cells {
+                font-weight: bold;
+            }
+
+            .bold {
+                font-weight: bold
+            }
+
+            div.signature {
+                margin-right: 5%;
+                float: left;
+                width: 45%;
+            }
+
+            div.signature div.date_location, div.signature div.dateline {
+                margin-top: 10%;
+            }
+
+            .float-left {
+                float: left;
+            }
+
+            .float-right {
+                float: right;
+            }
+
+            div.clear-float {
+                clear: both;
+            }
+
+            img.logo {
+                max-width: 50%;
+                max-height: 8%;
+            }
+
+            div.signing-area {
+                margin-top: 5%;
+            }
+        </style>
+    {% endblock %}
+    {% block title %}
+        <title>{{  env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}</title>
+    {% endblock %}
+</head>
+<body>
+    {% block header %}
+        <div class="clear-float">
+            <div class="float-left">
+                <p>{{ env('SENDER_NAME') }}<br>
+                    {{ env('SENDER_STREET') }}<br>
+                    {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}<br>
+                    Telefon: {{ env('SENDER_PHONE') }}<br>
+                    Mail: {{ env('SENDER_MAIL') }}<br>
+                    {{ env('SENDER_WEB') }} 
+                </p>
+            </div>
+
+            <div class="float-right">
+                <img class="logo" src="{{ base.path }}/resources/views/pdfs/static/swo_logo_big.png">
+            </div>
+        </div>
+    {% endblock %}
+    {% block customer %}{%  endblock %}
+    {% block content %}{% endblock %}
+</body>

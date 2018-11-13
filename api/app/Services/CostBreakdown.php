@@ -9,11 +9,11 @@ class CostBreakdown
     public static function calculate($breakdownable)
     {
         /** @var Collection $positions */
-        $positions = $breakdownable->positions->load(['service', 'rate_unit']);
+        $positions = $breakdownable->positions;
 
         // calculate subtotal without VAT
         $subtotal = intval($positions->map(function ($position) {
-            return $position->calculatedTotal();
+            return $position->calculated_total;
         })->sum());
 
         // calculate discounts
@@ -120,7 +120,7 @@ class CostBreakdown
             $sum = 0;
 
             foreach ($positions as $position) {
-                $sum += $position->calculatedTotal();
+                $sum += $position->calculated_total;
             }
 
             $sums[$vat] = $sum;

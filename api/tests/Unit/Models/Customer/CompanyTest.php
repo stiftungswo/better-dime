@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Customer;
 
+use App\Models\Customer\Address;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Person;
@@ -41,5 +42,16 @@ class CompanyTest extends \TestCase
         $people = factory(Person::class)->times(2)->make();
         $company->people()->saveMany($people);
         $this->assertCount(2, $company->people);
+    }
+
+    public function testAddressDeletion()
+    {
+        $company = factory(Company::class)->create();
+        $address = factory(Address::class)->make();
+        $address->customer()->associate($company);
+        $address->save();
+
+        $company->delete();
+        $this->assertNull(Address::find($address->id));
     }
 }

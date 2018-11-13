@@ -7,6 +7,8 @@ $factory->define(\App\Models\Customer\Address::class, function () {
     $faker = Faker\Factory::create('de_CH');
 
     return [
+        'customer_id' => factory(\App\Models\Customer\Person::class)->create()->id,
+        'customer_type' => \App\Models\Customer\Person::class,
         'city' => $faker->city,
         'country' => $faker->country,
         'description' => $faker->sentence,

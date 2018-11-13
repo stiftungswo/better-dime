@@ -17,9 +17,9 @@ class PortEmployeesTable extends Migration
         Schema::table('employees', function (Blueprint $table) {
             $table->string('first_name');
             $table->string('last_name');
-            $table->boolean('can_login');
-            $table->boolean('archived');
-            $table->string('holidays_per_year')->default(null);
+            $table->boolean('can_login')->default(false);
+            $table->boolean('archived')->default(false);
+            $table->string('holidays_per_year')->default(0);
             $table->softDeletes();
         });
     }

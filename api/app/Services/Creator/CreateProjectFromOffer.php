@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Creator;
 
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectPosition;
 
-class CreateProjectFromOffer extends BaseBreakdown
+class CreateProjectFromOffer extends BaseCreator
 {
 
     /**
      * @var Offer $offer ;
      */
     protected $offer;
-
-    /**
-     * @var array $offerBreakdown
-     */
-    protected $offerBreakdown;
 
     /**
      * @var Project $project
@@ -28,7 +23,6 @@ class CreateProjectFromOffer extends BaseBreakdown
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
-        $this->offerBreakdown = CostBreakdown::calculate($offer);
         $this->project = new Project();
     }
 
@@ -46,14 +40,9 @@ class CreateProjectFromOffer extends BaseBreakdown
 
         $this->project->chargeable = true;
 
-        if ($this->offer->fixed_price == null || $this->offer->fixed_price == 0) {
-            $this->project->budget_price = $this->offerBreakdown['subtotal'];
-        } else {
-            $this->checkAndAssignProjectProperty('budget_price', 'fixed_price');
+        if ($this->offer->fixed_price != null || $this->offer->fixed_price != 0) {
             $this->checkAndAssignProjectProperty('fixed_price');
         }
-
-        $budgetTime = 0;
 
         $this->project->offer()->associate($this->offer);
         $this->project->save();
@@ -69,11 +58,8 @@ class CreateProjectFromOffer extends BaseBreakdown
             }
 
             $this->project->positions()->save($projectPosition);
-
-            $budgetTime += $offerPosition->estimatedWorkHours();
         }
 
-        $this->project->budget_time = $budgetTime;
         $this->project->save();
 
         return $this->project;

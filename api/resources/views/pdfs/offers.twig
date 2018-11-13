@@ -1,0 +1,164 @@
+{% extends 'pdfs/static/base' %}
+
+{% block title %}
+<title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}vom {{ "now"|date("d.m.Y") }}</title>
+{% endblock %}
+
+{% block customer %}
+    <div class="clear-float">
+        <div class="recipient-address float-right">
+            {{ offer.address.dropdown_label | replace({',': "<br>"}) | raw }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="header clear-float">
+    <div>
+        {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+    </div>
+
+    <div>
+        Sachbearbeiter: {{ offer.accountant.first_name ~ ' ' ~ offer.accountant.last_name }}
+    </div>
+
+    <div class="offer-title">
+        <b>Offerte:<br>{{ offer.name }}</b>
+    </div>
+
+    <div style="padding-top: -10px;">
+        <p>Leistungsangebot Nr. {{ offer.id }}
+        {% if offer.project %}<br>Projekt Nr. {{ offer.project.id }}{% endif %}
+        </p>
+    </div>
+
+    <div class="bold">
+        {% if offer.short_description %}{{ offer.short_description }}{% endif %}
+    </div>
+
+    <div class="description">
+        {{ description | raw }}
+    </div>
+</div>
+
+<div class="force-page-break"></div>
+<b style="font-size: 16px;">Kostenübersicht</b>
+{{
+    tableGen(
+        {
+            "table": {
+                "class": "table"
+            },
+            "tfoot-tr": {
+                "class": "bold-cells"
+            }
+        },
+        {
+            "Bezeichnung": {"attr": { "class": "first-row" }},
+            "Ansatz CHF": {"attr": { "class": "second-row text-align-right" }},
+            "Einheit": {"attr": { "class": "third-row" }},
+            "Anzahl": {"attr": { "class": "fourth-row" }},
+            "MwSt. Satz": {"attr": { "class": "fifth-row text-align-right" }},
+            "Teilbetrag CHF exkl. MwSt.": {"attr": { "class": "sixth-row text-align-right" }}
+        },
+        breakdown.positions,
+        {
+            "service.name": {},
+            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "chf"},
+            "rate_unit.billing_unit": {},
+            "amount": {},
+            "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
+            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "chf"}
+        },
+        [
+            {
+                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            }
+        ]
+    )
+}}
+
+{% if breakdown.discounts is not empty %}
+{{ tableGen(
+    {
+        "table": {
+        "class": "table",
+        "style": "margin-top: 30px;"
+    },
+        "tfoot-tr-1": {
+        "class": "bold-cells"
+    }
+    },
+    {
+        "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
+        "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+    },
+    breakdown.discounts,
+    {
+        "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
+        "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+    },
+    [
+        {
+            "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+            (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+        },
+        {
+            "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+            (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+        }
+    ]
+) }}
+{% endif %}
+
+{{
+    tableGen(
+        {
+            "table": {
+                "class": "table",
+                "style": "margin-top: 30px;"
+            },
+            "tfoot-tr-1": {
+                "class": "bold-cells"
+            }
+        },
+        {
+            "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
+            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+        },
+        breakdown.vats,
+        {
+            "vat": {"attr": {"colspan": "5", "class": "text-align-right"}, "format": "percent"},
+            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+        },
+        [
+            {
+                "Mehrwertsteuer Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+            },
+            {
+                "Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
+            }
+        ]
+    )
+}}
+
+<div>
+    <p class="bold">Bitte unterschrieben retournieren bis {{ "now" | date_modify("+30 days") | date("d.m.Y") }}.</p>
+
+    <div class="clear-float signing-area">
+        <div class="signature">
+            <div class="bold">Unterschrift des Auftragsnehmers:</div>
+            <div class="date_location">Ort / Datum:</div>
+            <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }}</div
+        </div>
+        <div class="signature">
+            <div class="bold">Unterschrift des Auftraggebers:</div>
+            <div class="date_location">Ort / Datum:</div>
+            <div class="dateline" style="border-bottom: 1px dotted black;"><p></p></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

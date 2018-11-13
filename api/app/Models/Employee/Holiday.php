@@ -10,7 +10,7 @@ class Holiday extends Model
 {
     use  SoftDeletes;
 
-    protected $fillable = ['date', 'duration'];
+    protected $fillable = ['date', 'duration', 'name'];
 
     public static function paidTimeInDateRange($start, $end)
     {

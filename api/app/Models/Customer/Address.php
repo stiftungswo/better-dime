@@ -20,24 +20,24 @@ class Address extends Model
 
     public function getDropdownLabelAttribute()
     {
-        $basicString = "";
+        $baseArray = [];
         if ($this->customer) {
             if ($this->customer->company) {
-                $basicString .= $this->customer->company->name . ', ';
+                $baseArray[] = $this->customer->company->name;
             } elseif ($this->customer->name) {
-                $basicString .= $this->customer->name . ', ';
+                $baseArray[] = $this->customer->name;
             }
 
             if ($this->customer->first_name) {
-                $basicString .= $this->customer->first_name . ' ' . $this->customer->last_name . ', ';
+                $baseArray[] = $this->customer->first_name . ' ' . $this->customer->last_name;
             }
         }
 
-        $basicString .= $this->street . ', ';
-        $basicString .= $this->supplement ? $this->supplement . ', ' : '';
-        $basicString .= $this->postcode . ' ' . $this->city;
-        $basicString .= $this->country ? ', ' . $this->country : '';
+        $baseArray[] = $this->street;
+        !$this->supplement ?: array_push($baseArray, $this->supplement);
+        $baseArray[] = $this->postcode . ' ' . $this->city;
+        !$this->country ?: array_push($baseArray, $this->country);
 
-        return $basicString;
+        return implode(', ', $baseArray);
     }
 }

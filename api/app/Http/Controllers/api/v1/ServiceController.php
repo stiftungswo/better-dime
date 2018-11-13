@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\BaseController;
 use App\Models\Service\Service;
 use App\Models\Service\ServiceRate;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -21,11 +19,12 @@ class ServiceController extends BaseController
 
     public function get($id)
     {
-        return Service::with('serviceRates')->find($id);
+        return Service::with('service_rates')->findOrFail($id);
     }
 
-    public function post()
+    public function post(Request $request)
     {
+        $this->validateRequest($request);
         $s = Service::create(Input::toArray());
 
         foreach (Input::get('service_rates') as $rate) {
@@ -33,13 +32,13 @@ class ServiceController extends BaseController
             $r->service_id = $s->id;
             $r->save();
         }
-        return $s;
+        return self::get($s->id);
     }
 
-    // i am super unhappy with how complicated this is, but that's the price we pay for doing nested updates.
-    // we can probably extract the logic into a generic function though.
-    public function put($id)
+    public function put($id, Request $request)
     {
+        $this->validateRequest($request);
+
         try {
             DB::beginTransaction();
             $s = Service::findOrFail($id);
@@ -47,26 +46,32 @@ class ServiceController extends BaseController
 
             $this->executeNestedUpdate(
                 Input::get('service_rates'),
-                $s->serviceRates,
+                $s->service_rates,
                 ServiceRate::class,
                 'service',
                 $s
             );
-        } catch (QueryException $e) {
-            if (str_contains($e->getMessage(), 'service_rates_service_id_rate_group_id_unique')) {
-                return new Response('Einer der neuen Tarife ist bereits erfasst', 400);
-            }
-            DB::rollBack();
-            throw $e;
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
         }
         DB::commit();
+
+        return self::get($s->id);
     }
 
     public function delete($id)
     {
         Service::findOrFail($id)->delete();
+    }
+
+    private function validateRequest(Request $request)
+    {
+        $this->validate($request, [
+            'archived' => 'boolean',
+            'description' => 'required|string',
+            'name' => 'required|string',
+            'vat' => 'required|numeric'
+        ]);
     }
 }

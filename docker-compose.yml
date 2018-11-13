@@ -28,3 +28,12 @@ services:
     - PMA_ARBITRARY=1
     ports:
     - 38080:80
+  web-client:
+    image: node:10
+    container_name: dime_web-client
+    volumes:
+    - ./frontend:/var/frontend
+    working_dir: /var/frontend
+    ports:
+    - "33000:3000"
+    command: bash -c "yarn install && yarn run start"

@@ -7,6 +7,7 @@ use App\Models\Employee\Employee;
 use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
 use App\Models\Service\RateGroup;
+use App\Services\CostBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,18 +15,16 @@ class Project extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['current_price', 'current_time'];
-
     protected $casts = [
         'archived' => 'boolean',
         'chargeable' => 'boolean'
     ];
 
     protected $fillable = [
-        'accountant_id', 'address_id', 'archived', 'budget_price', 'budget_time', 'chargeable',
-        'category_id', 'deadline', 'description', 'fixed_price', 'vacation_project',
-        'name', 'offer_id', 'project_category_id', 'rate_group_id', 'started_at',
-        'stopped_at'];
+        'accountant_id', 'address_id', 'archived', 'chargeable', 'category_id', 'deadline',
+        'description', 'fixed_price', 'vacation_project', 'name', 'offer_id',
+        'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'
+    ];
 
     public function accountant()
     {
@@ -70,6 +69,48 @@ class Project extends Model
     public function rate_group()
     {
         return $this->belongsTo(RateGroup::class);
+    }
+
+    /**
+     * Returns the budget for the project based on a few factors:
+     * 1. if project has no associated offer, it returns null
+     * 2. if the offer of the project has a fixed price set, it returns the fixed price
+     * 3. else, calculate the subtotal of the offer through the Breakdown (this is before any discount and VAT are applied)
+     * @return null|integer
+     */
+    public function getBudgetPriceAttribute()
+    {
+        if (is_null($this->offer)) {
+            return null;
+        } else {
+            if (is_null($this->offer->fixed_price)) {
+                return CostBreakdown::calculate($this->offer)['subtotal'];
+            } else {
+                return $this->offer->fixed_price;
+            }
+        }
+    }
+
+    /**
+     * Returns the time budget for the project:
+     * 1. if project has no associated offer, it returns null
+     * 2. else, calculate the estimated workhours for each offer position and return this result
+     * @return float|int|null
+     */
+    public function getBudgetTimeAttribute()
+    {
+        if (is_null($this->offer)) {
+            return null;
+        } else {
+            $budgetTime = 0;
+
+            foreach ($this->offer->positions as $position) {
+                /** @var \App\Models\Offer\OfferPosition $position */
+                $budgetTime += $position->estimatedWorkHours();
+            }
+
+            return $budgetTime;
+        }
     }
 
     /**

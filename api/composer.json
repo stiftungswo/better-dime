@@ -12,6 +12,9 @@
         "erusev/parsedown": "^1.7",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "5.7.*",
+        "rcrowe/twigbridge": "^0.9.9",
+        "sentry/sentry-laravel": "^0.11.0",
+        "symfony/var-dumper": "^4.1",
         "vlucas/phpdotenv": "~2.2"
     },
     "require-dev": {
