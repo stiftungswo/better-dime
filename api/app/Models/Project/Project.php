@@ -23,7 +23,7 @@ class Project extends Model
     protected $fillable = [
         'accountant_id', 'address_id', 'archived', 'chargeable', 'category_id', 'deadline',
         'description', 'fixed_price', 'vacation_project', 'name', 'offer_id',
-        'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'
+        'project_category_id', 'rate_group_id'
     ];
 
     protected $hidden = ['efforts', 'offer'];
@@ -141,7 +141,7 @@ class Project extends Model
         foreach ($this->positions as $position) {
             if (!is_null($position->rate_unit) && $position->rate_unit->is_time) {
                 /** @var \App\Models\Project\ProjectPosition $position */
-                $duration += $position->effortsValueSum();
+                $duration += $position->efforts_value;
             }
         }
 

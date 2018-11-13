@@ -102,7 +102,7 @@ const schema = yup.object({
 
 export interface Props extends FormViewProps<Offer> {
   mainStore?: MainStore;
-  offer: Offer | undefined;
+  offer: Offer;
 }
 
 @compose(
@@ -139,7 +139,7 @@ export default class OfferForm extends React.Component<Props> {
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
-                  {offer && <Navigator projects={offer.project_ids} invoices={offer.invoice_ids} id={offer.id} />}
+                  {offer.id && <Navigator projects={offer.project_ids} invoices={offer.invoice_ids} id={offer.id} />}
                   <DimePaper>
                     <FormControl half>
                       <Field fullWidth component={TextField} name={'name'} label={'Name'} />
@@ -176,16 +176,18 @@ export default class OfferForm extends React.Component<Props> {
                     <OfferDiscountSubform formikProps={props} name={'discounts'} />
                   </DimePaper>
                 </Grid>
-                <Grid item xs={12} lg={6}>
-                  <DimePaper>
-                    <FormHeader>Berechnung</FormHeader>
-                    <BreakdownLine title={'Subtotal'} value={offer!.breakdown.subtotal} />
-                    <BreakdownLine title={'Davon MwSt.'} value={offer!.breakdown.vatTotal} />
-                    <BreakdownLine title={'Total Abzüge'} value={offer!.breakdown.discountTotal} />
-                    <BreakdownLine title={'Total'} value={offer!.breakdown.total} />
-                    <Field component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
-                  </DimePaper>
-                </Grid>
+                {offer.id && (
+                  <Grid item xs={12} lg={6}>
+                    <DimePaper>
+                      <FormHeader>Berechnung</FormHeader>
+                      <BreakdownLine title={'Subtotal'} value={offer.breakdown.subtotal} />
+                      <BreakdownLine title={'Davon MwSt.'} value={offer.breakdown.vatTotal} />
+                      <BreakdownLine title={'Total Abzüge'} value={offer.breakdown.discountTotal} />
+                      <BreakdownLine title={'Total'} value={offer.breakdown.total} />
+                      <Field component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                    </DimePaper>
+                  </Grid>
+                )}
               </Grid>
             </form>
           </Fragment>

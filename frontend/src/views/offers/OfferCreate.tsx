@@ -40,7 +40,11 @@ export default class OfferCreate extends React.Component<Props> {
     return {
       id: undefined,
       name: '',
+      status: 1,
+      short_description: '',
       description: '',
+      positions: [],
+      discounts: [],
     };
   }
 

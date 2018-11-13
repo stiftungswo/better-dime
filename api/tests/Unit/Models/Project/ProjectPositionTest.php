@@ -80,12 +80,12 @@ class ProjectPositionTest extends \TestCase
         // should be 0 if no efforts are recorded for the position
         /** @var ProjectPosition $position */
         $position = factory(ProjectPosition::class)->create();
-        $this->assertEquals(0, $position->effortsValueSum());
+        $this->assertEquals(0, $position->efforts_value);
 
         $position->efforts()->saveMany(factory(ProjectEffort::class, 2)->make([
             'value' => 1234.56
         ]));
 
-        $this->assertEquals(2469.12, $position->fresh(['efforts'])->effortsValueSum());
+        $this->assertEquals(2469.12, $position->fresh(['efforts'])->efforts_value);
     }
 }

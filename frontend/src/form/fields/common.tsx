@@ -36,7 +36,13 @@ class DelayedInput extends React.Component<any> {
   };
 }
 
-export type FormProps = { label: string; children: ReactNode; fullWidth: boolean; margin?: PropTypes.Margin } & FieldProps;
+export type FormProps = {
+  label: string;
+  children: ReactNode;
+  fullWidth: boolean;
+  margin?: PropTypes.Margin;
+  required?: boolean;
+} & FieldProps;
 export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any } & FormProps;
 
 export const ValidatedFormGroupWithLabel = ({
@@ -46,20 +52,34 @@ export const ValidatedFormGroupWithLabel = ({
   children,
   fullWidth,
   margin = 'normal',
+  required,
 }: FormProps) => {
   const hasErrors: boolean = !!errors[field.name] && !!touched[field.name];
 
   return (
     <FormControl margin={margin} error={hasErrors} fullWidth={fullWidth}>
-      {label && <InputLabel htmlFor={field.name}>{label}</InputLabel>}
+      {label && (
+        <InputLabel required={required} htmlFor={field.name}>
+          {label}
+        </InputLabel>
+      )}
       {children}
       <ErrorMessage name={field.name} render={error => <FormHelperText error={true}>{error}</FormHelperText>} />
     </FormControl>
   );
 };
 
-export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, unit = undefined, margin, ...rest }: InputFieldProps) => (
-  <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin}>
+export const InputFieldWithValidation = ({
+  label,
+  field,
+  form,
+  fullWidth = false,
+  unit = undefined,
+  margin,
+  required,
+  ...rest
+}: InputFieldProps) => (
+  <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin} required={required}>
     <DelayedInput
       fullWidth={fullWidth}
       endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
@@ -82,6 +102,6 @@ export const PasswordField = (props: InputFieldProps) => <InputFieldWithValidati
 export const TextField = (props: InputFieldProps & { multiline?: boolean }) => <InputFieldWithValidation type={'text'} {...props} />;
 
 export const TodoField = (props: InputFieldProps) => {
-  console.warn('TodoField used! Implement a custom field type for this.');
-  return <TextField {...props} />;
+  console.warn(`TodoField used: ${props.field.name}! Implement a custom field type for this.`);
+  return <TextField {...props} label={`[TODO] ${props.label}`} />;
 };

@@ -15,6 +15,9 @@ import ServiceCreate from './views/services/ServiceCreate';
 import OfferCreate from './views/offers/OfferCreate';
 import OfferUpdate from './views/offers/OfferUpdate';
 import RateUnitOverview from './views/rate_units/RateUnitOverview';
+import ProjectOverview from './views/projects/ProjectOverview';
+import ProjectUpdate from './views/projects/ProjectUpdate';
+import ProjectCreate from './views/projects/ProjectCreate';
 
 class App extends React.Component {
   public render() {
@@ -29,6 +32,9 @@ class App extends React.Component {
             <ProtectedRoute exact path="/offers" component={OfferOverview} />
             <ProtectedRoute exact path="/offers/new" component={OfferCreate} />
             <ProtectedRoute exact path="/offers/:id" component={OfferUpdate} />
+            <ProtectedRoute exact path="/projects" component={ProjectOverview} />
+            <ProtectedRoute exact path="/projects/new" component={ProjectCreate} />
+            <ProtectedRoute exact path="/projects/:id" component={ProjectUpdate} />
             <ProtectedRoute exact path="/employees" component={EmployeeOverview} />
             <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />

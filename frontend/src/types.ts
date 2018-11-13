@@ -183,27 +183,46 @@ export interface ServiceRateRateGroup {
 }
 
 export interface Project {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  currentPrice: string;
-  remainingBudgetPrice: string;
-  currentTime: string;
-  remainingBudgetTime: string;
-  budgetTime: string;
-  budgetPrice: string;
-  name: string;
-  alias: string;
-  startedAt: string;
-  stoppedAt: string;
-  description: string;
-  tags: any[];
-  chargeable: boolean;
-  activities: any[];
-  invoices: any[];
-  comments: any[];
-  offers: any[];
+  id?: number;
+  accountant_id: number;
+  address_id: number;
   archived: boolean;
+  category_id: number;
+  chargeable: boolean;
+  deadline: null;
+  description: string;
+  fixed_price: null | number;
+  name: string;
+  offer_id?: number;
+  rate_group_id: number;
+  started_at: null;
+  stopped_at: null;
+  vacation_project: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  budget_price: number;
+  budget_time: number;
+  current_price: number;
+  current_time: number;
+  positions: ProjectPosition[];
+  offer: Offer;
+}
+
+export interface ProjectPosition {
+  id?: number;
+  description: string;
+  price_per_rate: number;
+  project_id: number;
+  rate_unit_id: number;
+  service_id: number;
+  vat: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  charge: number;
+  calculated_vat: number;
+  efforts_value: number;
 }
 
 export interface Status {
