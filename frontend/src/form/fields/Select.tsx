@@ -76,6 +76,7 @@ function inputComponent({ inputRef, ...props }: any) {
 function Control(props: any) {
   return (
     <TextField
+      margin={props.margin}
       fullWidth
       InputProps={{
         inputComponent,
@@ -170,7 +171,7 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, field, label, ...rest } = this.props as any;
+    const { classes, theme, field, label, margin, ...rest } = this.props as any;
 
     const myLabel = this.props.label
       ? {
@@ -192,7 +193,7 @@ class IntegrationReactSelect extends React.Component<any> {
     };
 
     return (
-      <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} fullWidth>
+      <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} margin={margin} fullWidth>
         <Select
           menuPortalTarget={document.body}
           classes={classes}

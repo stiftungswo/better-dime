@@ -27,6 +27,6 @@ export class ServiceSelector extends React.Component<Props> {
   }
 
   public render() {
-    return <Select options={this.options} field={this.props.field} form={this.props.form} label={this.props.label} />;
+    return <Select options={this.options} {...this.props} />;
   }
 }
