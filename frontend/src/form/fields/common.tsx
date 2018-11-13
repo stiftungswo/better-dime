@@ -10,7 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabe
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 
 export type InputFieldProps = { type: string; unit?: string } & FormProps;
-export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean } & FieldProps;
+export type FormProps = { label: string; children: JSX.Element; fullWidth: boolean, multiline?: boolean } & FieldProps;
 
 export const ValidatedFormGroupWithLabel = ({ label, field, form: { touched, errors }, children, fullWidth }: FormProps) => {
   const hasErrors: boolean = !!errors[field.name] && !!touched[field.name];
@@ -36,7 +36,7 @@ export const SwitchField = ({ label, field }: FormProps) => (
   <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
 );
 
-export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined }: InputFieldProps) => (
+export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, type = 'text', unit = undefined, multiline = false }: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth}>
     <Input
       id={field.name}
@@ -44,6 +44,7 @@ export const InputFieldWithValidation = ({ label, field, form, fullWidth = false
       type={type}
       fullWidth={fullWidth}
       endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
+      multiline={multiline}
       {...field}
     />
   </ValidatedFormGroupWithLabel>
@@ -70,4 +71,8 @@ export const PasswordFieldWithValidation = ({ label, field, form, fullWidth = fa
 
 export const TextFieldWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
   <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} />
+);
+
+export const TextAreaWithValidation = ({ label, field, form, fullWidth = false, children }: FormProps & { children: ReactNode }) => (
+  <InputFieldWithValidation type={'text'} label={label} fullWidth={fullWidth} field={field} form={form} children={children} multiline={true} />
 );

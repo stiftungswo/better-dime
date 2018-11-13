@@ -1,17 +1,33 @@
 import { action } from 'mobx';
 import { MainStore } from './mainStore';
 
+interface AbstractMethods {
+  get_entity?: boolean,
+  set_entity?: boolean,
+  entities?: boolean,
+  doFetchAll?: boolean,
+  doFetchOne?: boolean,
+  doPost?: boolean,
+  doPut?: boolean,
+  doDelete?: boolean
+}
+
 /**
  * This class wraps all common store functions with success/error popups. The desired methods that start with "do" should be overriden in the specific stores.
  */
 export class AbstractStore<T, OverviewType = T> {
-  constructor(protected mainStore: MainStore) {}
+  constructor(protected mainStore: MainStore, protected urlPath?: string, protected activeMethods?: AbstractMethods) {}
 
   protected get entityName() {
     return { singular: 'Die Entität', plural: 'Die Entitäten' };
   }
 
   public get entity(): T | undefined {
+    // if (this.activeMethods) {
+    //   if (this.activeMethods.get_entity) {
+    //     return this.entityName().s
+    //   }
+    // }
     throw new Error('Not implemented');
   }
 

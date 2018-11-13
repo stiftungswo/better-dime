@@ -14,6 +14,9 @@ import ServiceOverview from './views/services/ServiceOverview';
 import ServiceUpdate from './views/services/ServiceUpdate';
 import ServiceCreate from './views/services/ServiceCreate';
 import RateUnitOverview from './views/rate_units/RateUnitOverview';
+import RateGroupOverview from './views/rate_groups/RateGroupOverview';
+import ProjectCategoryOverview from './views/project_categories/ProjectCategoryOverview';
+import CustomerTagOverview from './views/customer_tags/CustomerTagOverview';
 
 class App extends React.Component {
   public render() {
@@ -29,9 +32,12 @@ class App extends React.Component {
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />
             <ProtectedRoute exact path="/holidays" component={HolidayOverview} />
             <ProtectedRoute exact path="/rate_units" component={RateUnitOverview} />
+            <ProtectedRoute exact path="/rate_groups" component={RateGroupOverview} />
             <ProtectedRoute exact path="/services" component={ServiceOverview} />
             <ProtectedRoute exact path="/services/new" component={ServiceCreate} />
             <ProtectedRoute exact path="/services/:id" component={ServiceUpdate} />
+            <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
+            <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />
             <Route>
               <p>404</p>
             </Route>
