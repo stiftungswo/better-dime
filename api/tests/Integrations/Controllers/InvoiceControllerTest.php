@@ -103,8 +103,20 @@ class InvoiceControllerTest extends \TestCase
         $template['discounts']['0']['id'] = $invoiceDiscountList[0]->id;
         $template['positions']['0']['id'] = $invoicePositionList[0]->id;
 
-        $this->asAdmin()->json('PUT', 'api/v1/invoices/' . $invoice->id, $template);
+        $this->asAdmin()->json('PUT', 'api/v1/invoices/' . $invoice->id, $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
+    }
+
+    public function testValidPrint()
+    {
+        $this->asAdmin()->json('POST', 'api/v1/invoices', $this->invoiceTemplate())->assertResponseOk();
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $this->responseToArray()['id'] . '/print')->assertResponseOk();
+    }
+
+    public function testValidEsrPrint()
+    {
+        $this->asAdmin()->json('POST', 'api/v1/invoices', $this->invoiceTemplate())->assertResponseOk();
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $this->responseToArray()['id'] . '/print_esr')->assertResponseOk();
     }
 
     private function invoiceTemplate()

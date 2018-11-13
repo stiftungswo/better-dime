@@ -13,7 +13,6 @@ use App\Services\PDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
-use Laravel\Lumen\Application;
 use Parsedown;
 
 class InvoiceController extends BaseController
@@ -71,8 +70,7 @@ class InvoiceController extends BaseController
     public function print($id)
     {
         // initialize stuff
-        $app = new Application();
-        $invoice = Invoice::with(['accountant', 'address', 'costgroup_distributions', 'project'])->findOrFail($id);
+        $invoice = Invoice::with(['accountant', 'address', 'costgroup_distributions', 'project'])->findOrFail($id)->append('distribution_of_costgroups');
         $parsedown = new Parsedown();
 
         // group h1 / h2 / h3 and the following tags to divs
@@ -84,8 +82,33 @@ class InvoiceController extends BaseController
             [
                 'breakdown' => CostBreakdown::calculate($invoice),
                 'invoice' => $invoice,
-                'basePath' => $app->basepath(),
                 'description' => $description
+            ]
+        );
+
+        return $pdf->print();
+    }
+
+    public function print_esr($id)
+    {
+        // initialize stuff
+        $invoice = Invoice::with(['address'])->findOrFail($id);
+        $breakdown = CostBreakdown::calculate($invoice);
+
+        // format total
+        $splitted = str_split($breakdown['total']);
+        $first_part = "";
+        $first_part .= implode('', array_slice($splitted, 0, -2));
+        $first_part .= " ";
+        $first_part .= implode('', array_slice($splitted, -2, 2));
+
+        // initialize PDF, render view and pass it back
+        $pdf = new PDF(
+            'esr',
+            [
+                'breakdown' => $breakdown,
+                'invoice' => $invoice,
+                'formatted_total' => $first_part
             ]
         );
 

@@ -48,4 +48,20 @@ class Invoice extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function getDistributionOfCostgroupsAttribute()
+    {
+        if ($this->costgroup_distributions->isEmpty()) {
+            return [];
+        } else {
+            $sum = $this->costgroup_distributions->sum('weight');
+
+            return $this->costgroup_distributions->map(function ($cd) use ($sum) {
+                return [
+                    "costgroup_number" => $cd->costgroup_number,
+                    "ratio" => round($cd->weight / $sum * 100, 0)
+                ];
+            });
+        }
+    }
 }

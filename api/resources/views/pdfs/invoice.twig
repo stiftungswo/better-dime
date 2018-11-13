@@ -38,7 +38,7 @@
                 {% if invoice.project %}
                     <td width="20%">Projekt Nr. {{ invoice.project.id }}</td>
                 {% endif %}
-                <td colspan="2">Kostenstellen {% for dist in invoice.costgroup_distributions %}
+                <td colspan="2">Kostenstellen {% for dist in invoice.distribution_of_costgroups %}
                         {{ dist.ratio }}% {{ dist.costgroup_number }}
                     {% endfor %}
                 </td>

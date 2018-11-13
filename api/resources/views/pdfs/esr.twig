@@ -1,0 +1,71 @@
+<head>
+    {% block style %}
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+            line-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table tr td {
+            padding-right: 5%;
+            padding-bottom: 0.5%;
+        }
+    </style>
+</head>
+{% endblock %}
+
+<body class="text-align-right">
+<div style="margin-top: 67%; margin-left: -20px; width: 100%; height: 35%">
+    <div style="float: left; width: 28%; padding-right: 2%">
+        <div style="margin: 7% 0 0 0; font-size: 14px; height: 33%">
+            <div style="font-weight: bold;">{{ env('SENDER_NAME') }}</div>
+            {{ env('SENDER_STREET') }}<br>
+            {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}
+        </div>
+
+        <div class="text-align-right" style="margin:3% 8% 0 10%; font-size: 10px; text-align: right;">
+            {{ env('SENDER_BANK_ACCOUNT_NR') }}
+        </div>
+
+        <div style="margin: 5.5% -1.5% 0 0; text-align: right; width: 100%">
+           <pre style="margin: 0 0 0 0; padding: 0 5px 0 0; font-size: 18px; letter-spacing: 10px;">{{ formatted_total }}</pre>
+        </div>
+
+        <div style="margin: 7% 0 0 0; font-size: 14px;">
+            {{ invoice.address.dropdown_label | replace({',': "<br>"}) | raw }}
+        </div>
+    </div>
+    <div style="float: left; width: 28%; padding-right: 2%">
+        <div style="margin: 7% 0 0 0; font-size: 14px; height: 33%">
+            <div style="font-weight: bold;">{{ env('SENDER_NAME') }}</div>
+            {{ env('SENDER_STREET') }}<br>
+            {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}
+        </div>
+
+        <div class="text-align-right" style="margin:3% 0 0 10%; font-size: 10px; text-align: right;">
+            {{ env('SENDER_BANK_ACCOUNT_NR') }}
+        </div>
+
+        <div style="margin: 5.5% -7% 0 0; text-align: right; width: 100%">
+            <pre style="margin: 0 0 0 0; padding: 0 5px 0 0; font-size: 18px; letter-spacing: 10px;">{{ formatted_total }}</pre>
+        </div>
+    </div>
+    <div style="float: left; width: 36%; padding: 0 2% 0 2%">
+        <div style="margin: 7% 0 0 0; font-size: 14px; height: 23%">
+            Rechnung Nr. {{ invoice.id }}
+        </div>
+
+        <div style="margin: 20% 0 0 0; font-size: 14px;">
+            {{ invoice.address.dropdown_label | replace({',': "<br>"}) | raw }}
+        </div>
+    </div>
+</div>
+</body>
