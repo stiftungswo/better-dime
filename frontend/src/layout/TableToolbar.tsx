@@ -40,6 +40,7 @@ interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
   deleteAction?: any;
   addAction?: ActionButtonAction;
   title: string;
+  children?: React.ReactNode;
 }
 
 const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToolbarProps) => {
@@ -61,6 +62,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
         )}
       </div>
       <div className={classes.spacer} />
+      {props.children}
       <div className={classes.actions}>
         {numSelected > 0 ? <DeleteButton onConfirm={deleteAction} /> : <ActionButton icon={AddIcon} action={addAction} />}
       </div>

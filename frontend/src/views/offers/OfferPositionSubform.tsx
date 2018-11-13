@@ -37,6 +37,10 @@ export default class OfferPositionSubform extends React.Component<Props> {
     super(props);
   }
 
+  state = {
+    padding: 'default',
+  };
+
   public render() {
     const { values } = this.props.formikProps;
     return (
@@ -44,8 +48,18 @@ export default class OfferPositionSubform extends React.Component<Props> {
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Services'} numSelected={0} addAction={() => arrayHelpers.push(template)} />
-            <Table padding={'dense'}>
+            <TableToolbar title={'Services'} numSelected={0} addAction={() => arrayHelpers.push(template)}>
+              <button type="button" onClick={() => this.setState({ padding: 'none' })}>
+                none
+              </button>
+              <button type="button" onClick={() => this.setState({ padding: 'dense' })}>
+                dense
+              </button>
+              <button type="button" onClick={() => this.setState({ padding: 'default' })}>
+                default
+              </button>
+            </TableToolbar>
+            <Table padding={this.state.padding as any}>
               <TableHead>
                 <TableRow>
                   <TableCell>Reihenfolge</TableCell>
