@@ -60,7 +60,7 @@ class OfferPosition extends Model
 
     public function getDescriptionAttribute()
     {
-        if($this->service && $this->service->name) {
+        if ($this->service && $this->service->name) {
             return $this->service->name;
         } else {
             return "No service assigned";

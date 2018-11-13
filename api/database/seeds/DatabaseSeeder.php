@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
         });
 
         print("Attaching some people to a company ...\n");
-        $people->slice(ceil(count($people) / 2))->each(function ($p) use($companies) {
+        $people->slice(ceil(count($people) / 2))->each(function ($p) use ($companies) {
             $p->company()->associate($companies->random());
             $p->save();
         });
