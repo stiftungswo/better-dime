@@ -3,6 +3,7 @@ import * as React from 'react';
 import PeopleIcon from '@material-ui/icons/People';
 import DriveFile from '@material-ui/icons/InsertDriveFile';
 import ListIcon from '@material-ui/icons/List';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { NavItem } from './NavItem';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import { Collapsible } from './Collapsible';
@@ -14,7 +15,8 @@ interface NavigationProps {
 
 export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) => (
   <React.Fragment>
-    <NavItem to={'/'} exact label={'Offerten'} icon={DriveFile} />
+    <NavItem to={'/offers'} exact label={'Offerten'} icon={DriveFile} />
+    <NavItem to={'/projects'} exact label={'Projekte'} icon={AssignmentIcon} />
     <NavItem to={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
     <Collapsible icon={ListIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} />

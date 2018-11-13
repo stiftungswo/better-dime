@@ -186,14 +186,7 @@ export interface Project {
   id: number;
   createdAt: string;
   updatedAt: string;
-  currentPrice: string;
-  remainingBudgetPrice: string;
-  currentTime: string;
-  remainingBudgetTime: string;
-  budgetTime: string;
-  budgetPrice: string;
   name: string;
-  alias: string;
   startedAt: string;
   stoppedAt: string;
   description: string;
@@ -204,6 +197,12 @@ export interface Project {
   comments: any[];
   offers: any[];
   archived: boolean;
+  offer_id?: number;
+  current_price: number;
+  budget_price: number;
+  current_time: number;
+  budget_time: number;
+  fixed_price: number | null;
 }
 
 export interface Status {

@@ -82,6 +82,6 @@ export const PasswordField = (props: InputFieldProps) => <InputFieldWithValidati
 export const TextField = (props: InputFieldProps & { multiline?: boolean }) => <InputFieldWithValidation type={'text'} {...props} />;
 
 export const TodoField = (props: InputFieldProps) => {
-  console.warn('TodoField used! Implement a custom field type for this.');
-  return <TextField {...props} />;
+  console.warn(`TodoField used: ${props.field.name}! Implement a custom field type for this.`);
+  return <TextField {...props} label={`[TODO] ${props.label}`} />;
 };
