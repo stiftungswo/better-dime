@@ -37,8 +37,12 @@ const styles = (theme: Theme) => ({
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
   },
   singleValue: {
+    position: 'absolute',
     whiteSpace: 'nowrap',
     fontSize: 16,
+    maxWidth: 'calc(100% - 40px)',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
   },
   placeholder: {
     position: 'absolute',
