@@ -32,16 +32,6 @@ class CreateProjectFromOfferTest extends \TestCase
         $this->expectOfferError('address_id');
     }
 
-    public function testEmptyShortDescription()
-    {
-        $this->expectOfferError('short_description');
-    }
-
-    public function testEmptyName()
-    {
-        $this->expectOfferError('name');
-    }
-
     public function testEmptyRateGroup()
     {
         $this->expectOfferError('rate_group_id');
@@ -52,19 +42,9 @@ class CreateProjectFromOfferTest extends \TestCase
         $this->expectPositionError('service_id');
     }
 
-    public function testEmptyPricePerRate()
-    {
-        $this->expectPositionError('price_per_rate');
-    }
-
     public function testEmptyRateUnitId()
     {
         $this->expectPositionError('rate_unit_id');
-    }
-
-    public function testEmptyVat()
-    {
-        $this->expectPositionError('vat');
     }
 
     private function expectPositionError($a)

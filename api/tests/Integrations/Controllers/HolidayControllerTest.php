@@ -39,21 +39,14 @@ class HolidayControllerTest extends \TestCase
 
     public function testValidPost()
     {
-        $template = [
-            'date' => (new \DateTime())->format('Y-m-d'),
-            'duration' => 400
-        ];
-        $this->asAdmin()->json('POST', 'api/v1/holidays', $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
+        $this->asAdmin()->json('POST', 'api/v1/holidays', $this->holidayTemplate())->assertResponseOk();
+        $this->assertResponseMatchesTemplate($this->holidayTemplate());
     }
 
     public function testInvalidObjectPut()
     {
         // can't update because object does not exist
-        $this->asAdmin()->json('PUT', 'api/v1/holidays/1789764', [
-            'date' => (new \DateTime())->format('Y-m-d'),
-            'duration' => 400
-        ])->assertResponseStatus(404);
+        $this->asAdmin()->json('PUT', 'api/v1/holidays/1789764', $this->holidayTemplate())->assertResponseStatus(404);
     }
 
     public function testInvalidParamsPut()
@@ -66,11 +59,16 @@ class HolidayControllerTest extends \TestCase
     public function testValidPut()
     {
         $holidayId = factory(Holiday::class)->create()->id;
-        $template = [
+        $this->asAdmin()->json('PUT', 'api/v1/holidays/' . $holidayId, $this->holidayTemplate())->assertResponseOk();
+        $this->assertResponseMatchesTemplate($this->holidayTemplate());
+    }
+
+    private function holidayTemplate()
+    {
+        return [
             'date' => (new \DateTime())->format('Y-m-d'),
-            'duration' => 400
+            'duration' => 400,
+            'name' => 'Bring-deinen-Hund-mit-zur-Arbeit Tag'
         ];
-        $this->asAdmin()->json('PUT', 'api/v1/holidays/' . $holidayId, $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
     }
 }

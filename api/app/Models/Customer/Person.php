@@ -64,4 +64,13 @@ class Person extends Model
     {
         return $this->belongsTo(RateGroup::class);
     }
+
+    public function delete()
+    {
+        foreach ($this->addresses as $address) {
+            $address->delete();
+        }
+
+        parent::delete();
+    }
 }

@@ -43,7 +43,8 @@ class HolidayController extends BaseController
     {
         $this->validate($request, [
             'date' => 'required|date',
-            'duration' => 'required|numeric'
+            'duration' => 'required|numeric',
+            'name' => 'required|string'
         ]);
     }
 }

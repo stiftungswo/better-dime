@@ -30,7 +30,7 @@ class CreateCustomers extends Migration
             $table->text('comment');
             $table->unsignedInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->string('department');
+            $table->string('department')->nullable();
             $table->string('email');
             $table->string('first_name');
             $table->boolean('hidden')->default(false);

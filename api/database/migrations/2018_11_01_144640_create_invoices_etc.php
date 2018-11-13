@@ -70,7 +70,7 @@ class CreateInvoicesEtc extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->string('name');
             $table->boolean('percentage')->default(false);
-            $table->decimal('value', 10, 3);
+            $table->decimal('value', 11, 3);
             $table->softDeletes();
             $table->timestamps();
         });
