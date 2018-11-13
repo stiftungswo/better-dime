@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import { NumberField, TextField } from '../../form/fields/common';
+import { TextField } from '../../form/fields/common';
 import Grid, { GridSize } from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
@@ -21,6 +21,7 @@ import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
+import CurrencyField from '../../form/fields/CurrencyField';
 
 //TODO extract these
 export const FormHeader = ({ children }: any) => (
@@ -110,7 +111,13 @@ export default class OfferForm extends React.Component<Props> {
   }
 
   public render() {
-    const { offer } = this.props;
+    const { offer, mainStore } = this.props;
+
+    const BreakdownLine = ({ title, value }: { title: string; value: number }) => (
+      <p>
+        <b>{title}</b>: {mainStore!.formatCurrency(value)}
+      </p>
+    );
 
     return (
       <FormView
@@ -127,9 +134,8 @@ export default class OfferForm extends React.Component<Props> {
           <Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
-                {/*TODO add projects/invoices to backend model*/}
                 <Grid item xs={12}>
-                  {offer && <Navigator projects={[]} invoices={[]} id={offer.id} />}
+                  {offer && <Navigator projects={offer.project_ids} invoices={offer.invoice_ids} id={offer.id} />}
                   <DimePaper>
                     <FormControl half>
                       <Field fullWidth component={TextField} name={'name'} label={'Name'} />
@@ -169,8 +175,11 @@ export default class OfferForm extends React.Component<Props> {
                 <Grid item xs={12} lg={6}>
                   <DimePaper>
                     <FormHeader>Berechnung</FormHeader>
-                    <p>TODO</p>
-                    <Field component={NumberField} name={'fixed_price'} label={'Fixpreis'} />
+                    <BreakdownLine title={'Subtotal'} value={offer!.breakdown.subtotal} />
+                    <BreakdownLine title={'Davon MwSt.'} value={offer!.breakdown.vatTotal} />
+                    <BreakdownLine title={'Total Abzüge'} value={offer!.breakdown.discountTotal} />
+                    <BreakdownLine title={'Total'} value={offer!.breakdown.total} />
+                    <Field component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                   </DimePaper>
                 </Grid>
               </Grid>

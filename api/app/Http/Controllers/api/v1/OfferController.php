@@ -30,7 +30,7 @@ class OfferController extends BaseController
 
     public function get($id)
     {
-        return Offer::with(['discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'invoice_ids', 'project_id']);
+        return Offer::with(['discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'invoice_ids', 'project_ids']);
     }
 
     public function post(Request $request)

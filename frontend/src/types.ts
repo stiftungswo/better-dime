@@ -13,8 +13,33 @@ export interface Offer {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  breakdown: Breakdown;
+  invoice_ids: number[];
+  project_ids: number[];
   discounts: OfferDiscount[];
   positions: OfferPosition[];
+}
+
+export interface Breakdown {
+  discounts: BreakdownDiscount[];
+  discountTotal: number;
+  positions: OfferPosition[];
+  rawTotal: number;
+  subtotal: number;
+  total: number;
+  vats: Vat[];
+  vatTotal: number;
+}
+
+export interface BreakdownDiscount {
+  name: string;
+  value: number;
+}
+
+export interface Vat {
+  factor: number;
+  vat: string;
+  value: number;
 }
 
 export interface OfferDiscount {

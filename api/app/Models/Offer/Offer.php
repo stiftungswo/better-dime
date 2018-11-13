@@ -52,14 +52,15 @@ class Offer extends Model
 
     /**
      * Returns the project id for the current Offer (used for the navigation in frontend)
-     * @return null|int
+     * This will return an array even though there can be at most one project, so it has the same API as invoiceIds
+     * @return array
      */
-    public function getProjectIdAttribute()
+    public function getProjectIdsAttribute()
     {
         if (is_null($this->project)) {
-            return null;
+            return [];
         } else {
-            return $this->project->id;
+            return [$this->project->id];
         }
     }
 
