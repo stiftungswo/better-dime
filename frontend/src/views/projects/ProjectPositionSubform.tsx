@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { MainStore } from '../../stores/mainStore';
@@ -17,16 +16,6 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { computed } from 'mobx';
 import CurrencyField from '../../form/fields/CurrencyField';
-// import { DeleteButton } from '../../layout/ConfirmationDialog';
-// import PercentageField from '../../form/fields/PercentageField';
-// import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
-
-const schema = yup.object({
-  order: yup.number().required(),
-  name: yup.string().required(),
-  date: yup.date().required(),
-  duration: yup.number().required(),
-});
 
 const template = {
   amount: '',
@@ -112,7 +101,6 @@ export default class ProjectPositionSubform extends React.Component<Props> {
               values={values.positions}
               columns={this.columns}
               defaultValues={template}
-              schema={schema}
               renderForm={(index: number) => {
                 const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                 const p = values.positions[index] as any;

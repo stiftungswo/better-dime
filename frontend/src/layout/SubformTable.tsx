@@ -9,7 +9,6 @@ interface Props<T> {
   title: string;
   renderForm: (index: number) => React.ReactNode;
   defaultValues: any;
-  schema: any;
   renderActions?: (e: T) => React.ReactNode;
 }
 
@@ -56,7 +55,6 @@ export class SubformTable<T> extends React.Component<Props<T>> {
             onClose={this.handleClose}
             title={this.props.title}
             initialValues={this.props.values[this.state.editIndex!] || this.props.defaultValues}
-            validationSchema={this.props.schema}
             onSubmit={this.handleSubmit as any}
           >
             {this.props.renderForm(this.state.editIndex!)}
