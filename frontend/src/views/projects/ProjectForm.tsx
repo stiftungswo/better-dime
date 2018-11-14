@@ -133,20 +133,26 @@ export default class ProjectForm extends React.Component<Props> {
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
-                      <Field fullWidth component={TextField} name={'name'} label={'Name'} />
+                      <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                      <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                      <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 
                     <Grid item xs={12} lg={8}>
-                      <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                      <Field
+                        fullWidth
+                        required
+                        component={EmployeeSelector}
+                        name={'accountant_id'}
+                        label={'Verantwortlicher Mitarbeiter'}
+                      />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field fullWidth component={TodoField} name={'category_id'} label={'Tätigkeitsbereich'} />
+                      <Field fullWidth required component={TodoField} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
                       {/*TODO: make this properly nullable*/}
