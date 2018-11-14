@@ -85,9 +85,9 @@ class ProjectController extends BaseController
             'archived' => 'boolean',
             'category_id' => 'required|integer',
             'chargeable' => 'boolean',
-            'deadline' => 'date',
+            'deadline' => 'date|nullable',
             'description' => 'required|string',
-            'fixed_price' => 'integer',
+            'fixed_price' => 'integer|nullable',
             'vacation_project' => 'boolean',
             'name' => 'required|string',
             'offer_id' => 'integer',
@@ -97,8 +97,6 @@ class ProjectController extends BaseController
             'positions.*.service_id' => 'required|integer',
             'positions.*.vat' => 'required|numeric',
             'rate_group_id' => 'required|integer',
-            'started_at' => 'date',
-            'stopped_at' => 'date',
         ]);
     }
 

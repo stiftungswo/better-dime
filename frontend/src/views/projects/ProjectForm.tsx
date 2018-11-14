@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { Fragment } from 'react';
-import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { SwitchField, TextField, TodoField } from '../../form/fields/common';
-import Grid, { GridSize } from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -13,18 +11,15 @@ import { Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
-import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import MuiTextField from '@material-ui/core/TextField';
 import MuiFormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import ProjectPositionSubform from './ProjectPositionSubform';
 
 interface InfoFieldProps {
@@ -83,10 +78,10 @@ const schema = yup.object({
   description: yup.string(),
   chargeable: yup.boolean(),
   archived: yup.boolean(),
-  deadline: yup.date(),
+  deadline: yup.date().nullable(true),
   category_id: yup.number().required(),
   rate_group_id: yup.number().required(),
-  fixed_price: yup.number(),
+  fixed_price: yup.number().nullable(true),
   positions: yup.array(
     yup.object({
       description: yup.string(),
@@ -155,15 +150,12 @@ export default class ProjectForm extends React.Component<Props> {
                       <Field fullWidth required component={TodoField} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
-                      {/*TODO: make this properly nullable*/}
-                      {/*TODO: why doesn't this display validation errors? */}
-                      <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
-                    </Grid>
-                    <Grid item xs={12}>
                       <Field fullWidth component={TextField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
                     </Grid>
-                    <Grid item xs={12} lg={6}>
-                      {/*TODO: make this properly nullable*/}
+                    <Grid item xs={12} lg={8}>
+                      <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
+                    </Grid>
+                    <Grid item xs={12} lg={8}>
                       <Field fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                     </Grid>
                     <Grid item xs={12}>

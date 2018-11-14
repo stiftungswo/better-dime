@@ -23,7 +23,7 @@ class Project extends Model
     protected $fillable = [
         'accountant_id', 'address_id', 'archived', 'chargeable', 'category_id', 'deadline',
         'description', 'fixed_price', 'vacation_project', 'name', 'offer_id',
-        'project_category_id', 'rate_group_id', 'started_at', 'stopped_at'
+        'project_category_id', 'rate_group_id'
     ];
 
     protected $hidden = ['efforts', 'offer'];
