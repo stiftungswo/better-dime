@@ -15,7 +15,7 @@ export default class CurrencyField extends React.Component<InputFieldProps> {
   };
 
   public get format() {
-    return (this.props.field.value / factor).toFixed(2);
+    return this.props.field.value ? (this.props.field.value / factor).toFixed(2) : '';
   }
 
   public handleChange = (e: any) => {

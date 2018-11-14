@@ -171,13 +171,14 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, field, label, margin, ...rest } = this.props as any;
+    const { classes, theme, field, label, margin, required, ...rest } = this.props as any;
 
     const myLabel = this.props.label
       ? {
           label: this.props.label,
           InputLabelProps: {
             shrink: true,
+            required,
           },
         }
       : undefined;

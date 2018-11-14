@@ -10,7 +10,6 @@ import { Prompt } from 'react-router';
 interface DialogFormProps<T> {
   title: string;
   onSubmit: (values: any) => Promise<any>;
-  validationSchema?: any;
   loading?: boolean;
   open: boolean;
   onClose: () => void;

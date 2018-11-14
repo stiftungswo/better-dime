@@ -1,16 +1,15 @@
 import * as React from 'react';
-import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { MainStore } from '../../stores/mainStore';
 import TableToolbar from '../../layout/TableToolbar';
-import { Offer, OfferPosition } from '../../types';
+import { Project, ProjectPosition } from '../../types';
 import { Field, FieldArray, FormikProps } from 'formik';
 
 import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { SubformTable } from '../../layout/SubformTable';
 import { Column } from '../../layout/Overview';
-import { NumberField } from '../../form/fields/common';
+import { NumberField, TextField } from '../../form/fields/common';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitStore } from '../../stores/rateUnitStore';
@@ -19,16 +18,16 @@ import { computed } from 'mobx';
 import CurrencyField from '../../form/fields/CurrencyField';
 
 const template = {
-  amount: '',
-  order: 1,
-  price_per_rate: '',
+  description: '',
+  service_id: '',
+  price_per_rate: 0,
   rate_unit_id: '',
   vat: 0.077, // this should probably be configurable somewhere; user settings?
 };
 
 export interface Props {
   mainStore?: MainStore;
-  formikProps: FormikProps<Offer>;
+  formikProps: FormikProps<Project>;
   name: string;
   serviceStore?: ServiceStore;
   rateUnitStore?: RateUnitStore;
@@ -38,7 +37,7 @@ export interface Props {
   inject('serviceStore', 'rateUnitStore'),
   observer
 )
-export default class OfferPositionSubform extends React.Component<Props> {
+export default class ProjectPositionSubform extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
@@ -48,16 +47,11 @@ export default class OfferPositionSubform extends React.Component<Props> {
   }
 
   @computed
-  public get columns(): Array<Column<OfferPosition>> {
+  public get columns(): Array<Column<ProjectPosition>> {
     const { serviceStore, rateUnitStore, mainStore } = this.props;
     return [
       {
-        id: 'order',
-        numeric: false,
-        label: 'Reihenfolge',
-      },
-      {
-        id: 'service_id',
+        id: 'service',
         numeric: false,
         label: 'Service',
         format: ({ service_id }) => {
@@ -66,37 +60,27 @@ export default class OfferPositionSubform extends React.Component<Props> {
         },
       },
       {
+        id: 'description',
+        label: 'Beschreibung',
+      },
+      {
         id: 'price_per_rate',
-        numeric: false,
+        numeric: true,
         label: 'Tarif',
         format: p => mainStore!.formatCurrency(p.price_per_rate),
       },
       {
-        id: 'rate_unit_id',
-        numeric: false,
-        label: 'Tariftyp',
-        format: ({ rate_unit_id }) => {
-          const id = rate_unit_id;
-          const rateUnit = rateUnitStore!.rateUnits.find(s => s.id === id);
-          return rateUnit ? rateUnit.effort_unit : id;
+        id: 'efforts_value',
+        numeric: true,
+        label: 'Anzahl',
+        format: ({ efforts_value, rate_unit_id }) => {
+          const unit = rateUnitStore!.entities.find(u => u.id === rate_unit_id);
+          if (unit) {
+            return (efforts_value / unit.factor).toFixed(1) + ' ' + unit.effort_unit;
+          } else {
+            return '?';
+          }
         },
-      },
-      {
-        id: 'amount',
-        numeric: true,
-        label: 'Menge',
-      },
-      {
-        id: 'vat',
-        numeric: true,
-        label: 'MwSt',
-        format: ({ vat }) => (vat * 100).toFixed(2) + ' %',
-      },
-      {
-        id: 'total',
-        numeric: true,
-        label: 'Total',
-        format: p => mainStore!.formatCurrency(p.amount * p.price_per_rate * (1 + p.vat)),
       },
     ];
   }
@@ -122,11 +106,13 @@ export default class OfferPositionSubform extends React.Component<Props> {
 
                 return (
                   <>
-                    <div>
-                      <Field component={NumberField} label={'Reihenfolge'} name={name('order')} />
-                    </div>
+                    {/*TODO service should not be editable in existing entities; */}
+                    {/*in new entities, selecting it should prefill traif, einheit, mwst - maybe use a wizard flow? */}
                     <div>
                       <Field component={ServiceSelector} label={'Service'} name={name('service_id')} />
+                    </div>
+                    <div>
+                      <Field component={TextField} label={'Beschreibung'} name={name('description')} />
                     </div>
                     <div>
                       <Field component={CurrencyField} label="Tarif" name={name('price_per_rate')} />
@@ -135,13 +121,8 @@ export default class OfferPositionSubform extends React.Component<Props> {
                       <Field component={RateUnitSelector} label="Einheit" name={name('rate_unit_id')} />
                     </div>
                     <div>
-                      <Field component={NumberField} label="Menge" name={name('amount')} />
-                    </div>
-                    <div>
                       <Field component={PercentageField} label="MwSt." name={name('vat')} />
                     </div>
-                    <br />
-                    <div>Total: {this.props.mainStore!.formatCurrency(total)}</div>
                   </>
                 );
               }}
