@@ -21,6 +21,37 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
+import MuiTextField from '@material-ui/core/TextField';
+import MuiFormControl from '@material-ui/core/FormControl';
+import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import ProjectPositionSubform from './ProjectPositionSubform';
+
+interface InfoFieldProps {
+  value: string;
+  label: string;
+  unit?: string;
+  error?: boolean;
+  fullWidth?: boolean;
+}
+
+const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldProps) => (
+  <MuiFormControl margin={'normal'} error={error} fullWidth={fullWidth}>
+    <MuiTextField
+      disabled
+      variant={'outlined'}
+      value={value}
+      label={label}
+      InputProps={{
+        endAdornment: unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined,
+      }}
+      InputLabelProps={{
+        shrink: true,
+        error,
+      }}
+    />
+  </MuiFormControl>
+);
 
 interface FormControlProps {
   half?: boolean;
@@ -110,84 +141,87 @@ export default class ProjectForm extends React.Component<Props> {
         render={(
           props: FormikProps<any> // tslint:disable-line
         ) => (
-          <Fragment>
-            <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={24}>
-                <Grid item xs={12}>
-                  {/*TODO link invoices*/}
-                  {project && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
-                  <DimePaper>
-                    <FormControl half>
+          <form onSubmit={props.handleSubmit}>
+            <Grid container spacing={24}>
+              <Grid item xs={12} lg={10} xl={8}>
+                {/*TODO link invoices*/}
+                {project && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
+                <DimePaper>
+                  <Grid container spacing={24}>
+                    <Grid item xs={12}>
                       <Field fullWidth component={TextField} name={'name'} label={'Name'} />
-                    </FormControl>
-                    <FormControl half>
+                    </Grid>
+                    <Grid item xs={12} lg={8}>
                       <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
-                    </FormControl>
-                    <FormControl half>
+                    </Grid>
+                    <Grid item xs={12} lg={4}>
                       <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
-                    </FormControl>
-                    <FormControl half>
+                    </Grid>
+
+                    <Grid item xs={12} lg={8}>
+                      <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                    </Grid>
+                    <Grid item xs={12} lg={4}>
                       <Field fullWidth component={TodoField} name={'category_id'} label={'Tätigkeitsbereich'} />
-                    </FormControl>
-                    <FormControl half>
+                    </Grid>
+                    <Grid item xs={12}>
                       {/*TODO: make this properly nullable*/}
                       {/*TODO: why doesn't this display validation errors? */}
                       <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
-                    </FormControl>
-                    <FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
                       <Field fullWidth component={TextField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
-                    </FormControl>
-                    {project && (
-                      <>
-                        {/*TODO: format me nicely, maybe with those disabled outlined fields?*/}
-                        <p>
-                          <b>Verbleibende Kosten</b>: {mainStore!.formatCurrency(project.current_price)}/
-                          {mainStore!.formatCurrency(project.budget_price)}
-                        </p>
-                        <p>
-                          <b>Verbleibende Zeit</b>: {mainStore!.formatDuration(project.current_time)}/
-                          {mainStore!.formatDuration(project.budget_time)}
-                        </p>
-                      </>
-                    )}
-                    <FormControl>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
                       {/*TODO: make this properly nullable*/}
                       <Field fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
-                    </FormControl>
-                  </DimePaper>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <DimePaper>
-                    {/*<ProjectPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />*/}
-                  </DimePaper>
-                </Grid>
-
-                <Grid item xs={12} lg={6}>
-                  <DimePaper>{/*<ProjectDiscountSubform formikProps={props} name={'discounts'} />*/}</DimePaper>
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <DimePaper>
-                    {/*<FormHeader>Berechnung</FormHeader>*/}
-                    {/*<BreakdownLine title={'Subtotal'} value={project!.breakdown.subtotal} />*/}
-                    {/*<BreakdownLine title={'Davon MwSt.'} value={project!.breakdown.vatTotal} />*/}
-                    {/*<BreakdownLine title={'Total Abzüge'} value={project!.breakdown.discountTotal} />*/}
-                    {/*<BreakdownLine title={'Total'} value={project!.breakdown.total} />*/}
-                    {/*<Field component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />*/}
-                  </DimePaper>
-                </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
+                    </Grid>
+                    {project && (
+                      <>
+                        <Grid item xs={12} lg={6}>
+                          <InfoField
+                            fullWidth
+                            label={'Verbleibendes Budget'}
+                            value={`${mainStore!.formatCurrency(project.current_price, false)} / ${mainStore!.formatCurrency(
+                              project.budget_price,
+                              false
+                            )}`}
+                            error={project.current_price > project.budget_price}
+                            unit={'CHF'}
+                          />
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                          <InfoField
+                            fullWidth
+                            label={'Verbleibende Zeit'}
+                            value={`${mainStore!.formatDuration(project.current_time, 'h', false)} / ${mainStore!.formatDuration(
+                              project.budget_time,
+                              'h',
+                              false
+                            )}`}
+                            error={project.current_time > project.budget_time}
+                            unit={'h'}
+                          />
+                        </Grid>
+                      </>
+                    )}
+                  </Grid>
+                </DimePaper>
               </Grid>
-            </form>
-          </Fragment>
+
+              <Grid item xs={12}>
+                <DimePaper>
+                  <ProjectPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                </DimePaper>
+              </Grid>
+            </Grid>
+          </form>
         )}
       />
     );

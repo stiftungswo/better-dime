@@ -118,16 +118,17 @@ export class MainStore {
     return o.format('DD.MM.YYYY');
   };
 
-  public formatDuration = (seconds: number, unit: 'h' | 'd' = 'h') => {
+  public formatDuration = (seconds: number, unit: 'h' | 'd' = 'h', showUnit = false) => {
+    const renderedUnit = showUnit ? ' ' + unit : '';
     switch (unit) {
       case 'h':
-        return Number(seconds / 60).toFixed(1) + ' ' + unit;
+        return Number(seconds / 60).toFixed(1) + renderedUnit;
       case 'd':
-        return Number((seconds / 60) * 60).toFixed(1) + ' ' + unit;
+        return Number((seconds / 60) * 60).toFixed(1) + renderedUnit;
     }
   };
 
-  public formatCurrency = (amount: number) => (amount / 100).toFixed(2) + ' CHF';
+  public formatCurrency = (amount: number, showUnit = true) => (amount / 100).toFixed(2) + (showUnit ? ' CHF' : '');
 
   public displayInfo(message: string, options: OptionsObject = {}) {
     this.enqueueSnackbar(message, { variant: 'info', ...options });

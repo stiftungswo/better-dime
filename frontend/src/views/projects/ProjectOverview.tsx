@@ -37,7 +37,7 @@ export default class ProjectOverview extends React.Component<Props> {
   }
 
   public filter = (p: Project, query: string) => {
-    return [p.id.toString(), p.name, p.description].some(s => s.includes(query));
+    return [p.id + '', p.name, p.description].some(s => s.includes(query));
   };
 
   public render() {
