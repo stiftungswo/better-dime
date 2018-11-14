@@ -11,6 +11,8 @@ import { HolidayStore } from '../stores/holidayStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
 import { RateGroupStore } from '../stores/rateGroupStore';
 import { AddressStore } from '../stores/addressStore';
+import { ProjectStore } from '../stores/projectStore';
+import { ProjectCategoryStore } from '../stores/projectCategoryStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -27,6 +29,8 @@ export class StoreProvider extends React.Component<Props | any> {
     rateUnitStore: RateUnitStore;
     rateGroupStore: RateGroupStore;
     addressStore: AddressStore;
+    projectStore: ProjectStore;
+    projectCategoryStore: ProjectCategoryStore;
   };
 
   constructor(props: Props) {
@@ -43,6 +47,8 @@ export class StoreProvider extends React.Component<Props | any> {
       rateUnitStore: new RateUnitStore(mainStore),
       rateGroupStore: new RateGroupStore(mainStore),
       addressStore: new AddressStore(mainStore),
+      projectStore: new ProjectStore(mainStore),
+      projectCategoryStore: new ProjectCategoryStore(mainStore),
     };
   }
 
