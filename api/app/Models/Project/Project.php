@@ -141,7 +141,7 @@ class Project extends Model
         foreach ($this->positions as $position) {
             if (!is_null($position->rate_unit) && $position->rate_unit->is_time) {
                 /** @var \App\Models\Project\ProjectPosition $position */
-                $duration += $position->effortsValueSum();
+                $duration += $position->efforts_value;
             }
         }
 

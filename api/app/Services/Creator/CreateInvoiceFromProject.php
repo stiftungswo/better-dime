@@ -66,7 +66,7 @@ class CreateInvoiceFromProject extends BaseCreator
         $this->project->positions->each(function ($pp) {
             /** @var ProjectPosition $pp */
             $ip = new InvoicePosition();
-            $ip->amount = $pp->effortsValueSum();
+            $ip->amount = $pp->efforts_value;
 
             $attributes = ['description', 'price_per_rate', 'vat'];
 

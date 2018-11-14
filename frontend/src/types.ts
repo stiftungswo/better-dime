@@ -222,6 +222,7 @@ export interface ProjectPosition {
   updated_at: string;
   charge: number;
   calculated_vat: number;
+  efforts_value: number;
 }
 
 export interface Status {

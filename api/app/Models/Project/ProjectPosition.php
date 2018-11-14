@@ -12,7 +12,7 @@ class ProjectPosition extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['charge', 'calculated_vat'];
+    protected $appends = ['charge', 'calculated_vat', 'efforts_value'];
 
     protected $casts = [
         'vat' => 'float'
@@ -55,8 +55,8 @@ class ProjectPosition extends Model
     {
         $total = 0;
 
-        if ($this->effortsValueSum() != 0) {
-            $total = $this->price_per_rate * $this->effortsValueSum();
+        if ($this->efforts_value != 0) {
+            $total = $this->price_per_rate * $this->efforts_value;
         }
 
         $total += $this->calculated_vat;
@@ -68,7 +68,7 @@ class ProjectPosition extends Model
      * Returns the sum of all efforts for this position
      * @return float
      */
-    public function effortsValueSum()
+    public function getEffortsValueAttribute()
     {
         return $this->efforts->map(function ($e) {
             /** @var ProjectEffort $e */
@@ -82,6 +82,6 @@ class ProjectPosition extends Model
      */
     public function getCalculatedVatAttribute()
     {
-        return $this->price_per_rate * $this->effortsValueSum() * $this->vat;
+        return $this->price_per_rate * $this->efforts_value * $this->vat;
     }
 }

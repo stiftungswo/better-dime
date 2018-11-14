@@ -58,21 +58,6 @@ interface FormControlProps {
   children: React.ReactNode;
 }
 
-// FIXME i think i'm using way too much grid here. Can this be simplified?
-const FormControl = ({ half = false, children }: FormControlProps) => {
-  let lg: GridSize = 12;
-  if (half) {
-    lg = 6;
-  }
-  return (
-    <Grid container={true}>
-      <Grid item={true} xs={12} lg={lg}>
-        {children}
-      </Grid>
-    </Grid>
-  );
-};
-
 interface NavigatorProps extends RouteComponentProps {
   offers: number[];
   invoices: number[];
@@ -98,7 +83,6 @@ const schema = yup.object({
   description: yup.string(),
   chargeable: yup.boolean(),
   archived: yup.boolean(),
-  status: yup.number().required(),
   deadline: yup.date(),
   category_id: yup.number().required(),
   rate_group_id: yup.number().required(),
@@ -143,7 +127,7 @@ export default class ProjectForm extends React.Component<Props> {
         ) => (
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={24}>
-              <Grid item xs={12} lg={10} xl={8}>
+              <Grid item xs={12} lg={8}>
                 {/*TODO link invoices*/}
                 {project && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
                 <DimePaper>
@@ -215,7 +199,7 @@ export default class ProjectForm extends React.Component<Props> {
                 </DimePaper>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} lg={8}>
                 <DimePaper>
                   <ProjectPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
                 </DimePaper>
