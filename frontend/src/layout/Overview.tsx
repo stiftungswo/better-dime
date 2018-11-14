@@ -21,7 +21,7 @@ export interface Column<T> {
 }
 
 interface Props<T> {
-  store: AbstractStore<any>;
+  store: AbstractStore<T>;
   title: string;
   children?: React.ReactNode;
   addAction?: ActionButtonAction;

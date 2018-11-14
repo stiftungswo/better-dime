@@ -14,7 +14,7 @@ export interface Props {
 }
 
 @compose(
-  inject('offerStore', 'mainStore'),
+  inject('serviceStore', 'mainStore'),
   observer
 )
 export default class ServiceOverview extends React.Component<Props> {

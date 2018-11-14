@@ -14,14 +14,12 @@ import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import { inject, observer } from 'mobx-react';
-import { RateGroupStore } from '../../stores/rateGroupStore';
-import { RateUnitStore } from '../../stores/rateUnitStore';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
+import { ServiceStore } from 'src/stores/serviceStore';
 
 export interface Props extends FormViewProps<Service> {
-  rateGroupStore?: RateGroupStore;
-  rateUnitStore?: RateUnitStore;
+  serviceStore: ServiceStore;
   service: Service | undefined;
 }
 
@@ -42,18 +40,18 @@ const schema = yup.object({
 });
 
 @compose(
-  inject('rateGroupStore'),
+  inject('serviceStore'),
   observer
 )
 export default class ServiceForm extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.rateGroupStore!.fetchAll();
+    props.serviceStore!.fetchAll();
   }
 
   public rateGroupName(id: number) {
-    const group = this.props.rateGroupStore!.rateGroups.find(g => g.id === id);
-    return group ? group.name : id;
+    const service = this.props.serviceStore!.services.find(g => g.id === id);
+    return service ? service.name : id;
   }
 
   public render() {

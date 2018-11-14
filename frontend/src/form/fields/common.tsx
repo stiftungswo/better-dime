@@ -37,7 +37,7 @@ class DelayedInput extends React.Component<any> {
 }
 
 export type FormProps = { label: string; children: ReactNode; fullWidth: boolean; margin?: PropTypes.Margin } & FieldProps;
-export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any } & FormProps;
+export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any, multiline?: boolean } & FormProps;
 
 export const ValidatedFormGroupWithLabel = ({
   label,
@@ -58,11 +58,12 @@ export const ValidatedFormGroupWithLabel = ({
   );
 };
 
-export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, unit = undefined, margin, ...rest }: InputFieldProps) => (
+export const InputFieldWithValidation = ({ label, field, form, fullWidth = false, unit = undefined, margin, multiline, ...rest }: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin}>
     <DelayedInput
       fullWidth={fullWidth}
       endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
+      multiline={multiline}
       {...field}
       {...rest}
     />
