@@ -11,9 +11,9 @@ export interface EmployeeListing {
   can_login: boolean;
 }
 
-export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
+export class EmployeeStore extends AbstractStore<Employee> {
   @observable
-  public employees: EmployeeListing[] = [];
+  public employees: Employee[] = [];
   @observable
   public employee?: Employee = undefined;
 
@@ -24,7 +24,7 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
     };
   }
 
-  get entities(): Array<EmployeeListing> {
+  get entities(): Employee[] {
     return this.employees;
   }
 
@@ -34,7 +34,7 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
 
   @action
   public async doFetchAll() {
-    const res = await this.mainStore.api.get<EmployeeListing[]>('/employees');
+    const res = await this.mainStore.api.get<Employee[]>('/employees');
     this.employees = res.data;
   }
 

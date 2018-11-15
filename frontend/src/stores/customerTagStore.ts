@@ -46,19 +46,19 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
 
   @action
   public async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<CustomerTag>('/customer_tags/' + id);
-    this.customerTag = res.data;
+    await this.mainStore.api.get<CustomerTag>('/customer_tags/' + id);
+    await this.doFetchAll();
   }
 
   @action
   public async doPost(customerTag: CustomerTag) {
-    const res = await this.mainStore.api.post('/customer_tags', customerTag);
-    this.customerTag = res.data;
+    await this.mainStore.api.post('/customer_tags', customerTag);
+    await this.doFetchAll();
   }
 
   @action
   public async doPut(customerTag: CustomerTag) {
-    const res = await this.mainStore.api.put('/customer_tags/' + customerTag.id, customerTag);
-    this.customerTag = res.data;
+    await this.mainStore.api.put('/customer_tags/' + customerTag.id, customerTag);
+    await this.doFetchAll();
   }
 }

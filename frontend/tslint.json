@@ -29,6 +29,13 @@
     },
     "jsx-no-lambda": {
       "severity": "off"
-    }
+    },
+    "no-non-null-assertion": {
+      "severity": "off"
+    },
+    "member-access": {
+      "severity": "off"
+    },
+    
   }
 }

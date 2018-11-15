@@ -3,6 +3,8 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { History } from 'history';
 import { OptionsObject } from 'notistack';
 import moment from 'moment';
+import jwt_decode from 'jwt-decode';
+import { EmployeeStore } from './employeeStore';
 
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
@@ -12,6 +14,18 @@ const KEY_TOKEN = 'dime_token';
 
 interface JwtToken {
   token: string;
+}
+
+export interface JwtTokenDecoded {
+  exp: number;
+  iat: number;
+  is_admin: boolean;
+  iss: string;
+  sub: number;
+  details: {
+    first_name: string;
+    last_name: string;
+  };
 }
 
 function setAuthHeader(client: AxiosInstance, token: string | null) {
@@ -28,6 +42,12 @@ export class MainStore {
   @observable
   drawerOpen = false;
 
+  @observable
+  userMenuOpen = false;
+
+  @observable
+  userMenuAnchorEl: null | HTMLElement;
+
   @computed
   public get loading() {
     return this.openRequests > 0;
@@ -41,6 +61,13 @@ export class MainStore {
     this._token = token;
     localStorage.setItem(KEY_TOKEN, token);
     setAuthHeader(this._api, token);
+  }
+
+  public logout(): void {
+    localStorage.removeItem(KEY_TOKEN);
+    this._token = '';
+    setAuthHeader(this._api, this._token);
+    this.navigateTo('/');
   }
 
   public get api() {
@@ -107,9 +134,23 @@ export class MainStore {
   }
 
   @computed
-  public get isAdmin() {
-    //TODO decode jwt
-    return false;
+  public get isAdmin(): boolean {
+    return this.decodeJWT().is_admin;
+  }
+
+  @computed
+  public get meDetail(): JwtTokenDecoded['details'] {
+    return this.decodeJWT().details;
+  }
+
+  @computed
+  public get meSub(): number {
+    return this.decodeJWT().sub;
+  }
+
+  protected decodeJWT(): JwtTokenDecoded {
+    const decode: JwtTokenDecoded = jwt_decode(this._token);
+    return decode;
   }
 
   public formatDate = (date: string) => {

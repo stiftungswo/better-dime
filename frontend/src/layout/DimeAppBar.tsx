@@ -13,16 +13,19 @@ import { Button, CircularProgress } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
 import { styles } from './DimeLayout';
 import { ActionButton, ActionButtonAction } from './ActionButton';
+import { EmployeeStore } from '../stores/employeeStore';
+import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 
 //TODO should probably extract the respective styles from DimeLayout and declare them in this file
 interface DimeAppBarProps extends WithStyles<typeof styles> {
   children?: React.ReactNode;
   mainStore?: MainStore;
+  employeeStore?: EmployeeStore;
   title: string;
 }
 
 @compose(
-  inject('mainStore'),
+  inject('mainStore', 'employeeStore'),
   observer
 )
 class DimeAppBar_ extends React.Component<DimeAppBarProps> {
@@ -31,18 +34,28 @@ class DimeAppBar_ extends React.Component<DimeAppBarProps> {
     window.document.title = `${props.title} - Dime`;
   }
 
+  handleMenu = (event: any) => {
+    this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
+    this.props.mainStore!.userMenuOpen = false;
+  };
+
+  handleClose = () => {
+    this.props.mainStore!.userMenuAnchorEl = null;
+    this.props.mainStore!.userMenuOpen = false;
+  };
+
   public render() {
     const { children, classes } = this.props;
-    const open = this.props.mainStore!.drawerOpen;
+    const { drawerOpen, userMenuOpen, userMenuAnchorEl, meDetail } = this.props.mainStore!;
 
     return (
-      <AppBar position={'absolute'} className={classNames(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar disableGutters={!open} className={classes.toolbar}>
+      <AppBar position={'absolute'} className={classNames(classes.appBar, drawerOpen && classes.appBarShift)}>
+        <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
           <IconButton
             color={'inherit'}
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
-            className={classNames(classes.menuButton, open && classes.menuButtonHidden)}
+            className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
@@ -58,6 +71,7 @@ class DimeAppBar_ extends React.Component<DimeAppBarProps> {
           )}
 
           {children}
+          <DimeAppBarUserMenu meDetail={meDetail} />
         </Toolbar>
       </AppBar>
     );

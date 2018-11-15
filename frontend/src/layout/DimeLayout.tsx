@@ -144,6 +144,7 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
         },
       },
     },
+    avatar: {},
   });
 
 export const LoadingSpinner = compose(withStyles(styles(DimeTheme)))(({ classes }: any) => (

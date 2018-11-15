@@ -57,6 +57,9 @@ export default class ServiceOverview extends React.Component<Props> {
     this.props.mainStore!.navigateTo(`/services/${id}`);
   }
 
+  public filter = (s: Service, query: string) =>
+    [`${s.id}`, s.name, s.description].some(field => field.toLowerCase().includes(query.toLowerCase()));
+
   public render() {
     return (
       <Overview
@@ -66,6 +69,7 @@ export default class ServiceOverview extends React.Component<Props> {
         columns={this.columns}
         renderActions={this.renderActions}
         onClickRow={'/services/:id'}
+        searchFilter={this.filter}
       />
     );
   }
