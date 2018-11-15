@@ -9,7 +9,7 @@ import { Field, FieldArray, FormikProps } from 'formik';
 import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { SubformTable } from '../../layout/SubformTable';
 import { Column } from '../../layout/Overview';
-import { NumberField, TextField } from '../../form/fields/common';
+import { TextField } from '../../form/fields/common';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitStore } from '../../stores/rateUnitStore';

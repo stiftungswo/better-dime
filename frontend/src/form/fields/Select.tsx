@@ -191,6 +191,7 @@ class IntegrationReactSelect extends React.Component<any> {
           font: 'inherit',
         },
       }),
+      menuPortal: (base: any) => ({ ...base, zIndex: 9001 }),
     };
 
     return (

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import PeopleIcon from '@material-ui/icons/People';
 import DriveFile from '@material-ui/icons/InsertDriveFile';
+import ListIcon from '@material-ui/icons/List';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { NavItem } from './NavItem';
 import { AttachMoney, Domain, RoomService, Work, Weekend, Storage } from '@material-ui/icons/';

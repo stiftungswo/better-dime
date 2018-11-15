@@ -1,6 +1,6 @@
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import DimeTheme from './DimeTheme';
-import SearchIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase/InputBase';
 import * as React from 'react';
 import { styles } from './DimeLayout';

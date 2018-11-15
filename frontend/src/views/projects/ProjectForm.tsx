@@ -21,6 +21,7 @@ import MuiTextField from '@material-ui/core/TextField';
 import MuiFormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import ProjectPositionSubform from './ProjectPositionSubform';
+import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCategorySelector';
 
 interface InfoFieldProps {
   value: string;
@@ -75,7 +76,7 @@ const schema = yup.object({
   name: yup.string().required(),
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
-  description: yup.string(),
+  description: yup.string().required(),
   chargeable: yup.boolean(),
   archived: yup.boolean(),
   deadline: yup.date().nullable(true),
@@ -93,7 +94,7 @@ const schema = yup.object({
 
 export interface Props extends FormViewProps<Project> {
   mainStore?: MainStore;
-  project?: Project;
+  project: Project;
 }
 
 @compose(
@@ -124,7 +125,7 @@ export default class ProjectForm extends React.Component<Props> {
             <Grid container spacing={24}>
               <Grid item xs={12} lg={8}>
                 {/*TODO link invoices*/}
-                {project && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
+                {project.id && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
@@ -134,6 +135,7 @@ export default class ProjectForm extends React.Component<Props> {
                       <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
+                      {/*TODO preselect tarif based on selected customer?*/}
                       <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 
@@ -147,10 +149,10 @@ export default class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field fullWidth required component={TodoField} name={'category_id'} label={'Tätigkeitsbereich'} />
+                      <Field fullWidth required component={ProjectCategorySelector} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field fullWidth component={TextField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
+                      <Field fullWidth required component={TextField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
                       <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
@@ -164,7 +166,7 @@ export default class ProjectForm extends React.Component<Props> {
                     <Grid item xs={12}>
                       <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
                     </Grid>
-                    {project && (
+                    {project.id && (
                       <>
                         <Grid item xs={12} lg={6}>
                           <InfoField
@@ -199,6 +201,7 @@ export default class ProjectForm extends React.Component<Props> {
 
               <Grid item xs={12} lg={8}>
                 <DimePaper>
+                  {/*TODO add an indicator when validation in a row failed*/}
                   <ProjectPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
                 </DimePaper>
               </Grid>

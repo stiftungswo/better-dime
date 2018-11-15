@@ -51,9 +51,12 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   }
 
   protected cast(project: Project) {
+    //this prevents empty fields being sent to the backend as ""
+    //optimally, this can be handled in the form so empty strings don't even reach here.
     return {
       ...project,
       fixed_price: project.fixed_price || null,
+      deadline: project.deadline || null,
     };
   }
 }
