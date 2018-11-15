@@ -3,7 +3,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography/Typography';
-import { FormHeader } from '../views/offers/OfferForm';
+import { FormHeader } from './FormHeader';
 import { DeleteButton } from './ConfirmationDialog';
 import { ActionButton, ActionButtonAction } from './ActionButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -36,7 +36,7 @@ const toolbarStyles = (theme: any) => ({
 });
 
 interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
-  numSelected: number;
+  numSelected?: number;
   deleteAction?: any;
   addAction?: ActionButtonAction;
   title: string;
@@ -44,7 +44,7 @@ interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
 }
 
 const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToolbarProps) => {
-  const { numSelected, classes, deleteAction, addAction, title } = props;
+  const { numSelected = 0, classes, deleteAction, addAction, title } = props;
 
   return (
     <Toolbar
@@ -64,7 +64,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
       <div className={classes.spacer} />
       {props.children}
       <div className={classes.actions}>
-        {numSelected > 0 ? <DeleteButton onConfirm={deleteAction} /> : <ActionButton icon={AddIcon} action={addAction} />}
+        {numSelected > 0 ? <DeleteButton onConfirm={deleteAction} /> : addAction && <ActionButton icon={AddIcon} action={addAction} />}
       </div>
     </Toolbar>
   );

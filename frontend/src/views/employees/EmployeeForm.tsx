@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { Employee } from '../../types';
-import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
+import { FormHeader } from '../../layout/FormHeader';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
@@ -41,9 +41,7 @@ export default class EmployeeForm extends React.Component<Props> {
           props: FormikProps<any> // tslint:disable-line
         ) => (
           <Fragment>
-            <Typography component="h4" variant="h5" align={'left'}>
-              Allgemeine Informationen
-            </Typography>
+            <FormHeader> Allgemeine Informationen </FormHeader>
             <form onSubmit={props.handleSubmit}>
               <Grid container={true} spacing={16}>
                 <Grid item={true} xs={12} sm={6}>
@@ -71,9 +69,7 @@ export default class EmployeeForm extends React.Component<Props> {
 
               <br />
 
-              <Typography component="h4" variant="h5" align={'left'}>
-                Benutzereinstellungen
-              </Typography>
+              <FormHeader> Benutzereinstellungen </FormHeader>
 
               <Grid container={true} spacing={16}>
                 <Grid item={true} xs={12} sm={6}>

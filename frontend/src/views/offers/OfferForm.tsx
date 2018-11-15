@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import Typography from '@material-ui/core/Typography/Typography';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
-import Grid, { GridSize } from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -23,37 +22,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { OfferStore } from '../../stores/offerStore';
-
-//TODO extract these
-interface FormHeaderProps {
-  children: React.ReactNode;
-}
-
-export const FormHeader = ({ children }: FormHeaderProps) => (
-  <Typography component="h4" variant="h5" align={'left'}>
-    {children}
-  </Typography>
-);
-
-interface FormControlProps {
-  half?: boolean;
-  children: React.ReactNode;
-}
-
-// FIXME i think i'm using way too much grid here. Can this be simplified?
-const FormControl = ({ half = false, children }: FormControlProps) => {
-  let lg: GridSize = 12;
-  if (half) {
-    lg = 6;
-  }
-  return (
-    <Grid container={true}>
-      <Grid item={true} xs={12} lg={lg}>
-        {children}
-      </Grid>
-    </Grid>
-  );
-};
+import { FormHeader } from '../../layout/FormHeader';
 
 interface NavigatorProps extends RouteComponentProps {
   offer: Offer;
