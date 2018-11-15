@@ -20,7 +20,7 @@ const schema = yup.object({
 });
 
 const defaultValues = {
-  name: ''
+  name: '',
 };
 
 @compose(
@@ -46,9 +46,11 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (projectCategory: ProjectCategory) => <ActionButtons deleteAction={() => this.props.projectCategoryStore!.delete(projectCategory.id!)} />;
+  public renderActions = (projectCategory: ProjectCategory) => (
+    <ActionButtons deleteAction={() => this.props.projectCategoryStore!.delete(projectCategory.id!)} />
+  );
 
-  public filter = (r: ProjectCategory, query: string) =>  r.name.includes(query) || r.description.includes(query);
+  public filter = (r: ProjectCategory, query: string) => r.name.includes(query) || r.description.includes(query);
 
   public render() {
     return (

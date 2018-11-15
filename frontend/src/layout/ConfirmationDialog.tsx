@@ -76,7 +76,7 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
     return (
       <Fragment>
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
-          { this.props.message ? this.props.message  : "Wirklich löschen?" }
+          {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
         <ActionButton icon={DeleteIcon} title={'Löschen'} action={this.handleOpen} />
       </Fragment>

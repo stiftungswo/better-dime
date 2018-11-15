@@ -20,7 +20,7 @@ const schema = yup.object({
 });
 
 const defaultValues = {
-  name: ''
+  name: '',
 };
 
 @compose(
@@ -46,9 +46,11 @@ export default class CustomerTagOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (customerTag: CustomerTag) => <ActionButtons deleteAction={() => this.props.customerTagStore!.delete(customerTag.id!)} />;
+  public renderActions = (customerTag: CustomerTag) => (
+    <ActionButtons deleteAction={() => this.props.customerTagStore!.delete(customerTag.id!)} />
+  );
 
-  public filter = (r: CustomerTag, query: string) =>  r.name.includes(query);
+  public filter = (r: CustomerTag, query: string) => r.name.includes(query);
 
   public render() {
     return (

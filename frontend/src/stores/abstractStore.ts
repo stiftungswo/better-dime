@@ -2,14 +2,14 @@ import { action } from 'mobx';
 import { MainStore } from './mainStore';
 
 interface AbstractMethods {
-  get_entity?: boolean,
-  set_entity?: boolean,
-  entities?: boolean,
-  doFetchAll?: boolean,
-  doFetchOne?: boolean,
-  doPost?: boolean,
-  doPut?: boolean,
-  doDelete?: boolean
+  get_entity?: boolean;
+  set_entity?: boolean;
+  entities?: boolean;
+  doFetchAll?: boolean;
+  doFetchOne?: boolean;
+  doPost?: boolean;
+  doPut?: boolean;
+  doDelete?: boolean;
 }
 
 /**
