@@ -39,7 +39,7 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  private displayInProgress() {
+  protected displayInProgress() {
     this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: 60000 });
   }
 

@@ -17,9 +17,11 @@ import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { ServiceStore } from 'src/stores/serviceStore';
+import { RateGroupStore } from 'src/stores/rateGroupStore';
 
 export interface Props extends FormViewProps<Service> {
-  serviceStore: ServiceStore;
+  serviceStore?: ServiceStore;
+  rateGroupStore?: RateGroupStore;
   service: Service | undefined;
 }
 
@@ -40,17 +42,17 @@ const schema = yup.object({
 });
 
 @compose(
-  inject('serviceStore'),
+  inject('serviceStore', 'rateGroupStore'),
   observer
 )
 export default class ServiceForm extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.serviceStore!.fetchAll();
+    props.rateGroupStore!.fetchAll();
   }
 
   public rateGroupName(id: number) {
-    const service = this.props.serviceStore!.services.find(g => g.id === id);
+    const service = this.props.rateGroupStore!.rateGroups.find(g => g.id === id);
     return service ? service.name : id;
   }
 
@@ -115,7 +117,6 @@ export default class ServiceForm extends React.Component<Props> {
                         <TableCell>Tarifgruppe</TableCell>
                         <TableCell>Einheit</TableCell>
                         <TableCell>Wert</TableCell>
-                        {/*<TableCell>Aktionen</TableCell>*/}
                       </TableRow>
                     </TableHead>
                     <TableBody>

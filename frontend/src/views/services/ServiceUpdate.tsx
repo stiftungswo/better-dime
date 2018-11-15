@@ -17,7 +17,7 @@ export interface Props extends RouteComponentProps<ServiceDetailRouterProps>, In
 }
 
 @compose(
-  inject('offerStore'),
+  inject('offerStore', 'serviceStore'),
   observer
 )
 export default class ServiceUpdate extends React.Component<Props> {
@@ -26,9 +26,7 @@ export default class ServiceUpdate extends React.Component<Props> {
     props.serviceStore!.fetchOne(Number(props.match.params.id));
   }
 
-  public handleSubmit = (service: Service) => {
-    return this.props.serviceStore!.put(service);
-  };
+  public handleSubmit = (service: Service) => this.props.serviceStore!.put(service);
 
   public render() {
     const service: Service | undefined = this.props.serviceStore!.service;

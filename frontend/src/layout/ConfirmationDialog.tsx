@@ -47,6 +47,7 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
 
 interface DeleteButtonProps {
   onConfirm: () => void;
+  message?: string;
 }
 
 interface DeleteButtonState {
@@ -75,7 +76,7 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
     return (
       <Fragment>
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
-          Wirklich löschen?
+          { this.props.message ? this.props.message  : "Wirklich löschen?" }
         </ConfirmationDialog>
         <ActionButton icon={DeleteIcon} title={'Löschen'} action={this.handleOpen} />
       </Fragment>

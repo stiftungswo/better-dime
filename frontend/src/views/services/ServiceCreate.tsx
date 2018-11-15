@@ -16,7 +16,7 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps {
 }
 
 @compose(
-  inject('offerStore', 'rateGroupStore'),
+  inject('serviceStore', 'rateGroupStore'),
   observer
 )
 export default class ServiceCreate extends React.Component<Props> {

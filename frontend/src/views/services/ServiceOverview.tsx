@@ -48,6 +48,7 @@ export default class ServiceOverview extends React.Component<Props> {
       deleteAction={() => this.props.serviceStore!.delete(service.id!)}
       archiveAction={todo}
       copyAction={todo}
+      deleteMessage="Das Löschen eines Services führt möglicherweise zu korrupten Offerten, Projekten und Rechnungen.\nWirklich löschen?"
     />
   );
 
@@ -64,6 +65,7 @@ export default class ServiceOverview extends React.Component<Props> {
         addAction={'/services/new'}
         columns={this.columns}
         renderActions={this.renderActions}
+        onClickRow={'/services/:id'}
       />
     );
   }

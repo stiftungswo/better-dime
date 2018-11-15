@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { ErrorMessage, FieldProps } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -16,11 +15,11 @@ import { PropTypes } from '@material-ui/core';
  * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
  */
 class DelayedInput extends React.Component<any> {
-  state = {
+  public state = {
     value: '',
   };
 
-  constructor(props: any) {
+  public constructor(props: any) {
     super(props);
     this.state = {
       value: props.value,
@@ -42,6 +41,7 @@ export type FormProps = {
   fullWidth: boolean;
   margin?: PropTypes.Margin;
   required?: boolean;
+  multiline?: boolean;
 } & FieldProps;
 export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any } & FormProps;
 
@@ -77,6 +77,7 @@ export const InputFieldWithValidation = ({
   unit = undefined,
   margin,
   required,
+  multiline,
   ...rest
 }: InputFieldProps) => (
   <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin} required={required}>

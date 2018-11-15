@@ -10,6 +10,7 @@ interface ActionProps {
   editAction?: ActionButtonAction;
   archiveAction?: ActionButtonAction;
   deleteAction?: () => void;
+  deleteMessage?: string;
 }
 
 export const ActionButtons = (props: ActionProps) => (
@@ -17,6 +18,6 @@ export const ActionButtons = (props: ActionProps) => (
     {props.copyAction && <ActionButton icon={FileCopyIcon} action={props.copyAction} />}
     {props.editAction && <ActionButton icon={EditIcon} action={props.editAction} />}
     {props.archiveAction && <ActionButton icon={ArchiveIcon} action={props.archiveAction} />}
-    {props.deleteAction && <DeleteButton onConfirm={props.deleteAction} />}
+    {props.deleteAction && <DeleteButton onConfirm={props.deleteAction} message={props.deleteMessage} />}
   </>
 );
