@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { Offer } from '../types';
+import { Invoice, Offer, Project } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 
@@ -36,6 +36,7 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   }
 
   protected async doFetchOne(id: number) {
+    this.offer = undefined;
     const res = await this.mainStore.api.get<Offer>('/offers/' + id);
     this.offer = res.data;
   }
@@ -48,5 +49,29 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   protected async doPut(entity: Offer): Promise<void> {
     const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, entity);
     this.offer = res.data;
+  }
+
+  public async createProject(id: number): Promise<Project> {
+    try {
+      this.displayInProgress();
+      const res = await this.mainStore.api.post<Project>(`/offers/${id}/create_project`);
+      this.mainStore.displaySuccess('Das Projekt wurde erstellt');
+      return res.data;
+    } catch (e) {
+      this.mainStore.displayError('Beim erstellen des Projekts ist ein Fehler aufgetreten');
+      throw e;
+    }
+  }
+
+  public async createInvoice(id: number): Promise<Invoice> {
+    try {
+      this.displayInProgress();
+      const res = await this.mainStore.api.post<Invoice>(`/offers/${id}/create_invoice`);
+      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
+      return res.data;
+    } catch (e) {
+      this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
+      throw e;
+    }
   }
 }

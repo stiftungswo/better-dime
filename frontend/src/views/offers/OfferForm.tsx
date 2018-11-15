@@ -9,7 +9,7 @@ import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Offer } from '../../types';
+import { Invoice, Offer, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import OfferPositionSubform from './OfferPositionSubform';
@@ -22,6 +22,7 @@ import Tab from '@material-ui/core/Tab/Tab';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
+import { OfferStore } from '../../stores/offerStore';
 
 //TODO extract these
 interface FormHeaderProps {
@@ -55,20 +56,29 @@ const FormControl = ({ half = false, children }: FormControlProps) => {
 };
 
 interface NavigatorProps extends RouteComponentProps {
-  projects: number[];
-  invoices: number[];
-  id?: number;
+  offer: Offer;
+  offerStore: OfferStore;
 }
 
-const Navigator = withRouter(({ projects, invoices, id, history }: NavigatorProps) => (
+const Navigator = withRouter(({ offer: { project_ids, invoice_ids, id }, history, offerStore }: NavigatorProps) => (
   <Tabs value={0}>
     <Tab label={`Offerte ${id}`} />
-    {projects.map(pId => (
+    {project_ids.map(pId => (
       <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Projekt ${pId}`} />
     ))}
-    {invoices.map(pId => (
+    {project_ids.length === 0 && (
+      <Tab
+        onClick={() => offerStore.createProject(id!).then((p: Project) => history.push(`/projects/${p.id}`))}
+        label={'+ Projekt erstellen'}
+      />
+    )}
+    {invoice_ids.map(pId => (
       <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
     ))}
+    <Tab
+      onClick={() => offerStore.createInvoice(id!).then((i: Invoice) => history.push(`invoices/${i.id}`))}
+      label={'+ Rechnung erstellen'}
+    />
   </Tabs>
 ));
 
@@ -102,11 +112,12 @@ const schema = yup.object({
 
 export interface Props extends FormViewProps<Offer> {
   mainStore?: MainStore;
+  offerStore?: OfferStore;
   offer: Offer;
 }
 
 @compose(
-  inject('mainStore'),
+  inject('mainStore', 'offerStore'),
   observer
 )
 export default class OfferForm extends React.Component<Props> {
@@ -139,7 +150,7 @@ export default class OfferForm extends React.Component<Props> {
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
-                  {offer.id && <Navigator projects={offer.project_ids} invoices={offer.invoice_ids} id={offer.id} />}
+                  {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
                   <DimePaper>
                     <FormControl half>
                       <Field fullWidth component={TextField} name={'name'} label={'Name'} />

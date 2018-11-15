@@ -232,3 +232,8 @@ export interface Status {
   text: string;
   active: boolean;
 }
+
+export interface Invoice {
+  id?: number;
+  //TODO
+}

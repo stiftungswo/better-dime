@@ -21,6 +21,11 @@ export default class OfferOverview extends React.Component<Props> {
     super(props);
     this.columns = [
       {
+        id: 'id',
+        label: 'ID',
+        numeric: true,
+      },
+      {
         id: 'name',
         label: 'Name',
       },
@@ -32,12 +37,20 @@ export default class OfferOverview extends React.Component<Props> {
   }
 
   public render() {
+    const offerStore = this.props.offerStore!;
     return (
       <Overview
         title={'Offerten'}
-        store={this.props.offerStore!}
+        store={offerStore}
         addAction={'/offers/new'}
-        renderActions={e => <ActionButtons copyAction={todo} editAction={`/offers/${e.id}`} archiveAction={todo} deleteAction={todo} />}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={todo}
+            editAction={`/offers/${e.id}`}
+            archiveAction={todo}
+            deleteAction={() => offerStore!.delete(e.id)}
+          />
+        )}
         onClickRow={'/offers/:id'}
         columns={this.columns}
       />
