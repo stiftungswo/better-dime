@@ -86,10 +86,10 @@ const schema = yup.object({
   name: yup.string().required(),
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
-  description: yup.string(),
+  description: yup.string().required(),
   fixed_price: yup.boolean(),
   rate_group_id: yup.number().required(),
-  short_description: yup.string(),
+  short_description: yup.string().required(),
   status: yup.number().required(),
   discounts: yup.array(
     yup.object({
@@ -149,30 +149,46 @@ export default class OfferForm extends React.Component<Props> {
           <Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
-                <Grid item xs={12}>
+                <Grid item xs={12} lg={8}>
                   {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
                   <DimePaper>
-                    <FormControl half>
-                      <Field fullWidth component={TextField} name={'name'} label={'Name'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field fullWidth component={AddressSelector} name={'address_id'} label={'Kunde'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field fullWidth component={StatusSelector} name={'status'} label={'Status'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field component={EmployeeSelector} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field fullWidth component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
-                    </FormControl>
-                    <FormControl half>
-                      <Field fullWidth component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
-                    </FormControl>
-                    <FormControl>
-                      <Field fullWidth component={MarkdownField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
-                    </FormControl>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12}>
+                        <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
+                      </Grid>
+                      <Grid item xs={12} lg={8}>
+                        <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                      </Grid>
+                      <Grid item xs={12} lg={4}>
+                        <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                      </Grid>
+                      <Grid item xs={12} lg={8}>
+                        <Field
+                          fullWidth
+                          required
+                          component={EmployeeSelector}
+                          name={'accountant_id'}
+                          label={'Verantwortlicher Mitarbeiter'}
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={4}>
+                        <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field fullWidth required component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field
+                          fullWidth
+                          required
+                          component={MarkdownField}
+                          multiline
+                          rowsMax={14}
+                          name={'description'}
+                          label={'Beschreibung'}
+                        />
+                      </Grid>
+                    </Grid>
                   </DimePaper>
                 </Grid>
 
