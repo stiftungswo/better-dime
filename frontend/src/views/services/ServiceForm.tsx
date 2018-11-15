@@ -12,7 +12,7 @@ import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
-import { inject, observer } from 'mobx-react';
+import { inject, Observer, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { ServiceStore } from 'src/stores/serviceStore';
@@ -20,6 +20,7 @@ import { RateGroupStore } from 'src/stores/rateGroupStore';
 import CurrencyField from '../../form/fields/CurrencyField';
 import PercentageField from '../../form/fields/PercentageField';
 import TableToolbar from '../../layout/TableToolbar';
+import { computed } from 'mobx';
 
 export interface Props extends FormViewProps<Service> {
   serviceStore?: ServiceStore;
@@ -51,11 +52,6 @@ export default class ServiceForm extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     props.rateGroupStore!.fetchAll();
-  }
-
-  public rateGroupName(id: number) {
-    const service = this.props.rateGroupStore!.rateGroups.find(g => g.id === id);
-    return service ? service.name : id;
   }
 
   public render() {
@@ -103,32 +99,39 @@ export default class ServiceForm extends React.Component<Props> {
                   <FieldArray
                     name="service_rates"
                     render={arrayHelpers => (
-                      <DimePaper>
-                        <TableToolbar title={'Tarife'} numSelected={0} />
-                        <Table>
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Tarifgruppe</TableCell>
-                              <TableCell>Einheit</TableCell>
-                              <TableCell>Wert</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {props.values.service_rates.map((r: ServiceRate, index: number) => (
-                              <TableRow key={index}>
-                                {/*TODO fix this not being updated properly*/}
-                                <TableCell>{this.rateGroupName(props.values.service_rates[index].rate_group_id)}</TableCell>
-                                <TableCell>
-                                  <Field component={RateUnitSelector} name={`service_rates.${index}.rate_unit_id`} />
-                                </TableCell>
-                                <TableCell>
-                                  <Field component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </DimePaper>
+                      <Observer>
+                        {() => (
+                          <DimePaper>
+                            <TableToolbar title={'Tarife'} numSelected={0} />
+                            <Table>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>Tarifgruppe</TableCell>
+                                  <TableCell>Einheit</TableCell>
+                                  <TableCell>Wert</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {props.values.service_rates.map((r: ServiceRate, index: number) => {
+                                  const rateGroupId = props.values.service_rates[index].rate_group_id;
+                                  const rateGroup = this.props.rateGroupStore!.rateGroups.find(g => g.id === rateGroupId);
+                                  return (
+                                    <TableRow key={index}>
+                                      <TableCell>{rateGroup ? rateGroup.name : rateGroupId}</TableCell>
+                                      <TableCell>
+                                        <Field component={RateUnitSelector} name={`service_rates.${index}.rate_unit_id`} />
+                                      </TableCell>
+                                      <TableCell>
+                                        <Field component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
+                          </DimePaper>
+                        )}
+                      </Observer>
                     )}
                   />
                 </Grid>

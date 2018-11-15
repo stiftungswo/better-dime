@@ -7,6 +7,7 @@ import ServiceForm from './ServiceForm';
 import { Service } from './types';
 import { inject } from 'mobx-react';
 import compose from '../../utilities/compose';
+import { toJS } from 'mobx';
 
 interface ServiceDetailRouterProps {
   id?: string;
@@ -29,7 +30,8 @@ export default class ServiceUpdate extends React.Component<Props> {
   public handleSubmit = (service: Service) => this.props.serviceStore!.put(service);
 
   public render() {
-    const service: Service | undefined = this.props.serviceStore!.service;
+    const serviceStore = this.props.serviceStore!;
+    const service: Service | undefined = serviceStore.service ? toJS(serviceStore.service) : undefined;
     const title = service ? `${service.name} - Services` : 'Service bearbeiten';
 
     return <ServiceForm title={title} onSubmit={this.handleSubmit} service={service} />;
