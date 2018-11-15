@@ -225,8 +225,6 @@ class ProjectControllerTest extends \TestCase
                 ],
             ],
             'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
-            'started_at' => '2018-10-29',
-            'stopped_at' => '2019-10-29',
         ];
     }
 }
