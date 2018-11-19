@@ -55,16 +55,16 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <Field component={TextField} name={name('name')} />
+                        <Field delayed component={TextField} name={name('name')} />
                       </TableCell>
                       <TableCell>
                         <Field component={SwitchField} name={name('percentage')} />
                       </TableCell>
                       <TableCell>
                         {p.percentage ? (
-                          <Field component={PercentageField} unit={'%'} name={name('value')} />
+                          <Field delayed component={PercentageField} unit={'%'} name={name('value')} />
                         ) : (
-                          <Field component={NumberField} unit={'CHF'} name={name('value')} />
+                          <Field delayed component={NumberField} unit={'CHF'} name={name('value')} />
                         )}
                       </TableCell>
                       <TableCell>

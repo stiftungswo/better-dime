@@ -62,22 +62,22 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     return (
                       <TableRow key={index}>
                         <TableCell>
-                          <Field component={NumberField} name={`positions.${index}.order`} margin={'none'} />
+                          <Field delayed component={NumberField} name={`positions.${index}.order`} margin={'none'} />
                         </TableCell>
                         <TableCell>
                           <Field component={ServiceSelector} name={name('service_id')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
+                          <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                         </TableCell>
                         <TableCell>
                           <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={NumberField} name={name('amount')} margin={'none'} />
+                          <Field delayed component={NumberField} name={name('amount')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={PercentageField} name={name('vat')} margin={'none'} />
+                          <Field delayed component={PercentageField} name={name('vat')} margin={'none'} />
                         </TableCell>
                         <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
                         <TableCell>

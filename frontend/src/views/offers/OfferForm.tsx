@@ -123,7 +123,7 @@ export default class OfferForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={24}>
                       <Grid item xs={12}>
-                        <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
+                        <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
                       <Grid item xs={12} lg={8}>
                         <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
@@ -144,10 +144,11 @@ export default class OfferForm extends React.Component<Props> {
                         <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
                       </Grid>
                       <Grid item xs={12}>
-                        <Field fullWidth required component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
+                        <Field delayed fullWidth required component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
                       </Grid>
                       <Grid item xs={12}>
                         <Field
+                          delayed
                           fullWidth
                           required
                           component={MarkdownField}

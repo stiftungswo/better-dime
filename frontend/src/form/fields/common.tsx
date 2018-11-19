@@ -43,7 +43,7 @@ export type FormProps = {
   required?: boolean;
   multiline?: boolean;
 } & FieldProps;
-export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any } & FormProps;
+export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any; delayed?: boolean } & FormProps;
 
 export const ValidatedFormGroupWithLabel = ({
   label,
@@ -78,18 +78,22 @@ export const InputFieldWithValidation = ({
   margin,
   required,
   multiline,
+  delayed = false,
   ...rest
-}: InputFieldProps) => (
-  <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin} required={required}>
-    <DelayedInput
-      fullWidth={fullWidth}
-      endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
-      multiline={multiline}
-      {...field}
-      {...rest}
-    />
-  </ValidatedFormGroupWithLabel>
-);
+}: InputFieldProps) => {
+  const InputComponent = delayed ? DelayedInput : Input;
+  return (
+    <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin} required={required}>
+      <InputComponent
+        fullWidth={fullWidth}
+        endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
+        multiline={multiline}
+        {...field}
+        {...rest}
+      />
+    </ValidatedFormGroupWithLabel>
+  );
+};
 
 export const SwitchField = ({ label, field }: FormProps) => (
   <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />

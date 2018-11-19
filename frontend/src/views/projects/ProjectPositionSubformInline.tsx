@@ -64,16 +64,16 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                           <Field component={ServiceSelector} name={name('service_id')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={TextField} name={name('description')} margin={'none'} />
+                          <Field delayed component={TextField} name={name('description')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
+                          <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                         </TableCell>
                         <TableCell>
                           <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field component={PercentageField} name={name('vat')} margin={'none'} />
+                          <Field delayed component={PercentageField} name={name('vat')} margin={'none'} />
                         </TableCell>
                         <TableCell>{p.efforts_value}</TableCell>
                         <TableCell>{p.charge}</TableCell>

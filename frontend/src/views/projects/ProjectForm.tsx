@@ -129,7 +129,7 @@ export default class ProjectForm extends React.Component<Props> {
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
-                      <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
+                      <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
                       <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
@@ -152,13 +152,22 @@ export default class ProjectForm extends React.Component<Props> {
                       <Field fullWidth required component={ProjectCategorySelector} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field fullWidth required component={TextField} multiline rowsMax={14} name={'description'} label={'Beschreibung'} />
+                      <Field
+                        delayed
+                        fullWidth
+                        required
+                        component={TextField}
+                        multiline
+                        rowsMax={14}
+                        name={'description'}
+                        label={'Beschreibung'}
+                      />
                     </Grid>
                     <Grid item xs={12} lg={8}>
                       <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <Field fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                      <Field delayed fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                     </Grid>
                     <Grid item xs={12}>
                       <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
