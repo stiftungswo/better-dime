@@ -210,7 +210,7 @@ export default class ProjectForm extends React.Component<Props> {
 
               <Grid item xs={12}>
                 <DimePaper>
-                  <ProjectPositionSubformInline formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                  <ProjectPositionSubformInline formikProps={props} name={'positions'} />
                 </DimePaper>
               </Grid>
             </Grid>

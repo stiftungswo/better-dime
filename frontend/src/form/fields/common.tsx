@@ -37,7 +37,7 @@ class DelayedInput extends React.Component<any> {
 
 export type FormProps = {
   label: string;
-  children: ReactNode;
+  children?: ReactNode;
   fullWidth: boolean;
   margin?: PropTypes.Margin;
   required?: boolean;

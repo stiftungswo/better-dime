@@ -61,7 +61,7 @@ export class AbstractStore<T, OverviewType = T> {
   @action
   public async fetchOne(id: number) {
     try {
-      await this.doFetchOne(id);
+      return await this.doFetchOne(id);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
       console.error(e);
@@ -69,7 +69,7 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected async doFetchOne(id: number) {
+  protected async doFetchOne(id: number): Promise<any> {
     throw new Error('Not implemented');
   }
 
@@ -124,5 +124,17 @@ export class AbstractStore<T, OverviewType = T> {
   @action
   protected async doDelete(id: number) {
     throw new Error('Not implemented');
+  }
+
+  public async notifyProgress(action: () => Promise<any>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
+    try {
+      this.displayInProgress();
+      await action();
+      this.mainStore.displaySuccess(successMessage);
+    } catch (e) {
+      this.mainStore.displayError(errorMessage);
+      console.error(e);
+      throw e;
+    }
   }
 }

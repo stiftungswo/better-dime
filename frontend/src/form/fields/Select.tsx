@@ -171,7 +171,7 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, field, label, margin, required, ...rest } = this.props as any;
+    const { classes, theme, field, label, margin, required, disabled, ...rest } = this.props as any;
 
     const myLabel = this.props.label
       ? {
@@ -204,6 +204,7 @@ class IntegrationReactSelect extends React.Component<any> {
           value={this.value}
           onChange={this.handleChange}
           textFieldProps={myLabel}
+          isDisabled={disabled}
           {...rest}
         />
       </ValidatedFormGroupWithLabel>
@@ -212,3 +213,29 @@ class IntegrationReactSelect extends React.Component<any> {
 }
 
 export default withStyles(styles(DimeTheme) as any, { withTheme: true })(IntegrationReactSelect);
+
+/*
+ *  This makes our selectors usable without a Formik field, in the rare cases that a selector is needed without being tied to a Formik.
+ *  It would probably make more sense if the selectors were usable without formik by default and then wrapepd to be formik compatible.
+ *  Use it like this:
+ *
+ *        <ServiceSelector
+ *          {...formikCompatible({
+ *            label: 'Service',
+ *            value: this.state.serviceId,
+ *            onChange: service_id => this.setState({service_id})
+ *          })}
+ *        />
+ */
+export const formikFieldCompatible = ({ label, value, onChange }: { label: string; value: any; onChange: (value: any) => void }): any => ({
+  label,
+  field: {
+    name: label + '_compat',
+    value,
+  },
+  form: {
+    values: [],
+    errors: [],
+    setFieldValue: (_: any, value: any) => onChange(value),
+  },
+});

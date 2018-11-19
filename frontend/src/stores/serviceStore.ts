@@ -33,6 +33,7 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<Service>('/services/' + id);
     this.service = res.data;
+    return res.data;
   }
 
   protected async doPost(entity: Service): Promise<void> {
@@ -43,5 +44,10 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected async doPut(entity: Service): Promise<void> {
     const res = await this.mainStore.api.put(`/services/${entity.id}`, entity);
     this.service = res.data;
+  }
+
+  public getName(id: number) {
+    const service = this.services.find(s => s.id === id);
+    return service ? service.name : id;
   }
 }
