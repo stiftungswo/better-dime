@@ -11,7 +11,6 @@ import compose from '../../utilities/compose';
 import { Invoice, Offer, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
-import OfferPositionSubform from './OfferPositionSubform';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
@@ -23,6 +22,7 @@ import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { OfferStore } from '../../stores/offerStore';
 import { FormHeader } from '../../layout/FormHeader';
+import OfferPositionSubformInline from './OfferPositionSubformInline';
 
 interface NavigatorProps extends RouteComponentProps {
   offer: Offer;
@@ -163,7 +163,7 @@ export default class OfferForm extends React.Component<Props> {
 
                 <Grid item xs={12}>
                   <DimePaper>
-                    <OfferPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                    <OfferPositionSubformInline formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
                   </DimePaper>
                 </Grid>
 

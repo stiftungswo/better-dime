@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import { SwitchField, TextField, TodoField } from '../../form/fields/common';
+import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
@@ -20,8 +20,8 @@ import { DatePicker } from '../../form/fields/DatePicker';
 import MuiTextField from '@material-ui/core/TextField';
 import MuiFormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import ProjectPositionSubform from './ProjectPositionSubform';
 import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCategorySelector';
+import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 
 interface InfoFieldProps {
   value: string;
@@ -199,10 +199,9 @@ export default class ProjectForm extends React.Component<Props> {
                 </DimePaper>
               </Grid>
 
-              <Grid item xs={12} lg={8}>
+              <Grid item xs={12}>
                 <DimePaper>
-                  {/*TODO add an indicator when validation in a row failed*/}
-                  <ProjectPositionSubform formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                  <ProjectPositionSubformInline formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
                 </DimePaper>
               </Grid>
             </Grid>
