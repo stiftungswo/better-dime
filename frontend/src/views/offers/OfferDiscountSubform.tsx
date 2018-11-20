@@ -24,6 +24,7 @@ export interface Props {
   mainStore?: MainStore;
   formikProps: FormikProps<Offer>;
   name: string;
+  disabled?: boolean;
 }
 
 @compose(observer)
@@ -34,12 +35,13 @@ export default class OfferDiscountSubform extends React.Component<Props> {
 
   public render() {
     const { values } = this.props.formikProps;
+    const { disabled } = this.props;
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Abzüge'} numSelected={0} addAction={() => arrayHelpers.push(template)} />
+            <TableToolbar title={'Abzüge'} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template)} />
             <Table>
               <TableHead>
                 <TableRow>
@@ -55,20 +57,20 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <Field delayed component={TextField} name={name('name')} />
+                        <Field delayed component={TextField} name={name('name')} disabled={disabled} />
                       </TableCell>
                       <TableCell>
-                        <Field component={SwitchField} name={name('percentage')} />
+                        <Field component={SwitchField} name={name('percentage')} disabled={disabled} />
                       </TableCell>
                       <TableCell>
                         {p.percentage ? (
-                          <Field delayed component={PercentageField} unit={'%'} name={name('value')} />
+                          <Field delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
-                          <Field delayed component={NumberField} unit={'CHF'} name={name('value')} />
+                          <Field delayed component={NumberField} unit={'CHF'} name={name('value')} disabled={disabled} />
                         )}
                       </TableCell>
                       <TableCell>
-                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                       </TableCell>
                     </TableRow>
                   );

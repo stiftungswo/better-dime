@@ -90,10 +90,6 @@ export interface Props extends FormViewProps<Offer> {
   observer
 )
 export default class OfferForm extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   public render() {
     const { offer, mainStore } = this.props;
 
@@ -112,83 +108,109 @@ export default class OfferForm extends React.Component<Props> {
         initialValues={offer}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        render={(
-          props: FormikProps<any> // tslint:disable-line
-        ) => (
-          <Fragment>
-            <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={24}>
-                <Grid item xs={12} lg={8}>
-                  {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
-                  <DimePaper>
-                    <Grid container spacing={24}>
-                      <Grid item xs={12}>
-                        <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
-                      </Grid>
-                      <Grid item xs={12} lg={8}>
-                        <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
-                      </Grid>
-                      <Grid item xs={12} lg={4}>
-                        <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
-                      </Grid>
-                      <Grid item xs={12} lg={8}>
-                        <Field
-                          fullWidth
-                          required
-                          component={EmployeeSelector}
-                          name={'accountant_id'}
-                          label={'Verantwortlicher Mitarbeiter'}
-                        />
-                      </Grid>
-                      <Grid item xs={12} lg={4}>
-                        <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Field delayed fullWidth required component={TextField} name={'short_description'} label={'Kurzbeschreibung'} />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Field
-                          delayed
-                          fullWidth
-                          required
-                          component={MarkdownField}
-                          multiline
-                          rowsMax={14}
-                          name={'description'}
-                          label={'Beschreibung'}
-                        />
-                      </Grid>
-                    </Grid>
-                  </DimePaper>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <DimePaper>
-                    <OfferPositionSubformInline formikProps={props} name={'positions'} />
-                  </DimePaper>
-                </Grid>
-
-                <Grid item xs={12} lg={6}>
-                  <DimePaper>
-                    <OfferDiscountSubform formikProps={props} name={'discounts'} />
-                  </DimePaper>
-                </Grid>
-                {offer.id && (
-                  <Grid item xs={12} lg={6}>
+        render={(props: FormikProps<Offer>) => {
+          const locked = props.values.status === 2;
+          return (
+            <Fragment>
+              <form onSubmit={props.handleSubmit}>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} lg={8}>
+                    {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
                     <DimePaper>
-                      <FormHeader>Berechnung</FormHeader>
-                      <BreakdownLine title={'Subtotal'} value={offer.breakdown.subtotal} />
-                      <BreakdownLine title={'Davon MwSt.'} value={offer.breakdown.vatTotal} />
-                      <BreakdownLine title={'Total Abzüge'} value={offer.breakdown.discountTotal} />
-                      <BreakdownLine title={'Total'} value={offer.breakdown.total} />
-                      <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                      <Grid container spacing={24}>
+                        {locked && (
+                          <Grid item xs={12}>
+                            <p>
+                              Die Offerte ist auf dem Status "Bestätigt" und kann deswegen nicht mehr bearbeitet werden. Um die Offerte
+                              anzupassen, ändere erst den Status.
+                            </p>
+                          </Grid>
+                        )}
+                        <Grid item xs={12}>
+                          <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
+                        </Grid>
+                        <Grid item xs={12} lg={8}>
+                          <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} disabled={locked} />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <Field
+                            fullWidth
+                            required
+                            component={RateGroupSelector}
+                            name={'rate_group_id'}
+                            label={'Tarif'}
+                            disabled={locked}
+                          />
+                        </Grid>
+                        <Grid item xs={12} lg={8}>
+                          <Field
+                            fullWidth
+                            required
+                            component={EmployeeSelector}
+                            name={'accountant_id'}
+                            label={'Verantwortlicher Mitarbeiter'}
+                            disabled={locked}
+                          />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            delayed
+                            fullWidth
+                            required
+                            component={TextField}
+                            name={'short_description'}
+                            label={'Kurzbeschreibung'}
+                            disabled={locked}
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Field
+                            delayed
+                            fullWidth
+                            required
+                            component={MarkdownField}
+                            multiline
+                            rowsMax={14}
+                            name={'description'}
+                            label={'Beschreibung'}
+                            disabled={locked}
+                          />
+                        </Grid>
+                      </Grid>
                     </DimePaper>
                   </Grid>
-                )}
-              </Grid>
-            </form>
-          </Fragment>
-        )}
+
+                  <Grid item xs={12}>
+                    <DimePaper>
+                      <OfferPositionSubformInline formikProps={props} name={'positions'} disabled={locked} />
+                    </DimePaper>
+                  </Grid>
+
+                  <Grid item xs={12} lg={6}>
+                    <DimePaper>
+                      <OfferDiscountSubform formikProps={props} name={'discounts'} disabled={locked} />
+                    </DimePaper>
+                  </Grid>
+                  {offer.id && (
+                    <Grid item xs={12} lg={6}>
+                      <DimePaper>
+                        <FormHeader>Berechnung</FormHeader>
+                        <BreakdownLine title={'Subtotal'} value={offer.breakdown.subtotal} />
+                        <BreakdownLine title={'Davon MwSt.'} value={offer.breakdown.vatTotal} />
+                        <BreakdownLine title={'Total Abzüge'} value={offer.breakdown.discountTotal} />
+                        <BreakdownLine title={'Total'} value={offer.breakdown.total} />
+                        <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} disabled={locked} />
+                      </DimePaper>
+                    </Grid>
+                  )}
+                </Grid>
+              </form>
+            </Fragment>
+          );
+        }}
       />
     );
   }

@@ -194,6 +194,7 @@ class IntegrationReactSelect extends React.Component<any> {
       menuPortal: (base: any) => ({ ...base, zIndex: 9001 }),
     };
 
+    //FIXME while the `disabled` prop correctly disables interaction, the inputs don't look disabled.
     return (
       <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} margin={margin} fullWidth>
         <Select

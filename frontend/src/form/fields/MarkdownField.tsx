@@ -19,12 +19,12 @@ export class MarkdownField extends React.Component<any> {
   }
 
   render = () => {
-    const { label, field, form, required } = this.props;
+    const { label, field, form, required, disabled } = this.props;
     return (
       <Grid container={true} spacing={24}>
         <Grid item={true} xs={12} lg={6}>
           <ValidatedFormGroupWithLabel label={label} fullWidth field={field} form={form} required={required}>
-            <Input {...field} fullWidth multiline rowsMax={14} />
+            <Input {...field} fullWidth multiline rowsMax={14} disabled={disabled} />
           </ValidatedFormGroupWithLabel>
         </Grid>
         <Grid item={true} xs={12} lg={6}>

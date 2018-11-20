@@ -18,7 +18,13 @@ interface ButtonProps {
 
 const withLink = (link?: string) => (component: React.ReactNode) => (link ? <UnstyledLink to={link}>{component}</UnstyledLink> : component);
 const withTooltip = (text?: string) => (component: React.ReactElement<any>) =>
-  text ? <Tooltip title={text}>{component}</Tooltip> : component;
+  text ? (
+    <Tooltip title={text}>
+      <div>{component}</div>
+    </Tooltip>
+  ) : (
+    component
+  );
 
 export class ActionButton extends React.Component<ButtonProps> {
   public get route(): string | undefined {

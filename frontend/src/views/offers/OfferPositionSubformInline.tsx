@@ -25,6 +25,7 @@ export interface Props {
   serviceStore?: ServiceStore;
   formikProps: FormikProps<Offer>;
   name: string;
+  disabled?: boolean;
 }
 
 @compose(
@@ -53,12 +54,13 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
 
   public render() {
     const { values } = this.props.formikProps;
+    const { disabled } = this.props;
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Services'} numSelected={0} addAction={() => this.setState({ dialogOpen: true })} />
+            <TableToolbar title={'Services'} numSelected={0} addAction={disabled ? undefined : () => this.setState({ dialogOpen: true })} />
             <div style={{ overflowX: 'auto' }}>
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
@@ -80,24 +82,24 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     return (
                       <TableRow key={index}>
                         <TableCell>
-                          <Field delayed component={NumberField} name={`positions.${index}.order`} margin={'none'} />
+                          <Field delayed component={NumberField} name={`positions.${index}.order`} margin={'none'} disabled={disabled} />
                         </TableCell>
                         <TableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</TableCell>
                         <TableCell>
-                          <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
+                          <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
                         </TableCell>
                         <TableCell>
-                          <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                          <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} disabled={disabled} />
                         </TableCell>
                         <TableCell>
-                          <Field delayed component={NumberField} name={name('amount')} margin={'none'} />
+                          <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
                         </TableCell>
                         <TableCell>
-                          <Field delayed component={PercentageField} name={name('vat')} margin={'none'} />
+                          <Field delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
                         </TableCell>
                         <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
                         <TableCell>
-                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                         </TableCell>
                       </TableRow>
                     );
