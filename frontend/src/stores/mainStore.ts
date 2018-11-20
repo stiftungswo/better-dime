@@ -128,6 +128,10 @@ export class MainStore {
     this.history.push(path);
   }
 
+  public getPrintUrl(path: string): string {
+    return `${baseUrl}/${path}?auth=${this.token}`;
+  }
+
   @computed
   public get isLoggedIn() {
     return !!this._token;

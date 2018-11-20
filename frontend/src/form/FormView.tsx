@@ -12,6 +12,7 @@ export interface FormViewProps<T> {
   submitted?: boolean;
   loading?: boolean;
   paper?: boolean;
+  appBarButtons?: React.ReactNode;
 }
 
 interface Props<T> extends FormViewProps<T> {
@@ -31,6 +32,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
   };
 
   public render() {
+    const { appBarButtons, ...rest } = this.props as any;
     return this.props.loading ? (
       <Fragment>
         <DimeAppBar title={this.props.title} />
@@ -38,13 +40,14 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
       </Fragment>
     ) : (
       <Formik
-        {...this.props as any}
+        {...rest}
         enableReinitialize
         onSubmit={this.submit}
         render={props => (
           <Fragment>
             <Prompt when={!this.props.submitted && props.dirty} message={() => 'Änderungen verwerfen?'} />
             <DimeAppBar title={this.props.title}>
+              {appBarButtons}
               <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={props.handleSubmit} disabled={props.isSubmitting} />
             </DimeAppBar>
             <DimeContent paper={this.props.paper}>{this.props.render(props as any)}</DimeContent>

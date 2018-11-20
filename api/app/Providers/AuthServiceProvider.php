@@ -35,15 +35,18 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('jwt-auth', function ($request) {
             /** @var \Laravel\Lumen\Http\Request $request */
-            $token = $request->header('Authorization');
 
-            if (!$token) {
+            if ($request->header('Authorization')) {
+                $token = explode(' ', $request->header('Authorization'), 2)[1];
+            } elseif ($request->query('auth')) {
+                $token = $request->query('auth');
+            } else {
                 // Unauthorized response if token not there
                 return null;
             }
 
             try {
-                $credentials = JWT::decode(explode(' ', $token, 2)[1], env('JWT_SECRET'), ['HS256']);
+                $credentials = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
                 $employee = Employee::findOrFail($credentials->sub);
             } catch (Exception $e) {
                 return null;

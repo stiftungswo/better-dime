@@ -23,6 +23,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { OfferStore } from '../../stores/offerStore';
 import { FormHeader } from '../../layout/FormHeader';
 import OfferPositionSubformInline from './OfferPositionSubformInline';
+import PrintButton from '../../layout/PrintButton';
 
 interface NavigatorProps extends RouteComponentProps {
   offer: Offer;
@@ -108,6 +109,7 @@ export default class OfferForm extends React.Component<Props> {
         initialValues={offer}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
+        appBarButtons={offer && offer.id ? <PrintButton path={`offers/${offer.id}/print`} color={'inherit'} /> : undefined}
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (
