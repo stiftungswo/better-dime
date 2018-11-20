@@ -1,3 +1,5 @@
+// https://material-ui.com/demos/autocomplete/#react-select
+
 import React from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
@@ -44,6 +46,9 @@ const styles = (theme: Theme) => ({
     textOverflow: 'ellipsis',
     overflow: 'hidden',
   },
+  disabled: {
+    color: theme.palette.text.disabled,
+  },
   placeholder: {
     position: 'absolute',
     left: 2,
@@ -80,6 +85,7 @@ function Control(props: any) {
       fullWidth
       InputProps={{
         inputComponent,
+        disabled: props.isDisabled,
         inputProps: {
           className: props.selectProps.classes.input,
           inputRef: props.innerRef,
@@ -117,8 +123,9 @@ function Placeholder(props: any) {
 }
 
 function SingleValue(props: any) {
+  const classes = props.selectProps.classes;
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    <Typography className={classNames(classes.singleValue, { [classes.disabled]: props.isDisabled })} {...props.innerProps}>
       {props.children}
     </Typography>
   );
@@ -194,7 +201,6 @@ class IntegrationReactSelect extends React.Component<any> {
       menuPortal: (base: any) => ({ ...base, zIndex: 9001 }),
     };
 
-    //FIXME while the `disabled` prop correctly disables interaction, the inputs don't look disabled.
     return (
       <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} margin={margin} fullWidth>
         <Select
