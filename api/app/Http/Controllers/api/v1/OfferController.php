@@ -151,7 +151,7 @@ class OfferController extends BaseController
             'discounts.*.name' => 'required|string|max:255',
             'discounts.*.percentage' => 'required|boolean',
             'discounts.*.value' => 'required|numeric',
-            'fixed_price' => 'integer',
+            'fixed_price' => 'integer|nullable',
             'name' => 'required|string|max:255',
             'positions.*.amount' => 'required|integer',
             'positions.*.order' => 'required|integer',

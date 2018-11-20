@@ -56,7 +56,7 @@ const schema = yup.object({
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
   description: yup.string().required(),
-  fixed_price: yup.boolean(),
+  fixed_price: yup.number().nullable(true),
   rate_group_id: yup.number().required(),
   short_description: yup.string().required(),
   status: yup.number().required(),
@@ -181,7 +181,7 @@ export default class OfferForm extends React.Component<Props> {
                       <BreakdownLine title={'Davon MwSt.'} value={offer.breakdown.vatTotal} />
                       <BreakdownLine title={'Total Abzüge'} value={offer.breakdown.discountTotal} />
                       <BreakdownLine title={'Total'} value={offer.breakdown.total} />
-                      <Field component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                      <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                     </DimePaper>
                   </Grid>
                 )}
