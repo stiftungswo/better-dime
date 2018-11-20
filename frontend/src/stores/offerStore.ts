@@ -42,12 +42,12 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   }
 
   protected async doPost(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.post<Offer>('/offers/', entity);
+    const res = await this.mainStore.api.post<Offer>('/offers/', this.cast(entity));
     this.offer = res.data;
   }
 
   protected async doPut(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, entity);
+    const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, this.cast(entity));
     this.offer = res.data;
   }
 
@@ -73,5 +73,14 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
       this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
       throw e;
     }
+  }
+
+  protected cast(offer: Offer) {
+    //this prevents empty fields being sent to the backend as ""
+    //optimally, this can be handled in the form so empty strings don't even reach here.
+    return {
+      ...offer,
+      fixed_price: offer.fixed_price || null,
+    };
   }
 }

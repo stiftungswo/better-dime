@@ -40,7 +40,8 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     }
     arrayHelpers.push({
       description: '',
-      vat: 0.077, // this should probably be configurable somewhere; user settings?
+      order: 100,
+      vat: service.vat,
       service_id: service.id,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,

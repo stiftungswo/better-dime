@@ -164,7 +164,7 @@ export default class OfferForm extends React.Component<Props> {
 
                 <Grid item xs={12}>
                   <DimePaper>
-                    <OfferPositionSubformInline formikProps={props} mainStore={this.props.mainStore} name={'positions'} />
+                    <OfferPositionSubformInline formikProps={props} name={'positions'} />
                   </DimePaper>
                 </Grid>
 
