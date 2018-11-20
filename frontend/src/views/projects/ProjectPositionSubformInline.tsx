@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Field, FieldArray, FormikProps } from 'formik';
+import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableCell from '@material-ui/core/TableCell/TableCell';
@@ -9,20 +9,14 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { Project, ProjectPosition } from '../../types';
-import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceStore } from '../../stores/serviceStore';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
-import Button from '@material-ui/core/Button/Button';
 import { Service } from '../services/types';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { formikFieldCompatible } from '../../form/fields/Select';
+import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 
 export interface Props {
   serviceStore?: ServiceStore;
@@ -37,6 +31,20 @@ export interface Props {
 export default class ProjectPositionSubformInline extends React.Component<Props> {
   state = {
     dialogOpen: false,
+  };
+
+  public handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
+    const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
+    if (!rate) {
+      throw new Error('no rate was found');
+    }
+    arrayHelpers.push({
+      description: '',
+      vat: 0.077, // this should probably be configurable somewhere; user settings?
+      service_id: service.id,
+      rate_unit_id: rate.rate_unit_id,
+      price_per_rate: rate.value,
+    });
   };
 
   public componentWillMount = () => this.props.serviceStore!.fetchAll();
@@ -93,75 +101,11 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
               </Table>
             </div>
             {this.state.dialogOpen && (
-              <NewDialog
-                open
-                onClose={() => this.setState({ dialogOpen: false })}
-                rateGroupId={values.rate_group_id}
-                onSubmit={arrayHelpers.push}
-              />
+              <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
             )}
           </>
         )}
       />
-    );
-  }
-}
-
-interface NDProps {
-  open: boolean;
-  onClose: () => void;
-  serviceStore?: ServiceStore;
-  rateGroupId: number;
-  onSubmit: (template: any) => void;
-}
-
-@compose(
-  inject('serviceStore'),
-  observer
-)
-class NewDialog extends React.Component<NDProps> {
-  state = {
-    serviceId: undefined,
-  };
-
-  handleSubmit = () => {
-    this.props.serviceStore!.notifyProgress(async () => {
-      const service = (await this.props.serviceStore!.fetchOne(this.state.serviceId!)) as Service;
-      const rate = service.service_rates.find(r => r.rate_group_id === this.props.rateGroupId);
-      if (!rate) {
-        throw new Error('no rate was found');
-      }
-      this.props.onSubmit({
-        description: '',
-        vat: 0.077, // this should probably be configurable somewhere; user settings?
-        service_id: service.id,
-        rate_unit_id: rate.rate_unit_id,
-        price_per_rate: rate.value,
-      });
-      this.props.onClose();
-    });
-  };
-
-  render() {
-    return (
-      <Dialog open onClose={this.props.onClose}>
-        <DialogTitle>Service hinzufügen</DialogTitle>
-        <DialogContent>
-          <ServiceSelector
-            fullWidth
-            {...formikFieldCompatible({
-              label: 'Service',
-              value: this.state.serviceId,
-              onChange: serviceId => this.setState({ serviceId }),
-            })}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleSubmit} disabled={!this.state.serviceId}>
-            Hinzufügen
-          </Button>
-        </DialogActions>
-      </Dialog>
     );
   }
 }
