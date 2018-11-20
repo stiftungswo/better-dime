@@ -14,6 +14,8 @@ import { AddressStore } from '../stores/addressStore';
 import { ProjectStore } from '../stores/projectStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
 import { CustomerTagStore } from '../stores/customerTagStore';
+import { InvoiceStore } from '../stores/invoiceStore';
+import { CostgroupStore } from '../stores/costgroupStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -33,6 +35,8 @@ export class StoreProvider extends React.Component<Props | any> {
     projectStore: ProjectStore;
     projectCategoryStore: ProjectCategoryStore;
     customerTagStore: CustomerTagStore;
+    invoiceStore: InvoiceStore;
+    costgroupStore: CostgroupStore;
   };
 
   constructor(props: Props) {
@@ -52,6 +56,8 @@ export class StoreProvider extends React.Component<Props | any> {
       projectStore: new ProjectStore(mainStore),
       projectCategoryStore: new ProjectCategoryStore(mainStore),
       customerTagStore: new CustomerTagStore(mainStore),
+      invoiceStore: new InvoiceStore(mainStore),
+      costgroupStore: new CostgroupStore(mainStore),
     };
   }
 

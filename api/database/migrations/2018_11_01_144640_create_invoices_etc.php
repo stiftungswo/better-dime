@@ -38,6 +38,7 @@ class CreateInvoicesEtc extends Migration
         });
 
         Schema::create('costgroup_distributions', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('costgroup_number')->unsigned()->nullable();
             $table->foreign('costgroup_number')->references('number')->on('costgroups')->onDelete('set null');
             $table->integer('invoice_id')->unsigned();

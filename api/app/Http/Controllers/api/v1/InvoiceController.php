@@ -25,7 +25,7 @@ class InvoiceController extends BaseController
 
     public function get($id)
     {
-        return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id);
+        return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append('breakdown');
     }
 
     public function index()
@@ -154,14 +154,15 @@ class InvoiceController extends BaseController
             'discounts.*.percentage' => 'required|boolean',
             'discounts.*.value' => 'required|numeric',
             'end' => 'required|date',
-            'fixed_price' => 'integer',
+            'fixed_price' => 'integer|nullable',
             'positions.*.amount' => 'required|numeric',
             'positions.*.description' => 'required|string|max:255',
-            'positions.*.order' => 'required|integer',
-            'positions.*.project_position_id' => 'integer',
+            'positions.*.order' => 'integer|nullable',
+            'positions.*.price_per_rate' => 'required|integer',
+            'positions.*.project_position_id' => 'integer|nullable',
             'positions.*.rate_unit_id' => 'required|integer',
             'positions.*.vat' => 'required|numeric',
-            'project_id' => 'required|integer',
+            'project_id' => 'nullable|integer',
             'name' => 'required|string',
             'start' => 'required|date'
         ]);

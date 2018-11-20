@@ -90,6 +90,13 @@ class InvoiceControllerTest extends \TestCase
         $this->asAdmin()->json('PUT', 'api/v1/invoices/' . $invoiceId, $template)->assertResponseStatus(500);
     }
 
+    public function testCostgroupsRequired()
+    {
+        $template = $this->invoiceTemplate();
+        $template['costgroup_distributions'] = [];
+        $this->asAdmin()->json('POST', 'api/v1/invoices', $template)->assertResponseStatus(422);
+    }
+
     public function testValidPut()
     {
         // also add one nested relation, delete one and update one

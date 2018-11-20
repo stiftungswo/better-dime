@@ -146,6 +146,10 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->post('/', ['uses' => 'WorkPeriodController@post']);
                 $router->put('/{id}', ['uses' => 'WorkPeriodController@put']);
             });
+
+            $router->group(['prefix' => 'costgroups'], function () use ($router) {
+                $router->get('/', ['uses' => 'CostgroupController@index']);
+            });
         });
     });
 });

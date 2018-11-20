@@ -1,5 +1,7 @@
 // tslint:disable
 
+//TODO clean this up; either pull the Service types here, or split this up into several files
+
 export interface Offer {
   id?: number;
   accountant_id: number;
@@ -234,6 +236,60 @@ export interface Status {
 }
 
 export interface Invoice {
-  id?: number;
-  //TODO
+  id: number;
+  accountant_id: number;
+  address_id: number;
+  breakdown: Breakdown;
+  description: string;
+  end: string;
+  fixed_price: null;
+  project_id: number;
+  name: string;
+  start: string;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  costgroup_distributions: InvoiceCostgroup[];
+  discounts: InvoiceDiscount[];
+  positions: InvoicePosition[];
+}
+
+export interface InvoiceCostgroup {
+  costgroup_number: number;
+  invoice_id: number;
+  weight: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InvoicePosition {
+  id: number;
+  amount: number;
+  description: string;
+  invoice_id: number;
+  order: null;
+  price_per_rate: number;
+  project_position_id: number;
+  rate_unit_id: number;
+  vat: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface InvoiceDiscount {
+  id: number;
+  invoice_id: number;
+  name: string;
+  percentage: boolean;
+  value: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Costgroup {
+  number: number;
+  name: string;
 }

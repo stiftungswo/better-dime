@@ -16,6 +16,7 @@ import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import Typography from '@material-ui/core/Typography/Typography';
 
 const drawerWidth = 240;
 
@@ -146,6 +147,13 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
     },
     avatar: {},
   });
+
+interface ErrorTextProps extends WithStyles<typeof styles> {
+  children: React.ReactNode;
+}
+export const ErrorText = compose(withStyles(styles(DimeTheme)))(({ classes, children }: ErrorTextProps) => (
+  <Typography color={'error'}>{children}</Typography>
+));
 
 export const LoadingSpinner = compose(withStyles(styles(DimeTheme)))(({ classes }: any) => (
   <CircularProgress className={classes.progress} />

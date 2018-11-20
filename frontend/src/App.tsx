@@ -21,6 +21,9 @@ import CustomerTagOverview from './views/customer_tags/CustomerTagOverview';
 import ProjectOverview from './views/projects/ProjectOverview';
 import ProjectUpdate from './views/projects/ProjectUpdate';
 import ProjectCreate from './views/projects/ProjectCreate';
+import InvoiceOverview from './views/invoices/InvoiceOverview';
+import InvoiceUpdate from './views/invoices/InvoiceUpdate';
+import InvoiceCreate from './views/invoices/InvoiceCreate';
 
 class App extends React.Component {
   public render() {
@@ -38,6 +41,9 @@ class App extends React.Component {
             <ProtectedRoute exact path="/projects" component={ProjectOverview} />
             <ProtectedRoute exact path="/projects/new" component={ProjectCreate} />
             <ProtectedRoute exact path="/projects/:id" component={ProjectUpdate} />
+            <ProtectedRoute exact path="/invoices" component={InvoiceOverview} />
+            <ProtectedRoute exact path="/invoices/new" component={InvoiceCreate} />
+            <ProtectedRoute exact path="/invoices/:id" component={InvoiceUpdate} />
             <ProtectedRoute exact path="/employees" component={EmployeeOverview} />
             <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />

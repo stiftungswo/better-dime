@@ -12,7 +12,7 @@ class Invoice extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['accountant_id', 'address_id', 'description', 'end', 'fixed_price', 'name', 'project_id', 'start'];
+    protected $fillable = ['accountant_id', 'address_id', 'description', 'end', 'fixed_price', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
 
     public function accountant()
     {
@@ -48,6 +48,12 @@ class Invoice extends Model
     {
         return $this->belongsTo(Project::class);
     }
+    
+    public function getBreakdownAttribute()
+    {
+        return \App\Services\CostBreakdown::calculate($this);
+    }
+
 
     public function getDistributionOfCostgroupsAttribute()
     {

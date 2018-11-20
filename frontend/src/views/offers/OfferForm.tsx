@@ -10,7 +10,6 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { Invoice, Offer, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
@@ -24,6 +23,7 @@ import { OfferStore } from '../../stores/offerStore';
 import { FormHeader } from '../../layout/FormHeader';
 import OfferPositionSubformInline from './OfferPositionSubformInline';
 import PrintButton from '../../layout/PrintButton';
+import { BreakdownTable } from '../../layout/BreakdownTable';
 
 interface NavigatorProps extends RouteComponentProps {
   offer: Offer;
@@ -81,24 +81,17 @@ const schema = yup.object({
 });
 
 export interface Props extends FormViewProps<Offer> {
-  mainStore?: MainStore;
   offerStore?: OfferStore;
   offer: Offer;
 }
 
 @compose(
-  inject('mainStore', 'offerStore'),
+  inject('offerStore'),
   observer
 )
 export default class OfferForm extends React.Component<Props> {
   public render() {
-    const { offer, mainStore } = this.props;
-
-    const BreakdownLine = ({ title, value }: { title: string; value: number }) => (
-      <p>
-        <b>{title}</b>: {mainStore!.formatCurrency(value)}
-      </p>
-    );
+    const { offer } = this.props;
 
     return (
       <FormView
@@ -197,13 +190,10 @@ export default class OfferForm extends React.Component<Props> {
                     </DimePaper>
                   </Grid>
                   {offer.id && (
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12} lg={4}>
                       <DimePaper>
                         <FormHeader>Berechnung</FormHeader>
-                        <BreakdownLine title={'Subtotal'} value={offer.breakdown.subtotal} />
-                        <BreakdownLine title={'Davon MwSt.'} value={offer.breakdown.vatTotal} />
-                        <BreakdownLine title={'Total Abzüge'} value={offer.breakdown.discountTotal} />
-                        <BreakdownLine title={'Total'} value={offer.breakdown.total} />
+                        <BreakdownTable breakdown={offer.breakdown} />
                         <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} disabled={locked} />
                       </DimePaper>
                     </Grid>

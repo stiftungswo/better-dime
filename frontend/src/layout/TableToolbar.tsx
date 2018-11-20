@@ -41,10 +41,11 @@ interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
   addAction?: ActionButtonAction;
   title: string;
   children?: React.ReactNode;
+  error?: boolean;
 }
 
 const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToolbarProps) => {
-  const { numSelected = 0, classes, deleteAction, addAction, title } = props;
+  const { numSelected = 0, classes, deleteAction, addAction, title, error } = props;
 
   return (
     <Toolbar
@@ -58,7 +59,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
             {numSelected} ausgewählt
           </Typography>
         ) : (
-          <FormHeader>{title}</FormHeader>
+          <FormHeader color={error ? 'error' : undefined}>{title}</FormHeader>
         )}
       </div>
       <div className={classes.spacer} />

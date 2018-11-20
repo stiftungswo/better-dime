@@ -78,6 +78,8 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   protected cast(offer: Offer) {
     //this prevents empty fields being sent to the backend as ""
     //optimally, this can be handled in the form so empty strings don't even reach here.
+    //TODO - the fixed_price = '' seems to happen in OfferUpdate (and their Project/Invoice friends). Maybe we can kill it there and get rid of `cast` again.
+    // - or maybe yup cast/transform can solve this?
     return {
       ...offer,
       fixed_price: offer.fixed_price || null,

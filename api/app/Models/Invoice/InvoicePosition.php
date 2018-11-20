@@ -12,7 +12,8 @@ class InvoicePosition extends Model
     use SoftDeletes;
 
     protected $casts = [
-        'amount' => 'float'
+        'amount' => 'float',
+        'vat' => 'float'
     ];
 
     protected $fillable = ['amount', 'description', 'invoice_id', 'order', 'project_position_id', 'price_per_rate', 'rate_unit_id', 'vat'];
