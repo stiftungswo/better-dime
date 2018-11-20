@@ -37,7 +37,12 @@ class AuthServiceProvider extends ServiceProvider
             /** @var \Laravel\Lumen\Http\Request $request */
 
             if ($request->header('Authorization')) {
-                $token = explode(' ', $request->header('Authorization'), 2)[1];
+                $split = explode(' ', $request->header('Authorization'), 2);
+                if (sizeof($split) > 1) {
+                    $token = $split[1];
+                } else {
+                    return null;
+                }
             } elseif ($request->query('auth')) {
                 $token = $request->query('auth');
             } else {
