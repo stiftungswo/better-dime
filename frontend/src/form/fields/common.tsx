@@ -43,7 +43,14 @@ export type FormProps = {
   required?: boolean;
   multiline?: boolean;
 } & FieldProps;
-export type InputFieldProps = { type: string; unit?: string; onChange?: any; value?: any; delayed?: boolean } & FormProps;
+export type InputFieldProps = {
+  type: string;
+  unit?: string;
+  onChange?: any;
+  value?: any;
+  delayed?: boolean;
+  disabled?: boolean;
+} & FormProps;
 
 export const ValidatedFormGroupWithLabel = ({
   label,
