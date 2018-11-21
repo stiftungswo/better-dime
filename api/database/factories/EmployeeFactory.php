@@ -28,5 +28,7 @@ $factory->defineAs(Employee::class, 'admin', function () use ($factory) {
     $user['email'] ='office@stiftungswo.ch';
     $user['password'] = 'Welcome01';
     $user['is_admin'] = true;
+    $user['first_name'] = 'Ers';
+    $user['last_name'] = 'Gutermann';
     return $user;
 });

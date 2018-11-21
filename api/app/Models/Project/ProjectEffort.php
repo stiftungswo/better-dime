@@ -26,6 +26,19 @@ class ProjectEffort extends Model
         return $this->belongsTo(ProjectPosition::class, 'position_id');
     }
 
+    public function getProjectIdAttribute()
+    {
+        if ($this->position) {
+            if ($this->position->project) {
+                return $this->position->project->id;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     public function getServiceAttribute()
     {
         return $this->position->service;

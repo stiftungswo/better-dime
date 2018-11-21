@@ -15,13 +15,34 @@ class ProjectCommentController extends BaseController
         return 'Entity deleted';
     }
 
-    public function index()
+    public function get($id)
     {
-        if (Input::get('project')) {
-            return ProjectComment::where('project_id', Input::get('project'))->get();
-        } else {
-            return ProjectComment::all();
+        return ProjectComment::findOrFail($id);
+    }
+
+    public function index(Request $request)
+    {
+        $validatedInput = $this->validate($request, [
+            'end' => 'date',
+            'project_id' => 'integer',
+            'start' => 'date'
+        ]);
+
+        $queryBuilder = ProjectComment::orderBy('date');
+
+        if (!empty($validatedInput['end'])) {
+            $queryBuilder->where('date', '<=', $validatedInput['end']);
         }
+
+        if (!empty($validatedInput['project_id'])) {
+            $queryBuilder->where('project_id', '=', $validatedInput['project_id']);
+        }
+
+        if (!empty($validatedInput['start'])) {
+            $queryBuilder->where('date', '>=', $validatedInput['start']);
+        }
+
+        return $queryBuilder->get();
     }
 
     public function post(Request $request)
@@ -46,10 +67,5 @@ class ProjectCommentController extends BaseController
             'date' => 'required|date',
             'project_id' => 'required|integer'
         ]);
-    }
-
-    private function get($id)
-    {
-        return ProjectComment::findOrFail($id);
     }
 }

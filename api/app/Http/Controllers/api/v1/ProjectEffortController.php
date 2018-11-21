@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Project\ProjectEffort;
+use App\Services\Filter\TimetrackFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -18,25 +19,16 @@ class ProjectEffortController extends BaseController
 
     public function index(Request $request)
     {
-        $this->validateIndexRequest($request);
+        $validatedData = $this->validate($request, [
+            'project_id' => 'integer',
+            'employee_ids' => 'string',
+            'project_ids' => 'string',
+            'service_ids' => 'string',
+            'start' => 'date',
+            'end' => 'date',
+        ]);
 
-        $base = DB::table('project_efforts')->where('project_efforts.deleted_at');
-
-        if (Input::get('date_from')) {
-            $base->where('project_efforts.date', '>=', Input::get('date_from'));
-        }
-
-        if (Input::get('date_to')) {
-            $base->where('project_efforts.date', '<=', Input::get('date_to'));
-        }
-
-        if (Input::get('project')) {
-            $base->leftJoin('project_positions', 'project_positions.id', '=', 'project_efforts.position_id')
-                ->leftJoin('projects', 'projects.id', '=', 'project_positions.project_id')
-                ->where('projects.id', '=', Input::get('project'));
-        }
-
-        return $base->get(['project_efforts.*']);
+        return TimetrackFilter::fetch($validatedData);
     }
 
     public function post(Request $request)
@@ -53,9 +45,9 @@ class ProjectEffortController extends BaseController
         return self::get($id);
     }
 
-    private function get($id)
+    public function get($id)
     {
-        return ProjectEffort::findOrFail($id);
+        return ProjectEffort::findOrFail($id)->append('project_id');
     }
 
     private function validateRequest(Request $request)
@@ -65,15 +57,6 @@ class ProjectEffortController extends BaseController
             'employee_id' => 'required|integer',
             'position_id' => 'required|integer',
             'value' => 'required|numeric'
-        ]);
-    }
-
-    private function validateIndexRequest(Request $request)
-    {
-        $this->validate($request, [
-            'date_from' => 'date',
-            'date_to' => 'date',
-            'project' => 'integer'
         ]);
     }
 }

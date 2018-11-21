@@ -6,6 +6,9 @@ import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 import { LoadingSpinner } from '../layout/DimeLayout';
 import { Prompt } from 'react-router';
+import compose from '../utilities/compose';
+import { withMobileDialog } from '@material-ui/core';
+import { InjectedProps } from '@material-ui/core/withMobileDialog';
 
 interface DialogFormProps<T> {
   title: string;
@@ -17,8 +20,9 @@ interface DialogFormProps<T> {
   onClose: () => void;
 }
 
+@compose(withMobileDialog())
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
-  FormikConfig<Values> & ExtraProps & DialogFormProps<Values>
+  FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & InjectedProps
 > {
   public submit = async (values: any, formikBag: FormikBag<any, any>) => {
     await this.props.onSubmit(values);
@@ -34,8 +38,10 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   };
 
   public render() {
+    const { fullScreen } = this.props;
+
     return this.props.loading ? (
-      <Dialog open={this.props.open} onClose={this.props.onClose}>
+      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>
         <LoadingSpinner />
       </Dialog>
     ) : (
@@ -45,7 +51,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         render={formikProps => (
           <>
             <Prompt when={formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)}>
+            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
               <DialogContent>{this.props.render(formikProps as any)}</DialogContent>
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>

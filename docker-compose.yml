@@ -14,6 +14,7 @@ services:
     - "38000:8000"
   mysql:
     image: mysql:5.7
+    command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
     container_name: dime_db
     environment:
     - MYSQL_ALLOW_EMPTY_PASSWORD=1

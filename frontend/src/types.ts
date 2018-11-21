@@ -226,6 +226,7 @@ export interface ProjectPosition {
   charge: number;
   calculated_vat: number;
   efforts_value: number;
+  is_time: boolean;
 }
 
 export interface Status {
@@ -237,7 +238,7 @@ export interface Status {
 }
 
 export interface Invoice {
-  id: number;
+  id?: number;
   accountant_id: number;
   address_id: number;
   breakdown: Breakdown;
@@ -294,4 +295,64 @@ export interface InvoiceDiscount {
 export interface Costgroup {
   number: number;
   name: string;
+}
+
+export interface ProjectEffort {
+  id?: number;
+  created_at?: string;
+  updated_at?: string;
+  deleted_at?: string;
+  date: string;
+  employee_id: number;
+  position_id: number;
+  project_id?: number;
+  value: number;
+}
+
+export interface ProjectEffortFilter {
+  start: string;
+  end: string;
+  combine_times: boolean;
+  employee_ids: number[];
+  service_ids: number[];
+  show_empty_groups: boolean;
+  project_ids: number[];
+  show_project_comments: boolean;
+}
+
+export interface ProjectEffortListing {
+  id: number;
+  date: string;
+  effort_value: number;
+  effort_employee_id: number;
+  position_description: string;
+  project_id: number;
+  project_name: string;
+  service_id: number;
+  service_name: string;
+  employee_full_name: string;
+  effort_unit: string;
+  rate_unit_factor?: number;
+}
+
+export interface ProjectEffortTemplate {
+  date: string;
+  employee_id: number | null;
+  project_id: number | null;
+  value: number;
+}
+
+export interface ProjectComment {
+  id?: number;
+  comment: string;
+  date: string;
+  project_id?: number;
+  deleted_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Invoice {
+  id?: number;
+  //TODO
 }

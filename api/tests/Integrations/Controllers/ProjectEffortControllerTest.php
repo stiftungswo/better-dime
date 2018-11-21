@@ -36,7 +36,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '2099-01-01']);
         factory(ProjectEffort::class)->create(['date' => '2098-12-31']);
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_from=2099-01-01');
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?start=2099-01-01');
         $this->assertCount(1, $this->responseToArray());
     }
 
@@ -45,7 +45,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '1900-01-01']);
         factory(ProjectEffort::class)->create(['date' => '1900-01-02']);
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_to=1900-01-01');
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?end=1900-01-01');
         $this->assertCount(1, $this->responseToArray());
     }
 
@@ -56,7 +56,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '2099-01-01']);
         factory(ProjectEffort::class)->create(['date' => '2099-01-02']);
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_from=2077-01-01&date_to=2099-01-01');
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?start=2077-01-01&end=2099-01-01');
         $this->assertCount(2, $this->responseToArray());
     }
 
@@ -71,7 +71,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '2064-01-01', 'position_id' => $projectPositionId]);
         $this->createRandomProjectWithEfforts();
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_from=2065-01-01&project=' . $projectId);
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?start=2065-01-01&project_ids=' . $projectId);
         $this->assertCount(1, $this->responseToArray());
     }
 
@@ -86,7 +86,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '2066-01-01', 'position_id' => $projectPositionId]);
         $this->createRandomProjectWithEfforts();
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_to=2065-01-01&project=' . $projectId);
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?end=2065-01-01&project_ids=' . $projectId);
         $this->assertCount(1, $this->responseToArray());
     }
 
@@ -102,7 +102,7 @@ class ProjectEffortControllerTest extends \TestCase
         factory(ProjectEffort::class)->create(['date' => '2066-01-01', 'position_id' => $projectPositionId]);
         $this->createRandomProjectWithEfforts();
 
-        $this->asAdmin()->json('GET', 'api/v1/project_efforts?date_from=2065-01-01&date_to=2065-12-01&project=' . $projectId);
+        $this->asAdmin()->json('GET', 'api/v1/project_efforts?start=2065-01-01&end=2065-12-01&project_ids=' . $projectId);
         $this->assertCount(1, $this->responseToArray());
     }
 

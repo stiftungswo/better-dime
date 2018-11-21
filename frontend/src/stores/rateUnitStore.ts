@@ -31,6 +31,12 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   }
 
   @action
+  protected async doFetchOne(id: number) {
+    const res = await this.mainStore.api.get<RateUnit>('/rate_units/' + id);
+    this.rateUnit = res.data;
+  }
+
+  @action
   public async doFetchAll() {
     const res = await this.mainStore.api.get<RateUnit[]>('/rate_units');
     this.rateUnits = res.data;

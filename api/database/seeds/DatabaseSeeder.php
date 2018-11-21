@@ -28,7 +28,46 @@ class DatabaseSeeder extends Seeder
         $andere = factory(\App\Models\Service\RateGroup::class, 'andere')->create();
 
         print("Seeding rate units ...\n");
-        $rateUnits = factory(\App\Models\Service\RateUnit::class)->times(5)->create();
+        $rateUnits = collect([factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'CHF / min',
+            'effort_unit' => 'min',
+            'factor' => 1,
+            'is_time' => true,
+            'name' => 'Minuten',
+            'archived' => false
+        ]), factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'CHF / h',
+            'effort_unit' => 'h',
+            'factor' => 60,
+            'is_time' => true,
+            'name' => 'Stunden',
+            'archived' => false
+        ]), factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'CHF / d',
+            'effort_unit' => 'd',
+            'factor' => 504,
+            'is_time' => true,
+            'name' => 'Tage',
+            'archived' => false
+        ]), factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'CHF / Stk.',
+            'effort_unit' => 'Stk.',
+            'is_time' => false,
+            'name' => 'Stück',
+            'archived' => false
+        ]), factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'pau',
+            'effort_unit' => 'pau',
+            'is_time' => false,
+            'name' => 'Pauschal',
+            'archived' => false
+        ]), factory(\App\Models\Service\RateUnit::class)->create([
+            'billing_unit' => 'CHF / m',
+            'effort_unit' => 'm',
+            'is_time' => false,
+            'name' => 'Laufmeter',
+            'archived' => false
+        ])]);
 
         print("Seeding services and service rates ...\n");
         $services = factory(\App\Models\Service\Service::class)->times(10)->create();

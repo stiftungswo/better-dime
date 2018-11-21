@@ -12,7 +12,7 @@ class ProjectPosition extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['charge', 'calculated_vat', 'efforts_value'];
+    protected $appends = ['charge', 'calculated_vat', 'efforts_value', 'is_time'];
 
     protected $casts = [
         'vat' => 'float'
@@ -83,5 +83,18 @@ class ProjectPosition extends Model
     public function getCalculatedVatAttribute()
     {
         return $this->price_per_rate * $this->efforts_value * $this->vat;
+    }
+
+    /**
+     * Returns if the current position is calculated in time or goods
+     * @return boolean
+     */
+    public function getIsTimeAttribute()
+    {
+        if ($this->rate_unit) {
+            return $this->rate_unit->is_time;
+        } else {
+            return false;
+        }
     }
 }

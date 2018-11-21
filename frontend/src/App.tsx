@@ -24,6 +24,7 @@ import ProjectCreate from './views/projects/ProjectCreate';
 import InvoiceOverview from './views/invoices/InvoiceOverview';
 import InvoiceUpdate from './views/invoices/InvoiceUpdate';
 import InvoiceCreate from './views/invoices/InvoiceCreate';
+import Timetrack from './views/timetrack/Timetrack';
 
 class App extends React.Component {
   public render() {
@@ -33,7 +34,7 @@ class App extends React.Component {
         <DimeLayout>
           <Switch>
             <Route exact path="/">
-              <Redirect to={'/offers'} />
+              <Redirect to={'/timetrack'} />
             </Route>
             <ProtectedRoute exact path="/offers" component={OfferOverview} />
             <ProtectedRoute exact path="/offers/new" component={OfferCreate} />
@@ -55,6 +56,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/services/:id" component={ServiceUpdate} />
             <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
             <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />
+            <ProtectedRoute exact path="/timetrack" component={Timetrack} />
             <Route>
               <p>404</p>
             </Route>

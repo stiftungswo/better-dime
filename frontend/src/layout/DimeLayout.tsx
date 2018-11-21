@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
-import { CircularProgress, Theme, WithStyles } from '@material-ui/core';
+import { CircularProgress, Theme, WithStyles, withWidth } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import DimeTheme from './DimeTheme';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Typography from '@material-ui/core/Typography/Typography';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const drawerWidth = 240;
 
@@ -83,7 +84,12 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
     appBarSpacer: mixins.toolbar,
     content: {
       flexGrow: 1,
-      padding: spacing.unit * 3,
+      [breakpoints.down('sm')]: {
+        padding: spacing.unit,
+      },
+      [breakpoints.up('md')]: {
+        padding: spacing.unit * 3,
+      },
       height: '100vh',
       overflow: 'auto',
     },
@@ -97,7 +103,6 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       marginBottom: spacing.unit * 2,
     },
     mainContent: {
-      overflowX: 'auto',
       textAlign: 'left',
       padding: spacing.unit * 2,
     },
@@ -146,6 +151,9 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       },
     },
     avatar: {},
+    overflowX: {
+      overflowX: 'auto',
+    },
   });
 
 interface ErrorTextProps extends WithStyles<typeof styles> {
@@ -170,21 +178,28 @@ export const DimeContent = compose(withStyles(styles(DimeTheme)))(({ classes, ch
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
-      {paper ? <Paper className={classes.mainContent}>{content}</Paper> : content}
+      {paper ? <DimePaper>{content}</DimePaper> : content}
     </main>
   );
 });
 
-export const DimePaper = compose(withStyles(styles(DimeTheme)))(({ children, classes }: any) => (
-  <Paper className={classes.mainContent}>{children}</Paper>
+interface DimePaperProps extends WithStyles<typeof styles> {
+  children?: React.ReactNode;
+  overflowX?: boolean;
+}
+
+export const DimePaper = compose(withStyles(styles(DimeTheme)))(({ classes, children, overflowX = true }: DimePaperProps) => (
+  <Paper className={classNames(classes.mainContent, overflowX && classes.overflowX)}>{children}</Paper>
 ));
 
 interface Props extends WithStyles<typeof styles> {
   children?: React.ReactNode;
   mainStore?: MainStore;
+  width?: Breakpoint;
 }
 
 @compose(
+  withWidth(),
   inject('mainStore'),
   observer
 )
@@ -205,7 +220,12 @@ class DimeLayout extends React.Component<Props> {
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <Drawer variant={'permanent'} classes={{ paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose) }} open={open}>
+          <Drawer
+            variant={this.props.width !== 'xs' ? 'permanent' : 'temporary'}
+            classes={this.props.width !== 'xs' ? { paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose) } : undefined}
+            open={open}
+            anchor={'left'}
+          >
             <div className={classes.toolbarIcon}>
               <IconButton onClick={this.handleDrawerClose}>
                 <ChevronLeftIcon />
@@ -242,6 +262,7 @@ interface LoadingProps {
   children: React.ReactNode;
   classes: any; // tslint:disable-line:no-any
 }
+
 export const Loading = compose(withStyles(styles(DimeTheme)))(({ entity, children, classes }: LoadingProps) => (
   <Fragment>{hasContent(entity) ? children : <CircularProgress className={classes.progress} />}</Fragment>
 ));

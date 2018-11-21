@@ -34,7 +34,7 @@ class ProjectCommentControllerTest extends \TestCase
     {
         $project = factory(Project::class)->create();
         $project->comments()->saveMany(factory(ProjectComment::class, 5)->make());
-        $this->asAdmin()->json('GET', 'api/v1/project_comments?project=' . $project->id);
+        $this->asAdmin()->json('GET', 'api/v1/project_comments?project_id=' . $project->id);
         $this->assertEquals(5, count($this->responseToArray()));
     }
 

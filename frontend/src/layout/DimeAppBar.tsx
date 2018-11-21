@@ -9,12 +9,13 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography/Typography';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, withWidth } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
 import { styles } from './DimeLayout';
 import { ActionButton, ActionButtonAction } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 //TODO should probably extract the respective styles from DimeLayout and declare them in this file
 interface DimeAppBarProps extends WithStyles<typeof styles> {
@@ -22,9 +23,11 @@ interface DimeAppBarProps extends WithStyles<typeof styles> {
   mainStore?: MainStore;
   employeeStore?: EmployeeStore;
   title: string;
+  width?: Breakpoint;
 }
 
 @compose(
+  withWidth(),
   inject('mainStore', 'employeeStore'),
   observer
 )
@@ -49,7 +52,7 @@ class DimeAppBar_ extends React.Component<DimeAppBarProps> {
     const { drawerOpen, userMenuOpen, userMenuAnchorEl, meDetail } = this.props.mainStore!;
 
     return (
-      <AppBar position={'absolute'} className={classNames(classes.appBar, drawerOpen && classes.appBarShift)}>
+      <AppBar position={'absolute'} className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}>
         <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
           <IconButton
             color={'inherit'}

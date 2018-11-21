@@ -148,8 +148,12 @@ export class MainStore {
   }
 
   @computed
-  public get meSub(): number {
-    return this.decodeJWT().sub;
+  public get meSub(): number | undefined {
+    if (this._token) {
+      return this.decodeJWT().sub;
+    } else {
+      return undefined;
+    }
   }
 
   protected decodeJWT(): JwtTokenDecoded {

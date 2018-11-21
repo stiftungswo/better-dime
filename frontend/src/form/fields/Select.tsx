@@ -14,6 +14,12 @@ import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DimeTheme from '../../layout/DimeTheme';
 import { ValidatedFormGroupWithLabel } from './common';
 
+/*  TODO: If you want to use the MenuPlacement in combination with the Portal, the Menu "is stuck" in the FormControl div
+    TODO: Neither the portal nor the overflowX solution are working for the Subforms (e.g. Services in OfferForm)
+          The portal causes to scroll with the whole page because it is somehow attached to the current viewport
+          The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
+ */
+
 const styles = (theme: Theme) => ({
   root: {
     flexGrow: 1,
@@ -171,11 +177,16 @@ const components = {
 
 class IntegrationReactSelect extends React.Component<any> {
   public get value() {
-    return this.props.options.find((e: any) => e.value === this.props.field.value);
+    if (this.props.isMulti) {
+      return this.props.options.filter((e: any) => this.props.field.value.includes(e.value));
+    } else {
+      return this.props.options.find((e: any) => e.value === this.props.field.value);
+    }
   }
 
   public handleChange = (selected: any) => {
-    this.props.form.setFieldValue(this.props.field.name, selected.value);
+    const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
+    this.props.form.setFieldValue(this.props.field.name, value);
   };
 
   render() {
@@ -207,7 +218,9 @@ class IntegrationReactSelect extends React.Component<any> {
     return (
       <ValidatedFormGroupWithLabel label={''} field={field} form={form} margin={margin} fullWidth>
         <Select
-          menuPortalTarget={document.body}
+          menuPortalTarget={this.props.portal ? document.body : undefined}
+          menuPlacement={this.props.portal ? 'top' : undefined}
+          menuPosition={this.props.portal ? 'absolute' : 'fixed'}
           classes={classes}
           styles={selectStyles}
           components={components}
