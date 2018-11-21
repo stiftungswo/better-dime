@@ -22,6 +22,7 @@ import OfferPositionSubformInline from './OfferPositionSubformInline';
 import PrintButton from '../../layout/PrintButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './OfferNavigator';
+import InvoiceCreate from '../invoices/InvoiceCreate';
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -80,7 +81,7 @@ export default class OfferForm extends React.Component<Props> {
             <Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
-                  <Grid item xs={12} lg={8}>
+                  <Grid item xs={12}>
                     {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
                     <DimePaper>
                       <Grid container spacing={24}>
@@ -92,45 +93,49 @@ export default class OfferForm extends React.Component<Props> {
                             </p>
                           </Grid>
                         )}
-                        <Grid item xs={12}>
-                          <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
-                        </Grid>
                         <Grid item xs={12} lg={8}>
-                          <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} disabled={locked} />
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                          <Field
-                            fullWidth
-                            required
-                            component={RateGroupSelector}
-                            name={'rate_group_id'}
-                            label={'Tarif'}
-                            disabled={locked}
-                          />
-                        </Grid>
-                        <Grid item xs={12} lg={8}>
-                          <Field
-                            fullWidth
-                            required
-                            component={EmployeeSelector}
-                            name={'accountant_id'}
-                            label={'Verantwortlicher Mitarbeiter'}
-                            disabled={locked}
-                          />
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                          <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Field
-                            delayed
-                            fullWidth
-                            required
-                            component={TextField}
-                            name={'short_description'}
-                            label={'Kurzbeschreibung'}
-                            disabled={locked}
-                          />
+                          <Grid container spacing={8}>
+                            <Grid item xs={12}>
+                              <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
+                            </Grid>
+                            <Grid item xs={12} lg={8}>
+                              <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} disabled={locked} />
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                              <Field
+                                fullWidth
+                                required
+                                component={RateGroupSelector}
+                                name={'rate_group_id'}
+                                label={'Tarif'}
+                                disabled={locked}
+                              />
+                            </Grid>
+                            <Grid item xs={12} lg={8}>
+                              <Field
+                                fullWidth
+                                required
+                                component={EmployeeSelector}
+                                name={'accountant_id'}
+                                label={'Verantwortlicher Mitarbeiter'}
+                                disabled={locked}
+                              />
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                              <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Field
+                                delayed
+                                fullWidth
+                                required
+                                component={TextField}
+                                name={'short_description'}
+                                label={'Kurzbeschreibung'}
+                                disabled={locked}
+                              />
+                            </Grid>
+                          </Grid>
                         </Grid>
                         <Grid item xs={12}>
                           <Field

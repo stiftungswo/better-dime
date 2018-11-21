@@ -92,30 +92,34 @@ export default class InvoiceForm extends React.Component<Props> {
             <Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
-                  <Grid item xs={12} lg={8}>
+                  <Grid item xs={12} lg={12}>
                     {invoice.id && <Navigator invoice={invoice} />}
                     <DimePaper>
-                      <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                          <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
-                        </Grid>
+                      <Grid container spacing={8}>
                         <Grid item xs={12} lg={8}>
-                          <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
-                        </Grid>
-                        <Grid item xs={12} lg={8}>
-                          <Field
-                            fullWidth
-                            required
-                            component={EmployeeSelector}
-                            name={'accountant_id'}
-                            label={'Verantwortlicher Mitarbeiter'}
-                          />
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <Field fullWidth required component={DatePicker} name={'start'} label={'Startdatum'} />
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <Field fullWidth required component={DatePicker} name={'end'} label={'Enddatum'} />
+                          <Grid container spacing={8}>
+                            <Grid item xs={12}>
+                              <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Field
+                                fullWidth
+                                required
+                                component={EmployeeSelector}
+                                name={'accountant_id'}
+                                label={'Verantwortlicher Mitarbeiter'}
+                              />
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                              <Field fullWidth required component={DatePicker} name={'start'} label={'Startdatum'} />
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                              <Field fullWidth required component={DatePicker} name={'end'} label={'Enddatum'} />
+                            </Grid>
+                          </Grid>
                         </Grid>
                         <Grid item xs={12}>
                           <Field
