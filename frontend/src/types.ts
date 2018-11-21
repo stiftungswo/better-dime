@@ -209,6 +209,7 @@ export interface Project {
   current_time: number;
   positions: ProjectPosition[];
   offer: Offer;
+  invoice_ids: number[];
 }
 
 export interface ProjectPosition {

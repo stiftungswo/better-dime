@@ -2,6 +2,7 @@
 
 namespace Tests\Integrations\Controllers;
 
+use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
@@ -193,6 +194,18 @@ class ProjectControllerTest extends \TestCase
         $newPosition = $newPosition->fresh(['efforts']);
         $this->assertCount(1, $newProject->positions);
         $this->assertCount(10, $newPosition->efforts);
+    }
+
+    public function testInvoiceIds()
+    {
+        $project = factory(Project::class)->create();
+        $invoice1 = factory(Invoice::class)->create(['project_id' => $project->id]);
+        $invoice2 = factory(Invoice::class)->create(['project_id' => $project->id]);
+
+        $this->asUser()->json('GET', 'api/v1/projects/' . $project->id)->assertResponseOk();
+        $res = $this->responseToArray();
+        $this->assertContains($invoice1->id, $res['invoice_ids']);
+        $this->assertContains($invoice2->id, $res['invoice_ids']);
     }
 
     private function projectTemplate()

@@ -7,7 +7,7 @@ import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Project } from '../../types';
+import { Invoice, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
@@ -22,6 +22,7 @@ import MuiFormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCategorySelector';
 import ProjectPositionSubformInline from './ProjectPositionSubformInline';
+import { ProjectStore } from '../../stores/projectStore';
 
 interface InfoFieldProps {
   value: string;
@@ -55,22 +56,28 @@ interface FormControlProps {
 }
 
 interface NavigatorProps extends RouteComponentProps {
-  offers: number[];
-  invoices: number[];
-  id?: number;
+  project: Project;
+  projectStore: ProjectStore;
 }
 
-const Navigator = withRouter(({ offers, invoices, id, history }: NavigatorProps) => (
-  <Tabs value={offers.length}>
-    {offers.map(pId => (
-      <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Offerte ${pId}`} />
-    ))}
-    <Tab label={`Projekt ${id}`} />
-    {invoices.map(pId => (
-      <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
-    ))}
-  </Tabs>
-));
+const Navigator = withRouter(({ project: { offer_id, invoice_ids, id }, projectStore, history }: NavigatorProps) => {
+  const offers = offer_id ? [offer_id] : [];
+  return (
+    <Tabs value={offers.length}>
+      {offers.map(pId => (
+        <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Offerte ${pId}`} />
+      ))}
+      <Tab label={`Projekt ${id}`} />
+      {invoice_ids.map(pId => (
+        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
+      ))}
+      <Tab
+        onClick={() => projectStore.createInvoice(id!).then((i: Invoice) => history.push(`invoices/${i.id}`))}
+        label={'+ Rechnung erstellen'}
+      />
+    </Tabs>
+  );
+});
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -94,11 +101,12 @@ const schema = yup.object({
 
 export interface Props extends FormViewProps<Project> {
   mainStore?: MainStore;
+  projectStore?: ProjectStore;
   project: Project;
 }
 
 @compose(
-  inject('mainStore'),
+  inject('mainStore', 'projectStore'),
   observer
 )
 export default class ProjectForm extends React.Component<Props> {
@@ -107,7 +115,7 @@ export default class ProjectForm extends React.Component<Props> {
   }
 
   public render() {
-    const { project, mainStore } = this.props;
+    const { project, mainStore, projectStore } = this.props;
 
     return (
       <FormView
@@ -124,8 +132,7 @@ export default class ProjectForm extends React.Component<Props> {
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={24}>
               <Grid item xs={12} lg={8}>
-                {/*TODO link invoices*/}
-                {project.id && <Navigator offers={project.offer_id ? [project.offer_id] : []} invoices={[]} id={project.id} />}
+                {project.id && <Navigator project={project} projectStore={projectStore!} />}
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>

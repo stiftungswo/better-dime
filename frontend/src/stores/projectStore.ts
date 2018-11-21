@@ -1,5 +1,5 @@
 import { observable } from 'mobx';
-import { Project } from '../types';
+import { Invoice, Project } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 
@@ -58,5 +58,17 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
       fixed_price: project.fixed_price || null,
       deadline: project.deadline || null,
     };
+  }
+
+  public async createInvoice(id: number): Promise<Invoice> {
+    try {
+      this.displayInProgress();
+      const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
+      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
+      return res.data;
+    } catch (e) {
+      this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
+      throw e;
+    }
   }
 }

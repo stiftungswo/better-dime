@@ -73,6 +73,13 @@ class Project extends Model
         return $this->belongsTo(RateGroup::class);
     }
 
+    public function getInvoiceIdsAttribute()
+    {
+        return $this->invoices->map(function ($i) {
+            return $i->id;
+        });
+    }
+
     /**
      * Returns the budget for the project based on a few factors:
      * 1. if project has no associated offer, it returns null

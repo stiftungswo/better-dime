@@ -102,7 +102,7 @@ class ProjectController extends BaseController
 
     public function get($id)
     {
-        return Project::with(['positions'])->findOrFail($id)->append(['budget_price', 'budget_time', 'current_price', 'current_time']);
+        return Project::with(['positions'])->findOrFail($id)->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids']);
     }
 
     public function put($id, Request $request)
