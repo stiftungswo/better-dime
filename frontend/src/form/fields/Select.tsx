@@ -81,8 +81,9 @@ function inputComponent({ inputRef, ...props }: any) {
 function Control(props: any) {
   return (
     <TextField
-      margin={props.margin}
       fullWidth
+      margin={props.selectProps.margin}
+      error={props.selectProps.error}
       InputProps={{
         inputComponent,
         disabled: props.isDisabled,
@@ -178,7 +179,7 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, field, label, margin, required, disabled, ...rest } = this.props as any;
+    const { classes, theme, field, form, label, margin, required, disabled, ...rest } = this.props as any;
 
     const myLabel = this.props.label
       ? {
@@ -201,8 +202,10 @@ class IntegrationReactSelect extends React.Component<any> {
       menuPortal: (base: any) => ({ ...base, zIndex: 9001 }),
     };
 
+    const hasErrors: boolean = !!form.errors[field.name] && !!form.touched[field.name];
+
     return (
-      <ValidatedFormGroupWithLabel label={''} field={this.props.field} form={this.props.form} margin={margin} fullWidth>
+      <ValidatedFormGroupWithLabel label={''} field={field} form={form} margin={margin} fullWidth>
         <Select
           menuPortalTarget={document.body}
           classes={classes}
@@ -212,6 +215,8 @@ class IntegrationReactSelect extends React.Component<any> {
           onChange={this.handleChange}
           textFieldProps={myLabel}
           isDisabled={disabled}
+          error={hasErrors}
+          margin={margin}
           {...rest}
         />
       </ValidatedFormGroupWithLabel>
