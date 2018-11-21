@@ -14,7 +14,7 @@ import { PropTypes } from '@material-ui/core';
  * Formik's <FastField> is supposed to do this already, but it seemed to be syncing onChange anyway. This _might_ introduce some issues
  * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
  */
-class DelayedInput extends React.Component<any> {
+export class DelayedInput extends React.Component<any> {
   public state = {
     value: '',
   };

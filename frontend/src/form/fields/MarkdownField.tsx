@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { Converter } from 'showdown';
 import Grid from '@material-ui/core/Grid/Grid';
-import Switch from '@material-ui/core/Switch/Switch';
-import Input from '@material-ui/core/Input/Input';
-import { InputFieldProps, ValidatedFormGroupWithLabel } from './common';
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
+import { DelayedInput, InputFieldProps, ValidatedFormGroupWithLabel } from './common';
+import { createStyles, IconButton, InputAdornment, Theme, Tooltip, withStyles } from '@material-ui/core';
 import compose from '../../utilities/compose';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 //these styles try to mirror how the rendered markdown in the printed PDF looks. See base.twig in the backend code.
 const styles = (theme: Theme) => {
   const fontSize = theme.typography.body1.fontSize;
   return createStyles({
     container: {
+      marginTop: '16px', //this is the 'normal' margin of formControl, but where could this be stored in theme?
       '& *': {
         paddingTop: 0,
         paddingBottom: 0,
@@ -65,15 +66,26 @@ export class MarkdownField extends React.Component<Props> {
 
   render = () => {
     const { label, field, form, required, disabled, classes } = this.props;
+    const previewToggle = (
+      <Tooltip title={'Vorschau'}>
+        <IconButton onClick={this.togglePreview}>{this.state.preview ? <VisibilityOffIcon /> : <VisibilityIcon />}</IconButton>
+      </Tooltip>
+    );
     return (
       <Grid container={true} spacing={24}>
-        <Grid item={true} xs={12} lg={6}>
+        <Grid item={true} xs={12} lg={this.state.preview ? 6 : 12}>
           <ValidatedFormGroupWithLabel label={label} fullWidth field={field} form={form} required={required}>
-            <Input {...field} fullWidth multiline rowsMax={14} disabled={disabled} />
+            <DelayedInput
+              {...field}
+              fullWidth
+              multiline
+              rowsMax={14}
+              disabled={disabled}
+              endAdornment={<InputAdornment position={'end'}>{previewToggle}</InputAdornment>}
+            />
           </ValidatedFormGroupWithLabel>
         </Grid>
         <Grid item={true} xs={12} lg={6}>
-          Vorschau <Switch checked={this.state.preview} onChange={this.togglePreview} />
           {this.state.preview && <div className={classes.container} dangerouslySetInnerHTML={this.markup} />}
         </Grid>
       </Grid>
