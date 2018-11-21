@@ -1,9 +1,9 @@
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import DimeTheme from './DimeTheme';
-import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase/InputBase';
 import * as React from 'react';
 import { styles } from './DimeLayout';
+import { SearchIcon } from './icons';
 
 interface AppBarSearchProps extends WithStyles<typeof styles> {
   value: string;

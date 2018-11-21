@@ -5,10 +5,9 @@ import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { Grid, IconButton } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import AddCommentIcon from '@material-ui/icons/AddComment';
 import { TimetrackCombinedProjectTable } from './TimetrackCombinedProjectTable';
 import { TimetrackProjectGroupProps } from './types';
+import { AddCommentIcon, AddIcon } from '../../layout/icons';
 
 @compose(
   inject('effortStore', 'projectCommentStore'),

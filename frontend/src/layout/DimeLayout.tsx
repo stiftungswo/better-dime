@@ -8,7 +8,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import Drawer from '@material-ui/core/Drawer/Drawer';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Divider from '@material-ui/core/Divider/Divider';
 import Paper from '@material-ui/core/Paper/Paper';
 import { Navigation } from './Navigation';
@@ -17,6 +16,7 @@ import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Typography from '@material-ui/core/Typography/Typography';
+import { ChevronLeftIcon } from './icons';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
 const drawerWidth = 240;

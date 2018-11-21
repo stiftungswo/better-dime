@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { DelayedInput, InputFieldProps, ValidatedFormGroupWithLabel } from './common';
 import { createStyles, IconButton, InputAdornment, Theme, Tooltip, withStyles } from '@material-ui/core';
 import compose from '../../utilities/compose';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 
 //these styles try to mirror how the rendered markdown in the printed PDF looks. See base.twig in the backend code.
 const styles = (theme: Theme) => {

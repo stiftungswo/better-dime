@@ -3,7 +3,6 @@ import * as React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import createStyles from '@material-ui/core/styles/createStyles';
@@ -17,6 +16,7 @@ import { Theme } from '@material-ui/core';
 import { InjectedNotistackProps } from 'notistack';
 import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
+import { LogoIcon } from '../layout/icons';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -89,7 +89,7 @@ class Login extends React.Component<Props> {
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
-              <BeachAccessIcon />
+              <LogoIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Dime-Anmeldung

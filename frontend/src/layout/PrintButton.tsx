@@ -1,10 +1,10 @@
 import * as React from 'react';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import { PropTypes } from '@material-ui/core';
-import PrintIcon from '@material-ui/icons/Print';
 import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
+import { PrintIcon } from './icons';
 
 interface Props {
   path: string;

@@ -9,10 +9,10 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DimeTheme from '../../layout/DimeTheme';
 import { ValidatedFormGroupWithLabel } from './common';
+import { CancelIcon } from '../../layout/icons';
 
 /*  TODO: If you want to use the MenuPlacement in combination with the Portal, the Menu "is stuck" in the FormControl div
     TODO: Neither the portal nor the overflowX solution are working for the Subforms (e.g. Services in OfferForm)

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DimeAppBar, DimeAppBarButton } from '../../layout/DimeAppBar';
 import { DimeContent, LoadingSpinner } from '../../layout/DimeLayout';
-import AddIcon from '@material-ui/icons/Add';
 import Grid from '@material-ui/core/Grid/Grid';
 import { TimetrackFormDialog } from './TimetrackFormDialog';
 import compose from '../../utilities/compose';
@@ -18,8 +17,8 @@ import { EffortStore } from '../../stores/effortStore';
 import { ProjectEffortListing } from '../../types';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
-import AddCommentIcon from '@material-ui/icons/AddComment';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { AddCommentIcon, AddIcon } from '../../layout/icons';
 
 interface Props {
   effortStore?: EffortStore;

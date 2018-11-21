@@ -7,7 +7,6 @@ import AppBar from '@material-ui/core/AppBar/AppBar';
 import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Button, CircularProgress, withWidth } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
@@ -16,6 +15,7 @@ import { ActionButton, ActionButtonAction } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { MenuIcon } from './icons';
 
 //TODO should probably extract the respective styles from DimeLayout and declare them in this file
 interface DimeAppBarProps extends WithStyles<typeof styles> {

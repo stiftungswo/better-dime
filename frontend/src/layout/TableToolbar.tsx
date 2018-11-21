@@ -6,9 +6,9 @@ import Typography from '@material-ui/core/Typography/Typography';
 import { FormHeader } from './FormHeader';
 import { DeleteButton } from './ConfirmationDialog';
 import { ActionButton, ActionButtonAction } from './ActionButton';
-import AddIcon from '@material-ui/icons/Add';
 import * as React from 'react';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { AddIcon } from './icons';
 
 const toolbarStyles = (theme: any) => ({
   root: {

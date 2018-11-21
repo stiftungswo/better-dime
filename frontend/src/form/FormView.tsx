@@ -3,8 +3,8 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeLayout';
-import SaveIcon from '@material-ui/icons/Save';
 import { Prompt } from 'react-router';
+import { SaveIcon } from '../layout/icons';
 
 export interface FormViewProps<T> {
   title: string;

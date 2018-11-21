@@ -4,9 +4,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { Fragment } from 'react';
 import { ActionButton } from './ActionButton';
+import { DeleteIcon } from './icons';
 
 interface ConfirmDialogProps {
   onClose: () => void;

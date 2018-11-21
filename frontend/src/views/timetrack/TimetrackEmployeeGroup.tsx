@@ -4,9 +4,9 @@ import { Column } from '../../layout/Overview';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import AddIcon from '@material-ui/icons/Add';
 import { IconButton } from '@material-ui/core';
 import { TimetrackEmployeeGroupProps } from './types';
+import { AddIcon } from '../../layout/icons';
 
 @compose(
   inject('effortStore'),

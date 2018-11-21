@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Avatar, MenuItem, Menu, ListItemIcon } from '@material-ui/core/es';
 import { JwtTokenDecoded, MainStore } from 'src/stores/mainStore';
 import { IconButton, ListItemText } from '@material-ui/core';
-import { AccountCircle, ExitToApp } from '@material-ui/icons';
+import { AccountIcon, LogoutIcon } from './icons';
 
 interface DimeAppBarUserMenuProps {
   meDetail: JwtTokenDecoded['details'];
@@ -74,13 +74,13 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
         >
           <MenuItem onClick={this.handleProfil}>
             <ListItemIcon>
-              <AccountCircle />
+              <AccountIcon />
             </ListItemIcon>
             <ListItemText inset primary={fullName} />
           </MenuItem>
           <MenuItem onClick={this.handleLogout}>
             <ListItemIcon>
-              <ExitToApp />
+              <LogoutIcon />
             </ListItemIcon>
             <ListItemText inset primary="Abmelden" />
           </MenuItem>
