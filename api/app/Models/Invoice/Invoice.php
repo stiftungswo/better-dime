@@ -54,6 +54,21 @@ class Invoice extends Model
         return \App\Services\CostBreakdown::calculate($this);
     }
 
+    /*
+     * Returns the offer id for the current Invoice (used for the navigation in frontend)
+     */
+    public function getOfferIdAttribute()
+    {
+        if (is_null($this->project)) {
+            return null;
+        } else {
+            if (!is_null($this->project->offer_id)) {
+                return $this->project->offer_id;
+            }
+        }
+    }
+
+
 
     public function getDistributionOfCostgroupsAttribute()
     {

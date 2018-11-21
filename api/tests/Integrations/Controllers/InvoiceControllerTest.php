@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
+use App\Models\Offer\Offer;
+use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class InvoiceControllerTest extends \TestCase
@@ -88,6 +90,26 @@ class InvoiceControllerTest extends \TestCase
         ];
 
         $this->asAdmin()->json('PUT', 'api/v1/invoices/' . $invoiceId, $template)->assertResponseStatus(500);
+    }
+
+    public function testExistingOfferId()
+    {
+        $offer = factory(Offer::class)->create();
+        $project = factory(Project::class)->create(['offer_id' => $offer->id]);
+        $invoice = factory(Invoice::class)->create(['project_id' => $project->id]);
+
+        $this->asUser()->json('GET', "api/v1/invoices/" . $invoice->id)->assertResponseOk();
+        $res = $this->responseToArray();
+        $this->assertEquals($offer->id, $res['offer_id']);
+    }
+
+    public function testInexistentOfferId()
+    {
+        $invoice = factory(Invoice::class)->create();
+
+        $this->asUser()->json('GET', "api/v1/invoices/" . $invoice->id)->assertResponseOk();
+        $res = $this->responseToArray();
+        $this->assertNull($res['offer_id']);
     }
 
     public function testCostgroupsRequired()

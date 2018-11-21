@@ -30,8 +30,8 @@ interface NavigatorProps extends RouteComponentProps {
   invoice: Invoice;
 }
 
-const Navigator = withRouter(({ invoice: { project_id, id }, history }: NavigatorProps) => {
-  const offers: number[] = []; //TODO link offers
+const Navigator = withRouter(({ invoice: { project_id, offer_id, id }, history }: NavigatorProps) => {
+  const offers = offer_id ? [offer_id] : [];
   const projects = project_id ? [project_id] : [];
   return (
     <Tabs value={offers.length + projects.length}>

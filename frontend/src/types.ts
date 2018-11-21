@@ -243,7 +243,8 @@ export interface Invoice {
   description: string;
   end: string;
   fixed_price: null;
-  project_id: number;
+  project_id?: number;
+  offer_id?: number;
   name: string;
   start: string;
   deleted_at: null;
