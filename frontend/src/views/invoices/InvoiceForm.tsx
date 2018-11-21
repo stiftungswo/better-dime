@@ -12,9 +12,6 @@ import { Invoice } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { InvoiceStore } from '../../stores/invoiceStore';
@@ -25,26 +22,7 @@ import InvoicePositionSubformInline from './InvoicePositionSubformInline';
 import InvoiceDiscountSubform from './InvoiceDiscountSubform';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import { BreakdownTable } from '../../layout/BreakdownTable';
-
-interface NavigatorProps extends RouteComponentProps {
-  invoice: Invoice;
-}
-
-const Navigator = withRouter(({ invoice: { project_id, offer_id, id }, history }: NavigatorProps) => {
-  const offers = offer_id ? [offer_id] : [];
-  const projects = project_id ? [project_id] : [];
-  return (
-    <Tabs value={offers.length + projects.length}>
-      {offers.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={`Offerte ${pId}`} />
-      ))}
-      {projects.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Projekt ${pId}`} />
-      ))}
-      <Tab label={`Rechnung ${id}`} />
-    </Tabs>
-  );
-});
+import Navigator from './InvoiceNavigator';
 
 const schema = yup.object({
   name: yup.string().required(),

@@ -8,15 +8,12 @@ import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Invoice, Offer, Project } from '../../types';
+import { Offer } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
 import OfferDiscountSubform from './OfferDiscountSubform';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { OfferStore } from '../../stores/offerStore';
@@ -24,33 +21,7 @@ import { FormHeader } from '../../layout/FormHeader';
 import OfferPositionSubformInline from './OfferPositionSubformInline';
 import PrintButton from '../../layout/PrintButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
-
-interface NavigatorProps extends RouteComponentProps {
-  offer: Offer;
-  offerStore: OfferStore;
-}
-
-const Navigator = withRouter(({ offer: { project_ids, invoice_ids, id }, history, offerStore }: NavigatorProps) => (
-  <Tabs value={0}>
-    <Tab label={`Offerte ${id}`} />
-    {project_ids.map(pId => (
-      <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Projekt ${pId}`} />
-    ))}
-    {project_ids.length === 0 && (
-      <Tab
-        onClick={() => offerStore.createProject(id!).then((p: Project) => history.push(`/projects/${p.id}`))}
-        label={'+ Projekt erstellen'}
-      />
-    )}
-    {invoice_ids.map(pId => (
-      <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
-    ))}
-    <Tab
-      onClick={() => offerStore.createInvoice(id!).then((i: Invoice) => history.push(`invoices/${i.id}`))}
-      label={'+ Rechnung erstellen'}
-    />
-  </Tabs>
-));
+import Navigator from './OfferNavigator';
 
 const schema = yup.object({
   name: yup.string().required(),

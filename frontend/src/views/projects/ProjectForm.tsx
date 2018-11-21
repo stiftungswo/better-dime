@@ -7,14 +7,11 @@ import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Invoice, Project } from '../../types';
+import { Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import { RouteComponentProps, withRouter } from 'react-router';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import MuiTextField from '@material-ui/core/TextField';
@@ -23,6 +20,7 @@ import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCategorySelector';
 import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 import { ProjectStore } from '../../stores/projectStore';
+import Navigator from './ProjectNavigator';
 
 interface InfoFieldProps {
   value: string;
@@ -49,35 +47,6 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
     />
   </MuiFormControl>
 );
-
-interface FormControlProps {
-  half?: boolean;
-  children: React.ReactNode;
-}
-
-interface NavigatorProps extends RouteComponentProps {
-  project: Project;
-  projectStore: ProjectStore;
-}
-
-const Navigator = withRouter(({ project: { offer_id, invoice_ids, id }, projectStore, history }: NavigatorProps) => {
-  const offers = offer_id ? [offer_id] : [];
-  return (
-    <Tabs value={offers.length}>
-      {offers.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Offerte ${pId}`} />
-      ))}
-      <Tab label={`Projekt ${id}`} />
-      {invoice_ids.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
-      ))}
-      <Tab
-        onClick={() => projectStore.createInvoice(id!).then((i: Invoice) => history.push(`invoices/${i.id}`))}
-        label={'+ Rechnung erstellen'}
-      />
-    </Tabs>
-  );
-});
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -184,6 +153,7 @@ export default class ProjectForm extends React.Component<Props> {
                     </Grid>
                     {project.id && (
                       <>
+                        {/*TODO this design is not so great. Maybe just use a table like Breakdown and be a bit more consistent?*/}
                         <Grid item xs={12} lg={6}>
                           <InfoField
                             fullWidth
