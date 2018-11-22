@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
+use App\Services\Creator\CreateInvoiceFromProject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -125,6 +126,14 @@ class ProjectController extends BaseController
         DB::commit();
 
         return self::get($id);
+    }
+
+    public function createInvoice($id)
+    {
+        $project = Project::findOrFail($id);
+
+        $creator = new CreateInvoiceFromProject($project);
+        return $creator->create();
     }
 
     // TODO reimplement "Projects with potential invoices" after invoices are implemented

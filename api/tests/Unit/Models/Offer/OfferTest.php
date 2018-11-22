@@ -43,14 +43,14 @@ class OfferTest extends \TestCase
         $this->assertEmpty(factory(Offer::class)->make()->project_ids);
     }
 
-    public function testPopulatedProjectIdsAttribute()
+    public function testPopulatedProjectIdAttribute()
     {
         $offer = factory(Offer::class)->create();
         $project = factory(\App\Models\Project\Project::class)->create([
             'offer_id' => $offer->id
         ]);
 
-        $this->assertEquals([$project->id], $offer->fresh(['project'])->project_ids);
+        $this->assertEquals($project->id, $offer->fresh(['project'])->project_id);
     }
 
     public function testEmptyInvoiceIdsAttribute()

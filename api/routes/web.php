@@ -97,6 +97,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'ProjectController@put']);
                 $router->delete('/{id}', ['uses' => 'ProjectController@delete']);
                 $router->put('/{id}/move_efforts', ['uses' => 'ProjectController@moveEfforts']);
+                $router->post('/{id}/create_invoice', ['uses' => 'ProjectController@createInvoice']);
             });
 
             $router->group(['prefix' => 'project_categories'], function () use ($router) {

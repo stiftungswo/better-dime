@@ -22,7 +22,7 @@ import OfferPositionSubformInline from './OfferPositionSubformInline';
 import PrintButton from '../../layout/PrintButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './OfferNavigator';
-import InvoiceCreate from '../invoices/InvoiceCreate';
+import { ProjectStore } from '../../stores/projectStore';
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -54,11 +54,12 @@ const schema = yup.object({
 
 export interface Props extends FormViewProps<Offer> {
   offerStore?: OfferStore;
+  projectStore?: ProjectStore;
   offer: Offer;
 }
 
 @compose(
-  inject('offerStore'),
+  inject('offerStore', 'projectStore'),
   observer
 )
 export default class OfferForm extends React.Component<Props> {
@@ -82,7 +83,7 @@ export default class OfferForm extends React.Component<Props> {
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
-                    {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} />}
+                    {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} projectStore={this.props.projectStore!} />}
                     <DimePaper>
                       <Grid container spacing={24}>
                         {locked && (

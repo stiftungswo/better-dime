@@ -17,7 +17,7 @@ export interface Offer {
   updated_at: string;
   breakdown: Breakdown;
   invoice_ids: number[];
-  project_ids: number[];
+  project_id?: number;
   discounts: OfferDiscount[];
   positions: OfferPosition[];
 }

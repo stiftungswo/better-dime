@@ -15,14 +15,14 @@ export default withRouter(({ project: { offer_id, invoice_ids, id }, projectStor
   return (
     <Tabs value={offers.length}>
       {offers.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Offerte ${pId}`} />
+        <Tab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={`Offerte ${pId}`} />
       ))}
       <Tab label={`Projekt ${id}`} />
       {invoice_ids.map(pId => (
         <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
       ))}
       <Tab
-        onClick={() => projectStore.createInvoice(id!).then((i: Invoice) => history.push(`invoices/${i.id}`))}
+        onClick={() => projectStore.createInvoice(id!).then((i: Invoice) => history.push(`/invoices/${i.id}`))}
         label={'+ Rechnung erstellen'}
       />
     </Tabs>

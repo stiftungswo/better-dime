@@ -63,18 +63,6 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
     }
   }
 
-  public async createInvoice(id: number): Promise<Invoice> {
-    try {
-      this.displayInProgress();
-      const res = await this.mainStore.api.post<Invoice>(`/offers/${id}/create_invoice`);
-      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
-      return res.data;
-    } catch (e) {
-      this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
-      throw e;
-    }
-  }
-
   protected cast(offer: Offer) {
     //this prevents empty fields being sent to the backend as ""
     //optimally, this can be handled in the form so empty strings don't even reach here.
