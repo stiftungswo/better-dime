@@ -28,7 +28,7 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
 
   @action
   public async doFetchAll() {
-    const res = await this.mainStore.api.get<RateGroup[]>('/rate_groups/');
+    const res = await this.mainStore.api.get<RateGroup[]>('/rate_groups');
     this.rateGroups = res.data;
   }
 
