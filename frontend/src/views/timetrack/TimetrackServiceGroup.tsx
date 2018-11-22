@@ -30,12 +30,12 @@ export default class TimetrackServiceGroup extends React.Component<TimetrackServ
       {
         id: 'project_name',
         numeric: false,
-        label: 'Projekt-Name',
+        label: 'Projekt',
       },
       {
         id: 'position_description',
         numeric: false,
-        label: 'Name der Position',
+        label: 'Aktivität',
       },
       {
         id: 'effort_value',
@@ -49,6 +49,7 @@ export default class TimetrackServiceGroup extends React.Component<TimetrackServ
   public render() {
     const { entity } = this.props;
     const efforts = this.props.effortStore!.efforts.filter((effort: ProjectEffortListing) => effort.service_id === entity.id);
+    const workedEfforts = efforts.map((e: ProjectEffortListing) => e.effort_value);
 
     if (efforts.length > 0 || this.props.showEmptyGroups) {
       return <TimetrackEntityGroup columns={this.columns} efforts={efforts} title={entity.name} onClickRow={this.props.onClickRow} />;

@@ -18,7 +18,7 @@ import { ProjectEffortListing } from '../../types';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { AddCommentIcon, AddIcon } from '../../layout/icons';
+import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
 
 interface Props {
   effortStore?: EffortStore;
@@ -64,7 +64,7 @@ export default class Timetrack extends React.Component<Props> {
       <>
         <DimeAppBar title={'Zeiterfassung'}>
           <DimeAppBarButton icon={AddCommentIcon} title={'Kommentar erfassen'} action={this.handleCommentAdd} />
-          <DimeAppBarButton icon={AddIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />
+          <DimeAppBarButton icon={AddEffortIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />
         </DimeAppBar>
 
         <DimeContent loading={false} paper={false}>

@@ -12,16 +12,21 @@ interface EntityGroup {
   showEmptyGroups: boolean;
 }
 
-export interface TimetrackEmployeeGroupProps extends EntityGroup {
+interface FormatToTimeProp {
+  formatTotalWorkHours: (workedMinutes: number[]) => string;
+}
+
+export type TimetrackEmployeeGroupProps = {
   entity: EmployeeListing;
-}
+} & FormatToTimeProp &
+  EntityGroup;
 
-export interface TimetrackProjectGroupProps extends EntityGroup {
+export type TimetrackProjectGroupProps = {
   entity: ProjectListing;
-  projectCommentStore?: ProjectCommentStore;
   showProjectComments: boolean;
-}
+} & FormatToTimeProp &
+  EntityGroup;
 
-export interface TimetrackServiceGroupProps extends EntityGroup {
+export type TimetrackServiceGroupProps = {
   entity: ServiceListing;
-}
+} & EntityGroup;

@@ -344,6 +344,7 @@ export interface ProjectEffortListing {
   employee_full_name: string;
   effort_unit: string;
   rate_unit_factor?: number;
+  rate_unit_is_time: boolean;
 }
 
 export interface ProjectEffortTemplate {

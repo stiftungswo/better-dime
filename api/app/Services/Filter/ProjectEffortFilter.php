@@ -36,6 +36,7 @@ class ProjectEffortFilter
             DB::raw('concat(employees.first_name, \' \', employees.last_name) as employee_full_name'),
             DB::raw('rate_units.effort_unit as effort_unit'),
             DB::raw('rate_units.factor as rate_unit_factor'),
+            DB::raw('rate_units.is_time as rate_unit_is_time'),
         ])->get();
     }
 

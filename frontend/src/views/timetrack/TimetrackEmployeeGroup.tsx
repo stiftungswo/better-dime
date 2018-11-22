@@ -27,12 +27,12 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
       {
         id: 'project_name',
         numeric: false,
-        label: 'Projekt-Name',
+        label: 'Projekt',
       },
       {
         id: 'position_description',
         numeric: false,
-        label: 'Kategorie der Leistung',
+        label: 'Aktivität',
       },
       {
         id: 'effort_value',
@@ -50,8 +50,9 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
   };
 
   public render() {
-    const { entity } = this.props;
+    const { entity, formatTotalWorkHours } = this.props;
     const efforts = this.props.effortStore!.efforts.filter((effort: ProjectEffortListing) => effort.effort_employee_id === entity.id);
+    const workedMinutes = efforts.filter((e: ProjectEffortListing) => e.rate_unit_is_time).map((e: ProjectEffortListing) => e.effort_value);
 
     if (efforts.length > 0 || this.props.showEmptyGroups) {
       return (
@@ -65,6 +66,7 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
               <AddIcon />
             </IconButton>
           }
+          displayTotal={formatTotalWorkHours(workedMinutes)}
         />
       );
     } else {

@@ -10,6 +10,7 @@ interface Props {
   actions?: React.ReactNode;
   children: React.ReactNode;
   title: string;
+  displayTotal?: string;
 }
 
 export class TimetrackExpansionPanel extends React.Component<Props> {
@@ -26,13 +27,24 @@ export class TimetrackExpansionPanel extends React.Component<Props> {
       <Grid item xs={12}>
         <ExpansionPanel expanded={this.state.open}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon onClick={this.changeExpansion} />}>
-            <Grid justify="space-between" container spacing={24}>
+            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
               <Grid item>
                 <Typography variant={'h5'} color="inherit">
                   {this.props.title}
                 </Typography>
               </Grid>
-              {this.props.actions}
+              <Grid item>
+                <Grid container alignItems={'center'} spacing={8}>
+                  {this.props.displayTotal && (
+                    <Grid item>
+                      <Typography variant={'h6'} color={'textSecondary'}>
+                        {this.props.displayTotal}
+                      </Typography>
+                    </Grid>
+                  )}
+                  <Grid item>{this.props.actions}</Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden' }}>{this.props.children}</ExpansionPanelDetails>

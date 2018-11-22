@@ -23,6 +23,19 @@ export class TimetrackOverview extends React.Component<Props> {
     }
   };
 
+  protected formatTotalWorkHours = (workedMinutes: number[]) => {
+    let workedHoursFormatted = '0:00h';
+
+    if (workedMinutes.length > 0) {
+      const sum = workedMinutes.reduce((total: number, current: number) => Number(total) + Number(current));
+      const hours = Math.floor(sum / 60);
+      const minutes = Math.floor(sum % 60);
+      workedHoursFormatted = hours + ':' + ('0' + minutes).slice(-2) + 'h';
+    }
+
+    return workedHoursFormatted;
+  };
+
   public render() {
     const GroupComponent = this.props.component;
     const { filterIds, entities } = this.props;
@@ -42,6 +55,7 @@ export class TimetrackOverview extends React.Component<Props> {
         .map((entity: any) => (
           <GroupComponent
             entity={entity}
+            formatTotalWorkHours={this.formatTotalWorkHours}
             formatRateEntry={this.formatRateEntry}
             key={entity.id}
             onClickRow={this.props.onClickRow}
