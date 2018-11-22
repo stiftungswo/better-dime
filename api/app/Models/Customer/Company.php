@@ -10,14 +10,14 @@ class Company extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['tags'];
+    protected $appends = ['tags', 'persons'];
 
     protected $casts = [
         'hidden' => 'boolean',
     ];
 
     protected $hidden = [
-        'customer_tags'
+        'customer_tags', 'people'
     ];
 
     protected $fillable = [
@@ -36,6 +36,22 @@ class Company extends Model
         } else {
             return $this->customer_tags->map(function ($t) {
                 return $t->id;
+            })->toArray();
+        }
+    }
+
+    /**
+     * Magic method for the appended "people" attribute
+     *
+     * @return array
+     */
+    public function getPersonsAttribute()
+    {
+        if ($this->people->isEmpty()) {
+            return [];
+        } else {
+            return $this->people->map(function ($p) {
+                return $p->id;
             })->toArray();
         }
     }

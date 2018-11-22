@@ -56,3 +56,6 @@ export { default as ProjectCategoryIcon } from '@material-ui/icons/Work';
 export { default as MasterDataIcon } from '@material-ui/icons/Storage';
 export { default as TagsIcon } from '@material-ui/icons/Style';
 export { default as TimetrackIcon } from '@material-ui/icons/AccessTime';
+export { default as CustomersIcon } from '@material-ui/icons/Face';
+export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
+export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';

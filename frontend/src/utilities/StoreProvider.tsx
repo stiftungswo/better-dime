@@ -19,6 +19,8 @@ import { CostgroupStore } from '../stores/costgroupStore';
 import { EffortStore } from '../stores/effortStore';
 import { ProjectCommentStore } from '../stores/projectCommentStore';
 import { TimetrackFilterStore } from '../stores/timetrackFilterStore';
+import { PeopleStore } from 'src/stores/peopleStore';
+import { CompanyStore } from 'src/stores/companyStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -43,6 +45,8 @@ export class StoreProvider extends React.Component<Props | any> {
     effortStore: EffortStore;
     projectCommentStore: ProjectCommentStore;
     timetrackFilterStore: TimetrackFilterStore;
+    peopleStore: PeopleStore;
+    companyStore: CompanyStore;
   };
 
   constructor(props: Props) {
@@ -68,6 +72,8 @@ export class StoreProvider extends React.Component<Props | any> {
       costgroupStore: new CostgroupStore(mainStore),
       effortStore: new EffortStore(mainStore, timetrackFilterStore),
       projectCommentStore: new ProjectCommentStore(mainStore, timetrackFilterStore),
+      peopleStore: new PeopleStore(mainStore),
+      companyStore: new CompanyStore(mainStore),
     };
   }
 

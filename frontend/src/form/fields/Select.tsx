@@ -186,7 +186,7 @@ class IntegrationReactSelect extends React.Component<any> {
 
   public handleChange = (selected: any) => {
     const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
-    this.props.form.setFieldValue(this.props.field.name, value);
+    this.props.form.setFieldValue(this.props.field.name, selected ? value : null);
   };
 
   render() {

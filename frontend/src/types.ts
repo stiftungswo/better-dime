@@ -89,11 +89,21 @@ export interface Employee {
 
 export interface Address {
   id: number;
-  street: string;
   city: string;
-  plz: number;
   country: string;
+  description?: string;
+  postcode: number;
+  street: string;
   supplement?: string;
+}
+
+export interface PhoneNumber {
+  id: number;
+  category: number;
+  number: string;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Customer {

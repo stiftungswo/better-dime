@@ -25,6 +25,12 @@ import InvoiceOverview from './views/invoices/InvoiceOverview';
 import InvoiceUpdate from './views/invoices/InvoiceUpdate';
 import InvoiceCreate from './views/invoices/InvoiceCreate';
 import Timetrack from './views/timetrack/Timetrack';
+import PersonOverview from './views/persons/PersonOverview';
+import PersonCreate from './views/persons/PersonCreate';
+import PersonUpdate from './views/persons/PersonUpdate';
+import CompanyOverview from './views/companies/CompanyOverview';
+import CompanyUpdate from './views/companies/CompanyUpdate';
+import CompanyCreate from './views/companies/CompanyCreate';
 
 class App extends React.Component {
   public render() {
@@ -57,6 +63,12 @@ class App extends React.Component {
             <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
             <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />
             <ProtectedRoute exact path="/timetrack" component={Timetrack} />
+            <ProtectedRoute exact path="/persons" component={PersonOverview} />
+            <ProtectedRoute exact path="/persons/new" component={PersonCreate} />
+            <ProtectedRoute exact path="/persons/:id" component={PersonUpdate} />
+            <ProtectedRoute exact path="/companies" component={CompanyOverview} />
+            <ProtectedRoute exact path="/companies/new" component={CompanyCreate} />
+            <ProtectedRoute exact path="/companies/:id" component={CompanyUpdate} />
             <Route>
               <p>404</p>
             </Route>
