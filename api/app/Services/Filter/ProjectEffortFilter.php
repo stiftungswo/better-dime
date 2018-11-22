@@ -11,13 +11,16 @@ class ProjectEffortFilter
         return self::fetch($params)
             ->groupBy('efforts_date')
             ->groupBy('position_description')
+            ->groupBy('effort_unit_is_time')
+            ->groupBy('effort_unit_factor')
+            ->groupBy('effort_unit_name')
             ->select([
                 DB::raw('SUM(project_efforts.value) as efforts_sum'),
                 DB::raw('project_efforts.date as efforts_date'),
                 DB::raw('project_positions.description as position_description'),
-                DB::raw('any_value(rate_units.is_time) as effort_unit_is_time'),
-                DB::raw('any_value(rate_units.factor) as effort_unit_factor'),
-                DB::raw('any_value(rate_units.name) as effort_unit_name'),
+                DB::raw('rate_units.is_time as effort_unit_is_time'),
+                DB::raw('rate_units.factor as effort_unit_factor'),
+                DB::raw('rate_units.name as effort_unit_name'),
             ])->get();
     }
 
