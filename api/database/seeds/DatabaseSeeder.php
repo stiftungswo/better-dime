@@ -133,10 +133,14 @@ class DatabaseSeeder extends Seeder
         print("Seeding offer positions and discounts ...\n");
         $offers->each(function ($o) use ($rateUnits, $services) {
             /** @var \App\Models\Offer\Offer $o */
-            $o->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class)->times(rand(0, 5))->make([
-                'rate_unit_id' => $rateUnits->random()->id,
-                'service_id' => $services->random()->id
-            ]));
+            $positions = [];
+            foreach (range(1, rand(2, 5)) as $i) {
+                $positions[] = factory(\App\Models\Offer\OfferPosition::class)->make([
+                    'rate_unit_id' => $rateUnits->random()->id,
+                    'service_id' => $services->random()->id
+                ]);
+            }
+            $o->positions()->saveMany($positions);
             $o->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->make());
         });
 
@@ -155,7 +159,7 @@ class DatabaseSeeder extends Seeder
             $p->update([
                 'category_id' => $projectCategories->random()->id,
             ]);
-            $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 5))->make());
+            $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->make());
         });
 
         print("Seeding holiday projects ...\n");

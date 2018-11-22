@@ -42,6 +42,7 @@
             }
 
             table.top_table {
+                width: 65%;
                 padding-top: 15px;
                 margin-bottom: 15px;
             }
@@ -117,6 +118,10 @@
                 font-weight: bold
             }
 
+            .italic {
+                font-style: italic
+            }
+
             div.signature {
                 margin-right: 5%;
                 float: left;
@@ -148,6 +153,7 @@
                 margin-top: 5%;
             }
         </style>
+        {% block additional_styles %}{% endblock additional_styles %}
     {% endblock %}
     {% block title %}
         <title>{{  env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}</title>

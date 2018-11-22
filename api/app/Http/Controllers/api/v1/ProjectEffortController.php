@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Project\ProjectEffort;
-use App\Services\Filter\TimetrackFilter;
+use App\Services\Filter\ProjectEffortFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -28,7 +28,7 @@ class ProjectEffortController extends BaseController
             'end' => 'date',
         ]);
 
-        return TimetrackFilter::fetch($validatedData);
+        return ProjectEffortFilter::fetchList($validatedData);
     }
 
     public function post(Request $request)

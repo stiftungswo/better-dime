@@ -8,6 +8,6 @@ $factory->define(\App\Models\Project\ProjectComment::class, function () {
 
     return [
         'comment' => $faker->sentence,
-        'date' => $faker->dateTimeBetween('-270 days', '-90 days'),
+        'date' => $faker->dateTimeBetween('-2 years'),
     ];
 });

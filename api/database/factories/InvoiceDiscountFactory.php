@@ -10,6 +10,6 @@ $factory->define(\App\Models\Invoice\InvoiceDiscount::class, function () {
     return [
         'name' => $faker->word . ' Rabatt',
         'percentage' => $percentage,
-        'value' => $percentage ? $faker->randomFloat(2) : $faker->numberBetween(50000, 100000)
+        'value' => $percentage ? $faker->randomFloat(2, 0, 50) : $faker->numberBetween(50000, 100000)
     ];
 });

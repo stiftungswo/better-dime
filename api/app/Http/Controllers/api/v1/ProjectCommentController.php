@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Project\ProjectComment;
+use App\Services\Filter\ProjectCommentFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -28,21 +29,7 @@ class ProjectCommentController extends BaseController
             'start' => 'date'
         ]);
 
-        $queryBuilder = ProjectComment::orderBy('date');
-
-        if (!empty($validatedInput['end'])) {
-            $queryBuilder->where('date', '<=', $validatedInput['end']);
-        }
-
-        if (!empty($validatedInput['project_id'])) {
-            $queryBuilder->where('project_id', '=', $validatedInput['project_id']);
-        }
-
-        if (!empty($validatedInput['start'])) {
-            $queryBuilder->where('date', '>=', $validatedInput['start']);
-        }
-
-        return $queryBuilder->get();
+        return ProjectCommentFilter::fetch($validatedInput);
     }
 
     public function post(Request $request)

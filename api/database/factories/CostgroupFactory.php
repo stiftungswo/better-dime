@@ -8,6 +8,6 @@ $factory->define(\App\Models\Invoice\Costgroup::class, function () {
 
     return [
         'name' => $faker->word,
-        'number' => $faker->numberBetween(100, 999)
+        'number' => $faker->unique()->numberBetween(100, 999)
     ];
 });
