@@ -23,6 +23,7 @@ import InvoiceDiscountSubform from './InvoiceDiscountSubform';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './InvoiceNavigator';
+import { ESRIcon, PaperIcon, StatisticsIcon } from '../../layout/icons';
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -86,13 +87,29 @@ export default class InvoiceForm extends React.Component<Props> {
         initialValues={invoice}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        appBarButtons={invoice && invoice.id ? <PrintButton path={`invoices/${invoice.id}/print`} color={'inherit'} /> : undefined}
+        appBarButtons={
+          invoice && invoice.id ? (
+            <>
+              <PrintButton path={`invoices/${invoice.id}/print_effort_report`} color={'inherit'} title={'Aufwandsrapport drucken'}>
+                <StatisticsIcon />
+              </PrintButton>
+              <PrintButton path={`invoices/${invoice.id}/print_esr`} color={'inherit'} title={'Einzahlungsschein drucken'}>
+                <ESRIcon />
+              </PrintButton>
+              <PrintButton path={`invoices/${invoice.id}/print`} color={'inherit'} title={'Rechnung drucken'}>
+                <PaperIcon />
+              </PrintButton>
+            </>
+          ) : (
+            undefined
+          )
+        }
         render={(props: FormikProps<Invoice>) => {
           return (
             <Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
-                  <Grid item xs={12} lg={12}>
+                  <Grid item xs={12}>
                     {invoice.id && <Navigator invoice={invoice} />}
                     <DimePaper>
                       <Grid container spacing={8}>

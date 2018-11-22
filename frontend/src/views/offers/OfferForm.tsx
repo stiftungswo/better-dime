@@ -23,6 +23,7 @@ import PrintButton from '../../layout/PrintButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './OfferNavigator';
 import { ProjectStore } from '../../stores/projectStore';
+import { PaperIcon } from '../../layout/icons';
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -75,7 +76,15 @@ export default class OfferForm extends React.Component<Props> {
         initialValues={offer}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        appBarButtons={offer && offer.id ? <PrintButton path={`offers/${offer.id}/print`} color={'inherit'} /> : undefined}
+        appBarButtons={
+          offer && offer.id ? (
+            <PrintButton path={`offers/${offer.id}/print`} color={'inherit'}>
+              <PaperIcon />
+            </PrintButton>
+          ) : (
+            undefined
+          )
+        }
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (

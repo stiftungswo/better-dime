@@ -38,6 +38,9 @@ export { default as ArchiveIcon } from '@material-ui/icons/Archive';
 export { default as CancelIcon } from '@material-ui/icons/Cancel';
 export { default as SaveIcon } from '@material-ui/icons/Save';
 export { default as AddCommentIcon } from '@material-ui/icons/AddComment';
+export { default as PaperIcon } from '@material-ui/icons/Description';
+export { default as ESRIcon } from '@material-ui/icons/Payment';
+export { default as StatisticsIcon } from '@material-ui/icons/Equalizer';
 
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
