@@ -26,6 +26,12 @@ export default class InvoiceUpdate extends React.Component<Props> {
     props.invoiceStore!.fetchOne(Number(props.match.params.id));
   }
 
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.props.invoiceStore!.fetchOne(Number(this.props.match.params.id));
+    }
+  }
+
   public handleSubmit = (invoice: Invoice) => {
     return this.props.invoiceStore!.put(invoice);
   };

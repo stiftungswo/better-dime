@@ -25,7 +25,7 @@ class InvoiceController extends BaseController
 
     public function get($id)
     {
-        return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'offer_id']);
+        return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'offer_id', 'sibling_invoice_ids']);
     }
 
     public function index()

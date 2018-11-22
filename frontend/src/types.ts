@@ -255,6 +255,7 @@ export interface Invoice {
   costgroup_distributions: InvoiceCostgroup[];
   discounts: InvoiceDiscount[];
   positions: InvoicePosition[];
+  sibling_invoice_ids: number[];
 }
 
 export interface InvoiceCostgroup {
@@ -350,9 +351,4 @@ export interface ProjectComment {
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;
-}
-
-export interface Invoice {
-  id?: number;
-  //TODO
 }

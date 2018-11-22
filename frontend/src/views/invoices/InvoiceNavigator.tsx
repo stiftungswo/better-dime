@@ -8,7 +8,7 @@ interface NavigatorProps extends RouteComponentProps {
   invoice: Invoice;
 }
 
-export default withRouter(({ invoice: { project_id, offer_id, id }, history }: NavigatorProps) => {
+export default withRouter(({ invoice: { project_id, offer_id, sibling_invoice_ids, id }, history }: NavigatorProps) => {
   const offers = offer_id ? [offer_id] : [];
   const projects = project_id ? [project_id] : [];
   return (
@@ -20,6 +20,9 @@ export default withRouter(({ invoice: { project_id, offer_id, id }, history }: N
         <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={`Projekt ${pId}`} />
       ))}
       <Tab label={`Rechnung ${id}`} />
+      {sibling_invoice_ids.map(pId => (
+        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={`Rechnung ${pId}`} />
+      ))}
     </Tabs>
   );
 });

@@ -68,7 +68,21 @@ class Invoice extends Model
         }
     }
 
-
+    /*
+     * Returns invoices that are spawned from the same parent project (used for the navigation in frontend)
+     */
+    public function getSiblingInvoiceIdsAttribute()
+    {
+        if (is_null($this->project)) {
+            return [];
+        } else {
+            return $this->project->invoices->map(function ($i) {
+                return $i->id;
+            })->filter(function ($i) {
+                return $i != $this->id;
+            })->values();
+        }
+    }
 
     public function getDistributionOfCostgroupsAttribute()
     {

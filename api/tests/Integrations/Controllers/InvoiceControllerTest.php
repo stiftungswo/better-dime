@@ -112,6 +112,17 @@ class InvoiceControllerTest extends \TestCase
         $this->assertNull($res['offer_id']);
     }
 
+    public function testSiblingInvoiceIds()
+    {
+        $project = factory(Project::class)->create();
+        $invoice1 = factory(Invoice::class)->create(["project_id" => $project->id]);
+        $invoice2 = factory(Invoice::class)->create(["project_id" => $project->id]);
+
+        $this->asUser()->json('GET', "api/v1/invoices/" . $invoice1->id)->assertResponseOk();
+        $res = $this->responseToArray();
+        $this->assertEquals([$invoice2->id], $res['sibling_invoice_ids']);
+    }
+
     public function testCostgroupsRequired()
     {
         $template = $this->invoiceTemplate();
