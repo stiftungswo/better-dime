@@ -5,6 +5,7 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import { RouteComponentProps } from 'react-router';
 import EmployeeForm from './EmployeeForm';
 import compose from '../../utilities/compose';
+import { employeeTemplate } from './employeeSchema';
 
 export interface Props extends RouteComponentProps {
   employeeStore?: EmployeeStore;
@@ -28,26 +29,13 @@ export default class EmployeeCreate extends React.Component<Props> {
   };
 
   public render() {
-    const employee: Employee = {
-      archived: false,
-      email: '',
-      can_login: true,
-      is_admin: false,
-      id: 0,
-      first_name: '',
-      last_name: '',
-      createdAt: '',
-      updatedAt: '',
-      holidays_per_year: 20,
-      realTime: 0,
-      targetTime: 0,
-      extendTimetrack: false,
-      workingPeriods: [],
-      password: '',
-    };
-
     return (
-      <EmployeeForm title={'Mitarbeiter erfassen'} onSubmit={this.handleSubmit} employee={employee} submitted={this.state.submitted} />
+      <EmployeeForm
+        title={'Mitarbeiter erfassen'}
+        onSubmit={this.handleSubmit}
+        employee={employeeTemplate}
+        submitted={this.state.submitted}
+      />
     );
   }
 }

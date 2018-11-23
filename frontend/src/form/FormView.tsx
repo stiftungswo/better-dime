@@ -25,7 +25,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
 > {
   private submit = async (values: any, formikBag: FormikBag<any, any>) => {
     try {
-      await this.props.onSubmit(values);
+      await this.props.onSubmit(this.props.validationSchema.cast(values));
     } finally {
       formikBag.setSubmitting(false);
     }

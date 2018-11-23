@@ -6,32 +6,14 @@ import { Column } from '../../layout/Overview';
 import { RateUnit, RateUnitStore } from '../../stores/rateUnitStore';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import * as yup from 'yup';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import { Field } from 'formik';
+import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
 
 interface Props {
   mainStore?: MainStore;
   rateUnitStore?: RateUnitStore;
 }
-
-const schema = yup.object({
-  archived: yup.boolean(),
-  billing_unit: yup.string().required(),
-  effort_unit: yup.string().required(),
-  factor: yup.number().required(),
-  is_time: yup.boolean(),
-  name: yup.string().required(),
-});
-
-const defaultValues = {
-  name: '',
-  billing_unit: 'CHF /',
-  effort_unit: '',
-  factor: 1,
-  is_time: false,
-  archived: false,
-};
 
 @compose(
   inject('mainStore', 'rateUnitStore'),
@@ -90,8 +72,8 @@ export default class RateUnitOverview extends React.Component<Props> {
         title={'Tarif-Typen'}
         store={this.props.rateUnitStore!}
         columns={this.columns}
-        schema={schema}
-        defaultValues={defaultValues}
+        schema={rateUnitSchema}
+        defaultValues={rateUnitTemplate}
         searchFilter={this.filter}
         renderActions={this.renderActions}
         renderForm={props => (

@@ -42,12 +42,12 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   }
 
   protected async doPost(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.post<Offer>('/offers/', this.cast(entity));
+    const res = await this.mainStore.api.post<Offer>('/offers/', entity);
     this.offer = res.data;
   }
 
   protected async doPut(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, this.cast(entity));
+    const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, entity);
     this.offer = res.data;
   }
 
@@ -61,16 +61,5 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
       this.mainStore.displayError('Beim erstellen des Projekts ist ein Fehler aufgetreten');
       throw e;
     }
-  }
-
-  protected cast(offer: Offer) {
-    //this prevents empty fields being sent to the backend as ""
-    //optimally, this can be handled in the form so empty strings don't even reach here.
-    //TODO - the fixed_price = '' seems to happen in OfferUpdate (and their Project/Invoice friends). Maybe we can kill it there and get rid of `cast` again.
-    // - or maybe yup cast/transform can solve this?
-    return {
-      ...offer,
-      fixed_price: offer.fixed_price || null,
-    };
   }
 }

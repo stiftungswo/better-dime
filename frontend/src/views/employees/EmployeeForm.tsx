@@ -1,29 +1,17 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { Employee } from '../../types';
-import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
+import { employeeSchema } from './employeeSchema';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
 }
-
-const employeeSchema = yup.object({
-  archived: yup.boolean(),
-  can_login: yup.boolean().required(),
-  email: yup.string().required(),
-  holidays_per_year: yup.number().required(),
-  is_admin: yup.boolean().required(),
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
-  password: yup.string(),
-  password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
-});
 
 export default class EmployeeForm extends React.Component<Props> {
   public render() {

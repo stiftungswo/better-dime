@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -24,45 +23,7 @@ import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './InvoiceNavigator';
 import { ESRIcon, PaperIcon, StatisticsIcon } from '../../layout/icons';
-
-const schema = yup.object({
-  name: yup.string().required(),
-  accountant_id: yup.number().required(),
-  address_id: yup.number().required(),
-  description: yup.string().required(),
-  fixed_price: yup.number().nullable(true),
-  start: yup.date().required(),
-  end: yup.date().required(),
-  discounts: yup.array(
-    yup.object({
-      name: yup.string().required(),
-      percentage: yup.boolean().required(),
-      value: yup.number().required(),
-    })
-  ),
-  positions: yup.array(
-    yup.object({
-      amount: yup.number().required(),
-      description: yup.string().required(),
-      order: yup
-        .mixed()
-        .transform(value => (value === '' ? null : Number(value)))
-        .nullable(true),
-      price_per_rate: yup.number().required(),
-      project_position_id: yup.number().nullable(true),
-      rate_unit_id: yup.number().required(),
-      vat: yup.number().required(),
-    })
-  ),
-  costgroup_distributions: yup
-    .array(
-      yup.object({
-        costgroup_number: yup.number().required(),
-        weight: yup.number().required(),
-      })
-    )
-    .min(1),
-});
+import { invoiceSchema } from './invoiceSchema';
 
 export interface Props extends FormViewProps<Invoice> {
   mainStore?: MainStore;
@@ -83,7 +44,7 @@ export default class InvoiceForm extends React.Component<Props> {
         paper={false}
         loading={!hasContent(invoice) || this.props.loading}
         title={this.props.title}
-        validationSchema={schema}
+        validationSchema={invoiceSchema}
         initialValues={invoice}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

@@ -5,23 +5,15 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import * as yup from 'yup';
 import { InputFieldWithValidation } from '../../form/fields/common';
 import { Field } from 'formik';
-import { ProjectCategoryStore, ProjectCategory } from '../../stores/projectCategoryStore';
+import { ProjectCategory, ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 
 interface Props {
   mainStore?: MainStore;
   projectCategoryStore?: ProjectCategoryStore;
 }
-
-const schema = yup.object({
-  name: yup.string().required(),
-});
-
-const defaultValues = {
-  name: '',
-};
 
 @compose(
   inject('mainStore', 'projectCategoryStore'),
@@ -58,8 +50,8 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         title={'Tätigkeitsbereiche'}
         store={this.props.projectCategoryStore!}
         columns={this.columns}
-        schema={schema}
-        defaultValues={defaultValues}
+        schema={projectCategorySchema}
+        defaultValues={projectCategoryTemplate}
         searchFilter={this.filter}
         renderActions={this.renderActions}
         renderForm={() => (

@@ -6,8 +6,8 @@ import { InjectedNotistackProps } from 'notistack';
 import OfferForm from './OfferForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
-import { computed } from 'mobx';
 import { Offer } from '../../types';
+import { offerTemplate } from './offerSchema';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   offerStore?: OfferStore;
@@ -23,10 +23,6 @@ export default class OfferCreate extends React.Component<Props> {
     submitted: false,
   };
 
-  constructor(props: Props) {
-    super(props);
-  }
-
   public handleSubmit = (offer: Offer) => {
     return this.props.offerStore!.post(offer).then(() => {
       this.setState({ submitted: true });
@@ -35,20 +31,9 @@ export default class OfferCreate extends React.Component<Props> {
     });
   };
 
-  @computed
-  get offer(): any {
-    return {
-      id: undefined,
-      name: '',
-      status: 1,
-      short_description: '',
-      description: '',
-      positions: [],
-      discounts: [],
-    };
-  }
-
   public render() {
-    return <OfferForm title={'Offerte erstellen'} onSubmit={this.handleSubmit} offer={this.offer} submitted={this.state.submitted} />;
+    return (
+      <OfferForm title={'Offerte erstellen'} onSubmit={this.handleSubmit} offer={offerTemplate as any} submitted={this.state.submitted} />
+    );
   }
 }

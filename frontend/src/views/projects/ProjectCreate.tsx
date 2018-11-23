@@ -8,6 +8,7 @@ import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
 import { Project } from '../../types';
+import { projectTemplate } from './projectSchema';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   projectStore?: ProjectStore;
@@ -35,19 +36,14 @@ export default class ProjectCreate extends React.Component<Props> {
     });
   };
 
-  @computed
-  get project(): any {
-    return {
-      id: undefined,
-      name: '',
-      description: '',
-      deadline: '',
-      fixed_price: '',
-      positions: [],
-    };
-  }
-
   public render() {
-    return <ProjectForm title={'Projekt erstellen'} onSubmit={this.handleSubmit} project={this.project} submitted={this.state.submitted} />;
+    return (
+      <ProjectForm
+        title={'Projekt erstellen'}
+        onSubmit={this.handleSubmit}
+        project={projectTemplate as any}
+        submitted={this.state.submitted}
+      />
+    );
   }
 }

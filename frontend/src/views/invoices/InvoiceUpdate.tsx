@@ -6,7 +6,7 @@ import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { InvoiceStore } from '../../stores/invoiceStore';
 import { Invoice } from '../../types';
-import { toJS } from 'mobx';
+import { action, computed, toJS } from 'mobx';
 
 interface InvoiceDetailRouterProps {
   id?: string;
@@ -32,25 +32,15 @@ export default class InvoiceUpdate extends React.Component<Props> {
     }
   }
 
+  @action
   public handleSubmit = (invoice: Invoice) => {
     return this.props.invoiceStore!.put(invoice);
   };
 
+  @computed
   public get invoice() {
-    const invoice = this.props.invoiceStore!.invoice;
-    if (invoice) {
-      return {
-        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
-        ...toJS(invoice),
-        fixed_price: invoice.fixed_price || '',
-        positions: invoice.positions.map(p => ({
-          ...p,
-          order: p.order || '',
-        })),
-      };
-    } else {
-      return undefined;
-    }
+    //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+    return toJS(this.props.invoiceStore!.invoice);
   }
 
   public render() {

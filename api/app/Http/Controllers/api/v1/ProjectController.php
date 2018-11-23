@@ -91,7 +91,7 @@ class ProjectController extends BaseController
             'fixed_price' => 'integer|nullable',
             'vacation_project' => 'boolean',
             'name' => 'required|string',
-            'offer_id' => 'integer',
+            'offer_id' => 'integer|nullable',
             'positions.*.description' => 'string',
             'positions.*.price_per_rate' => 'required|integer',
             'positions.*.rate_unit_id' => 'required|integer',

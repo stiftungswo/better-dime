@@ -3,9 +3,7 @@ import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import Overview, { Column } from '../../layout/Overview';
-// import { TextFieldWithValidation, TextAreaWithValidation } from '../../form/fields/common';
-// import { Field } from 'formik';
-import { RateGroupStore, RateGroup } from '../../stores/rateGroupStore';
+import { RateGroup, RateGroupStore } from '../../stores/rateGroupStore';
 
 interface Props {
   mainStore?: MainStore;

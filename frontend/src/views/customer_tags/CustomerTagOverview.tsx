@@ -5,23 +5,15 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import * as yup from 'yup';
 import { InputFieldWithValidation } from '../../form/fields/common';
 import { Field } from 'formik';
-import { CustomerTagStore, CustomerTag } from '../../stores/customerTagStore';
+import { CustomerTag, CustomerTagStore } from '../../stores/customerTagStore';
+import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
 
 interface Props {
   mainStore?: MainStore;
   customerTagStore?: CustomerTagStore;
 }
-
-const schema = yup.object({
-  name: yup.string().required(),
-});
-
-const defaultValues = {
-  name: '',
-};
 
 @compose(
   inject('mainStore', 'customerTagStore'),
@@ -58,8 +50,8 @@ export default class CustomerTagOverview extends React.Component<Props> {
         title={'Tags'}
         store={this.props.customerTagStore!}
         columns={this.columns}
-        schema={schema}
-        defaultValues={defaultValues}
+        schema={customerTagSchema}
+        defaultValues={customerTagTemplate}
         searchFilter={this.filter}
         renderActions={this.renderActions}
         renderForm={() => (

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import * as yup from 'yup';
 import { Field, FieldArray, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -20,29 +19,13 @@ import { RateGroupStore } from 'src/stores/rateGroupStore';
 import CurrencyField from '../../form/fields/CurrencyField';
 import PercentageField from '../../form/fields/PercentageField';
 import TableToolbar from '../../layout/TableToolbar';
-import { computed } from 'mobx';
+import { serviceSchema } from './serviceSchema';
 
 export interface Props extends FormViewProps<Service> {
   serviceStore?: ServiceStore;
   rateGroupStore?: RateGroupStore;
   service: Service | undefined;
 }
-
-const schema = yup.object({
-  name: yup.string().required(),
-  description: yup.string().required(),
-  vat: yup.number().required(),
-  chargeable: yup.boolean(),
-  archived: yup.boolean(),
-  service_rates: yup.array(
-    yup.object({
-      id: yup.number(),
-      rate_group_id: yup.number().required(),
-      rate_unit_id: yup.number().required(),
-      value: yup.number().required(),
-    })
-  ),
-});
 
 @compose(
   inject('serviceStore', 'rateGroupStore'),
@@ -62,13 +45,11 @@ export default class ServiceForm extends React.Component<Props> {
         paper={false}
         loading={!hasContent(service) || this.props.loading}
         title={this.props.title}
-        validationSchema={schema}
+        validationSchema={serviceSchema}
         initialValues={service}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        render={(
-          props: FormikProps<any> // tslint:disable-line
-        ) => (
+        render={(props: FormikProps<Service>) => (
           <Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>

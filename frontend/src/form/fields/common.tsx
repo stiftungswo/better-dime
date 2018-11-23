@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { ErrorMessage, FieldProps } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -96,6 +96,7 @@ export const InputFieldWithValidation = ({
         endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
         multiline={multiline}
         {...field}
+        value={field.value === null ? '' : field.value}
         {...rest}
       />
     </ValidatedFormGroupWithLabel>

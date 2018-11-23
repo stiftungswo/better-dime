@@ -9,6 +9,7 @@ import { Service } from './types';
 import { RateGroup, RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
 import { hasContent } from '../../layout/DimeLayout';
+import { serviceTemplate } from './serviceSchema';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   serviceStore?: ServiceStore;
@@ -48,19 +49,16 @@ export default class ServiceCreate extends React.Component<Props> {
 
   @computed
   get service(): Service {
+    // We prepopulate the form with all registered ServiceRates from the backend, to ensure all of them have been
+    // connected with this service. This does not handle the case where a new ServiceRate is created later, but
+    // we don't intend to create any in the future, so we just ignore that case.
     return {
-      id: undefined,
-      name: '',
-      description: '',
-      vat: 0.077,
-      chargeable: true,
-      archived: false,
+      ...serviceTemplate,
       service_rates: this.serviceRates as any,
     };
   }
 
   public render() {
-    //wait for serviceRates to be loaded so the initialValues are populated correctly
     return (
       <ServiceForm
         title={'Service erstellen'}

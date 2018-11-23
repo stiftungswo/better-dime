@@ -31,16 +31,7 @@ export default class OfferUpdate extends React.Component<Props> {
   };
 
   public get offer() {
-    const offer = this.props.offerStore!.offer;
-    if (offer) {
-      return {
-        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
-        ...toJS(offer),
-        fixed_price: offer.fixed_price || '',
-      };
-    } else {
-      return undefined;
-    }
+    return toJS(this.props.offerStore!.offer);
   }
 
   public render() {

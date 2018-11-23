@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as yup from 'yup';
 import { inject, observer } from 'mobx-react';
 import { Holiday, HolidayStore } from '../../stores/holidayStore';
 import { Field } from 'formik';
@@ -11,18 +10,7 @@ import compose from '../../utilities/compose';
 import { DurationField } from '../../form/fields/DurationField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { ActionButtons } from '../../layout/ActionButtons';
-
-const schema = yup.object({
-  name: yup.string().required(),
-  date: yup.date().required(),
-  duration: yup.number().required(),
-});
-
-const defaultValues = {
-  name: '',
-  date: new Date(),
-  duration: 8.4 * 60,
-};
+import { holidaySchema, holidayTemplate } from './holidaySchema';
 
 interface Props {
   holidayStore?: HolidayStore;
@@ -71,8 +59,8 @@ export default class HolidayOverview extends React.Component<Props> {
         title={'Feiertage'}
         store={this.props.holidayStore!}
         columns={this.columns}
-        schema={schema}
-        defaultValues={defaultValues}
+        schema={holidaySchema}
+        defaultValues={holidayTemplate}
         searchFilter={this.filter}
         renderActions={this.renderActions}
         renderForm={props => (

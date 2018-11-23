@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -21,6 +20,7 @@ import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCatego
 import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 import { ProjectStore } from '../../stores/projectStore';
 import Navigator from './ProjectNavigator';
+import { projectSchema } from './projectSchema';
 
 interface InfoFieldProps {
   value: string;
@@ -48,26 +48,6 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
   </MuiFormControl>
 );
 
-const schema = yup.object({
-  name: yup.string().required(),
-  accountant_id: yup.number().required(),
-  address_id: yup.number().required(),
-  description: yup.string().required(),
-  chargeable: yup.boolean(),
-  archived: yup.boolean(),
-  deadline: yup.date().nullable(true),
-  category_id: yup.number().required(),
-  rate_group_id: yup.number().required(),
-  fixed_price: yup.number().nullable(true),
-  positions: yup.array(
-    yup.object({
-      description: yup.string(),
-      price_per_rate: yup.number().required(),
-      rate_unit_id: yup.number().required(),
-    })
-  ),
-});
-
 export interface Props extends FormViewProps<Project> {
   mainStore?: MainStore;
   projectStore?: ProjectStore;
@@ -91,7 +71,7 @@ export default class ProjectForm extends React.Component<Props> {
         paper={false}
         loading={!hasContent(project) || this.props.loading}
         title={this.props.title}
-        validationSchema={schema}
+        validationSchema={projectSchema}
         initialValues={project}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

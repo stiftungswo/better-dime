@@ -48,25 +48,12 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
   }
 
   protected async doPost(entity: Invoice): Promise<void> {
-    const res = await this.mainStore.api.post<Invoice>('/invoices/', this.cast(entity));
+    const res = await this.mainStore.api.post<Invoice>('/invoices/', entity);
     this.invoice = res.data;
   }
 
   protected async doPut(entity: Invoice): Promise<void> {
-    const res = await this.mainStore.api.put<Invoice>('/invoices/' + entity.id, this.cast(entity));
+    const res = await this.mainStore.api.put<Invoice>('/invoices/' + entity.id, entity);
     this.invoice = res.data;
-  }
-
-  protected cast(invoice: Invoice) {
-    //this prevents empty fields being sent to the backend as ""
-    //optimally, this can be handled in the form so empty strings don't even reach here.
-    return {
-      ...invoice,
-      fixed_price: invoice.fixed_price || null,
-      positions: invoice.positions.map(p => ({
-        ...p,
-        order: p.order === '' ? null : p.order,
-      })),
-    };
   }
 }

@@ -6,8 +6,8 @@ import { InjectedNotistackProps } from 'notistack';
 import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
-import { computed } from 'mobx';
 import { Invoice } from '../../types';
+import { invoiceTemplate } from './invoiceSchema';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   invoiceStore?: InvoiceStore;
@@ -23,10 +23,6 @@ export default class InvoiceCreate extends React.Component<Props> {
     submitted: false,
   };
 
-  constructor(props: Props) {
-    super(props);
-  }
-
   public handleSubmit = (invoice: Invoice) => {
     return this.props.invoiceStore!.post(invoice).then(() => {
       this.setState({ submitted: true });
@@ -35,25 +31,14 @@ export default class InvoiceCreate extends React.Component<Props> {
     });
   };
 
-  @computed
-  get invoice(): any {
-    return {
-      id: undefined,
-      name: '',
-      description: '',
-      address_id: '',
-      accountant_id: '',
-      positions: [],
-      discounts: [],
-      costgroup_distributions: [],
-      start: '',
-      end: '',
-    };
-  }
-
   public render() {
     return (
-      <InvoiceForm title={'Rechnung erstellen'} onSubmit={this.handleSubmit} invoice={this.invoice} submitted={this.state.submitted} />
+      <InvoiceForm
+        title={'Rechnung erstellen'}
+        onSubmit={this.handleSubmit}
+        invoice={invoiceTemplate as any}
+        submitted={this.state.submitted}
+      />
     );
   }
 }
