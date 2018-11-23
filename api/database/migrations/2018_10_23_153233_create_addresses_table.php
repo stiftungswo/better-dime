@@ -23,8 +23,13 @@ class CreateAddressesTable extends Migration
             $table->integer('postcode');
             $table->string('street');
             $table->string('supplement')->nullable();
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

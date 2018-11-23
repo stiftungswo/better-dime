@@ -8,10 +8,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class WorkPeriod extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     /* please mind the following things in the database
     1. pensum is in integer, e.g. 100 is a 100% pensum

@@ -26,8 +26,13 @@ class CreateServiceEtc extends Migration
             $table->string('description');
             $table->double('vat');
             $table->boolean('archived'); //TODO extract trait?
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('rate_units', function (Blueprint $table) {
@@ -38,8 +43,13 @@ class CreateServiceEtc extends Migration
             $table->boolean('is_time');
             $table->string('name');
             $table->boolean('archived')->default(false); //TODO extract trait?
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('service_rates', function (Blueprint $table) {
@@ -51,8 +61,8 @@ class CreateServiceEtc extends Migration
             $table->unsignedInteger('rate_unit_id');
             $table->foreign('rate_unit_id')->references('id')->on('rate_units')->onDelete('cascade');
             $table->integer("value");
-            $table->timestamps();
 
+            $table->timestamps();
             $table->unique(['service_id', 'rate_group_id']);
         });
     }

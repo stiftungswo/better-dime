@@ -21,8 +21,13 @@ class CreateCustomers extends Migration
             $table->string('name');
             $table->unsignedInteger('rate_group_id')->nullable();
             $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('people', function (Blueprint $table) {
@@ -38,15 +43,25 @@ class CreateCustomers extends Migration
             $table->unsignedInteger('rate_group_id')->nullable();
             $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
             $table->string('salutation');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('customer_tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('customer_taggables', function (Blueprint $table) {

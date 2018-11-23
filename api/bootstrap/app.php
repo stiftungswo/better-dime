@@ -93,10 +93,12 @@ $app->middleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(\Barryvdh\DomPDF\ServiceProvider::class);
-
-$app->configure('twigbridge');
 $app->register(\TwigBridge\ServiceProvider::class);
 $app->register('Sentry\SentryLaravel\SentryLumenServiceProvider');
+$app->register(RichanFongdasen\EloquentBlameable\ServiceProvider::class);
+
+$app->configure('blameable');
+$app->configure('twigbridge');
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

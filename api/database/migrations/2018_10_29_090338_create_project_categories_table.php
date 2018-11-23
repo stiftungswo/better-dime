@@ -16,8 +16,13 @@ class CreateProjectCategoriesTable extends Migration
         Schema::create('project_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

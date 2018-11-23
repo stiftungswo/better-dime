@@ -19,8 +19,13 @@ class CreatePhonesTable extends Migration
             $table->integer('customer_id');
             $table->string('customer_type');
             $table->string('number');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

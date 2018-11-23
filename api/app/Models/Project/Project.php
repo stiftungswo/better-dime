@@ -10,10 +10,11 @@ use App\Models\Service\RateGroup;
 use App\Services\CostBreakdown;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Project extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $casts = [
         'archived' => 'boolean',

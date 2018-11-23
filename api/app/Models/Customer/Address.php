@@ -4,10 +4,11 @@ namespace App\Models\Customer;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Address extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $hidden = ['customer_id', 'customer_type', 'customer'];
 

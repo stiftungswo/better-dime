@@ -33,8 +33,13 @@ class CreateInvoicesEtc extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('set null');
             $table->string('name');
             $table->date('start');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('costgroup_distributions', function (Blueprint $table) {

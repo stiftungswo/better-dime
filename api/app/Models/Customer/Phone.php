@@ -4,10 +4,11 @@ namespace App\Models\Customer;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Phone extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     /* the numbers for the different categories are going as follow:
     1: Hauptnummer

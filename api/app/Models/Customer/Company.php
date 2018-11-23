@@ -5,10 +5,11 @@ namespace App\Models\Customer;
 use App\Models\Service\RateGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Company extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $appends = ['tags', 'persons'];
 

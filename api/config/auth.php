@@ -12,7 +12,7 @@ return [
     ],
 
     'providers' => [
-        'employees' => ['driver' => 'eloquent', 'model' => \App\Modules\Employee\Models\Employee::class],
+        'employees' => ['driver' => 'eloquent', 'model' => \App\Models\Employee\Employee::class],
     ],
 
 ];

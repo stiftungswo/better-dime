@@ -18,8 +18,13 @@ class CreateHolidaysTable extends Migration
             $table->string('name');
             $table->date('date');
             $table->integer('duration');
+
             $table->timestamps();
             $table->softDeletes();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

@@ -26,8 +26,13 @@ class CreateOffersEtc extends Migration
             $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
             $table->text('short_description');
             $table->tinyInteger('status');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('offer_positions', function (Blueprint $table) {

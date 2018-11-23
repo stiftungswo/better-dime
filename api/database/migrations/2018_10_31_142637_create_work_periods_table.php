@@ -22,8 +22,13 @@ class CreateWorkPeriodsTable extends Migration
             $table->date('start');
             $table->decimal('vacation_takeover');
             $table->integer('yearly_vacation_budget');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

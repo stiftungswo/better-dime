@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Employee\Employee;
-use Firebase\JWT\ExpiredException;
-use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
 use Exception;
+use Firebase\JWT\JWT;
+use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -67,7 +65,7 @@ class AuthServiceProvider extends ServiceProvider
                         'email' => $employee->email
                     ]);
                 }
-                return $employee->id;
+                return $employee;
             } else {
                 return null;
             }

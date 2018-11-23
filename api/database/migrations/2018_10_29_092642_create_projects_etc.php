@@ -34,8 +34,13 @@ class CreateProjectsEtc extends Migration
             $table->date('started_at')->nullable();
             $table->date('stopped_at')->nullable();
             $table->boolean('vacation_project')->default(false);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('project_positions', function (Blueprint $table) {
@@ -49,6 +54,7 @@ class CreateProjectsEtc extends Migration
             $table->unsignedInteger('service_id')->nullable();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('set null');
             $table->decimal('vat', 4, 3);
+
             $table->softDeletes();
             $table->timestamps();
         });
@@ -61,8 +67,13 @@ class CreateProjectsEtc extends Migration
             $table->unsignedInteger('position_id')->nullable();
             $table->foreign('position_id')->references('id')->on('project_positions')->onDelete('cascade');
             $table->decimal('value', 10, 3);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('project_comments', function (Blueprint $table) {
@@ -71,8 +82,13 @@ class CreateProjectsEtc extends Migration
             $table->date('date');
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 
