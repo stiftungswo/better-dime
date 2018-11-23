@@ -9,6 +9,33 @@ use Laravel\Lumen\Routing\Controller;
 class BaseController extends Controller
 {
     /**
+     * Duplicates an object. Pass an optional array to copy some of the relations
+     * @param Model $model
+     * @param array $relations
+     * @return integer
+     */
+    protected function duplicateObject(Model $model, array $relations = [])
+    {
+        $className = get_class($model);
+
+        $duplicate = $model->replicate();
+        unset($duplicate->relations);
+        $duplicate->save();
+        $relationName = snake_case(class_basename($className)) . '_id';
+
+        $model->refresh();
+        foreach ($relations as $relation) {
+            $model->$relation->each(function ($p) use ($duplicate, $relationName) {
+                $duplicateP = $p->replicate();
+                $duplicateP->$relationName = $duplicate->id;
+                $duplicateP->save();
+            });
+        }
+
+        return $duplicate->id;
+    }
+
+    /**
      * allows to update a nested property of an object
      *
      * @param array $arrayOfNestedAttributes

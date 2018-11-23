@@ -74,6 +74,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'offers'], function () use ($router) {
+                $router->post('/{id}/duplicate', ['uses' => 'OfferController@duplicate']);
                 $router->get('/', ['uses' => 'OfferController@index']);
                 $router->post('/', ['uses' => 'OfferController@post']);
                 $router->get('/{id}', ['uses' => 'OfferController@get']);

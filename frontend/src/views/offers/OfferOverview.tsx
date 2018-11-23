@@ -45,8 +45,7 @@ export default class OfferOverview extends React.Component<Props> {
         addAction={'/offers/new'}
         renderActions={e => (
           <ActionButtons
-            copyAction={todo}
-            editAction={`/offers/${e.id}`}
+            copyAction={() => offerStore!.duplicate(e.id)}
             archiveAction={todo}
             deleteAction={() => offerStore!.delete(e.id)}
           />

@@ -23,6 +23,12 @@ class OfferController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $offer = Offer::findOrFail($id);
+        return self::get($this->duplicateObject($offer, ['discounts', 'positions']));
+    }
+
     public function index()
     {
         return Offer::all();

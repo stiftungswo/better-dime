@@ -126,6 +126,24 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
+  @action
+  public async duplicate(id: number) {
+    try {
+      this.displayInProgress();
+      await this.doDuplicate(id);
+      this.mainStore.displaySuccess(`${this.entityName.singular} wurde dupliziert.`);
+    } catch (e) {
+      this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.`);
+      console.error(e);
+      throw e;
+    }
+  }
+
+  @action
+  protected async doDuplicate(id: number) {
+    throw new Error('Not implemented');
+  }
+
   public async notifyProgress(action: () => Promise<any>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
     try {
       this.displayInProgress();

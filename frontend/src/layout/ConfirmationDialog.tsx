@@ -75,12 +75,12 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
 
   public render = () => {
     return (
-      <Fragment>
+      <>
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
           {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
         <ActionButton disabled={this.props.disabled} icon={DeleteIcon} title={'Löschen'} action={this.handleOpen} />
-      </Fragment>
+      </>
     );
   };
 }
