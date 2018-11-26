@@ -5,7 +5,7 @@ import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
 import { AbstractStore } from '../stores/abstractStore';
 import { ActionButtonAction } from './ActionButton';
 import { OverviewTable } from './OverviewTable';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { AppBarSearch } from './AppBarSearch';
 import { AddIcon, RefreshIcon } from './icons';
@@ -32,6 +32,7 @@ interface Props<T> {
 }
 
 @inject('mainStore')
+@observer
 export default class Overview extends React.Component<Props<any>> {
   public state = {
     loading: true,
