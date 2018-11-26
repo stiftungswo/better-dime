@@ -130,7 +130,6 @@ export class AbstractStore<T, OverviewType = T> {
   @action
   public async duplicate(id: number): Promise<T> {
     try {
-      this.displayInProgress();
       const newEntity: AxiosResponse = await this.doDuplicate(id);
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
       return newEntity.data;

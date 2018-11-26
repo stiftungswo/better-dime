@@ -9,7 +9,11 @@ use Laravel\Lumen\Routing\Controller;
 class BaseController extends Controller
 {
     /**
-     * Duplicates an object. Pass an optional array to copy some of the relations
+     * Duplicates an object.
+     * Pass an optional array to copy some of the relations.
+     * Or pass an optional array to exclude some attributes from cloning.
+     * Or pass an optional array to overwrite some attributes from the duplicate.
+     *
      * @param Model $model
      * @param array $relations
      * @param array $except

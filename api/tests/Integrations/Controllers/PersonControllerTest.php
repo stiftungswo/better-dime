@@ -34,6 +34,18 @@ class PersonControllerTest extends \TestCase
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
+    public function testValidDuplicate()
+    {
+        $personTemplate = factory(Person::class)->create();
+        $personTemplate->addresses()->saveMany(factory(Address::class, 5)->make());
+        $personTemplate->phone_numbers()->saveMany(factory(Phone::class, 5)->make());
+        $this->asAdmin()->json('GET', 'api/v1/people/' . $personTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/people/' . $personTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     public function testInvalidGet()
     {
         // can't get because object does not exist

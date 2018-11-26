@@ -5,14 +5,16 @@ import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+type Props = {
   peopleStore?: PeopleStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('peopleStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class PersonOverview extends React.Component<Props> {
   public columns: Array<Column<Person>>;
@@ -41,12 +43,23 @@ export default class PersonOverview extends React.Component<Props> {
   }
 
   public render() {
+    const peopleStore = this.props.peopleStore;
+
     return (
       <Overview
         title={'Person'}
-        store={this.props.peopleStore!}
+        store={peopleStore!}
         addAction={'/persons/new'}
-        renderActions={e => <ActionButtons copyAction={todo} editAction={`/persons/${e.id}`} archiveAction={todo} deleteAction={todo} />}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              const newEntity: Person = await peopleStore!.duplicate(e.id);
+              this.props.history.push(`/persons/${newEntity.id}`);
+            }}
+            archiveAction={todo}
+            deleteAction={todo}
+          />
+        )}
         onClickRow={'/persons/:id'}
         columns={this.columns}
       />

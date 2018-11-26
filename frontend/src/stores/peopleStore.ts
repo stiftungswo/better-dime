@@ -40,6 +40,10 @@ export class PeopleStore extends AbstractStore<Person> {
     super(mainStore);
   }
 
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Person>('/people/' + id + '/duplicate');
+  }
+
   @action
   public async doFetchAll() {
     const res = await this.mainStore.api.get<Person[]>('/people');

@@ -20,6 +20,12 @@ class PersonController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $person = Person::findOrFail($id);
+        return self::get($this->duplicateObject($person, ['addresses' => 'customer', 'phone_numbers' => 'customer']));
+    }
+
     public function index()
     {
         return Person::with(['addresses', 'phone_numbers'])->get();

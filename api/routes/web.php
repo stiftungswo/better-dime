@@ -87,6 +87,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'people'], function () use ($router) {
+                $router->post('/{id}/duplicate', ['uses' => 'PersonController@duplicate']);
                 $router->get('/', ['uses' => 'PersonController@index']);
                 $router->post('/', ['uses' => 'PersonController@post']);
                 $router->get('/{id}', ['uses' => 'PersonController@get']);

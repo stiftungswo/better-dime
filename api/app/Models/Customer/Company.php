@@ -88,6 +88,10 @@ class Company extends Model
             $address->delete();
         }
 
+        foreach ($this->phone_numbers as $phone) {
+            $phone->delete();
+        }
+
         parent::delete();
     }
 }

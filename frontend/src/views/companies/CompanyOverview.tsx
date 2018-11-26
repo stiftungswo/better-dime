@@ -52,7 +52,6 @@ export default class CompanyOverview extends React.Component<Props> {
               const newEntity: Company = await companyStore!.duplicate(e.id);
               this.props.history.push(`/companies/${newEntity.id}`);
             }}
-            editAction={`/companies/${e.id}`}
             archiveAction={todo}
             deleteAction={todo}
           />
