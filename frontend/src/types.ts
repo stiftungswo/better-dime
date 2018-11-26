@@ -207,8 +207,6 @@ export interface Project {
   name: string;
   offer_id?: number;
   rate_group_id: number;
-  started_at: null;
-  stopped_at: null;
   vacation_project: number;
   deleted_at: null;
   created_at: string;

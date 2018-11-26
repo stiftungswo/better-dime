@@ -31,8 +31,6 @@ class CreateProjectsEtc extends Migration
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('set null');
             $table->unsignedInteger('rate_group_id');
             $table->foreign('rate_group_id')->references('id')->on('rate_groups');
-            $table->date('started_at')->nullable();
-            $table->date('stopped_at')->nullable();
             $table->boolean('vacation_project')->default(false);
 
             $table->softDeletes();

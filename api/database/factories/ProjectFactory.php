@@ -30,8 +30,6 @@ $factory->define(\App\Models\Project\Project::class, function () {
         'rate_group_id' => function () {
             return factory(\App\Models\Service\RateGroup::class)->create()->id;
         },
-        'started_at' => $faker->dateTimeBetween('-270 days', '-90 days'),
-        'stopped_at' => $faker->dateTimeBetween('+30 days', '+270 days'),
         'vacation_project' => false,
     ];
 });
