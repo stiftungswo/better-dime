@@ -8,6 +8,22 @@ import TableBody from '@material-ui/core/TableBody/TableBody';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { Column } from './Overview';
 import { observer } from 'mobx-react';
+import compose from '../utilities/compose';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+
+const styles = createStyles({
+  container: {
+    '@media (hover)': {
+      '& .actions': {
+        visibility: 'hidden',
+      },
+      '&:hover .actions': {
+        visibility: 'visible',
+      },
+    },
+  },
+});
 
 function desc(a: any, b: any, orderBy: string): number {
   if (b[orderBy] < a[orderBy]) {
@@ -48,6 +64,7 @@ interface TableProps<T> {
   onClickRow?: (e: T, index: number) => void;
   searchFilter?: (e: T) => boolean;
   noSort?: boolean;
+  classes?: any;
 }
 
 interface TableState {
@@ -57,7 +74,10 @@ interface TableState {
 
 type Direction = 'asc' | 'desc';
 
-@observer
+@compose(
+  observer,
+  withStyles(styles)
+)
 export class OverviewTable<T> extends React.Component<TableProps<T>, TableState> {
   constructor(props: TableProps<T>) {
     super(props);
@@ -97,7 +117,7 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
   };
 
   public render() {
-    const { columns, data, noSort } = this.props;
+    const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
     const sortedData = noSort ? data : stableSort(this.filterSearch(data), getSorting(order, orderBy));
     return (
@@ -111,18 +131,28 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
                 </TableSortLabel>
               </TableCell>
             ))}
-            {this.props.renderActions && <TableCell numeric>Aktionen</TableCell>}
+            {this.props.renderActions && <TableCell numeric />}
           </TableRow>
         </TableHead>
         <TableBody>
           {sortedData.map((row, index) => (
-            <TableRow hover key={index} onClick={this.handleRowClick(row, index)} component={SafeClickableTableRow}>
+            <TableRow
+              className={classes.container}
+              hover
+              key={index}
+              onClick={this.handleRowClick(row, index)}
+              component={SafeClickableTableRow}
+            >
               {columns.map(col => (
                 <TableCell key={col.id} numeric={col.numeric}>
                   {format(col, row)}
                 </TableCell>
               ))}
-              {this.props.renderActions && <TableCell numeric>{this.props.renderActions(row)}</TableCell>}
+              {this.props.renderActions && (
+                <TableCell numeric>
+                  <span className={'actions'}>{this.props.renderActions(row)}</span>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
