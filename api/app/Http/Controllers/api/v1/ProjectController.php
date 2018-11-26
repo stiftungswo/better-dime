@@ -20,6 +20,12 @@ class ProjectController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $project = Project::findOrFail($id);
+        return self::get($this->duplicateObject($project, ['positions'], ['offer_id']));
+    }
+
     public function index()
     {
         return Project::all();

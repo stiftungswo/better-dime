@@ -12,13 +12,14 @@ class BaseController extends Controller
      * Duplicates an object. Pass an optional array to copy some of the relations
      * @param Model $model
      * @param array $relations
+     * @param array $except
      * @return integer
      */
-    protected function duplicateObject(Model $model, array $relations = [])
+    protected function duplicateObject(Model $model, array $relations = [], array $except = [])
     {
         $className = get_class($model);
 
-        $duplicate = $model->replicate();
+        $duplicate = $model->replicate($except);
         unset($duplicate->relations);
         $duplicate->save();
 

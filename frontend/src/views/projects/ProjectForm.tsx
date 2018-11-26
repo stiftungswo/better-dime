@@ -144,7 +144,7 @@ export default class ProjectForm extends React.Component<Props> {
                     <Grid item xs={12}>
                       <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
                     </Grid>
-                    {project.id && (
+                    {project.id && project.offer_id && (
                       <>
                         {/*TODO this design is not so great. Maybe just use a table like Breakdown and be a bit more consistent?*/}
                         <Grid item xs={12} lg={6}>

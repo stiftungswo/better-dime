@@ -30,6 +30,10 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     super(mainStore);
   }
 
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Project>('/projects/' + id + '/duplicate');
+  }
+
   protected async doFetchAll(): Promise<void> {
     const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
     this.projects = res.data;

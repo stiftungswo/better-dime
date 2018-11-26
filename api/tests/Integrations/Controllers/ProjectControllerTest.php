@@ -26,6 +26,17 @@ class ProjectControllerTest extends \TestCase
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
+    public function testValidDuplicate()
+    {
+        $projectTemplate = factory(Project::class)->create();
+        $projectTemplate->positions()->saveMany(factory(ProjectPosition::class, 5)->make());
+        $this->asAdmin()->json('GET', 'api/v1/projects/' . $projectTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/projects/' . $projectTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     public function testGetIndex()
     {
         factory(Project::class)->create();

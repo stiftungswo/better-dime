@@ -6,14 +6,16 @@ import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { Project } from '../../types';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-export interface Props {
+export type Props = {
   projectStore?: ProjectStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('projectStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class ProjectOverview extends React.Component<Props> {
   public columns: Array<Column<ProjectListing>>;
@@ -41,12 +43,23 @@ export default class ProjectOverview extends React.Component<Props> {
   };
 
   public render() {
+    const projectStore = this.props.projectStore;
+
     return (
       <Overview
         title={'Projekte'}
-        store={this.props.projectStore!}
+        store={projectStore!}
         addAction={'/projects/new'}
-        renderActions={e => <ActionButtons copyAction={todo} editAction={`/projects/${e.id}`} archiveAction={todo} deleteAction={todo} />}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              const newEntity: Project = await projectStore!.duplicate(e.id);
+              this.props.history.push(`/projects/${newEntity.id}`);
+            }}
+            archiveAction={todo}
+            deleteAction={todo}
+          />
+        )}
         onClickRow={'/projects/:id'}
         columns={this.columns}
         searchFilter={this.filter}
