@@ -2,6 +2,7 @@ import { computed, observable, action } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 import { Service, ServiceListing } from '../views/services/types';
+import { Offer } from '../types';
 
 export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected get entityName() {
@@ -23,6 +24,10 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+  }
+
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Offer>('/services/' + id + '/duplicate');
   }
 
   protected async doFetchAll() {

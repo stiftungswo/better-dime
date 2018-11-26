@@ -65,6 +65,12 @@ class ServiceController extends BaseController
         Service::findOrFail($id)->delete();
     }
 
+    public function duplicate($id)
+    {
+        $service = Service::findOrFail($id);
+        return self::get($this->duplicateObject($service, ['service_rates']));
+    }
+
     private function validateRequest(Request $request)
     {
         $this->validate($request, [

@@ -102,6 +102,19 @@ class ServiceControllerTest extends \TestCase
         $this->assertResponseMatchesTemplate($template);
     }
 
+    public function testValidDuplicate()
+    {
+        $serviceTemplate = factory(Service::class)->create();
+        $serviceTemplate->service_rates()->saveMany(factory(ServiceRate::class, 5)->make([
+            'service_id' => $serviceTemplate->id
+        ]));
+        $this->asAdmin()->json('GET', 'api/v1/services/' . $serviceTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/services/' . $serviceTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     private function serviceTemplate()
     {
         return [

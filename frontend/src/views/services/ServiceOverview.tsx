@@ -7,15 +7,17 @@ import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-export interface Props {
+export type Props = {
   serviceStore?: ServiceStore;
   mainStore?: MainStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('serviceStore', 'mainStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class ServiceOverview extends React.Component<Props> {
   public columns: Array<Column<Service>> = [];
@@ -44,10 +46,14 @@ export default class ServiceOverview extends React.Component<Props> {
 
   public renderActions = (service: Service) => (
     <ActionButtons
-      editAction={`/services/${service.id}`}
       deleteAction={() => this.props.serviceStore!.delete(service.id!)}
       archiveAction={todo}
-      copyAction={todo}
+      copyAction={async () => {
+        if (service && service.id) {
+          const newEntity: Service = await this.props.serviceStore!.duplicate(service.id);
+          this.props.history.push(`/services/${newEntity.id}`);
+        }
+      }}
       deleteMessage="Das Löschen eines Services führt möglicherweise zu korrupten Offerten, Projekten und Rechnungen.\nWirklich löschen?"
     />
   );
