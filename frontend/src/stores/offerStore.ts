@@ -30,6 +30,11 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
     super(mainStore);
   }
 
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/offers/' + id);
+    await this.doFetchAll();
+  }
+
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Offer>('/offers/' + id + '/duplicate');
   }

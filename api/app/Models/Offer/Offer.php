@@ -6,15 +6,18 @@ use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
 use App\Models\Project\Project;
 use App\Models\Service\RateGroup;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Offer extends Model
 {
-    use SoftDeletes, BlameableTrait;
+    use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
     protected $fillable = ['accountant_id', 'address_id', 'description', 'fixed_price', 'name', 'short_description', 'rate_group_id', 'status'];
+
+    protected $softCascade = ['discounts', 'positions'];
 
     public function accountant()
     {

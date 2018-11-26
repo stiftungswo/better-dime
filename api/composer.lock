@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b585af336c1570a8cd1c4e9683b73ce",
+    "content-hash": "6234b6ebfdf3fbf1173d3beb0de90fff",
     "packages": [
+        {
+            "name": "askedio/laravel-soft-cascade",
+            "version": "5.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Askedio/laravel-soft-cascade.git",
+                "reference": "118c4d2d86b8fd01cf6fb90911e3c1ba11b8b7ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Askedio/laravel-soft-cascade/zipball/118c4d2d86b8fd01cf6fb90911e3c1ba11b8b7ca",
+                "reference": "118c4d2d86b8fd01cf6fb90911e3c1ba11b8b7ca",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/container": "5.7.*",
+                "illuminate/database": "5.7.*",
+                "illuminate/events": "5.7.*",
+                "illuminate/support": "5.7.*",
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "codacy/coverage": "dev-master",
+                "orchestra/testbench": "3.7.x",
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Askedio\\SoftCascade\\Providers\\GenericServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Askedio\\SoftCascade\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Laravel Cascade Soft Delete & Restore",
+            "time": "2018-10-06T10:09:01+00:00"
+        },
         {
             "name": "barryvdh/laravel-dompdf",
             "version": "v0.8.3",
