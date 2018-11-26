@@ -9,6 +9,6 @@ class AddressController extends BaseController
 {
     public function index()
     {
-        return Address::all()->each->append('dropdown_label');
+        return Address::all()->each->append(['dropdown_label', 'rate_group_id']);
     }
 }

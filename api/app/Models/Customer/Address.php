@@ -41,4 +41,12 @@ class Address extends Model
 
         return implode(', ', $baseArray);
     }
+
+    public function getRateGroupIdAttribute()
+    {
+        if ($this->customer) {
+            return $this->customer->rate_group_id;
+        }
+        return null;
+    }
 }

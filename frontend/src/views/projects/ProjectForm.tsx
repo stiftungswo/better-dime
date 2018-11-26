@@ -21,6 +21,8 @@ import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 import { ProjectStore } from '../../stores/projectStore';
 import Navigator from './ProjectNavigator';
 import { projectSchema } from './projectSchema';
+import Effect, { OnChange } from '../../utilities/Effect';
+import { AddressStore } from '../../stores/addressStore';
 
 interface InfoFieldProps {
   value: string;
@@ -51,17 +53,30 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
 export interface Props extends FormViewProps<Project> {
   mainStore?: MainStore;
   projectStore?: ProjectStore;
+  addressStore?: AddressStore;
   project: Project;
 }
 
 @compose(
-  inject('mainStore', 'projectStore'),
+  inject('mainStore', 'projectStore', 'addressStore'),
   observer
 )
 export default class ProjectForm extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }
+
+  // set rateGroup based on selected customer.
+  handleAddressChange: OnChange<Project> = (current, next, formik) => {
+    if (current.values.address_id !== next.values.address_id) {
+      if (!current.values.address_id && !current.values.rate_group_id) {
+        const address = this.props.addressStore!.addresses.find(a => a.id === next.values.address_id);
+        if (address) {
+          formik.setFieldValue('rate_group_id', address.rate_group_id);
+        }
+      }
+    }
+  };
 
   public render() {
     const { project, mainStore, projectStore } = this.props;
@@ -75,9 +90,7 @@ export default class ProjectForm extends React.Component<Props> {
         initialValues={project}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        render={(
-          props: FormikProps<any> // tslint:disable-line
-        ) => (
+        render={(props: FormikProps<Project>) => (
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={24}>
               <Grid item xs={12} lg={8}>
@@ -88,10 +101,10 @@ export default class ProjectForm extends React.Component<Props> {
                       <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
+                      <Effect onChange={this.handleAddressChange} />
                       <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      {/*TODO preselect tarif based on selected customer?*/}
                       <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 

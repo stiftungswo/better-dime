@@ -23,19 +23,33 @@ import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './OfferNavigator';
 import { ProjectStore } from '../../stores/projectStore';
 import { offerSchema } from './offerSchema';
-import { PaperIcon } from '../../layout/icons';
+import Effect, { OnChange } from '../../utilities/Effect';
+import { AddressStore } from '../../stores/addressStore';
 
 export interface Props extends FormViewProps<Offer> {
   offerStore?: OfferStore;
   projectStore?: ProjectStore;
+  addressStore?: AddressStore;
   offer: Offer;
 }
 
 @compose(
-  inject('offerStore', 'projectStore'),
+  inject('offerStore', 'projectStore', 'addressStore'),
   observer
 )
 export default class OfferForm extends React.Component<Props> {
+  // set rateGroup based on selected customer.
+  handleAddressChange: OnChange<Offer> = (current, next, formik) => {
+    if (current.values.address_id !== next.values.address_id) {
+      if (!current.values.address_id && !current.values.rate_group_id) {
+        const address = this.props.addressStore!.addresses.find(a => a.id === next.values.address_id);
+        if (address) {
+          formik.setFieldValue('rate_group_id', address.rate_group_id);
+        }
+      }
+    }
+  };
+
   public render() {
     const { offer } = this.props;
 
@@ -73,6 +87,7 @@ export default class OfferForm extends React.Component<Props> {
                               <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={8}>
+                              <Effect onChange={this.handleAddressChange} />
                               <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={4}>

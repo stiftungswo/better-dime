@@ -5,6 +5,7 @@ import { Address } from '../types';
 export interface AddressListing {
   id: number;
   dropdown_label: string;
+  rate_group_id: number;
 }
 
 export class AddressStore extends AbstractStore<Address, AddressListing> {
