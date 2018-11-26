@@ -12,10 +12,10 @@ interface ActionProps {
 }
 
 export const ActionButtons = (props: ActionProps) => (
-  <>
+  <div style={{ whiteSpace: 'nowrap' }}>
     {props.copyAction && <ActionButton icon={CopyIcon} action={props.copyAction} />}
     {props.editAction && <ActionButton icon={EditIcon} action={props.editAction} />}
     {props.archiveAction && <ActionButton icon={ArchiveIcon} action={props.archiveAction} />}
     {props.deleteAction && <DeleteButton onConfirm={props.deleteAction} message={props.deleteMessage} />}
-  </>
+  </div>
 );
