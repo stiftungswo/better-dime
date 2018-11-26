@@ -40,6 +40,18 @@ class EmployeeController extends BaseController
         return "Entity deleted";
     }
 
+    public function duplicate($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $randomNumber = rand(1000, 9999);
+        return self::get($this->duplicateObject(
+            $employee,
+            [],
+            [],
+            ['email' => str_slug(strtolower($employee->first_name) . strtolower($employee->last_name) . $randomNumber) . '@swo.ch']
+        ));
+    }
+
     private function validateRequest(Request $request)
     {
         $this->validate($request, [

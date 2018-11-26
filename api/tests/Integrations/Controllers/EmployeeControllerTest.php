@@ -23,6 +23,16 @@ class EmployeeControllerTest extends \TestCase
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
+    public function testValidDuplicate()
+    {
+        $employeeTemplate = factory(Employee::class)->create();
+        $this->asAdmin()->json('GET', 'api/v1/employees/' . $employeeTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/employees/' . $employeeTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     public function testIndex()
     {
         $employeeId = factory(Employee::class)->create()->id;

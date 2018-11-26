@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { EmployeeStore } from '../../stores/employeeStore';
-import { Employee } from '../../types';
+import { Employee, Project } from '../../types';
 import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+type Props = {
   employeeStore?: EmployeeStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('employeeStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class EmployeeOverview extends React.Component<Props> {
   public columns: Array<Column<Employee>>;
@@ -42,12 +44,23 @@ export default class EmployeeOverview extends React.Component<Props> {
   }
 
   public render() {
+    const employeeStore = this.props.employeeStore;
+
     return (
       <Overview
         title={'Mitarbeiter'}
-        store={this.props.employeeStore!}
+        store={employeeStore!}
         addAction={'/employees/new'}
-        renderActions={e => <ActionButtons copyAction={todo} editAction={`/employees/${e.id}`} archiveAction={todo} deleteAction={todo} />}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              const newEntity: Employee = await employeeStore!.duplicate(e.id);
+              this.props.history.push(`/employees/${newEntity.id}`);
+            }}
+            archiveAction={todo}
+            deleteAction={todo}
+          />
+        )}
         onClickRow={'/employees/:id'}
         columns={this.columns}
       />

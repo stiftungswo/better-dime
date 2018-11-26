@@ -13,14 +13,18 @@ class BaseController extends Controller
      * @param Model $model
      * @param array $relations
      * @param array $except
+     * @param array $newAttributes
      * @return integer
      */
-    protected function duplicateObject(Model $model, array $relations = [], array $except = [])
+    protected function duplicateObject(Model $model, array $relations = [], array $except = [], array $newAttributes = [])
     {
         $className = get_class($model);
 
         $duplicate = $model->replicate($except);
         unset($duplicate->relations);
+        foreach ($newAttributes as $attribute => $value) {
+            $duplicate->$attribute = $value;
+        }
         $duplicate->save();
 
         $model->refresh();

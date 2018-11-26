@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 import { MainStore } from './mainStore';
-import { Employee } from '../types';
+import { Employee, Offer } from '../types';
 import { AbstractStore } from './abstractStore';
 
 export interface EmployeeListing {
@@ -32,26 +32,26 @@ export class EmployeeStore extends AbstractStore<Employee> {
     super(mainStore);
   }
 
-  @action
-  public async doFetchAll() {
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Employee>('/employees/' + id + '/duplicate');
+  }
+
+  protected async doFetchAll() {
     const res = await this.mainStore.api.get<Employee[]>('/employees');
     this.employees = res.data;
   }
 
-  @action
-  public async doFetchOne(id: number) {
+  protected async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<Employee>('/employees/' + id);
     this.employee = res.data;
   }
 
-  @action
-  public async doPost(employee: Employee) {
+  protected async doPost(employee: Employee) {
     const res = await this.mainStore.api.post('/employees', employee);
     this.employee = res.data;
   }
 
-  @action
-  public async doPut(employee: Employee) {
+  protected async doPut(employee: Employee) {
     const res = await this.mainStore.api.put('/employees/' + employee.id, employee);
     this.employee = res.data;
   }

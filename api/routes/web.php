@@ -45,6 +45,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'employees'], function () use ($router) {
+                $router->post('/{id}/duplicate', ['uses' => 'EmployeeController@duplicate']);
                 $router->get('/', ['uses' => 'EmployeeController@index']);
                 $router->post('/', ['uses' => 'EmployeeController@post']);
                 $router->get('/{id}', ['uses' => 'EmployeeController@get']);
