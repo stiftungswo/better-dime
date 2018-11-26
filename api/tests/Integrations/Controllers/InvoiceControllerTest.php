@@ -105,7 +105,9 @@ class InvoiceControllerTest extends \TestCase
 
     public function testInexistentOfferId()
     {
-        $invoice = factory(Invoice::class)->create();
+        $invoice = factory(Invoice::class)->create([
+            'project_id' => null
+        ]);
 
         $this->asUser()->json('GET', "api/v1/invoices/" . $invoice->id)->assertResponseOk();
         $res = $this->responseToArray();

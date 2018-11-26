@@ -7,7 +7,9 @@ $factory->define(\App\Models\Employee\WorkPeriod::class, function () {
     $faker = Faker\Factory::create('de_CH');
 
     return [
-        'employee_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
+        'employee_id' => function () {
+            return factory(\App\Models\Employee\Employee::class)->create()->id;
+        },
         'end' => $faker->dateTimeBetween('-1 years'),
         'pensum' => $faker->numberBetween(70, 100),
         'start' => $faker->dateTimeBetween('-2 years', '-1 years'),

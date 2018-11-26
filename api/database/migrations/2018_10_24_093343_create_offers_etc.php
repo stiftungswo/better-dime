@@ -22,8 +22,8 @@ class CreateOffersEtc extends Migration
             $table->text('description');
             $table->integer('fixed_price')->nullable();
             $table->string('name');
-            $table->unsignedInteger('rate_group_id')->nullable();
-            $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
+            $table->unsignedInteger('rate_group_id');
+            $table->foreign('rate_group_id')->references('id')->on('rate_groups');
             $table->text('short_description');
             $table->tinyInteger('status');
 

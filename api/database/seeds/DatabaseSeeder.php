@@ -89,8 +89,11 @@ class DatabaseSeeder extends Seeder
 
         print("Seeding companies ...\n");
         $companies = factory(\App\Models\Customer\Company::class)->times(10)->create([
-            'rate_group_id' => \App\Models\Service\RateGroup::all()->random()->id
+            'rate_group_id' => function () {
+                return \App\Models\Service\RateGroup::all()->random()->id;
+            }
         ]);
+
         $companies->each(function ($c) use ($customerTags) {
             /** @var \App\Models\Customer\Company $c */
             $c->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
@@ -100,7 +103,9 @@ class DatabaseSeeder extends Seeder
 
         print("Seeding people ...\n");
         $people = factory(\App\Models\Customer\Person::class)->times(10)->create([
-            'rate_group_id' => \App\Models\Service\RateGroup::all()->random()->id
+            'rate_group_id' => function () {
+                return \App\Models\Service\RateGroup::all()->random()->id;
+            }
         ]);
 
         $people->each(function ($p) use ($customerTags) {
@@ -112,6 +117,7 @@ class DatabaseSeeder extends Seeder
 
         print("Attaching some people to a company ...\n");
         $people->slice(ceil(count($people) / 2))->each(function ($p) use ($companies) {
+            /** @var \App\Models\Customer\Person $p */
             $p->company()->associate($companies->random());
             $p->save();
         });
@@ -136,12 +142,15 @@ class DatabaseSeeder extends Seeder
             $positions = [];
             foreach (range(1, rand(2, 5)) as $i) {
                 $positions[] = factory(\App\Models\Offer\OfferPosition::class)->make([
+                    'offer_id' => $o->id,
                     'rate_unit_id' => $rateUnits->random()->id,
                     'service_id' => $services->random()->id
                 ]);
             }
             $o->positions()->saveMany($positions);
-            $o->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->make());
+            $o->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->make([
+                'offer_id' => $o->id,
+            ]));
         });
 
         print("Seeding project categories ...\n");
@@ -159,7 +168,9 @@ class DatabaseSeeder extends Seeder
             $p->update([
                 'category_id' => $projectCategories->random()->id,
             ]);
-            $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->make());
+            $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->make([
+                'project_id' => $p->id
+            ]));
         });
 
         print("Seeding holiday projects ...\n");
@@ -172,6 +183,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $holidayProject->positions()->save(factory(\App\Models\Project\ProjectPosition::class)->make([
+            'description' => 'Ferien',
             'rate_unit_id' => $rateUnits->firstWhere('is_time', true)->id,
             'service_id' => $services->random()->id
         ]));
@@ -187,7 +199,8 @@ class DatabaseSeeder extends Seeder
 
                 $pp->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class)->times(rand(0, 2))->make([
                     'employee_id' => $wp->employee->id,
-                    'date' => $date
+                    'date' => $date,
+                    'position_id' => $pp->id
                 ]));
             });
         });
@@ -204,9 +217,11 @@ class DatabaseSeeder extends Seeder
 
         $invoices->each(function ($i) use ($costgroups) {
             $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
-                'costgroup_number' => $costgroups->random()->number
+                'costgroup_number' => $costgroups->random()->number,
+                'invoice_id' => $i->id,
             ]), factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
-                'costgroup_number' => $costgroups->random()->number
+                'costgroup_number' => $costgroups->random()->number,
+                'invoice_id' => $i->id,
             ])]);
         });
     }

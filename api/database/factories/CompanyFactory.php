@@ -1,6 +1,7 @@
 <?php
 
 /** @var Factory $factory */
+
 use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(\App\Models\Customer\Company::class, function () {
@@ -11,5 +12,8 @@ $factory->define(\App\Models\Customer\Company::class, function () {
         'email' => $faker->companyEmail,
         'hidden' => $faker->boolean,
         'name' => $faker->company,
+        'rate_group_id' => function () {
+            return factory(\App\Models\Service\RateGroup::class)->create()->id;
+        }
     ];
 });

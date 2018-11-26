@@ -32,11 +32,6 @@ class CreateProjectFromOfferTest extends \TestCase
         $this->expectOfferError('address_id');
     }
 
-    public function testEmptyRateGroup()
-    {
-        $this->expectOfferError('rate_group_id');
-    }
-
     public function testEmptyServiceId()
     {
         $this->expectPositionError('service_id');

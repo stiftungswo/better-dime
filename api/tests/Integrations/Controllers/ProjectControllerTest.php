@@ -120,6 +120,7 @@ class ProjectControllerTest extends \TestCase
         $newProject = factory(Project::class)->create();
         $oldPosition = factory(ProjectPosition::class)->create([
             'project_id' => $oldProject->id,
+            'service_id' => null
         ]);
         $oldEffortIds = factory(ProjectEffort::class, 1)->create([
             'position_id' => $oldPosition->id

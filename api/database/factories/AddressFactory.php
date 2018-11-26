@@ -5,10 +5,13 @@ use Illuminate\Database\Eloquent\Factory;
 /** @var Factory $factory */
 $factory->define(\App\Models\Customer\Address::class, function () {
     $faker = Faker\Factory::create('de_CH');
+    $type = rand(1, 10) > 5 ? \App\Models\Customer\Company::class : \App\Models\Customer\Person::class;
 
     return [
-        'customer_id' => factory(\App\Models\Customer\Person::class)->create()->id,
-        'customer_type' => \App\Models\Customer\Person::class,
+        'customer_id' => function () use ($type) {
+            return factory($type)->create()->id;
+        },
+        'customer_type' => $type,
         'city' => $faker->city,
         'country' => $faker->country,
         'description' => $faker->sentence,

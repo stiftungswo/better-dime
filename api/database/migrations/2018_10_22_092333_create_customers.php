@@ -19,8 +19,8 @@ class CreateCustomers extends Migration
             $table->string('email');
             $table->boolean('hidden')->default(false);
             $table->string('name');
-            $table->unsignedInteger('rate_group_id')->nullable();
-            $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
+            $table->unsignedInteger('rate_group_id');
+            $table->foreign('rate_group_id')->references('id')->on('rate_groups');
 
             $table->timestamps();
             $table->softDeletes();
@@ -40,8 +40,8 @@ class CreateCustomers extends Migration
             $table->string('first_name');
             $table->boolean('hidden')->default(false);
             $table->string('last_name');
-            $table->unsignedInteger('rate_group_id')->nullable();
-            $table->foreign('rate_group_id')->references('id')->on('rate_groups')->onDelete('set null');
+            $table->unsignedInteger('rate_group_id');
+            $table->foreign('rate_group_id')->references('id')->on('rate_groups');
             $table->string('salutation');
 
             $table->timestamps();

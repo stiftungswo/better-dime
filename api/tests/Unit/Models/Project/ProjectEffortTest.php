@@ -30,7 +30,9 @@ class ProjectEffortTest extends \TestCase
 
     public function testGetNullService()
     {
-        $position = factory(ProjectPosition::class)->make();
+        $position = factory(ProjectPosition::class)->make([
+            'service_id' => null
+        ]);
         $effort = factory(ProjectEffort::class)->make();
         $effort->position()->associate($position);
         $this->assertNull($effort->service);

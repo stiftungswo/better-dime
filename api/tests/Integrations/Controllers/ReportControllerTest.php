@@ -29,7 +29,9 @@ class ReportControllerTest extends \TestCase
 
     public function testPrintEffortReportForInvoiceWithoutProject()
     {
-        $invoice = factory(\App\Models\Invoice\Invoice::class)->create();
+        $invoice = factory(\App\Models\Invoice\Invoice::class)->create([
+            'project_id' => null
+        ]);
         $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoice->id . '/print_effort_report')->assertResponseStatus(400);
         $this->assertEquals('Invoice ' . $invoice->id . ' has no project assigned!', $this->response->getContent());
     }

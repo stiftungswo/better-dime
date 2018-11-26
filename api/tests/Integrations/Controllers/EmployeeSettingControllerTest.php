@@ -3,9 +3,12 @@
 namespace Tests\Integrations\Controllers;
 
 use App\Models\Employee\EmployeeSetting;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class EmployeeSettingControllerTest extends \TestCase
 {
+    use DatabaseTransactions;
+
     public function testInvalidObjectPut()
     {
         // can't update because object does not exist

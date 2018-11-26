@@ -60,7 +60,9 @@ class ProjectTest extends \TestCase
 
     public function testBudgetPriceWithoutOffer()
     {
-        $this->assertNull(factory(Project::class)->create()->budget_price);
+        $this->assertNull(factory(Project::class)->create([
+            'offer_id' => null
+        ])->budget_price);
     }
 
     public function testBudgetPriceWithOfferFixedPrice()
@@ -105,7 +107,9 @@ class ProjectTest extends \TestCase
 
     public function testBudgetTimeWithoutOffer()
     {
-        $this->assertNull(factory(Project::class)->create()->budget_time);
+        $this->assertNull(factory(Project::class)->create([
+            'offer_id' => null
+        ])->budget_time);
     }
 
     public function testBudgetTime()
