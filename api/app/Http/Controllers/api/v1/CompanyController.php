@@ -20,6 +20,12 @@ class CompanyController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $company = Company::findOrFail($id);
+        return self::get($this->duplicateObject($company, ['addresses' => 'customer', 'phone_numbers' => 'customer', 'people']));
+    }
+
     public function index()
     {
         return Company::with(['addresses', 'phone_numbers'])->get();

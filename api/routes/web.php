@@ -29,6 +29,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'companies'], function () use ($router) {
+                $router->post('/{id}/duplicate', ['uses' => 'CompanyController@duplicate']);
                 $router->get('/', ['uses' => 'CompanyController@index']);
                 $router->post('/', ['uses' => 'CompanyController@post']);
                 $router->get('/{id}', ['uses' => 'CompanyController@get']);

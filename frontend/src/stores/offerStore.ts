@@ -31,8 +31,7 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   }
 
   protected async doDuplicate(id: number) {
-    await this.mainStore.api.post('/offers/' + id + '/duplicate');
-    await this.fetchAll();
+    return this.mainStore.api.post<Offer>('/offers/' + id + '/duplicate');
   }
 
   protected async doFetchAll(): Promise<void> {

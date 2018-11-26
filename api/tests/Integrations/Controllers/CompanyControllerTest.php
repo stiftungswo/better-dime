@@ -5,20 +5,13 @@ namespace Tests\Integrations\Controllers;
 use App\Models\Customer\Address;
 use App\Models\Customer\Company;
 use App\Models\Customer\CustomerTag;
+use App\Models\Customer\Person;
 use App\Models\Customer\Phone;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class CompanyControllerTest extends \TestCase
 {
     use DatabaseTransactions;
-
-    public function testIndex()
-    {
-        factory(Company::class)->create()->id;
-        $this->asAdmin()->json('GET', 'api/v1/companies');
-        $decodedResponse = $this->responseToArray();
-        $this->assertEquals(count(Company::all()), count($decodedResponse));
-    }
 
     public function testInvalidDelete()
     {
@@ -33,6 +26,19 @@ class CompanyControllerTest extends \TestCase
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
+    public function testValidDuplicate()
+    {
+        $companyTemplate = factory(Company::class)->create();
+        $companyTemplate->addresses()->saveMany(factory(Address::class, 5)->make());
+        $companyTemplate->phone_numbers()->saveMany(factory(Phone::class, 5)->make());
+        $companyTemplate->people()->saveMany(factory(Person::class, 5)->make());
+        $this->asAdmin()->json('GET', 'api/v1/companies/' . $companyTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/companies/' . $companyTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     public function testInvalidGet()
     {
         // can't get because object does not exist
@@ -44,6 +50,14 @@ class CompanyControllerTest extends \TestCase
         $company = factory(Company::class)->create();
         $this->asAdmin()->json('GET', 'api/v1/companies/' . $company->id)->assertResponseOk();
         $this->assertEquals($company->name, $this->responseToArray()['name']);
+    }
+
+    public function testIndex()
+    {
+        factory(Company::class)->create()->id;
+        $this->asAdmin()->json('GET', 'api/v1/companies');
+        $decodedResponse = $this->responseToArray();
+        $this->assertEquals(count(Company::all()), count($decodedResponse));
     }
 
     public function testInvalidPost()

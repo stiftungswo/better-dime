@@ -39,6 +39,11 @@ export class CompanyStore extends AbstractStore<Company> {
     super(mainStore);
   }
 
+  @action
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Company>('/companies/' + id + '/duplicate');
+  }
+
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Company[]>('/companies');
     this.companies = res.data;

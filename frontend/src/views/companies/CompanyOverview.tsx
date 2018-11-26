@@ -1,18 +1,20 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { CompanyStore, Company } from '../../stores/companyStore';
+import { Company, CompanyStore } from '../../stores/companyStore';
 import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
+import { RouteComponentProps, withRouter } from 'react-router';
 
-interface Props {
+type Props = {
   companyStore?: CompanyStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('companyStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class CompanyOverview extends React.Component<Props> {
   public columns: Array<Column<Company>>;
@@ -37,12 +39,24 @@ export default class CompanyOverview extends React.Component<Props> {
   }
 
   public render() {
+    const companyStore = this.props.companyStore!;
+
     return (
       <Overview
         title={'Firma'}
-        store={this.props.companyStore!}
+        store={companyStore!}
         addAction={'/companies/new'}
-        renderActions={e => <ActionButtons copyAction={todo} editAction={`/companies/${e.id}`} archiveAction={todo} deleteAction={todo} />}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              const newEntity: Company = await companyStore!.duplicate(e.id);
+              this.props.history.push(`/companies/${newEntity.id}`);
+            }}
+            editAction={`/companies/${e.id}`}
+            archiveAction={todo}
+            deleteAction={todo}
+          />
+        )}
         onClickRow={'/companies/:id'}
         columns={this.columns}
       />

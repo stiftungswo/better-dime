@@ -5,14 +5,17 @@ import compose from '../../utilities/compose';
 import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import { ActionButtons } from '../../layout/ActionButtons';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Offer } from '../../types';
 
-export interface Props {
+type Props = {
   offerStore?: OfferStore;
-}
+} & RouteComponentProps;
 
 @compose(
   inject('offerStore'),
-  observer
+  observer,
+  withRouter
 )
 export default class OfferOverview extends React.Component<Props> {
   public columns: Array<Column<OfferListing>>;
@@ -45,7 +48,10 @@ export default class OfferOverview extends React.Component<Props> {
         addAction={'/offers/new'}
         renderActions={e => (
           <ActionButtons
-            copyAction={() => offerStore!.duplicate(e.id)}
+            copyAction={async () => {
+              const newEntity: Offer = await offerStore!.duplicate(e.id);
+              this.props.history.push(`/offers/${newEntity.id}`);
+            }}
             archiveAction={todo}
             deleteAction={() => offerStore!.delete(e.id)}
           />

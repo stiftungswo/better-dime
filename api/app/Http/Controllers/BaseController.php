@@ -21,13 +21,20 @@ class BaseController extends Controller
         $duplicate = $model->replicate();
         unset($duplicate->relations);
         $duplicate->save();
-        $relationName = snake_case(class_basename($className)) . '_id';
 
         $model->refresh();
-        foreach ($relations as $relation) {
+        foreach ($relations as $key => $value) {
+            if (is_string($key)) {
+                $relation = $key;
+                $relationName = $value;
+            } else {
+                $relation = $value;
+                $relationName = snake_case(class_basename($className));
+            }
+
             $model->$relation->each(function ($p) use ($duplicate, $relationName) {
                 $duplicateP = $p->replicate();
-                $duplicateP->$relationName = $duplicate->id;
+                $duplicateP->$relationName()->associate($duplicate);
                 $duplicateP->save();
             });
         }

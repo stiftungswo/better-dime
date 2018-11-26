@@ -1,5 +1,6 @@
 import { action } from 'mobx';
 import { MainStore } from './mainStore';
+import { AxiosResponse } from 'axios';
 
 interface AbstractMethods {
   get_entity?: boolean;
@@ -127,11 +128,12 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  public async duplicate(id: number) {
+  public async duplicate(id: number): Promise<T> {
     try {
       this.displayInProgress();
-      await this.doDuplicate(id);
-      this.mainStore.displaySuccess(`${this.entityName.singular} wurde dupliziert.`);
+      const newEntity: AxiosResponse = await this.doDuplicate(id);
+      this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
+      return newEntity.data;
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.`);
       console.error(e);
@@ -140,7 +142,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  protected async doDuplicate(id: number) {
+  protected async doDuplicate(id: number): Promise<AxiosResponse> {
     throw new Error('Not implemented');
   }
 
