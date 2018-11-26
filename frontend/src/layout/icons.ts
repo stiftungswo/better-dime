@@ -39,7 +39,7 @@ export { default as CancelIcon } from '@material-ui/icons/Cancel';
 export { default as SaveIcon } from '@material-ui/icons/Save';
 export { default as AddCommentIcon } from '@material-ui/icons/AddCommentOutlined';
 export { default as PaperIcon } from '@material-ui/icons/Description';
-export { default as ESRIcon } from '@material-ui/icons/Payment';
+export { default as ESRIcon } from '@material-ui/icons/AttachMoney';
 export { default as StatisticsIcon } from '@material-ui/icons/Equalizer';
 export { default as AddEffortIcon } from '@material-ui/icons/AddAlarm';
 
