@@ -30,6 +30,16 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     super(mainStore);
   }
 
+  protected async doArchive(id: number) {
+    await this.mainStore.api.put('/projects/' + id + '/archive');
+    this.doFetchAll();
+  }
+
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/projects/' + id);
+    await this.doFetchAll();
+  }
+
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Project>('/projects/' + id + '/duplicate');
   }

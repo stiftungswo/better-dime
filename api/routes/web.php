@@ -96,6 +96,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'projects'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'ProjectController@archive']);
                 $router->post('/{id}/duplicate', ['uses' => 'ProjectController@duplicate']);
                 $router->get('/', ['uses' => 'ProjectController@index']);
                 $router->post('/', ['uses' => 'ProjectController@post']);

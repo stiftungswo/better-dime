@@ -155,4 +155,14 @@ class Project extends Model
 
         return $duration;
     }
+
+    /**
+     * Determines if the project can be deleted according to the specification of the following ticket:
+     * https://github.com/stiftungswo/Dime/issues/140
+     * @return bool
+     */
+    public function getDeletableAttribute()
+    {
+        return $this->efforts->isEmpty() && $this->invoices->isEmpty();
+    }
 }

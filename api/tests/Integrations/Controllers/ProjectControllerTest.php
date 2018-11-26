@@ -2,7 +2,6 @@
 
 namespace Tests\Integrations\Controllers;
 
-use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
@@ -13,10 +12,26 @@ class ProjectControllerTest extends \TestCase
 {
     use DatabaseTransactions;
 
-    public function testInvalidDelete()
+    public function testArchive()
+    {
+        $project = factory(Project::class)->create();
+        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id . '/archive')->assertResponseOk();
+        $this->assertTrue($project->refresh()->archived);
+    }
+
+    public function testInvalidIdDelete()
     {
         // can't delete because object does not exist
         $this->asAdmin()->json('DELETE', 'api/v1/projects/1789764')->assertResponseStatus(404);
+    }
+
+    public function testNonDeletedProject()
+    {
+        $projectId = factory(Project::class)->create()->id;
+        factory(\App\Models\Invoice\Invoice::class)->create([
+            'project_id' => $projectId
+        ]);
+        $this->asAdmin()->json('DELETE', 'api/v1/projects/' . $projectId)->assertResponseStatus(422);
     }
 
     public function testValidDelete()
@@ -211,8 +226,8 @@ class ProjectControllerTest extends \TestCase
     public function testInvoiceIds()
     {
         $project = factory(Project::class)->create();
-        $invoice1 = factory(Invoice::class)->create(['project_id' => $project->id]);
-        $invoice2 = factory(Invoice::class)->create(['project_id' => $project->id]);
+        $invoice1 = factory(\App\Models\Invoice\Invoice::class)->create(['project_id' => $project->id]);
+        $invoice2 = factory(\App\Models\Invoice\Invoice::class)->create(['project_id' => $project->id]);
 
         $this->asUser()->json('GET', 'api/v1/projects/' . $project->id)->assertResponseOk();
         $res = $this->responseToArray();

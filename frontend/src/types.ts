@@ -218,6 +218,7 @@ export interface Project {
   positions: ProjectPosition[];
   offer: Offer;
   invoice_ids: number[];
+  deletable: boolean;
 }
 
 export interface ProjectPosition {

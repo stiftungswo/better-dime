@@ -14,10 +14,21 @@ use Illuminate\Support\Facades\Input;
 class ProjectController extends BaseController
 {
 
+    public function archive($id)
+    {
+        $project = Project::findOrFail($id);
+        return self::doArchive($project);
+    }
+
     public function delete($id)
     {
-        Project::findOrFail($id)->delete();
-        return 'Entity deleted';
+        $project = Project::findOrFail($id);
+        if ($project->deletable) {
+            $project->delete();
+            return 'Entity deleted';
+        } else {
+            return response("You can't delete this project because either it already has invoices or people did book efforts on it", 422);
+        }
     }
 
     public function duplicate($id)
@@ -28,7 +39,7 @@ class ProjectController extends BaseController
 
     public function index()
     {
-        return Project::all();
+        return Project::all()->each->append('deletable');
     }
 
     public function post(Request $request)

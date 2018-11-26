@@ -9,6 +9,18 @@ use Laravel\Lumen\Routing\Controller;
 class BaseController extends Controller
 {
     /**
+     * Pass a model (with the attribute archived) to archive it.
+     * @param Model $model
+     * @return string
+     */
+    protected function doArchive(Model $model)
+    {
+        $model->archived = true;
+        $model->save();
+        return 'Entity archived';
+    }
+
+    /**
      * Duplicates an object.
      * Pass an optional array to copy some of the relations.
      * Or pass an optional array to exclude some attributes from cloning.

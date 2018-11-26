@@ -102,7 +102,7 @@ class ProjectTest extends \TestCase
             'offer_id' => $offer->id
         ]);
 
-        $this->assertEquals(50*1337*4, $project->budget_price);
+        $this->assertEquals(50 * 1337 * 4, $project->budget_price);
     }
 
     public function testBudgetTimeWithoutOffer()
@@ -181,5 +181,34 @@ class ProjectTest extends \TestCase
 
         $calc = 2 * 504;
         $this->assertEquals($calc, $project->fresh()->current_time);
+    }
+
+    public function testDeletableAttributeWithEfforts()
+    {
+        $project = factory(Project::class)->create();
+        $position = factory(ProjectPosition::class)->create([
+            'project_id' => $project->id
+        ]);
+        factory(ProjectEffort::class)->create([
+            'position_id' => $position->id
+        ]);
+
+        $this->assertFalse($project->refresh()->deletable);
+    }
+
+    public function testDeletableAttributeWithAnInvoice()
+    {
+        $project = factory(Project::class)->create();
+        factory(\App\Models\Invoice\Invoice::class)->create([
+            'project_id' => $project->id
+        ]);
+
+        $this->assertFalse($project->refresh()->deletable);
+    }
+
+    public function testDeletableAttributeWithNothing()
+    {
+        $project = factory(Project::class)->create();
+        $this->assertTrue($project->refresh()->deletable);
     }
 }

@@ -47,6 +47,7 @@ export default class ProjectOverview extends React.Component<Props> {
 
     return (
       <Overview
+        archivable
         title={'Projekte'}
         store={projectStore!}
         addAction={'/projects/new'}
@@ -56,8 +57,9 @@ export default class ProjectOverview extends React.Component<Props> {
               const newEntity: Project = await projectStore!.duplicate(e.id);
               this.props.history.push(`/projects/${newEntity.id}`);
             }}
-            archiveAction={todo}
-            deleteAction={todo}
+            archiveAction={() => projectStore!.archive(e.id)}
+            deleteAction={e.deletable ? () => projectStore!.delete(e.id) : undefined}
+            deleteMessage={'Möchtest du dieses Projekt wirklich löschen?'}
           />
         )}
         onClickRow={'/projects/:id'}
