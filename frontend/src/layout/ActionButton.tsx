@@ -19,7 +19,7 @@ interface ButtonProps {
 const withLink = (link?: string) => (component: React.ReactNode) => (link ? <UnstyledLink to={link}>{component}</UnstyledLink> : component);
 const withTooltip = (text?: string) => (component: React.ReactElement<any>) =>
   text ? (
-    <Tooltip title={text} style={{ display: 'inline' }}>
+    <Tooltip title={text} style={{ display: 'inline-block' }}>
       <div>{component}</div>
     </Tooltip>
   ) : (
