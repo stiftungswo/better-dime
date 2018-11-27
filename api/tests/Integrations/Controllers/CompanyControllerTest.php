@@ -69,7 +69,7 @@ class CompanyControllerTest extends \TestCase
     public function testValidPost()
     {
         $template = $this->companyTemplate();
-        $this->asAdmin()->json('POST', 'api/v1/companies', $template);
+        $this->asAdmin()->json('POST', 'api/v1/companies', $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
     }
 

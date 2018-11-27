@@ -13,6 +13,7 @@
         "erusev/parsedown": "^1.7",
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "5.7.*",
+        "nanigans/single-table-inheritance": "0.8.*",
         "rcrowe/twigbridge": "^0.9.9",
         "richan-fongdasen/eloquent-blameable": "master",
         "sentry/sentry-laravel": "^0.11.0",

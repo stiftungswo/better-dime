@@ -12,13 +12,8 @@ class CustomerTag extends Model
 
     protected $fillable = [ 'name' ];
 
-    public function companies()
+    public function customers()
     {
-        return $this->morphedByMany(Company::class, 'customer_taggable');
-    }
-
-    public function people()
-    {
-        return $this->morphedByMany(Person::class, 'customer_taggable');
+        return $this->belongsToMany(Customer::class, 'customer_taggable');
     }
 }

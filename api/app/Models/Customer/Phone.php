@@ -18,12 +18,12 @@ class Phone extends Model
     5: Fax
      */
 
-    protected $hidden = ['customer_id', 'customer_type'];
+    protected $hidden = ['customer'];
 
-    protected $fillable = ['category', 'customer_id', 'customer_type', 'number'];
+    protected $fillable = ['category', 'customer_id', 'number'];
 
     public function customer()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Customer::class);
     }
 }

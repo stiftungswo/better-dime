@@ -31,9 +31,9 @@ class CompanyTest extends \TestCase
     {
         $rateGroup = factory(RateGroup::class)->create();
         $company = factory(Company::class)->create();
-        $company->rateGroup()->associate($rateGroup);
+        $company->rate_group()->associate($rateGroup);
         $company->save();
-        $this->assertEquals($rateGroup, $company->rateGroup);
+        $this->assertEquals($rateGroup, $company->rate_group);
     }
 
     public function testPeopleAssignment()

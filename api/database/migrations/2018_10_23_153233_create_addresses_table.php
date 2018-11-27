@@ -17,8 +17,8 @@ class CreateAddressesTable extends Migration
             $table->increments('id');
             $table->string('city');
             $table->string('country')->nullable();
-            $table->integer('customer_id');
-            $table->string('customer_type');
+            $table->unsignedInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->integer('postcode');
             $table->string('street');

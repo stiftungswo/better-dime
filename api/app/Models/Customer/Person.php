@@ -7,16 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
-class Person extends Model
+class Person extends Customer
 {
-    use SoftDeletes, BlameableTrait;
-
-    protected $appends = ['tags'];
-
-    protected $casts = [
-        'hidden' => 'boolean',
-    ];
-
     protected $hidden = [
         'customer_tags'
     ];
@@ -25,57 +17,12 @@ class Person extends Model
         'comment', 'company_id', 'department', 'email', 'first_name', 'hidden', 'last_name', 'rate_group_id', 'salutation'
     ];
 
-    /**
-     * Magic method for the appended "tags" attribute
-     *
-     * @return array
-     */
-    public function getTagsAttribute()
-    {
-        if ($this->customer_tags->isEmpty()) {
-            return [];
-        } else {
-            return $this->customer_tags->map(function ($t) {
-                return $t->id;
-            })->toArray();
-        }
-    }
+    protected static $persisted = ['company_id', 'department', 'first_name', 'last_name', 'salutation'];
 
-    public function addresses()
-    {
-        return $this->morphMany(Address::class, 'customer');
-    }
+    protected static $singleTableType = 'person';
 
     public function company()
     {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function customer_tags()
-    {
-        return $this->morphToMany(CustomerTag::class, 'customer_taggable');
-    }
-
-    public function phone_numbers()
-    {
-        return $this->morphMany(Phone::class, 'customer');
-    }
-
-    public function rateGroup()
-    {
-        return $this->belongsTo(RateGroup::class);
-    }
-
-    public function delete()
-    {
-        foreach ($this->addresses as $address) {
-            $address->delete();
-        }
-
-        foreach ($this->phone_numbers as $phone) {
-            $phone->delete();
-        }
-
-        parent::delete();
+        return $this->belongsTo(Company::class, 'company_id');
     }
 }

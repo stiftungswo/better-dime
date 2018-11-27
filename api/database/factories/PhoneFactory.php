@@ -12,7 +12,6 @@ $factory->define(\App\Models\Customer\Phone::class, function () {
         'customer_id' => function () use ($type) {
             return factory($type)->create()->id;
         },
-        'customer_type' => $type,
         'number' => $faker->phoneNumber
     ];
 });

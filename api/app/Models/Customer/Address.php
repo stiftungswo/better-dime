@@ -10,13 +10,13 @@ class Address extends Model
 {
     use SoftDeletes, BlameableTrait;
 
-    protected $hidden = ['customer_id', 'customer_type', 'customer'];
+    protected $hidden = ['customer'];
 
-    protected $fillable = ['city', 'country', 'description', 'postcode', 'street', 'supplement'];
+    protected $fillable = ['city', 'country', 'description', 'postcode', 'street', 'supplement', 'customer_id'];
 
     public function customer()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Customer::class);
     }
 
     public function getDropdownLabelAttribute()

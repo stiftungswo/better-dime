@@ -46,7 +46,7 @@ class PersonController extends BaseController
             foreach (Input::get('tags') as $tag) {
                 /** @var CustomerTag $t */
                 $t = CustomerTag::findOrFail($tag);
-                $t->people()->save($person);
+                $t->customers()->save($person);
             }
         }
 

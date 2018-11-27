@@ -46,7 +46,7 @@ class CompanyController extends BaseController
             foreach (Input::get('tags') as $tag) {
                 /** @var CustomerTag $t */
                 $t = CustomerTag::findOrFail($tag);
-                $t->companies()->save($company);
+                $t->customers()->save($company);
             }
         }
 

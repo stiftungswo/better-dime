@@ -11,7 +11,6 @@ $factory->define(\App\Models\Customer\Address::class, function () {
         'customer_id' => function () use ($type) {
             return factory($type)->create()->id;
         },
-        'customer_type' => $type,
         'city' => $faker->city,
         'country' => $faker->country,
         'description' => $faker->sentence,
