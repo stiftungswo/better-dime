@@ -179,6 +179,14 @@ export class MainStore {
 
   public formatCurrency = (amount: number, showUnit = true) => (amount / 100).toFixed(2) + (showUnit ? ' CHF' : '');
 
+  public trimString = (str: string) => {
+    if (str.length > 150) {
+      return str.substring(0, 150) + ' ...';
+    } else {
+      return str;
+    }
+  };
+
   public displayInfo(message: string, options: OptionsObject = {}) {
     this.enqueueSnackbar(message, { variant: 'info', ...options });
   }

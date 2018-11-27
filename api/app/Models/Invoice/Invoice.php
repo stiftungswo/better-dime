@@ -5,15 +5,18 @@ namespace App\Models\Invoice;
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
 use App\Models\Project\Project;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Invoice extends Model
 {
-    use SoftDeletes, BlameableTrait;
+    use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
     protected $fillable = ['accountant_id', 'address_id', 'description', 'end', 'fixed_price', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
+
+    protected $softCascade = ['costgroup_distributions', 'discounts', 'positions'];
 
     public function accountant()
     {

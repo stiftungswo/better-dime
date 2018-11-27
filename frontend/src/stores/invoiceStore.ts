@@ -36,6 +36,11 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
     super(mainStore);
   }
 
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/invoices/' + id);
+    await this.doFetchAll();
+  }
+
   protected async doFetchAll(): Promise<void> {
     const res = await this.mainStore.api.get<InvoiceListing[]>('/invoices');
     this.invoices = res.data;

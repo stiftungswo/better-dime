@@ -34,6 +34,7 @@ export default class InvoiceOverview extends React.Component<Props> {
       {
         id: 'description',
         label: 'Beschreibung',
+        format: i => props.mainStore!.trimString(i.description),
       },
       {
         id: 'start',
@@ -55,14 +56,7 @@ export default class InvoiceOverview extends React.Component<Props> {
         title={'Rechnungen'}
         store={invoiceStore}
         addAction={'/invoices/new'}
-        renderActions={e => (
-          <ActionButtons
-            copyAction={todo}
-            editAction={`/invoices/${e.id}`}
-            archiveAction={todo}
-            deleteAction={() => invoiceStore!.delete(e.id)}
-          />
-        )}
+        renderActions={e => <ActionButtons copyAction={todo} deleteAction={() => invoiceStore!.delete(e.id)} />}
         onClickRow={'/invoices/:id'}
         columns={this.columns}
       />
