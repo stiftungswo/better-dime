@@ -14,9 +14,26 @@ class ProjectControllerTest extends \TestCase
 
     public function testArchive()
     {
-        $project = factory(Project::class)->create();
-        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id . '/archive')->assertResponseOk();
+        $project = factory(Project::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
         $this->assertTrue($project->refresh()->archived);
+    }
+
+    public function testArchiveRestore()
+    {
+        $project = factory(Project::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($project->refresh()->archived);
     }
 
     public function testInvalidIdDelete()

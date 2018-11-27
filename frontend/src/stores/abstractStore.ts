@@ -146,20 +146,20 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  public async archive(id: number) {
+  public async archive(id: number, archived: boolean) {
     try {
       this.displayInProgress();
-      await this.doArchive(id);
-      this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich archiviert.`);
+      await this.doArchive(id, archived);
+      this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich ${archived ? 'archiviert' : 'wiederhergestellt'}.`);
     } catch (e) {
-      this.mainStore.displayError(`${this.entityName.singular} konnte nicht archiviert werden.`);
+      this.mainStore.displayError(`${this.entityName.singular} konnte nicht ${archived ? 'archiviert' : 'wiederhergestellt'} werden.`);
       console.error(e);
       throw e;
     }
   }
 
   @action
-  protected async doArchive(id: number) {
+  protected async doArchive(id: number, archived: boolean) {
     throw new Error('Not implemented');
   }
 

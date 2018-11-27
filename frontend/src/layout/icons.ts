@@ -35,6 +35,7 @@ export { default as ExpandMoreIcon } from '@material-ui/icons/ExpandMore';
 export { default as CopyIcon } from '@material-ui/icons/FileCopy';
 export { default as EditIcon } from '@material-ui/icons/Edit';
 export { default as ArchiveIcon } from '@material-ui/icons/Archive';
+export { default as RestoreIcon } from '@material-ui/icons/Unarchive';
 export { default as CancelIcon } from '@material-ui/icons/Cancel';
 export { default as SaveIcon } from '@material-ui/icons/Save';
 export { default as AddCommentIcon } from '@material-ui/icons/AddCommentOutlined';

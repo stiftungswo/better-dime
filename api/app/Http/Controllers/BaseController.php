@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Laravel\Lumen\Routing\Controller;
 
@@ -11,13 +12,19 @@ class BaseController extends Controller
     /**
      * Pass a model (with the attribute archived) to archive it.
      * @param Model $model
+     * @param Request $request
      * @return string
+     * @throws \Illuminate\Validation\ValidationException;
      */
-    protected function doArchive(Model $model)
+    protected function doArchive(Model $model, Request $request)
     {
-        $model->archived = true;
+        $validatedData = $this->validate($request, [
+            'archived' => 'required|boolean'
+        ]);
+
+        $model->archived = $validatedData['archived'];
         $model->save();
-        return 'Entity archived';
+        return 'Entity ' . $validatedData['archived'] ? 'archived' : 'restored';
     }
 
     /**

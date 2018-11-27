@@ -8,13 +8,16 @@ use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
 use App\Models\Service\RateGroup;
 use App\Services\CostBreakdown;
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Project extends Model
 {
-    use SoftDeletes, BlameableTrait;
+    use SoftDeletes, BlameableTrait, SoftCascadeTrait;
+
+    protected $softCascade = ['comments', 'efforts', 'positions'];
 
     protected $casts = [
         'archived' => 'boolean',

@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Input;
 class ProjectController extends BaseController
 {
 
-    public function archive($id)
+    public function archive($id, Request $request)
     {
         $project = Project::findOrFail($id);
-        return self::doArchive($project);
+        return self::doArchive($project, $request);
     }
 
     public function delete($id)
