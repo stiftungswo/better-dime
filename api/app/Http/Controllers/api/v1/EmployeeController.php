@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Input;
 
 class EmployeeController extends BaseController
 {
+    public function archive($id, Request $request)
+    {
+        $employee = Employee::findOrFail($id);
+        return self::doArchive($employee, $request);
+    }
 
     public function index()
     {
@@ -32,12 +37,6 @@ class EmployeeController extends BaseController
         $this->validateRequest($request);
         Employee::findOrFail($id)->update(Input::toArray());
         return self::get($id);
-    }
-
-    public function delete($id)
-    {
-        Employee::findOrFail($id)->delete();
-        return "Entity deleted";
     }
 
     public function duplicate($id)

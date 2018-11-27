@@ -4,6 +4,7 @@ import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
+import { Employee } from '../../types';
 
 interface Props extends FormProps {
   employeeStore?: EmployeeStore;
@@ -20,10 +21,12 @@ export class EmployeeSelector extends React.Component<Props> {
   }
 
   public get options() {
-    return this.props.employeeStore!.employees.map(e => ({
-      value: e.id,
-      label: `${e.first_name} ${e.last_name}`,
-    }));
+    return this.props
+      .employeeStore!.employees.filter((e: Employee) => !e.archived || this.props.field.value === e.id)
+      .map(e => ({
+        value: e.id,
+        label: `${e.first_name} ${e.last_name}`,
+      }));
   }
 
   public render() {

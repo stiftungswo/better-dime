@@ -32,6 +32,16 @@ export class EmployeeStore extends AbstractStore<Employee> {
     super(mainStore);
   }
 
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/employees/' + id + '/archive', { archived: archived });
+    this.doFetchAll();
+  }
+
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/employees/' + id);
+    await this.doFetchAll();
+  }
+
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Employee>('/employees/' + id + '/duplicate');
   }

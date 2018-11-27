@@ -7,20 +7,30 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class EmployeeControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
 
-    public function testInvalidDelete()
+    public function testArchive()
     {
-        // can't delete because object does not exist
-        $this->asAdmin()->json('DELETE', 'api/v1/employees/1789764')->assertResponseStatus(404);
+        $project = factory(Employee::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/employees/' . $project->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
+        $this->assertTrue($project->refresh()->archived);
     }
 
-    public function testValidDelete()
+    public function testArchiveRestore()
     {
-        $employeeId = factory(Employee::class)->create()->id;
-        $this->asAdmin()->json('DELETE', 'api/v1/employees/' . $employeeId)->assertResponseOk();
-        $this->assertEquals('Entity deleted', $this->response->getContent());
+        $project = factory(Employee::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/employees/' . $project->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($project->refresh()->archived);
     }
 
     public function testValidDuplicate()

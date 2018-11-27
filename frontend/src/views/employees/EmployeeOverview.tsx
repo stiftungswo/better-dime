@@ -48,6 +48,7 @@ export default class EmployeeOverview extends React.Component<Props> {
 
     return (
       <Overview
+        archivable
         title={'Mitarbeiter'}
         store={employeeStore!}
         addAction={'/employees/new'}
@@ -57,8 +58,8 @@ export default class EmployeeOverview extends React.Component<Props> {
               const newEntity: Employee = await employeeStore!.duplicate(e.id);
               this.props.history.push(`/employees/${newEntity.id}`);
             }}
-            archiveAction={todo}
-            deleteAction={todo}
+            archiveAction={!e.archived ? () => employeeStore!.archive(e.id, true) : undefined}
+            restoreAction={e.archived ? () => employeeStore!.archive(e.id, false) : undefined}
           />
         )}
         onClickRow={'/employees/:id'}

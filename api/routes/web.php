@@ -45,12 +45,12 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'employees'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'EmployeeController@archive']);
                 $router->post('/{id}/duplicate', ['uses' => 'EmployeeController@duplicate']);
                 $router->get('/', ['uses' => 'EmployeeController@index']);
                 $router->post('/', ['uses' => 'EmployeeController@post']);
                 $router->get('/{id}', ['uses' => 'EmployeeController@get']);
                 $router->put('/{id}', ['uses' => 'EmployeeController@put']);
-                $router->delete('/{id}', ['uses' => 'EmployeeController@delete']);
             });
 
             $router->group(['prefix' => 'employee_settings'], function () use ($router) {
