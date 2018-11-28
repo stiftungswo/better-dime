@@ -42,6 +42,7 @@ class CustomerTagController extends BaseController
     private function validateRequest(Request $request)
     {
         $this->validate($request, [
+            'archived' => 'required|boolean',
             'name' => 'required|string',
         ]);
     }

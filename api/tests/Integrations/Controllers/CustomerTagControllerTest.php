@@ -37,8 +37,7 @@ class CustomerTagControllerTest extends \TestCase
     {
         factory(CustomerTag::class)->create()->id;
         $this->asAdmin()->json('GET', 'api/v1/customer_tags')->assertResponseOk();
-        $decodedResponse = $this->responseToArray();
-        $this->assertEquals(count(CustomerTag::all()), count($decodedResponse));
+        $this->assertEquals(count(CustomerTag::all()), count($this->responseToArray()));
     }
 
     public function testInvalidPost()
@@ -49,19 +48,14 @@ class CustomerTagControllerTest extends \TestCase
 
     public function testValidPost()
     {
-        $template = [
-            'name' => 'Zivildienstleistender',
-        ];
-        $this->asAdmin()->json('POST', 'api/v1/customer_tags', $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
+        $this->asAdmin()->json('POST', 'api/v1/customer_tags', $this->customerTagTemplate())->assertResponseOk();
+        $this->assertResponseMatchesTemplate($this->customerTagTemplate());
     }
 
     public function testInvalidObjectPut()
     {
         // can't update because object does not exist
-        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/1789764', [
-            'name' => 'Zivildienstleistender',
-        ])->assertResponseStatus(404);
+        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/1789764', $this->customerTagTemplate())->assertResponseStatus(404);
     }
 
     public function testInvalidParamsPut()
@@ -74,10 +68,15 @@ class CustomerTagControllerTest extends \TestCase
     public function testValidPut()
     {
         $customerTagId = factory(CustomerTag::class)->create()->id;
-        $template = [
-            'name' => 'Zivildienstleistender',
+        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/' . $customerTagId, $this->customerTagTemplate())->assertResponseOk();
+        $this->assertResponseMatchesTemplate($this->customerTagTemplate());
+    }
+
+    private function customerTagTemplate()
+    {
+        return [
+            'archived' => false,
+            'name' => 'Zivildienstleistender'
         ];
-        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/' . $customerTagId, $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
     }
 }
