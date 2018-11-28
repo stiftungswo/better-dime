@@ -3,6 +3,7 @@
 namespace App\Models\Invoice;
 
 use App\Models\Customer\Address;
+use App\Models\Customer\Customer;
 use App\Models\Employee\Employee;
 use App\Models\Project\Project;
 use Askedio\SoftCascade\Traits\SoftCascadeTrait;
@@ -14,7 +15,7 @@ class Invoice extends Model
 {
     use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
-    protected $fillable = ['accountant_id', 'address_id', 'description', 'end', 'fixed_price', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
+    protected $fillable = ['accountant_id', 'address_id', 'customer_id', 'description', 'end', 'fixed_price', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
 
     protected $softCascade = ['costgroup_distributions', 'discounts', 'positions'];
 
@@ -26,6 +27,11 @@ class Invoice extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function costgroup_distributions()

@@ -3,6 +3,7 @@
 namespace App\Models\Project;
 
 use App\Models\Customer\Address;
+use App\Models\Customer\Customer;
 use App\Models\Employee\Employee;
 use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
@@ -25,7 +26,7 @@ class Project extends Model
     ];
 
     protected $fillable = [
-        'accountant_id', 'address_id', 'archived', 'chargeable', 'category_id', 'deadline',
+        'accountant_id', 'address_id', 'customer_id', 'archived', 'chargeable', 'category_id', 'deadline',
         'description', 'fixed_price', 'vacation_project', 'name', 'offer_id',
         'project_category_id', 'rate_group_id'
     ];
@@ -35,6 +36,11 @@ class Project extends Model
     public function accountant()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function address()

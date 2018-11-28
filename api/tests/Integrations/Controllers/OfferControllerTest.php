@@ -2,6 +2,8 @@
 
 namespace Tests\Integrations\Controllers;
 
+use App\Models\Customer\Address;
+use App\Models\Customer\Person;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
@@ -159,9 +161,12 @@ class OfferControllerTest extends \TestCase
 
     private function offerTemplate()
     {
+        $person = factory(Person::class)->create();
+        $address = factory(Address::class)->create(['customer_id' => $person->id]);
         return [
             'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
-            'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
+            'address_id' => $address->id,
+            'customer_id' => $person->id,
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'discounts' => [
                 [

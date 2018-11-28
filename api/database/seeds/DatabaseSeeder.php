@@ -94,11 +94,14 @@ class DatabaseSeeder extends Seeder
             }
         ]);
 
-        $companies->each(function ($c) use ($customerTags) {
+
+        $companies->each(function ($c, $i) use ($customerTags) {
+            $min = $i===0 ? 1 : 0; //make sure at least one company has an address
+
             /** @var \App\Models\Customer\Company $c */
             $c->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
             $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
-            $c->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
+            $c->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->make());
         });
 
         print("Seeding people ...\n");
@@ -108,11 +111,13 @@ class DatabaseSeeder extends Seeder
             }
         ]);
 
-        $people->each(function ($p) use ($customerTags) {
+        $people->each(function ($p, $i) use ($customerTags) {
+            $min = $i===0 ? 1 : 0; //make sure at least one person has an address
+
             /** @var \App\Models\Customer\Person $p */
             $p->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
             $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
-            $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand(0, 2))->make());
+            $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->make());
         });
 
         print("Attaching some people to a company ...\n");
@@ -123,15 +128,19 @@ class DatabaseSeeder extends Seeder
         });
 
         print("Fetching entites for later seeding steps ...\n");
-        $addresses = \App\Models\Customer\Address::all();
+        $customers = \App\Models\Customer\Company::with('addresses')->get()->filter(function ($c) {
+            return $c->addresses->isNotEmpty();
+        });
         $rateGroups = \App\Models\Service\RateGroup::all();
 
         print("Seeding offers ...\n");
         $offers = collect([]);
         for ($i = 0; $i < 20; $i++) {
+            $customer = $customers->random();
             $offers->push(factory(\App\Models\Offer\Offer::class)->create([
                 'accountant_id' => $employees->random()->id,
-                'address_id' => $addresses->random()->id,
+                'customer_id' => $customer->id,
+                'address_id' => $customer->addresses->random()->id,
                 'rate_group_id' => $rateGroups->random()->id
             ]));
         }
@@ -173,10 +182,12 @@ class DatabaseSeeder extends Seeder
             ]));
         });
 
-        print("Seeding holiday projects ...\n");
+        print("Seeding holiday project ...\n");
+        $customer = $customers->random();
         $holidayProject = factory(\App\Models\Project\Project::class)->create([
             'accountant_id' => $employees->random()->id,
-            'address_id' => $addresses->random()->id,
+            'customer_id' => $customer->id,
+            'address_id' => $customer->addresses->random()->id,
             'category_id' => $projectCategories->random()->id,
             'vacation_project' => true,
             'rate_group_id' => $rateGroups->random()->id

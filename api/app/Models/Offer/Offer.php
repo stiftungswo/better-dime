@@ -3,6 +3,7 @@
 namespace App\Models\Offer;
 
 use App\Models\Customer\Address;
+use App\Models\Customer\Customer;
 use App\Models\Employee\Employee;
 use App\Models\Project\Project;
 use App\Models\Service\RateGroup;
@@ -15,13 +16,18 @@ class Offer extends Model
 {
     use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
-    protected $fillable = ['accountant_id', 'address_id', 'description', 'fixed_price', 'name', 'short_description', 'rate_group_id', 'status'];
+    protected $fillable = ['accountant_id', 'address_id', 'customer_id', 'description', 'fixed_price', 'name', 'short_description', 'rate_group_id', 'status'];
 
     protected $softCascade = ['discounts', 'positions'];
 
     public function accountant()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function address()

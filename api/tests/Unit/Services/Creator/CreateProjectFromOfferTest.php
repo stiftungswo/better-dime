@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Services\Creator;
 
+use App\Models\Customer\Address;
+use App\Models\Customer\Person;
 use App\Models\Offer\Offer;
 use App\Services\Creator\CreateProjectFromOffer;
 use InvalidArgumentException;
@@ -70,11 +72,14 @@ class CreateProjectFromOfferTest extends \TestCase
 
     private function offerTemplate()
     {
+        $person = factory(Person::class)->create();
+        $address = factory(Address::class)->create(['customer_id' => $person->id]);
         /** @var Offer $offer */
         $offer = factory(Offer::class)->create(
             [
                 'accountant_id' => factory(\App\Models\Employee\Employee::class)->create()->id,
-                'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
+                'customer_id' => $person->id,
+                'address_id' => $address->id,
                 'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
             ]
         );

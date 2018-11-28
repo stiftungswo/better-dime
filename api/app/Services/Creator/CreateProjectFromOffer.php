@@ -33,6 +33,7 @@ class CreateProjectFromOffer extends BaseCreator
     public function create()
     {
         $this->checkAndAssignProjectProperty('accountant_id');
+        $this->checkAndAssignProjectProperty('customer_id');
         $this->checkAndAssignProjectProperty('address_id');
         $this->checkAndAssignProjectProperty('description', 'short_description');
         $this->checkAndAssignProjectProperty('name');

@@ -59,6 +59,7 @@ class CreateInvoiceFromProject extends BaseCreator
         $this->invoice->fixed_price = $this->project->fixed_price;
 
         $this->invoice->project()->associate($this->project);
+        $this->invoice->customer()->associate($this->project->customer);
         $this->invoice->address()->associate($this->project->address);
         $this->invoice->accountant()->associate($this->project->accountant);
         $this->invoice->save();

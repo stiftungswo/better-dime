@@ -152,6 +152,7 @@ class OfferController extends BaseController
     {
         $this->validate($request, [
             'accountant_id' => 'required|integer',
+            'customer_id' => 'required|integer',
             'address_id' => 'required|integer',
             'description' => 'required|string',
             'discounts.*.name' => 'required|string|max:255',

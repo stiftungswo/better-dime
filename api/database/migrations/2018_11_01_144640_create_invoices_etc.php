@@ -24,6 +24,8 @@ class CreateInvoicesEtc extends Migration
             $table->increments('id');
             $table->unsignedInteger('accountant_id')->nullable();
             $table->foreign('accountant_id')->references('id')->on('employees')->onDelete('set null');
+            $table->unsignedInteger('customer_id')->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
             $table->text('description');

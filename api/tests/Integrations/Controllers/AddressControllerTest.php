@@ -2,17 +2,16 @@
 
 namespace Tests\Integrations\Controllers;
 
-use App\Models\Customer\Address;
+use App\Models\Customer\Customer;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
-class AddressControllerTest extends \TestCase
+class CustomerControllerTest extends \TestCase
 {
     use DatabaseTransactions;
 
     public function testIndex()
     {
-        factory(Address::class)->create();
-        $this->asAdmin()->json('GET', 'api/v1/addresses');
-        $this->assertCount(count(Address::all()), $this->responseToArray());
+        $this->asAdmin()->json('GET', 'api/v1/customers');
+        $this->assertCount(count(Customer::all()), $this->responseToArray());
     }
 }
