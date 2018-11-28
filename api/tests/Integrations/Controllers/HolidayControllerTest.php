@@ -7,8 +7,14 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class HolidayControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
+
+    public function testValidDuplicate()
+    {
+        $holidayTemplate = factory(Holiday::class)->create();
+        $this->asAdmin()->json('POST', 'api/v1/holidays/' . $holidayTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate(json_decode($holidayTemplate->toJson(), true), true);
+    }
 
     public function testIndex()
     {

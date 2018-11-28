@@ -15,6 +15,12 @@ class HolidayController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $holiday = Holiday::findOrFail($id);
+        return self::get($this->duplicateObject($holiday));
+    }
+
     public function index()
     {
         return Holiday::all();

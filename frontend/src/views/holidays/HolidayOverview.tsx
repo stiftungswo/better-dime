@@ -47,22 +47,33 @@ export default class HolidayOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (holiday: Holiday) => <ActionButtons deleteAction={() => this.props.holidayStore!.delete(holiday.id!)} />;
-
   public filter = (h: Holiday, query: string) => {
     return h.name.includes(query) || this.props.mainStore!.formatDate(h.date).includes(query);
   };
 
   public render() {
+    const holidayStore = this.props.holidayStore;
+
     return (
       <EditableOverview
         title={'Feiertage'}
-        store={this.props.holidayStore!}
+        store={holidayStore!}
         columns={this.columns}
         schema={holidaySchema}
         defaultValues={holidayTemplate}
         searchFilter={this.filter}
-        renderActions={this.renderActions}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              await holidayStore!.duplicate(e.id);
+              await holidayStore!.fetchAll();
+            }}
+            deleteAction={() => holidayStore!.delete(e.id)}
+            deleteMessage={
+              'Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!'
+            }
+          />
+        )}
         renderForm={props => (
           <>
             <Field component={TextField} name={'name'} label={'Name'} fullWidth />

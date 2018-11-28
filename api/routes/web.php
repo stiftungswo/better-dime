@@ -69,6 +69,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'holidays'], function () use ($router) {
+                $router->post('/{id}/duplicate', ['uses' => 'HolidayController@duplicate']);
                 $router->get('/', ['uses' => 'HolidayController@index']);
                 $router->post('/', ['uses' => 'HolidayController@post']);
                 $router->put('/{id}', ['uses' => 'HolidayController@put']);
