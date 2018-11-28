@@ -2,6 +2,8 @@
 
 //TODO clean this up; either pull the Service types here, or split this up into several files
 
+import { Service } from './views/services/types';
+
 export interface Offer {
   id?: number;
   accountant_id: number;
@@ -236,6 +238,7 @@ export interface ProjectPosition {
   calculated_vat: number;
   efforts_value: number;
   is_time: boolean;
+  service: Service;
 }
 
 export interface Status {

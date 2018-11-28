@@ -24,7 +24,7 @@ class CreateProjectsEtc extends Migration
             $table->foreign('category_id')->references('id')->on('project_categories')->onDelete('set null');
             $table->boolean('chargeable')->default(true);
             $table->date('deadline')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('fixed_price')->nullable();
             $table->string('name');
             $table->unsignedInteger('offer_id')->nullable();

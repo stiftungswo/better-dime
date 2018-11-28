@@ -38,7 +38,7 @@ export class ProjectPositionSelector extends React.Component<Props> {
     if (this.props.effortStore!.selected_project) {
       return this.props.effortStore!.selected_project!.positions.map(e => ({
         value: e.id,
-        label: e.description,
+        label: e.service.name,
       }));
     } else {
       return [];

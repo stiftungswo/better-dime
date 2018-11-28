@@ -86,7 +86,7 @@ class CreateInvoiceFromProjectTest extends \TestCase
         $this->assertCount(1, $invoice->positions);
         $invoice_position = $invoice->positions->first();
 
-        $this->assertEquals($project_position->description, $invoice_position->description);
+        $this->assertEquals($project_position->service->name, $invoice_position->description);
         $this->assertEquals($project_position->rate_unit, $invoice_position->rate_unit);
         $this->assertEquals($project_position->price_per_rate, $invoice_position->price_per_rate);
         $this->assertEquals($project_position->vat, $invoice_position->vat);

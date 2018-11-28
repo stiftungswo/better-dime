@@ -67,8 +67,9 @@ class CreateInvoiceFromProject extends BaseCreator
             /** @var ProjectPosition $pp */
             $ip = new InvoicePosition();
             $ip->amount = $pp->efforts_value;
+            $ip->description = $pp->service->name;
 
-            $attributes = ['description', 'price_per_rate', 'vat'];
+            $attributes = ['price_per_rate', 'vat'];
 
             foreach ($attributes as $attribute) {
                 $ip = $this->throwExceptionIfNull($pp, $ip, $attribute);

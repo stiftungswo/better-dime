@@ -8,7 +8,7 @@ $factory->define(\App\Models\Project\ProjectPosition::class, function () {
     $faker = Faker\Factory::create('de_CH');
 
     return [
-        'description' => $faker->sentence,
+        'description' => $faker->optional()->sentence,
         'price_per_rate' => $faker->numberBetween(3000, 18000),
         'project_id' => function () {
             return factory(\App\Models\Project\Project::class)->create()->id;

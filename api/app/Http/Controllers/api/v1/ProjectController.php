@@ -109,7 +109,7 @@ class ProjectController extends BaseController
             'vacation_project' => 'boolean',
             'name' => 'required|string',
             'offer_id' => 'integer|nullable',
-            'positions.*.description' => 'string',
+            'positions.*.description' => 'string|nullable',
             'positions.*.price_per_rate' => 'required|integer',
             'positions.*.rate_unit_id' => 'required|integer',
             'positions.*.service_id' => 'required|integer',
@@ -120,7 +120,8 @@ class ProjectController extends BaseController
 
     public function get($id)
     {
-        return Project::with(['positions'])->findOrFail($id)->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids']);
+        return Project::with(['positions', 'positions.service'])->findOrFail($id)
+            ->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids']);
     }
 
     public function put($id, Request $request)
