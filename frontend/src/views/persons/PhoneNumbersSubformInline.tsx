@@ -14,6 +14,7 @@ import { Person, PeopleStore } from 'src/stores/peopleStore';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { NumberField, TextField } from 'src/form/fields/common';
 import Select from 'src/form/fields/Select';
+import { DimePaper } from '../../layout/DimeLayout';
 
 export interface Props {
   mainStore?: MainStore;
@@ -49,38 +50,36 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
-          <>
+          <DimePaper>
             <TableToolbar title={'Telefonnummern'} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
-            <div style={{ overflowX: 'auto' }}>
-              <Table padding={'dense'} style={{ minWidth: '1000px' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ width: '40%' }}>Kategorie</TableCell>
-                    <TableCell style={{ width: '40%' }}>Nummer</TableCell>
-                    <TableCell style={{ width: '20%' }}>Aktionen</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {(values.phone_numbers ? values.phone_numbers : []).map((_: PhoneNumber, index: number) => {
-                    const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Field delayed component={Select} name={name('category')} margin={'none'} options={this.options} />
-                        </TableCell>
-                        <TableCell>
-                          <Field delayed component={TextField} name={name('number')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
-                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-          </>
+            <Table padding={'dense'} style={{ minWidth: '1000px' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ width: '40%' }}>Kategorie</TableCell>
+                  <TableCell style={{ width: '40%' }}>Nummer</TableCell>
+                  <TableCell style={{ width: '20%' }}>Aktionen</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(values.phone_numbers ? values.phone_numbers : []).map((_: PhoneNumber, index: number) => {
+                  const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
+                      </TableCell>
+                      <TableCell>
+                        <Field delayed component={TextField} name={name('number')} margin={'none'} />
+                      </TableCell>
+                      <TableCell>
+                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </DimePaper>
         )}
       />
     );

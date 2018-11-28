@@ -40,6 +40,11 @@ export class PeopleStore extends AbstractStore<Person> {
     super(mainStore);
   }
 
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/people/' + id);
+    await this.doFetchAll();
+  }
+
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Person>('/people/' + id + '/duplicate');
   }

@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { hasContent } from '../../layout/DimeLayout';
+import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
 import AddressesSubformInline from './AddressesSubformInline';
@@ -48,6 +48,7 @@ export default class PersonForm extends React.Component<Props> {
 
     return (
       <FormView
+        paper={false}
         title={this.props.title}
         validationSchema={personSchema}
         loading={!hasContent(person) || this.props.loading}
@@ -58,28 +59,38 @@ export default class PersonForm extends React.Component<Props> {
           props: FormikProps<any> // tslint:disable-line
         ) => (
           <Fragment>
-            <FormHeader> Allgemeine Informationen </FormHeader>
             <form onSubmit={props.handleSubmit}>
-              <Grid container={true} spacing={16}>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextField} name={'salutation'} label={'Anrede'} fullWidth={true} />
+              <DimePaper>
+                <Grid container={true} spacing={16}>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={TextField} name={'salutation'} label={'Anrede'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={TextField} name={'first_name'} label={'Vorname'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={TextField} name={'last_name'} label={'Nachname'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={CompanySelector} name={'company_id'} label={'Firma'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={TextField} name={'department'} label={'Zuständigkeitsbereich'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                  </Grid>
                 </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextField} name={'first_name'} label={'Vorname'} fullWidth={true} />
-                </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextField} name={'last_name'} label={'Nachname'} fullWidth={true} />
-                </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
-                </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={CompanySelector} name={'company_id'} label={'Firma'} fullWidth={true} />
-                </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} fullWidth={true} />
-                </Grid>
-              </Grid>
+              </DimePaper>
 
               <br />
               <AddressesSubformInline formikProps={props} name={'addresses'} />

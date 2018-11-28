@@ -56,8 +56,8 @@ export default class PersonOverview extends React.Component<Props> {
               const newEntity: Person = await peopleStore!.duplicate(e.id);
               this.props.history.push(`/persons/${newEntity.id}`);
             }}
-            archiveAction={todo}
-            deleteAction={todo}
+            deleteMessage={'Möchtest du diese Person wirklich löschen?'}
+            deleteAction={() => peopleStore!.delete(e.id)}
           />
         )}
         onClickRow={'/persons/:id'}

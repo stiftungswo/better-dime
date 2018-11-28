@@ -219,7 +219,7 @@ class IntegrationReactSelect extends React.Component<any> {
       <ValidatedFormGroupWithLabel label={''} field={field} form={form} margin={margin} fullWidth>
         <Select
           menuPortalTarget={this.props.portal ? document.body : undefined}
-          menuPlacement={this.props.portal ? 'top' : undefined}
+          menuPlacement={this.props.portal ? 'auto' : undefined}
           menuPosition={this.props.portal ? 'absolute' : 'fixed'}
           classes={classes}
           styles={selectStyles}

@@ -18,8 +18,6 @@ class Customer extends Model
         'hidden' => 'boolean',
     ];
 
-    protected $softCascade = ['addresses', 'phone_numbers'];
-
     protected $table = "customers";
 
     protected static $singleTableTypeField = 'type';
