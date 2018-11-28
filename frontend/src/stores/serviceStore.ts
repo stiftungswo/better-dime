@@ -26,6 +26,11 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
     super(mainStore);
   }
 
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/services/' + id + '/archive', { archived: archived });
+    this.doFetchAll();
+  }
+
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Offer>('/services/' + id + '/duplicate');
   }

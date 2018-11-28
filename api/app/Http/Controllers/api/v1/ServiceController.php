@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Input;
 class ServiceController extends BaseController
 {
 
+    public function archive($id, Request $request)
+    {
+        $service = Service::findOrFail($id);
+        return self::doArchive($service, $request);
+    }
+
     public function index()
     {
         return Service::all();
@@ -58,11 +64,6 @@ class ServiceController extends BaseController
         DB::commit();
 
         return self::get($s->id);
-    }
-
-    public function delete($id)
-    {
-        Service::findOrFail($id)->delete();
     }
 
     public function duplicate($id)

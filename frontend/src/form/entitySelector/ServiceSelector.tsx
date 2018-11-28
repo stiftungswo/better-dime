@@ -4,6 +4,7 @@ import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
+import { ServiceListing } from '../../views/services/types';
 
 interface Props extends FormProps {
   serviceStore?: ServiceStore;
@@ -20,10 +21,12 @@ export class ServiceSelector extends React.Component<Props> {
   }
 
   public get options() {
-    return this.props.serviceStore!.entities.map(e => ({
-      value: e.id,
-      label: e.name,
-    }));
+    return this.props
+      .serviceStore!.entities.filter((e: ServiceListing) => !e.archived || this.props.field.value === e.id)
+      .map(e => ({
+        value: e.id,
+        label: e.name,
+      }));
   }
 
   public render() {

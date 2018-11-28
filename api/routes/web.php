@@ -143,12 +143,12 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'services'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'ServiceController@archive']);
                 $router->post('/{id}/duplicate', ['uses' => 'ServiceController@duplicate']);
                 $router->get('/', ['uses' => 'ServiceController@index']);
                 $router->post('/', ['uses' => 'ServiceController@post']);
                 $router->get('/{id}', ['uses' => 'ServiceController@get']);
                 $router->put('/{id}', ['uses' => 'ServiceController@put']);
-                $router->delete('/{id}', ['uses' => 'ServiceController@delete']);
             });
 
             $router->group(['prefix' => 'work_periods'], function () use ($router) {

@@ -13,6 +13,30 @@ class ServiceControllerTest extends \TestCase
 
     use DatabaseTransactions;
 
+    public function testArchive()
+    {
+        $service = factory(Service::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($service->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/services/' . $service->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
+        $this->assertTrue($service->refresh()->archived);
+    }
+
+    public function testArchiveRestore()
+    {
+        $service = factory(Service::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($service->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/services/' . $service->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($service->refresh()->archived);
+    }
+
     public function testGetServices()
     {
         factory(Service::class)->create();
@@ -29,16 +53,6 @@ class ServiceControllerTest extends \TestCase
         $this->asUser()->json('GET', 'api/v1/services/' . $s->id)
             ->seeJson(["name" => $s->name])
             ->assertResponseOk();
-    }
-
-    public function testDeleteService()
-    {
-        $s = factory(Service::class)->create();
-
-        $this->asUser()->json('DELETE', 'api/v1/services/' . $s->id)
-            ->assertResponseOk();
-
-        $this->assertEmpty(Service::find($s->id));
     }
 
     public function testInvalidPost()

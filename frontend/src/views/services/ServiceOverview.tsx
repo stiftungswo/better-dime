@@ -4,7 +4,6 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { Service } from './types';
 import { MainStore } from '../../stores/mainStore';
 import Overview, { Column } from '../../layout/Overview';
-import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -44,36 +43,29 @@ export default class ServiceOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (service: Service) => (
-    <ActionButtons
-      deleteAction={() => this.props.serviceStore!.delete(service.id!)}
-      archiveAction={todo}
-      copyAction={async () => {
-        if (service && service.id) {
-          const newEntity: Service = await this.props.serviceStore!.duplicate(service.id);
-          this.props.history.push(`/services/${newEntity.id}`);
-        }
-      }}
-      deleteMessage="Das Löschen eines Services führt möglicherweise zu korrupten Offerten, Projekten und Rechnungen.\nWirklich löschen?"
-    />
-  );
-
-  public navigateTo(id: number) {
-    //TODO: can this be extracted and used from overview? maybe add row rendering as render prop?
-    this.props.mainStore!.navigateTo(`/services/${id}`);
-  }
-
   public filter = (s: Service, query: string) =>
     [`${s.id}`, s.name, s.description].some(field => field.toLowerCase().includes(query.toLowerCase()));
 
   public render() {
+    const serviceStore = this.props.serviceStore;
+
     return (
       <Overview
+        archivable
         title={'Services'}
         store={this.props.serviceStore!}
         addAction={'/services/new'}
         columns={this.columns}
-        renderActions={this.renderActions}
+        renderActions={e => (
+          <ActionButtons
+            copyAction={async () => {
+              const newEntity: Service = await serviceStore!.duplicate(e.id);
+              this.props.history.push(`/services/${newEntity.id}`);
+            }}
+            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true) : undefined}
+            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false) : undefined}
+          />
+        )}
         onClickRow={'/services/:id'}
         searchFilter={this.filter}
       />
