@@ -131,11 +131,11 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'rate_units'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'RateUnitController@archive']);
                 $router->get('/', ['uses' => 'RateUnitController@index']);
                 $router->post('/', ['uses' => 'RateUnitController@post']);
                 $router->get('/{id}', ['uses' => 'RateUnitController@get']);
                 $router->put('/{id}', ['uses' => 'RateUnitController@put']);
-                $router->delete('/{id}', ['uses' => 'RateUnitController@delete']);
             });
 
             $router->group(['prefix' => 'rate_groups'], function () use ($router) {

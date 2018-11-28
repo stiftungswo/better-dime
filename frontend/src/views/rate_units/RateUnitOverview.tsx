@@ -51,16 +51,8 @@ export default class RateUnitOverview extends React.Component<Props> {
         label: 'Zeiteinheit',
         format: e => (e.is_time ? 'Ja' : 'Nein'),
       },
-      {
-        id: 'archived',
-        numeric: false,
-        label: 'Archiviert',
-        format: e => (e.archived ? 'Ja' : 'Nein'),
-      },
     ];
   }
-
-  public renderActions = (rateUnit: RateUnit) => <ActionButtons deleteAction={() => this.props.rateUnitStore!.delete(rateUnit.id!)} />;
 
   public filter = (r: RateUnit, query: string) => {
     return r.name.includes(query) || r.billing_unit.includes(query) || r.effort_unit.includes(query);
@@ -69,13 +61,19 @@ export default class RateUnitOverview extends React.Component<Props> {
   public render() {
     return (
       <EditableOverview
+        archivable
         title={'Tarif-Typen'}
         store={this.props.rateUnitStore!}
         columns={this.columns}
         schema={rateUnitSchema}
         defaultValues={rateUnitTemplate}
         searchFilter={this.filter}
-        renderActions={this.renderActions}
+        renderActions={e => (
+          <ActionButtons
+            archiveAction={!e.archived ? () => this.props.rateUnitStore!.archive(e.id, true) : undefined}
+            restoreAction={e.archived ? () => this.props.rateUnitStore!.archive(e.id, false) : undefined}
+          />
+        )}
         renderForm={props => (
           <>
             <Field component={TextField} name={'name'} label={'Name'} fullWidth />

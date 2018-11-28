@@ -7,8 +7,31 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class RateUnitControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
+
+    public function testArchive()
+    {
+        $rateUnit = factory(RateUnit::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($rateUnit->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/rate_units/' . $rateUnit->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
+        $this->assertTrue($rateUnit->refresh()->archived);
+    }
+
+    public function testArchiveRestore()
+    {
+        $rateUnit = factory(RateUnit::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($rateUnit->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/rate_units/' . $rateUnit->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($rateUnit->refresh()->archived);
+    }
 
     public function testIndex()
     {
@@ -16,19 +39,6 @@ class RateUnitControllerTest extends \TestCase
         $this->asAdmin()->json('GET', 'api/v1/rate_units')->assertResponseOk();
         $decodedResponse = $this->responseToArray();
         $this->assertEquals($rateUnitId, end($decodedResponse)['id']);
-    }
-
-    public function testInvalidDelete()
-    {
-        // can't delete because object does not exist
-        $this->asAdmin()->json('DELETE', 'api/v1/rate_units/1789764')->assertResponseStatus(404);
-    }
-
-    public function testValidDelete()
-    {
-        $rateUnitId = factory(RateUnit::class)->create()->id;
-        $this->asAdmin()->json('DELETE', 'api/v1/rate_units/' . $rateUnitId)->assertResponseOk();
-        $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
     public function testInvalidGet()

@@ -9,11 +9,10 @@ use Illuminate\Support\Facades\Input;
 
 class RateUnitController extends BaseController
 {
-
-    public function delete($id)
+    public function archive($id, Request $request)
     {
-        RateUnit::findOrFail($id)->delete();
-        return 'Entity deleted';
+        $rateUnit = RateUnit::findOrFail($id);
+        return self::doArchive($rateUnit, $request);
     }
 
     public function index()

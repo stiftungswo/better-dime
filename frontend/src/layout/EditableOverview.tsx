@@ -5,6 +5,7 @@ import * as React from 'react';
 import { FormDialog } from '../form/FormDialog';
 
 interface Props<T> {
+  archivable?: boolean;
   store: AbstractStore<T>;
   columns: Array<Column<T>>;
   title: string;
@@ -48,6 +49,7 @@ export class EditableOverview<T> extends React.Component<Props<T>> {
     return (
       <>
         <Overview
+          archivable={this.props.archivable}
           title={this.props.title}
           store={this.props.store}
           columns={this.props.columns}

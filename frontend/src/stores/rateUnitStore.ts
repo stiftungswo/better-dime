@@ -30,6 +30,11 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
     super(mainStore);
   }
 
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/rate_units/' + id + '/archive', { archived: archived });
+    this.doFetchAll();
+  }
+
   @action
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<RateUnit>('/rate_units/' + id);
@@ -51,12 +56,6 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   @action
   public async doPut(rate_unit: RateUnit) {
     await this.mainStore.api.put('/rate_units/' + rate_unit.id, rate_unit);
-    await this.doFetchAll();
-  }
-
-  @action
-  protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/rate_units/' + id);
     await this.doFetchAll();
   }
 
