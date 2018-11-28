@@ -3,9 +3,9 @@ import { Fragment } from 'react';
 import { Person, PeopleStore } from '../../stores/peopleStore';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import { EmailField, TextField } from '../../form/fields/common';
+import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { hasContent } from '../../layout/DimeLayout';
+import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
@@ -78,6 +78,7 @@ export default class CompanyForm extends React.Component<Props> {
 
     return (
       <FormView
+        paper={false}
         title={this.props.title}
         validationSchema={companySchema}
         loading={!hasContent(company) || this.props.loading}
@@ -88,19 +89,26 @@ export default class CompanyForm extends React.Component<Props> {
           props: FormikProps<any> // tslint:disable-line
         ) => (
           <Fragment>
-            <FormHeader> Allgemeine Informationen </FormHeader>
             <form onSubmit={props.handleSubmit}>
-              <Grid container={true} spacing={16}>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={TextField} name={'name'} label={'Name'} fullWidth={true} />
+              <DimePaper>
+                <Grid container={true} spacing={16}>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={TextField} name={'name'} label={'Name'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                  </Grid>
                 </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
-                </Grid>
-                <Grid item={true} xs={12} sm={6}>
-                  <Field component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} fullWidth={true} />
-                </Grid>
-              </Grid>
+              </DimePaper>
 
               <br />
               <AddressesSubformInline formikProps={props} name={'addresses'} />
@@ -110,8 +118,8 @@ export default class CompanyForm extends React.Component<Props> {
 
               <br />
               {!loading && (
-                <>
-                  <TableToolbar title={'Mitarbeiter'} />
+                <DimePaper>
+                  <TableToolbar title={'Mitarbeiter'} addAction={'/persons/new'} />
                   <OverviewTable
                     data={this.persons}
                     onClickRow={(m: Person) => {
@@ -140,7 +148,7 @@ export default class CompanyForm extends React.Component<Props> {
                       },
                     ]}
                   />
-                </>
+                </DimePaper>
               )}
             </form>
           </Fragment>

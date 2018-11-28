@@ -2,7 +2,6 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Company, CompanyStore } from '../../stores/companyStore';
 import Overview, { Column } from '../../layout/Overview';
-import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -52,8 +51,10 @@ export default class CompanyOverview extends React.Component<Props> {
               const newEntity: Company = await companyStore!.duplicate(e.id);
               this.props.history.push(`/companies/${newEntity.id}`);
             }}
-            archiveAction={todo}
-            deleteAction={todo}
+            deleteMessage={
+              'Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.'
+            }
+            deleteAction={() => companyStore!.delete(e.id)}
           />
         )}
         onClickRow={'/companies/:id'}

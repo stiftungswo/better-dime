@@ -39,6 +39,11 @@ export class CompanyStore extends AbstractStore<Company> {
     super(mainStore);
   }
 
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/companies/' + id);
+    await this.doFetchAll();
+  }
+
   @action
   protected async doDuplicate(id: number) {
     return this.mainStore.api.post<Company>('/companies/' + id + '/duplicate');

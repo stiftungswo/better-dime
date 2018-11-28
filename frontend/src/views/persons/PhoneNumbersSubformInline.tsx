@@ -69,7 +69,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                         <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
                       </TableCell>
                       <TableCell>
-                        <Field delayed component={TextField} name={name('number')} margin={'none'} />
+                        <Field delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
                       </TableCell>
                       <TableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />

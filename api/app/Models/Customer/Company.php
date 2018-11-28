@@ -19,6 +19,8 @@ class Company extends Customer
         'comment', 'email', 'hidden', 'name', 'rate_group_id'
     ];
 
+    protected $softCascade = ['addresses', 'phone_numbers', 'people'];
+
     protected static $persisted = ['name'];
 
     protected static $singleTableType = 'company';
