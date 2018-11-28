@@ -11,7 +11,7 @@ class ProjectCategoryControllerTest extends \TestCase
 
     public function testArchive()
     {
-        $project = factory(Project::class)->create([
+        $project = factory(ProjectCategory::class)->create([
             'archived' => false
         ]);
         $this->assertFalse($project->archived);
@@ -23,7 +23,7 @@ class ProjectCategoryControllerTest extends \TestCase
 
     public function testArchiveRestore()
     {
-        $project = factory(Project::class)->create([
+        $project = factory(ProjectCategory::class)->create([
             'archived' => true
         ]);
         $this->assertTrue($project->archived);

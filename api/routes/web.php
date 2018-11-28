@@ -38,10 +38,10 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'customer_tags'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'CustomerTagController@archive']);
                 $router->get('/', ['uses' => 'CustomerTagController@index']);
                 $router->post('/', ['uses' => 'CustomerTagController@post']);
                 $router->put('/{id}', ['uses' => 'CustomerTagController@put']);
-                $router->delete('/{id}', ['uses' => 'CustomerTagController@delete']);
             });
 
             $router->group(['prefix' => 'employees'], function () use ($router) {

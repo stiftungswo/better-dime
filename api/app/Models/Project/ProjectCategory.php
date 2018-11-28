@@ -14,5 +14,5 @@ class ProjectCategory extends Model
         'archived' => 'boolean'
     ];
 
-    protected $fillable = ['name'];
+    protected $fillable = ['archived', 'name'];
 }

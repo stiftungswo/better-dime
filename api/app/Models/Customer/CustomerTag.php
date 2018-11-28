@@ -10,7 +10,11 @@ class CustomerTag extends Model
 {
     use SoftDeletes, BlameableTrait;
 
-    protected $fillable = [ 'name' ];
+    protected $casts = [
+        'archived' => 'boolean'
+    ];
+
+    protected $fillable = ['archived', 'name' ];
 
     public function customers()
     {

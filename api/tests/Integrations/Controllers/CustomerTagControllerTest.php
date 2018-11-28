@@ -7,8 +7,31 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class CustomerTagControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
+
+    public function testArchive()
+    {
+        $project = factory(CustomerTag::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/' . $project->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
+        $this->assertTrue($project->refresh()->archived);
+    }
+
+    public function testArchiveRestore()
+    {
+        $project = factory(CustomerTag::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/customer_tags/' . $project->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($project->refresh()->archived);
+    }
 
     public function testIndex()
     {
@@ -16,19 +39,6 @@ class CustomerTagControllerTest extends \TestCase
         $this->asAdmin()->json('GET', 'api/v1/customer_tags')->assertResponseOk();
         $decodedResponse = $this->responseToArray();
         $this->assertEquals(count(CustomerTag::all()), count($decodedResponse));
-    }
-
-    public function testInvalidDelete()
-    {
-        // can't delete because object does not exist
-        $this->asAdmin()->json('DELETE', 'api/v1/customer_tags/1789764')->assertResponseStatus(404);
-    }
-
-    public function testValidDelete()
-    {
-        $customerTagId = factory(CustomerTag::class)->create()->id;
-        $this->asAdmin()->json('DELETE', 'api/v1/customer_tags/' . $customerTagId)->assertResponseOk();
-        $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
     public function testInvalidPost()

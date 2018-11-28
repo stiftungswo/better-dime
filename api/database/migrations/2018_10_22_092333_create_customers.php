@@ -40,6 +40,7 @@ class CreateCustomers extends Migration
 
         Schema::create('customer_tags', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('archived')->default(false);
             $table->string('name');
 
             $table->timestamps();

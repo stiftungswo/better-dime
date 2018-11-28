@@ -4,6 +4,7 @@ import { AbstractStore } from './abstractStore';
 
 export interface CustomerTag {
   id: number;
+  archived: boolean;
   name: string;
 }
 
@@ -36,6 +37,11 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+  }
+
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived: archived });
+    this.doFetchAll();
   }
 
   @action

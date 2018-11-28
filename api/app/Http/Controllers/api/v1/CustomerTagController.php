@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Input;
 
 class CustomerTagController extends BaseController
 {
-    public function delete($id)
+    public function archive($id, Request $request)
     {
-        CustomerTag::findOrFail($id)->delete();
-        return 'Entity deleted';
+        $customerTag = CustomerTag::findOrFail($id);
+        return self::doArchive($customerTag, $request);
     }
 
     public function index()

@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { InputFieldWithValidation } from '../../form/fields/common';
+import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
 import { Field } from 'formik';
 import { CustomerTag, CustomerTagStore } from '../../stores/customerTagStore';
 import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
@@ -38,26 +38,30 @@ export default class CustomerTagOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (customerTag: CustomerTag) => (
-    <ActionButtons deleteAction={() => this.props.customerTagStore!.delete(customerTag.id!)} />
-  );
-
   public filter = (r: CustomerTag, query: string) => r.name.includes(query);
 
   public render() {
+    const customerTagStore = this.props.customerTagStore;
+
     return (
       <EditableOverview
+        archivable
         title={'Tags'}
-        store={this.props.customerTagStore!}
+        store={customerTagStore!}
         columns={this.columns}
         schema={customerTagSchema}
         defaultValues={customerTagTemplate}
         searchFilter={this.filter}
-        renderActions={this.renderActions}
+        renderActions={e => (
+          <ActionButtons
+            archiveAction={!e.archived ? () => customerTagStore!.archive(e.id, true) : undefined}
+            restoreAction={e.archived ? () => customerTagStore!.archive(e.id, false) : undefined}
+          />
+        )}
         renderForm={() => (
           <>
-            {/* <Field component={NumberFieldWithValidation} name={'id'} label={'ID'} fullWidth /> */}
-            <Field component={InputFieldWithValidation} name={'name'} label={'Name'} fullWidth multiline={true} />
+            <Field delayed component={InputFieldWithValidation} name={'name'} label={'Name'} fullWidth />
+            <Field delayed component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
           </>
         )}
       />
