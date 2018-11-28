@@ -7,8 +7,31 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectCategoryControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
+
+    public function testArchive()
+    {
+        $project = factory(Project::class)->create([
+            'archived' => false
+        ]);
+        $this->assertFalse($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/project_categories/' . $project->id . '/archive', [
+            'archived' => true
+        ])->assertResponseOk();
+        $this->assertTrue($project->refresh()->archived);
+    }
+
+    public function testArchiveRestore()
+    {
+        $project = factory(Project::class)->create([
+            'archived' => true
+        ]);
+        $this->assertTrue($project->archived);
+        $this->asAdmin()->json('PUT', 'api/v1/project_categories/' . $project->id . '/archive', [
+            'archived' => false
+        ])->assertResponseOk();
+        $this->assertFalse($project->refresh()->archived);
+    }
 
     public function testIndex()
     {
@@ -16,19 +39,6 @@ class ProjectCategoryControllerTest extends \TestCase
         $this->asAdmin()->json('GET', 'api/v1/project_categories')->assertResponseOk();
         $decodedResponse = $this->responseToArray();
         $this->assertCount(count(ProjectCategory::all()), $decodedResponse);
-    }
-
-    public function testInvalidDelete()
-    {
-        // can't delete because object does not exist
-        $this->asAdmin()->json('DELETE', 'api/v1/project_categories/1789764')->assertResponseStatus(404);
-    }
-
-    public function testValidDelete()
-    {
-        $projectCategoryId = factory(ProjectCategory::class)->create()->id;
-        $this->asAdmin()->json('DELETE', 'api/v1/project_categories/' . $projectCategoryId)->assertResponseOk();
-        $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
     public function testInvalidPost()

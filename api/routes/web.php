@@ -109,6 +109,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'project_categories'], function () use ($router) {
+                $router->put('/{id}/archive', ['uses' => 'ProjectCategoryController@archive']);
                 $router->get('/', ['uses' => 'ProjectCategoryController@index']);
                 $router->post('/', ['uses' => 'ProjectCategoryController@post']);
                 $router->put('/{id}', ['uses' => 'ProjectCategoryController@put']);

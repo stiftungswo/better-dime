@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { InputFieldWithValidation } from '../../form/fields/common';
+import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
 import { Field } from 'formik';
 import { ProjectCategory, ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
@@ -38,26 +38,30 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
     ];
   }
 
-  public renderActions = (projectCategory: ProjectCategory) => (
-    <ActionButtons deleteAction={() => this.props.projectCategoryStore!.delete(projectCategory.id!)} />
-  );
-
-  public filter = (r: ProjectCategory, query: string) => r.name.includes(query) || r.description.includes(query);
+  public filter = (r: ProjectCategory, query: string) => r.name.includes(query);
 
   public render() {
+    const projectCategoryStore = this.props.projectCategoryStore;
+
     return (
       <EditableOverview
+        archivable
         title={'Tätigkeitsbereiche'}
-        store={this.props.projectCategoryStore!}
+        store={projectCategoryStore!}
         columns={this.columns}
         schema={projectCategorySchema}
         defaultValues={projectCategoryTemplate}
         searchFilter={this.filter}
-        renderActions={this.renderActions}
+        renderActions={e => (
+          <ActionButtons
+            archiveAction={!e.archived ? () => projectCategoryStore!.archive(e.id, true) : undefined}
+            restoreAction={e.archived ? () => projectCategoryStore!.archive(e.id, false) : undefined}
+          />
+        )}
         renderForm={() => (
           <>
-            {/* <Field component={NumberFieldWithValidation} name={'id'} label={'ID'} fullWidth /> */}
             <Field component={InputFieldWithValidation} name={'name'} label={'Name'} fullWidth />
+            <Field component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
           </>
         )}
       />

@@ -15,6 +15,7 @@ class CreateProjectCategoriesTable extends Migration
     {
         Schema::create('project_categories', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('archived')->default(false);
             $table->string('name');
 
             $table->softDeletes();

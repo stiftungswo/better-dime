@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Input;
 
 class ProjectCategoryController extends BaseController
 {
-    public function delete($id)
+    public function archive($id, Request $request)
     {
-        ProjectCategory::findOrFail($id)->delete();
-        return 'Entity deleted';
+        $projectCategory = ProjectCategory::findOrFail($id);
+        return self::doArchive($projectCategory, $request);
     }
 
     public function index()

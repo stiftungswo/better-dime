@@ -7,6 +7,7 @@ $factory->define(\App\Models\Project\ProjectCategory::class, function () {
     $faker = Faker\Factory::create('de_CH');
 
     return [
+        'archived' => $faker->boolean(20),
         'name' => $faker->word
     ];
 });

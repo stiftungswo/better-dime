@@ -3,9 +3,9 @@ import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 
 export interface ProjectCategory {
+  archived: boolean;
   id: number;
   name: string;
-  description: string;
 }
 
 export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
@@ -26,6 +26,11 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
     super(mainStore);
   }
 
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived: archived });
+    this.doFetchAll();
+  }
+
   @action
   public async doFetchAll() {
     const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
@@ -41,12 +46,6 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   @action
   public async doPut(project_category: ProjectCategory) {
     await this.mainStore.api.put('/project_categories/' + project_category.id, project_category);
-    await this.doFetchAll();
-  }
-
-  @action
-  protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/project_categories/' + id);
     await this.doFetchAll();
   }
 

@@ -10,5 +10,9 @@ class ProjectCategory extends Model
 {
     use SoftDeletes, BlameableTrait;
 
+    protected $casts = [
+        'archived' => 'boolean'
+    ];
+
     protected $fillable = ['name'];
 }
