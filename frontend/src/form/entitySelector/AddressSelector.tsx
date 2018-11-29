@@ -1,32 +1,49 @@
 import * as React from 'react';
-import { AddressStore } from '../../stores/addressStore';
+import { CustomerStore } from '../../stores/customerStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
+import { Address } from '../../types';
+import { computed } from 'mobx';
 
 interface Props extends FormProps {
-  addressStore?: AddressStore;
+  customerStore?: CustomerStore;
+  customerId: number;
 }
 
 @compose(
-  inject('addressStore'),
+  inject('customerStore'),
   observer
 )
 export class AddressSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.addressStore!.fetchAll();
+    props.customerStore!.customer = undefined;
   }
 
+  public componentDidUpdate = (prevProps: Props) => {
+    if (prevProps.customerId !== this.props.customerId) {
+      this.props.customerStore!.fetchOne(this.props.customerId);
+    }
+  };
+
+  @computed
   public get options() {
-    return this.props.addressStore!.entities.map(e => ({
-      value: e.id,
-      label: e.dropdown_label,
-    }));
+    const customer = this.props.customerStore!.customer;
+    return customer
+      ? customer.addresses.map((a: Address) => ({
+          value: a.id,
+          label: [a.street, a.supplement, a.postcode, a.city, a.country].filter(x => Boolean(x)).join(', '),
+        }))
+      : [];
   }
 
   public render() {
-    return <Select options={this.options} {...this.props} />;
+    return this.props.customerId ? (
+      <Select options={this.options} {...this.props} />
+    ) : (
+      <Select options={[]} isDisabled placeholder={'zuerst Kunde auswählen'} {...this.props} />
+    );
   }
 }

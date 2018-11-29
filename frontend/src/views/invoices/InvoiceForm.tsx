@@ -24,6 +24,7 @@ import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './InvoiceNavigator';
 import { ESRIcon, InvoiceIcon, PaperIcon, StatisticsIcon } from '../../layout/icons';
 import { invoiceSchema } from './invoiceSchema';
+import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
 
 export interface Props extends FormViewProps<Invoice> {
   mainStore?: MainStore;
@@ -78,8 +79,18 @@ export default class InvoiceForm extends React.Component<Props> {
                             <Grid item xs={12}>
                               <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
-                            <Grid item xs={12}>
-                              <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                            <Grid item xs={12} lg={6}>
+                              <Field fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                              <Field
+                                fullWidth
+                                required
+                                component={AddressSelector}
+                                customerId={props.values.customer_id}
+                                name={'address_id'}
+                                label={'Adresse'}
+                              />
                             </Grid>
                             <Grid item xs={12}>
                               <Field

@@ -8,6 +8,7 @@ export interface Offer {
   id?: number;
   accountant_id: number;
   address_id: number;
+  customer_id: number;
   description: string;
   fixed_price: number | null;
   name: string;
@@ -89,16 +90,6 @@ export interface Employee {
   password: string;
 }
 
-export interface Address {
-  id: number;
-  city: string;
-  country: string;
-  description?: string;
-  postcode: number;
-  street: string;
-  supplement?: string;
-}
-
 export interface PhoneNumber {
   id: number;
   category: number;
@@ -106,25 +97,6 @@ export interface PhoneNumber {
   deleted_at: null;
   created_at: string;
   updated_at: string;
-}
-
-export interface Customer {
-  id: number;
-  user: Employee;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  alias: string;
-  tags: any[];
-  company: string;
-  department: string;
-  fullname: string;
-  salutation: string;
-  rateGroup: CustomerRateGroup;
-  chargeable: boolean;
-  systemCustomer: boolean;
-  address: Address;
-  phones: any[];
 }
 
 export interface CustomerRateGroup {
@@ -199,6 +171,7 @@ export interface ServiceRateRateGroup {
 export interface Project {
   id?: number;
   accountant_id: number;
+  customer_id: number;
   address_id: number;
   archived: boolean;
   category_id: number;
@@ -252,6 +225,7 @@ export interface Status {
 export interface Invoice {
   id?: number;
   accountant_id: number;
+  customer_id: number;
   address_id: number;
   breakdown: Breakdown;
   description: string;
@@ -364,4 +338,49 @@ export interface ProjectComment {
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;
+}
+
+// TODO: we should be able to define customer something like this
+// type Customer = Person | Company;
+// interface Person {
+//   type: 'person';
+//   ...
+// }
+
+export interface Customer {
+  id: number;
+  type: CustomerType;
+  comment: string;
+  email: string;
+  hidden: boolean;
+  name?: string;
+  rate_group_id: number;
+  created_at: string;
+  updated_at: string;
+  persons?: number[];
+  tags: number[];
+  addresses: Address[];
+  company_id?: number | null;
+  department?: null;
+  first_name?: string;
+  last_name?: string;
+  salutation?: string;
+}
+
+export interface Address {
+  id: number;
+  city: string;
+  country: string;
+  customer_id: number;
+  description: string;
+  postcode: number;
+  street: string;
+  supplement: null | string;
+  created_at: string;
+  updated_at: string;
+}
+
+export enum CustomerType {
+  Company = 'company',
+  Person = 'person',
 }

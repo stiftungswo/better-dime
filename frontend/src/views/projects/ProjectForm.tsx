@@ -22,7 +22,8 @@ import { ProjectStore } from '../../stores/projectStore';
 import Navigator from './ProjectNavigator';
 import { projectSchema } from './projectSchema';
 import Effect, { OnChange } from '../../utilities/Effect';
-import { AddressStore } from '../../stores/addressStore';
+import { CustomerStore } from '../../stores/customerStore';
+import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
 
 interface InfoFieldProps {
   value: string;
@@ -53,26 +54,22 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
 export interface Props extends FormViewProps<Project> {
   mainStore?: MainStore;
   projectStore?: ProjectStore;
-  addressStore?: AddressStore;
+  customerStore?: CustomerStore;
   project: Project;
 }
 
 @compose(
-  inject('mainStore', 'projectStore', 'addressStore'),
+  inject('mainStore', 'projectStore', 'customerStore'),
   observer
 )
 export default class ProjectForm extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   // set rateGroup based on selected customer.
-  handleAddressChange: OnChange<Project> = (current, next, formik) => {
-    if (current.values.address_id !== next.values.address_id) {
-      if (!current.values.address_id && !current.values.rate_group_id) {
-        const address = this.props.addressStore!.addresses.find(a => a.id === next.values.address_id);
-        if (address) {
-          formik.setFieldValue('rate_group_id', address.rate_group_id);
+  handleCustomerChange: OnChange<Project> = (current, next, formik) => {
+    if (current.values.customer_id !== next.values.customer_id) {
+      if (!current.values.customer_id && !current.values.rate_group_id) {
+        const customer = this.props.customerStore!.customers.find(a => a.id === next.values.customer_id);
+        if (customer) {
+          formik.setFieldValue('rate_group_id', customer.rate_group_id);
         }
       }
     }
@@ -100,9 +97,19 @@ export default class ProjectForm extends React.Component<Props> {
                     <Grid item xs={12}>
                       <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
-                    <Grid item xs={12} lg={8}>
-                      <Effect onChange={this.handleAddressChange} />
-                      <Field fullWidth required component={AddressSelector} name={'address_id'} label={'Kunde'} />
+                    <Grid item xs={12} lg={4}>
+                      <Effect onChange={this.handleCustomerChange} />
+                      <Field fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                    </Grid>
+                    <Grid item xs={12} lg={4}>
+                      <Field
+                        fullWidth
+                        required
+                        component={AddressSelector}
+                        customerId={props.values.customer_id}
+                        name={'address_id'}
+                        label={'Adresse'}
+                      />
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />

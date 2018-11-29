@@ -24,8 +24,9 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
 
         $router->group(['middleware' => 'auth'], function () use ($router) {
 
-            $router->group(['prefix' => 'addresses'], function () use ($router) {
-                $router->get('/', ['uses' => 'AddressController@index']);
+            $router->group(['prefix' => 'customers'], function () use ($router) {
+                $router->get('/', ['uses' => 'CustomerController@index']);
+                $router->get('/{id}', ['uses' => 'CustomerController@get']);
             });
 
             $router->group(['prefix' => 'companies'], function () use ($router) {

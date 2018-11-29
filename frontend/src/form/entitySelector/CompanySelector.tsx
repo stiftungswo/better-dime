@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { AddressStore } from '../../stores/addressStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';

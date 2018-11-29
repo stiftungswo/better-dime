@@ -142,7 +142,6 @@ export default class CompanyForm extends React.Component<Props> {
                         id: '_',
                         label: 'Strasse',
                         format: p => {
-                          console.log(p);
                           return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
                         },
                       },

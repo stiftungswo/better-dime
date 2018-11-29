@@ -190,7 +190,8 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, field, form, label, margin, required, disabled, ...rest } = this.props as any;
+    const { classes, theme, field, form, label, margin, required, disabled, placeholder = 'Bitte auswählen...', ...rest } = this
+      .props as any;
 
     const myLabel = this.props.label
       ? {
@@ -230,6 +231,7 @@ class IntegrationReactSelect extends React.Component<any> {
           isDisabled={disabled}
           error={hasErrors}
           margin={margin}
+          placeholder={placeholder}
           {...rest}
         />
       </ValidatedFormGroupWithLabel>

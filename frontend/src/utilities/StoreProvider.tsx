@@ -10,7 +10,7 @@ import { History } from 'history';
 import { HolidayStore } from '../stores/holidayStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
 import { RateGroupStore } from '../stores/rateGroupStore';
-import { AddressStore } from '../stores/addressStore';
+import { CustomerStore } from '../stores/customerStore';
 import { ProjectStore } from '../stores/projectStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
 import { CustomerTagStore } from '../stores/customerTagStore';
@@ -36,7 +36,7 @@ export class StoreProvider extends React.Component<Props | any> {
     holidayStore: HolidayStore;
     rateUnitStore: RateUnitStore;
     rateGroupStore: RateGroupStore;
-    addressStore: AddressStore;
+    customerStore: CustomerStore;
     projectStore: ProjectStore;
     projectCategoryStore: ProjectCategoryStore;
     customerTagStore: CustomerTagStore;
@@ -64,7 +64,7 @@ export class StoreProvider extends React.Component<Props | any> {
       holidayStore: new HolidayStore(mainStore),
       rateUnitStore: new RateUnitStore(mainStore),
       rateGroupStore: new RateGroupStore(mainStore),
-      addressStore: new AddressStore(mainStore),
+      customerStore: new CustomerStore(mainStore),
       projectStore: new ProjectStore(mainStore),
       projectCategoryStore: new ProjectCategoryStore(mainStore),
       customerTagStore: new CustomerTagStore(mainStore),
