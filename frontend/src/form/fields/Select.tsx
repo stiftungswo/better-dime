@@ -180,7 +180,7 @@ class IntegrationReactSelect extends React.Component<any> {
     if (this.props.isMulti) {
       return this.props.options.filter((e: any) => this.props.field.value.includes(e.value));
     } else {
-      return this.props.options.find((e: any) => e.value === this.props.field.value);
+      return this.props.options.find((e: any) => e.value === this.props.field.value) || '';
     }
   }
 
