@@ -43,8 +43,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Stunden',
             'archived' => false
         ]), factory(\App\Models\Service\RateUnit::class)->create([
-            'billing_unit' => 'CHF / d',
-            'effort_unit' => 'd',
+            'billing_unit' => 'CHF / t',
+            'effort_unit' => 't',
             'factor' => 504,
             'is_time' => true,
             'name' => 'Tage',
@@ -52,18 +52,21 @@ class DatabaseSeeder extends Seeder
         ]), factory(\App\Models\Service\RateUnit::class)->create([
             'billing_unit' => 'CHF / Stk.',
             'effort_unit' => 'Stk.',
+            'factor' => 1,
             'is_time' => false,
             'name' => 'Stück',
             'archived' => false
         ]), factory(\App\Models\Service\RateUnit::class)->create([
             'billing_unit' => 'pau',
             'effort_unit' => 'pau',
+            'factor' => 1,
             'is_time' => false,
             'name' => 'Pauschal',
             'archived' => false
         ]), factory(\App\Models\Service\RateUnit::class)->create([
             'billing_unit' => 'CHF / m',
             'effort_unit' => 'm',
+            'factor' => 1,
             'is_time' => false,
             'name' => 'Laufmeter',
             'archived' => false

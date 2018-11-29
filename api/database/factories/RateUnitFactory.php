@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Factory;
 $factory->define(RateUnit::class, function () {
     $faker = Faker\Factory::create('de_CH');
     $unit = $faker->lexify("??");
+    $isTime = $faker->boolean;
 
     return [
         'billing_unit' => "CHF / $unit",
         'effort_unit' => $unit,
-        'factor' => $faker->optional(0.5, 1)->numberBetween(1, 1000),
-        'is_time' => $faker->boolean,
+        'factor' => $isTime ? $faker->numberBetween(1, 100) : 1,
+        'is_time' => $isTime,
         'name' => $faker->word,
-        'archived' => $faker->randomElement([true, false, false, false, false]),
+        'archived' => $faker->boolean(20),
     ];
 });

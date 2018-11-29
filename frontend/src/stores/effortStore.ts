@@ -69,8 +69,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @action
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.is_loading = true;
-    const res = await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
-    this.effort = res.data;
+    await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
     this.fetchAll();
     this.is_loading = false;
   }

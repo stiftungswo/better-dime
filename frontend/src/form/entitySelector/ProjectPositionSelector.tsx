@@ -22,7 +22,7 @@ export class ProjectPositionSelector extends React.Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.form.values.project_id !== prevProps.form.values.project_id) {
-      this.props.form.setFieldValue(this.props.field.name, null);
+      this.props.form.setFieldValue(this.props.field.name, undefined);
       this.updateProjectInStore();
     }
   }
