@@ -30,6 +30,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   @observable
   public effortTemplate: ProjectEffortTemplate = <ProjectEffortTemplate>{
+    comment: '',
     date: moment().format('YYYY-MM-DD'),
     employee_ids: [this.mainStore.meSub && this.mainStore.meSub],
     position_id: null,

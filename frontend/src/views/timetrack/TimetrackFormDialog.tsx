@@ -5,7 +5,7 @@ import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { EffortStore } from '../../stores/effortStore';
 import * as yup from 'yup';
-import { ProjectEffort, ProjectEffortTemplate } from '../../types';
+import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../types';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../../stores/mainStore';
@@ -16,14 +16,18 @@ import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core'
 import { InjectedProps } from '@material-ui/core/withMobileDialog';
 import Button from '@material-ui/core/Button/Button';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import { TextField } from '../../form/fields/common';
+import { ProjectCommentStore } from '../../stores/projectCommentStore';
 
 interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
+  projectCommentStore?: ProjectCommentStore;
 }
 
 const schema = yup.object({
+  comment: yup.string(),
   employee_id: yup.number().required(),
   position_id: yup.number().required(),
   date: yup.string().required(),
@@ -31,7 +35,7 @@ const schema = yup.object({
 });
 
 @compose(
-  inject('effortStore', 'mainStore'),
+  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore'),
   observer,
   withMobileDialog()
 )
@@ -41,10 +45,16 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
       await this.props.effortStore!.put(entity);
     } else if ('employee_ids' in entity) {
       entity.employee_ids.forEach(async (e: number) => {
-        let toBeSaved: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
-        await this.props.effortStore!.post(toBeSaved);
+        const newEffort: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
+        await this.props.effortStore!.post(newEffort);
       });
     }
+
+    if ('comment' in entity && entity.comment !== '') {
+      const newProjectComment: ProjectComment = { ...entity } as ProjectComment;
+      await this.props.projectCommentStore!.post(newProjectComment);
+    }
+
     this.props.effortStore!.fetchAll();
     formikBag.setSubmitting(false);
   };
@@ -75,7 +85,22 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
               <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
               <Field portal formProps={formikProps} component={ProjectPositionSelector} name={'position_id'} label={'Aktivität'} />
               <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-              <Field component={EffortValueField} name={'value'} label={'Wert'} fullWidth />
+              {formikProps.values.project_id && formikProps.values.position_id && (
+                <>
+                  <Field component={EffortValueField} name={'value'} label={'Wert'} fullWidth />
+                  {!formikProps.values.id && (
+                    <Field
+                      delayed
+                      fullWidth
+                      multiline
+                      component={TextField}
+                      name={'comment'}
+                      label={'Kommentar zu Projekt und Tag'}
+                      margin={'none'}
+                    />
+                  )}
+                </>
+              )}
             </DialogContent>
 
             <DialogActions>

@@ -324,6 +324,7 @@ export interface ProjectEffortListing {
 }
 
 export interface ProjectEffortTemplate {
+  comment: string;
   date: string;
   employee_ids: number[];
   position_id: number | null;
