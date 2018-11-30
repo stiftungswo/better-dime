@@ -5,7 +5,7 @@ import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { EffortStore } from '../../stores/effortStore';
 import * as yup from 'yup';
-import { ProjectEffort } from '../../types';
+import { ProjectEffort, ProjectEffortTemplate } from '../../types';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../../stores/mainStore';
@@ -36,12 +36,16 @@ const schema = yup.object({
   withMobileDialog()
 )
 export class TimetrackFormDialog extends React.Component<Props & InjectedProps> {
-  public handleSubmit = async (entity: ProjectEffort, formikBag: FormikBag<any, any>) => {
-    if (this.props.effortStore!.entity) {
+  public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikBag: FormikBag<any, any>) => {
+    if (this.props.effortStore!.entity && 'employee_id' in entity) {
       await this.props.effortStore!.put(entity);
-    } else {
-      await this.props.effortStore!.post(entity);
+    } else if ('employee_ids' in entity) {
+      entity.employee_ids.forEach(async (e: number) => {
+        let toBeSaved: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
+        await this.props.effortStore!.post(toBeSaved);
+      });
     }
+    this.props.effortStore!.fetchAll();
     formikBag.setSubmitting(false);
   };
 
@@ -63,10 +67,11 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
         validationSchema={schema}
         render={(formikProps: any) => (
           <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
-            <DialogTitle>Leistung erfassen</DialogTitle>
+            <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
             <DialogContent>
-              <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />
+              {!formikProps.values.id && <Field portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />}
+              {formikProps.values.id && <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
               <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
               <Field portal formProps={formikProps} component={ProjectPositionSelector} name={'position_id'} label={'Aktivität'} />
               <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
@@ -84,9 +89,11 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
               >
                 Speichern
               </Button>
-              <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
-                Speichern und weiter
-              </Button>
+              {!formikProps.values.id && (
+                <Button onClick={() => this.handleSubmit(formikProps.values, formikProps)} disabled={formikProps.isSubmitting}>
+                  Speichern und weiter
+                </Button>
+              )}
             </DialogActions>
           </Dialog>
         )}

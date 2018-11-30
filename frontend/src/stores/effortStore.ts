@@ -31,7 +31,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
   public effortTemplate: ProjectEffortTemplate = <ProjectEffortTemplate>{
     date: moment().format('YYYY-MM-DD'),
-    employee_id: this.mainStore.meSub && this.mainStore.meSub,
+    employee_ids: [this.mainStore.meSub && this.mainStore.meSub],
+    position_id: null,
     project_id: null,
     value: 1,
   };
@@ -70,7 +71,6 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.is_loading = true;
     await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
-    this.fetchAll();
     this.is_loading = false;
   }
 
