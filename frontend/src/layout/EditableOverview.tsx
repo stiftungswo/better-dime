@@ -3,20 +3,25 @@ import Overview, { Column, SearchFilter } from './Overview';
 import { FormikBag, FormikProps } from 'formik';
 import * as React from 'react';
 import { FormDialog } from '../form/FormDialog';
+import { HandleFormikSubmit, Listing } from '../types';
+import { Schema } from 'yup';
+import { Omit } from '@material-ui/core';
 
 interface Props<T> {
   archivable?: boolean;
-  store: AbstractStore<T>;
+  //tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
+  store: AbstractStore<any, T>;
   columns: Array<Column<T>>;
   title: string;
   renderForm: (props: FormikProps<T>) => React.ReactNode;
-  defaultValues: any;
-  schema: any;
+  defaultValues: object;
+  //tslint:disable-next-line:no-any ;
+  schema: Schema<any>;
   searchFilter?: SearchFilter<T>;
   renderActions?: (e: T) => React.ReactNode;
 }
 
-export class EditableOverview<T> extends React.Component<Props<T>> {
+export class EditableOverview<T extends Listing> extends React.Component<Props<T>> {
   public state = {
     editing: false,
   };
@@ -30,12 +35,13 @@ export class EditableOverview<T> extends React.Component<Props<T>> {
     this.setState({ editing: false });
   };
 
-  public handleSubmit = (entity: T, formikBag: FormikBag<any, any>) => {
+  public handleSubmit = (entity: T) => {
     if (this.props.store.entity) {
       this.props.store!.put(entity).then(() => this.setState({ editing: false }));
     } else {
       this.props.store!.post(entity).then(() => this.setState({ editing: false }));
     }
+    return Promise.resolve();
   };
 
   public handleAdd = () => {
@@ -65,7 +71,7 @@ export class EditableOverview<T> extends React.Component<Props<T>> {
             title={this.props.title}
             initialValues={entity || this.props.defaultValues}
             validationSchema={this.props.schema}
-            onSubmit={this.handleSubmit as any}
+            onSubmit={this.handleSubmit}
             render={this.props.renderForm}
           />
         )}

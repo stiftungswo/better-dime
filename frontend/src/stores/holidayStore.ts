@@ -1,11 +1,12 @@
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
+import { DimeDate } from '../types';
 
 export interface Holiday {
   id: number;
   duration: number;
-  date: any; // TODO
+  date: DimeDate;
   name: string;
 }
 

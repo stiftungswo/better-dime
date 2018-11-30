@@ -18,7 +18,7 @@ type Props = {
   withRouter
 )
 export default class OfferOverview extends React.Component<Props> {
-  public columns: Array<Column<OfferListing>>;
+  public columns: Column<OfferListing>[];
 
   constructor(props: Props) {
     super(props);

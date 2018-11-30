@@ -5,7 +5,7 @@ import { InjectedNotistackProps } from 'notistack';
 import ProjectForm from './ProjectForm';
 import compose from '../../utilities/compose';
 import { ProjectStore } from '../../stores/projectStore';
-import { Project } from '../../types';
+import { FormValues, Project } from '../../types';
 import { toJS } from 'mobx';
 
 interface ProjectDetailRouterProps {
@@ -47,6 +47,6 @@ export default class ProjectUpdate extends React.Component<Props> {
     const project = this.project;
     const title = project ? `${project.name} - Projekt` : 'Projekte bearbeiten';
 
-    return <ProjectForm title={title} onSubmit={this.handleSubmit} project={project as any} />;
+    return <ProjectForm title={title} onSubmit={this.handleSubmit} project={project as FormValues} />;
   }
 }

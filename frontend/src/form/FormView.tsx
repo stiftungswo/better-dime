@@ -5,10 +5,11 @@ import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeLayout';
 import { Prompt } from 'react-router';
 import { SaveIcon } from '../layout/icons';
+import { HandleFormikSubmit } from '../types';
 
 export interface FormViewProps<T> {
   title: string;
-  onSubmit: (values: any) => Promise<any>;
+  onSubmit: (values: T) => Promise<void>;
   submitted?: boolean;
   loading?: boolean;
   paper?: boolean;
@@ -23,7 +24,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
   FormikConfig<Values> & ExtraProps & Props<Values>,
   FormikState<Values>
 > {
-  private submit = async (values: any, formikBag: FormikBag<any, any>) => {
+  private handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     try {
       await this.props.onSubmit(this.props.validationSchema.cast(values));
     } finally {
@@ -32,6 +33,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
   };
 
   public render() {
+    // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
     const { appBarButtons, ...rest } = this.props as any;
     return this.props.loading ? (
       <Fragment>
@@ -42,15 +44,15 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
       <Formik
         {...rest}
         enableReinitialize
-        onSubmit={this.submit}
-        render={props => (
+        onSubmit={this.handleSubmit}
+        render={(formikProps: FormikProps<Values>) => (
           <Fragment>
-            <Prompt when={!this.props.submitted && props.dirty} message={() => 'Änderungen verwerfen?'} />
+            <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <DimeAppBar title={this.props.title}>
               {appBarButtons}
-              <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={props.handleSubmit} disabled={props.isSubmitting} />
+              <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
-            <DimeContent paper={this.props.paper}>{this.props.render(props as any)}</DimeContent>
+            <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>
           </Fragment>
         )}
       />

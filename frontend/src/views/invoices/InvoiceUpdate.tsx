@@ -5,7 +5,7 @@ import { InjectedNotistackProps } from 'notistack';
 import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { InvoiceStore } from '../../stores/invoiceStore';
-import { Invoice } from '../../types';
+import { FormValues, Invoice } from '../../types';
 import { action, computed, toJS } from 'mobx';
 
 interface InvoiceDetailRouterProps {
@@ -47,6 +47,6 @@ export default class InvoiceUpdate extends React.Component<Props> {
     const invoice = this.invoice;
     const title = invoice ? `${invoice.name} - Rechnungen` : 'Rechnung bearbeiten';
 
-    return <InvoiceForm title={title} onSubmit={this.handleSubmit} invoice={invoice as any} />;
+    return <InvoiceForm title={title} onSubmit={this.handleSubmit} invoice={invoice as FormValues} />;
   }
 }

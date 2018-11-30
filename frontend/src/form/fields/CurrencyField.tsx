@@ -5,7 +5,7 @@ const factor = 100;
 
 //TODO extract this behavior into a TransformingField and use it for this, vat, percentage
 export default class CurrencyField extends React.Component<InputFieldProps> {
-  constructor(props: any) {
+  constructor(props: InputFieldProps) {
     super(props);
     this.state.value = this.format;
   }
@@ -18,13 +18,13 @@ export default class CurrencyField extends React.Component<InputFieldProps> {
     return this.props.field.value ? (this.props.field.value / factor).toFixed(2) : '';
   }
 
-  public handleChange = (e: any) => {
+  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     this.setState({ value });
     if (value === '') {
       this.props.form.setFieldValue(this.props.field.name, null);
     } else {
-      this.props.form.setFieldValue(this.props.field.name, value * factor);
+      this.props.form.setFieldValue(this.props.field.name, Number(value) * factor);
     }
   };
 

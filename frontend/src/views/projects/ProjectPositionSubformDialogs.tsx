@@ -102,8 +102,6 @@ export default class ProjectPositionSubformDialogs extends React.Component<Props
               defaultValues={template}
               renderForm={(index: number) => {
                 const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                const p = values.positions[index] as any;
-                const total = p.amount * p.price_per_rate * (1 + p.vat);
 
                 return (
                   <>

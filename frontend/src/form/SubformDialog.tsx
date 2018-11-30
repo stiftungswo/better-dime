@@ -6,10 +6,11 @@ import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 import { LoadingSpinner } from '../layout/DimeLayout';
 import { Prompt } from 'react-router';
+import { HandleFormikSubmit } from '../types';
 
 interface DialogFormProps<T> {
   title: string;
-  onSubmit: (values: any) => Promise<any>;
+  onSubmit: (values: T) => Promise<void>;
   loading?: boolean;
   open: boolean;
   onClose: () => void;
@@ -19,7 +20,7 @@ interface DialogFormProps<T> {
 export class SubformDialog<Values = object, ExtraProps = {}> extends React.Component<
   FormikConfig<Values> & ExtraProps & DialogFormProps<Values>
 > {
-  public submit = async (values: any, formikBag: FormikBag<any, any>) => {
+  public handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     await this.props.onSubmit(values);
     formikBag.setSubmitting(false);
   };

@@ -52,7 +52,7 @@ export default class CustomerTagOverview extends React.Component<Props> {
         schema={customerTagSchema}
         defaultValues={customerTagTemplate}
         searchFilter={this.filter}
-        renderActions={e => (
+        renderActions={(e: CustomerTag) => (
           <ActionButtons
             archiveAction={!e.archived ? () => customerTagStore!.archive(e.id, true) : undefined}
             restoreAction={e.archived ? () => customerTagStore!.archive(e.id, false) : undefined}

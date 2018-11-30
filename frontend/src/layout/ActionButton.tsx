@@ -5,11 +5,12 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import UnstyledLink from './UnstyledLink';
 import { PropTypes } from '@material-ui/core';
 import compose from '../utilities/compose';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 export type ActionButtonAction = (() => void) | string;
 
-interface ButtonProps {
-  icon: any;
+export interface ButtonProps {
+  icon: React.ReactType<SvgIconProps>;
   title?: string;
   action?: ActionButtonAction;
   disabled?: boolean;
@@ -17,7 +18,7 @@ interface ButtonProps {
 }
 
 const withLink = (link?: string) => (component: React.ReactNode) => (link ? <UnstyledLink to={link}>{component}</UnstyledLink> : component);
-const withTooltip = (text?: string) => (component: React.ReactElement<any>) =>
+const withTooltip = (text?: string) => (component: React.ReactNode) =>
   text ? (
     <Tooltip title={text} style={{ display: 'inline-block' }}>
       <div>{component}</div>
@@ -29,14 +30,14 @@ const withTooltip = (text?: string) => (component: React.ReactElement<any>) =>
 export class ActionButton extends React.Component<ButtonProps> {
   public get route(): string | undefined {
     if (typeof this.props.action === 'string') {
-      return this.props.action as any;
+      return this.props.action;
     }
     return undefined;
   }
 
   public get onClick(): (() => void) | undefined {
     if (typeof this.props.action === 'function') {
-      return this.props.action as any;
+      return this.props.action;
     }
     return undefined;
   }

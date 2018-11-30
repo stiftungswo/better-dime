@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { RefObject } from 'react';
 
+//tslint:disable:no-any
+
 /**
  * This TR's onClick only triggers when the TR or its direct TD children are clicked.
  * Any other elements (like buttons inside a cell) won't trigger it.

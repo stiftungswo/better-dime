@@ -52,7 +52,7 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         schema={projectCategorySchema}
         defaultValues={projectCategoryTemplate}
         searchFilter={this.filter}
-        renderActions={e => (
+        renderActions={(e: ProjectCategory) => (
           <ActionButtons
             archiveAction={!e.archived ? () => projectCategoryStore!.archive(e.id, true) : undefined}
             restoreAction={e.archived ? () => projectCategoryStore!.archive(e.id, false) : undefined}

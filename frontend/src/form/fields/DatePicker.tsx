@@ -5,6 +5,9 @@ import { Moment } from 'moment';
 import { FormProps } from './common';
 import { getIn } from 'formik';
 
+type MaskFunction = (value: any) => any; //tslint:disable-line:no-any ; Couldn't find any sensible type definitions for this
+const mask: MaskFunction = value => (value ? [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/] : []);
+
 export const DatePicker = ({ field, form, required, ...rest }: FormProps & { children: ReactNode }) => {
   const currentError = getIn(form.errors, field.name);
   return (
@@ -13,7 +16,7 @@ export const DatePicker = ({ field, form, required, ...rest }: FormProps & { chi
       autoOk
       format="DD.MM.YYYY"
       placeholder="10.10.2018"
-      mask={(value: any) => (value ? [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/] : [])}
+      mask={mask}
       value={field.value ? new Date(field.value) : field.value}
       onChange={(date?: Moment) => form.setFieldValue(field.name, date ? date.format('YYYY-MM-DD') : date)}
       disableOpenOnEnter
@@ -21,7 +24,7 @@ export const DatePicker = ({ field, form, required, ...rest }: FormProps & { chi
       clearable={!required}
       error={!!currentError}
       helperText={currentError}
-      onError={(_, error: any) => form.setFieldError(field.name, error)}
+      onError={(_, error: string) => form.setFieldError(field.name, error)}
       {...rest}
     />
   );

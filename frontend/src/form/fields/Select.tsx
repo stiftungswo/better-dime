@@ -1,4 +1,5 @@
 // https://material-ui.com/demos/autocomplete/#react-select
+// tslint:disable:no-any ; This is adapted from the above example and should work as is; however, we should probably add types some time.
 
 import React from 'react';
 import classNames from 'classnames';

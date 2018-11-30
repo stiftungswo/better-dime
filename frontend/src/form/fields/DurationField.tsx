@@ -4,8 +4,12 @@ import Input from '@material-ui/core/Input/Input';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import { FormProps, ValidatedFormGroupWithLabel } from './common';
 
-export class DurationField extends React.Component<FormProps & { children: ReactNode }> {
-  constructor(props: any) {
+interface Props extends FormProps {
+  children: ReactNode;
+}
+
+export class DurationField extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
     this.state.value = this.format;
   }
@@ -23,13 +27,13 @@ export class DurationField extends React.Component<FormProps & { children: React
     return this.props.field.value / this.mode.factor;
   }
 
-  public handleChange = (e: any) => {
+  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     this.setState({ value });
     if (value === '') {
       this.props.form.setFieldValue(this.props.field.name, null);
     } else {
-      this.props.form.setFieldValue(this.props.field.name, value * this.mode.factor);
+      this.props.form.setFieldValue(this.props.field.name, Number(value) * this.mode.factor);
     }
   };
 

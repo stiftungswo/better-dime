@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, Formik, FormikBag, FormikProps } from 'formik';
+import { Field, Formik, FormikBag, FormikProps, FormikValues } from 'formik';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -40,7 +40,7 @@ const schema = yup.object({
   withMobileDialog()
 )
 export class TimetrackFormDialog extends React.Component<Props & InjectedProps> {
-  public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikBag: FormikBag<any, any>) => {
+  public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
     if (this.props.effortStore!.entity && 'employee_id' in entity) {
       await this.props.effortStore!.put(entity);
     } else if ('employee_ids' in entity) {
@@ -56,12 +56,15 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     }
 
     this.props.effortStore!.fetchAll();
-    formikBag.setSubmitting(false);
+    formikProps.setSubmitting(false);
+    return Promise.resolve();
   };
 
   public handleClose = (props: FormikProps<any>) => () => {
     if (props.dirty) {
-      confirm('Änderungen verwerfen?') && this.props.onClose();
+      if (confirm('Änderungen verwerfen?')) {
+        this.props.onClose();
+      }
     } else {
       this.props.onClose();
     }
@@ -73,9 +76,9 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     return (
       <Formik
         initialValues={this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
-        onSubmit={this.handleSubmit as any}
+        onSubmit={this.handleSubmit}
         validationSchema={schema}
-        render={(formikProps: any) => (
+        render={(formikProps: FormikProps<ProjectEffort>) => (
           <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
             <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 

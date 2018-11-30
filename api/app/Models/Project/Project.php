@@ -22,7 +22,8 @@ class Project extends Model
 
     protected $casts = [
         'archived' => 'boolean',
-        'chargeable' => 'boolean'
+        'chargeable' => 'boolean',
+        'vacation_project' => 'boolean',
     ];
 
     protected $fillable = [

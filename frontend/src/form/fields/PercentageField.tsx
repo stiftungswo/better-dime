@@ -4,8 +4,12 @@ import { FormProps, InputFieldWithValidation } from './common';
 
 const factor = 0.01;
 
-export default class PercentageField extends React.Component<FormProps & { children: ReactNode }> {
-  constructor(props: any) {
+interface Props extends FormProps {
+  children: ReactNode;
+}
+
+export default class PercentageField extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
     this.state.value = this.format;
   }
@@ -18,13 +22,13 @@ export default class PercentageField extends React.Component<FormProps & { child
     return (this.props.field.value / factor).toFixed(2);
   }
 
-  public handleChange = (e: any) => {
+  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     this.setState({ value });
     if (value === '') {
       this.props.form.setFieldValue(this.props.field.name, null);
     } else {
-      this.props.form.setFieldValue(this.props.field.name, value * factor);
+      this.props.form.setFieldValue(this.props.field.name, Number(value) * factor);
     }
   };
 

@@ -5,7 +5,7 @@ import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import * as yup from 'yup';
 import { FormDialog } from '../../form/FormDialog';
-import { ProjectComment } from '../../types';
+import { HandleFormikSubmit, ProjectComment } from '../../types';
 import { Field, FormikBag } from 'formik';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -28,12 +28,13 @@ const schema = yup.object({
   observer
 )
 export class TimetrackCommentFormDialog extends React.Component<Props> {
-  public handleSubmit = (entity: ProjectComment, formikBag: FormikBag<any, any>) => {
+  public handleSubmit = (entity: ProjectComment) => {
     if (this.props.projectCommentStore!.entity) {
       this.props.projectCommentStore!.put(entity).then(() => (this.props.projectCommentStore!.editing = false));
     } else {
       this.props.projectCommentStore!.post(entity).then(() => (this.props.projectCommentStore!.editing = false));
     }
+    return Promise.resolve();
   };
 
   public render() {
@@ -44,7 +45,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
         title={'Projekt-Kommentar erfassen'}
         initialValues={this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
         validationSchema={schema}
-        onSubmit={this.handleSubmit as any}
+        onSubmit={this.handleSubmit}
         render={() => (
           <>
             <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />

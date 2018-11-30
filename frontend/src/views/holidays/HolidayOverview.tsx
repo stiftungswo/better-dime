@@ -62,7 +62,7 @@ export default class HolidayOverview extends React.Component<Props> {
         schema={holidaySchema}
         defaultValues={holidayTemplate}
         searchFilter={this.filter}
-        renderActions={e => (
+        renderActions={(e: Holiday) => (
           <ActionButtons
             copyAction={async () => {
               await holidayStore!.duplicate(e.id);

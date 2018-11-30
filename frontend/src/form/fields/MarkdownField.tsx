@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Converter } from 'showdown';
 import Grid from '@material-ui/core/Grid/Grid';
 import { DelayedInput, InputFieldProps, ValidatedFormGroupWithLabel } from './common';
-import { createStyles, IconButton, InputAdornment, Theme, Tooltip, withStyles } from '@material-ui/core';
-import compose from '../../utilities/compose';
+import { createStyles, IconButton, InputAdornment, Theme, Tooltip, WithStyles, withStyles } from '@material-ui/core';
 import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 
 //these styles try to mirror how the rendered markdown in the printed PDF looks. See base.twig in the backend code.
@@ -45,12 +44,9 @@ const styles = (theme: Theme) => {
   });
 };
 
-interface Props extends InputFieldProps {
-  classes?: any;
-}
+interface Props extends InputFieldProps, WithStyles<typeof styles> {}
 
-@compose(withStyles(styles))
-export class MarkdownField extends React.Component<Props> {
+class MarkdownFieldInner extends React.Component<Props> {
   state = {
     preview: true,
   };
@@ -91,3 +87,4 @@ export class MarkdownField extends React.Component<Props> {
     );
   };
 }
+export const MarkdownField = withStyles(styles)(MarkdownFieldInner);

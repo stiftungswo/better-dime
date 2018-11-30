@@ -9,11 +9,13 @@ import { Prompt } from 'react-router';
 import compose from '../utilities/compose';
 import { withMobileDialog } from '@material-ui/core';
 import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import { Schema } from 'yup';
+import { HandleFormikSubmit } from '../types';
 
 interface DialogFormProps<T> {
   title: string;
-  onSubmit: (values: any) => Promise<any>;
-  validationSchema?: any;
+  onSubmit: (values: T) => Promise<void>;
+  validationSchema?: Schema<T>;
   render: (props: FormikProps<T>, id: number) => React.ReactNode;
   loading?: boolean;
   open: boolean;
@@ -24,12 +26,12 @@ interface DialogFormProps<T> {
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
   FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & InjectedProps
 > {
-  public submit = async (values: any, formikBag: FormikBag<any, any>) => {
-    await this.props.onSubmit(values);
+  public handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
+    await this.props.onSubmit(this.props.validationSchema.cast(values));
     formikBag.setSubmitting(false);
   };
 
-  public handleClose = (props: FormikProps<any>) => () => {
+  public handleClose = (props: FormikProps<Values>) => () => {
     if (props.dirty) {
       if (confirm('Änderungen verwerfen?')) {
         this.props.onClose();
@@ -40,7 +42,8 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   };
 
   public render() {
-    const { fullScreen } = this.props;
+    // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
+    const { fullScreen, ...rest } = this.props as any;
 
     return this.props.loading ? (
       <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>
@@ -48,13 +51,13 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
       </Dialog>
     ) : (
       <Formik
-        {...this.props as any}
-        onSubmit={this.submit}
-        render={formikProps => (
+        {...rest}
+        onSubmit={this.handleSubmit}
+        render={(formikProps: FormikProps<Values>) => (
           <>
             <Prompt when={formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
-              <DialogContent>{this.props.render(formikProps as any)}</DialogContent>
+              <DialogContent>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
                 <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>

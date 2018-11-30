@@ -159,11 +159,11 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
 interface ErrorTextProps extends WithStyles<typeof styles> {
   children: React.ReactNode;
 }
-export const ErrorText = compose(withStyles(styles(DimeTheme)))(({ classes, children }: ErrorTextProps) => (
+export const ErrorText = withStyles(styles(DimeTheme))(({ classes, children }: ErrorTextProps) => (
   <Typography color={'error'}>{children}</Typography>
 ));
 
-export const LoadingSpinner = compose(withStyles(styles(DimeTheme)))(({ classes }: any) => (
+export const LoadingSpinner = withStyles(styles(DimeTheme))(({ classes }: WithStyles<typeof styles>) => (
   <CircularProgress className={classes.progress} />
 ));
 
@@ -246,8 +246,8 @@ class DimeLayout extends React.Component<Props> {
 
 export default withStyles(styles(DimeTheme))(DimeLayout);
 
+// tslint:disable-next-line:no-any
 export const hasContent = (value: any) => {
-  // tslint:disable-line:no-any
   if (!value) {
     return false;
   }

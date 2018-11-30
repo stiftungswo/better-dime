@@ -9,8 +9,9 @@ import { ActionButton, ActionButtonAction } from './ActionButton';
 import * as React from 'react';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { AddIcon } from './icons';
+import { Theme } from '@material-ui/core';
 
-const toolbarStyles = (theme: any) => ({
+const toolbarStyles = (theme: Theme) => ({
   root: {
     paddingRight: theme.spacing.unit,
   },
@@ -37,7 +38,7 @@ const toolbarStyles = (theme: any) => ({
 
 interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
   numSelected?: number;
-  deleteAction?: any;
+  deleteAction?: () => undefined;
   addAction?: ActionButtonAction;
   title: string;
   children?: React.ReactNode;
@@ -65,7 +66,11 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
       <div className={classes.spacer} />
       {props.children}
       <div className={classes.actions}>
-        {numSelected > 0 ? <DeleteButton onConfirm={deleteAction} /> : addAction && <ActionButton icon={AddIcon} action={addAction} />}
+        {numSelected > 0 && deleteAction ? (
+          <DeleteButton onConfirm={deleteAction} />
+        ) : (
+          addAction && <ActionButton icon={AddIcon} action={addAction} />
+        )}
       </div>
     </Toolbar>
   );

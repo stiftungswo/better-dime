@@ -25,8 +25,7 @@
       "severity": "off"
     },
     "no-any": {
-      "todo": "reenable this",
-      "severity": "off"
+      "severity": "warning"
     },
     "array-type": {
       "severity": "off"

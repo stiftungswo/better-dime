@@ -29,10 +29,10 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   public editing: boolean = false;
 
   @observable
-  public effortTemplate: ProjectEffortTemplate = <ProjectEffortTemplate>{
+  public effortTemplate: ProjectEffortTemplate = {
     comment: '',
     date: moment().format('YYYY-MM-DD'),
-    employee_ids: [this.mainStore.userId && this.mainStore.userId],
+    employee_ids: this.mainStore.userId ? [this.mainStore.userId] : [],
     position_id: null,
     project_id: null,
     value: 1,

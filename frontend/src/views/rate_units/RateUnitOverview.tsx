@@ -68,7 +68,7 @@ export default class RateUnitOverview extends React.Component<Props> {
         schema={rateUnitSchema}
         defaultValues={rateUnitTemplate}
         searchFilter={this.filter}
-        renderActions={e => (
+        renderActions={(e: RateUnit) => (
           <ActionButtons
             archiveAction={!e.archived ? () => this.props.rateUnitStore!.archive(e.id, true) : undefined}
             restoreAction={e.archived ? () => this.props.rateUnitStore!.archive(e.id, false) : undefined}

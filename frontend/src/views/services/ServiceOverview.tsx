@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Service } from './types';
+import { Service, ServiceListing } from './types';
 import { MainStore } from '../../stores/mainStore';
 import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
@@ -19,7 +19,7 @@ export type Props = {
   withRouter
 )
 export default class ServiceOverview extends React.Component<Props> {
-  public columns: Array<Column<Service>> = [];
+  public columns: Array<Column<ServiceListing>> = [];
 
   constructor(props: Props) {
     super(props);
@@ -43,7 +43,7 @@ export default class ServiceOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (s: Service, query: string) =>
+  public filter = (s: ServiceListing, query: string) =>
     [`${s.id}`, s.name, s.description].some(field => field.toLowerCase().includes(query.toLowerCase()));
 
   public render() {

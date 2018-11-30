@@ -5,7 +5,7 @@ import { InjectedNotistackProps } from 'notistack';
 import OfferForm from './OfferForm';
 import compose from '../../utilities/compose';
 import { OfferStore } from '../../stores/offerStore';
-import { Offer } from '../../types';
+import { FormValues, Offer } from '../../types';
 import { toJS } from 'mobx';
 
 interface OfferDetailRouterProps {
@@ -38,6 +38,6 @@ export default class OfferUpdate extends React.Component<Props> {
     const offer = this.offer;
     const title = offer ? `${offer.name} - Offerten` : 'Offerte bearbeiten';
 
-    return <OfferForm title={title} onSubmit={this.handleSubmit} offer={offer as any} />;
+    return <OfferForm title={title} onSubmit={this.handleSubmit} offer={offer as FormValues} />;
   }
 }

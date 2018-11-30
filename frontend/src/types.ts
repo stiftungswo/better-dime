@@ -1,8 +1,7 @@
-// tslint:disable
-
 //TODO clean this up; either pull the Service types here, or split this up into several files
 
 import { Service } from './views/services/types';
+import { FormikBag } from 'formik';
 
 export interface Offer {
   id?: number;
@@ -86,7 +85,6 @@ export interface Employee {
   realTime: number;
   targetTime: number;
   extendTimetrack: boolean;
-  workingPeriods: any[];
   password: string;
 }
 
@@ -97,75 +95,6 @@ export interface PhoneNumber {
   deleted_at: null;
   created_at: string;
   updated_at: string;
-}
-
-export interface CustomerRateGroup {
-  id: number;
-  user: Employee;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  name: RateGroupName;
-}
-
-export enum RateGroupName {
-  Kanton = 'Kanton',
-}
-
-export enum RateUnit {
-  CHFH = 'CHF/h',
-}
-
-export interface RateUnitType {
-  id: ID;
-  user: User;
-  createdAt: string;
-  updatedAt: string;
-  name: RateUnitTypeName;
-  doTransform: boolean;
-  factor: number;
-  scale: number;
-  roundMode: number;
-  symbol: ID;
-}
-
-export enum ID {
-  H = 'h',
-}
-
-export enum RateUnitTypeName {
-  Stunden = 'Stunden',
-}
-
-export interface User {}
-
-export enum Alias {
-  Consulting = 'consulting',
-}
-
-export enum ServiceDescription {
-  ThisIsADetailedDescription = 'This is a detailed description',
-}
-
-export interface ServiceRate {
-  id: number;
-  user: User;
-  createdAt: string;
-  updatedAt: string;
-  rateGroup: ServiceRateRateGroup;
-  rateUnit: RateUnit;
-  rateUnitType: RateUnitType;
-  service: User;
-  rateValue: string;
-}
-
-export interface ServiceRateRateGroup {
-  id: number;
-  user: User;
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  name: RateGroupName;
 }
 
 export interface Project {
@@ -193,7 +122,6 @@ export interface Project {
   positions: ProjectPosition[];
   offer: Offer;
   invoice_ids: number[];
-  deletable: boolean;
 }
 
 export interface ProjectPosition {
@@ -386,3 +314,16 @@ export enum CustomerType {
   Company = 'company',
   Person = 'person',
 }
+
+//tslint:disable-next-line:no-any ; really don't care for that type, and it comes from deep inside Formik
+export type HandleFormikSubmit<Values> = (values: Values, formikBag: FormikBag<any, Values>) => void;
+
+export interface Listing {
+  id?: number;
+  archived?: boolean;
+}
+
+export type DimeDate = string;
+
+//tslint:disable-next-line:no-any ; If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
+export type FormValues = any;

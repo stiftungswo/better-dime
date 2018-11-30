@@ -10,6 +10,7 @@ import { RateGroup, RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
 import { hasContent } from '../../layout/DimeLayout';
 import { serviceTemplate } from './serviceSchema';
+import { FormValues } from '../../types';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   serviceStore?: ServiceStore;
@@ -54,7 +55,7 @@ export default class ServiceCreate extends React.Component<Props> {
     // we don't intend to create any in the future, so we just ignore that case.
     return {
       ...serviceTemplate,
-      service_rates: this.serviceRates as any,
+      service_rates: this.serviceRates as FormValues,
     };
   }
 

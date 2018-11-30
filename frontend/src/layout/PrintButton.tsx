@@ -8,7 +8,7 @@ import { PrintIcon } from './icons';
 import Badge from '@material-ui/core/Badge/Badge';
 
 interface Props {
-  icon?: any;
+  icon?: React.ReactType;
   path: string;
   disabled?: boolean;
   color?: PropTypes.Color;

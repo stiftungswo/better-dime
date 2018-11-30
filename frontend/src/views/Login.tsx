@@ -17,6 +17,7 @@ import { InjectedNotistackProps } from 'notistack';
 import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
+import { HandleFormikSubmit } from '../types';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -68,8 +69,7 @@ const loginSchema = yup.object({
   observer
 )
 class Login extends React.Component<Props> {
-  public handleSubmit = (values: { email: string; password: string }, formikBag: FormikBag<any, any>) => {
-    // tslint:disable-line:no-any
+  public handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = (values, formikBag) => {
     this.props
       .mainStore!.postLogin({ ...values })
       .then(() => {

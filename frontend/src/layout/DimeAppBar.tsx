@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography/Typography';
 import { Button, CircularProgress, withWidth } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
 import { styles } from './DimeLayout';
-import { ActionButton, ActionButtonAction } from './ActionButton';
+import { ActionButton, ActionButtonAction, ButtonProps } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
@@ -37,8 +37,9 @@ class DimeAppBarInner extends React.Component<DimeAppBarProps> {
     window.document.title = `${props.title} - Dime`;
   }
 
-  handleMenu = (event: any) => {
-    this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
+  //TODO is the whole userMenu stuff going to be implemented or can we remove this?
+  handleMenu = (event: React.PointerEvent) => {
+    this.props.mainStore!.userMenuAnchorEl = event.currentTarget as HTMLElement;
     this.props.mainStore!.userMenuOpen = false;
   };
 
@@ -82,13 +83,6 @@ class DimeAppBarInner extends React.Component<DimeAppBarProps> {
 }
 
 export const DimeAppBar = withStyles(styles(DimeTheme))(DimeAppBarInner);
-
-interface ButtonProps {
-  icon: any;
-  title: string;
-  action?: ActionButtonAction;
-  disabled?: boolean;
-}
 
 export class DimeAppBarButton extends React.Component<ButtonProps> {
   public render = () => {

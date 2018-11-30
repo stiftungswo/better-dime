@@ -6,6 +6,7 @@ import Overview, { Column } from '../../layout/Overview';
 import { todo } from '../../index';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { MainStore } from '../../stores/mainStore';
+import { Invoice } from '../../types';
 
 export interface Props {
   mainStore?: MainStore;
@@ -17,7 +18,7 @@ export interface Props {
   observer
 )
 export default class InvoiceOverview extends React.Component<Props> {
-  public columns: Array<Column<InvoiceListing>>;
+  public columns: Column<InvoiceListing>[];
 
   constructor(props: Props) {
     super(props);

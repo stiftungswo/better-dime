@@ -25,6 +25,8 @@ const styles = createStyles({
   },
 });
 
+//tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
+
 function desc(a: any, b: any, orderBy: string): number {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -59,14 +61,15 @@ function format<T>(def: Column<T>, row: T): React.ReactNode {
   }
 }
 
-interface TableProps<T> {
+//tslint:enable:no-any
+
+interface TableProps<T> extends WithStyles<typeof styles> {
   columns: Array<Column<T>>;
   renderActions?: (e: T) => React.ReactNode;
   data: Array<T>;
   onClickRow?: (e: T, index: number) => void;
   searchFilter?: (e: T) => boolean;
   noSort?: boolean;
-  classes?: any;
 }
 
 interface TableState {
@@ -76,11 +79,8 @@ interface TableState {
 
 type Direction = 'asc' | 'desc';
 
-@compose(
-  observer,
-  withStyles(styles)
-)
-export class OverviewTable<T> extends React.Component<TableProps<T>, TableState> {
+@compose(observer)
+class OverviewTableInner<T> extends React.Component<TableProps<T>, TableState> {
   constructor(props: TableProps<T>) {
     super(props);
     this.state = {
@@ -162,3 +162,5 @@ export class OverviewTable<T> extends React.Component<TableProps<T>, TableState>
     );
   }
 }
+
+export const OverviewTable = withStyles(styles)(OverviewTableInner);

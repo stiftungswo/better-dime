@@ -9,6 +9,7 @@ import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { AppBarSearch } from './AppBarSearch';
 import { AddIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
+import { Listing } from '../types';
 
 export type SearchFilter<T> = (e: T, qry: string) => boolean;
 
@@ -19,29 +20,29 @@ export interface Column<T> {
   format?: (t: T) => React.ReactNode;
 }
 
-interface Props<T> {
-  store: AbstractStore<T>;
+interface Props<ListingType> {
+  store: AbstractStore<any, ListingType>; //tslint:disable-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
   title: string;
   children?: React.ReactNode;
   addAction?: ActionButtonAction;
-  renderActions?: (e: T) => React.ReactNode;
-  columns?: Array<Column<T>>;
-  searchFilter?: SearchFilter<T>;
-  onClickRow?: ((e: T) => void) | string;
+  renderActions?: (e: ListingType) => React.ReactNode;
+  columns?: Array<Column<ListingType>>;
+  searchFilter?: SearchFilter<ListingType>;
+  onClickRow?: ((e: ListingType) => void) | string;
   mainStore?: MainStore;
   archivable?: boolean;
 }
 
 @inject('mainStore')
 @observer
-export default class Overview extends React.Component<Props<any>> {
+export default class Overview<ListingType extends Listing> extends React.Component<Props<ListingType>> {
   public state = {
     loading: true,
     query: '',
     showArchived: false,
   };
 
-  constructor(props: Props<any>) {
+  constructor(props: Props<ListingType>) {
     super(props);
     props.store!.fetchAll().then(() => this.setState({ loading: false }));
   }
@@ -53,15 +54,15 @@ export default class Overview extends React.Component<Props<any>> {
 
   public get searchFilter() {
     if (this.props.searchFilter !== undefined) {
-      return (e: any) => this.props.searchFilter!(e, this.state.query);
+      return (e: ListingType) => this.props.searchFilter!(e, this.state.query);
     }
     return undefined;
   }
 
-  public handleClick = (e: any) => {
+  public handleClick = (e: ListingType) => {
     const onClickRow = this.props.onClickRow;
     if (typeof onClickRow === 'string') {
-      this.props.mainStore!.navigateTo(onClickRow.replace(':id', e.id));
+      this.props.mainStore!.navigateTo(onClickRow.replace(':id', String(e.id)));
     } else if (typeof onClickRow === 'function') {
       onClickRow(e);
     }
@@ -71,7 +72,7 @@ export default class Overview extends React.Component<Props<any>> {
     let entities = this.props.store!.entities;
 
     if (this.props.archivable && !this.state.showArchived) {
-      entities = entities.filter((e: any) => !e.archived);
+      entities = entities.filter((e: ListingType) => !e.archived);
     }
 
     return (

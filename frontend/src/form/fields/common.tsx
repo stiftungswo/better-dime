@@ -3,7 +3,7 @@ import { ErrorMessage, FieldProps } from 'formik';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input/Input';
+import Input, { InputProps } from '@material-ui/core/Input/Input';
 import Switch from '@material-ui/core/Switch/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
@@ -14,21 +14,17 @@ import { PropTypes } from '@material-ui/core';
  * Formik's <FastField> is supposed to do this already, but it seemed to be syncing onChange anyway. This _might_ introduce some issues
  * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
  */
-export class DelayedInput extends React.Component<any> {
-  public state = {
-    value: '',
-  };
-
-  public constructor(props: any) {
+export class DelayedInput extends React.Component<InputProps, { value?: string }> {
+  public constructor(props: InputProps) {
     super(props);
     this.state = {
-      value: props.value,
+      value: String(props.value),
     };
   }
 
   public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: e.target.value });
 
-  public handleBlur = this.props.onChange;
+  public handleBlur: any = this.props.onChange; //tslint:disable-line:no-any
 
   public render = () => {
     return <Input {...this.props} value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} />;
@@ -46,8 +42,8 @@ export type FormProps = {
 export type InputFieldProps = {
   type: string;
   unit?: string;
-  onChange?: any;
-  value?: any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
   delayed?: boolean;
   disabled?: boolean;
 } & FormProps;

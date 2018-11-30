@@ -5,8 +5,22 @@ import { AbstractStore } from './abstractStore';
 
 export interface ProjectListing {
   id: number;
+  accountant_id: number;
+  customer_id: number | null;
+  address_id: number;
+  archived: boolean;
+  category_id: number;
+  chargeable: boolean;
+  deadline: null | string;
+  description: string;
+  fixed_price: number | null;
   name: string;
-  shortDescription: string;
+  offer_id: number | null;
+  rate_group_id: number;
+  vacation_project: boolean;
+  created_at: string;
+  updated_at: string;
+  deletable: boolean;
 }
 
 export class ProjectStore extends AbstractStore<Project, ProjectListing> {
@@ -64,6 +78,7 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     this.project = res.data;
   }
 
+  //TODO this was supposed to be replaced by yup casts - can this be removed?
   protected cast(project: Project) {
     //this prevents empty fields being sent to the backend as ""
     //optimally, this can be handled in the form so empty strings don't even reach here.

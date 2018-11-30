@@ -8,7 +8,7 @@ interface Props<T> {
   columns: Array<Column<T>>;
   title: string;
   renderForm: (index: number) => React.ReactNode;
-  defaultValues: any;
+  defaultValues: object;
   renderActions?: (e: T) => React.ReactNode;
 }
 
@@ -34,7 +34,7 @@ export class SubformTable<T> extends React.Component<Props<T>> {
     this.setState({ editing: true });
   };
 
-  public handleSubmit = () => undefined;
+  public handleSubmit = () => Promise.resolve();
 
   public render() {
     // const entity = this.props.store.entity;
@@ -54,7 +54,7 @@ export class SubformTable<T> extends React.Component<Props<T>> {
             onClose={this.handleClose}
             title={this.props.title}
             initialValues={this.props.values[this.state.editIndex!] || this.props.defaultValues}
-            onSubmit={this.handleSubmit as any}
+            onSubmit={this.handleSubmit}
           >
             {this.props.renderForm(this.state.editIndex!)}
           </SubformDialog>

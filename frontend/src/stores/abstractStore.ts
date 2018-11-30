@@ -71,7 +71,7 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected async doFetchOne(id: number): Promise<any> {
+  protected async doFetchOne(id: number): Promise<T | void> {
     throw new Error('Not implemented');
   }
 
@@ -164,7 +164,7 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  public async notifyProgress(f: () => Promise<any>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
+  public async notifyProgress<P>(f: () => Promise<P>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
     try {
       this.displayInProgress();
       await f();

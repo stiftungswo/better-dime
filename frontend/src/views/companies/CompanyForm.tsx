@@ -18,7 +18,7 @@ import { MainStore } from 'src/stores/mainStore';
 import TableToolbar from 'src/layout/TableToolbar';
 import { toJS } from 'mobx';
 
-export interface Props extends FormViewProps<Person> {
+export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
@@ -141,7 +141,7 @@ export default class CompanyForm extends React.Component<Props> {
                       {
                         id: '_',
                         label: 'Strasse',
-                        format: p => {
+                        format: (p: Person) => {
                           return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
                         },
                       },

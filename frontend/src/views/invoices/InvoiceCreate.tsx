@@ -6,7 +6,7 @@ import { InjectedNotistackProps } from 'notistack';
 import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
-import { Invoice } from '../../types';
+import { FormValues, Invoice } from '../../types';
 import { invoiceTemplate } from './invoiceSchema';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
@@ -36,7 +36,7 @@ export default class InvoiceCreate extends React.Component<Props> {
       <InvoiceForm
         title={'Rechnung erstellen'}
         onSubmit={this.handleSubmit}
-        invoice={invoiceTemplate as any}
+        invoice={invoiceTemplate as FormValues}
         submitted={this.state.submitted}
       />
     );

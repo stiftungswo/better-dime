@@ -26,8 +26,7 @@ export interface Props extends InjectedNotistackProps {
   history: History;
 }
 
-@compose(withSnackbar)
-export class StoreProvider extends React.Component<Props | any> {
+class StoreProviderInner extends React.Component<Props> {
   private stores: {
     mainStore: MainStore;
     offerStore: OfferStore;
@@ -81,3 +80,5 @@ export class StoreProvider extends React.Component<Props | any> {
     return <Provider {...this.stores}>{this.props.children}</Provider>;
   };
 }
+
+export const StoreProvider = withSnackbar(StoreProviderInner);

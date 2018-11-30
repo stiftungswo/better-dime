@@ -18,7 +18,7 @@ export type Props = {
   withRouter
 )
 export default class ProjectOverview extends React.Component<Props> {
-  public columns: Array<Column<ProjectListing>>;
+  public columns: Column<ProjectListing>[];
 
   constructor(props: Props) {
     super(props);
@@ -38,7 +38,7 @@ export default class ProjectOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: Project, query: string) => {
+  public filter = (p: ProjectListing, query: string) => {
     return [p.id + '', p.name, p.description].some(s => s.includes(query));
   };
 

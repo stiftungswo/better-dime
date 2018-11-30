@@ -7,10 +7,10 @@ import ProjectForm from './ProjectForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
-import { Project } from '../../types';
+import { FormValues, Project } from '../../types';
 import { projectTemplate } from './projectSchema';
 
-export interface Props extends RouteComponentProps, InjectedNotistackProps {
+export interface Props extends RouteComponentProps {
   projectStore?: ProjectStore;
   rateGroupStore?: RateGroupStore;
 }
@@ -41,7 +41,7 @@ export default class ProjectCreate extends React.Component<Props> {
       <ProjectForm
         title={'Projekt erstellen'}
         onSubmit={this.handleSubmit}
-        project={projectTemplate as any}
+        project={projectTemplate as FormValues}
         submitted={this.state.submitted}
       />
     );
