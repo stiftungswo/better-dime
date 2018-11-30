@@ -4,7 +4,7 @@ export const employeeSchema = yup.object({
   archived: yup.boolean(),
   can_login: yup.boolean().required(),
   email: yup.string().required(),
-  holidays_per_year: yup.number().required(),
+  holidays_per_year: yup.number().nullable(true),
   is_admin: yup.boolean().required(),
   first_name: yup.string().required(),
   last_name: yup.string().required(),

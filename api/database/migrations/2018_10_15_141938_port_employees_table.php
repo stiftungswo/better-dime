@@ -19,7 +19,7 @@ class PortEmployeesTable extends Migration
             $table->string('last_name');
             $table->boolean('can_login')->default(false);
             $table->boolean('archived')->default(false);
-            $table->string('holidays_per_year')->default(0);
+            $table->integer('holidays_per_year')->nullable();
             $table->softDeletes();
         });
     }
