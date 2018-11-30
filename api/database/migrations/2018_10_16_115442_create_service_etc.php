@@ -17,13 +17,12 @@ class CreateServiceEtc extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->timestamps();
         });
 
         Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->double('vat');
             $table->boolean('archived'); //TODO extract trait?
 

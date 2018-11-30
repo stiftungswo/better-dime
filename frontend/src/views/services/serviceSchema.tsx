@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 export const serviceSchema = yup.object({
   name: yup.string().required(),
-  description: yup.string().required(),
+  description: yup.string().nullable(true),
   vat: yup.number().required(),
   chargeable: yup.boolean(),
   archived: yup.boolean(),
