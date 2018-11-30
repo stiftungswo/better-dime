@@ -26,8 +26,8 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
     return this.customerTag;
   }
 
-  set entity(customer_tag: CustomerTag | undefined) {
-    this.customerTag = customer_tag;
+  set entity(customerTag: CustomerTag | undefined) {
+    this.customerTag = customerTag;
   }
 
   @computed
@@ -40,7 +40,7 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived: archived });
+    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 

@@ -43,7 +43,7 @@ export class TimetrackOverview extends React.Component<Props> {
 
     if (filterIds.length > 0) {
       rendering = this.props.filterIds.map((id: number) =>
-        entities.find((entity: ServiceListing | ProjectListing | EmployeeListing) => entity.id == id)
+        entities.find((entity: ServiceListing | ProjectListing | EmployeeListing) => entity.id === id)
       );
     } else {
       rendering = entities;

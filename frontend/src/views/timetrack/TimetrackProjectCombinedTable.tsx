@@ -28,13 +28,13 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
   public onClickCommentRow = async (entity: ProjectComment | undefined) => {
     if (entity && entity.id) {
       await this.props.projectCommentStore!.fetchOne(entity.id);
-      this.props.projectCommentStore!.is_editing = true;
+      this.props.projectCommentStore!.editing = true;
     }
   };
 
   public onProjectCommentAdd = () => {
     this.props.projectCommentStore!.projectCommentTemplate!.project_id = this.props.entity.id;
-    this.props.projectCommentStore!.is_editing = true;
+    this.props.projectCommentStore!.editing = true;
   };
 
   public projectGroupActions = (
@@ -52,9 +52,9 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
     const { displayTotal, efforts, entity, formatRateEntry, onClickEffortRow, projectCommentStore, showEmptyGroups } = this.props;
     const comments = projectCommentStore!.projectComments.filter((comment: ProjectComment) => comment.project_id === entity.id);
 
-    let joined_forces: (ProjectEffortListing | ProjectComment)[] = efforts;
-    joined_forces = joined_forces.concat(comments);
-    joined_forces = joined_forces.sort((a, b) => {
+    let joinedForces: (ProjectEffortListing | ProjectComment)[] = efforts;
+    joinedForces = joinedForces.concat(comments);
+    joinedForces = joinedForces.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
       return dateA.getTime() - dateB.getTime();
@@ -74,7 +74,7 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {joined_forces.map((e: ProjectEffortListing | ProjectComment) => {
+                {joinedForces.map((e: ProjectEffortListing | ProjectComment) => {
                   if ('comment' in e) {
                     return (
                       <TableRow key={`comment_${e.id}`} onClick={() => this.onClickCommentRow(e)} component={SafeClickableTableRow}>

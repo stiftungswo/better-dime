@@ -57,7 +57,7 @@ export class TimeEffortValueField extends React.Component<Props> {
   };
 
   protected updateValue = (value: string) => {
-    this.setState({ value: value });
+    this.setState({ value });
     this.props.form.setFieldValue(this.props.field.name, this.state.selectedFactor * Number(value));
   };
 

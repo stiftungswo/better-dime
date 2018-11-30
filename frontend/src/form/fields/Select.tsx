@@ -263,6 +263,6 @@ export const formikFieldCompatible = ({ label, value, onChange }: { label: strin
   form: {
     values: [],
     errors: [],
-    setFieldValue: (_: any, value: any) => onChange(value),
+    setFieldValue: (_: any, v: any) => onChange(v),
   },
 });

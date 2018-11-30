@@ -18,10 +18,10 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   }
 
   @observable
-  public is_editing: boolean = false;
+  public editing: boolean = false;
 
   @observable
-  public projectCommentTemplate: ProjectComment = <ProjectComment>{
+  public projectCommentTemplate: ProjectComment = {
     comment: '',
     date: moment().format('YYYY-MM-DD'),
     project_id: undefined,

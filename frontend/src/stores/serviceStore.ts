@@ -27,7 +27,7 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/services/' + id + '/archive', { archived: archived });
+    await this.mainStore.api.put('/services/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 

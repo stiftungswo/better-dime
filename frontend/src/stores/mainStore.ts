@@ -29,15 +29,15 @@ export interface JwtTokenDecoded {
 }
 
 function setAuthHeader(client: AxiosInstance, token: string | null) {
-  client.defaults.headers['Authorization'] = token ? 'Bearer ' + token : '';
+  client.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
 }
 
 export class MainStore {
-  private _api: AxiosInstance;
+  private _api: AxiosInstance; //tslint:disable-line:variable-name
   @observable
   private openRequests = 0;
   @observable
-  private _token: string = '';
+  private _token: string = ''; //tslint:disable-line:variable-name
 
   @observable
   drawerOpen = false;
@@ -103,7 +103,7 @@ export class MainStore {
       (error: AxiosError) => {
         this.openRequests -= 1;
         if (error.response && error.response.status === 401) {
-          console.log('Unathorized API access, redirect to login');
+          console.log('Unathorized API access, redirect to login'); //tslint:disable-line:no-console
           this.history.push('/login');
         }
         return Promise.reject(error);
@@ -148,7 +148,7 @@ export class MainStore {
   }
 
   @computed
-  public get meSub(): number | undefined {
+  public get userId(): number | undefined {
     if (this._token) {
       return this.decodeJWT().sub;
     } else {

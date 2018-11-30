@@ -27,7 +27,7 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived: archived });
+    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 
@@ -38,14 +38,14 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   }
 
   @action
-  public async doPost(project_category: ProjectCategory) {
-    await this.mainStore.api.post('/project_categories/', project_category);
+  public async doPost(projectCategory: ProjectCategory) {
+    await this.mainStore.api.post('/project_categories/', projectCategory);
     await this.doFetchAll();
   }
 
   @action
-  public async doPut(project_category: ProjectCategory) {
-    await this.mainStore.api.put('/project_categories/' + project_category.id, project_category);
+  public async doPut(projectCategory: ProjectCategory) {
+    await this.mainStore.api.put('/project_categories/' + projectCategory.id, projectCategory);
     await this.doFetchAll();
   }
 
@@ -54,8 +54,8 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
     return this.projectCategory;
   }
 
-  set entity(project_category: ProjectCategory | undefined) {
-    this.projectCategory = project_category;
+  set entity(projectCategory: ProjectCategory | undefined) {
+    this.projectCategory = projectCategory;
   }
 
   @computed

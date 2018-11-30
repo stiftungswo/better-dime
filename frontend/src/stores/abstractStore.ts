@@ -1,3 +1,4 @@
+//tslint:disable:no-console
 import { action } from 'mobx';
 import { MainStore } from './mainStore';
 import { AxiosResponse } from 'axios';
@@ -163,10 +164,10 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  public async notifyProgress(action: () => Promise<any>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
+  public async notifyProgress(f: () => Promise<any>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
     try {
       this.displayInProgress();
-      await action();
+      await f();
       this.mainStore.displaySuccess(successMessage);
     } catch (e) {
       this.mainStore.displayError(errorMessage);

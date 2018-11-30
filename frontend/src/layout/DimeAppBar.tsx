@@ -31,7 +31,7 @@ interface DimeAppBarProps extends WithStyles<typeof styles> {
   inject('mainStore', 'employeeStore'),
   observer
 )
-class DimeAppBar_ extends React.Component<DimeAppBarProps> {
+class DimeAppBarInner extends React.Component<DimeAppBarProps> {
   constructor(props: DimeAppBarProps) {
     super(props);
     window.document.title = `${props.title} - Dime`;
@@ -81,7 +81,7 @@ class DimeAppBar_ extends React.Component<DimeAppBarProps> {
   }
 }
 
-export const DimeAppBar = withStyles(styles(DimeTheme))(DimeAppBar_);
+export const DimeAppBar = withStyles(styles(DimeTheme))(DimeAppBarInner);
 
 interface ButtonProps {
   icon: any;

@@ -26,23 +26,23 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   public efforts: ProjectEffortListing[] = [];
 
   @observable
-  public is_editing: boolean = false;
+  public editing: boolean = false;
 
   @observable
   public effortTemplate: ProjectEffortTemplate = <ProjectEffortTemplate>{
     comment: '',
     date: moment().format('YYYY-MM-DD'),
-    employee_ids: [this.mainStore.meSub && this.mainStore.meSub],
+    employee_ids: [this.mainStore.userId && this.mainStore.userId],
     position_id: null,
     project_id: null,
     value: 1,
   };
 
   @observable
-  public is_loading: boolean = false;
+  public loading: boolean = false;
 
   @observable
-  public selected_project?: Project = undefined;
+  public selectedProject?: Project = undefined;
 
   @computed
   get entity(): ProjectEffort | undefined {
@@ -51,7 +51,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   @action
   protected async doFetchAll() {
-    this.is_loading = true;
+    this.loading = true;
     let baseIndex = '/project_efforts';
 
     if (this.timetrackFilterStore.filter) {
@@ -65,23 +65,23 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
     const res = await this.mainStore.api.get<ProjectEffortListing[]>(baseIndex);
     this.efforts = res.data;
-    this.is_loading = false;
+    this.loading = false;
   }
 
   @action
   protected async doPost(entity: ProjectEffort): Promise<void> {
-    this.is_loading = true;
+    this.loading = true;
     await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
-    this.is_loading = false;
+    this.loading = false;
   }
 
   @action
   protected async doPut(entity: ProjectEffort): Promise<void> {
-    this.is_loading = true;
+    this.loading = true;
     const res = await this.mainStore.api.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
     this.effort = res.data;
     this.fetchAll();
-    this.is_loading = false;
+    this.loading = false;
   }
 
   @action

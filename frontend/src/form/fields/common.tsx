@@ -81,7 +81,7 @@ export const InputFieldWithValidation = ({
   field,
   form,
   fullWidth = false,
-  unit = undefined,
+  unit,
   margin,
   required,
   multiline,
@@ -114,8 +114,3 @@ export const NumberField = (props: InputFieldProps) => <InputFieldWithValidation
 export const PasswordField = (props: InputFieldProps) => <InputFieldWithValidation type={'password'} {...props} />;
 
 export const TextField = (props: InputFieldProps & { multiline?: boolean }) => <InputFieldWithValidation type={'text'} {...props} />;
-
-export const TodoField = (props: InputFieldProps) => {
-  console.warn(`TodoField used: ${props.field.name}! Implement a custom field type for this.`);
-  return <TextField {...props} label={`[TODO] ${props.label}`} />;
-};

@@ -14,7 +14,7 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
   public onEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
     this.props.effortStore!.effortTemplate!.project_id = this.props.entity.id;
-    this.props.effortStore!.is_editing = true;
+    this.props.effortStore!.editing = true;
   };
 
   public render() {

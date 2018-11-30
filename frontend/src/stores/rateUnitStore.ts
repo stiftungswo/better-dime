@@ -31,7 +31,7 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/rate_units/' + id + '/archive', { archived: archived });
+    await this.mainStore.api.put('/rate_units/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 
@@ -48,14 +48,14 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   }
 
   @action
-  public async doPost(rate_unit: RateUnit) {
-    await this.mainStore.api.post('/rate_units', rate_unit);
+  public async doPost(rateUnit: RateUnit) {
+    await this.mainStore.api.post('/rate_units', rateUnit);
     await this.doFetchAll();
   }
 
   @action
-  public async doPut(rate_unit: RateUnit) {
-    await this.mainStore.api.put('/rate_units/' + rate_unit.id, rate_unit);
+  public async doPut(rateUnit: RateUnit) {
+    await this.mainStore.api.put('/rate_units/' + rateUnit.id, rateUnit);
     await this.doFetchAll();
   }
 

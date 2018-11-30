@@ -41,22 +41,22 @@ export default class Timetrack extends React.Component<Props> {
 
   public handleEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
-    this.props.effortStore!.is_editing = true;
+    this.props.effortStore!.editing = true;
   };
 
   public handleCommentAdd = () => {
     this.props.projectCommentStore!.projectComment = undefined;
-    this.props.projectCommentStore!.is_editing = true;
+    this.props.projectCommentStore!.editing = true;
   };
 
   public handleClose = () => {
-    this.props.projectCommentStore!.is_editing = false;
-    this.props.effortStore!.is_editing = false;
+    this.props.projectCommentStore!.editing = false;
+    this.props.effortStore!.editing = false;
   };
 
   public onClickRow = async (entity: ProjectEffortListing) => {
     await this.props.effortStore!.fetchOne(entity.id);
-    this.props.effortStore!.is_editing = true;
+    this.props.effortStore!.editing = true;
   };
 
   public render() {
@@ -71,8 +71,8 @@ export default class Timetrack extends React.Component<Props> {
           <Grid container={true} spacing={8}>
             <TimetrackFilterForm />
 
-            {this.props.effortStore!.is_loading && <LoadingSpinner />}
-            {!this.props.effortStore!.is_loading &&
+            {this.props.effortStore!.loading && <LoadingSpinner />}
+            {!this.props.effortStore!.loading &&
               ((this.props.timetrackFilterStore!.grouping === 'employee' && (
                 <TimetrackOverview
                   component={TimetrackEmployeeGroup}
@@ -103,8 +103,8 @@ export default class Timetrack extends React.Component<Props> {
                 )))}
           </Grid>
 
-          {this.props.effortStore!.is_editing && <TimetrackFormDialog onClose={this.handleClose} />}
-          {this.props.projectCommentStore!.is_editing && <TimetrackCommentFormDialog onClose={this.handleClose} />}
+          {this.props.effortStore!.editing && <TimetrackFormDialog onClose={this.handleClose} />}
+          {this.props.projectCommentStore!.editing && <TimetrackCommentFormDialog onClose={this.handleClose} />}
         </DimeContent>
       </>
     );

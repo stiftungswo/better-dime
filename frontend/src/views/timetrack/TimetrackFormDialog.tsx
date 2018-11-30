@@ -108,7 +108,7 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
               <Button
                 onClick={async () => {
                   await this.handleSubmit(formikProps.values, formikProps);
-                  this.props.effortStore!.is_editing = false;
+                  this.props.effortStore!.editing = false;
                 }}
                 disabled={formikProps.isSubmitting}
               >

@@ -10,13 +10,13 @@ export class TimetrackFilterStore extends AbstractStore<ProjectEffortFilter> {
   }
 
   @observable
-  public projectEffortFilter?: ProjectEffortFilter = <ProjectEffortFilter>{
+  public projectEffortFilter?: ProjectEffortFilter = {
     start: moment()
       .subtract(1, 'weeks')
       .format('YYYY-MM-DD'),
     end: moment().format('YYYY-MM-DD'),
     combine_times: false,
-    employee_ids: [this.mainStore.meSub && this.mainStore.meSub],
+    employee_ids: this.mainStore.userId ? [this.mainStore.userId] : [],
     service_ids: [],
     show_empty_groups: false,
     project_ids: [],

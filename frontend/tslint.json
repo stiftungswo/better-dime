@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier", "@sentry/typescript/tslint"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "defaultSeverity": "warning",
   "linterOptions": {
     "exclude": [
@@ -25,7 +25,17 @@
       "severity": "off"
     },
     "no-any": {
-      "severity": "warning"
+      "todo": "reenable this",
+      "severity": "off"
+    },
+    "array-type": {
+      "severity": "off"
+    },
+    "max-classes-per-file": {
+      "severity": "off"
+    },
+    "member-ordering": {
+      "severity": "off"
     },
     "jsx-no-lambda": {
       "severity": "off"

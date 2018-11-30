@@ -31,7 +31,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
   };
 
   private handleProfil = () => {
-    const myId = this.props.mainStore!.meSub;
+    const myId = this.props.mainStore!.userId;
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
 

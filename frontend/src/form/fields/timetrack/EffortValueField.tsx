@@ -20,10 +20,10 @@ interface Props extends InputFieldProps {
 export class EffortValueField extends React.Component<Props> {
   public render() {
     const { position_id } = this.props.form.values;
-    const { selected_project } = this.props.effortStore!;
+    const { selectedProject } = this.props.effortStore!;
 
-    if (position_id && selected_project) {
-      const selectedPosition: ProjectPosition | undefined = selected_project!.positions.find((p: ProjectPosition) => p.id === position_id);
+    if (position_id && selectedProject) {
+      const selectedPosition: ProjectPosition | undefined = selectedProject!.positions.find((p: ProjectPosition) => p.id === position_id);
 
       if (selectedPosition) {
         if (selectedPosition.is_time) {

@@ -31,7 +31,9 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
 
   public handleClose = (props: FormikProps<any>) => () => {
     if (props.dirty) {
-      confirm('Änderungen verwerfen?') && this.props.onClose();
+      if (confirm('Änderungen verwerfen?')) {
+        this.props.onClose();
+      }
     } else {
       this.props.onClose();
     }

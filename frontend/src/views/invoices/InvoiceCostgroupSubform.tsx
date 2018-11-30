@@ -41,7 +41,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
     const currentError = getIn(touched, name) && getIn(errors, name);
     return (
       <FieldArray
-        name={this.props.name}
+        name={name}
         render={arrayHelpers => (
           <>
             <TableToolbar
@@ -67,16 +67,16 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                   </TableRow>
                 )}
                 {values.costgroup_distributions.map((p: InvoiceCostgroup, index: number) => {
-                  const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
+                  const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
                   const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
                     <TableRow key={index}>
                       <TableCell>
-                        <Field delayed component={NumberField} name={name('weight')} />
+                        <Field delayed component={NumberField} name={fieldName('weight')} />
                       </TableCell>
                       <TableCell>{distribution}%</TableCell>
                       <TableCell>
-                        <Field component={CostgroupSelector} name={name('costgroup_number')} />
+                        <Field component={CostgroupSelector} name={fieldName('costgroup_number')} />
                       </TableCell>
                       <TableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

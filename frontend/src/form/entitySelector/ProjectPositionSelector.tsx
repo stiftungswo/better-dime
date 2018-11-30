@@ -30,13 +30,13 @@ export class ProjectPositionSelector extends React.Component<Props> {
   protected async updateProjectInStore() {
     if (this.props.form.values.project_id) {
       await this.props.projectStore!.fetchOne(this.props.form.values.project_id);
-      this.props.effortStore!.selected_project = this.props.projectStore!.project;
+      this.props.effortStore!.selectedProject = this.props.projectStore!.project;
     }
   }
 
   public get options() {
-    if (this.props.effortStore!.selected_project) {
-      return this.props.effortStore!.selected_project!.positions.map(e => ({
+    if (this.props.effortStore!.selectedProject) {
+      return this.props.effortStore!.selectedProject!.positions.map(e => ({
         value: e.id,
         label: e.service.name,
       }));

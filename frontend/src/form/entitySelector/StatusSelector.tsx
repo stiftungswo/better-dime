@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FormProps } from '../fields/common';
 import Select from '../fields/Select';
 
-interface Props extends FormProps {}
+type Props = FormProps;
 
 const statuses = {
   1: 'Offeriert',

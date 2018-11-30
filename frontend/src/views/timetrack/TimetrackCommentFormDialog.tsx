@@ -30,9 +30,9 @@ const schema = yup.object({
 export class TimetrackCommentFormDialog extends React.Component<Props> {
   public handleSubmit = (entity: ProjectComment, formikBag: FormikBag<any, any>) => {
     if (this.props.projectCommentStore!.entity) {
-      this.props.projectCommentStore!.put(entity).then(() => (this.props.projectCommentStore!.is_editing = false));
+      this.props.projectCommentStore!.put(entity).then(() => (this.props.projectCommentStore!.editing = false));
     } else {
-      this.props.projectCommentStore!.post(entity).then(() => (this.props.projectCommentStore!.is_editing = false));
+      this.props.projectCommentStore!.post(entity).then(() => (this.props.projectCommentStore!.editing = false));
     }
   };
 

@@ -33,12 +33,12 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
   }
 
   @action
-  public async doPost(rate_group: RateGroup) {
+  public async doPost(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 
   @action
-  public async doPut(rate_group: RateGroup) {
+  public async doPut(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 

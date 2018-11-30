@@ -33,7 +33,7 @@ export class EmployeeStore extends AbstractStore<Employee> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/employees/' + id + '/archive', { archived: archived });
+    await this.mainStore.api.put('/employees/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 

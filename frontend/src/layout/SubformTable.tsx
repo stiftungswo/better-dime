@@ -19,7 +19,6 @@ export class SubformTable<T> extends React.Component<Props<T>> {
   };
 
   public handleClick = async (entity: T, index: number) => {
-    console.log('clicked index: ', index);
     this.setState({
       editing: true,
       editIndex: index,
@@ -35,7 +34,7 @@ export class SubformTable<T> extends React.Component<Props<T>> {
     this.setState({ editing: true });
   };
 
-  public handleSubmit = () => {};
+  public handleSubmit = () => undefined;
 
   public render() {
     // const entity = this.props.store.entity;
