@@ -7,20 +7,20 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
-import { employeeSchema } from './employeeSchema';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
+  schema: Object;
 }
 
 export default class EmployeeForm extends React.Component<Props> {
   public render() {
-    const { employee } = this.props;
+    const { employee, schema } = this.props;
 
     return (
       <FormView
         title={this.props.title}
-        validationSchema={employeeSchema}
+        validationSchema={schema}
         loading={!hasContent(employee) || this.props.loading}
         initialValues={{ ...employee, password: '', password_repeat: '' }}
         onSubmit={this.props.onSubmit}

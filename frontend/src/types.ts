@@ -81,7 +81,7 @@ export interface Employee {
   last_name: string;
   createdAt: string;
   updatedAt: string;
-  holidays_per_year: number;
+  holidays_per_year: number | null;
   realTime: number;
   targetTime: number;
   extendTimetrack: boolean;

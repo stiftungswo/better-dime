@@ -5,7 +5,7 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import { RouteComponentProps } from 'react-router';
 import EmployeeForm from './EmployeeForm';
 import compose from '../../utilities/compose';
-import { employeeTemplate } from './employeeSchema';
+import { employeeTemplate, newEmployeeSchema } from './employeeSchema';
 
 export interface Props extends RouteComponentProps {
   employeeStore?: EmployeeStore;
@@ -34,6 +34,7 @@ export default class EmployeeCreate extends React.Component<Props> {
         title={'Mitarbeiter erfassen'}
         onSubmit={this.handleSubmit}
         employee={employeeTemplate}
+        schema={newEmployeeSchema}
         submitted={this.state.submitted}
       />
     );

@@ -58,7 +58,7 @@ class EmployeeController extends BaseController
             'can_login' => 'boolean',
             'email' => 'required|email',
             'first_name' => 'required|string',
-            'holidays_per_year' => 'required|integer',
+            'holidays_per_year' => 'integer|nullable',
             'is_admin' => 'boolean',
             'last_name' => 'required|string',
             'password' => 'string'
