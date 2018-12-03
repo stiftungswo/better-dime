@@ -86,6 +86,7 @@ export interface Employee {
   targetTime: number;
   extendTimetrack: boolean;
   password: string;
+  work_periods: WorkPeriod[];
 }
 
 export interface PhoneNumber {
@@ -327,3 +328,21 @@ export type DimeDate = string;
 
 //tslint:disable-next-line:no-any ; If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
 export type FormValues = any;
+
+export interface WorkPeriod {
+  id: number;
+  created_at: string;
+  deleted_at: null;
+  effective_time: number;
+  effort_till_today: number;
+  employee_id: number;
+  end: string;
+  pensum: number;
+  period_vacation_budget: number;
+  target_time: number;
+  start: string;
+  updated_at: string;
+  vacation_takeover: number;
+  vacation_till_today: number;
+  yearly_vacation_budget: number;
+}

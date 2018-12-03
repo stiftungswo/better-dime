@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { dimeDate } from '../../utilities/validationHelpers';
 
 export const editEmployeeSchema = yup.object({
   archived: yup.boolean(),
@@ -10,6 +11,15 @@ export const editEmployeeSchema = yup.object({
   last_name: yup.string().required(),
   password: yup.string(),
   password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
+  work_periods: yup.array(
+    yup.object({
+      end: dimeDate().required(),
+      pensum: yup.number().required(),
+      start: dimeDate().required(),
+      vacation_takeover: yup.number().required(),
+      yearly_vacation_budget: yup.number().required(),
+    })
+  ),
 });
 
 export const newEmployeeSchema = yup.object({
@@ -25,6 +35,15 @@ export const newEmployeeSchema = yup.object({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.')
     .required(),
+  work_periods: yup.array(
+    yup.object({
+      end: dimeDate().required(),
+      pensum: yup.number().required(),
+      start: dimeDate().required(),
+      vacation_takeover: yup.number().required(),
+      yearly_vacation_budget: yup.number().required(),
+    })
+  ),
 });
 
 export const employeeTemplate = {
@@ -41,6 +60,6 @@ export const employeeTemplate = {
   realTime: 0,
   targetTime: 0,
   extendTimetrack: false,
-  workingPeriods: [],
+  work_periods: [],
   password: '',
 };

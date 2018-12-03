@@ -3,6 +3,7 @@
 namespace Tests\Integrations\Controllers;
 
 use App\Models\Employee\Employee;
+use App\Models\Employee\WorkPeriod;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class EmployeeControllerTest extends \TestCase
@@ -70,18 +71,24 @@ class EmployeeControllerTest extends \TestCase
         $this->asAdmin()->json('PUT', 'api/v1/employees/1789764', $template = $this->employeeTemplate())->assertResponseStatus(404);
     }
 
-    /*public function testInvalidParamsPut()
+    public function testInvalidParamsPut()
     {
         // can't update because parameters are invalid
         $employeeId = factory(Employee::class)->create()->id;
         $this->asAdmin()->json('PUT', 'api/v1/employees/' . $employeeId, [])->assertResponseStatus(422);
-    }*/
+    }
 
     public function testValidPut()
     {
-        $employeeId = factory(Employee::class)->create()->id;
+        // also add one nested relation, delete one and update one
+        $employee = factory(Employee::class)->create();
+        $workPeriodList = factory(WorkPeriod::class)->times(2)->make();
+        $employee->work_periods()->saveMany($workPeriodList);
+
         $template = $this->employeeTemplate();
-        $this->asAdmin()->json('PUT', 'api/v1/employees/' . $employeeId, $template)->assertResponseOk();
+        $template['work_periods']['0']['id'] = $workPeriodList[0]->id;
+
+        $this->asAdmin()->json('PUT', 'api/v1/employees/' . $employee->id, $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
     }
 
@@ -95,6 +102,22 @@ class EmployeeControllerTest extends \TestCase
             'holidays_per_year' => 25,
             'is_admin' => false,
             'last_name' => 'Muster',
+            'work_periods' => [
+                [
+                    'end' => '2017-12-31',
+                    'pensum' => 80,
+                    'start' => '2017-01-01',
+                    'vacation_takeover' => 130,
+                    'yearly_vacation_budget' => 10080
+                ],
+                [
+                    'end' => '2018-12-31',
+                    'pensum' => 90,
+                    'start' => '2018-01-01',
+                    'vacation_takeover' => 0,
+                    'yearly_vacation_budget' => 10080
+                ]
+            ]
         ];
     }
 }

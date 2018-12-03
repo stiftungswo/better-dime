@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Employee\Employee;
+use App\Models\Employee\WorkPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class EmployeeController extends BaseController
@@ -22,20 +24,44 @@ class EmployeeController extends BaseController
 
     public function get($id)
     {
-        return Employee::findOrFail($id);
+        return Employee::with('work_periods')->findOrFail($id);
     }
 
     public function post(Request $request)
     {
         $this->validateRequest($request);
         $employee = Employee::create(Input::toArray());
+
+        if (Input::get('work_periods')) {
+            foreach (Input::get('work_periods') as $workPeriod) {
+                /** @var WorkPeriod $wp */
+                $wp = WorkPeriod::make($workPeriod);
+                $wp->employee()->associate($employee);
+                $wp->save();
+            }
+        }
+
         return self::get($employee->id);
     }
 
     public function put($id, Request $request)
     {
         $this->validateRequest($request);
-        Employee::findOrFail($id)->update(Input::toArray());
+        $employee = Employee::findOrFail($id);
+
+        try {
+            DB::beginTransaction();
+            $employee->update(Input::toArray());
+
+            if (Input::get('work_periods')) {
+                $this->executeNestedUpdate(Input::get('work_periods'), $employee->work_periods, WorkPeriod::class, 'employee', $employee);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+        DB::commit();
+
         return self::get($id);
     }
 
@@ -61,7 +87,12 @@ class EmployeeController extends BaseController
             'holidays_per_year' => 'integer|nullable',
             'is_admin' => 'boolean',
             'last_name' => 'required|string',
-            'password' => 'string'
+            'password' => 'string',
+            'work_periods.*.end' => 'required|date',
+            'work_periods.*.pensum' => 'required|integer',
+            'work_periods.*.start' => 'required|date',
+            'work_periods.*.vacation_takeover' => 'required|numeric',
+            'work_periods.*.yearly_vacation_budget' => 'required|integer',
         ]);
     }
 }

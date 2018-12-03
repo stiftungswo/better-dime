@@ -11,6 +11,71 @@ class WorkPeriodTest extends \TestCase
 {
     use DatabaseTransactions;
 
+    public function testEffectiveTimeAttribute()
+    {
+        $employeeId = factory(\App\Models\Employee\Employee::class)->create()->id;
+        $projectId = factory(\App\Models\Project\Project::class)->create(['vacation_project' => false])->id;
+        $timeRateUnitId = factory(\App\Models\Service\RateUnit::class)->create(['is_time' => true])->id;
+        $materialRateUnitId = factory(\App\Models\Service\RateUnit::class)->create(['is_time' => false])->id;
+        $timePosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $timeRateUnitId]);
+        $materialPosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $materialRateUnitId]);
+
+        // truncate holidays so they dont get between us and our results
+        Holiday::truncate();
+
+        // seed a few efforts for both positions
+        $timePosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2018-09-30',
+            'value' => 504
+        ]));
+        $timePosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2018-10-31',
+            'value' => 504
+        ]));
+        $timePosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2020-01-31',
+            'value' => 504
+        ]));
+        // seed a few efforts for both positions
+        $materialPosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2018-09-30',
+            'value' => 504
+        ]));
+        $materialPosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2018-10-31',
+            'value' => 504
+        ]));
+        $materialPosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
+            'employee_id' => $employeeId,
+            'date' => '2020-01-31',
+            'value' => 504
+        ]));
+
+        // lets check the following stuff
+        // period ends earlier than today
+        $workPeriod = factory(WorkPeriod::class)->create([
+            'employee_id' => $employeeId,
+            'start' => '2018-01-01',
+            'end' => '2018-10-01'
+        ]);
+
+        // this should not matter, it counts everything
+        $this->assertEquals(3 * 504, $workPeriod->effective_time);
+
+        // lets make it a bit longer, until the last effort, so it should count everything
+        $workPeriod->update(['end' => '2020-02-01']);
+        $this->assertEquals(9 * 504, $workPeriod->effective_time);
+
+        // lets move the start back, so it returns 0, because the period did not start yet
+        $workPeriod->update(['start' => '2019-06-01']);
+        $this->assertEquals(0, $workPeriod->effective_time);
+    }
+
     public function testTargetTimeAttribute()
     {
         // this tests also includes the period_vacation_budget attribute

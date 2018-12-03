@@ -36,7 +36,11 @@ class WorkPeriod extends Model
         so you get the effective amount of minutes the employee has taken vacations
     */
 
-    protected $appends = ['effort_till_today', 'period_vacation_budget', 'target_time', 'vacation_till_today'];
+    protected $appends = ['effective_time', 'effort_till_today', 'period_vacation_budget', 'target_time', 'vacation_till_today'];
+
+    protected $casts = [
+        'vacation_takeover' => 'float'
+    ];
 
     protected $hidden = ['employee'];
 
@@ -51,9 +55,9 @@ class WorkPeriod extends Model
     {
         $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($this->end)->addDay());
         $pensum = $this->pensum / 100;
-        $targetTimeWithoutVacations = $weekdays * 8.4 * 60 * $pensum;
+        $targetTimeWithoutHolidays = $weekdays * 8.4 * 60 * $pensum;
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
-        return round($targetTimeWithoutVacations - $this->period_vacation_budget - $paidTimeInDateRange, 0);
+        return round($targetTimeWithoutHolidays - $this->period_vacation_budget - $paidTimeInDateRange, 0);
     }
 
     public function getPeriodVacationBudgetAttribute()
@@ -94,55 +98,55 @@ class WorkPeriod extends Model
 
     public function getEffortTillTodayAttribute()
     {
-        if ($this->start > Carbon::now()) {
-            return 0;
-        } else {
-            $start = Carbon::parse($this->start);
-        }
+        $start = Carbon::parse($this->start);
 
         if ($this->end < Carbon::now()) {
             $end = Carbon::parse($this->end);
         } else {
             $end = Carbon::now();
+        }
+
+        return $this->calculateBookedTime($start, $end);
+    }
+
+    public function getEffectiveTimeAttribute()
+    {
+        $start = Carbon::parse($this->start);
+        $end = Carbon::parse($this->end);
+
+        return $this->calculateBookedTime($start, $end);
+    }
+
+    public function getVacationTillTodayAttribute()
+    {
+        $start = Carbon::parse($this->start);
+
+        if ($this->end < Carbon::now()) {
+            $end = Carbon::parse($this->end);
+        } else {
+            $end = Carbon::now();
+        }
+
+        return $this->calculateBookedTime($start, $end, true);
+    }
+
+    private function calculateBookedTime(Carbon $start, Carbon $end, $onlyVacations = false)
+    {
+        if ($start > Carbon::now()) {
+            return 0;
         }
 
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
 
         return round(DB::table('project_efforts')->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
-            ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
-            ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
-            ->where([
-                ['project_efforts.date', '>=', $start->subDay()],
-                ['project_efforts.date', '<=', $end->addDay()],
-                ['project_efforts.employee_id', '=', $this->employee->id],
-                ['projects.vacation_project', '=', false],
-                ['rate_units.is_time', '=', true]
-            ])->sum('project_efforts.value') - $paidTimeInDateRange, 0);
-    }
-
-    public function getVacationTillTodayAttribute()
-    {
-        if ($this->start > Carbon::now()) {
-            return 0;
-        } else {
-            $start = Carbon::parse($this->start);
-        }
-
-        if ($this->end < Carbon::now()) {
-            $end = Carbon::parse($this->end);
-        } else {
-            $end = Carbon::now();
-        }
-
-        return round(DB::table('project_efforts')->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
-            ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
-            ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
-            ->where([
-                ['project_efforts.date', '>=', $start->subDay()],
-                ['project_efforts.date', '<=', $end->addDay()],
-                ['project_efforts.employee_id', '=', $this->employee->id],
-                ['projects.vacation_project', '=', true],
-                ['rate_units.is_time', '=', true]
-            ])->sum('project_efforts.value'), 0);
+                ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
+                ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
+                ->where([
+                    ['project_efforts.date', '>=', $start->subDay()],
+                    ['project_efforts.date', '<=', $end->addDay()],
+                    ['project_efforts.employee_id', '=', $this->employee->id],
+                    ['projects.vacation_project', '=', $onlyVacations],
+                    ['rate_units.is_time', '=', true]
+                ])->sum('project_efforts.value') - $paidTimeInDateRange, 0);
     }
 }
