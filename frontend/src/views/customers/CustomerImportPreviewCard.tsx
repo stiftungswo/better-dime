@@ -1,0 +1,66 @@
+import React from 'react';
+import { Card, CardActions, CardContent, CardHeader, createStyles, Theme, Typography, WithStyles, withStyles } from '@material-ui/core';
+import compose from '../../utilities/compose';
+import Button from '@material-ui/core/Button/Button';
+import { NonPersistedImportCustomer } from '../../stores/customerImportStore';
+
+const styles = ({ palette }: Theme) =>
+  createStyles({
+    root: {
+      backgroundColor: palette.secondary.main,
+    },
+  });
+
+type Props = {
+  customerPreview: NonPersistedImportCustomer;
+  index: number;
+  removeItem: (value: number) => void;
+} & WithStyles<typeof styles>;
+
+export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Props) => {
+  const { customerPreview, classes, index, removeItem } = props;
+
+  return (
+    <Card classes={customerPreview.duplicate ? undefined : classes}>
+      <CardHeader
+        title={
+          customerPreview.type === 'company' ? customerPreview.company_name : customerPreview.first_name! + ' ' + customerPreview.last_name!
+        }
+        action={
+          <CardActions>
+            <Button size="small" onClick={() => removeItem(index)}>
+              Löschen
+            </Button>
+          </CardActions>
+        }
+      />
+      <CardContent>
+        <Typography variant={'body2'}>Typ: {customerPreview.type}</Typography>
+        <Typography variant={'body2'}>Anrede: {customerPreview.salutation}</Typography>
+        <Typography variant={'body2'}>Vorname: {customerPreview.first_name}</Typography>
+        <Typography variant={'body2'}>Nachname: {customerPreview.last_name}</Typography>
+        <Typography variant={'body2'}>Firma: {customerPreview.company_name}</Typography>
+        <Typography variant={'body2'}>Abteilung: {customerPreview.department}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>E-Mail: {customerPreview.email}</Typography>
+        <Typography variant={'body2'}>Hauptnummer: {customerPreview.main_number}</Typography>
+        <Typography variant={'body2'}>Fax: {customerPreview.fax}</Typography>
+        <Typography variant={'body2'}>Mobiltelefonnummer: {customerPreview.mobile_number}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>Strasse: {customerPreview.street}</Typography>
+        <Typography variant={'body2'}>Addresszusatz: {customerPreview.supplement}</Typography>
+        <Typography variant={'body2'}>Postleitzahl: {customerPreview.plz}</Typography>
+        <Typography variant={'body2'}>Ortschaft: {customerPreview.city}</Typography>
+        <Typography variant={'body2'}>Land: {customerPreview.country}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>Kommentar: {customerPreview.comment}</Typography>
+      </CardContent>
+    </Card>
+  );
+});
