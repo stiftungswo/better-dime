@@ -52,6 +52,13 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton(
+    Illuminate\Contracts\Filesystem\Factory::class,
+    function ($app) {
+        return new Illuminate\Filesystem\FilesystemManager($app);
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -98,8 +105,10 @@ $app->register('Sentry\SentryLaravel\SentryLumenServiceProvider');
 $app->register(RichanFongdasen\EloquentBlameable\ServiceProvider::class);
 $app->register(\Askedio\SoftCascade\Providers\LumenServiceProvider::class);
 $app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 
 $app->configure('blameable');
+$app->configure('filesystems');
 $app->configure('twigbridge');
 // $app->register(App\Providers\EventServiceProvider::class);
 

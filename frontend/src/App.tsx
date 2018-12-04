@@ -31,7 +31,7 @@ import PersonUpdate from './views/persons/PersonUpdate';
 import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
 import CompanyCreate from './views/companies/CompanyCreate';
-import { CustomerImportExportOverview } from './views/companies/CustomerImportExportOverview';
+import { CustomerImportExportOverview } from './views/customers/CustomerImportExportOverview';
 
 class App extends React.Component {
   public render() {

@@ -11,7 +11,7 @@ class CustomerExcelImportTemplate implements FromArray, ShouldAutoSize
     {
         return [
             [
-                'Typ (Firma oder Person)', 'Anrede', 'Vorname', 'Nachname', 'Firma', 'Abteilung',
+                'Typ (Firma oder Person)', 'Anrede', 'Vorname', 'Nachname', 'Firma',
                 'Abteilung', 'E-Mail-Adresse', 'Hauptnummer', 'Fax', 'Mobiltelefonnummer',
                 'Strasse', 'Addresszusatz', 'PLZ', 'Ort', 'Land', 'Kommentar'
             ]

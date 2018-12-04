@@ -7,12 +7,12 @@ use App\Models\Customer\Customer;
 use App\Services\Export\CustomerExcelExport;
 use App\Services\Export\CustomerExcelImportTemplate;
 use App\Services\Filter\CustomerFilter;
+use App\Services\Import\VerifyCustomerImport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends BaseController
 {
-
     public function export(Request $request)
     {
         $validatedData = $this->validate($request, [
@@ -53,5 +53,15 @@ class CustomerController extends BaseController
             $response['addresses'] = $customer->addresses->merge($customer->company->addresses);
         }
         return $response;
+    }
+
+    public function verifyImport(Request $request)
+    {
+        $request->hasFile('importFile');
+        if ($request->file('importFile')->isValid()) {
+            $pathOfFile = $request->file('importFile')->store('customer_imports');
+
+            return VerifyCustomerImport::importFileToSortedArray($pathOfFile);
+        };
     }
 }
