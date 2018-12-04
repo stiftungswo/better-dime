@@ -33,7 +33,7 @@ class CompanyController extends BaseController
 
     public function get($id)
     {
-        return Company::with(['addresses', 'phone_numbers'])->findOrFail($id);
+        return Company::with(['addresses', 'phone_numbers'])->findOrFail($id)->append(['tags', 'persons']);
     }
 
     public function post(Request $request)

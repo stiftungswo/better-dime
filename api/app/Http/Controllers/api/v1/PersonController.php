@@ -33,7 +33,7 @@ class PersonController extends BaseController
 
     public function get($id)
     {
-        return Person::with(['addresses', 'phone_numbers'])->findOrFail($id);
+        return Person::with(['addresses', 'phone_numbers'])->findOrFail($id)->append('tags');
     }
 
     public function post(Request $request)

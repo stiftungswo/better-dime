@@ -97,6 +97,7 @@ $app->register(\TwigBridge\ServiceProvider::class);
 $app->register('Sentry\SentryLaravel\SentryLumenServiceProvider');
 $app->register(RichanFongdasen\EloquentBlameable\ServiceProvider::class);
 $app->register(\Askedio\SoftCascade\Providers\LumenServiceProvider::class);
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
 
 $app->configure('blameable');
 $app->configure('twigbridge');

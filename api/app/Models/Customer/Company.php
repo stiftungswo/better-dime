@@ -9,8 +9,6 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class Company extends Customer
 {
-    protected $appends = ['persons', 'tags'];
-
     protected $hidden = [
         'customer_tags', 'people'
     ];

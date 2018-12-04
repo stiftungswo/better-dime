@@ -18,6 +18,7 @@ import {
   CustomersIcon,
   PersonIcon,
   CompanyIcon,
+  ExportIcon,
 } from './icons';
 
 interface NavigationProps {
@@ -33,8 +34,9 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
     <NavItem to={'/invoices'} label={'Rechnungen'} icon={InvoiceIcon} />
     <NavItem to={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
-      <NavItem nested to={'/persons'} label={'Person'} icon={PersonIcon} />
+      <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
       <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
+      <NavItem nested to={'/customers/export'} label={'Daten exportieren'} icon={ExportIcon} />
     </Collapsible>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />

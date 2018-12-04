@@ -346,3 +346,9 @@ export interface WorkPeriod {
   vacation_till_today: number;
   yearly_vacation_budget: number;
 }
+
+export interface CustomerFilter {
+  customer_tags: number[];
+  export_format: number;
+  include_hidden: boolean;
+}

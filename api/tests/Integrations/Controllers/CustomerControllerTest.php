@@ -12,6 +12,22 @@ class CustomerControllerTest extends \TestCase
 {
     use DatabaseTransactions;
 
+    public function testExportWithInvalidParameters()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/customers/export')->assertResponseStatus(422);
+    }
+
+    public function testExportText()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/customers/export?export_format=1&include_hidden=0')->assertResponseOk();
+    }
+
+    public function testExportExcel()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/customers/export?export_format=2&include_hidden=0')->assertResponseOk();
+        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $this->response->headers->get('Content-Type'));
+    }
+
     public function testIndex()
     {
         $this->asAdmin()->json('GET', 'api/v1/customers');

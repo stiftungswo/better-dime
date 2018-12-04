@@ -12,8 +12,6 @@ class Customer extends Model
 {
     use SingleTableInheritanceTrait, SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
-    protected $appends = ['tags'];
-
     protected $casts = [
         'hidden' => 'boolean',
     ];

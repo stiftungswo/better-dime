@@ -45,6 +45,7 @@ export { default as StatisticsIcon } from '@material-ui/icons/Equalizer';
 export { default as AddEffortIcon } from '@material-ui/icons/AddAlarm';
 export { default as VisibleIcon } from '@material-ui/icons/Visibility';
 export { default as InvisibleIcon } from '@material-ui/icons/VisibilityOff';
+export { default as ExportIcon } from '@material-ui/icons/CallMade';
 
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';

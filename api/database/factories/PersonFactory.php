@@ -12,6 +12,7 @@ $factory->define(\App\Models\Customer\Person::class, function () {
             $val = rand(0, 1) == 1 ? factory(\App\Models\Customer\Company::class)->create()->id : null;
             return $val;
         },
+        'department' => $faker->word,
         'email' => $faker->companyEmail,
         'first_name' => $faker->firstName,
         'hidden' => $faker->boolean,
