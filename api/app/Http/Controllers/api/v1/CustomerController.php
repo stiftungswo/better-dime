@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\BaseController;
 use App\Models\Customer\Customer;
 use App\Services\Export\CustomerExcelExport;
+use App\Services\Export\CustomerExcelImportTemplate;
 use App\Services\Filter\CustomerFilter;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -32,6 +33,11 @@ class CustomerController extends BaseController
             default:
                 return null;
         }
+    }
+
+    public function importTemplate()
+    {
+        return Excel::download(new CustomerExcelImportTemplate, 'import_template.xlsx');
     }
 
     public function index()

@@ -3,11 +3,15 @@ import * as React from 'react';
 import { NavItem } from './NavItem';
 import { Collapsible } from './Collapsible';
 import {
+  CompanyIcon,
+  CustomersIcon,
   HolidayIcon,
+  ImportExportIcon,
   InvoiceIcon,
   MasterDataIcon,
   OfferIcon,
   PeopleIcon,
+  PersonIcon,
   ProjectCategoryIcon,
   ProjectIcon,
   RateGroupIcon,
@@ -15,10 +19,6 @@ import {
   ServiceIcon,
   TagsIcon,
   TimetrackIcon,
-  CustomersIcon,
-  PersonIcon,
-  CompanyIcon,
-  ExportIcon,
 } from './icons';
 
 interface NavigationProps {
@@ -36,7 +36,7 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
       <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
-      <NavItem nested to={'/customers/export'} label={'Daten exportieren'} icon={ExportIcon} />
+      <NavItem nested to={'/customers/transfer'} label={'Import / Export'} icon={ImportExportIcon} />
     </Collapsible>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />

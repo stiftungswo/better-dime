@@ -28,6 +28,12 @@ class CustomerControllerTest extends \TestCase
         $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $this->response->headers->get('Content-Type'));
     }
 
+    public function testImportTemplateGet()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/customers/import/template')->assertResponseOk();
+        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $this->response->headers->get('Content-Type'));
+    }
+
     public function testIndex()
     {
         $this->asAdmin()->json('GET', 'api/v1/customers');

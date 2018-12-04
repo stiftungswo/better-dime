@@ -31,7 +31,7 @@ import PersonUpdate from './views/persons/PersonUpdate';
 import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
 import CompanyCreate from './views/companies/CompanyCreate';
-import { CustomerExportOverview } from './views/companies/CustomerExportOverview';
+import { CustomerImportExportOverview } from './views/companies/CustomerImportExportOverview';
 
 class App extends React.Component {
   public render() {
@@ -70,7 +70,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/companies" component={CompanyOverview} />
             <ProtectedRoute exact path="/companies/new" component={CompanyCreate} />
             <ProtectedRoute exact path="/companies/:id" component={CompanyUpdate} />
-            <ProtectedRoute exact path="/customers/export" component={CustomerExportOverview} />
+            <ProtectedRoute exact path="/customers/transfer" component={CustomerImportExportOverview} />
             <Route>
               <p>404</p>
             </Route>
