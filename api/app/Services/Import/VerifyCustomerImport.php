@@ -10,7 +10,7 @@ class VerifyCustomerImport
     public static function convertAndCheckImportFile(string $pathOfExcelImportFile)
     {
         $allCustomers = Customer::all();
-        $unsortedImportArray = Excel::toArray(new VerifyCustomerImport, $pathOfExcelImportFile, null, \Maatwebsite\Excel\Excel::XLSX);
+        $unsortedImportArray = Excel::toArray(null, $pathOfExcelImportFile, null, \Maatwebsite\Excel\Excel::XLSX);
         array_shift($unsortedImportArray[0]); // remove the heading row from the import
 
         $sortedCustomers = collect([]);

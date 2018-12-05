@@ -12,7 +12,6 @@ export interface CustomerImportSettings {
 export interface NonPersistedImportCustomer {
   city: string | null;
   comment: string | null;
-  name: string | null;
   country: string | null;
   department: string | null;
   duplicate: boolean;
@@ -22,6 +21,7 @@ export interface NonPersistedImportCustomer {
   invalid: boolean;
   main_number: string | null;
   mobile_number: string | null;
+  name: string | null;
   last_name: string | null;
   postcode: number | null;
   type: string;

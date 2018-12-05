@@ -34,6 +34,21 @@ class CustomerControllerTest extends \TestCase
         $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $this->response->headers->get('Content-Type'));
     }
 
+    public function testImportInvalidParams()
+    {
+        $this->asAdmin()->json('POST', 'api/v1/customers/import', [])->assertResponseStatus(422);
+    }
+
+    public function testValidImportParams()
+    {
+        $this->asAdmin()->json('POST', 'api/v1/customers/import', $this->importTemplate())->assertResponseOk();
+    }
+
+    public function testVerifyImportInvalidParams()
+    {
+        $this->asAdmin()->json('POST', 'api/v1/customers/import/verify', [])->assertResponseStatus(400);
+    }
+
     public function testIndex()
     {
         $this->asAdmin()->json('GET', 'api/v1/customers');
@@ -52,7 +67,7 @@ class CustomerControllerTest extends \TestCase
     public function testValidGetCompany()
     {
         $company = factory(Company::class)->create();
-        $address = factory(Address::class)->create(['customer_id' => $company->id]);
+        factory(Address::class)->create(['customer_id' => $company->id]);
         $this->asAdmin()->json('GET', 'api/v1/customers/' . $company->id)->assertResponseOk();
 
         $this->assertCount(1, $this->responseToArray()['addresses']);
@@ -61,12 +76,57 @@ class CustomerControllerTest extends \TestCase
     public function testPersonIncludesCompanyAddresses()
     {
         $company = factory(Company::class)->create();
-        $companyAddress = factory(Address::class)->create(['customer_id' => $company->id]);
+        factory(Address::class)->create(['customer_id' => $company->id]);
 
         $person = factory(Person::class)->create(['company_id' => $company->id]);
-        $personAddress = factory(Address::class)->create(['customer_id' => $person->id]);
+        factory(Address::class)->create(['customer_id' => $person->id]);
 
         $this->asAdmin()->json('GET', 'api/v1/customers/' . $person->id)->assertResponseOk();
         $this->assertCount(2, $this->responseToArray()['addresses']);
+    }
+
+    private function importTemplate()
+    {
+        $rateGroupdId = factory(\App\Models\Service\RateGroup::class)->create()->id;
+        $tagId = factory(\App\Models\Customer\CustomerTag::class)->create()->id;
+
+        return [
+            'customer_tags' => [$tagId],
+            'customers_to_import' => [[
+                'type' => 'company',
+                'city' => 'Schwerzenbach',
+                'comment' => 'Dies ist ein Kommentar über die SWO.',
+                'country' => 'Schweiz',
+                'department' => null,
+                'email' => 'swo@stiftungswo.ch',
+                'fax' => '044 888 33 23',
+                'first_name' => null,
+                'main_number' => '044 888 33 22',
+                'name' => 'Stiftung Wirtschaft und Ökologie',
+                'last_name' => null,
+                'postcode' => 8603,
+                'street' => 'Bahnstrasse 18b',
+                'supplement' => null
+            ], [
+                'type' => 'person',
+                'city' => 'Opfikon',
+                'comment' => 'Dies ist der heimliche Chef der SWO, aber wir sagen es nicht so öffentlich',
+                'country' => 'Schweiz',
+                'department' => 'Integration',
+                'email' => 'hh@stiftungswo.ch',
+                'fax' => null,
+                'first_name' => 'Hans',
+                'main_number' => '099 888 22 33',
+                'mobile_number' => '079 666 77 22',
+                'name' => 'Stiftung Wirtschaft und Ökologie',
+                'last_name' => 'Heinrich',
+                'postcode' => 8092,
+                'street' => 'Bahnhofstrasse 534c',
+                'supplement' => null
+            ],
+            ],
+            'hidden' => false,
+            'rate_group_id' => $rateGroupdId
+        ];
     }
 }

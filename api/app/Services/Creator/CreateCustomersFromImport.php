@@ -53,7 +53,7 @@ class CreateCustomersFromImport
 
                 if (!empty($customerData['main_number'])) {
                     Phone::create([
-                        'category' => 1,
+                        'category' => $customerData['type'] == 'company' ? 1 : 3,
                         'customer_id' => $newCustomer->id,
                         'number' => $customerData['main_number']
                     ]);
@@ -63,7 +63,7 @@ class CreateCustomersFromImport
                     Phone::create([
                         'category' => 5,
                         'customer_id' => $newCustomer->id,
-                        'number' => $customerData['main_number']
+                        'number' => $customerData['fax']
                     ]);
                 }
 

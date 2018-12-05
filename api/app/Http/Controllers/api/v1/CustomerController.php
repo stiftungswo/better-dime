@@ -93,13 +93,11 @@ class CustomerController extends BaseController
 
     public function verifyImport(Request $request)
     {
-        $request->hasFile('importFile');
-        if ($request->file('importFile')->isValid()) {
+        if ($request->hasFile('importFile')) {
             $pathOfFile = $request->file('importFile')->store('customer_imports');
-
             return VerifyCustomerImport::convertAndCheckImportFile($pathOfFile);
         } else {
-            return response('You did not upload a valid file', 422);
+            return response('You did not upload a valid file', 400);
         }
     }
 }
