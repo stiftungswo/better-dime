@@ -27,7 +27,7 @@ export interface Props extends FormViewProps<Company> {
 
 const companySchema = yup.object({
   archived: yup.boolean(),
-  email: yup.string().required(),
+  email: yup.string().nullable(true),
   name: yup.string().required(),
   company_id: yup.number().nullable(true),
   rate_group_id: yup.number().required(),

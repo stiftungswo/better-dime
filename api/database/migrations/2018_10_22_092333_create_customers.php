@@ -21,7 +21,7 @@ class CreateCustomers extends Migration
             $table->unsignedInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('customers')->onDelete('cascade');
             $table->string('department')->nullable();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->boolean('hidden')->default(false);

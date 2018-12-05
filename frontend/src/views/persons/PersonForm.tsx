@@ -19,7 +19,7 @@ export interface Props extends FormViewProps<Person> {
 
 const personSchema = yup.object({
   archived: yup.boolean(),
-  email: yup.string().required(),
+  email: yup.string().nullable(true),
   first_name: yup.string().required(),
   last_name: yup.string().required(),
   company_id: yup.number().nullable(true),
