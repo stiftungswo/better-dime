@@ -1,6 +1,6 @@
 import React from 'react';
 import { MainStore } from '../../stores/mainStore';
-import { Card, CardActions, CardContent, CardHeader, Grid, Input, Typography } from '@material-ui/core';
+import { Grid, Input, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import { DimePaper, LoadingSpinner } from '../../layout/DimeLayout';
 import compose from '../../utilities/compose';
@@ -9,21 +9,36 @@ import { Field, Formik } from 'formik';
 import { SwitchField } from '../../form/fields/common';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
-import { CustomerImportStore } from '../../stores/customerImportStore';
+import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer } from '../../stores/customerImportStore';
 import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
+import { CustomerImportFAQ } from './CustomerImportFAQ';
 
 interface Props {
   customerImportStore?: CustomerImportStore;
   mainStore?: MainStore;
 }
 
+interface CustomerImportFormState {
+  faqOpen: boolean;
+}
+
 @compose(
   inject('customerImportStore', 'mainStore'),
   observer
 )
-export class CustomerImportForm extends React.Component<Props> {
-  public removeItem = (indexOfItem: number) => {
-    this.props.customerImportStore!.importSettings!.customers_to_import.splice(indexOfItem, 1);
+export class CustomerImportForm extends React.Component<Props, CustomerImportFormState> {
+  public state = {
+    faqOpen: false,
+  };
+
+  public handleSubmit = (importSettings: CustomerImportSettings | undefined) => {
+    this.props.customerImportStore!.doImport(importSettings).then(() => {
+      this.props.customerImportStore!.customersToImport = [];
+    });
+  };
+
+  public removeCustomer = (indexOfItem: number) => {
+    this.props.customerImportStore!.customersToImport!.splice(indexOfItem, 1);
   };
 
   public render() {
@@ -33,15 +48,33 @@ export class CustomerImportForm extends React.Component<Props> {
       <>
         <Grid item xs={12}>
           <DimePaper>
-            <Typography gutterBottom variant={'h5'}>
-              Daten importieren
-            </Typography>
+            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
+              <Grid item>
+                <Typography gutterBottom variant={'h5'}>
+                  Daten importieren
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                <Button
+                  variant="contained"
+                  component="span"
+                  onClick={() => {
+                    this.setState({ faqOpen: !this.state.faqOpen });
+                  }}
+                >
+                  FAQ zum Import {this.state.faqOpen ? 'schliessen' : 'öffnen'}
+                </Button>
+              </Grid>
+            </Grid>
+
+            <CustomerImportFAQ open={this.state.faqOpen} />
 
             <Formik
               initialValues={customerImportStore!.importSettings}
-              onSubmit={e => console.log(e)}
+              onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
-                <>
+                <form onSubmit={formikProps.handleSubmit}>
                   <Grid container spacing={24} alignItems={'center'}>
                     <Grid item xs={12} md={4}>
                       <Field delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
@@ -70,14 +103,15 @@ export class CustomerImportForm extends React.Component<Props> {
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field
-                        component={Input}
+                      <Input
                         type={'file'}
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                          this.props.customerImportStore!.verifyImportFile(
-                            event.currentTarget.files![0],
-                            event.currentTarget.files![0].name
-                          );
+                          if (event.currentTarget.files) {
+                            this.props.customerImportStore!.verifyImportFile(
+                              event.currentTarget.files[0],
+                              event.currentTarget.files[0].name
+                            );
+                          }
                         }}
                         style={{ display: 'none' }}
                         id={'contained-button-file'}
@@ -94,13 +128,17 @@ export class CustomerImportForm extends React.Component<Props> {
                         fullWidth
                         color={'secondary'}
                         variant={'contained'}
-                        disabled={customerImportStore!.importSettings!.customers_to_import.length <= 0}
+                        disabled={
+                          customerImportStore!.customersToImport!.length <= 0 ||
+                          customerImportStore!.customersToImport!.filter((e: NonPersistedImportCustomer) => e.invalid).length > 0
+                        }
+                        type={'submit'}
                       >
                         Import starten
                       </Button>
                     </Grid>
                   </Grid>
-                </>
+                </form>
               )}
             />
           </DimePaper>
@@ -108,9 +146,9 @@ export class CustomerImportForm extends React.Component<Props> {
 
         {customerImportStore!.importIsLoading && <LoadingSpinner />}
         {!customerImportStore!.importIsLoading &&
-          customerImportStore!.importSettings!.customers_to_import.map((nonPersistedCustomer, index: number) => (
+          customerImportStore!.customersToImport!.map((nonPersistedCustomer, index: number) => (
             <Grid item xs={12} md={4} key={index}>
-              <CustomerImportPreviewCard customerPreview={nonPersistedCustomer} index={index} removeItem={this.removeItem} />
+              <CustomerImportPreviewCard customerPreview={nonPersistedCustomer} index={index} removeItem={this.removeCustomer} />
             </Grid>
           ))}
       </>

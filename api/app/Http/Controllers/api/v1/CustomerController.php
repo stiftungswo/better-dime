@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Customer\Customer;
+use App\Services\Creator\CreateCustomersFromImport;
 use App\Services\Export\CustomerExcelExport;
 use App\Services\Export\CustomerExcelImportTemplate;
 use App\Services\Filter\CustomerFilter;
@@ -55,13 +56,50 @@ class CustomerController extends BaseController
         return $response;
     }
 
+    public function doImport(Request $request)
+    {
+        // Note: Data gets verified during the verifyImport step. So if street is set, it will always have a postcode and a city at least
+        $validatedData = $this->validate($request, [
+            'customer_tags' => 'array',
+            'customer_tags.*' => 'integer',
+            'customers_to_import' => 'array|required',
+            'customers_to_import.*.city' => 'string|nullable',
+            'customers_to_import.*.comment' => 'string|nullable',
+            'customers_to_import.*.name' => 'string|nullable',
+            'customers_to_import.*.country' => 'string|nullable',
+            'customers_to_import.*.department' => 'string|nullable',
+            'customers_to_import.*.email' => 'string',
+            'customers_to_import.*.fax' => 'string|nullable',
+            'customers_to_import.*.first_name' => 'string|nullable',
+            'customers_to_import.*.main_number' => 'string|nullable',
+            'customers_to_import.*.mobile_number' => 'string|nullable',
+            'customers_to_import.*.last_name' => 'string|nullable',
+            'customers_to_import.*.postcode' => 'integer|nullable',
+            'customers_to_import.*.type' => 'string|required',
+            'customers_to_import.*.salutation' => 'string|nullable',
+            'customers_to_import.*.street' => 'string|nullable',
+            'customers_to_import.*.supplement' => 'string|nullable',
+            'hidden' => 'boolean|required',
+            'rate_group_id' => 'integer|required'
+        ]);
+
+        try {
+            CreateCustomersFromImport::create($validatedData['rate_group_id'], $validatedData['hidden'], $validatedData['customers_to_import'], $validatedData['customer_tags']);
+            return "Customers imported!";
+        } catch (\Exception $e) {
+            return response('Unable to import customers: ' . $e->getMessage(), 500);
+        }
+    }
+
     public function verifyImport(Request $request)
     {
         $request->hasFile('importFile');
         if ($request->file('importFile')->isValid()) {
             $pathOfFile = $request->file('importFile')->store('customer_imports');
 
-            return VerifyCustomerImport::importFileToSortedArray($pathOfFile);
-        };
+            return VerifyCustomerImport::convertAndCheckImportFile($pathOfFile);
+        } else {
+            return response('You did not upload a valid file', 422);
+        }
     }
 }

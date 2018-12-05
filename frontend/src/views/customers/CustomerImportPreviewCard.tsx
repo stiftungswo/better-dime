@@ -21,11 +21,9 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
   const { customerPreview, classes, index, removeItem } = props;
 
   return (
-    <Card classes={customerPreview.duplicate ? undefined : classes}>
+    <Card classes={customerPreview.duplicate || customerPreview.invalid ? undefined : classes}>
       <CardHeader
-        title={
-          customerPreview.type === 'company' ? customerPreview.company_name : customerPreview.first_name! + ' ' + customerPreview.last_name!
-        }
+        title={customerPreview.type === 'company' ? customerPreview.name : customerPreview.first_name! + ' ' + customerPreview.last_name!}
         action={
           <CardActions>
             <Button size="small" onClick={() => removeItem(index)}>
@@ -35,11 +33,16 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
         }
       />
       <CardContent>
+        <Typography variant={'body2'}>Duplikat: {customerPreview.duplicate ? 'Ja' : 'Nein'}</Typography>
+        <Typography variant={'body2'}>Angaben ungültig: {customerPreview.invalid ? 'Ja' : 'Nein'}</Typography>
+
+        <hr />
+
         <Typography variant={'body2'}>Typ: {customerPreview.type}</Typography>
         <Typography variant={'body2'}>Anrede: {customerPreview.salutation}</Typography>
         <Typography variant={'body2'}>Vorname: {customerPreview.first_name}</Typography>
         <Typography variant={'body2'}>Nachname: {customerPreview.last_name}</Typography>
-        <Typography variant={'body2'}>Firma: {customerPreview.company_name}</Typography>
+        <Typography variant={'body2'}>Firma: {customerPreview.name}</Typography>
         <Typography variant={'body2'}>Abteilung: {customerPreview.department}</Typography>
 
         <hr />
@@ -53,7 +56,7 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
 
         <Typography variant={'body2'}>Strasse: {customerPreview.street}</Typography>
         <Typography variant={'body2'}>Addresszusatz: {customerPreview.supplement}</Typography>
-        <Typography variant={'body2'}>Postleitzahl: {customerPreview.plz}</Typography>
+        <Typography variant={'body2'}>Postleitzahl: {customerPreview.postcode}</Typography>
         <Typography variant={'body2'}>Ortschaft: {customerPreview.city}</Typography>
         <Typography variant={'body2'}>Land: {customerPreview.country}</Typography>
 

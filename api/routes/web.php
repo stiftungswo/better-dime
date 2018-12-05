@@ -28,6 +28,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/export', ['uses' => 'CustomerController@export']);
                 $router->get('/import/template', ['uses' => 'CustomerController@importTemplate']);
                 $router->post('/import/verify', ['uses' => 'CustomerController@verifyImport']);
+                $router->post('/import', ['uses' => 'CustomerController@doImport']);
                 $router->get('/', ['uses' => 'CustomerController@index']);
                 $router->get('/{id}', ['uses' => 'CustomerController@get']);
             });
