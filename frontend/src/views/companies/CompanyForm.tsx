@@ -17,6 +17,7 @@ import { inject } from 'mobx-react';
 import { MainStore } from 'src/stores/mainStore';
 import TableToolbar from 'src/layout/TableToolbar';
 import { toJS } from 'mobx';
+import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
@@ -46,6 +47,7 @@ const companySchema = yup.object({
       number: yup.string().required(),
     })
   ),
+  tags: yup.array(yup.number().nullable(false)),
 });
 
 @inject('mainStore', 'peopleStore')
@@ -106,6 +108,9 @@ export default class CompanyForm extends React.Component<Props> {
                   </Grid>
                   <Grid item={true} xs={12} sm={6}>
                     <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field isMulti fullWidth delayed component={CustomerTagSelector} name={'tags'} label={'Tags'} />
                   </Grid>
                 </Grid>
               </DimePaper>

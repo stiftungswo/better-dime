@@ -3,15 +3,15 @@ import { Fragment } from 'react';
 import { Person } from '../../stores/peopleStore';
 import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
-import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
+import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { DimePaper, hasContent } from '../../layout/DimeLayout';
 import { FormView, FormViewProps } from '../../form/FormView';
-import { FormHeader } from '../../layout/FormHeader';
 import AddressesSubformInline from './AddressesSubformInline';
 import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
 import { CompanySelector } from '../../form/entitySelector/CompanySelector';
 import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
+import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 
 export interface Props extends FormViewProps<Person> {
   person: Person | undefined;
@@ -40,6 +40,7 @@ const personSchema = yup.object({
       number: yup.string().required(),
     })
   ),
+  tags: yup.array(yup.number().nullable(false)),
 });
 
 export default class PersonForm extends React.Component<Props> {
@@ -88,6 +89,9 @@ export default class PersonForm extends React.Component<Props> {
                   </Grid>
                   <Grid item={true} xs={12} sm={6}>
                     <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                  </Grid>
+                  <Grid item={true} xs={12} sm={6}>
+                    <Field isMulti fullWidth delayed component={CustomerTagSelector} name={'tags'} label={'Tags'} />
                   </Grid>
                 </Grid>
               </DimePaper>
