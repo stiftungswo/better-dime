@@ -9,5 +9,5 @@ export const nullableNumber = () =>
 
 export const dimeDate = () =>
   yup.mixed().transform(value => {
-    return value ? moment(value).format('YYYY-MM-DD') : value;
+    return value ? moment(value).format('YYYY-MM-DD') : null;
   });

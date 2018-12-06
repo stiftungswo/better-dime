@@ -69,24 +69,13 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   }
 
   protected async doPost(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.post<Project>('/projects/', this.cast(entity));
+    const res = await this.mainStore.api.post<Project>('/projects/', entity);
     this.project = res.data;
   }
 
   protected async doPut(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.put<Project>('/projects/' + entity.id, this.cast(entity));
+    const res = await this.mainStore.api.put<Project>('/projects/' + entity.id, entity);
     this.project = res.data;
-  }
-
-  //TODO this was supposed to be replaced by yup casts - can this be removed?
-  protected cast(project: Project) {
-    //this prevents empty fields being sent to the backend as ""
-    //optimally, this can be handled in the form so empty strings don't even reach here.
-    return {
-      ...project,
-      fixed_price: project.fixed_price || null,
-      deadline: project.deadline || null,
-    };
   }
 
   public async createInvoice(id: number): Promise<Invoice> {
