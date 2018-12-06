@@ -21,13 +21,13 @@ class CreateOffersEtc extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('fixed_price')->nullable();
             $table->string('name');
             $table->unsignedInteger('rate_group_id');
             $table->foreign('rate_group_id')->references('id')->on('rate_groups');
-            $table->text('short_description');
-            $table->tinyInteger('status');
+            $table->text('short_description')->nullable();
+            $table->tinyInteger('status')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
