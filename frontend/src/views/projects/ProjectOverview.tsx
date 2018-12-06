@@ -39,7 +39,7 @@ export default class ProjectOverview extends React.Component<Props> {
   }
 
   public filter = (p: ProjectListing, query: string) => {
-    return [p.id + '', p.name, p.description].some(s => s.includes(query));
+    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
   };
 
   public render() {

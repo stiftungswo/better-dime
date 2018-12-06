@@ -107,7 +107,7 @@ export interface Project {
   category_id: number;
   chargeable: boolean;
   deadline: null;
-  description: string;
+  description: string | null;
   fixed_price: null | number;
   name: string;
   offer_id?: number;
