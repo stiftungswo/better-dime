@@ -26,6 +26,9 @@ class ProjectEffortFilter
 
     public static function fetchList($params = [])
     {
+        // TODO add service name so frontend can display something if position description is empty
+        // TODO dont display data with deleted_at attribute
+        // TODO sort by date
         return self::fetch($params)->select([
             DB::raw('project_efforts.id as id'),
             DB::raw('project_efforts.date as date'),
