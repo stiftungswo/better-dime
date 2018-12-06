@@ -55,9 +55,9 @@ class WorkPeriod extends Model
     {
         $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($this->end)->addDay());
         $pensum = $this->pensum / 100;
-        $targetTimeWithoutHolidays = $weekdays * 8.4 * 60 * $pensum;
+        $targetTimeWithoutHolidays = $weekdays * 8.4 * 60;
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
-        return round($targetTimeWithoutHolidays - $this->period_vacation_budget - $paidTimeInDateRange, 0);
+        return round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
     }
 
     public function getPeriodVacationBudgetAttribute()
@@ -138,15 +138,20 @@ class WorkPeriod extends Model
 
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
 
-        return round(DB::table('project_efforts')->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
-                ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
-                ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
-                ->where([
-                    ['project_efforts.date', '>=', $start->subDay()],
-                    ['project_efforts.date', '<=', $end->addDay()],
-                    ['project_efforts.employee_id', '=', $this->employee->id],
-                    ['projects.vacation_project', '=', $onlyVacations],
-                    ['rate_units.is_time', '=', true]
-                ])->sum('project_efforts.value') - $paidTimeInDateRange, 0);
+        $qb = DB::table('project_efforts')->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
+            ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
+            ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
+            ->where([
+                ['project_efforts.date', '>=', $start->subDay()],
+                ['project_efforts.date', '<=', $end->addDay()],
+                ['project_efforts.employee_id', '=', $this->employee->id],
+                ['rate_units.is_time', '=', true]
+            ]);
+
+        if ($onlyVacations) {
+            $qb = $qb->where('projects.vacation_project', '=', $onlyVacations);
+        }
+
+        return round($qb->sum('project_efforts.value') - $paidTimeInDateRange, 0);
     }
 }
