@@ -14,6 +14,9 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { formikFieldCompatible } from '../form/fields/Select';
 import { DatePicker } from '../form/fields/DatePicker';
 import Button from '@material-ui/core/Button/Button';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 
 interface Props {
   dailyReportStore?: DailyReportStore;
@@ -28,6 +31,7 @@ export default class DailyReport extends React.Component<Props> {
   render() {
     const dailyReportStore = this.props.dailyReportStore!;
     const { dates, employees } = dailyReportStore.result;
+    const { detail } = dailyReportStore;
     return (
       <>
         <DimeAppBar title={'Wochenrapport'} />
@@ -80,9 +84,7 @@ export default class DailyReport extends React.Component<Props> {
                       {employees.map(employee => (
                         <TableRow key={employee.employee_id}>
                           <TableCell>{employee.name}</TableCell>
-                          {dates.map(date => (
-                            <TableCell key={date}>{this.renderCell(employee.efforts[date])}</TableCell>
-                          ))}
+                          {dates.map(date => this.renderCell(employee.efforts[date], date))}
                         </TableRow>
                       ))}
                     </TableBody>
@@ -94,17 +96,41 @@ export default class DailyReport extends React.Component<Props> {
             </Grid>
           </Grid>
         </DimeContent>
+        {detail !== undefined && (
+          <Dialog open onClose={this.handleCloseDetail}>
+            <DialogContent>
+              <Table>
+                {detail.map((e: DailyReportEffort, index: number) => (
+                  <TableRow key={index}>
+                    <TableCell>{e.service_name}</TableCell>
+                    <TableCell>{this.props.mainStore!.formatDuration(Number(e.value), 'h', true)}</TableCell>
+                  </TableRow>
+                ))}
+              </Table>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCloseDetail} color={'primary'}>
+                Schliessen
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
       </>
     );
   }
 
-  renderCell = (efforts?: DailyReportEffort[]) => {
+  handleCloseDetail = () => (this.props.dailyReportStore!.detail = undefined);
+
+  renderCell = (efforts: DailyReportEffort[], key: string) => {
     if (efforts === undefined) {
-      return undefined;
+      return <TableCell key={key} />;
     }
 
-    //TODO add an onclick popup that breaks down each effort
     const sum = efforts.map(e => Number(e.value)).reduce((a, b) => a + b, 0);
-    return this.props.mainStore!.formatDuration(sum, 'h', true);
+    return (
+      <TableCell key={key} onClick={() => (this.props.dailyReportStore!.detail = efforts)} style={{ cursor: 'pointer' }}>
+        {this.props.mainStore!.formatDuration(sum, 'h', true)}
+      </TableCell>
+    );
   };
 }

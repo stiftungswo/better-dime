@@ -25,6 +25,9 @@ export class DailyReportStore {
   public result: DailyReportResponse = { dates: [], employees: [] };
 
   @observable
+  public detail?: DailyReportEffort[] = undefined;
+
+  @observable
   //TODO centralize this formating somehow
   public from = moment()
     .subtract(6, 'days')
