@@ -71,17 +71,9 @@ export default class ProjectPositionSubformDialogs extends React.Component<Props
         format: p => mainStore!.formatCurrency(p.price_per_rate),
       },
       {
-        id: 'efforts_value',
+        id: 'efforts_value_with_unit',
         numeric: true,
         label: 'Anzahl',
-        format: ({ efforts_value, rate_unit_id }) => {
-          const unit = rateUnitStore!.entities.find(u => u.id === rate_unit_id);
-          if (unit) {
-            return (efforts_value / unit.factor).toFixed(1) + ' ' + unit.effort_unit;
-          } else {
-            return '?';
-          }
-        },
       },
     ];
   }

@@ -17,15 +17,17 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Service } from '../services/types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
+import { MainStore } from '../../stores/mainStore';
 
 export interface Props {
+  mainStore?: MainStore;
   serviceStore?: ServiceStore;
   formikProps: FormikProps<Project>;
   name: string;
 }
 
 @compose(
-  inject('serviceStore'),
+  inject('mainStore', 'serviceStore'),
   observer
 )
 export default class ProjectPositionSubformInline extends React.Component<Props> {
@@ -68,7 +70,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                     <TableCell style={{ width: '15%' }}>Einheit</TableCell>
                     <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
                     <TableCell style={{ width: '10%' }}>Anzahl</TableCell>
-                    <TableCell style={{ width: '10%' }}>Total CHF</TableCell>
+                    <TableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</TableCell>
                     <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
                   </TableRow>
                 </TableHead>
@@ -90,8 +92,8 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                         <TableCell>
                           <Field required delayed component={PercentageField} name={name('vat')} margin={'none'} />
                         </TableCell>
-                        <TableCell>{p.efforts_value}</TableCell>
-                        <TableCell>{p.charge}</TableCell>
+                        <TableCell>{p.efforts_value_with_unit}</TableCell>
+                        <TableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</TableCell>
                         <TableCell>
                           <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
                         </TableCell>

@@ -138,7 +138,7 @@ export interface ProjectPosition {
   updated_at: string;
   charge: number;
   calculated_vat: number;
-  efforts_value: number;
+  efforts_value_with_unit: string;
   is_time: boolean;
   service: Service;
 }
