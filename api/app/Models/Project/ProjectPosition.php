@@ -12,7 +12,7 @@ class ProjectPosition extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['charge', 'calculated_vat', 'efforts_value', 'is_time'];
+    protected $appends = ['charge', 'calculated_vat', 'efforts_value_with_unit', 'is_time'];
 
     protected $casts = [
         'vat' => 'float'
@@ -70,10 +70,19 @@ class ProjectPosition extends Model
      */
     public function getEffortsValueAttribute()
     {
-        return $this->efforts->map(function ($e) {
+        return round($this->efforts->map(function ($e) {
             /** @var ProjectEffort $e */
             return $e->value;
-        })->sum();
+        })->sum() / $this->rate_unit->factor, 2);
+    }
+
+    /**
+     * Returns the sum of all efforts with corresponding effort unit attached
+     * @return string
+     */
+    public function getEffortsValueWithUnitAttribute()
+    {
+        return $this->efforts_value . " " . $this->rate_unit->effort_unit;
     }
 
     /**
