@@ -64,3 +64,4 @@ export { default as TimetrackIcon } from '@material-ui/icons/AccessTime';
 export { default as CustomersIcon } from '@material-ui/icons/Face';
 export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
 export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';
+export { default as ReportIcon } from '@material-ui/icons/ShowChart';

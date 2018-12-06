@@ -22,6 +22,7 @@ import { TimetrackFilterStore } from '../stores/timetrackFilterStore';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { CompanyStore } from 'src/stores/companyStore';
 import { CustomerImportStore } from '../stores/customerImportStore';
+import { DailyReportStore } from '../stores/dailyReportStore';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -48,6 +49,7 @@ class StoreProviderInner extends React.Component<Props> {
     peopleStore: PeopleStore;
     companyStore: CompanyStore;
     customerImportStore: CustomerImportStore;
+    dailyReportStore: DailyReportStore;
   };
 
   constructor(props: Props) {
@@ -76,6 +78,7 @@ class StoreProviderInner extends React.Component<Props> {
       peopleStore: new PeopleStore(mainStore),
       companyStore: new CompanyStore(mainStore),
       customerImportStore: new CustomerImportStore(mainStore),
+      dailyReportStore: new DailyReportStore(mainStore),
     };
   }
 

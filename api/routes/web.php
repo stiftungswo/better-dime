@@ -168,6 +168,10 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             $router->group(['prefix' => 'costgroups'], function () use ($router) {
                 $router->get('/', ['uses' => 'CostgroupController@index']);
             });
+
+            $router->group(['prefix' => 'reports'], function () use ($router) {
+                $router->get('/daily', ['uses' => 'ReportController@daily']);
+            });
         });
     });
 });

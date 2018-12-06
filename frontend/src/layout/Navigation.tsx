@@ -16,6 +16,7 @@ import {
   ProjectIcon,
   RateGroupIcon,
   RateUnitIcon,
+  ReportIcon,
   ServiceIcon,
   TagsIcon,
   TimetrackIcon,
@@ -37,6 +38,9 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
       <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
       <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
       <NavItem nested to={'/customers/transfer'} label={'Import / Export'} icon={ImportExportIcon} />
+    </Collapsible>
+    <Collapsible icon={ReportIcon} label={'Rapporte'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
+      <NavItem nested to={'/reports/daily'} label={'Wochenrapport'} />
     </Collapsible>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />
