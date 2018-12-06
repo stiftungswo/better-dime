@@ -81,14 +81,14 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                         <TableCell style={{ width: '20%' }}>Tariftyp</TableCell>
                         <TableCell style={{ width: '10%' }}>Menge</TableCell>
                         <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
-                        <TableCell style={{ width: '10%' }}>Total CHF</TableCell>
+                        <TableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</TableCell>
                         <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {values.positions.map((p: OfferPosition, index: number) => {
                         const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                        const total = p.amount * p.price_per_rate * (1 + p.vat);
+                        const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
                         return (
                           <TableRow key={index}>
                             <TableCell>
