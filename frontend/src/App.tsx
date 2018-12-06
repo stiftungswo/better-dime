@@ -33,6 +33,7 @@ import CompanyUpdate from './views/companies/CompanyUpdate';
 import CompanyCreate from './views/companies/CompanyCreate';
 import { CustomerImportExportOverview } from './views/customers/CustomerImportExportOverview';
 import DailyReport from './views/DailyReport';
+import NotFound from './views/NotFound';
 
 class App extends React.Component {
   public render() {
@@ -74,8 +75,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/customers/transfer" component={CustomerImportExportOverview} />
             <ProtectedRoute exact path="/reports/daily" component={DailyReport} />
             <Route>
-              {/*TODO*/}
-              <p>404</p>
+              <NotFound />
             </Route>
           </Switch>
         </DimeLayout>
