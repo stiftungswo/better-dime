@@ -19,14 +19,20 @@ interface Props extends FormProps {
 export class AddressSelector extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
-    props.customerStore!.customer = undefined;
+    this.updateCustomerInStore();
   }
 
   public componentDidUpdate = (prevProps: Props) => {
     if (prevProps.customerId !== this.props.customerId) {
-      this.props.customerStore!.fetchOne(this.props.customerId);
+      this.updateCustomerInStore();
     }
   };
+
+  protected async updateCustomerInStore() {
+    if (this.props.form.values.customer_id) {
+      await this.props.customerStore!.fetchOne(this.props.customerId);
+    }
+  }
 
   @computed
   public get options() {
