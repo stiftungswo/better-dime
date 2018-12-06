@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import { inject, observer } from 'mobx-react';
+import { inject, Observer, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { Offer, OfferPosition } from '../../types';
 import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
@@ -37,6 +37,10 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
     dialogOpen: false,
   };
 
+  public componentWillMount() {
+    this.props.serviceStore!.fetchAll();
+  }
+
   public handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
@@ -59,58 +63,72 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
-          <>
-            <TableToolbar title={'Services'} numSelected={0} addAction={disabled ? undefined : () => this.setState({ dialogOpen: true })} />
-            <div style={{ overflowX: 'auto' }}>
-              <Table padding={'dense'} style={{ minWidth: '1200px' }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell style={{ width: '5%' }}>Sort.</TableCell>
-                    <TableCell style={{ width: '25%' }}>Service</TableCell>
-                    <TableCell style={{ width: '15%' }}>Tarif</TableCell>
-                    <TableCell style={{ width: '20%' }}>Tariftyp</TableCell>
-                    <TableCell style={{ width: '10%' }}>Menge</TableCell>
-                    <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
-                    <TableCell style={{ width: '10%' }}>Total CHF</TableCell>
-                    <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {values.positions.map((p: OfferPosition, index: number) => {
-                    const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                    const total = p.amount * p.price_per_rate * (1 + p.vat);
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Field delayed component={NumberField} name={`positions.${index}.order`} margin={'none'} disabled={disabled} />
-                        </TableCell>
-                        <TableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</TableCell>
-                        <TableCell>
-                          <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
-                        </TableCell>
-                        <TableCell>
-                          <Field portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} disabled={disabled} />
-                        </TableCell>
-                        <TableCell>
-                          <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
-                        </TableCell>
-                        <TableCell>
-                          <Field delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
-                        </TableCell>
-                        <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
-                        <TableCell>
-                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
-                        </TableCell>
+          <Observer>
+            {() => (
+              <>
+                <TableToolbar
+                  title={'Services'}
+                  numSelected={0}
+                  addAction={disabled ? undefined : () => this.setState({ dialogOpen: true })}
+                />
+                <div style={{ overflowX: 'auto' }}>
+                  <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell style={{ width: '5%' }}>Sort.</TableCell>
+                        <TableCell style={{ width: '25%' }}>Service</TableCell>
+                        <TableCell style={{ width: '15%' }}>Tarif</TableCell>
+                        <TableCell style={{ width: '20%' }}>Tariftyp</TableCell>
+                        <TableCell style={{ width: '10%' }}>Menge</TableCell>
+                        <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
+                        <TableCell style={{ width: '10%' }}>Total CHF</TableCell>
+                        <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
                       </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-            {this.state.dialogOpen && (
-              <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
+                    </TableHead>
+                    <TableBody>
+                      {values.positions.map((p: OfferPosition, index: number) => {
+                        const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
+                        const total = p.amount * p.price_per_rate * (1 + p.vat);
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Field
+                                delayed
+                                component={NumberField}
+                                name={`positions.${index}.order`}
+                                margin={'none'}
+                                disabled={disabled}
+                              />
+                            </TableCell>
+                            <TableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</TableCell>
+                            <TableCell>
+                              <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
+                            </TableCell>
+                            <TableCell>
+                              <Field portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} disabled={disabled} />
+                            </TableCell>
+                            <TableCell>
+                              <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
+                            </TableCell>
+                            <TableCell>
+                              <Field delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
+                            </TableCell>
+                            <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
+                            <TableCell>
+                              <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+                {this.state.dialogOpen && (
+                  <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
+                )}
+              </>
             )}
-          </>
+          </Observer>
         )}
       />
     );
