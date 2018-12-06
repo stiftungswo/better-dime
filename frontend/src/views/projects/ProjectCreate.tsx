@@ -9,14 +9,16 @@ import { RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
 import { FormValues, Project } from '../../types';
 import { projectTemplate } from './projectSchema';
+import { MainStore } from '../../stores/mainStore';
 
 export interface Props extends RouteComponentProps {
   projectStore?: ProjectStore;
+  mainStore?: MainStore;
   rateGroupStore?: RateGroupStore;
 }
 
 @compose(
-  inject('projectStore'),
+  inject('projectStore', 'mainStore'),
   observer
 )
 export default class ProjectCreate extends React.Component<Props> {
@@ -41,7 +43,12 @@ export default class ProjectCreate extends React.Component<Props> {
       <ProjectForm
         title={'Projekt erstellen'}
         onSubmit={this.handleSubmit}
-        project={projectTemplate as FormValues}
+        project={
+          {
+            ...projectTemplate,
+            accountant_id: this.props.mainStore!.userId!,
+          } as FormValues
+        }
         submitted={this.state.submitted}
       />
     );

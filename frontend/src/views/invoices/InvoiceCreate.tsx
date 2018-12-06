@@ -8,14 +8,16 @@ import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { FormValues, Invoice } from '../../types';
 import { invoiceTemplate } from './invoiceSchema';
+import { MainStore } from '../../stores/mainStore';
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps {
   invoiceStore?: InvoiceStore;
+  mainStore?: MainStore;
   rateGroupStore?: RateGroupStore;
 }
 
 @compose(
-  inject('invoiceStore'),
+  inject('invoiceStore', 'mainStore'),
   observer
 )
 export default class InvoiceCreate extends React.Component<Props> {
@@ -36,7 +38,12 @@ export default class InvoiceCreate extends React.Component<Props> {
       <InvoiceForm
         title={'Rechnung erstellen'}
         onSubmit={this.handleSubmit}
-        invoice={invoiceTemplate as FormValues}
+        invoice={
+          {
+            ...invoiceTemplate,
+            accountant_id: this.props.mainStore!.userId,
+          } as FormValues
+        }
         submitted={this.state.submitted}
       />
     );
