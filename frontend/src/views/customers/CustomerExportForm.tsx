@@ -36,7 +36,7 @@ export class CustomerExportForm extends React.Component<Props> {
 
           <Formik
             initialValues={initialValues}
-            onSubmit={e => console.log(e)}
+            onSubmit={() => {}} //tslint:disable-line:no-empty
             render={formikProps => (
               <Grid container alignItems={'center'} spacing={24}>
                 <Grid item xs={12} md={4}>

@@ -5,9 +5,11 @@ import { EmployeeListing } from '../../stores/employeeStore';
 import { ProjectEffortListing } from '../../types';
 import { TimetrackEmployeeGroupProps, TimetrackProjectGroupProps, TimetrackServiceGroupProps } from './types';
 
+type Listing = ProjectListing | ServiceListing | EmployeeListing;
+
 interface Props {
   component: React.ComponentClass<TimetrackProjectGroupProps | TimetrackServiceGroupProps | TimetrackEmployeeGroupProps>;
-  entities: (ProjectListing | ServiceListing | EmployeeListing)[];
+  entities: Listing[];
   filterIds: number[];
   onClickRow: (entity: ProjectEffortListing) => void;
   showEmptyGroups: boolean;
@@ -39,30 +41,22 @@ export class TimetrackOverview extends React.Component<Props> {
   public render() {
     const GroupComponent = this.props.component;
     const { filterIds, entities } = this.props;
-    let rendering: (ServiceListing | ProjectListing | EmployeeListing | undefined)[] = [];
 
-    if (filterIds.length > 0) {
-      rendering = this.props.filterIds.map((id: number) =>
-        entities.find((entity: ServiceListing | ProjectListing | EmployeeListing) => entity.id === id)
-      );
-    } else {
-      rendering = entities;
-    }
+    const results = filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
 
-    if (rendering.length > 0) {
-      return rendering
-        .filter((entity: any) => entity !== undefined)
-        .map((entity: any) => (
-          <GroupComponent
-            entity={entity}
-            formatTotalWorkHours={this.formatTotalWorkHours}
-            formatRateEntry={this.formatRateEntry}
-            key={entity.id}
-            onClickRow={this.props.onClickRow}
-            showEmptyGroups={this.props.showEmptyGroups}
-            showProjectComments={this.props.showProjectComments}
-          />
-        ));
+    if (results.length > 0) {
+      //tslint:disable-next-line:no-any ; we can't guarantee that the entity types match the provided component
+      return results.map((entity: any) => (
+        <GroupComponent
+          entity={entity}
+          formatTotalWorkHours={this.formatTotalWorkHours}
+          formatRateEntry={this.formatRateEntry}
+          key={entity.id}
+          onClickRow={this.props.onClickRow}
+          showEmptyGroups={this.props.showEmptyGroups}
+          showProjectComments={this.props.showProjectComments}
+        />
+      ));
     } else {
       return 'Nichts gefunden.';
     }

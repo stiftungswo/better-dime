@@ -60,7 +60,7 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     return Promise.resolve();
   };
 
-  public handleClose = (props: FormikProps<any>) => () => {
+  public handleClose = (props: FormikProps<ProjectEffort>) => () => {
     if (props.dirty) {
       if (confirm('Änderungen verwerfen?')) {
         this.props.onClose();
