@@ -87,7 +87,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                           <Field delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                         </TableCell>
                         <TableCell>
-                          <Field required component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                          <Field disabled required component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                         </TableCell>
                         <TableCell>
                           <Field required delayed component={PercentageField} name={name('vat')} margin={'none'} />

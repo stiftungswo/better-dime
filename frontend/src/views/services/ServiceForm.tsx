@@ -23,6 +23,7 @@ import { serviceSchema } from './serviceSchema';
 import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Service> {
+  rateUnitSelectDisabled: boolean;
   serviceStore?: ServiceStore;
   rateGroupStore?: RateGroupStore;
   service: Service | undefined;
@@ -101,7 +102,11 @@ export default class ServiceForm extends React.Component<Props> {
                                     <TableRow key={index}>
                                       <TableCell>{rateGroup ? rateGroup.name : rateGroupId}</TableCell>
                                       <TableCell>
-                                        <Field component={RateUnitSelector} name={`service_rates.${index}.rate_unit_id`} />
+                                        <Field
+                                          disabled={this.props.rateUnitSelectDisabled}
+                                          component={RateUnitSelector}
+                                          name={`service_rates.${index}.rate_unit_id`}
+                                        />
                                       </TableCell>
                                       <TableCell>
                                         <Field component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />

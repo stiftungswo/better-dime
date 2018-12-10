@@ -67,6 +67,7 @@ export default class ServiceCreate extends React.Component<Props> {
         service={this.service}
         loading={empty(this.serviceRates)}
         submitted={this.state.submitted}
+        rateUnitSelectDisabled={false}
       />
     );
   }

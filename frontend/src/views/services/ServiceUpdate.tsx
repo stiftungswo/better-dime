@@ -34,6 +34,6 @@ export default class ServiceUpdate extends React.Component<Props> {
     const service: Service | undefined = serviceStore.service ? toJS(serviceStore.service) : undefined;
     const title = service ? `${service.name} - Services` : 'Service bearbeiten';
 
-    return <ServiceForm title={title} onSubmit={this.handleSubmit} service={service} />;
+    return <ServiceForm rateUnitSelectDisabled title={title} onSubmit={this.handleSubmit} service={service} />;
   }
 }

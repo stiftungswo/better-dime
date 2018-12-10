@@ -105,7 +105,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                               <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
                             </TableCell>
                             <TableCell>
-                              <Field portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} disabled={disabled} />
+                              <Field disabled portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                             </TableCell>
                             <TableCell>
                               <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />

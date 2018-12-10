@@ -109,7 +109,7 @@ export default class ProjectPositionSubformDialogs extends React.Component<Props
                       <Field component={CurrencyField} label="Tarif" name={name('price_per_rate')} />
                     </div>
                     <div>
-                      <Field component={RateUnitSelector} label="Einheit" name={name('rate_unit_id')} />
+                      <Field disabled component={RateUnitSelector} label="Einheit" name={name('rate_unit_id')} />
                     </div>
                     <div>
                       <Field component={PercentageField} label="MwSt." name={name('vat')} />
