@@ -13,6 +13,7 @@ import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
+import CurrencyField from '../../form/fields/CurrencyField';
 
 const template = {
   name: '',
@@ -66,7 +67,7 @@ export default class InvoiceDiscountSubform extends React.Component<Props> {
                         {p.percentage ? (
                           <Field delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
-                          <Field delayed component={NumberField} unit={'CHF'} name={name('value')} disabled={disabled} />
+                          <Field delayed component={CurrencyField} name={name('value')} disabled={disabled} />
                         )}
                       </TableCell>
                       <TableCell>
