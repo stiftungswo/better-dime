@@ -37,7 +37,7 @@ class CreateServiceEtc extends Migration
         Schema::create('rate_units', function (Blueprint $table) {
             $table->increments('id');
             $table->string('billing_unit');
-            $table->string('effort_unit');
+            $table->string('effort_unit')->nullable();
             $table->double('factor')->default(1);
             $table->boolean('is_time');
             $table->string('name');

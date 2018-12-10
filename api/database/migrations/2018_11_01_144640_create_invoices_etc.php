@@ -28,13 +28,13 @@ class CreateInvoicesEtc extends Migration
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
             $table->unsignedInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('set null');
-            $table->text('description');
-            $table->date('end');
+            $table->text('description')->nullable();
+            $table->date('end')->nullable();
             $table->integer('fixed_price')->nullable();
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('set null');
             $table->string('name');
-            $table->date('start');
+            $table->date('start')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
