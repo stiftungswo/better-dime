@@ -10,7 +10,6 @@ use App\Models\Project\ProjectCategory;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateGroup;
-use App\Models\Service\RateUnit;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectTest extends \TestCase
@@ -140,8 +139,12 @@ class ProjectTest extends \TestCase
     public function testGetCurrentPriceAttribute()
     {
         $project = factory(Project::class)->create();
+        $rateUnit = factory(\App\Models\Service\RateUnit::class)->create([
+            'factor' => 5
+        ]);
         $project->positions()->saveMany(factory(ProjectPosition::class, 2)->make([
             'price_per_rate' => 12000,
+            'rate_unit_id' => $rateUnit->id,
             'vat' => 0.077
         ]));
         $project->positions->each(function ($pp) {
@@ -150,15 +153,15 @@ class ProjectTest extends \TestCase
             ]));
         });
 
-        $calc = 2 * (504 * 12000 + 504 * 12000 * 0.077);
+        $calc = 2 * (504 / 5 * 12000 + 504 / 5 * 12000 * 0.077);
         $this->assertEquals($calc, $project->fresh()->current_price);
     }
 
     public function testGetCurrentTimeAttribute()
     {
         $project = factory(Project::class)->create();
-        $rateUnitTime = factory(RateUnit::class)->create(['is_time' => true, 'factor' => 1]);
-        $rateUnitMaterial = factory(RateUnit::class)->create(['is_time' => false]);
+        $rateUnitTime = factory(\App\Models\Service\RateUnit::class)->create(['is_time' => true, 'factor' => 1]);
+        $rateUnitMaterial = factory(\App\Models\Service\RateUnit::class)->create(['is_time' => false]);
 
         // add a few positions with time, and another one with a non-time rate unit
         $project->positions()->saveMany(factory(ProjectPosition::class, 2)->make([

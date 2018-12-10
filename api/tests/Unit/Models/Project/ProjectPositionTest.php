@@ -40,9 +40,13 @@ class ProjectPositionTest extends \TestCase
     public function testGetChargeAttribute()
     {
         // should be 0 if position has no efforts
+        $rateUnit = factory(\App\Models\Service\RateUnit::class)->create([
+            'factor' => 10
+        ]);
         /** @var ProjectPosition $position */
         $position = factory(ProjectPosition::class)->create([
             'price_per_rate' => 7500,
+            'rate_unit_id' => $rateUnit->id,
             'vat' => 0.077
         ]);
         $this->assertEquals(0, $position->charge);
@@ -55,7 +59,7 @@ class ProjectPositionTest extends \TestCase
             'value' => 140
         ]));
 
-        $this->assertEquals(1696275, $position->fresh()->charge);
+        $this->assertEquals(169627.5, $position->fresh()->charge);
     }
 
     public function testGetCalculatedVatAttribute()
