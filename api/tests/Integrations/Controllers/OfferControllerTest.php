@@ -5,6 +5,7 @@ namespace Tests\Integrations\Controllers;
 use App\Models\Customer\Address;
 use App\Models\Customer\Person;
 use App\Models\Offer\Offer;
+use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
 use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -30,7 +31,7 @@ class OfferControllerTest extends \TestCase
     {
         $offerTemplate = factory(Offer::class)->create();
         $offerTemplate->positions()->saveMany(factory(OfferPosition::class, 5)->make());
-        $offerTemplate->discounts()->saveMany(factory(OfferPosition::class, 5)->make());
+        $offerTemplate->discounts()->saveMany(factory(OfferDiscount::class, 5)->make());
         $this->asAdmin()->json('GET', 'api/v1/offers/' . $offerTemplate->id);
         $template = $this->responseToArray();
 

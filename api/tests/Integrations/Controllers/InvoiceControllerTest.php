@@ -27,6 +27,18 @@ class InvoiceControllerTest extends \TestCase
         $this->assertEquals('Entity deleted', $this->response->getContent());
     }
 
+    public function testValidDuplicate()
+    {
+        $invoiceTemplate = factory(Invoice::class)->create();
+        $invoiceTemplate->positions()->saveMany(factory(InvoicePosition::class, 5)->make());
+        $invoiceTemplate->discounts()->saveMany(factory(InvoiceDiscount::class, 5)->make());
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoiceTemplate->id);
+        $template = $this->responseToArray();
+
+        $this->asAdmin()->json('POST', 'api/v1/invoices/' . $invoiceTemplate->id . '/duplicate')->assertResponseOk();
+        $this->assertResponseMatchesTemplate($template, true);
+    }
+
     public function testInvalidGet()
     {
         // can't get because object does not exist

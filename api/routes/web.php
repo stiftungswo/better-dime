@@ -65,6 +65,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             $router->group(['prefix' => 'invoices'], function () use ($router) {
                 $router->get('/', ['uses' => 'InvoiceController@index']);
                 $router->post('/', ['uses' => 'InvoiceController@post']);
+                $router->post('/{id}/duplicate', ['uses' => 'InvoiceController@duplicate']);
                 $router->get('/{id}', ['uses' => 'InvoiceController@get']);
                 $router->put('/{id}', ['uses' => 'InvoiceController@put']);
                 $router->delete('/{id}', ['uses' => 'InvoiceController@delete']);

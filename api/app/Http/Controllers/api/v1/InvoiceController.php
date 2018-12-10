@@ -23,6 +23,12 @@ class InvoiceController extends BaseController
         return 'Entity deleted';
     }
 
+    public function duplicate($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        return self::get($this->duplicateObject($invoice, ['costgroup_distributions', 'discounts', 'positions']));
+    }
+
     public function get($id)
     {
         return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'offer_id', 'sibling_invoice_ids']);
