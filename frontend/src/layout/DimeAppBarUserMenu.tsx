@@ -2,17 +2,18 @@ import * as React from 'react';
 import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { Avatar, MenuItem, Menu, ListItemIcon } from '@material-ui/core/es';
-import { JwtTokenDecoded, MainStore } from 'src/stores/mainStore';
+import { MainStore } from 'src/stores/mainStore';
 import { IconButton, ListItemText } from '@material-ui/core';
 import { AccountIcon, LogoutIcon } from './icons';
+import { ApiStore } from '../stores/apiStore';
 
 interface DimeAppBarUserMenuProps {
-  meDetail: JwtTokenDecoded['details'];
   mainStore?: MainStore;
+  apiStore?: ApiStore;
 }
 
 @compose(
-  inject('mainStore', 'employeeStore'),
+  inject('mainStore', 'apiStore'),
   observer
 )
 export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps> {
@@ -30,7 +31,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     this.props.mainStore!.userMenuOpen = false;
   };
 
-  private handleProfil = () => {
+  private handleProfile = () => {
     const myId = this.props.mainStore!.userId;
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
@@ -42,11 +43,11 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
 
-    this.props.mainStore!.logout();
+    this.props.apiStore!.logout();
   };
 
   render() {
-    const { first_name, last_name } = this.props.meDetail;
+    const { first_name, last_name } = this.props.apiStore!.meDetail!;
     const shortName = `${first_name.slice(0, 1)}${last_name.slice(0, 1)}`;
     const fullName = `${first_name} ${last_name}`;
 
@@ -72,7 +73,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
           open={open}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleProfil}>
+          <MenuItem onClick={this.handleProfile}>
             <ListItemIcon>
               <AccountIcon />
             </ListItemIcon>

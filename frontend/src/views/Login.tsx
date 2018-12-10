@@ -18,6 +18,7 @@ import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
+import { ApiStore } from '../stores/apiStore';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -55,6 +56,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
   });
 
 export interface Props extends RouteComponentProps, InjectedNotistackProps, WithStyles<typeof styles> {
+  apiStore?: ApiStore;
   mainStore?: MainStore;
 }
 
@@ -65,13 +67,13 @@ const loginSchema = yup.object({
 
 @compose(
   withRouter,
-  inject('mainStore'),
+  inject('mainStore', 'apiStore'),
   observer
 )
 class Login extends React.Component<Props> {
   public handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = (values, formikBag) => {
     this.props
-      .mainStore!.postLogin({ ...values })
+      .apiStore!.postLogin({ ...values })
       .then(() => {
         this.props.history.replace('/');
       })

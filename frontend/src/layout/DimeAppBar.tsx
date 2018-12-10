@@ -37,7 +37,6 @@ class DimeAppBarInner extends React.Component<DimeAppBarProps> {
     window.document.title = `${props.title} - Dime`;
   }
 
-  //TODO is the whole userMenu stuff going to be implemented or can we remove this?
   handleMenu = (event: React.PointerEvent) => {
     this.props.mainStore!.userMenuAnchorEl = event.currentTarget as HTMLElement;
     this.props.mainStore!.userMenuOpen = false;
@@ -50,7 +49,7 @@ class DimeAppBarInner extends React.Component<DimeAppBarProps> {
 
   public render() {
     const { children, classes } = this.props;
-    const { drawerOpen, userMenuOpen, userMenuAnchorEl, meDetail } = this.props.mainStore!;
+    const { drawerOpen } = this.props.mainStore!;
 
     return (
       <AppBar position={'absolute'} className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}>
@@ -68,14 +67,8 @@ class DimeAppBarInner extends React.Component<DimeAppBarProps> {
             {this.props.title}
           </Typography>
 
-          {this.props.mainStore!.loading && (
-            <Button>
-              <CircularProgress className={classes.progress} size={16} />
-            </Button>
-          )}
-
           {children}
-          <DimeAppBarUserMenu meDetail={meDetail} />
+          <DimeAppBarUserMenu />
         </Toolbar>
       </AppBar>
     );

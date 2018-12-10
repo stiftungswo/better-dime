@@ -1,4 +1,3 @@
-import compose from './compose';
 import { InjectedNotistackProps, withSnackbar } from 'notistack';
 import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
@@ -23,6 +22,9 @@ import { PeopleStore } from 'src/stores/peopleStore';
 import { CompanyStore } from 'src/stores/companyStore';
 import { CustomerImportStore } from '../stores/customerImportStore';
 import { DailyReportStore } from '../stores/dailyReportStore';
+import { ApiStore } from '../stores/apiStore';
+import { Formatter } from './formatter';
+import { Notifier } from './notifier';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -30,6 +32,7 @@ export interface Props extends InjectedNotistackProps {
 
 class StoreProviderInner extends React.Component<Props> {
   private stores: {
+    apiStore: ApiStore;
     mainStore: MainStore;
     offerStore: OfferStore;
     employeeStore: EmployeeStore;
@@ -55,10 +58,12 @@ class StoreProviderInner extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    const mainStore = new MainStore(this.props.history, this.props.enqueueSnackbar);
+    const apiStore = new ApiStore(this.props.history, this.props.enqueueSnackbar);
+    const mainStore = new MainStore(apiStore, new Formatter(apiStore), new Notifier(this.props.enqueueSnackbar), this.props.history);
     const timetrackFilterStore = new TimetrackFilterStore(mainStore);
 
     this.stores = {
+      apiStore,
       mainStore,
       timetrackFilterStore,
       offerStore: new OfferStore(mainStore),
