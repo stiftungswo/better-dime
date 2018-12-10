@@ -5,7 +5,6 @@ namespace Tests\Unit\Models\Project;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
-use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
@@ -23,7 +22,7 @@ class ProjectPositionTest extends \TestCase
 
     public function testRateUnitAssignment()
     {
-        $rateUnit = factory(RateUnit::class)->make();
+        $rateUnit = factory(\App\Models\Service\RateUnit::class)->make();
         $position = factory(ProjectPosition::class)->make();
         $position->rate_unit()->associate($rateUnit);
         $this->assertEquals($rateUnit, $position->rate_unit);
@@ -65,8 +64,12 @@ class ProjectPositionTest extends \TestCase
     public function testGetCalculatedVatAttribute()
     {
         /** @var ProjectPosition $position */
+        $rateUnit = factory(\App\Models\Service\RateUnit::class)->create([
+            'factor' => 4
+        ]);
         $position = factory(ProjectPosition::class)->create([
             'price_per_rate' => 9000,
+            'rate_unit_id' => $rateUnit->id,
             'vat' => 0.077
         ]);
         // should be 0 if no efforts are recorded for the position
@@ -76,20 +79,26 @@ class ProjectPositionTest extends \TestCase
             'value' => 50
         ]));
 
-        $this->assertEquals(69300, $position->fresh(['efforts'])->calculated_vat);
+        $calc = 2 * ( 50 / 4 * 9000 * 0.077 );
+        $this->assertEquals($calc, $position->fresh(['efforts'])->calculated_vat);
     }
 
     public function testEffortsValueSum()
     {
+        $rateUnit = factory(\App\Models\Service\RateUnit::class)->create([
+            'factor' => 9
+        ]);
         // should be 0 if no efforts are recorded for the position
         /** @var ProjectPosition $position */
-        $position = factory(ProjectPosition::class)->create();
+        $position = factory(ProjectPosition::class)->create([
+            'rate_unit_id' => $rateUnit->id,
+        ]);
         $this->assertEquals(0, $position->efforts_value);
 
         $position->efforts()->saveMany(factory(ProjectEffort::class, 2)->make([
             'value' => 1234.56
         ]));
 
-        $this->assertEquals(2469.12, $position->fresh(['efforts'])->efforts_value);
+        $this->assertEquals(round(2 * 1234.56 / 9, 2), $position->fresh(['efforts'])->efforts_value);
     }
 }
