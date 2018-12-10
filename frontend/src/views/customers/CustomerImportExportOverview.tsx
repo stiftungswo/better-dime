@@ -1,6 +1,6 @@
 import React from 'react';
 import { DimeAppBar } from '../../layout/DimeAppBar';
-import { DimeContent } from '../../layout/DimeLayout';
+import { DimeContent } from '../../layout/DimeContent';
 import { Grid } from '@material-ui/core';
 import { FormProps } from '../../form/fields/common';
 import compose from '../../utilities/compose';

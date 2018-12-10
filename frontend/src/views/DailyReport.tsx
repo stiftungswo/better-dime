@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DimeAppBar } from '../layout/DimeAppBar';
-import { DimeContent, DimePaper } from '../layout/DimeLayout';
+import { DimePaper } from '../layout/DimePaper';
 import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { DailyReportEffort, DailyReportStore } from '../stores/dailyReportStore';
@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import { DimeContent } from '../layout/DimeContent';
 
 interface Props {
   dailyReportStore?: DailyReportStore;

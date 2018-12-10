@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { Service, ServiceRate } from './types';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableCell from '@material-ui/core/TableCell/TableCell';
@@ -20,6 +20,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import PercentageField from '../../form/fields/PercentageField';
 import TableToolbar from '../../layout/TableToolbar';
 import { serviceSchema } from './serviceSchema';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Service> {
   serviceStore?: ServiceStore;
@@ -43,7 +44,7 @@ export default class ServiceForm extends React.Component<Props> {
     return (
       <FormView
         paper={false}
-        loading={!hasContent(service) || this.props.loading}
+        loading={empty(service) || this.props.loading}
         title={this.props.title}
         validationSchema={serviceSchema}
         initialValues={service}

@@ -14,7 +14,7 @@ import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import CostgroupSelector from '../../form/entitySelector/CostgroupSelector';
-import { ErrorText } from '../../layout/DimeLayout';
+import { ErrorText } from '../../layout/ErrorText';
 
 const template = {
   weight: 10,

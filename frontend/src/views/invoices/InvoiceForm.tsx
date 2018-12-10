@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Field, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
@@ -25,6 +25,7 @@ import Navigator from './InvoiceNavigator';
 import { ESRIcon, InvoiceIcon, PaperIcon, StatisticsIcon } from '../../layout/icons';
 import { invoiceSchema } from './invoiceSchema';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Invoice> {
   mainStore?: MainStore;
@@ -43,7 +44,7 @@ export default class InvoiceForm extends React.Component<Props> {
     return (
       <FormView
         paper={false}
-        loading={!hasContent(invoice) || this.props.loading}
+        loading={empty(invoice) || this.props.loading}
         title={this.props.title}
         validationSchema={invoiceSchema}
         initialValues={invoice}

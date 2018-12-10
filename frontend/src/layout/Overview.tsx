@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { DimeContent } from './DimeLayout';
+import { DimeContent } from './DimeContent';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
 import { AbstractStore } from '../stores/abstractStore';
 import { ActionButtonAction } from './ActionButton';
@@ -21,7 +21,8 @@ export interface Column<T> {
 }
 
 interface Props<ListingType> {
-  store: AbstractStore<any, ListingType>; //tslint:disable-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
+  //tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
+  store: AbstractStore<any, ListingType>;
   title: string;
   children?: React.ReactNode;
   addAction?: ActionButtonAction;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Field, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
@@ -24,6 +24,7 @@ import { projectSchema } from './projectSchema';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { DimePaper } from '../../layout/DimePaper';
 
 interface InfoFieldProps {
   value: string;
@@ -81,7 +82,7 @@ export default class ProjectForm extends React.Component<Props> {
     return (
       <FormView
         paper={false}
-        loading={!hasContent(project) || this.props.loading}
+        loading={empty(project) || this.props.loading}
         title={this.props.title}
         validationSchema={projectSchema}
         initialValues={project}

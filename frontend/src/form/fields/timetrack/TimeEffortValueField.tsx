@@ -5,7 +5,7 @@ import { RateUnit, RateUnitStore } from '../../../stores/rateUnitStore';
 import { InputFieldProps } from '../common';
 import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { LoadingSpinner } from '../../../layout/DimeLayout';
+import { LoadingSpinner } from '../../../layout/LoadingSpinner';
 
 interface Props extends InputFieldProps {
   rateUnitId: number;

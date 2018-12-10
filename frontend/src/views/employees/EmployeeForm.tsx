@@ -4,10 +4,11 @@ import { Employee } from '../../types';
 import { Field, FormikProps } from 'formik';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
@@ -22,7 +23,7 @@ export default class EmployeeForm extends React.Component<Props> {
       <FormView
         title={this.props.title}
         validationSchema={schema}
-        loading={!hasContent(employee) || this.props.loading}
+        loading={empty(employee) || this.props.loading}
         initialValues={{ ...employee, password: '', password_repeat: '' }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

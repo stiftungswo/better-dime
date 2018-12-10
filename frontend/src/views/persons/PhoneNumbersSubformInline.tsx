@@ -14,7 +14,7 @@ import { Person, PeopleStore } from 'src/stores/peopleStore';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { NumberField, TextField } from 'src/form/fields/common';
 import Select from 'src/form/fields/Select';
-import { DimePaper } from '../../layout/DimeLayout';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props {
   mainStore?: MainStore;

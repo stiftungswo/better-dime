@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Field, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
@@ -26,6 +26,7 @@ import { offerSchema } from './offerSchema';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Offer> {
   offerStore?: OfferStore;
@@ -57,7 +58,7 @@ export default class OfferForm extends React.Component<Props> {
     return (
       <FormView
         paper={false}
-        loading={!hasContent(offer) || this.props.loading}
+        loading={empty(offer) || this.props.loading}
         title={this.props.title}
         validationSchema={offerSchema}
         initialValues={offer}

@@ -2,7 +2,7 @@ import React from 'react';
 import { MainStore } from '../../stores/mainStore';
 import { Grid, Input, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
-import { DimePaper, LoadingSpinner } from '../../layout/DimeLayout';
+import { LoadingSpinner } from '../../layout/LoadingSpinner';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { Field, Formik } from 'formik';
@@ -12,6 +12,7 @@ import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
 import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer } from '../../stores/customerImportStore';
 import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
 import { CustomerImportFAQ } from './CustomerImportFAQ';
+import { DimePaper } from '../../layout/DimePaper';
 
 interface Props {
   customerImportStore?: CustomerImportStore;

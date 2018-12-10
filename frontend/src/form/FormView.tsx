@@ -2,7 +2,7 @@ import { Formik, FormikBag, FormikConfig, FormikProps, FormikState } from 'formi
 import * as React from 'react';
 import { Fragment } from 'react';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
-import { DimeContent } from '../layout/DimeLayout';
+import { DimeContent } from '../layout/DimeContent';
 import { Prompt } from 'react-router';
 import { SaveIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';

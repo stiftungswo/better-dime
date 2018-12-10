@@ -3,7 +3,7 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import Grid from '@material-ui/core/Grid/Grid';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
-import { DimePaper } from '../../layout/DimeLayout';
+import { DimePaper } from '../../layout/DimePaper';
 import { Field, Formik, FormikBag } from 'formik';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { SwitchField } from '../../form/fields/common';

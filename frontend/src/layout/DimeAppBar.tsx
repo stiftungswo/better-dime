@@ -8,17 +8,49 @@ import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import Typography from '@material-ui/core/Typography/Typography';
-import { Button, CircularProgress, withWidth } from '@material-ui/core';
+import { Button, CircularProgress, Theme, withWidth } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
-import { styles } from './DimeLayout';
 import { ActionButton, ActionButtonAction, ButtonProps } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 import { MenuIcon } from './icons';
+import createStyles from '@material-ui/core/styles/createStyles';
+import { drawerWidth } from './DimeLayout';
 
-//TODO should probably extract the respective styles from DimeLayout and declare them in this file
-interface DimeAppBarProps extends WithStyles<typeof styles> {
+export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
+  createStyles({
+    appBar: {
+      zIndex: zIndex.drawer + 1,
+      transition: transitions.create(['width', 'margin'], {
+        easing: transitions.easing.sharp,
+        duration: transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: transitions.create(['width', 'margin'], {
+        easing: transitions.easing.sharp,
+        duration: transitions.duration.enteringScreen,
+      }),
+    },
+    toolbar: {
+      paddingRight: 24, // keep right padding when drawer closed
+    },
+    menuButton: {
+      marginLeft: 12,
+      marginRight: 36,
+    },
+    menuButtonHidden: {
+      display: 'none',
+    },
+    title: {
+      flexGrow: 1,
+    },
+  });
+
+interface Props extends WithStyles<typeof styles> {
   children?: React.ReactNode;
   mainStore?: MainStore;
   employeeStore?: EmployeeStore;
@@ -31,8 +63,8 @@ interface DimeAppBarProps extends WithStyles<typeof styles> {
   inject('mainStore', 'employeeStore'),
   observer
 )
-class DimeAppBarInner extends React.Component<DimeAppBarProps> {
-  constructor(props: DimeAppBarProps) {
+class DimeAppBarInner extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
     window.document.title = `${props.title} - Dime`;
   }

@@ -8,7 +8,7 @@ import compose from '../../utilities/compose';
 import { Service } from './types';
 import { RateGroup, RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
-import { hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { serviceTemplate } from './serviceSchema';
 import { FormValues } from '../../types';
 
@@ -65,7 +65,7 @@ export default class ServiceCreate extends React.Component<Props> {
         title={'Service erstellen'}
         onSubmit={this.handleSubmit}
         service={this.service}
-        loading={!hasContent(this.serviceRates)}
+        loading={empty(this.serviceRates)}
         submitted={this.state.submitted}
       />
     );

@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
-import { LoadingSpinner } from '../layout/DimeLayout';
+import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { Prompt } from 'react-router';
 import { HandleFormikSubmit } from '../types';
 

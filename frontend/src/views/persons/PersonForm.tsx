@@ -5,13 +5,14 @@ import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { FormView, FormViewProps } from '../../form/FormView';
 import AddressesSubformInline from './AddressesSubformInline';
 import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
 import { CompanySelector } from '../../form/entitySelector/CompanySelector';
 import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Person> {
   person: Person | undefined;
@@ -52,7 +53,7 @@ export default class PersonForm extends React.Component<Props> {
         paper={false}
         title={this.props.title}
         validationSchema={personSchema}
-        loading={!hasContent(person) || this.props.loading}
+        loading={empty(person) || this.props.loading}
         initialValues={{ ...person }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

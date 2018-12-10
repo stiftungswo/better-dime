@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { Field, FormikProps } from 'formik';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DimePaper, hasContent } from '../../layout/DimeLayout';
+import { empty } from '../../utilities/helpers';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
@@ -18,6 +18,7 @@ import { MainStore } from 'src/stores/mainStore';
 import TableToolbar from 'src/layout/TableToolbar';
 import { toJS } from 'mobx';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
+import { DimePaper } from '../../layout/DimePaper';
 
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
@@ -83,7 +84,7 @@ export default class CompanyForm extends React.Component<Props> {
         paper={false}
         title={this.props.title}
         validationSchema={companySchema}
-        loading={!hasContent(company) || this.props.loading}
+        loading={empty(company) || this.props.loading}
         initialValues={{ ...company }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

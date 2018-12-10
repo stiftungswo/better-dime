@@ -5,7 +5,7 @@ import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelect
 import { FormProps, SwitchField } from '../../form/fields/common';
 import { ExportFormatSelector } from '../../form/entitySelector/ExportFormatSelector';
 import Button from '@material-ui/core/Button/Button';
-import { DimePaper } from '../../layout/DimeLayout';
+import { DimePaper } from '../../layout/DimePaper';
 import { CustomerFilter } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
