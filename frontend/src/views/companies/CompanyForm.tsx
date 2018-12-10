@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { Person, PeopleStore } from '../../stores/peopleStore';
-import * as yup from 'yup';
+import { PeopleStore, Person } from '../../stores/peopleStore';
 import { Field, FormikProps } from 'formik';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
 import { FormView, FormViewProps } from '../../form/FormView';
-import { FormHeader } from '../../layout/FormHeader';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import PhoneNumberSubformInline from '../persons/PhoneNumbersSubformInline';
 import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
@@ -16,9 +14,9 @@ import { OverviewTable } from 'src/layout/OverviewTable';
 import { inject } from 'mobx-react';
 import { MainStore } from 'src/stores/mainStore';
 import TableToolbar from 'src/layout/TableToolbar';
-import { toJS } from 'mobx';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 import { DimePaper } from '../../layout/DimePaper';
+import { companySchema } from './companySchema';
 
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
@@ -26,30 +24,27 @@ export interface Props extends FormViewProps<Company> {
   peopleStore?: PeopleStore;
 }
 
-const companySchema = yup.object({
-  archived: yup.boolean(),
-  email: yup.string().nullable(true),
-  name: yup.string().required(),
-  company_id: yup.number().nullable(true),
-  rate_group_id: yup.number().required(),
-  addresses: yup.array(
-    yup.object({
-      city: yup.string().required(),
-      country: yup.string().required(),
-      description: yup.string(),
-      postcode: yup.number().required(),
-      street: yup.string().required(),
-      supplement: yup.string().nullable(true),
-    })
-  ),
-  phone_numbers: yup.array(
-    yup.object({
-      category: yup.number().required(),
-      number: yup.string().required(),
-    })
-  ),
-  tags: yup.array(yup.number().nullable(false)),
-});
+const personsColumns = [
+  {
+    id: 'first_name',
+    label: 'Vorname',
+  },
+  {
+    id: 'last_name',
+    label: 'Nachname',
+  },
+  {
+    id: 'email',
+    label: 'E-Mail',
+  },
+  {
+    id: '_',
+    label: 'Strasse',
+    format: (p: Person) => {
+      return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
+    },
+  },
+];
 
 @inject('mainStore', 'peopleStore')
 export default class CompanyForm extends React.Component<Props> {
@@ -88,73 +83,55 @@ export default class CompanyForm extends React.Component<Props> {
         initialValues={{ ...company }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        render={(
-          props: FormikProps<any> // tslint:disable-line
-        ) => (
+        render={(props: FormikProps<Company>) => (
           <Fragment>
             <form onSubmit={props.handleSubmit}>
-              <DimePaper>
-                <Grid container={true} spacing={16}>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field fullWidth delayed component={TextField} name={'name'} label={'Name'} />
-                  </Grid>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
-                  </Grid>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field fullWidth delayed component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
-                  </Grid>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
-                  </Grid>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
-                  </Grid>
-                  <Grid item={true} xs={12} sm={6}>
-                    <Field isMulti fullWidth delayed component={CustomerTagSelector} name={'tags'} label={'Tags'} />
-                  </Grid>
+              <Grid container spacing={24}>
+                <Grid item xs={12}>
+                  <DimePaper>
+                    <Grid container spacing={16}>
+                      <Grid item xs={12} sm={6}>
+                        <Field fullWidth delayed component={TextField} name={'name'} label={'Name'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field fullWidth delayed component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field isMulti fullWidth delayed component={CustomerTagSelector} name={'tags'} label={'Tags'} />
+                      </Grid>
+                    </Grid>
+                  </DimePaper>
                 </Grid>
-              </DimePaper>
-
-              <br />
-              <AddressesSubformInline formikProps={props} name={'addresses'} />
-
-              <br />
-              <PhoneNumberSubformInline formikProps={props} name={'phone_numbers'} />
-
-              <br />
-              {!loading && (
-                <DimePaper>
-                  <TableToolbar title={'Mitarbeiter'} addAction={'/persons/new'} />
-                  <OverviewTable
-                    data={this.persons}
-                    onClickRow={(m: Person) => {
-                      mainStore!.navigateTo(`/persons/${m.id}`);
-                    }}
-                    columns={[
-                      {
-                        id: 'first_name',
-                        label: 'Vorname',
-                      },
-                      {
-                        id: 'last_name',
-                        label: 'Nachname',
-                      },
-                      {
-                        id: 'email',
-                        label: 'E-Mail',
-                      },
-                      {
-                        id: '_',
-                        label: 'Strasse',
-                        format: (p: Person) => {
-                          return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
-                        },
-                      },
-                    ]}
-                  />
-                </DimePaper>
-              )}
+                <Grid item xs={12}>
+                  <AddressesSubformInline formikProps={props} name={'addresses'} />
+                </Grid>
+                <Grid item xs={12}>
+                  <PhoneNumberSubformInline formikProps={props} name={'phone_numbers'} />
+                </Grid>
+                <Grid item xs={12}>
+                  {!loading && (
+                    <DimePaper>
+                      <TableToolbar title={'Mitarbeiter'} addAction={'/persons/new'} />
+                      <OverviewTable
+                        data={this.persons}
+                        onClickRow={(m: Person) => {
+                          mainStore!.navigateTo(`/persons/${m.id}`);
+                        }}
+                        columns={personsColumns}
+                      />
+                    </DimePaper>
+                  )}
+                </Grid>
+              </Grid>
             </form>
           </Fragment>
         )}

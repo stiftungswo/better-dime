@@ -14,11 +14,12 @@ import { Person, PeopleStore } from 'src/stores/peopleStore';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { NumberField, TextField } from 'src/form/fields/common';
 import { DimePaper } from '../../layout/DimePaper';
+import { Company } from '../../stores/companyStore';
 
 export interface Props {
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
-  formikProps: FormikProps<Person>;
+  formikProps: FormikProps<Person | Company>;
   name: string;
   disabled?: boolean;
 }
