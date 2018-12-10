@@ -6,10 +6,6 @@ import { TimetrackFormDialog } from './TimetrackFormDialog';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { TimetrackFilterForm } from './TimetrackFilterForm';
-import { ProjectStore } from '../../stores/projectStore';
-import { EmployeeStore } from '../../stores/employeeStore';
-import { ServiceStore } from '../../stores/serviceStore';
-import { TimetrackOverview } from './TimetrackOverview';
 import TimetrackEmployeeGroup from './TimetrackEmployeeGroup';
 import TimetrackProjectGroup from './TimetrackProjectGroup';
 import TimetrackServiceGroup from './TimetrackServiceGroup';
@@ -21,23 +17,42 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
 
+export const formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
+  if (factor) {
+    return `${value / factor} ${unit}`;
+  } else {
+    return `${value} ${unit}`;
+  }
+};
+
+export const formatTotalWorkHours = (workedMinutes: number[]) => {
+  let workedHoursFormatted = '0:00h';
+
+  if (workedMinutes.length > 0) {
+    const sum = workedMinutes.reduce((total: number, current: number) => Number(total) + Number(current));
+    const hours = Math.floor(sum / 60);
+    const minutes = Math.floor(sum % 60);
+    workedHoursFormatted = hours + ':' + ('0' + minutes).slice(-2) + 'h';
+  }
+
+  return workedHoursFormatted;
+};
+
 interface Props {
   effortStore?: EffortStore;
-  employeeStore?: EmployeeStore;
   projectCommentStore?: ProjectCommentStore;
-  projectStore?: ProjectStore;
-  serviceStore?: ServiceStore;
   timetrackFilterStore?: TimetrackFilterStore;
 }
 
 @compose(
-  inject('effortStore', 'employeeStore', 'projectCommentStore', 'projectStore', 'serviceStore', 'timetrackFilterStore'),
+  inject('effortStore', 'projectCommentStore', 'timetrackFilterStore'),
   observer
 )
 export default class Timetrack extends React.Component<Props> {
   public componentDidMount() {
-    this.props.effortStore!.fetchAll();
-    this.props.projectCommentStore!.fetchAll();
+    const filter = this.props.timetrackFilterStore!.filter;
+    this.props.effortStore!.fetchFiltered(filter);
+    this.props.projectCommentStore!.fetchFiltered(filter);
   }
 
   public handleEffortAdd = () => {
@@ -60,7 +75,35 @@ export default class Timetrack extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   };
 
+  public renderGroups = () => {
+    const filterStore = this.props.timetrackFilterStore!;
+    const showEmptyGroups = filterStore.filter!.showEmptyGroups;
+    switch (filterStore.grouping) {
+      case 'employee':
+        return filterStore.employees.map(employee => (
+          <TimetrackEmployeeGroup key={employee.id} entity={employee} onClickRow={this.onClickRow} />
+        ));
+      case 'project':
+        return filterStore.projects.map(project => (
+          <TimetrackProjectGroup
+            key={project.id}
+            entity={project}
+            onClickRow={this.onClickRow}
+            showProjectComments={filterStore.filter!.showProjectComments}
+          />
+        ));
+      case 'service':
+        return filterStore.services.map(service => (
+          <TimetrackServiceGroup key={service.id} entity={service} onClickRow={this.onClickRow} />
+        ));
+      default:
+        throw new Error();
+    }
+  };
+
   public render() {
+    const filterStore = this.props.timetrackFilterStore!;
+    const showEmptyGroups = filterStore.filter!.showEmptyGroups;
     return (
       <>
         <DimeAppBar title={'Zeiterfassung'}>
@@ -73,35 +116,7 @@ export default class Timetrack extends React.Component<Props> {
             <TimetrackFilterForm />
 
             {this.props.effortStore!.loading && <LoadingSpinner />}
-            {!this.props.effortStore!.loading &&
-              ((this.props.timetrackFilterStore!.grouping === 'employee' && (
-                <TimetrackOverview
-                  component={TimetrackEmployeeGroup}
-                  filterIds={this.props.timetrackFilterStore!.filter!.employee_ids}
-                  entities={this.props.employeeStore!.employees!}
-                  onClickRow={this.onClickRow}
-                  showEmptyGroups={this.props.timetrackFilterStore!.filter!.show_empty_groups}
-                />
-              )) ||
-                (this.props.timetrackFilterStore!.grouping === 'project' && (
-                  <TimetrackOverview
-                    component={TimetrackProjectGroup}
-                    filterIds={this.props.timetrackFilterStore!.filter!.project_ids}
-                    entities={this.props.projectStore!.projects!}
-                    onClickRow={this.onClickRow}
-                    showEmptyGroups={this.props.timetrackFilterStore!.filter!.show_empty_groups}
-                    showProjectComments={this.props.timetrackFilterStore!.filter!.show_project_comments}
-                  />
-                )) ||
-                (this.props.timetrackFilterStore!.grouping === 'service' && (
-                  <TimetrackOverview
-                    component={TimetrackServiceGroup}
-                    filterIds={this.props.timetrackFilterStore!.filter!.service_ids}
-                    entities={this.props.serviceStore!.services!}
-                    onClickRow={this.onClickRow}
-                    showEmptyGroups={this.props.timetrackFilterStore!.filter!.show_empty_groups}
-                  />
-                )))}
+            {!this.props.effortStore!.loading && this.renderGroups()}
           </Grid>
 
           {this.props.effortStore!.editing && <TimetrackFormDialog onClose={this.handleClose} />}

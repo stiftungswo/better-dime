@@ -7,25 +7,17 @@ import { EmployeeListing } from '../../stores/employeeStore';
 
 interface EntityGroup {
   effortStore?: EffortStore;
-  formatRateEntry: (value: number, factor: number | undefined, unit: string) => string;
   onClickRow: (entity: ProjectEffortListing) => void;
-  showEmptyGroups: boolean;
-}
-
-interface FormatToTimeProp {
-  formatTotalWorkHours: (workedMinutes: number[]) => string;
 }
 
 export type TimetrackEmployeeGroupProps = {
   entity: EmployeeListing;
-} & FormatToTimeProp &
-  EntityGroup;
+} & EntityGroup;
 
 export type TimetrackProjectGroupProps = {
   entity: ProjectListing;
   showProjectComments: boolean;
-} & FormatToTimeProp &
-  EntityGroup;
+} & EntityGroup;
 
 export type TimetrackServiceGroupProps = {
   entity: ServiceListing;

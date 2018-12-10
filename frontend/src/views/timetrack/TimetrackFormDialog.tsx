@@ -18,12 +18,14 @@ import Button from '@material-ui/core/Button/Button';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { TextField } from '../../form/fields/common';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 
 interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
   projectCommentStore?: ProjectCommentStore;
+  timetrackFilterStore?: TimetrackFilterStore;
 }
 
 const schema = yup.object({
@@ -35,29 +37,34 @@ const schema = yup.object({
 });
 
 @compose(
-  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore'),
+  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore'),
   observer,
   withMobileDialog()
 )
 export class TimetrackFormDialog extends React.Component<Props & InjectedProps> {
   public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
-    if (this.props.effortStore!.entity && 'employee_id' in entity) {
-      await this.props.effortStore!.put(entity);
+    const filter = this.props.timetrackFilterStore!.filter;
+    const effortStore = this.props.effortStore!;
+
+    if (effortStore.entity && 'employee_id' in entity) {
+      await effortStore.put(entity);
     } else if ('employee_ids' in entity) {
-      entity.employee_ids.forEach(async (e: number) => {
-        const newEffort: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
-        await this.props.effortStore!.post(newEffort);
-      });
+      await Promise.all(
+        entity.employee_ids.map((e: number) => {
+          const newEffort: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
+          return effortStore.post(newEffort);
+        })
+      );
     }
 
     if ('comment' in entity && entity.comment !== '') {
       const newProjectComment: ProjectComment = { ...entity } as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
+      await this.props.projectCommentStore!.fetchFiltered(filter);
     }
 
-    this.props.effortStore!.fetchAll();
+    await effortStore.fetchFiltered(filter);
     formikProps.setSubmitting(false);
-    return Promise.resolve();
   };
 
   public handleClose = (props: FormikProps<ProjectEffort>) => () => {

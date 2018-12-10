@@ -10,11 +10,13 @@ import { Field, FormikBag } from 'formik';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { TextField } from '../../form/fields/common';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 
 interface Props {
   onClose: () => void;
   projectCommentStore?: ProjectCommentStore;
   mainStore?: MainStore;
+  timetrackFilterStore?: TimetrackFilterStore;
 }
 
 const schema = yup.object({
@@ -24,17 +26,19 @@ const schema = yup.object({
 });
 
 @compose(
-  inject('projectCommentStore', 'mainStore'),
+  inject('projectCommentStore', 'timetrackFilterStore', 'mainStore'),
   observer
 )
 export class TimetrackCommentFormDialog extends React.Component<Props> {
-  public handleSubmit = (entity: ProjectComment) => {
-    if (this.props.projectCommentStore!.entity) {
-      this.props.projectCommentStore!.put(entity).then(() => (this.props.projectCommentStore!.editing = false));
+  public handleSubmit = async (entity: ProjectComment) => {
+    const projectCommentStore = this.props.projectCommentStore!;
+    if (projectCommentStore.entity) {
+      await projectCommentStore.put(entity);
     } else {
-      this.props.projectCommentStore!.post(entity).then(() => (this.props.projectCommentStore!.editing = false));
+      await projectCommentStore.post(entity);
     }
-    return Promise.resolve();
+    await projectCommentStore.fetchFiltered(this.props.timetrackFilterStore!.filter);
+    projectCommentStore.editing = false;
   };
 
   public render() {

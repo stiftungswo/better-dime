@@ -16,7 +16,6 @@ interface Props {
   formatRateEntry: (value: number, factor: number | undefined, unit: string) => string;
   onEffortAdd: () => void;
   onClickEffortRow: (entity: ProjectEffortListing) => void;
-  showEmptyGroups: boolean;
   projectCommentStore?: ProjectCommentStore;
 }
 
@@ -49,7 +48,7 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
   );
 
   public render() {
-    const { displayTotal, efforts, entity, formatRateEntry, onClickEffortRow, projectCommentStore, showEmptyGroups } = this.props;
+    const { displayTotal, efforts, entity, formatRateEntry, onClickEffortRow, projectCommentStore } = this.props;
     const comments = projectCommentStore!.projectComments.filter((comment: ProjectComment) => comment.project_id === entity.id);
 
     let joinedForces: (ProjectEffortListing | ProjectComment)[] = efforts;
@@ -60,54 +59,50 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
       return dateA.getTime() - dateB.getTime();
     });
 
-    if (efforts.length > 0 || comments.length > 0 || showEmptyGroups) {
-      if (efforts.length > 0 || comments.length > 0) {
-        return (
-          <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name} displayTotal={displayTotal}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Datum</TableCell>
-                  <TableCell>Mitarbeiter</TableCell>
-                  <TableCell>Aktivität</TableCell>
-                  <TableCell numeric>Gebuchter Wert</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {joinedForces.map((e: ProjectEffortListing | ProjectComment) => {
-                  if ('comment' in e) {
-                    return (
-                      <TableRow key={`comment_${e.id}`} onClick={() => this.onClickCommentRow(e)} component={SafeClickableTableRow}>
-                        <TableCell style={{ fontStyle: 'italic' }}>{e.date}</TableCell>
-                        <TableCell colSpan={3} style={{ fontStyle: 'italic' }}>
-                          {e.comment}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  } else {
-                    return (
-                      <TableRow key={`effort_${e.id}`} onClick={() => onClickEffortRow(e)} component={SafeClickableTableRow}>
-                        <TableCell>{e.date}</TableCell>
-                        <TableCell>{e.employee_full_name}</TableCell>
-                        <TableCell>{e.position_description}</TableCell>
-                        <TableCell numeric>{formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</TableCell>
-                      </TableRow>
-                    );
-                  }
-                })}
-              </TableBody>
-            </Table>
-          </TimetrackExpansionPanel>
-        );
-      } else {
-        return (
-          <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name}>
-            Keine Leistungen erfasst mit den gewählten Filtern.
-          </TimetrackExpansionPanel>
-        );
-      }
+    if (efforts.length > 0 || comments.length > 0) {
+      return (
+        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name} displayTotal={displayTotal}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Datum</TableCell>
+                <TableCell>Mitarbeiter</TableCell>
+                <TableCell>Aktivität</TableCell>
+                <TableCell numeric>Gebuchter Wert</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {joinedForces.map((e: ProjectEffortListing | ProjectComment) => {
+                if ('comment' in e) {
+                  return (
+                    <TableRow key={`comment_${e.id}`} onClick={() => this.onClickCommentRow(e)} component={SafeClickableTableRow}>
+                      <TableCell style={{ fontStyle: 'italic' }}>{e.date}</TableCell>
+                      <TableCell colSpan={3} style={{ fontStyle: 'italic' }}>
+                        {e.comment}
+                      </TableCell>
+                    </TableRow>
+                  );
+                } else {
+                  return (
+                    <TableRow key={`effort_${e.id}`} onClick={() => onClickEffortRow(e)} component={SafeClickableTableRow}>
+                      <TableCell>{e.date}</TableCell>
+                      <TableCell>{e.employee_full_name}</TableCell>
+                      <TableCell>{e.position_description}</TableCell>
+                      <TableCell numeric>{formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</TableCell>
+                    </TableRow>
+                  );
+                }
+              })}
+            </TableBody>
+          </Table>
+        </TimetrackExpansionPanel>
+      );
     } else {
-      return null;
+      return (
+        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name}>
+          Keine Leistungen erfasst mit den gewählten Filtern.
+        </TimetrackExpansionPanel>
+      );
     }
   }
 }

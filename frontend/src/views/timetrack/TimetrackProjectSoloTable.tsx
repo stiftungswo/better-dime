@@ -11,7 +11,6 @@ interface Props {
   efforts: ProjectEffortListing[];
   formatRateEntry: (value: number, factor: number | undefined, unit: string) => string;
   onClickRow: (entity: ProjectEffortListing) => void;
-  showEmptyGroups: boolean;
   title: string;
 }
 
@@ -50,19 +49,15 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
   );
 
   public render() {
-    if (this.props.efforts.length > 0 || this.props.showEmptyGroups) {
-      return (
-        <TimetrackEntityGroup
-          actions={this.projectGroupActions}
-          columns={this.columns}
-          displayTotal={this.props.displayTotal}
-          efforts={this.props.efforts}
-          onClickRow={this.props.onClickRow}
-          title={this.props.title}
-        />
-      );
-    } else {
-      return null;
-    }
+    return (
+      <TimetrackEntityGroup
+        actions={this.projectGroupActions}
+        columns={this.columns}
+        displayTotal={this.props.displayTotal}
+        efforts={this.props.efforts}
+        onClickRow={this.props.onClickRow}
+        title={this.props.title}
+      />
+    );
   }
 }

@@ -1,33 +1,18 @@
 import { AbstractStore } from './abstractStore';
-import { Project, ProjectEffort, ProjectEffortListing, ProjectEffortTemplate } from '../types';
+import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
 import { MainStore } from './mainStore';
-import { TimetrackFilterStore } from './timetrackFilterStore';
 
 export class EffortStore extends AbstractStore<ProjectEffort> {
-  protected get entityName(): { singular: string; plural: string } {
-    return {
-      singular: 'die Leistung',
-      plural: 'die Leistungen',
-    };
-  }
-
-  constructor(mainStore: MainStore, private timetrackFilterStore: TimetrackFilterStore) {
-    super(mainStore);
-  }
-
-  /* TODO: save the last selected user, project and project position in the employeeSettings */
-
   @observable
   public effort?: ProjectEffort = undefined;
-
   @observable
   public efforts: ProjectEffortListing[] = [];
 
+  /* TODO: save the last selected user, project and project position in the employeeSettings */
   @observable
   public editing: boolean = false;
-
   @observable
   public effortTemplate: ProjectEffortTemplate = {
     comment: '',
@@ -37,34 +22,45 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     project_id: null,
     value: 1,
   };
-
   @observable
   public loading: boolean = false;
-
   @observable
   public selectedProject?: Project = undefined;
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+  }
 
   @computed
   get entity(): ProjectEffort | undefined {
     return this.effort;
   }
 
+  protected get entityName(): { singular: string; plural: string } {
+    return {
+      singular: 'die Leistung',
+      plural: 'die Leistungen',
+    };
+  }
+
   @action
-  protected async doFetchAll() {
+  public async fetchFiltered(filter: ProjectEffortFilter) {
     this.loading = true;
-    let baseIndex = '/project_efforts';
-
-    if (this.timetrackFilterStore.filter) {
-      baseIndex += '?start=' + this.timetrackFilterStore.filter.start;
-      baseIndex += '&end=' + this.timetrackFilterStore.filter.end;
-      baseIndex += '&employee_ids=' + this.timetrackFilterStore.filter.employee_ids.join(',');
-      baseIndex += '&project_ids=' + this.timetrackFilterStore.filter.project_ids.join(',');
-      baseIndex += '&service_ids=' + this.timetrackFilterStore.filter.service_ids.join(',');
-      baseIndex += '&combine_times=' + this.timetrackFilterStore.filter.combine_times;
+    try {
+      const res = await this.mainStore.api.get<ProjectEffortListing[]>('/project_efforts', {
+        params: {
+          start: filter.start,
+          end: filter.end,
+          employee_ids: filter.employeeIds.join(','),
+          project_ids: filter.projectIds.join(','),
+          service_ids: filter.serviceIds.join(','),
+          combine_times: filter.combineTimes,
+        },
+      });
+      this.efforts = res.data;
+    } catch (e) {
+      this.mainStore.displayError('Fehler beim laden der Leistungen');
     }
-
-    const res = await this.mainStore.api.get<ProjectEffortListing[]>(baseIndex);
-    this.efforts = res.data;
     this.loading = false;
   }
 
@@ -80,7 +76,6 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     this.loading = true;
     const res = await this.mainStore.api.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
     this.effort = res.data;
-    this.fetchAll();
     this.loading = false;
   }
 

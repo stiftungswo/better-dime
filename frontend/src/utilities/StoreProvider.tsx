@@ -60,26 +60,30 @@ class StoreProviderInner extends React.Component<Props> {
 
     const apiStore = new ApiStore(this.props.history, this.props.enqueueSnackbar);
     const mainStore = new MainStore(apiStore, new Formatter(apiStore), new Notifier(this.props.enqueueSnackbar), this.props.history);
-    const timetrackFilterStore = new TimetrackFilterStore(mainStore);
+    const employeeStore = new EmployeeStore(mainStore);
+    const serviceStore = new ServiceStore(mainStore);
+    const projectStore = new ProjectStore(mainStore);
+    const effortStore = new EffortStore(mainStore);
+    const timetrackFilterStore = new TimetrackFilterStore(mainStore, employeeStore, projectStore, serviceStore, effortStore);
 
     this.stores = {
       apiStore,
       mainStore,
       timetrackFilterStore,
       offerStore: new OfferStore(mainStore),
-      employeeStore: new EmployeeStore(mainStore),
-      serviceStore: new ServiceStore(mainStore),
+      employeeStore,
+      serviceStore,
       holidayStore: new HolidayStore(mainStore),
       rateUnitStore: new RateUnitStore(mainStore),
       rateGroupStore: new RateGroupStore(mainStore),
       customerStore: new CustomerStore(mainStore),
-      projectStore: new ProjectStore(mainStore),
+      projectStore,
       projectCategoryStore: new ProjectCategoryStore(mainStore),
       customerTagStore: new CustomerTagStore(mainStore),
       invoiceStore: new InvoiceStore(mainStore),
       costgroupStore: new CostgroupStore(mainStore),
-      effortStore: new EffortStore(mainStore, timetrackFilterStore),
-      projectCommentStore: new ProjectCommentStore(mainStore, timetrackFilterStore),
+      effortStore,
+      projectCommentStore: new ProjectCommentStore(mainStore),
       peopleStore: new PeopleStore(mainStore),
       companyStore: new CompanyStore(mainStore),
       customerImportStore: new CustomerImportStore(mainStore),

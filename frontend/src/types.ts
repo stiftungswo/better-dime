@@ -228,12 +228,12 @@ export interface ProjectEffort {
 export interface ProjectEffortFilter {
   start: string;
   end: string;
-  combine_times: boolean;
-  employee_ids: number[];
-  service_ids: number[];
-  show_empty_groups: boolean;
-  project_ids: number[];
-  show_project_comments: boolean;
+  combineTimes: boolean;
+  employeeIds: number[];
+  serviceIds: number[];
+  showEmptyGroups: boolean;
+  projectIds: number[];
+  showProjectComments: boolean;
 }
 
 export interface ProjectEffortListing {

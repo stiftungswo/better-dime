@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import { TimetrackProjectCombinedTable } from './TimetrackProjectCombinedTable';
 import { TimetrackProjectGroupProps } from './types';
 import { TimetrackProjectSoloTable } from './TimetrackProjectSoloTable';
+import { formatRateEntry, formatTotalWorkHours } from './Timetrack';
 
 @compose(
   inject('effortStore'),
@@ -18,8 +19,8 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
   };
 
   public render() {
-    const { entity, effortStore, formatRateEntry, formatTotalWorkHours, onClickRow, showEmptyGroups } = this.props;
-    const efforts = effortStore!.efforts.filter((effort: ProjectEffortListing) => effort.project_id === entity.id);
+    const { entity, effortStore, onClickRow } = this.props;
+    const efforts = (entity as any).efforts;
     const workedMinutes = efforts.filter((e: ProjectEffortListing) => e.rate_unit_is_time).map((e: ProjectEffortListing) => e.effort_value);
 
     if (this.props.showProjectComments) {
@@ -31,7 +32,6 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
           formatRateEntry={formatRateEntry}
           onClickEffortRow={onClickRow}
           onEffortAdd={this.onEffortAdd}
-          showEmptyGroups={showEmptyGroups}
         />
       );
     } else {
@@ -42,7 +42,6 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
           formatRateEntry={formatRateEntry}
           onClickRow={onClickRow}
           onEffortAdd={this.onEffortAdd}
-          showEmptyGroups={showEmptyGroups}
           title={entity.name}
         />
       );

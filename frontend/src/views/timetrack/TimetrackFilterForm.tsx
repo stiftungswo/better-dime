@@ -14,7 +14,7 @@ import { inject, observer } from 'mobx-react';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 
@@ -32,11 +32,11 @@ interface Props {
 export class TimetrackFilterForm extends React.Component<Props> {
   public handleSubmit = (filter: ProjectEffortFilter) => {
     this.props.timetrackFilterStore!.filter = filter;
-    this.props.effortStore!.fetchAll();
-    this.props.projectCommentStore!.fetchAll();
+    this.props.effortStore!.fetchFiltered(filter);
+    this.props.projectCommentStore!.fetchFiltered(filter);
   };
 
-  public changeGroupBy = (event: ChangeEvent, value: string) => {
+  public changeGroupBy = (event: ChangeEvent, value: Grouping) => {
     this.props.timetrackFilterStore!.grouping = value;
   };
 
@@ -70,23 +70,23 @@ export class TimetrackFilterForm extends React.Component<Props> {
                     </Grid>
 
                     <Grid item xs={12} md={3}>
-                      <Field component={SwitchField} name={'show_project_comments'} label={'Projekt-Kommentare anzeigen?'} fullWidth />
+                      <Field component={SwitchField} name={'showProjectComments'} label={'Projekt-Kommentare anzeigen?'} fullWidth />
                     </Grid>
 
                     <Grid item xs={12} md={3}>
-                      <Field component={SwitchField} name={'show_empty_groups'} label={'Leere Gruppen anzeigen?'} fullWidth />
+                      <Field component={SwitchField} name={'showEmptyGroups'} label={'Leere Gruppen anzeigen?'} fullWidth />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter filtern'} />
+                      <Field fullWidth isMulti component={EmployeeSelector} name={'employeeIds'} label={'Mitarbeiter filtern'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={ProjectSelector} name={'project_ids'} label={'Projekte filtern'} />
+                      <Field fullWidth isMulti component={ProjectSelector} name={'projectIds'} label={'Projekte filtern'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={ServiceSelector} name={'service_ids'} label={'Services filtern'} />
+                      <Field fullWidth isMulti component={ServiceSelector} name={'serviceIds'} label={'Services filtern'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>

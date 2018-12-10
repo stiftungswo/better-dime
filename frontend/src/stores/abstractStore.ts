@@ -168,9 +168,13 @@ export class AbstractStore<T, OverviewType = T> {
     try {
       this.displayInProgress();
       await f();
-      this.mainStore.displaySuccess(successMessage);
+      if (successMessage) {
+        this.mainStore.displaySuccess(successMessage);
+      }
     } catch (e) {
-      this.mainStore.displayError(errorMessage);
+      if (successMessage) {
+        this.mainStore.displayError(errorMessage);
+      }
       console.error(e);
       throw e;
     }
