@@ -106,7 +106,13 @@ class WorkPeriod extends Model
             $end = Carbon::now();
         }
 
-        return $this->calculateBookedTime($start, $end);
+        $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($end)->addDay());
+        $pensum = $this->pensum / 100;
+        $targetTimeWithoutHolidays = $weekdays * 8.4 * 60;
+        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
+        $targetTimeUntilToday = round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
+
+        return $this->calculateBookedTime($start, $end) - $targetTimeUntilToday;
     }
 
     public function getEffectiveTimeAttribute()
@@ -136,12 +142,11 @@ class WorkPeriod extends Model
             return 0;
         }
 
-        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
-
         $qb = DB::table('project_efforts')->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
             ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
             ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
             ->where([
+                ['project_efforts.deleted_at', '=', null],
                 ['project_efforts.date', '>=', $start->subDay()],
                 ['project_efforts.date', '<=', $end->addDay()],
                 ['project_efforts.employee_id', '=', $this->employee->id],
@@ -152,6 +157,6 @@ class WorkPeriod extends Model
             $qb = $qb->where('projects.vacation_project', '=', $onlyVacations);
         }
 
-        return round($qb->sum('project_efforts.value') - $paidTimeInDateRange, 0);
+        return round($qb->sum('project_efforts.value'), 0);
     }
 }

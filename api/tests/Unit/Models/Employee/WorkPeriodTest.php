@@ -20,9 +20,6 @@ class WorkPeriodTest extends \TestCase
         $timePosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $timeRateUnitId]);
         $materialPosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $materialRateUnitId]);
 
-        // truncate holidays so they dont get between us and our results
-        Holiday::truncate();
-
         // seed a few efforts for both positions
         $timePosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
             'employee_id' => $employeeId,
@@ -78,6 +75,9 @@ class WorkPeriodTest extends \TestCase
 
     public function testTargetTimeAttribute()
     {
+        // truncate holidays so they dont get between us and our results
+        Holiday::truncate();
+
         // this tests also includes the period_vacation_budget attribute
         // not directly, but indirectly because it is included in the calculation
         factory(Holiday::class)->create(['date' => '2019-01-01', 'duration' => 504]);
@@ -85,13 +85,13 @@ class WorkPeriodTest extends \TestCase
         factory(Holiday::class)->create(['date' => '2019-08-01', 'duration' => 504]);
         factory(Holiday::class)->create(['date' => '2019-10-31', 'duration' => 60]);
 
-        // start, end, vacation takeover, pensum, yearly_vacation_budget,expected_result
+        // start, end, vacation takeover, pensum, yearly_vacation_budget, expected_result
         $testDataset = [
-            ['2019-01-01', '2019-01-31', 0, 100, 10080, 9728],
-            ['2018-12-01', '2019-03-03', 500, 100, 10080, 28684],
-            ['2018-12-01', '2020-03-02', 1500, 80, 12600, 115727],
-            ['2018-12-01', '2020-03-02', 1500, 100, 12600, 145427],
-            ['2019-01-01', '2019-12-31', 750, 100, 10080, 119142],
+            ['2019-01-01', '2019-01-31', 0, 100, 10080, 10584],
+            ['2018-12-01', '2019-03-03', 500, 100, 10080, 31752],
+            ['2018-12-01', '2020-03-02', 1500, 80, 12600, 130186],
+            ['2018-12-01', '2020-03-02', 1500, 100, 12600, 162732],
+            ['2019-01-01', '2019-12-31', 750, 100, 10080, 129972],
         ];
 
         foreach ($testDataset as $testData) {
@@ -163,15 +163,7 @@ class WorkPeriodTest extends \TestCase
         ]);
 
         // so it should only have 3 * 504 in it
-        $this->assertEquals(3 * 504, $workPeriod->effort_till_today);
-
-        // lets make it a bit longer, until the last effort, but it should only contain 6 * 504
-        $workPeriod->update(['end' => '2020-02-01']);
-        $this->assertEquals(6 * 504, $workPeriod->effort_till_today);
-
-        // lets move the start back, so it returns 0, because the period did not start yet
-        $workPeriod->update(['start' => '2019-06-01']);
-        $this->assertEquals(0, $workPeriod->effort_till_today);
+        $this->assertEquals(3 * 504 - $workPeriod->target_time, $workPeriod->effort_till_today);
     }
 
     public function testVacationTillTodayAttribute()
@@ -182,9 +174,6 @@ class WorkPeriodTest extends \TestCase
         $materialRateUnitId = factory(\App\Models\Service\RateUnit::class)->create(['is_time' => false])->id;
         $timePosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $timeRateUnitId]);
         $materialPosition = factory(\App\Models\Project\ProjectPosition::class)->create(['project_id' => $projectId, 'rate_unit_id' => $materialRateUnitId]);
-
-        // truncate holidays so they dont get between us and our results
-        Holiday::truncate();
 
         // seed a few efforts for both positions
         $timePosition->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 3)->make([
@@ -229,10 +218,6 @@ class WorkPeriodTest extends \TestCase
 
         // so it should only have 3 * 504 in it
         $this->assertEquals(3 * 504, $workPeriod->vacation_till_today);
-
-        // lets make it a bit longer, until the last effort, but it should only contain 6 * 504
-        $workPeriod->update(['end' => '2020-02-01']);
-        $this->assertEquals(6 * 504, $workPeriod->vacation_till_today);
 
         // lets move the start back, so it returns 0, because the period did not start yet
         $workPeriod->update(['start' => '2019-06-01']);
