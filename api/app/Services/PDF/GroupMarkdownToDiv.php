@@ -27,15 +27,16 @@ class GroupMarkdownToDiv
                         do {
                             $node = $node->nextSibling;
                         } while (!($node instanceof \DOMElement));
+
+                        $myNode = $doc->importNode($node, true);
                     }
 
-                    $myNode = $doc->importNode($node, true);
                     $container->appendChild($myNode);
-
                     $newRoot->appendChild($container);
                     break;
                 default:
                     $newRoot->appendChild($myNode);
+                    break;
             }
             $node = $node->nextSibling;
         }

@@ -19,7 +19,7 @@ class GroupMarkdownToDivTest extends \TestCase
         $parser = new \Parsedown();
         $template = "# This is a title\nblob\n# End Note";
         $resultLine1 = "<div><div><h1>This is a title</h1><p>blob</p></div>";
-        $resultLine2 = "<div><h1>End Note</h1><h1>End Note</h1></div></div>\n";
+        $resultLine2 = "<div><h1>End Note</h1></div></div>\n";
 
         $this->assertStringStartsWith($resultLine1, GroupMarkdownToDiv::group($parser->text($template)));
         $this->assertStringEndsWith($resultLine2, GroupMarkdownToDiv::group($parser->text($template)));
