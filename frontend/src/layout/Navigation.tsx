@@ -37,6 +37,7 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
       <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
+      <NavItem nested to={'/customer_tags'} label={'Tags'} icon={TagsIcon} />
       <NavItem nested to={'/customers/transfer'} label={'Import / Export'} icon={ImportExportIcon} />
     </Collapsible>
     <Collapsible icon={ReportIcon} label={'Rapporte'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
@@ -48,7 +49,6 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
       <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />
       <NavItem nested to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
       <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
-      <NavItem nested to={'customer_tags'} label={'Tags'} icon={TagsIcon} />
     </Collapsible>
   </React.Fragment>
 );
