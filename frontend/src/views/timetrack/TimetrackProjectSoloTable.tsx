@@ -4,6 +4,7 @@ import { Column } from '../../layout/Overview';
 import { ProjectEffortListing } from '../../types';
 import { IconButton } from '@material-ui/core';
 import { AddEffortIcon } from '../../layout/icons';
+import { ActionButton } from '../../layout/ActionButton';
 
 interface Props {
   displayTotal: string;
@@ -42,9 +43,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
 
   public projectGroupActions = (
     <>
-      <IconButton onClick={this.props.onEffortAdd}>
-        <AddEffortIcon />
-      </IconButton>
+      <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.props.onEffortAdd} />
     </>
   );
 

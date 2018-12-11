@@ -40,13 +40,9 @@ const columns: Column<ProjectEffortListing>[] = [
   observer
 )
 export default class TimetrackServiceGroup extends React.Component<TimetrackServiceGroupProps> {
-  public constructor(props: TimetrackServiceGroupProps) {
-    super(props);
-  }
-
   public render() {
     const { entity } = this.props;
-    const efforts = (entity as any).efforts;
+    const efforts = entity.efforts;
     const workedEfforts = efforts.map((e: ProjectEffortListing) => e.effort_value);
 
     return <TimetrackEntityGroup columns={columns} efforts={efforts} title={entity.name} onClickRow={this.props.onClickRow} />;

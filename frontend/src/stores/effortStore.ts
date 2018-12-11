@@ -13,6 +13,10 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   /* TODO: save the last selected user, project and project position in the employeeSettings */
   @observable
   public editing: boolean = false;
+
+  @observable
+  public moving: boolean = false;
+
   @observable
   public effortTemplate: ProjectEffortTemplate = {
     comment: '',
@@ -69,6 +73,17 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   }
 
   @action
+  public async move(effortIds: number[], targetProject: number, targetPosition: number | null) {
+    await this.notifyProgress(() =>
+      this.mainStore.api.put('project_efforts/move', {
+        effort_ids: effortIds,
+        project_id: targetProject,
+        position_id: targetPosition || null,
+      })
+    );
+  }
+
+  @action
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.loading = true;
     await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
@@ -87,5 +102,10 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<ProjectEffort>('/project_efforts/' + id);
     this.effort = res.data;
+  }
+
+  @action
+  protected async doDelete(id: number): Promise<void> {
+    await this.mainStore.api.delete('/project_efforts/' + id);
   }
 }

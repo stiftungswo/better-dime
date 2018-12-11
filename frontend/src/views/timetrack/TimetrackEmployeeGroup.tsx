@@ -4,10 +4,10 @@ import { Column } from '../../layout/Overview';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { IconButton } from '@material-ui/core';
 import { TimetrackEmployeeGroupProps } from './types';
-import { AddIcon } from '../../layout/icons';
+import { AddEffortIcon } from '../../layout/icons';
 import { formatRateEntry, formatTotalWorkHours } from './Timetrack';
+import { ActionButton } from '../../layout/ActionButton';
 
 const columns: Column<ProjectEffortListing>[] = [
   {
@@ -50,7 +50,7 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
 
   public render() {
     const { entity } = this.props;
-    const efforts = (entity as any).efforts;
+    const efforts = entity.efforts;
     const workedMinutes = efforts.filter((e: ProjectEffortListing) => e.rate_unit_is_time).map((e: ProjectEffortListing) => e.effort_value);
 
     return (
@@ -59,11 +59,7 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
         efforts={efforts}
         title={`${entity.first_name} ${entity.last_name}`}
         onClickRow={this.props.onClickRow}
-        actions={
-          <IconButton onClick={this.onEffortAdd}>
-            <AddIcon />
-          </IconButton>
-        }
+        actions={<ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.onEffortAdd} />}
         displayTotal={formatTotalWorkHours(workedMinutes)}
       />
     );

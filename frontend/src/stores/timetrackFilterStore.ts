@@ -1,6 +1,6 @@
 import { ProjectEffortFilter, ProjectEffortListing } from '../types';
 import { MainStore } from './mainStore';
-import { computed, observable } from 'mobx';
+import { computed, observable, ObservableMap } from 'mobx';
 import moment from 'moment';
 import { EmployeeListing, EmployeeStore } from './employeeStore';
 import { ProjectListing, ProjectStore } from './projectStore';
@@ -28,6 +28,9 @@ export class TimetrackFilterStore {
 
   @observable
   public grouping: Grouping = 'employee';
+
+  @observable
+  public selectedEffortIds = new ObservableMap<number, boolean>();
 
   constructor(
     private mainStore: MainStore,
@@ -61,10 +64,9 @@ export class TimetrackFilterStore {
   }): Array<T & { efforts: ProjectEffortListing[] }> => {
     const results = filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
     return this.filterEmptyGroups(
-      results.map(entity => ({
-        ...(entity as any),
-        efforts: this.effortStore.efforts.filter(effort => filterEfforts(effort, entity)),
-      }))
+      results.map(entity =>
+        Object.assign({}, entity, { efforts: this.effortStore.efforts.filter(effort => filterEfforts(effort, entity)) })
+      )
     );
   };
 

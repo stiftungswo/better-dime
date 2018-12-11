@@ -11,6 +11,7 @@ import { observer } from 'mobx-react';
 import compose from '../utilities/compose';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 
 const styles = createStyles({
   container: {
@@ -70,6 +71,8 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   onClickRow?: (e: T, index: number) => void;
   searchFilter?: (e: T) => boolean;
   noSort?: boolean;
+  selected?: number[];
+  setSelected?: (e: T, state: boolean) => void;
 }
 
 interface TableState {
@@ -80,7 +83,7 @@ interface TableState {
 type Direction = 'asc' | 'desc';
 
 @compose(observer)
-class OverviewTableInner<T> extends React.Component<TableProps<T>, TableState> {
+class OverviewTableInner<T extends { id?: number }> extends React.Component<TableProps<T>, TableState> {
   constructor(props: TableProps<T>) {
     super(props);
     this.state = {
@@ -118,14 +121,49 @@ class OverviewTableInner<T> extends React.Component<TableProps<T>, TableState> {
     }
   };
 
+  public get selectAllState() {
+    const selected = this.props.selected;
+    if (selected) {
+      if (selected.length === 0) {
+        return { checked: false };
+      } else if (selected.length === this.props.data.length) {
+        return { checked: true };
+      } else {
+        return { checked: false, indeterminate: true };
+      }
+    }
+    return {};
+  }
+
+  public handleSelectAll = () => {
+    const selected = this.props.selected!;
+    if (selected.length === 0) {
+      this.props.data.forEach(e => this.props.setSelected!(e, true));
+    } else {
+      this.props.data.forEach(e => this.props.setSelected!(e, false));
+    }
+  };
+
+  public RowCheckbox = ({ row }: { row: T }) => {
+    const checked = this.props.selected!.includes(row.id!);
+    return <Checkbox checked={checked} onClick={() => this.props.setSelected!(row, !checked)} />;
+  };
+
   public render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
     const sortedData = noSort ? data : stableSort(this.filterSearch(data), getSorting(order, orderBy));
+    const RowCheckbox = this.RowCheckbox;
+
     return (
       <Table>
         <TableHead>
           <TableRow>
+            {this.props.selected && (
+              <TableCell padding={'checkbox'}>
+                <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
+              </TableCell>
+            )}
             {columns.map(col => (
               <TableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
                 <TableSortLabel active={orderBy === col.id} direction={order} onClick={this.createSortHandler(col.id)}>
@@ -145,6 +183,11 @@ class OverviewTableInner<T> extends React.Component<TableProps<T>, TableState> {
               onClick={this.handleRowClick(row, index)}
               component={SafeClickableTableRow}
             >
+              {this.props.selected && (
+                <TableCell padding={'checkbox'}>
+                  <RowCheckbox row={row} />
+                </TableCell>
+              )}
               {columns.map(col => (
                 <TableCell key={col.id} numeric={col.numeric}>
                   {format(col, row)}

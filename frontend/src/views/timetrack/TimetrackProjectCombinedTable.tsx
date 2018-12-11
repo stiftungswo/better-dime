@@ -1,13 +1,14 @@
 import React from 'react';
 import { ProjectComment, ProjectEffortListing } from '../../types';
 import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { ProjectListing } from '../../stores/projectStore';
 import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
+import { ActionButton } from '../../layout/ActionButton';
 
 interface Props {
   displayTotal: string;
@@ -38,12 +39,8 @@ export class TimetrackProjectCombinedTable extends React.Component<Props> {
 
   public projectGroupActions = (
     <>
-      <IconButton onClick={this.onProjectCommentAdd}>
-        <AddCommentIcon />
-      </IconButton>
-      <IconButton onClick={this.props.onEffortAdd}>
-        <AddEffortIcon />
-      </IconButton>
+      <ActionButton icon={AddCommentIcon} action={this.onProjectCommentAdd} title={'Kommentar hinzufügen'} />
+      <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
     </>
   );
 

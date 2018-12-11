@@ -10,15 +10,19 @@ interface EntityGroup {
   onClickRow: (entity: ProjectEffortListing) => void;
 }
 
+interface WithEfforts {
+  efforts: ProjectEffortListing[];
+}
+
 export type TimetrackEmployeeGroupProps = {
-  entity: EmployeeListing;
+  entity: EmployeeListing & WithEfforts;
 } & EntityGroup;
 
 export type TimetrackProjectGroupProps = {
-  entity: ProjectListing;
+  entity: ProjectListing & WithEfforts;
   showProjectComments: boolean;
 } & EntityGroup;
 
 export type TimetrackServiceGroupProps = {
-  entity: ServiceListing;
+  entity: ServiceListing & WithEfforts;
 } & EntityGroup;

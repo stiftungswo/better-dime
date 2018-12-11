@@ -10,13 +10,14 @@ import TimetrackEmployeeGroup from './TimetrackEmployeeGroup';
 import TimetrackProjectGroup from './TimetrackProjectGroup';
 import TimetrackServiceGroup from './TimetrackServiceGroup';
 import { EffortStore } from '../../stores/effortStore';
-import { ProjectEffortListing } from '../../types';
+import { Employee, Listing, ProjectEffortListing } from '../../types';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
-import Button from '@material-ui/core/Button/Button';
+import { ServiceListing } from '../services/types';
+import { ProjectListing } from '../../stores/projectStore';
 
 export const formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
   if (factor) {
@@ -76,7 +77,10 @@ export default class Timetrack extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   };
 
-  public getGroups = (): { entities: any[]; Component: React.ReactType } => {
+  public getGroups = (): {
+    entities: Array<(Employee | ServiceListing | ProjectListing) & { efforts: ProjectEffortListing[] }>;
+    Component: React.ReactType;
+  } => {
     const filterStore = this.props.timetrackFilterStore!;
     switch (filterStore.grouping) {
       case 'employee':
@@ -101,11 +105,11 @@ export default class Timetrack extends React.Component<Props> {
 
   public renderGroups = () => {
     const filterStore = this.props.timetrackFilterStore!;
-    const Group = this.getGroups();
-    const effortCount = Group.entities.reduce((sum, e) => sum + e.efforts.length, 0);
+    const { entities, Component } = this.getGroups();
+    const effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
     if (effortCount > 0 || filterStore.filter!.showEmptyGroups) {
-      return Group.entities.map(e => (
-        <Group.Component key={e.id} entity={e} onClickRow={this.onClickRow} showProjectComments={filterStore.filter!.showProjectComments} />
+      return entities.map(e => (
+        <Component key={e.id} entity={e} onClickRow={this.onClickRow} showProjectComments={filterStore.filter!.showProjectComments} />
       ));
     } else {
       return (

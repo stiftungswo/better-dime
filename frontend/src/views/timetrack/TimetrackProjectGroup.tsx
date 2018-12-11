@@ -19,8 +19,8 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
   };
 
   public render() {
-    const { entity, effortStore, onClickRow } = this.props;
-    const efforts = (entity as any).efforts;
+    const { entity, onClickRow } = this.props;
+    const efforts = entity.efforts;
     const workedMinutes = efforts.filter((e: ProjectEffortListing) => e.rate_unit_is_time).map((e: ProjectEffortListing) => e.effort_value);
 
     if (this.props.showProjectComments) {
