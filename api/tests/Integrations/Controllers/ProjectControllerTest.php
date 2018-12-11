@@ -3,9 +3,7 @@
 namespace Tests\Integrations\Controllers;
 
 use App\Models\Project\Project;
-use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
-use App\Models\Service\Service;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectControllerTest extends \TestCase
@@ -155,89 +153,6 @@ class ProjectControllerTest extends \TestCase
 
         $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id, $template);
         $this->assertResponseMatchesTemplate($template);
-    }
-
-    public function testMoveEffortsWithNullService()
-    {
-        $oldProject = factory(Project::class)->create();
-        $newProject = factory(Project::class)->create();
-        $oldPosition = factory(ProjectPosition::class)->create([
-            'project_id' => $oldProject->id,
-            'service_id' => null
-        ]);
-        $oldEffortIds = factory(ProjectEffort::class, 1)->create([
-            'position_id' => $oldPosition->id
-        ])->map(function ($pe) {
-            return $pe->id;
-        })->toArray();
-
-        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $newProject->id . '/move_efforts', [
-            'efforts' => $oldEffortIds
-        ])->assertResponseStatus(422);
-    }
-
-    public function testMoveEffortsWithoutExistingActivity()
-    {
-        $oldServiceId = factory(Service::class)->create()->id;
-        $oldProject = factory(Project::class)->create();
-        $newProject = factory(Project::class)->create();
-        $oldPosition = factory(ProjectPosition::class)->create([
-            'project_id' => $oldProject->id,
-            'service_id' => $oldServiceId
-        ]);
-        $oldEffortIds = factory(ProjectEffort::class, 10)->create([
-            'position_id' => $oldPosition->id
-        ])->map(function ($pe) {
-            return $pe->id;
-        })->toArray();
-
-        $newProject = $newProject->fresh(['positions']);
-        $this->assertCount(0, $newProject->positions);
-
-        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $newProject->id . '/move_efforts', [
-            'efforts' => $oldEffortIds
-        ])->assertResponseOk();
-
-        $newProject = $newProject->fresh(['positions']);
-        $this->assertCount(1, $newProject->positions);
-        $this->assertCount(10, $newProject->positions->first()->efforts);
-    }
-
-    public function testMoveEffortWithExistingActivity()
-    {
-        $oldServiceId = factory(Service::class)->create()->id;
-
-        $oldProject = factory(Project::class)->create();
-        $newProject = factory(Project::class)->create();
-
-        $oldPosition = factory(ProjectPosition::class)->create([
-            'project_id' => $oldProject->id,
-            'service_id' => $oldServiceId
-        ]);
-        $newPosition = factory(ProjectPosition::class)->create([
-            'project_id' => $newProject->id,
-            'service_id' => $oldServiceId
-        ]);
-
-        $oldEffortIds = factory(ProjectEffort::class, 10)->create([
-            'position_id' => $oldPosition->id
-        ])->map(function ($pe) {
-            return $pe->id;
-        })->toArray();
-
-        $newProject = $newProject->fresh(['positions']);
-        $newPosition = $newPosition->fresh(['efforts']);
-        $this->assertCount(1, $newProject->positions);
-        $this->assertCount(0, $newPosition->efforts);
-
-        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $newProject->id . '/move_efforts', [
-            'efforts' => $oldEffortIds
-        ])->assertResponseOk();
-
-        $newProject = $newProject->fresh(['positions']);
-        $newPosition = $newPosition->fresh(['efforts']);
-        $this->assertCount(1, $newProject->positions);
-        $this->assertCount(10, $newPosition->efforts);
     }
 
     public function testInvoiceIds()

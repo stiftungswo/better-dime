@@ -110,7 +110,6 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/{id}', ['uses' => 'ProjectController@get']);
                 $router->put('/{id}', ['uses' => 'ProjectController@put']);
                 $router->delete('/{id}', ['uses' => 'ProjectController@delete']);
-                $router->put('/{id}/move_efforts', ['uses' => 'ProjectController@moveEfforts']);
                 $router->post('/{id}/create_invoice', ['uses' => 'ProjectController@createInvoice']);
             });
 
@@ -131,6 +130,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'project_efforts'], function () use ($router) {
+                $router->put('/move', ['uses' => 'ProjectEffortController@moveEfforts']);
                 $router->delete('/{id}', ['uses' => 'ProjectEffortController@delete']);
                 $router->get('/', ['uses' => 'ProjectEffortController@index']);
                 $router->get('/{id}', ['uses' => 'ProjectEffortController@get']);

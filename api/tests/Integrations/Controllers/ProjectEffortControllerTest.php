@@ -5,6 +5,7 @@ namespace Tests\Integrations\Controllers;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
+use App\Models\Service\Service;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectEffortControllerTest extends \TestCase
@@ -138,6 +139,154 @@ class ProjectEffortControllerTest extends \TestCase
         $template = $this->projectEffortTemplate();
         $this->asAdmin()->json('PUT', 'api/v1/project_efforts/' . $effortId, $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
+    }
+
+    public function testMoveEffortsWithNullService()
+    {
+        $oldProject = factory(Project::class)->create();
+        $newProject = factory(Project::class)->create();
+        $oldPosition = factory(ProjectPosition::class)->create([
+            'project_id' => $oldProject->id,
+            'service_id' => null
+        ]);
+        $oldEffortIds = factory(ProjectEffort::class, 1)->create([
+            'position_id' => $oldPosition->id
+        ])->map(function ($pe) {
+            return $pe->id;
+        })->toArray();
+
+        $this->asAdmin()->json('PUT', 'api/v1/project_efforts/move', [
+            'effort_ids' => $oldEffortIds,
+            'project_id' => $newProject->id,
+            'position_id' => null
+        ])->assertResponseStatus(400);
+    }
+
+    public function testMoveEffortsWithoutExistingProjectPosition()
+    {
+        $oldServiceId = factory(Service::class)->create()->id;
+        $oldProject = factory(Project::class)->create();
+        $newProject = factory(Project::class)->create();
+        $oldPosition = factory(ProjectPosition::class)->create([
+            'project_id' => $oldProject->id,
+            'service_id' => $oldServiceId
+        ]);
+        $oldEffortIds = factory(ProjectEffort::class, 10)->create([
+            'position_id' => $oldPosition->id
+        ])->map(function ($pe) {
+            return $pe->id;
+        })->toArray();
+
+        $newProject = $newProject->fresh(['positions']);
+        $this->assertCount(0, $newProject->positions);
+
+        $this->asAdmin()->json('PUT', 'api/v1/project_efforts/move', [
+            'effort_ids' => $oldEffortIds,
+            'project_id' => $newProject->id,
+            'position_id' => null
+        ])->assertResponseOk();
+
+        $newProject = $newProject->fresh(['positions']);
+        $this->assertCount(1, $newProject->positions);
+        $this->assertCount(10, $newProject->positions->first()->efforts);
+    }
+
+    public function testMoveEffortWithExistingProjectPosition()
+    {
+        $oldServiceId = factory(Service::class)->create()->id;
+
+        $oldProject = factory(Project::class)->create();
+        $newProject = factory(Project::class)->create();
+
+        $oldPosition = factory(ProjectPosition::class)->create([
+            'project_id' => $oldProject->id,
+            'service_id' => $oldServiceId
+        ]);
+        $newPosition = factory(ProjectPosition::class)->create([
+            'project_id' => $newProject->id,
+            'service_id' => $oldServiceId
+        ]);
+
+        $oldEffortIds = factory(ProjectEffort::class, 10)->create([
+            'position_id' => $oldPosition->id
+        ])->map(function ($pe) {
+            return $pe->id;
+        })->toArray();
+
+        $newProject = $newProject->fresh(['positions']);
+        $newPosition = $newPosition->fresh(['efforts']);
+        $this->assertCount(1, $newProject->positions);
+        $this->assertCount(0, $newPosition->efforts);
+
+        $this->asAdmin()->json('PUT', 'api/v1/project_efforts/move', [
+            'effort_ids' => $oldEffortIds,
+            'project_id' => $newProject->id,
+            'position_id' => null
+        ])->assertResponseOk();
+
+        $newProject = $newProject->fresh(['positions']);
+        $newPosition = $newPosition->fresh(['efforts']);
+        $this->assertCount(1, $newProject->positions);
+        $this->assertCount(10, $newPosition->efforts);
+    }
+
+    public function testMoveEffortsWithTargetPosition()
+    {
+        // this moves all timeslices to the target position, regardless of their origin
+        $oldService1 = factory(Service::class)->create();
+        $oldService2 = factory(Service::class)->create();
+        $newService = factory(Service::class)->create();
+
+        $oldProject = factory(Project::class)->create();
+        $newProject = factory(Project::class)->create();
+
+        $oldProjectPosition1 = factory(ProjectPosition::class)->create([
+            'project_id' => $oldProject->id,
+            'service_id' => $oldService1->id
+        ]);
+        $oldProjectPosition2 = factory(ProjectPosition::class)->create([
+            'project_id' => $oldProject->id,
+            'service_id' => $oldService2->id
+        ]);
+        $newProjectPosition = factory(ProjectPosition::class)->create([
+            'project_id' => $newProject->id,
+            'service_id' => $newService->id
+        ]);
+
+        $oldEffortIds = factory(ProjectEffort::class, 10)->create([
+            'position_id' => $oldProjectPosition1->id
+        ])->map(function ($pe) {
+            return $pe->id;
+        });
+
+        $oldEffortIds = $oldEffortIds->merge(factory(ProjectEffort::class, 10)->create([
+            'position_id' => $oldProjectPosition2->id
+        ])->map(function ($pe) {
+            return $pe->id;
+        }))->toArray();
+
+        $this->assertCount(2, $oldProject->positions);
+        $this->assertCount(10, $oldProjectPosition1->efforts);
+        $this->assertCount(10, $oldProjectPosition2->efforts);
+        $this->assertCount(1, $newProject->positions);
+        $this->assertCount(0, $newProjectPosition->efforts);
+
+        $this->asAdmin()->json('PUT', 'api/v1/project_efforts/move', [
+            'effort_ids' => $oldEffortIds,
+            'project_id' => $newProject->id,
+            'position_id' => $newProjectPosition->id
+        ])->assertResponseOk();
+
+        // refresh entities from database
+        $oldProjectPosition1 = $oldProjectPosition1->fresh('efforts');
+        $oldProjectPosition2 = $oldProjectPosition2->fresh('efforts');
+        $newProject = $newProject->fresh('positions');
+        $newProjectPosition = $newProjectPosition->fresh('efforts');
+
+        $this->assertCount(0, $oldProjectPosition1->efforts);
+        $this->assertCount(0, $oldProjectPosition2->efforts);
+        $this->assertCount(1, $newProject->positions);
+        $this->assertCount(20, $newProjectPosition->efforts);
     }
 
     private function projectEffortTemplate()
