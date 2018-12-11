@@ -53,17 +53,15 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
   });
 
 interface AppBarSearchProps extends WithStyles<typeof styles> {
-  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const AppBarSearch = withStyles(styles(DimeTheme))(({ classes, value, onChange }: AppBarSearchProps) => (
+export const AppBarSearch = withStyles(styles(DimeTheme))(({ classes, onChange }: AppBarSearchProps) => (
   <div className={classes.search}>
     <div className={classes.searchIcon}>
       <SearchIcon />
     </div>
     <InputBase
-      value={value}
       onChange={onChange}
       placeholder="Suche…"
       classes={{

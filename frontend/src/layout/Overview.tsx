@@ -10,6 +10,7 @@ import { MainStore } from '../stores/mainStore';
 import { AppBarSearch } from './AppBarSearch';
 import { AddIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
 import { Listing } from '../types';
+import debounce from 'lodash/debounce';
 
 export type SearchFilter<T> = (e: T, qry: string) => boolean;
 
@@ -69,6 +70,12 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     }
   };
 
+  public updateQueryState = debounce(query => {
+    this.setState({
+      query,
+    });
+  }, 300);
+
   public render() {
     let entities = this.props.store!.entities;
 
@@ -79,7 +86,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     return (
       <Fragment>
         <DimeAppBar title={this.props.title}>
-          {this.props.searchFilter && <AppBarSearch value={this.state.query} onChange={e => this.setState({ query: e.target.value })} />}
+          {this.props.searchFilter && <AppBarSearch onChange={e => this.updateQueryState(e.target.value)} />}
           {this.props.archivable && (
             <DimeAppBarButton
               icon={this.state.showArchived ? InvisibleIcon : VisibleIcon}
