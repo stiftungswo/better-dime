@@ -63,6 +63,7 @@ export class AbstractStore<T, OverviewType = T> {
   @action
   public async fetchOne(id: number) {
     try {
+      this.entity = undefined;
       return await this.doFetchOne(id);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);

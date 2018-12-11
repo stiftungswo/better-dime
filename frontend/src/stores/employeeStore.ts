@@ -1,6 +1,6 @@
-import { action, observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
-import { Employee, Offer } from '../types';
+import { Employee } from '../types';
 import { AbstractStore } from './abstractStore';
 
 export interface EmployeeListing {
@@ -25,6 +25,16 @@ export class EmployeeStore extends AbstractStore<Employee> {
     };
   }
 
+  @computed
+  public get entity(): Employee | undefined {
+    return this.employee;
+  }
+
+  public set entity(employee: Employee | undefined) {
+    this.employee = employee;
+  }
+
+  @computed
   get entities(): Employee[] {
     return this.employees;
   }

@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { Invoice } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
@@ -21,6 +21,15 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
       singular: 'die Rechnung',
       plural: 'die Rechnungen',
     };
+  }
+
+  @computed
+  public get entity(): Invoice | undefined {
+    return this.invoice;
+  }
+
+  public set entity(invoice: Invoice | undefined) {
+    this.invoice = invoice;
   }
 
   get entities(): Array<InvoiceListing> {

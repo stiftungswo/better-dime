@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { Invoice, Project } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
@@ -31,7 +31,17 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     };
   }
 
-  get entities(): Array<ProjectListing> {
+  @computed
+  public get entity(): Project | undefined {
+    return this.project;
+  }
+
+  public set entity(project: Project | undefined) {
+    this.project = project;
+  }
+
+  @computed
+  public get entities(): Array<ProjectListing> {
     return this.projects;
   }
 

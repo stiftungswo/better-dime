@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 import { Address, PhoneNumber } from 'src/types';
@@ -34,6 +34,16 @@ export class PeopleStore extends AbstractStore<Person> {
     };
   }
 
+  @computed
+  public get entity(): Person | undefined {
+    return this.person;
+  }
+
+  public set entity(person: Person | undefined) {
+    this.person = person;
+  }
+
+  @computed
   get entities(): Person[] {
     return this.people;
   }

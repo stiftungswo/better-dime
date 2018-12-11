@@ -32,8 +32,12 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   }
 
   @computed
-  get entity(): ProjectEffort | undefined {
+  public get entity(): ProjectEffort | undefined {
     return this.effort;
+  }
+
+  public set entity(effort: ProjectEffort | undefined) {
+    this.effort = effort;
   }
 
   protected get entityName(): { singular: string; plural: string } {

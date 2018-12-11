@@ -1,6 +1,6 @@
 import { computed, observable } from 'mobx';
 import { AbstractStore } from './abstractStore';
-import { Address, Customer } from '../types';
+import { Customer } from '../types';
 
 export class CustomerStore extends AbstractStore<Customer> {
   protected get entityName() {
@@ -18,6 +18,10 @@ export class CustomerStore extends AbstractStore<Customer> {
   @computed
   public get entity() {
     return this.customer;
+  }
+
+  public set entity(customer: Customer | undefined) {
+    this.customer = customer;
   }
 
   @observable

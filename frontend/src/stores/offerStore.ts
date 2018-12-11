@@ -1,5 +1,5 @@
-import { observable } from 'mobx';
-import { Invoice, Offer, Project } from '../types';
+import { computed, observable } from 'mobx';
+import { Offer, Project } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 
@@ -17,7 +17,17 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
     };
   }
 
-  get entities(): Array<OfferListing> {
+  @computed
+  public get entity(): Offer | undefined {
+    return this.offer;
+  }
+
+  public set entity(offer: Offer | undefined) {
+    this.offer = offer;
+  }
+
+  @computed
+  public get entities(): Array<OfferListing> {
     return this.offers;
   }
 

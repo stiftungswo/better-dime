@@ -1,8 +1,7 @@
-import { computed, observable, action } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 import { Address, PhoneNumber } from '../types';
-import { Person } from './peopleStore';
 
 export interface Company {
   id: number;
@@ -28,6 +27,15 @@ export class CompanyStore extends AbstractStore<Company> {
       singular: 'Die Firma',
       plural: 'Die Firmen',
     };
+  }
+
+  @computed
+  public get entity(): Company | undefined {
+    return this.company;
+  }
+
+  public set entity(company: Company | undefined) {
+    this.company = company;
   }
 
   @computed

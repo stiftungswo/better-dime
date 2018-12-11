@@ -1,8 +1,7 @@
-import { computed, observable, action } from 'mobx';
+import { computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 import { Service, ServiceListing } from '../views/services/types';
-import { Offer } from '../types';
 
 export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected get entityName() {
@@ -10,6 +9,15 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
       singular: 'Der Service',
       plural: 'Die Services',
     };
+  }
+
+  @computed
+  public get entity(): Service | undefined {
+    return this.service;
+  }
+
+  public set entity(service: Service | undefined) {
+    this.service = service;
   }
 
   @computed
@@ -32,7 +40,7 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Offer>('/services/' + id + '/duplicate');
+    return this.mainStore.api.post<Service>('/services/' + id + '/duplicate');
   }
 
   protected async doFetchAll() {
