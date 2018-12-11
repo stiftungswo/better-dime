@@ -49,7 +49,7 @@
             Aufwandzeitraum {{ invoice.start|date('d.m.Y') }} - {{ invoice.end|date('d.m.Y') }}
         {% endif %}
 
-        {% if invoice.description %}
+        {% if description %}
             <div class="description">
                 {{ description | raw }}
             </div>
@@ -84,7 +84,7 @@
         },
         [
             {
-                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                "Subtotal": {"attr": {"colspan": "5" }},
                 (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
             }
         ]
@@ -102,21 +102,21 @@
             }
             },
             {
-                "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
+                "Abzug": {"attr": { "colspan": "5" }},
                 "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
             },
             breakdown.discounts,
             {
-                "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                "name": {"attr": {"colspan": "5"}},
                 "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
             },
             [
                 {
-                    "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                    "Abzüge Total": {"attr": {"colspan": "5" }},
                     (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
                 },
                 {
-                    "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                    "Subtotal": {"attr": {"colspan": "5"}},
                     (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
                 }
             ]
@@ -134,22 +134,21 @@
         }
         },
         {
-            "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
+            "MwSt. Satz": {"attr": { "colspan": "5"}},
             "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
         },
         breakdown.vats,
         {
-            "vat": {"attr": {"colspan": "5", "class": "text-align-right"}, "format": "percent"},
+            "vat": {"attr": {"colspan": "5"}, "format": "percent"},
             "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
         },
         [
             {
-                "Mehrwertsteuer Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
                 (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
             },
             {
-                "Zahlbar 30 Tage netto": {"attr": {"colspan": "2", "class": "text-align-center"}},
-                "Rechnungstotal": {"attr": {"colspan": "3", "class": "text-align-right"}},
+                "Rechnungstotal": {"attr": {"colspan": "5" }},
                 (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
             }
         ]
