@@ -6,7 +6,7 @@ import { AbstractStore } from './abstractStore';
 export interface OfferListing {
   id: number;
   name: string;
-  shortDescription: string;
+  short_description: string;
 }
 
 export class OfferStore extends AbstractStore<Offer, OfferListing> {

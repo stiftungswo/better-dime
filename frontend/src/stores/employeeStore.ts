@@ -5,6 +5,7 @@ import { AbstractStore } from './abstractStore';
 
 export interface EmployeeListing {
   id: number;
+  archived: boolean;
   email: string;
   first_name: string;
   last_name: string;

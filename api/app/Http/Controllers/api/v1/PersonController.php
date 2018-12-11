@@ -28,7 +28,7 @@ class PersonController extends BaseController
 
     public function index()
     {
-        return Person::with(['addresses', 'phone_numbers'])->get();
+        return Person::with(['company'])->get();
     }
 
     public function get($id)

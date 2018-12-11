@@ -5,6 +5,7 @@ import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { InvoiceListing } from '../../stores/invoiceStore';
 
 type Props = {
   peopleStore?: PeopleStore;
@@ -35,11 +36,15 @@ export default class PersonOverview extends React.Component<Props> {
       },
       {
         id: '',
-        label: 'Strasse',
-        format: p => <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>,
+        label: 'Firma',
+        format: p => <>{p.company ? p.company.name : ''}</>,
       },
     ];
   }
+
+  public filter = (p: Person, query: string) => {
+    return [p.first_name, p.last_name, p.company ? p.company.name : ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
+  };
 
   public render() {
     const peopleStore = this.props.peopleStore;
@@ -61,6 +66,7 @@ export default class PersonOverview extends React.Component<Props> {
         )}
         onClickRow={'/persons/:id'}
         columns={this.columns}
+        searchFilter={this.filter}
       />
     );
   }

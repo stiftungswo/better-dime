@@ -3,7 +3,6 @@ import * as React from 'react';
 import { OfferListing, OfferStore } from '../../stores/offerStore';
 import compose from '../../utilities/compose';
 import Overview, { Column } from '../../layout/Overview';
-import { todo } from '../../index';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Offer } from '../../types';
@@ -39,6 +38,10 @@ export default class OfferOverview extends React.Component<Props> {
     ];
   }
 
+  public filter = (p: OfferListing, query: string) => {
+    return [String(p.id), p.name, p.short_description || ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
+  };
+
   public render() {
     const offerStore = this.props.offerStore!;
     return (
@@ -60,6 +63,7 @@ export default class OfferOverview extends React.Component<Props> {
         )}
         onClickRow={'/offers/:id'}
         columns={this.columns}
+        searchFilter={this.filter}
       />
     );
   }

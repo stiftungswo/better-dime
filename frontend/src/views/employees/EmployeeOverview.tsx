@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { EmployeeStore } from '../../stores/employeeStore';
-import { Employee, Project } from '../../types';
+import { EmployeeListing, EmployeeStore } from '../../stores/employeeStore';
+import { Employee } from '../../types';
 import Overview, { Column } from '../../layout/Overview';
-import { todo } from '../../index';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -24,6 +23,11 @@ export default class EmployeeOverview extends React.Component<Props> {
     super(props);
     this.columns = [
       {
+        id: 'id',
+        label: 'ID',
+        numeric: true,
+      },
+      {
         id: 'first_name',
         label: 'Vorname',
       },
@@ -42,6 +46,10 @@ export default class EmployeeOverview extends React.Component<Props> {
       },
     ];
   }
+
+  public filter = (p: EmployeeListing, query: string) => {
+    return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(query.toLowerCase()));
+  };
 
   public render() {
     const employeeStore = this.props.employeeStore;
@@ -64,6 +72,7 @@ export default class EmployeeOverview extends React.Component<Props> {
         )}
         onClickRow={'/employees/:id'}
         columns={this.columns}
+        searchFilter={this.filter}
       />
     );
   }

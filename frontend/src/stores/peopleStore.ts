@@ -2,10 +2,12 @@ import { action, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
 import { Address, PhoneNumber } from 'src/types';
+import { Company } from './companyStore';
 
 export interface Person {
   id: number;
   comment: string;
+  company?: Company;
   company_id: number | null;
   department: string | null;
   email: string;

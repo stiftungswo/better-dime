@@ -44,7 +44,7 @@ export default class ServiceOverview extends React.Component<Props> {
   }
 
   public filter = (s: ServiceListing, query: string) =>
-    [`${s.id}`, s.name, s.description].some(field => field.toLowerCase().includes(query.toLowerCase()));
+    [`${s.id}`, s.name, s.description || ''].some(field => field.toLowerCase().includes(query.toLowerCase()));
 
   public render() {
     const serviceStore = this.props.serviceStore;

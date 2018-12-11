@@ -28,7 +28,7 @@ class CompanyController extends BaseController
 
     public function index()
     {
-        return Company::with(['addresses', 'phone_numbers'])->get();
+        return Company::with(['addresses'])->get();
     }
 
     public function get($id)

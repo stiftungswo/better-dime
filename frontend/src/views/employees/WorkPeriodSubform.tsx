@@ -108,10 +108,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       return (
                         <TableRow key={index}>
                           <LessPaddingTableCell>
-                            <Field delayed component={DatePicker} name={fieldName('start')} />
+                            <Field component={DatePicker} name={fieldName('start')} />
                           </LessPaddingTableCell>
                           <LessPaddingTableCell>
-                            <Field delayed component={DatePicker} name={fieldName('end')} />
+                            <Field component={DatePicker} name={fieldName('end')} />
                           </LessPaddingTableCell>
                           <LessPaddingTableCell>
                             <Field delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
