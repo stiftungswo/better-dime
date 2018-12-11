@@ -14,8 +14,9 @@ import { ProjectEffortListing } from '../../types';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
+import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
+import Button from '@material-ui/core/Button/Button';
 
 export const formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
   if (factor) {
@@ -75,35 +76,51 @@ export default class Timetrack extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   };
 
-  public renderGroups = () => {
+  public getGroups = (): { entities: any[]; Component: React.ReactType } => {
     const filterStore = this.props.timetrackFilterStore!;
-    const showEmptyGroups = filterStore.filter!.showEmptyGroups;
     switch (filterStore.grouping) {
       case 'employee':
-        return filterStore.employees.map(employee => (
-          <TimetrackEmployeeGroup key={employee.id} entity={employee} onClickRow={this.onClickRow} />
-        ));
+        return {
+          entities: filterStore.employees,
+          Component: TimetrackEmployeeGroup,
+        };
       case 'project':
-        return filterStore.projects.map(project => (
-          <TimetrackProjectGroup
-            key={project.id}
-            entity={project}
-            onClickRow={this.onClickRow}
-            showProjectComments={filterStore.filter!.showProjectComments}
-          />
-        ));
+        return {
+          entities: filterStore.projects,
+          Component: TimetrackProjectGroup,
+        };
       case 'service':
-        return filterStore.services.map(service => (
-          <TimetrackServiceGroup key={service.id} entity={service} onClickRow={this.onClickRow} />
-        ));
+        return {
+          entities: filterStore.services,
+          Component: TimetrackServiceGroup,
+        };
       default:
         throw new Error();
     }
   };
 
+  public renderGroups = () => {
+    const filterStore = this.props.timetrackFilterStore!;
+    const Group = this.getGroups();
+    const effortCount = Group.entities.reduce((sum, e) => sum + e.efforts.length, 0);
+    if (effortCount > 0 || filterStore.filter!.showEmptyGroups) {
+      return Group.entities.map(e => (
+        <Group.Component key={e.id} entity={e} onClickRow={this.onClickRow} showProjectComments={filterStore.filter!.showProjectComments} />
+      ));
+    } else {
+      return (
+        <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
+          <p>
+            <LogoIcon fontSize={'large'} />
+          </p>
+          <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
+        </Grid>
+      );
+    }
+  };
+
   public render() {
     const filterStore = this.props.timetrackFilterStore!;
-    const showEmptyGroups = filterStore.filter!.showEmptyGroups;
     return (
       <>
         <DimeAppBar title={'Zeiterfassung'}>
