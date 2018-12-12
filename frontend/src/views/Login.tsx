@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
-import { Field, Formik, FormikBag } from 'formik';
+import { Field, Formik } from 'formik';
 import { EmailField, PasswordField } from '../form/fields/common';
 import { RouteComponentProps, withRouter } from 'react-router';
 import dimeTheme from '../layout/DimeTheme';
@@ -19,7 +19,6 @@ import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
 import { ApiStore } from '../stores/apiStore';
-import { AxiosError } from 'axios';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -39,7 +38,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing.unit * 2}px ${spacing.unit * 3}px ${spacing.unit * 3}px`,
+      padding: `${spacing.unit * 2}px ${spacing.unit * 3}px ${spacing.unit * 6}px`,
     },
     avatar: {
       margin: spacing.unit,
@@ -53,6 +52,16 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
     submit: {
       marginTop: spacing.unit * 3,
       backgroundColor: palette.primary.main,
+    },
+    attributions: {
+      position: 'absolute',
+      bottom: spacing.unit,
+      right: spacing.unit,
+      textAlign: 'right',
+      color: '#ddd',
+      '& a': {
+        color: '#ccc',
+      },
     },
   });
 
@@ -90,7 +99,7 @@ class Login extends React.Component<Props> {
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
+      <>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
@@ -127,7 +136,27 @@ class Login extends React.Component<Props> {
             />
           </Paper>
         </main>
-      </React.Fragment>
+        <footer className={classes.attributions}>
+          <div>
+            Icons made by{' '}
+            <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
+              Smashicons
+            </a>{' '}
+            and{' '}
+            <a href="https://www.freepik.com/" title="Freepik">
+              Freepik
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/" title="Flaticon">
+              www.flaticon.com
+            </a>{' '}
+            is licensed by{' '}
+            <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">
+              CC 3.0 BY
+            </a>
+          </div>
+        </footer>
+      </>
     );
   }
 }

@@ -5,12 +5,12 @@ import { Collapsible } from './Collapsible';
 import {
   CompanyIcon,
   CustomersIcon,
+  EmployeeIcon,
   HolidayIcon,
   ImportExportIcon,
   InvoiceIcon,
   MasterDataIcon,
   OfferIcon,
-  PeopleIcon,
   PersonIcon,
   ProjectCategoryIcon,
   ProjectIcon,
@@ -34,7 +34,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
     <NavItem to={'/offers'} exact label={'Offerten'} icon={OfferIcon} />
     <NavItem to={'/projects'} exact label={'Projekte'} icon={ProjectIcon} />
     <NavItem to={'/invoices'} label={'Rechnungen'} icon={InvoiceIcon} />
-    <NavItem to={'/employees'} label={'Mitarbeiter'} icon={PeopleIcon} />
+    <NavItem to={'/employees'} label={'Mitarbeiter'} icon={EmployeeIcon} />
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
       <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
