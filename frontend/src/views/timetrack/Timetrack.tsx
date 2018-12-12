@@ -16,15 +16,7 @@ import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
-
-const NoResults = () => (
-  <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
-    <p>
-      <LogoIcon fontSize={'large'} />
-    </p>
-    <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
-  </Grid>
-);
+import { Button } from '@material-ui/core';
 
 interface Props {
   effortStore?: EffortStore;
@@ -63,8 +55,19 @@ export default class Timetrack extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   };
 
+  public NoResults = () => (
+    <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
+      <p>
+        <LogoIcon fontSize={'large'} />
+      </p>
+      <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
+      <Button onClick={() => (this.props.timetrackFilterStore!.filter.showEmptyGroups = true)}>Leere Gruppen anzeigen</Button>
+    </Grid>
+  );
+
   public renderGroups = () => {
     const filterStore = this.props.timetrackFilterStore!;
+    const { NoResults } = this;
     let groups;
     let effortCount;
     switch (filterStore.grouping) {
