@@ -23,6 +23,7 @@ if (sentryDSN.startsWith('https')) {
 } else {
   console.log('no raven');
 }
+
 // TODO implement in Dime Layout to change scope to current user, observed from mainState
 
 ReactDOM.render(

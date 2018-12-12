@@ -19,6 +19,9 @@ import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { TextField } from '../../form/fields/common';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import moment from 'moment';
+import { ProjectStore } from '../../stores/projectStore';
+import { captureException } from '../../utilities/helpers';
 
 interface Props {
   onClose: () => void;
@@ -26,6 +29,7 @@ interface Props {
   mainStore?: MainStore;
   projectCommentStore?: ProjectCommentStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  projectStore?: ProjectStore;
 }
 
 const schema = yup.object({
@@ -49,12 +53,13 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     if (effortStore.entity && 'employee_id' in entity) {
       await effortStore.put(entity);
     } else if ('employee_ids' in entity) {
-      await Promise.all(
-        entity.employee_ids.map((e: number) => {
+      await Promise.all([
+        this.widenFilterSettings(entity),
+        ...entity.employee_ids.map((e: number) => {
           const newEffort: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
           return effortStore.post(newEffort);
-        })
-      );
+        }),
+      ]);
     }
 
     if ('comment' in entity && entity.comment !== '') {
@@ -65,6 +70,47 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
 
     await effortStore.fetchFiltered(filter);
     formikProps.setSubmitting(false);
+  };
+
+  //widen the filter so the newly added entities are displayed
+  private widenFilterSettings = async (entity: ProjectEffortTemplate) => {
+    const filter = this.props.timetrackFilterStore!.filter;
+
+    if (filter.employeeIds.length > 0) {
+      const allIds = new Set(filter.employeeIds);
+      entity.employee_ids.forEach(id => allIds.add(id));
+      filter.employeeIds = Array.from(allIds.values());
+    }
+
+    if (filter.projectIds.length > 0) {
+      const allIds = new Set(filter.projectIds);
+      allIds.add(entity.project_id!);
+      filter.projectIds = Array.from(allIds.values());
+    }
+
+    if (filter.serviceIds.length > 0) {
+      try {
+        await this.props.projectStore!.fetchOne(entity.project_id!);
+        const position = this.props.projectStore!.project!.positions.find(pos => pos.id === entity.position_id)!;
+        const allIds = new Set(filter.serviceIds);
+        allIds.add(position.service_id);
+        filter.serviceIds = Array.from(allIds.values());
+      } catch (e) {
+        captureException(e);
+      }
+    }
+
+    const effortDate = moment(entity.date);
+    const filterEnd = moment(filter.end);
+    const filterStart = moment(filter.start);
+
+    if (effortDate.isAfter(filterEnd)) {
+      filter.end = effortDate.format('YYYY-MM-DD');
+    }
+
+    if (effortDate.isBefore(filterStart)) {
+      filter.start = effortDate.format('YYYY-MM-DD');
+    }
   };
 
   public handleClose = (props: FormikProps<ProjectEffort>) => () => {

@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/browser';
+
 // tslint:disable-next-line:no-any
 export const empty = (value: any) => {
   if (!value) {
@@ -10,3 +12,6 @@ export const empty = (value: any) => {
 };
 
 export const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
+
+// tslint:disable-next-line:no-any
+export const captureException = (e: any) => Sentry.captureException(e);
