@@ -10,14 +10,12 @@ import TimetrackEmployeeGroup from './TimetrackEmployeeGroup';
 import TimetrackProjectGroup from './TimetrackProjectGroup';
 import TimetrackServiceGroup from './TimetrackServiceGroup';
 import { EffortStore } from '../../stores/effortStore';
-import { Employee, Listing, ProjectEffortListing } from '../../types';
+import { ProjectEffortListing } from '../../types';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
-import { ServiceListing } from '../services/types';
-import { ProjectListing } from '../../stores/projectStore';
 
 export const formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
   if (factor) {
@@ -39,6 +37,15 @@ export const formatTotalWorkHours = (workedMinutes: number[]) => {
 
   return workedHoursFormatted;
 };
+
+const NoResults = () => (
+  <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
+    <p>
+      <LogoIcon fontSize={'large'} />
+    </p>
+    <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
+  </Grid>
+);
 
 interface Props {
   effortStore?: EffortStore;
@@ -77,49 +84,44 @@ export default class Timetrack extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   };
 
-  public getGroups = (): {
-    entities: Array<(Employee | ServiceListing | ProjectListing) & { efforts: ProjectEffortListing[] }>;
-    Component: React.ReactType;
-  } => {
+  public renderGroups = () => {
     const filterStore = this.props.timetrackFilterStore!;
+    let groups;
+    let effortCount;
     switch (filterStore.grouping) {
-      case 'employee':
-        return {
-          entities: filterStore.employees,
-          Component: TimetrackEmployeeGroup,
-        };
-      case 'project':
-        return {
-          entities: filterStore.projects,
-          Component: TimetrackProjectGroup,
-        };
-      case 'service':
-        return {
-          entities: filterStore.services,
-          Component: TimetrackServiceGroup,
-        };
+      case 'employee': {
+        const entities = filterStore.employees;
+        effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
+        groups = () => entities.map(e => <TimetrackEmployeeGroup key={e.id} entity={e} onClickRow={this.onClickRow} />);
+        break;
+      }
+      case 'project': {
+        const entities = filterStore.projects;
+        effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
+        groups = () =>
+          entities.map(e => (
+            <TimetrackProjectGroup
+              key={e.id}
+              entity={e}
+              onClickRow={this.onClickRow}
+              showProjectComments={filterStore.filter!.showProjectComments}
+            />
+          ));
+        break;
+      }
+      case 'service': {
+        const entities = filterStore.services;
+        effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
+        groups = () => entities.map(e => <TimetrackServiceGroup key={e.id} entity={e} onClickRow={this.onClickRow} />);
+        break;
+      }
       default:
         throw new Error();
     }
-  };
-
-  public renderGroups = () => {
-    const filterStore = this.props.timetrackFilterStore!;
-    const { entities, Component } = this.getGroups();
-    const effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
     if (effortCount > 0 || filterStore.filter!.showEmptyGroups) {
-      return entities.map(e => (
-        <Component key={e.id} entity={e} onClickRow={this.onClickRow} showProjectComments={filterStore.filter!.showProjectComments} />
-      ));
+      return groups();
     } else {
-      return (
-        <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
-          <p>
-            <LogoIcon fontSize={'large'} />
-          </p>
-          <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
-        </Grid>
-      );
+      return <NoResults />;
     }
   };
 
