@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ServiceHoursReport implements FromArray, ShouldAutoSize
+class ServiceHoursPerProjectReport implements FromArray, ShouldAutoSize
 {
     private $efforts;
 

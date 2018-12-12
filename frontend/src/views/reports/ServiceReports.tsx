@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
+import { ExportGroupingSelector } from "../../form/entitySelector/ExportGroupingSelector"
+import { Typography } from "@material-ui/core"
 
 interface Props {
   mainStore?: MainStore;
@@ -18,7 +20,7 @@ interface Props {
   inject('mainStore'),
   observer
 )
-export class ServiceHoursReport extends React.Component<Props> {
+export class ServiceReports extends React.Component<Props> {
   public state = {
     start: moment()
       .startOf('year')
@@ -26,16 +28,19 @@ export class ServiceHoursReport extends React.Component<Props> {
     end: moment()
       .endOf('year')
       .format('YYYY-MM-DD'),
+    grouping: 'project'
   };
 
   public render() {
     return (
       <>
-        <DimeAppBar title={'Service-Stunden-Rapport'} />
+        <DimeAppBar title={'Service-Rapporte'} />
 
         <DimeContent loading={false}>
-          <Grid container spacing={8}>
-            <Grid item xs={12} md={3}>
+          <Typography variant={'h5'}>Stunden pro Service</Typography>
+
+          <Grid container alignItems={'center'} spacing={24}>
+            <Grid item xs={12} md={4}>
               <DatePicker
                 fullWidth
                 {...formikFieldCompatible({
@@ -45,7 +50,7 @@ export class ServiceHoursReport extends React.Component<Props> {
                 })}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
               <DatePicker
                 fullWidth
                 {...formikFieldCompatible({
@@ -55,9 +60,19 @@ export class ServiceHoursReport extends React.Component<Props> {
                 })}
               />
             </Grid>
+            <Grid item xs={12} md={4}>
+              <ExportGroupingSelector
+                fullWidth
+                {...formikFieldCompatible({
+                  label: 'Gruppierung',
+                  value: this.state.grouping,
+                  onChange: d => this.setState({ grouping: d }),
+                })}
+              />
+            </Grid>
             <Grid item xs={12}>
               <a
-                href={this.props.mainStore!.getPrintUrl('reports/service_hours') + '&start=' + this.state.start + '&end=' + this.state.end}
+                href={this.props.mainStore!.getPrintUrl('reports/service_hours') + '&start=' + this.state.start + '&end=' + this.state.end + '&group_by=' + this.state.grouping}
                 target={'_blank'}
                 style={{ textDecoration: 'none', color: 'white' }}
               >
