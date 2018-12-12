@@ -1,11 +1,10 @@
 import * as React from 'react';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import { PropTypes, Tooltip } from '@material-ui/core';
+import { PropTypes } from '@material-ui/core';
 import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { PrintIcon } from './icons';
-import Badge from '@material-ui/core/Badge/Badge';
+import { ActionButton } from './ActionButton';
 
 interface Props {
   icon?: React.ReactType;
@@ -25,17 +24,7 @@ export default class PrintButton extends React.Component<Props> {
     const BadgeIcon = this.props.icon;
     return (
       <a href={this.props.mainStore!.getPrintUrl(this.props.path)} target={'_blank'} style={{ color: 'white' }}>
-        <Tooltip title={this.props.title || 'Drucken'}>
-          <IconButton disabled={this.props.disabled} color={this.props.color}>
-            {BadgeIcon ? (
-              <Badge badgeContent={<BadgeIcon fontSize={'small'} />}>
-                <PrintIcon />
-              </Badge>
-            ) : (
-              <PrintIcon />
-            )}
-          </IconButton>
-        </Tooltip>
+        <ActionButton icon={PrintIcon} secondaryIcon={BadgeIcon} title={this.props.title || 'Drucken'} color={this.props.color} />
       </a>
     );
   };

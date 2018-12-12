@@ -6,17 +6,23 @@ import UnstyledLink from './UnstyledLink';
 import { PropTypes } from '@material-ui/core';
 import compose from '../utilities/compose';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import Badge from '@material-ui/core/Badge';
 
 export type ActionButtonAction = (() => void) | string;
 
+type IconType = React.ReactType<SvgIconProps>;
+
 export interface ButtonProps {
-  icon: React.ReactType<SvgIconProps>;
+  icon: IconType;
+  secondaryIcon?: IconType;
   title?: string;
   action?: ActionButtonAction;
   disabled?: boolean;
   color?: PropTypes.Color;
 }
 
+const withSecondaryIcon = (Icon?: IconType) => (component: React.ReactNode) =>
+  Icon ? <Badge badgeContent={<Icon fontSize={'small'} />}>{component}</Badge> : component;
 const withLink = (link?: string) => (component: React.ReactNode) => (link ? <UnstyledLink to={link}>{component}</UnstyledLink> : component);
 const withTooltip = (text?: string) => (component: React.ReactNode) =>
   text ? (
@@ -50,7 +56,7 @@ export class ActionButton extends React.Component<ButtonProps> {
       withTooltip(this.props.title)
     )(
       <IconButton onClick={this.onClick} disabled={this.props.disabled} color={this.props.color}>
-        <Icon />
+        {withSecondaryIcon(this.props.secondaryIcon)(<Icon />)}
       </IconButton>
     );
   };

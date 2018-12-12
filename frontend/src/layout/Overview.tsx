@@ -8,7 +8,7 @@ import { OverviewTable } from './OverviewTable';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { AppBarSearch } from './AppBarSearch';
-import { AddIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
+import { AddIcon, ArchiveIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
 import { Listing } from '../types';
 import debounce from 'lodash/debounce';
 
@@ -89,7 +89,8 @@ export default class Overview<ListingType extends Listing> extends React.Compone
           {this.props.searchFilter && <AppBarSearch onChange={e => this.updateQueryState(e.target.value)} />}
           {this.props.archivable && (
             <DimeAppBarButton
-              icon={this.state.showArchived ? InvisibleIcon : VisibleIcon}
+              icon={ArchiveIcon}
+              secondaryIcon={this.state.showArchived ? InvisibleIcon : VisibleIcon}
               title={`Archivierte Objekte ${this.state.showArchived ? 'ausblenden' : 'einblenden'}`}
               action={() => this.setState({ showArchived: !this.state.showArchived })}
             />
