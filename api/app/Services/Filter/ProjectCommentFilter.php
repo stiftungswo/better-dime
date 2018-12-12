@@ -14,7 +14,7 @@ class ProjectCommentFilter
      */
     public static function fetch($params = [])
     {
-        $queryBuilder = DB::table('project_comments')->orderBy('date');
+        $queryBuilder = DB::table('project_comments')->orderBy('date')->whereNull('deleted_at');
 
         if (!empty($params['end'])) {
             $queryBuilder->where('date', '<=', $params['end']);

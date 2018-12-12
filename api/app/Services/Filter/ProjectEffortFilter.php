@@ -43,7 +43,9 @@ class ProjectEffortFilter
             DB::raw('rate_units.effort_unit as effort_unit'),
             DB::raw('rate_units.factor as rate_unit_factor'),
             DB::raw('rate_units.is_time as rate_unit_is_time'),
-        ])->get();
+        ])
+            ->whereNull('project_efforts.deleted_at')
+            ->get();
     }
 
     /**
