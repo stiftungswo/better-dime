@@ -259,6 +259,7 @@ export const formikFieldCompatible = ({ label, value, onChange }: { label: strin
   label,
   field: {
     name: label + '_compat',
+    onChange,
     value,
   },
   form: {

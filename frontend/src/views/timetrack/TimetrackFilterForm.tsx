@@ -17,6 +17,7 @@ import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
+import { formikFieldCompatible } from '../../form/fields/Select';
 
 interface Props {
   effortStore?: EffortStore;
@@ -30,8 +31,8 @@ interface Props {
   observer
 )
 export class TimetrackFilterForm extends React.Component<Props> {
-  public handleSubmit = (filter: ProjectEffortFilter) => {
-    this.props.timetrackFilterStore!.filter = filter;
+  public handleSubmit = () => {
+    const filter = this.props.timetrackFilterStore!.filter;
     this.props.effortStore!.fetchFiltered(filter);
     this.props.projectCommentStore!.fetchFiltered(filter);
   };
@@ -56,47 +57,93 @@ export class TimetrackFilterForm extends React.Component<Props> {
         <Grid item xs={12}>
           <DimePaper overflowX={false}>
             <Grid container alignItems={'center'} spacing={24}>
-              <Formik
-                initialValues={filter}
-                onSubmit={this.handleSubmit}
-                render={formikProps => (
-                  <>
-                    <Grid item xs={12} md={3}>
-                      <Field component={DatePicker} name={'start'} label={'Start'} fullWidth />
-                    </Grid>
+              <Grid item xs={12} md={3}>
+                <DatePicker
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Start',
+                    value: filter.start,
+                    onChange: d => (filter.start = d),
+                  })}
+                />
+              </Grid>
 
-                    <Grid item xs={12} md={3}>
-                      <Field component={DatePicker} name={'end'} label={'Ende'} fullWidth />
-                    </Grid>
+              <Grid item xs={12} md={3}>
+                <DatePicker
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Ende',
+                    value: filter.end,
+                    onChange: d => (filter.end = d),
+                  })}
+                />
+              </Grid>
 
-                    <Grid item xs={12} md={3}>
-                      <Field component={SwitchField} name={'showProjectComments'} label={'Projekt-Kommentare anzeigen?'} fullWidth />
-                    </Grid>
+              <Grid item xs={12} md={3}>
+                <SwitchField
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Leere Gruppen anzeigen',
+                    value: filter.showEmptyGroups,
+                    onChange: e => (filter.showEmptyGroups = e.target.checked),
+                  })}
+                />
+              </Grid>
 
-                    <Grid item xs={12} md={3}>
-                      <Field component={SwitchField} name={'showEmptyGroups'} label={'Leere Gruppen anzeigen?'} fullWidth />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={EmployeeSelector} name={'employeeIds'} label={'Mitarbeiter filtern'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={ProjectSelector} name={'projectIds'} label={'Projekte filtern'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <Field fullWidth isMulti component={ServiceSelector} name={'serviceIds'} label={'Services filtern'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <Button onClick={formikProps.submitForm} color={'primary'} variant="contained">
-                        Aktualisieren
-                      </Button>
-                    </Grid>
-                  </>
+              <Grid item xs={12} md={3}>
+                {this.props.timetrackFilterStore!.grouping === 'project' && (
+                  <SwitchField
+                    fullWidth
+                    {...formikFieldCompatible({
+                      label: 'Projekt-Kommentare anzeigen',
+                      value: filter.showProjectComments,
+                      onChange: e => (filter.showProjectComments = e.target.checked),
+                    })}
+                  />
                 )}
-              />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <EmployeeSelector
+                  isMulti
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Mitarbeiter',
+                    value: filter.employeeIds,
+                    onChange: v => (filter.employeeIds = v),
+                  })}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <ProjectSelector
+                  isMulti
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Projekte',
+                    value: filter.projectIds,
+                    onChange: v => (filter.projectIds = v),
+                  })}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <ServiceSelector
+                  isMulti
+                  fullWidth
+                  {...formikFieldCompatible({
+                    label: 'Services',
+                    value: filter.serviceIds,
+                    onChange: v => (filter.serviceIds = v),
+                  })}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Button onClick={this.handleSubmit} color={'primary'} variant="contained">
+                  Aktualisieren
+                </Button>
+              </Grid>
             </Grid>
           </DimePaper>
         </Grid>
