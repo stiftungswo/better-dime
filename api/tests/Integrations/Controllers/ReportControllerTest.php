@@ -2,11 +2,11 @@
 
 namespace Tests\Integrations\Controllers;
 
+use App\Models\Project\ProjectEffort;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ReportControllerTest extends \TestCase
 {
-
     use DatabaseTransactions;
 
     public function testValidPrintEffortReport()
@@ -34,5 +34,22 @@ class ReportControllerTest extends \TestCase
         ]);
         $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoice->id . '/print_effort_report')->assertResponseStatus(400);
         $this->assertEquals('Invoice ' . $invoice->id . ' has no project assigned!', $this->response->getContent());
+    }
+
+    public function testExportServiceHoursWithInvalidParams()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/reports/service_hours', [
+            'start' => 'jabdudiiibi'
+        ])->assertResponseStatus(422);
+    }
+
+    public function testExportServiceHoursWithValidParams()
+    {
+        // seed a few things to have something in the report
+        factory(ProjectEffort::class, 30)->create();
+        $this->asAdmin()->json('GET', 'api/v1/reports/service_hours', [
+            'end' => '2050-12-31',
+            'start' => '2000-01-01'
+        ])->assertResponseOk();
     }
 }

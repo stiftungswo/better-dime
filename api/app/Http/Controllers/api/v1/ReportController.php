@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Invoice\Invoice;
+use App\Models\Project\ProjectEffort;
+use App\Services\Export\ServiceHoursReport;
 use App\Services\Filter\DailyEfforts;
 use App\Services\Filter\ProjectCommentFilter;
 use App\Services\Filter\ProjectEffortFilter;
@@ -11,6 +13,7 @@ use App\Services\PDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends BaseController
 {
@@ -65,6 +68,20 @@ class ReportController extends BaseController
         } else {
             return response('Invoice ' . $invoice->id . ' has no project assigned!', 400);
         }
+    }
+
+    public function exportServiceHoursReport(Request $request)
+    {
+        $validatedData = $this->validate($request, [
+            'end' => 'required|date',
+            'start' => 'required|date'
+        ]);
+
+        $effortForTimerange = ProjectEffort::with('position', 'position.project', 'position.project.category', 'position.service', 'position.service', 'position.rate_unit')
+            ->whereBetween('date', [$validatedData['start'], $validatedData['end']])
+            ->get();
+
+        return Excel::download(new ServiceHoursReport($effortForTimerange), 'service_hour_report.xlsx');
     }
 
     public function daily(Request $request)
