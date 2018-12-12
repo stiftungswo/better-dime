@@ -14,7 +14,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 
 const styles = createStyles({
-  container: {
+  hideActions: {
     '@media (hover)': {
       '& .actions': {
         visibility: 'hidden',
@@ -177,7 +177,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
         <TableBody>
           {sortedData.map((row, index) => (
             <TableRow
-              className={classes.container}
+              className={classes.hideActions}
               hover
               key={index}
               onClick={this.handleRowClick(row, index)}

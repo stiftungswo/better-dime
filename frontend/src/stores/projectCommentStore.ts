@@ -78,4 +78,9 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     const res = await this.mainStore.api.put<ProjectComment>('/project_comments/' + entity.id, entity);
     this.projectComment = res.data;
   }
+
+  @action
+  protected async doDelete(id: number): Promise<void> {
+    await this.mainStore.api.delete('/project_comments/' + id);
+  }
 }
