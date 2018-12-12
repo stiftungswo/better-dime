@@ -2,30 +2,35 @@ import React from 'react';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import { Column } from '../../layout/Overview';
 import { ProjectEffortListing } from '../../types';
-import { IconButton } from '@material-ui/core';
 import { AddEffortIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
+import { inject, observer } from 'mobx-react';
+import { Formatter } from '../../utilities/formatter';
 
 interface Props {
   displayTotal: string;
   onEffortAdd: () => void;
   efforts: ProjectEffortListing[];
-  formatRateEntry: (value: number, factor: number | undefined, unit: string) => string;
   onClickRow: (entity: ProjectEffortListing) => void;
   title: string;
+  formatter?: Formatter;
 }
 
+@inject('mainStore', 'formatter')
+@observer
 export class TimetrackProjectSoloTable extends React.Component<Props> {
   public columns: Array<Column<ProjectEffortListing>> = [];
 
   public constructor(props: Props) {
     super(props);
+    const formatter = props.formatter!;
 
     this.columns = [
       {
         id: 'date',
         numeric: false,
         label: 'Datum',
+        format: e => formatter.formatDate(e.date),
       },
       {
         id: 'position_description',
@@ -36,7 +41,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
         id: 'effort_value',
         numeric: true,
         label: 'Gebuchter Wert',
-        format: h => this.props.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
       },
     ];
   }

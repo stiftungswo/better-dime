@@ -17,27 +17,6 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
 
-export const formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
-  if (factor) {
-    return `${value / factor} ${unit}`;
-  } else {
-    return `${value} ${unit}`;
-  }
-};
-
-export const formatTotalWorkHours = (workedMinutes: number[]) => {
-  let workedHoursFormatted = '0:00h';
-
-  if (workedMinutes.length > 0) {
-    const sum = workedMinutes.reduce((total: number, current: number) => Number(total) + Number(current));
-    const hours = Math.floor(sum / 60);
-    const minutes = Math.floor(sum % 60);
-    workedHoursFormatted = hours + ':' + ('0' + minutes).slice(-2) + 'h';
-  }
-
-  return workedHoursFormatted;
-};
-
 const NoResults = () => (
   <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
     <p>

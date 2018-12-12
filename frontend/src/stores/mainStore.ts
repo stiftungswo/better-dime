@@ -31,7 +31,12 @@ export class MainStore {
     return this.apiStore.userId;
   }
 
-  constructor(private apiStore: ApiStore, private formatter: Formatter, private notifier: Notifier, private history: History) {}
+  constructor(
+    private apiStore: ApiStore,
+    public readonly formatter: Formatter,
+    public readonly notifier: Notifier,
+    private history: History
+  ) {}
 
   // --- formatting
   public formatDate = this.formatter.formatDate;

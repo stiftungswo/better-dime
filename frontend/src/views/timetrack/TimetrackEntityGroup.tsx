@@ -7,7 +7,6 @@ import { inject, observer } from 'mobx-react';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { ActionButton } from '../../layout/ActionButton';
 import { DeleteIcon, MoveIcon } from '../../layout/icons';
-import { todo } from '../../index';
 import { EffortStore } from '../../stores/effortStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import EffortMoveDialog from './EffortMoveDialog';

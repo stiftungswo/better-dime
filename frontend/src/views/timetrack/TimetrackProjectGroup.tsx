@@ -1,14 +1,13 @@
 import React from 'react';
-import { ProjectEffortListing } from '../../types';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { TimetrackProjectCombinedTable } from './TimetrackProjectCombinedTable';
 import { TimetrackProjectGroupProps } from './types';
 import { TimetrackProjectSoloTable } from './TimetrackProjectSoloTable';
-import { formatRateEntry, formatTotalWorkHours } from './Timetrack';
+import { sum } from '../../utilities/helpers';
 
 @compose(
-  inject('effortStore'),
+  inject('effortStore', 'formatter'),
   observer
 )
 export default class TimetrackProjectGroup extends React.Component<TimetrackProjectGroupProps> {
@@ -21,15 +20,14 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
   public render() {
     const { entity, onClickRow } = this.props;
     const efforts = entity.efforts;
-    const workedMinutes = efforts.filter((e: ProjectEffortListing) => e.rate_unit_is_time).map((e: ProjectEffortListing) => e.effort_value);
+    const workedMinutes = sum(efforts.filter(e => e.rate_unit_is_time).map(e => e.effort_value));
 
     if (this.props.showProjectComments) {
       return (
         <TimetrackProjectCombinedTable
-          displayTotal={formatTotalWorkHours(workedMinutes)}
+          displayTotal={this.props.formatter!.formatTotalWorkHours(workedMinutes)}
           efforts={efforts}
           entity={entity}
-          formatRateEntry={formatRateEntry}
           onClickEffortRow={onClickRow}
           onEffortAdd={this.onEffortAdd}
         />
@@ -37,9 +35,8 @@ export default class TimetrackProjectGroup extends React.Component<TimetrackProj
     } else {
       return (
         <TimetrackProjectSoloTable
-          displayTotal={formatTotalWorkHours(workedMinutes)}
+          displayTotal={this.props.formatter!.formatTotalWorkHours(workedMinutes)}
           efforts={efforts}
-          formatRateEntry={formatRateEntry}
           onClickRow={onClickRow}
           onEffortAdd={this.onEffortAdd}
           title={entity.name}

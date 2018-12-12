@@ -5,46 +5,50 @@ import { ProjectEffortListing } from '../../types';
 import { Column } from '../../layout/Overview';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import { TimetrackServiceGroupProps } from './types';
-import { formatRateEntry } from './Timetrack';
 
-const columns: Column<ProjectEffortListing>[] = [
-  {
-    id: 'date',
-    numeric: false,
-    label: 'Datum',
-  },
-  {
-    id: 'employee_full_name',
-    numeric: false,
-    label: 'Mitarbeiter',
-  },
-  {
-    id: 'project_name',
-    numeric: false,
-    label: 'Projekt',
-  },
-  {
-    id: 'position_description',
-    numeric: false,
-    label: 'Aktivität',
-  },
-  {
-    id: 'effort_value',
-    numeric: true,
-    label: 'Gebuchter Wert',
-    format: h => formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-  },
-];
 @compose(
-  inject('effortStore'),
+  inject('effortStore', 'formatter'),
   observer
 )
 export default class TimetrackServiceGroup extends React.Component<TimetrackServiceGroupProps> {
+  private columns: Column<ProjectEffortListing>[];
+
+  constructor(props: TimetrackServiceGroupProps) {
+    super(props);
+    const formatter = props.formatter!;
+    this.columns = [
+      {
+        id: 'date',
+        numeric: false,
+        label: 'Datum',
+        format: e => formatter.formatDate(e.date),
+      },
+      {
+        id: 'employee_full_name',
+        numeric: false,
+        label: 'Mitarbeiter',
+      },
+      {
+        id: 'project_name',
+        numeric: false,
+        label: 'Projekt',
+      },
+      {
+        id: 'position_description',
+        numeric: false,
+        label: 'Aktivität',
+      },
+      {
+        id: 'effort_value',
+        numeric: true,
+        label: 'Gebuchter Wert',
+        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+      },
+    ];
+  }
+
   public render() {
     const { entity } = this.props;
-    const efforts = entity.efforts;
-    const workedEfforts = efforts.map((e: ProjectEffortListing) => e.effort_value);
-
-    return <TimetrackEntityGroup columns={columns} efforts={efforts} title={entity.name} onClickRow={this.props.onClickRow} />;
+    return <TimetrackEntityGroup columns={this.columns} efforts={entity.efforts} title={entity.name} onClickRow={this.props.onClickRow} />;
   }
 }

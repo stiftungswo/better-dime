@@ -18,6 +18,8 @@ import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { MainStore } from '../../stores/mainStore';
+import { Formatter } from '../../utilities/formatter';
 
 const styles = createStyles({
   hideActions: {
@@ -36,16 +38,16 @@ interface Props extends WithStyles<typeof styles> {
   displayTotal: string;
   efforts: ProjectEffortListing[];
   entity: ProjectListing;
-  formatRateEntry: (value: number, factor: number | undefined, unit: string) => string;
   onEffortAdd: () => void;
   onClickEffortRow: (entity: ProjectEffortListing) => void;
   projectCommentStore?: ProjectCommentStore;
   effortStore?: EffortStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  formatter?: Formatter;
 }
 
 @compose(
-  inject('projectCommentStore', 'effortStore', 'timetrackFilterStore'),
+  inject('projectCommentStore', 'effortStore', 'timetrackFilterStore', 'formatter'),
   observer
 )
 class TimetrackProjectCombinedTableInner extends React.Component<Props> {
@@ -79,8 +81,9 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
   );
 
   public render() {
-    const { displayTotal, efforts, entity, formatRateEntry, onClickEffortRow, projectCommentStore, classes } = this.props;
+    const { displayTotal, efforts, entity, onClickEffortRow, projectCommentStore, classes } = this.props;
     const comments = projectCommentStore!.projectComments.filter((comment: ProjectComment) => comment.project_id === entity.id);
+    const formatter = this.props.formatter!;
 
     let joinedForces: (ProjectEffortListing | ProjectComment)[] = efforts;
     joinedForces = joinedForces.concat(comments);
@@ -114,7 +117,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       onClick={() => this.handleClickCommentRow(e)}
                       component={SafeClickableTableRow}
                     >
-                      <TableCell style={{ fontStyle: 'italic' }}>{e.date}</TableCell>
+                      <TableCell style={{ fontStyle: 'italic' }}>{formatter.formatDate(e.date)}</TableCell>
                       <TableCell colSpan={3} style={{ fontStyle: 'italic' }}>
                         {e.comment}
                       </TableCell>
@@ -134,10 +137,10 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       onClick={() => onClickEffortRow(e)}
                       component={SafeClickableTableRow}
                     >
-                      <TableCell>{e.date}</TableCell>
+                      <TableCell>{formatter.formatDate(e.date)}</TableCell>
                       <TableCell>{e.employee_full_name}</TableCell>
                       <TableCell>{e.position_description}</TableCell>
-                      <TableCell numeric>{formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</TableCell>
+                      <TableCell numeric>{formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</TableCell>
                       <TableCell numeric>
                         <span className={'actions'}>
                           <DeleteButton onConfirm={() => this.handleEffortDelete(e.id!)} />

@@ -32,6 +32,7 @@ export interface Props extends InjectedNotistackProps {
 
 class StoreProviderInner extends React.Component<Props> {
   private stores: {
+    formatter: Formatter;
     apiStore: ApiStore;
     mainStore: MainStore;
     offerStore: OfferStore;
@@ -59,7 +60,8 @@ class StoreProviderInner extends React.Component<Props> {
     super(props);
 
     const apiStore = new ApiStore(this.props.history, this.props.enqueueSnackbar);
-    const mainStore = new MainStore(apiStore, new Formatter(apiStore), new Notifier(this.props.enqueueSnackbar), this.props.history);
+    const formatter = new Formatter(apiStore);
+    const mainStore = new MainStore(apiStore, formatter, new Notifier(this.props.enqueueSnackbar), this.props.history);
     const employeeStore = new EmployeeStore(mainStore);
     const serviceStore = new ServiceStore(mainStore);
     const projectStore = new ProjectStore(mainStore);
@@ -67,6 +69,7 @@ class StoreProviderInner extends React.Component<Props> {
     const timetrackFilterStore = new TimetrackFilterStore(mainStore, employeeStore, projectStore, serviceStore, effortStore);
 
     this.stores = {
+      formatter,
       apiStore,
       mainStore,
       timetrackFilterStore,

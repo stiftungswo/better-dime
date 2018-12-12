@@ -2,11 +2,12 @@ import { EffortStore } from '../../stores/effortStore';
 import { ServiceListing } from '../services/types';
 import { ProjectEffortListing } from '../../types';
 import { ProjectListing } from '../../stores/projectStore';
-import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { EmployeeListing } from '../../stores/employeeStore';
+import { Formatter } from '../../utilities/formatter';
 
 interface EntityGroup {
   effortStore?: EffortStore;
+  formatter?: Formatter;
   onClickRow: (entity: ProjectEffortListing) => void;
 }
 

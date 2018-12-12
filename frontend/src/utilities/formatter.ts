@@ -29,4 +29,24 @@ export class Formatter {
       return str;
     }
   };
+
+  public formatRateEntry = (value: number, factor: number | undefined, unit: string) => {
+    if (factor && factor !== 1) {
+      return `${Number(value / factor).toFixed(2)} ${unit}`;
+    } else {
+      return `${Number(value)} ${unit}`;
+    }
+  };
+
+  public formatTotalWorkHours = (workedMinutes: number) => {
+    let workedHoursFormatted = '0:00h';
+
+    if (workedMinutes > 0) {
+      const hours = Math.floor(workedMinutes / 60);
+      const minutes = Math.floor(workedMinutes % 60);
+      workedHoursFormatted = hours + ':' + ('0' + minutes).slice(-2) + 'h';
+    }
+
+    return workedHoursFormatted;
+  };
 }
