@@ -57,6 +57,10 @@ class CreateProjectsEtc extends Migration
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('project_efforts', function (Blueprint $table) {

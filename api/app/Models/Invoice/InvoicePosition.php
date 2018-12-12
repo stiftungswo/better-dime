@@ -6,10 +6,11 @@ use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateUnit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class InvoicePosition extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $casts = [
         'amount' => 'float',

@@ -49,8 +49,13 @@ class CreateOffersEtc extends Migration
             $table->unsignedInteger('service_id')->nullable();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('set null');
             $table->decimal('vat', 4, 3);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('offer_discounts', function (Blueprint $table) {
@@ -60,8 +65,13 @@ class CreateOffersEtc extends Migration
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->boolean('percentage')->default(false);
             $table->decimal('value', 10, 3);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

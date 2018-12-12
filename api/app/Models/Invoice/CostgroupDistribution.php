@@ -4,10 +4,11 @@ namespace App\Models\Invoice;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class CostgroupDistribution extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $fillable = ['costgroup_number', 'invoice_id', 'weight'];
 

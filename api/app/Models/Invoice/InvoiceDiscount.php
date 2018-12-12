@@ -4,10 +4,11 @@ namespace App\Models\Invoice;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
 class InvoiceDiscount extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, BlameableTrait;
 
     protected $casts = [
         'percentage' => 'boolean',

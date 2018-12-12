@@ -51,8 +51,13 @@ class CreateInvoicesEtc extends Migration
             $table->integer('invoice_id')->unsigned();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
             $table->integer('weight');
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('invoice_positions', function (Blueprint $table) {
@@ -68,8 +73,13 @@ class CreateInvoicesEtc extends Migration
             $table->unsignedInteger('rate_unit_id')->nullable();
             $table->foreign('rate_unit_id')->references('id')->on('rate_units')->onDelete('set null');
             $table->decimal('vat', 4, 3);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::create('invoice_discounts', function (Blueprint $table) {
@@ -79,8 +89,13 @@ class CreateInvoicesEtc extends Migration
             $table->string('name');
             $table->boolean('percentage')->default(false);
             $table->decimal('value', 11, 3);
+
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 
