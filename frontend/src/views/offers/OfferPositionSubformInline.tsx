@@ -2,14 +2,12 @@ import * as React from 'react';
 import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
 import { NumberField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, Observer, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { Offer, OfferPosition } from '../../types';
-import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
@@ -19,6 +17,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { Service } from '../services/types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { ServiceStore } from '../../stores/serviceStore';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props {
   mainStore?: MainStore;
@@ -75,14 +74,14 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                   <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                     <TableHead>
                       <TableRow>
-                        <TableCell style={{ width: '5%' }}>Sort.</TableCell>
-                        <TableCell style={{ width: '25%' }}>Service</TableCell>
-                        <TableCell style={{ width: '15%' }}>Tarif</TableCell>
-                        <TableCell style={{ width: '20%' }}>Tariftyp</TableCell>
-                        <TableCell style={{ width: '10%' }}>Menge</TableCell>
-                        <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
-                        <TableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</TableCell>
-                        <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
+                        <DimeTableCell style={{ width: '5%' }}>Sort.</DimeTableCell>
+                        <DimeTableCell style={{ width: '25%' }}>Service</DimeTableCell>
+                        <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
+                        <DimeTableCell style={{ width: '20%' }}>Tariftyp</DimeTableCell>
+                        <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
+                        <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
+                        <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
+                        <DimeTableCell style={{ width: '10%' }}>Aktionen</DimeTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -91,7 +90,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                         const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
                         return (
                           <TableRow key={index}>
-                            <TableCell>
+                            <DimeTableCell>
                               <Field
                                 delayed
                                 component={NumberField}
@@ -99,24 +98,24 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                                 margin={'none'}
                                 disabled={disabled}
                               />
-                            </TableCell>
-                            <TableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</TableCell>
-                            <TableCell>
+                            </DimeTableCell>
+                            <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
+                            <DimeTableCell>
                               <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
-                            </TableCell>
-                            <TableCell>
+                            </DimeTableCell>
+                            <DimeTableCell>
                               <Field disabled portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
-                            </TableCell>
-                            <TableCell>
+                            </DimeTableCell>
+                            <DimeTableCell>
                               <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
-                            </TableCell>
-                            <TableCell>
+                            </DimeTableCell>
+                            <DimeTableCell>
                               <Field delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
-                            </TableCell>
-                            <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
-                            <TableCell>
+                            </DimeTableCell>
+                            <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
+                            <DimeTableCell>
                               <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
-                            </TableCell>
+                            </DimeTableCell>
                           </TableRow>
                         );
                       })}

@@ -7,7 +7,6 @@ import { DailyReportEffort, DailyReportStore } from '../stores/dailyReportStore'
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { MainStore } from '../stores/mainStore';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -18,6 +17,7 @@ import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import { DimeContent } from '../layout/DimeContent';
+import { DimeTableCell } from '../layout/DimeTableCell';
 
 interface Props {
   dailyReportStore?: DailyReportStore;
@@ -75,16 +75,16 @@ export default class DailyReport extends React.Component<Props> {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell />
+                        <DimeTableCell />
                         {dates.map(date => (
-                          <TableCell key={date}>{this.props.mainStore!.formatDate(date)}</TableCell>
+                          <DimeTableCell key={date}>{this.props.mainStore!.formatDate(date)}</DimeTableCell>
                         ))}
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {employees.map(employee => (
                         <TableRow key={employee.employee_id}>
-                          <TableCell>{employee.name}</TableCell>
+                          <DimeTableCell>{employee.name}</DimeTableCell>
                           {dates.map(date => this.renderCell(employee.efforts[date], date))}
                         </TableRow>
                       ))}
@@ -103,8 +103,8 @@ export default class DailyReport extends React.Component<Props> {
               <Table>
                 {detail.map((e: DailyReportEffort, index: number) => (
                   <TableRow key={index}>
-                    <TableCell>{e.service_name}</TableCell>
-                    <TableCell>{this.props.mainStore!.formatDuration(Number(e.value), 'h', true)}</TableCell>
+                    <DimeTableCell>{e.service_name}</DimeTableCell>
+                    <DimeTableCell>{this.props.mainStore!.formatDuration(Number(e.value), 'h', true)}</DimeTableCell>
                   </TableRow>
                 ))}
               </Table>
@@ -124,14 +124,14 @@ export default class DailyReport extends React.Component<Props> {
 
   renderCell = (efforts: DailyReportEffort[], key: string) => {
     if (efforts === undefined) {
-      return <TableCell key={key} />;
+      return <DimeTableCell key={key} />;
     }
 
     const sum = efforts.map(e => Number(e.value)).reduce((a, b) => a + b, 0);
     return (
-      <TableCell key={key} onClick={() => (this.props.dailyReportStore!.detail = efforts)} style={{ cursor: 'pointer' }}>
+      <DimeTableCell key={key} onClick={() => (this.props.dailyReportStore!.detail = efforts)} style={{ cursor: 'pointer' }}>
         {this.props.mainStore!.formatDuration(sum, 'h', true)}
-      </TableCell>
+      </DimeTableCell>
     );
   };
 }

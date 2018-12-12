@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@material-ui/core';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { NumberField } from '../../form/fields/common';
-import { LessPaddingTableCell } from '../../layout/LessPaddingTableCell';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DurationField } from '../../form/fields/DurationField';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { Observer } from 'mobx-react';
@@ -51,10 +51,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                 <Table style={{ minWidth: '1200px' }}>
                   <TableHead>
                     <TableRow>
-                      <LessPaddingTableCell style={{ width: '15%' }}>Start</LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '15%' }}>Ende</LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '8%' }}>Pensum</LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '7%' }}>
+                      <DimeTableCell style={{ width: '15%' }}>Start</DimeTableCell>
+                      <DimeTableCell style={{ width: '15%' }}>Ende</DimeTableCell>
+                      <DimeTableCell style={{ width: '8%' }}>Pensum</DimeTableCell>
+                      <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
                             'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
@@ -62,8 +62,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         >
                           <p>Sollzeit</p>
                         </Tooltip>
-                      </LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '7%' }}>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
                             'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
@@ -71,8 +71,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         >
                           <p>Istzeit</p>
                         </Tooltip>
-                      </LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '7%' }}>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
                             'Gebuchte Stunden innerhalb der Periode bis heute (oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
@@ -80,8 +80,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         >
                           <p>Heute</p>
                         </Tooltip>
-                      </LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '7%' }}>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
                             'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. Dazu gezählt wird der Ferienübertrag.'
@@ -89,15 +89,15 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         >
                           <p>Ferienguthaben</p>
                         </Tooltip>
-                      </LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '7%' }}>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip title={'Stunden, welche innerhalb dieser Periode auf ein Ferienprojekt gebucht wurden.'}>
                           <p>Ferien gebucht</p>
                         </Tooltip>
-                      </LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '9%' }}>Übertrag</LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '9%' }}>Jährliches Ferienbudget</LessPaddingTableCell>
-                      <LessPaddingTableCell style={{ width: '9%' }}>Aktionen</LessPaddingTableCell>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '9%' }}>Übertrag</DimeTableCell>
+                      <DimeTableCell style={{ width: '9%' }}>Jährliches Ferienbudget</DimeTableCell>
+                      <DimeTableCell style={{ width: '9%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -107,31 +107,31 @@ export class WorkPeriodSubform extends React.Component<Props> {
 
                       return (
                         <TableRow key={index}>
-                          <LessPaddingTableCell>
+                          <DimeTableCell>
                             <Field component={DatePicker} name={fieldName('start')} />
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>
+                          </DimeTableCell>
+                          <DimeTableCell>
                             <Field component={DatePicker} name={fieldName('end')} />
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>
+                          </DimeTableCell>
+                          <DimeTableCell>
                             <Field delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>{formattedHours(w.target_time)}</LessPaddingTableCell>
-                          <LessPaddingTableCell>{formattedHours(w.effective_time)}</LessPaddingTableCell>
-                          <LessPaddingTableCell style={{ color: w.effort_till_today < 0 ? 'red' : 'green' }}>
+                          </DimeTableCell>
+                          <DimeTableCell>{formattedHours(w.target_time)}</DimeTableCell>
+                          <DimeTableCell>{formattedHours(w.effective_time)}</DimeTableCell>
+                          <DimeTableCell style={{ color: w.effort_till_today < 0 ? 'red' : 'green' }}>
                             {formattedHours(w.effort_till_today)}
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>{formattedHours(w.period_vacation_budget)}</LessPaddingTableCell>
-                          <LessPaddingTableCell>{formattedHours(w.vacation_till_today)}</LessPaddingTableCell>
-                          <LessPaddingTableCell>
+                          </DimeTableCell>
+                          <DimeTableCell>{formattedHours(w.period_vacation_budget)}</DimeTableCell>
+                          <DimeTableCell>{formattedHours(w.vacation_till_today)}</DimeTableCell>
+                          <DimeTableCell>
                             <Field delayed component={DurationField} name={fieldName('vacation_takeover')} />
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>
+                          </DimeTableCell>
+                          <DimeTableCell>
                             <Field delayed component={DurationField} name={fieldName('yearly_vacation_budget')} />
-                          </LessPaddingTableCell>
-                          <LessPaddingTableCell>
+                          </DimeTableCell>
+                          <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
-                          </LessPaddingTableCell>
+                          </DimeTableCell>
                         </TableRow>
                       );
                     })}

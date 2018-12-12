@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -13,6 +12,7 @@ import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 const template = {
   name: '',
@@ -45,10 +45,10 @@ export default class OfferDiscountSubform extends React.Component<Props> {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Prozent</TableCell>
-                  <TableCell>Abzug</TableCell>
-                  <TableCell>Aktionen</TableCell>
+                  <DimeTableCell>Name</DimeTableCell>
+                  <DimeTableCell>Prozent</DimeTableCell>
+                  <DimeTableCell>Abzug</DimeTableCell>
+                  <DimeTableCell>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -56,22 +56,22 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (
                     <TableRow key={index}>
-                      <TableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('name')} disabled={disabled} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field component={SwitchField} name={name('percentage')} disabled={disabled} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         {p.percentage ? (
                           <Field delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
                           <Field delayed component={NumberField} unit={'CHF'} name={name('value')} disabled={disabled} />
                         )}
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 })}

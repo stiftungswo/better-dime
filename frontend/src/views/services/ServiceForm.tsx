@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
 import { Service, ServiceRate } from './types';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -21,6 +20,7 @@ import PercentageField from '../../form/fields/PercentageField';
 import TableToolbar from '../../layout/TableToolbar';
 import { serviceSchema } from './serviceSchema';
 import { DimePaper } from '../../layout/DimePaper';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
@@ -89,9 +89,9 @@ export default class ServiceForm extends React.Component<Props> {
                             <Table>
                               <TableHead>
                                 <TableRow>
-                                  <TableCell>Tarifgruppe</TableCell>
-                                  <TableCell>Einheit</TableCell>
-                                  <TableCell>Wert</TableCell>
+                                  <DimeTableCell>Tarifgruppe</DimeTableCell>
+                                  <DimeTableCell>Einheit</DimeTableCell>
+                                  <DimeTableCell>Wert</DimeTableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>
@@ -100,17 +100,17 @@ export default class ServiceForm extends React.Component<Props> {
                                   const rateGroup = this.props.rateGroupStore!.rateGroups.find(g => g.id === rateGroupId);
                                   return (
                                     <TableRow key={index}>
-                                      <TableCell>{rateGroup ? rateGroup.name : rateGroupId}</TableCell>
-                                      <TableCell>
+                                      <DimeTableCell>{rateGroup ? rateGroup.name : rateGroupId}</DimeTableCell>
+                                      <DimeTableCell>
                                         <Field
                                           disabled={this.props.rateUnitSelectDisabled}
                                           component={RateUnitSelector}
                                           name={`service_rates.${index}.rate_unit_id`}
                                         />
-                                      </TableCell>
-                                      <TableCell>
+                                      </DimeTableCell>
+                                      <DimeTableCell>
                                         <Field component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
-                                      </TableCell>
+                                      </DimeTableCell>
                                     </TableRow>
                                   );
                                 })}

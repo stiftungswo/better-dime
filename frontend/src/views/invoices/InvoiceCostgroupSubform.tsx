@@ -1,20 +1,19 @@
 import * as React from 'react';
-import { ErrorMessage, Field, FieldArray, FormikProps, getIn } from 'formik';
-import { NumberField, SwitchField, TextField } from '../../form/fields/common';
+import { Field, FieldArray, FormikProps, getIn } from 'formik';
+import { NumberField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { Invoice, InvoiceCostgroup, InvoiceDiscount } from '../../types';
+import { Invoice, InvoiceCostgroup } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
-import PercentageField from '../../form/fields/PercentageField';
 import CostgroupSelector from '../../form/entitySelector/CostgroupSelector';
 import { ErrorText } from '../../layout/ErrorText';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 const template = {
   weight: 10,
@@ -52,18 +51,18 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: '20%' }}>Gewicht</TableCell>
-                  <TableCell style={{ width: '15%' }}>Anteil</TableCell>
-                  <TableCell style={{ width: '50%' }}>Kostenstelle</TableCell>
-                  <TableCell style={{ width: '15%' }}>Aktionen</TableCell>
+                  <DimeTableCell style={{ width: '20%' }}>Gewicht</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Anteil</DimeTableCell>
+                  <DimeTableCell style={{ width: '50%' }}>Kostenstelle</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {typeof currentError === 'string' && (
                   <TableRow>
-                    <TableCell colSpan={4}>
+                    <DimeTableCell colSpan={4}>
                       <ErrorText>{currentError}</ErrorText>
-                    </TableCell>
+                    </DimeTableCell>
                   </TableRow>
                 )}
                 {values.costgroup_distributions.map((p: InvoiceCostgroup, index: number) => {
@@ -71,16 +70,16 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                   const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
                     <TableRow key={index}>
-                      <TableCell>
+                      <DimeTableCell>
                         <Field delayed component={NumberField} name={fieldName('weight')} />
-                      </TableCell>
-                      <TableCell>{distribution}%</TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>{distribution}%</DimeTableCell>
+                      <DimeTableCell>
                         <Field component={CostgroupSelector} name={fieldName('costgroup_number')} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 })}

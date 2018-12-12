@@ -6,7 +6,7 @@ import * as React from 'react';
 import Table from '@material-ui/core/Table/Table';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableCell from '@material-ui/core/TableCell/TableCell';
+import { DimeTableCell } from './DimeTableCell';
 
 interface BTProps {
   mainStore?: MainStore;
@@ -26,20 +26,20 @@ export class BreakdownTable extends React.Component<BTProps> {
       <Table>
         <TableBody>
           <TableRow>
-            <TableCell>Subtotal</TableCell>
-            <TableCell numeric>{format(subtotal)}</TableCell>
+            <DimeTableCell>Subtotal</DimeTableCell>
+            <DimeTableCell numeric>{format(subtotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Davon MwSt.</TableCell>
-            <TableCell numeric>{format(vatTotal)}</TableCell>
+            <DimeTableCell>Davon MwSt.</DimeTableCell>
+            <DimeTableCell numeric>{format(vatTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Total Abzüge</TableCell>
-            <TableCell numeric>{format(discountTotal)}</TableCell>
+            <DimeTableCell>Total Abzüge</DimeTableCell>
+            <DimeTableCell numeric>{format(discountTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Total</TableCell>
-            <TableCell numeric>{format(total)}</TableCell>
+            <DimeTableCell>Total</DimeTableCell>
+            <DimeTableCell numeric>{format(total)}</DimeTableCell>
           </TableRow>
         </TableBody>
       </Table>

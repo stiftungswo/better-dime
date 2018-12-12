@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
 import { NumberField, TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -16,6 +15,7 @@ import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceStore } from '../../stores/serviceStore';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 const template = {
   amount: '',
@@ -51,14 +51,14 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '5%' }}>Sort.</TableCell>
-                    <TableCell style={{ width: '25%' }}>Beschreibung</TableCell>
-                    <TableCell style={{ width: '15%' }}>Tarif</TableCell>
-                    <TableCell style={{ width: '20%' }}>Tariftyp</TableCell>
-                    <TableCell style={{ width: '10%' }}>Menge</TableCell>
-                    <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
-                    <TableCell style={{ width: '10%' }}>Total CHF</TableCell>
-                    <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
+                    <DimeTableCell style={{ width: '5%' }}>Sort.</DimeTableCell>
+                    <DimeTableCell style={{ width: '25%' }}>Beschreibung</DimeTableCell>
+                    <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
+                    <DimeTableCell style={{ width: '20%' }}>Tariftyp</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Total CHF</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Aktionen</DimeTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -67,28 +67,28 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
                     const total = p.amount * p.price_per_rate * (1 + p.vat);
                     return (
                       <TableRow key={index}>
-                        <TableCell>
+                        <DimeTableCell>
                           <Field delayed component={NumberField} name={name('order')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed fullWidth component={TextField} name={name('description')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed component={NumberField} name={name('amount')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed component={PercentageField} name={name('vat')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>{this.props.mainStore!.formatCurrency(total, false)}</TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
+                        <DimeTableCell>
                           <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                        </TableCell>
+                        </DimeTableCell>
                       </TableRow>
                     );
                   })}

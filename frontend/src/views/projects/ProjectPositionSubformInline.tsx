@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -18,6 +17,7 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { Service } from '../services/types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { MainStore } from '../../stores/mainStore';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props {
   mainStore?: MainStore;
@@ -64,14 +64,14 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: '20%' }}>Service</TableCell>
-                    <TableCell style={{ width: '20%' }}>Beschreibung</TableCell>
-                    <TableCell style={{ width: '15%' }}>Tarif</TableCell>
-                    <TableCell style={{ width: '15%' }}>Einheit</TableCell>
-                    <TableCell style={{ width: '10%' }}>MwSt.</TableCell>
-                    <TableCell style={{ width: '10%' }}>Anzahl</TableCell>
-                    <TableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</TableCell>
-                    <TableCell style={{ width: '10%' }}>Aktionen</TableCell>
+                    <DimeTableCell style={{ width: '20%' }}>Service</DimeTableCell>
+                    <DimeTableCell style={{ width: '20%' }}>Beschreibung</DimeTableCell>
+                    <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
+                    <DimeTableCell style={{ width: '15%' }}>Einheit</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Anzahl</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
+                    <DimeTableCell style={{ width: '10%' }}>Aktionen</DimeTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -79,24 +79,24 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                     const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                     return (
                       <TableRow key={index}>
-                        <TableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</TableCell>
-                        <TableCell>
+                        <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed component={TextField} name={name('description')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field disabled required component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>
                           <Field required delayed component={PercentageField} name={name('vat')} margin={'none'} />
-                        </TableCell>
-                        <TableCell>{p.efforts_value_with_unit}</TableCell>
-                        <TableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</TableCell>
-                        <TableCell>
+                        </DimeTableCell>
+                        <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
+                        <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
+                        <DimeTableCell>
                           <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                        </TableCell>
+                        </DimeTableCell>
                       </TableRow>
                     );
                   })}

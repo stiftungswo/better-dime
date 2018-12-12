@@ -1,21 +1,21 @@
 import * as React from 'react';
-import { ArrayHelpers, FieldArray, FormikProps, Field } from 'formik';
+import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { Address, PhoneNumber } from '../../types';
+import { PhoneNumber } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import TableToolbar from '../../layout/TableToolbar';
-import { Person, PeopleStore } from 'src/stores/peopleStore';
+import { PeopleStore, Person } from 'src/stores/peopleStore';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
-import { NumberField, TextField } from 'src/form/fields/common';
+import { TextField } from 'src/form/fields/common';
 import Select from 'src/form/fields/Select';
 import { DimePaper } from '../../layout/DimePaper';
 import { Company } from '../../stores/companyStore';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props {
   mainStore?: MainStore;
@@ -56,9 +56,9 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
             <Table padding={'dense'} style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: '40%' }}>Kategorie</TableCell>
-                  <TableCell style={{ width: '40%' }}>Nummer</TableCell>
-                  <TableCell style={{ width: '20%' }}>Aktionen</TableCell>
+                  <DimeTableCell style={{ width: '40%' }}>Kategorie</DimeTableCell>
+                  <DimeTableCell style={{ width: '40%' }}>Nummer</DimeTableCell>
+                  <DimeTableCell style={{ width: '20%' }}>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -66,15 +66,15 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (
                     <TableRow key={index}>
-                      <TableCell>
+                      <DimeTableCell>
                         <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 })}

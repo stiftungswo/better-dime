@@ -2,7 +2,6 @@ import * as React from 'react';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
@@ -12,6 +11,7 @@ import compose from '../utilities/compose';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import { DimeTableCell } from './DimeTableCell';
 
 const styles = createStyles({
   hideActions: {
@@ -160,18 +160,18 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
         <TableHead>
           <TableRow>
             {this.props.selected && (
-              <TableCell padding={'checkbox'}>
+              <DimeTableCell padding={'checkbox'}>
                 <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
-              </TableCell>
+              </DimeTableCell>
             )}
             {columns.map(col => (
-              <TableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
+              <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
                 <TableSortLabel active={orderBy === col.id} direction={order} onClick={this.createSortHandler(col.id)}>
                   {col.label}
                 </TableSortLabel>
-              </TableCell>
+              </DimeTableCell>
             ))}
-            {this.props.renderActions && <TableCell numeric />}
+            {this.props.renderActions && <DimeTableCell numeric />}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -184,19 +184,19 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
               component={SafeClickableTableRow}
             >
               {this.props.selected && (
-                <TableCell padding={'checkbox'}>
+                <DimeTableCell padding={'checkbox'}>
                   <RowCheckbox row={row} />
-                </TableCell>
+                </DimeTableCell>
               )}
               {columns.map(col => (
-                <TableCell key={col.id} numeric={col.numeric}>
+                <DimeTableCell key={col.id} numeric={col.numeric}>
                   {format(col, row)}
-                </TableCell>
+                </DimeTableCell>
               ))}
               {this.props.renderActions && (
-                <TableCell numeric>
+                <DimeTableCell numeric>
                   <span className={'actions'}>{this.props.renderActions(row)}</span>
-                </TableCell>
+                </DimeTableCell>
               )}
             </TableRow>
           ))}

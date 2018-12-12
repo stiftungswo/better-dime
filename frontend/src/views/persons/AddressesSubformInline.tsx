@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ArrayHelpers, FieldArray, FormikProps, Field } from 'formik';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -15,6 +14,7 @@ import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { NumberField, TextField } from 'src/form/fields/common';
 import { DimePaper } from '../../layout/DimePaper';
 import { Company } from '../../stores/companyStore';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props {
   mainStore?: MainStore;
@@ -51,13 +51,13 @@ export default class AddressesSubformInline extends React.Component<Props> {
             <Table padding={'dense'} style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
-                  <TableCell style={{ width: '20%' }}>Strasse</TableCell>
-                  <TableCell style={{ width: '15%' }}>Addresszusatz</TableCell>
-                  <TableCell style={{ width: '10%' }}>PLZ</TableCell>
-                  <TableCell style={{ width: '15%' }}>Stadt</TableCell>
-                  <TableCell style={{ width: '15%' }}>Land</TableCell>
-                  <TableCell style={{ width: '30%' }}>Kommentar</TableCell>
-                  <TableCell style={{ width: '15%' }}>Aktionen</TableCell>
+                  <DimeTableCell style={{ width: '20%' }}>Strasse</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Addresszusatz</DimeTableCell>
+                  <DimeTableCell style={{ width: '10%' }}>PLZ</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Stadt</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Land</DimeTableCell>
+                  <DimeTableCell style={{ width: '30%' }}>Kommentar</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -65,27 +65,27 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (
                     <TableRow key={index}>
-                      <TableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('street')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('supplement')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed component={NumberField} name={name('postcode')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('city')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('country')} margin={'none'} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <Field delayed component={TextField} name={name('description')} margin={'none'} multiline={true} />
-                      </TableCell>
-                      <TableCell>
+                      </DimeTableCell>
+                      <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 })}

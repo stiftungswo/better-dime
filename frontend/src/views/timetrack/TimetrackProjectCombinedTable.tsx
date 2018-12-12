@@ -14,12 +14,12 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { MainStore } from '../../stores/mainStore';
 import { Formatter } from '../../utilities/formatter';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 const styles = createStyles({
   hideActions: {
@@ -99,11 +99,11 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Datum</TableCell>
-                <TableCell>Mitarbeiter</TableCell>
-                <TableCell>Aktivität</TableCell>
-                <TableCell numeric>Gebuchter Wert</TableCell>
-                <TableCell numeric />
+                <DimeTableCell>Datum</DimeTableCell>
+                <DimeTableCell>Mitarbeiter</DimeTableCell>
+                <DimeTableCell>Aktivität</DimeTableCell>
+                <DimeTableCell numeric>Gebuchter Wert</DimeTableCell>
+                <DimeTableCell numeric />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -117,15 +117,15 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       onClick={() => this.handleClickCommentRow(e)}
                       component={SafeClickableTableRow}
                     >
-                      <TableCell style={{ fontStyle: 'italic' }}>{formatter.formatDate(e.date)}</TableCell>
-                      <TableCell colSpan={3} style={{ fontStyle: 'italic' }}>
+                      <DimeTableCell style={{ fontStyle: 'italic' }}>{formatter.formatDate(e.date)}</DimeTableCell>
+                      <DimeTableCell colSpan={3} style={{ fontStyle: 'italic' }}>
                         {e.comment}
-                      </TableCell>
-                      <TableCell numeric>
+                      </DimeTableCell>
+                      <DimeTableCell numeric>
                         <span className={'actions'}>
                           <DeleteButton onConfirm={() => this.handleCommentDelete(e.id!)} />
                         </span>
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 } else {
@@ -137,15 +137,15 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       onClick={() => onClickEffortRow(e)}
                       component={SafeClickableTableRow}
                     >
-                      <TableCell>{formatter.formatDate(e.date)}</TableCell>
-                      <TableCell>{e.employee_full_name}</TableCell>
-                      <TableCell>{e.position_description}</TableCell>
-                      <TableCell numeric>{formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</TableCell>
-                      <TableCell numeric>
+                      <DimeTableCell>{formatter.formatDate(e.date)}</DimeTableCell>
+                      <DimeTableCell>{e.employee_full_name}</DimeTableCell>
+                      <DimeTableCell>{e.position_description}</DimeTableCell>
+                      <DimeTableCell numeric>{formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</DimeTableCell>
+                      <DimeTableCell numeric>
                         <span className={'actions'}>
                           <DeleteButton onConfirm={() => this.handleEffortDelete(e.id!)} />
                         </span>
-                      </TableCell>
+                      </DimeTableCell>
                     </TableRow>
                   );
                 }
