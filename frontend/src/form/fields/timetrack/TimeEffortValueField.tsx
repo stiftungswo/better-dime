@@ -45,14 +45,16 @@ export class TimeEffortValueField extends React.Component<Props> {
   }
 
   protected options() {
-    return this.state.rateUnits!.map(e => ({
-      value: e.factor,
-      label: e.effort_unit,
-    }));
+    return this.state
+      .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.field.value === e.id)
+      .map(e => ({
+        value: e.factor,
+        label: e.effort_unit,
+      }));
   }
 
   protected updateSelectedFactor = (factor: number) => {
-    this.setState({ selectedFactor: factor });
+    this.setState({ selectedFactor: factor, value: (this.state.value * this.state.selectedFactor) / factor });
     this.props.form.setFieldValue(this.props.field.name, factor * this.state.value);
   };
 
