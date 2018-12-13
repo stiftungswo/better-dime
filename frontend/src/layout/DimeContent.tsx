@@ -4,6 +4,7 @@ import * as React from 'react';
 import { styles } from './DimeLayout';
 import { DimePaper } from './DimePaper';
 import { LoadingSpinner } from './LoadingSpinner';
+import { ErrorBoundary } from '../utilities/ErrorBoundary';
 
 interface DimeContentProps extends WithStyles<typeof styles> {
   children?: React.ReactNode;
@@ -17,7 +18,7 @@ export const DimeContent = withStyles(styles(DimeTheme))(({ classes, children, l
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
-      {paper ? <DimePaper>{content}</DimePaper> : content}
+      <ErrorBoundary>{paper ? <DimePaper>{content}</DimePaper> : content}</ErrorBoundary>
     </main>
   );
 });
