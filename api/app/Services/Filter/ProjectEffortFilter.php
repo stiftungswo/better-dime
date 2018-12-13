@@ -26,9 +26,6 @@ class ProjectEffortFilter
 
     public static function fetchList($params = [])
     {
-        // TODO add service name so frontend can display something if position description is empty
-        // TODO dont display data with deleted_at attribute
-        // TODO sort by date
         return self::fetch($params)->select([
             DB::raw('project_efforts.id as id'),
             DB::raw('project_efforts.date as date'),
@@ -43,9 +40,7 @@ class ProjectEffortFilter
             DB::raw('rate_units.effort_unit as effort_unit'),
             DB::raw('rate_units.factor as rate_unit_factor'),
             DB::raw('rate_units.is_time as rate_unit_is_time'),
-        ])
-            ->whereNull('project_efforts.deleted_at')
-            ->get();
+        ])->get();
     }
 
     /**
@@ -60,7 +55,8 @@ class ProjectEffortFilter
             ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
             ->leftJoin('services', 'project_positions.service_id', '=', 'services.id')
             ->leftJoin('employees', 'project_efforts.employee_id', '=', 'employees.id')
-            ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id');
+            ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
+            ->whereNull('project_efforts.deleted_at');
 
         if (!empty($params['employee_ids'])) {
             $queryBuilder = $queryBuilder->whereIn('project_efforts.employee_id', explode(',', $params['employee_ids']));
@@ -82,6 +78,6 @@ class ProjectEffortFilter
             $queryBuilder = $queryBuilder->where('project_efforts.date', '<=', $params['end']);
         }
 
-        return $queryBuilder->orderBy('date');
+        return $queryBuilder;
     }
 }

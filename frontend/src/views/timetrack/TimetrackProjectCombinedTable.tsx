@@ -139,7 +139,9 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                     >
                       <DimeTableCell>{formatter.formatDate(e.date)}</DimeTableCell>
                       <DimeTableCell>{e.employee_full_name}</DimeTableCell>
-                      <DimeTableCell>{e.position_description}</DimeTableCell>
+                      <DimeTableCell>
+                        {e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name}
+                      </DimeTableCell>
                       <DimeTableCell numeric>{formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</DimeTableCell>
                       <DimeTableCell numeric>
                         <span className={'actions'}>

@@ -33,9 +33,13 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
         format: e => formatter.formatDate(e.date),
       },
       {
-        id: 'position_description',
+        id: '',
         numeric: false,
         label: 'Aktivität',
+        format: projectEffortListing =>
+          projectEffortListing.service_name + projectEffortListing.position_description
+            ? '(' + projectEffortListing.position_description + ')'
+            : '',
       },
       {
         id: 'effort_value',

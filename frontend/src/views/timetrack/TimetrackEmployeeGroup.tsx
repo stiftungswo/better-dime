@@ -32,9 +32,13 @@ export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmp
         label: 'Projekt',
       },
       {
-        id: 'position_description',
+        id: '',
         numeric: false,
         label: 'Aktivität',
+        format: projectEffortListing =>
+          projectEffortListing.position_description
+            ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
+            : projectEffortListing.service_name,
       },
       {
         id: 'effort_value',
