@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import EmployeeForm from './EmployeeForm';
 import compose from '../../utilities/compose';
 import { editEmployeeSchema } from './employeeSchema';
+import { toJS } from 'mobx';
 
 interface EmployeeDetailRouterProps {
   id?: string;
@@ -33,6 +34,6 @@ export default class EmployeeUpdate extends React.Component<Props> {
     const employee: Employee | undefined = this.props!.employeeStore!.employee;
     const title = employee ? `${employee.first_name} ${employee.last_name} - Mitarbeiter` : 'Mitarbeiter bearbeiten';
 
-    return <EmployeeForm title={title} onSubmit={this.handleSubmit} employee={employee} schema={editEmployeeSchema} />;
+    return <EmployeeForm title={title} onSubmit={this.handleSubmit} employee={toJS(employee)} schema={editEmployeeSchema} />;
   }
 }
