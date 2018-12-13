@@ -30,6 +30,13 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
     super(mainStore);
   }
 
+  public filter = (r: RateUnit) => {
+    const query = this.searchQuery;
+    return (
+      r.name.toLowerCase().includes(query) || r.billing_unit.toLowerCase().includes(query) || r.effort_unit.toLowerCase().includes(query)
+    );
+  };
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/rate_units/' + id + '/archive', { archived });
     this.doFetchAll();

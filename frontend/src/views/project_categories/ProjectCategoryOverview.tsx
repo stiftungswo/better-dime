@@ -38,20 +38,18 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (r: ProjectCategory, query: string) => r.name.includes(query);
-
   public render() {
     const projectCategoryStore = this.props.projectCategoryStore;
 
     return (
       <EditableOverview
         archivable
+        searchable
         title={'Tätigkeitsbereiche'}
         store={projectCategoryStore!}
         columns={this.columns}
         schema={projectCategorySchema}
         defaultValues={projectCategoryTemplate}
-        searchFilter={this.filter}
         renderActions={(e: ProjectCategory) => (
           <ActionButtons
             archiveAction={!e.archived ? () => projectCategoryStore!.archive(e.id, true) : undefined}

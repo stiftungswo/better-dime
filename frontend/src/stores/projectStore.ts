@@ -54,6 +54,10 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     super(mainStore);
   }
 
+  public filter = (p: ProjectListing) => {
+    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/projects/' + id + '/archive', { archived });
     this.doFetchAll();

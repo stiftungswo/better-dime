@@ -38,14 +38,11 @@ export default class OfferOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: OfferListing, query: string) => {
-    return [String(p.id), p.name, p.short_description || ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const offerStore = this.props.offerStore!;
     return (
       <Overview
+        searchable
         title={'Offerten'}
         store={offerStore}
         addAction={'/offers/new'}
@@ -63,7 +60,6 @@ export default class OfferOverview extends React.Component<Props> {
         )}
         onClickRow={'/offers/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
       />
     );
   }

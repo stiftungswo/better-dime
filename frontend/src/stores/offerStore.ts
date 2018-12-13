@@ -40,6 +40,10 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
     super(mainStore);
   }
 
+  public filter = (p: OfferListing) => {
+    return [String(p.id), p.name, p.short_description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/offers/' + id);
     await this.doFetchAll();

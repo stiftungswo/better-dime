@@ -52,6 +52,10 @@ export class PeopleStore extends AbstractStore<Person> {
     super(mainStore);
   }
 
+  public filter = (p: Person) => {
+    return [p.first_name, p.last_name, p.company ? p.company.name : ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/people/' + id);
     await this.doFetchAll();

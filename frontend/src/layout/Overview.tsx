@@ -29,37 +29,31 @@ interface Props<ListingType> {
   addAction?: ActionButtonAction;
   renderActions?: (e: ListingType) => React.ReactNode;
   columns?: Array<Column<ListingType>>;
-  searchFilter?: SearchFilter<ListingType>;
   onClickRow?: ((e: ListingType) => void) | string;
   mainStore?: MainStore;
   archivable?: boolean;
+  searchable?: boolean;
+}
+
+interface State {
+  loading: boolean;
 }
 
 @inject('mainStore')
 @observer
-export default class Overview<ListingType extends Listing> extends React.Component<Props<ListingType>> {
-  public state = {
-    loading: true,
-    query: '',
-    showArchived: false,
-  };
-
+export default class Overview<ListingType extends Listing> extends React.Component<Props<ListingType>, State> {
   constructor(props: Props<ListingType>) {
     super(props);
     props.store!.fetchAll().then(() => this.setState({ loading: false }));
+    this.state = {
+      loading: true,
+    };
   }
 
   public reload = () => {
     this.setState({ loading: true });
     this.props.store!.fetchAll().then(() => this.setState({ loading: false }));
   };
-
-  public get searchFilter() {
-    if (this.props.searchFilter !== undefined) {
-      return (e: ListingType) => this.props.searchFilter!(e, this.state.query);
-    }
-    return undefined;
-  }
 
   public handleClick = (e: ListingType) => {
     const onClickRow = this.props.onClickRow;
@@ -71,28 +65,25 @@ export default class Overview<ListingType extends Listing> extends React.Compone
   };
 
   public updateQueryState = debounce(query => {
-    this.setState({
-      query,
-    });
-  }, 300);
+    this.props.store.searchQuery = query;
+  }, 100);
 
   public render() {
-    let entities = this.props.store!.entities;
-
-    if (this.props.archivable && !this.state.showArchived) {
-      entities = entities.filter((e: ListingType) => !e.archived);
-    }
+    const mainStore = this.props.mainStore!;
+    const entities = this.props.store!.filteredEntities;
 
     return (
       <Fragment>
         <DimeAppBar title={this.props.title}>
-          {this.props.searchFilter && <AppBarSearch onChange={e => this.updateQueryState(e.target.value)} />}
+          {this.props.searchable && (
+            <AppBarSearch onChange={e => this.updateQueryState(e.target.value)} defaultValue={this.props.store!.searchQuery} />
+          )}
           {this.props.archivable && (
             <DimeAppBarButton
               icon={ArchiveIcon}
-              secondaryIcon={this.state.showArchived ? InvisibleIcon : VisibleIcon}
-              title={`Archivierte Objekte ${this.state.showArchived ? 'ausblenden' : 'einblenden'}`}
-              action={() => this.setState({ showArchived: !this.state.showArchived })}
+              secondaryIcon={mainStore.showArchived ? InvisibleIcon : VisibleIcon}
+              title={`Archivierte Objekte ${mainStore.showArchived ? 'ausblenden' : 'einblenden'}`}
+              action={() => (mainStore.showArchived = !mainStore.showArchived)}
             />
           )}
           <DimeAppBarButton icon={RefreshIcon} title={'Aktualisieren'} action={this.reload} />
@@ -105,7 +96,6 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               renderActions={this.props.renderActions}
               data={entities}
               onClickRow={this.handleClick}
-              searchFilter={this.searchFilter}
             />
           )}
           {this.props.children}

@@ -49,21 +49,17 @@ export default class InvoiceOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: InvoiceListing, query: string) => {
-    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const invoiceStore = this.props.invoiceStore!;
     return (
       <Overview
+        searchable
         title={'Rechnungen'}
         store={invoiceStore}
         addAction={'/invoices/new'}
         renderActions={e => <ActionButtons copyAction={todo} deleteAction={() => invoiceStore!.delete(e.id)} />}
         onClickRow={'/invoices/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
       />
     );
   }

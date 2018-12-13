@@ -26,6 +26,8 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
     super(mainStore);
   }
 
+  public filter = (r: ProjectCategory) => r.name.toLowerCase().includes(this.searchQuery);
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived });
     this.doFetchAll();

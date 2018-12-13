@@ -17,6 +17,9 @@ export class MainStore {
   @observable
   userMenuAnchorEl: null | HTMLElement;
 
+  @observable
+  showArchived = false;
+
   public get api() {
     return this.apiStore.api;
   }

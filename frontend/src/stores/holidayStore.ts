@@ -42,6 +42,10 @@ export class HolidayStore extends AbstractStore<Holiday> {
     super(mainStore);
   }
 
+  public filter = (h: Holiday) => {
+    return [h.name, this.mainStore!.formatDate(h.date)].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/holidays/' + id);
     await this.doFetchAll();

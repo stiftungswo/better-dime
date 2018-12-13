@@ -33,9 +33,7 @@ export default class RateGroupOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (r: RateGroup, query: string) => r.name.includes(query) || r.description.includes(query);
-
   public render() {
-    return <Overview title={'Tarif-Gruppen'} store={this.props.rateGroupStore!} columns={this.columns} searchFilter={this.filter} />;
+    return <Overview searchable title={'Tarif-Gruppen'} store={this.props.rateGroupStore!} columns={this.columns} />;
   }
 }

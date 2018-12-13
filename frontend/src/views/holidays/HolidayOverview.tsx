@@ -47,21 +47,17 @@ export default class HolidayOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (h: Holiday, query: string) => {
-    return h.name.includes(query) || this.props.mainStore!.formatDate(h.date).includes(query);
-  };
-
   public render() {
     const holidayStore = this.props.holidayStore;
 
     return (
       <EditableOverview
+        searchable
         title={'Feiertage'}
         store={holidayStore!}
         columns={this.columns}
         schema={holidaySchema}
         defaultValues={holidayTemplate}
-        searchFilter={this.filter}
         renderActions={(e: Holiday) => (
           <ActionButtons
             copyAction={async () => {

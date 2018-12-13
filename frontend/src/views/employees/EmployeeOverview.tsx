@@ -47,10 +47,6 @@ export default class EmployeeOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: EmployeeListing, query: string) => {
-    return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const employeeStore = this.props.employeeStore;
 
@@ -72,7 +68,7 @@ export default class EmployeeOverview extends React.Component<Props> {
         )}
         onClickRow={'/employees/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
+        searchable
       />
     );
   }

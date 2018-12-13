@@ -1,5 +1,5 @@
 //tslint:disable:no-console
-import { action } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AxiosResponse } from 'axios';
 
@@ -39,6 +39,37 @@ export class AbstractStore<T, OverviewType = T> {
 
   public get entities(): Array<OverviewType> {
     throw new Error('Not implemented');
+  }
+
+  @observable
+  //tslint:disable-next-line:variable-name
+  private _searchQuery: string = '';
+
+  public get searchQuery() {
+    return this._searchQuery;
+  }
+
+  public set searchQuery(query) {
+    this._searchQuery = query.toLowerCase();
+  }
+
+  private mergeFilter = (e: OverviewType) => {
+    return this.filterArchived(e) && this.filter(e);
+  };
+
+  private filterArchived(e: OverviewType) {
+    //tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
+    return this.mainStore.showArchived || !(e as any).archived;
+  }
+
+  protected filter(e: OverviewType) {
+    //override this
+    return true;
+  }
+
+  @computed
+  public get filteredEntities(): OverviewType[] {
+    return this.entities.filter(this.mergeFilter);
   }
 
   protected displayInProgress() {

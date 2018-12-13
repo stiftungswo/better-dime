@@ -26,6 +26,9 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
     super(mainStore);
   }
 
+  public filter = (r: RateGroup) =>
+    r.name.toLowerCase().includes(this.searchQuery) || r.description.toLowerCase().includes(this.searchQuery);
+
   @action
   public async doFetchAll() {
     const res = await this.mainStore.api.get<RateGroup[]>('/rate_groups');

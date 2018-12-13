@@ -34,6 +34,9 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
     super(mainStore);
   }
 
+  public filter = (s: ServiceListing) =>
+    [`${s.id}`, s.name, s.description || ''].some(field => field.toLowerCase().includes(this.searchQuery));
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/services/' + id + '/archive', { archived });
     this.doFetchAll();

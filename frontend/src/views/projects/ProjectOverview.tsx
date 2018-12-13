@@ -37,16 +37,13 @@ export default class ProjectOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: ProjectListing, query: string) => {
-    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const projectStore = this.props.projectStore;
 
     return (
       <Overview
         archivable
+        searchable
         title={'Projekte'}
         store={projectStore!}
         addAction={'/projects/new'}
@@ -64,7 +61,6 @@ export default class ProjectOverview extends React.Component<Props> {
         )}
         onClickRow={'/projects/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
       />
     );
   }

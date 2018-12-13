@@ -45,6 +45,10 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
     super(mainStore);
   }
 
+  public filter = (p: InvoiceListing) => {
+    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/invoices/' + id);
     await this.doFetchAll();

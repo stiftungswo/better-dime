@@ -39,6 +39,8 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
     super(mainStore);
   }
 
+  public filter = (r: CustomerTag) => r.name.includes(this.searchQuery);
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived });
     this.doFetchAll();

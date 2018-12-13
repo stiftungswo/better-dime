@@ -47,21 +47,12 @@ export default class CompanyOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (c: Company, query: string) => {
-    let search = [c.name, c.email || ''];
-
-    if (c.addresses && c.addresses.length > 0) {
-      search = search.concat([c.addresses[0].street, String(c.addresses[0].postcode), c.addresses[0].city]);
-    }
-
-    return search.some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const companyStore = this.props.companyStore!;
 
     return (
       <Overview
+        searchable
         title={'Firmen'}
         store={companyStore!}
         addAction={'/companies/new'}
@@ -79,7 +70,6 @@ export default class CompanyOverview extends React.Component<Props> {
         )}
         onClickRow={'/companies/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
       />
     );
   }

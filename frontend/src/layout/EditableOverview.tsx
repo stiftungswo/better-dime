@@ -9,6 +9,7 @@ import { Omit } from '@material-ui/core';
 
 interface Props<T> {
   archivable?: boolean;
+  searchable?: boolean;
   //tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
   store: AbstractStore<any, T>;
   columns: Array<Column<T>>;
@@ -17,7 +18,6 @@ interface Props<T> {
   defaultValues: object;
   //tslint:disable-next-line:no-any ;
   schema: Schema<any>;
-  searchFilter?: SearchFilter<T>;
   renderActions?: (e: T) => React.ReactNode;
 }
 
@@ -61,8 +61,8 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
           columns={this.props.columns}
           addAction={this.handleAdd}
           onClickRow={this.handleClick}
-          searchFilter={this.props.searchFilter}
           renderActions={this.props.renderActions}
+          searchable={this.props.searchable}
         />
         {this.state.editing && (
           <FormDialog

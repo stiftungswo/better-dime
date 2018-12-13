@@ -42,15 +42,12 @@ export default class PersonOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (p: Person, query: string) => {
-    return [p.first_name, p.last_name, p.company ? p.company.name : ''].some(s => s.toLowerCase().includes(query.toLowerCase()));
-  };
-
   public render() {
     const peopleStore = this.props.peopleStore;
 
     return (
       <Overview
+        searchable
         title={'Person'}
         store={peopleStore!}
         addAction={'/persons/new'}
@@ -66,7 +63,6 @@ export default class PersonOverview extends React.Component<Props> {
         )}
         onClickRow={'/persons/:id'}
         columns={this.columns}
-        searchFilter={this.filter}
       />
     );
   }

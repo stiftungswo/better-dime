@@ -38,20 +38,18 @@ export default class CustomerTagOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (r: CustomerTag, query: string) => r.name.includes(query);
-
   public render() {
     const customerTagStore = this.props.customerTagStore;
 
     return (
       <EditableOverview
         archivable
+        searchable
         title={'Tags'}
         store={customerTagStore!}
         columns={this.columns}
         schema={customerTagSchema}
         defaultValues={customerTagTemplate}
-        searchFilter={this.filter}
         renderActions={(e: CustomerTag) => (
           <ActionButtons
             archiveAction={!e.archived ? () => customerTagStore!.archive(e.id, true) : undefined}

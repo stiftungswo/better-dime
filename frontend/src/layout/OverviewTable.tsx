@@ -69,7 +69,6 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   renderActions?: (e: T) => React.ReactNode;
   data: Array<T>;
   onClickRow?: (e: T, index: number) => void;
-  searchFilter?: (e: T) => boolean;
   noSort?: boolean;
   selected?: number[];
   setSelected?: (e: T, state: boolean) => void;
@@ -113,14 +112,6 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     }
   };
 
-  public filterSearch = (arr: T[]) => {
-    if (this.props.searchFilter) {
-      return arr.filter(this.props.searchFilter);
-    } else {
-      return arr;
-    }
-  };
-
   public get selectAllState() {
     const selected = this.props.selected;
     if (selected) {
@@ -152,7 +143,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
   public render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
-    const sortedData = noSort ? data : stableSort(this.filterSearch(data), getSorting(order, orderBy));
+    const sortedData = noSort ? data : stableSort(data, getSorting(order, orderBy));
     const RowCheckbox = this.RowCheckbox;
 
     return (

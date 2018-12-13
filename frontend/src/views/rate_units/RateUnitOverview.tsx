@@ -54,20 +54,16 @@ export default class RateUnitOverview extends React.Component<Props> {
     ];
   }
 
-  public filter = (r: RateUnit, query: string) => {
-    return r.name.includes(query) || r.billing_unit.includes(query) || r.effort_unit.includes(query);
-  };
-
   public render() {
     return (
       <EditableOverview
         archivable
+        searchable
         title={'Tarif-Typen'}
         store={this.props.rateUnitStore!}
         columns={this.columns}
         schema={rateUnitSchema}
         defaultValues={rateUnitTemplate}
-        searchFilter={this.filter}
         renderActions={(e: RateUnit) => (
           <ActionButtons
             archiveAction={!e.archived ? () => this.props.rateUnitStore!.archive(e.id, true) : undefined}

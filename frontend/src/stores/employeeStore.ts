@@ -12,7 +12,7 @@ export interface EmployeeListing {
   can_login: boolean;
 }
 
-export class EmployeeStore extends AbstractStore<Employee> {
+export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   @observable
   public employees: Employee[] = [];
   @observable
@@ -42,6 +42,10 @@ export class EmployeeStore extends AbstractStore<Employee> {
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
+
+  public filter = (p: EmployeeListing) => {
+    return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(this.searchQuery));
+  };
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/employees/' + id + '/archive', { archived });

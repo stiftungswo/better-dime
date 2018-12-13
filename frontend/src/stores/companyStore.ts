@@ -47,6 +47,16 @@ export class CompanyStore extends AbstractStore<Company> {
     super(mainStore);
   }
 
+  public filter = (c: Company) => {
+    let search = [c.name, c.email || ''];
+
+    if (c.addresses && c.addresses.length > 0) {
+      search = search.concat([c.addresses[0].street, String(c.addresses[0].postcode), c.addresses[0].city]);
+    }
+
+    return search.some(s => s.toLowerCase().includes(this.searchQuery));
+  };
+
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/companies/' + id);
     await this.doFetchAll();
