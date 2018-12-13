@@ -3,12 +3,9 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import Grid from '@material-ui/core/Grid/Grid';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
-import { DimePaper } from '../../layout/DimePaper';
-import { Field, Formik, FormikBag } from 'formik';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { SwitchField } from '../../form/fields/common';
 import Button from '@material-ui/core/Button/Button';
-import { ProjectEffortFilter } from '../../types';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
@@ -18,6 +15,7 @@ import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStor
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { formikFieldCompatible } from '../../form/fields/Select';
+import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
 interface Props {
   effortStore?: EffortStore;
@@ -55,7 +53,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
         </Grid>
 
         <Grid item xs={12}>
-          <DimePaper overflowX={false}>
+          <TimetrackExpansionPanel title={'Filter'}>
             <Grid container alignItems={'center'} spacing={24}>
               <Grid item xs={12} md={3}>
                 <DatePicker
@@ -145,7 +143,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
                 </Button>
               </Grid>
             </Grid>
-          </DimePaper>
+          </TimetrackExpansionPanel>
         </Grid>
       </>
     );

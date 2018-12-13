@@ -9,8 +9,8 @@ import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { ExportGroupingSelector } from "../../form/entitySelector/ExportGroupingSelector"
-import { Typography } from "@material-ui/core"
+import { ExportGroupingSelector } from '../../form/entitySelector/ExportGroupingSelector';
+import { Typography } from '@material-ui/core';
 
 interface Props {
   mainStore?: MainStore;
@@ -28,7 +28,7 @@ export class ServiceReports extends React.Component<Props> {
     end: moment()
       .endOf('year')
       .format('YYYY-MM-DD'),
-    grouping: 'project'
+    grouping: 'project',
   };
 
   public render() {
@@ -72,7 +72,15 @@ export class ServiceReports extends React.Component<Props> {
             </Grid>
             <Grid item xs={12}>
               <a
-                href={this.props.mainStore!.getPrintUrl('reports/service_hours') + '&start=' + this.state.start + '&end=' + this.state.end + '&group_by=' + this.state.grouping}
+                href={
+                  this.props.mainStore!.getPrintUrl('reports/service_hours') +
+                  '&start=' +
+                  this.state.start +
+                  '&end=' +
+                  this.state.end +
+                  '&group_by=' +
+                  this.state.grouping
+                }
                 target={'_blank'}
                 style={{ textDecoration: 'none', color: 'white' }}
               >
