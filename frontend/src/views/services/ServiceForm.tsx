@@ -13,7 +13,6 @@ import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import { inject, Observer, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { ServiceStore } from 'src/stores/serviceStore';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
 import CurrencyField from '../../form/fields/CurrencyField';
 import PercentageField from '../../form/fields/PercentageField';
@@ -21,22 +20,28 @@ import TableToolbar from '../../layout/TableToolbar';
 import { serviceSchema } from './serviceSchema';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { RateUnitStore } from '../../stores/rateUnitStore';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
-  serviceStore?: ServiceStore;
   rateGroupStore?: RateGroupStore;
+  rateUnitStore?: RateUnitStore;
   service: Service | undefined;
 }
 
 @compose(
-  inject('serviceStore', 'rateGroupStore'),
+  inject('rateGroupStore', 'rateUnitStore'),
   observer
 )
 export default class ServiceForm extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.rateGroupStore!.fetchAll();
+  public state = {
+    loading: true,
+  };
+
+  public componentWillMount() {
+    Promise.all([this.props.rateGroupStore!.fetchAll(), this.props.rateUnitStore!.fetchAll()]).then(() =>
+      this.setState({ loading: false })
+    );
   }
 
   public render() {
@@ -45,7 +50,7 @@ export default class ServiceForm extends React.Component<Props> {
     return (
       <FormView
         paper={false}
-        loading={empty(service) || this.props.loading}
+        loading={empty(service) || this.props.loading || this.state.loading}
         title={this.props.title}
         validationSchema={serviceSchema}
         initialValues={service}
@@ -61,13 +66,13 @@ export default class ServiceForm extends React.Component<Props> {
                       <Grid item xs={12}>
                         <Field fullWidth component={TextField} name={'name'} label={'Name'} />
                       </Grid>
-                      <Grid item={true} xs={12}>
+                      <Grid item xs={12}>
                         <Field component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
                       </Grid>
-                      <Grid item={true} xs={12} lg={4}>
+                      <Grid item xs={12} lg={6}>
                         <Field component={PercentageField} name={'vat'} label={'Mehrwertsteuer'} fullWidth />
                       </Grid>
-                      <Grid item xs={12} lg={8}>
+                      <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
                           <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} fullWidth={true} />
                         </Grid>
@@ -89,9 +94,9 @@ export default class ServiceForm extends React.Component<Props> {
                             <Table>
                               <TableHead>
                                 <TableRow>
-                                  <DimeTableCell>Tarifgruppe</DimeTableCell>
-                                  <DimeTableCell>Einheit</DimeTableCell>
-                                  <DimeTableCell>Wert</DimeTableCell>
+                                  <DimeTableCell style={{ width: '33%' }}>Tarifgruppe</DimeTableCell>
+                                  <DimeTableCell style={{ width: '33%' }}>Einheit</DimeTableCell>
+                                  <DimeTableCell style={{ width: '34%' }}>Wert</DimeTableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>

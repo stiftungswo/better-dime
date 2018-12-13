@@ -14,7 +14,6 @@ import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
-import { ServiceStore } from '../../stores/serviceStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
 const template = {
@@ -28,14 +27,13 @@ const template = {
 
 export interface Props {
   mainStore?: MainStore;
-  serviceStore?: ServiceStore;
   formikProps: FormikProps<Invoice>;
   name: string;
   disabled?: boolean;
 }
 
 @compose(
-  inject('mainStore', 'serviceStore'),
+  inject('mainStore'),
   observer
 )
 export default class InvoicePositionSubformInline extends React.Component<Props> {

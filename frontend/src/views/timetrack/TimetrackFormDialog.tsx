@@ -139,7 +139,13 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
               {!formikProps.values.id && <Field portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />}
               {formikProps.values.id && <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
               <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
-              <Field portal formProps={formikProps} component={ProjectPositionSelector} name={'position_id'} label={'Aktivität'} />
+              <Field
+                portal
+                projectId={formikProps.values.project_id}
+                component={ProjectPositionSelector}
+                name={'position_id'}
+                label={'Aktivität'}
+              />
               <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
               {formikProps.values.project_id && formikProps.values.position_id && (
                 <>

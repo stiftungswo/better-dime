@@ -11,17 +11,22 @@ import PhoneNumberSubformInline from '../persons/PhoneNumbersSubformInline';
 import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
 import { Company } from 'src/stores/companyStore';
 import { OverviewTable } from 'src/layout/OverviewTable';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { MainStore } from 'src/stores/mainStore';
 import TableToolbar from 'src/layout/TableToolbar';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 import { DimePaper } from '../../layout/DimePaper';
 import { companySchema } from './companySchema';
+import compose from '../../utilities/compose';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
+  customerTagStore?: CustomerTagStore;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
+  rateGroupStore?: RateGroupStore;
 }
 
 const personsColumns = [
@@ -46,19 +51,14 @@ const personsColumns = [
   },
 ];
 
-@inject('mainStore', 'peopleStore')
+@compose(
+  inject('customerTagStore', 'mainStore', 'peopleStore', 'rateGroupStore'),
+  observer
+)
 export default class CompanyForm extends React.Component<Props> {
   state = {
     loading: true,
   };
-
-  public constructor(props: Props) {
-    super(props);
-
-    props.peopleStore!.fetchAll().then(() => {
-      this.setState({ loading: false });
-    });
-  }
 
   public get persons() {
     const { peopleStore } = this.props;
@@ -68,6 +68,12 @@ export default class CompanyForm extends React.Component<Props> {
     people = peopleStore!.people.filter((p: Person) => persons.includes(p.id));
 
     return people;
+  }
+
+  public componentWillMount() {
+    Promise.all([this.props.customerTagStore!.fetchAll(), this.props.peopleStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(
+      () => this.setState({ loading: false })
+    );
   }
 
   public render() {

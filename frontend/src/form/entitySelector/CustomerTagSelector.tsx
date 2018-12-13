@@ -14,14 +14,9 @@ interface Props extends FormProps {
   observer
 )
 export class CustomerTagSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    this.props.customerTagStore!.fetchAll();
-  }
-
   public get options() {
     return this.props
-      .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.field.value !== ct.id)
+      .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.field.value === ct.id)
       .map(e => ({
         value: e.id,
         label: e.name,

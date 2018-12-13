@@ -233,7 +233,7 @@ class IntegrationReactSelect extends React.Component<any> {
           error={hasErrors}
           margin={margin}
           placeholder={placeholder}
-          noOptionsMessage={'Keine Optionen verfügbar'}
+          noOptionsMessage={() => 'Keine Optionen verfügbar'}
           {...rest}
         />
       </ValidatedFormGroupWithLabel>

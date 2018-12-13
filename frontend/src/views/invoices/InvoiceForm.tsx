@@ -9,7 +9,6 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { Invoice } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -22,22 +21,42 @@ import InvoiceDiscountSubform from './InvoiceDiscountSubform';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './InvoiceNavigator';
-import { ESRIcon, InvoiceIcon, PaperIcon, StatisticsIcon } from '../../layout/icons';
+import { ESRIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
 import { invoiceSchema } from './invoiceSchema';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
 import { DimePaper } from '../../layout/DimePaper';
+import { CustomerStore } from '../../stores/customerStore';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
+import { CostgroupStore } from '../../stores/costgroupStore';
 
 export interface Props extends FormViewProps<Invoice> {
-  mainStore?: MainStore;
+  costgroupStore?: CostgroupStore;
+  customerStore?: CustomerStore;
+  employeeStore?: EmployeeStore;
   invoiceStore?: InvoiceStore;
   invoice: Invoice;
+  rateUnitStore?: RateUnitStore;
 }
 
 @compose(
-  inject('invoiceStore'),
+  inject('costgroupStore', 'customerStore', 'employeeStore', 'invoiceStore', 'rateUnitStore'),
   observer
 )
 export default class InvoiceForm extends React.Component<Props> {
+  public state = {
+    loading: true,
+  };
+
+  componentWillMount() {
+    Promise.all([
+      this.props.costgroupStore!.fetchAll(),
+      this.props.customerStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+      this.props.rateUnitStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
+  }
+
   public render() {
     const { invoice } = this.props;
 

@@ -14,11 +14,6 @@ interface Props extends FormProps {
   observer
 )
 export class ProjectCategorySelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.projectCategoryStore!.fetchAll();
-  }
-
   public get options() {
     return this.props
       .projectCategoryStore!.entities.filter((e: ProjectCategory) => !e.archived || this.props.field.value === e.id)

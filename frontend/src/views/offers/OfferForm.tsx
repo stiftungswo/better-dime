@@ -27,16 +27,24 @@ import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
 import { DimePaper } from '../../layout/DimePaper';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceStore } from '../../stores/serviceStore';
 
 export interface Props extends FormViewProps<Offer> {
+  customerStore?: CustomerStore;
+  employeeStore?: EmployeeStore;
+  offer: Offer;
   offerStore?: OfferStore;
   projectStore?: ProjectStore;
-  customerStore?: CustomerStore;
-  offer: Offer;
+  rateGroupStore?: RateGroupStore;
+  rateUnitStore?: RateUnitStore;
+  serviceStore?: ServiceStore;
 }
 
 @compose(
-  inject('offerStore', 'projectStore', 'customerStore'),
+  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore'),
   observer
 )
 export default class OfferForm extends React.Component<Props> {
@@ -52,13 +60,27 @@ export default class OfferForm extends React.Component<Props> {
     }
   };
 
+  public state = {
+    loading: true,
+  };
+
+  public componentWillMount() {
+    Promise.all([
+      this.props.customerStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+      this.props.rateGroupStore!.fetchAll(),
+      this.props.rateUnitStore!.fetchAll(),
+      this.props.serviceStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
+  }
+
   public render() {
     const { offer } = this.props;
 
     return (
       <FormView
         paper={false}
-        loading={empty(offer) || this.props.loading}
+        loading={empty(offer) || this.props.loading || this.state.loading}
         title={this.props.title}
         validationSchema={offerSchema}
         initialValues={offer}

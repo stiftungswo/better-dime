@@ -26,11 +26,6 @@ export default class ServiceCreate extends React.Component<Props> {
     submitted: false,
   };
 
-  constructor(props: Props) {
-    super(props);
-    props.rateGroupStore!.fetchAll();
-  }
-
   public handleSubmit = (service: Service) => {
     return this.props.serviceStore!.post(service).then(() => {
       this.setState({ submitted: true });

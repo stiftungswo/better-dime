@@ -13,12 +13,34 @@ import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 import { DimePaper } from '../../layout/DimePaper';
 import { personSchema } from './personSchema';
+import { CompanyStore } from '../../stores/companyStore';
+import compose from '../../utilities/compose';
+import { inject, observer } from 'mobx-react';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 
 export interface Props extends FormViewProps<Person> {
+  companyStore?: CompanyStore;
+  customerTagStore?: CustomerTagStore;
   person?: Person;
+  rateGroupStore?: RateGroupStore;
 }
 
+@compose(
+  inject('companyStore', 'customerTagStore', 'rateGroupStore'),
+  observer
+)
 export default class PersonForm extends React.Component<Props> {
+  public state = {
+    loading: true,
+  };
+
+  componentWillMount() {
+    Promise.all([this.props.companyStore!.fetchAll(), this.props.customerTagStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(
+      () => this.setState({ loading: false })
+    );
+  }
+
   public render() {
     const { person } = this.props;
 
@@ -27,7 +49,7 @@ export default class PersonForm extends React.Component<Props> {
         paper={false}
         title={this.props.title}
         validationSchema={personSchema}
-        loading={empty(person) || this.props.loading}
+        loading={empty(person) || this.props.loading || this.state.loading}
         initialValues={{ ...person }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}

@@ -39,14 +39,6 @@ export interface Props {
   observer
 )
 export default class ProjectPositionSubformDialogs extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-
-    const { serviceStore, rateUnitStore, mainStore } = this.props;
-    serviceStore!.fetchAll();
-    rateUnitStore!.fetchAll();
-  }
-
   @computed
   public get columns(): Array<Column<ProjectPosition>> {
     const { serviceStore, rateUnitStore, mainStore } = this.props;

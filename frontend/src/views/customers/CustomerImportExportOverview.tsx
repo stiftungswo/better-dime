@@ -5,25 +5,37 @@ import { Grid } from '@material-ui/core';
 import { FormProps } from '../../form/fields/common';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { MainStore } from '../../stores/mainStore';
 import { CustomerExportForm } from './CustomerExportForm';
 import { CustomerImportForm } from './CustomerImportForm';
+import { CustomerTagStore } from '../../stores/customerTagStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
 
 interface Props extends FormProps {
-  mainStore?: MainStore;
+  customerTagStore?: CustomerTagStore;
+  rateGroupStore?: RateGroupStore;
 }
 
 @compose(
-  inject('mainStore'),
+  inject('customerTagStore', 'rateGroupStore'),
   observer
 )
 export class CustomerImportExportOverview extends React.Component<Props> {
+  public state = {
+    loading: true,
+  };
+
+  public componentWillMount(): void {
+    Promise.all([this.props.customerTagStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(() =>
+      this.setState({ loading: false })
+    );
+  }
+
   public render() {
     return (
       <>
         <DimeAppBar title={'Kundendaten importieren / exportieren'} />
 
-        <DimeContent loading={false} paper={false}>
+        <DimeContent loading={this.state.loading} paper={this.state.loading}>
           <Grid container spacing={24}>
             <CustomerExportForm {...this.props} />
             <CustomerImportForm />

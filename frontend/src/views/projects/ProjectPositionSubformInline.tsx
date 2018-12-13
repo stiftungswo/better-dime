@@ -51,8 +51,6 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     });
   };
 
-  public componentWillMount = () => this.props.serviceStore!.fetchAll();
-
   public render() {
     const { values } = this.props.formikProps;
     return (

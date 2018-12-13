@@ -14,16 +14,13 @@ interface Props extends FormProps {
   observer
 )
 export class ProjectSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.projectStore!.fetchAll();
-  }
-
   public get options() {
-    return this.props.projectStore!.projects.map(e => ({
-      value: e.id,
-      label: `${e.id} ${e.name}`,
-    }));
+    return this.props
+      .projectStore!.projects.filter(p => !p.archived || this.props.field.value === p.id)
+      .map(e => ({
+        value: e.id,
+        label: `${e.id} ${e.name}`,
+      }));
   }
 
   public render() {

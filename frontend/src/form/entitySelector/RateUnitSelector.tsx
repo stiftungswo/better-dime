@@ -14,17 +14,12 @@ interface Props extends FormProps {
   observer
 )
 export class RateUnitSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.rateUnitStore!.fetchAll();
-  }
-
   public get options() {
     return this.props
       .rateUnitStore!.rateUnits.filter((e: RateUnit) => !e.archived || this.props.field.value === e.id)
       .map(e => ({
         value: e.id,
-        label: e.billing_unit,
+        label: e.name,
       }));
   }
 

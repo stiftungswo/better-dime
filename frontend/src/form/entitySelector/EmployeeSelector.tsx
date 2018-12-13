@@ -15,11 +15,6 @@ interface Props extends FormProps {
   observer
 )
 export class EmployeeSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.employeeStore!.fetchAll();
-  }
-
   public get options() {
     return this.props
       .employeeStore!.employees.filter((e: Employee) => !e.archived || this.props.field.value === e.id)

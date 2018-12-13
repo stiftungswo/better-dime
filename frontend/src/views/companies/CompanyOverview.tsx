@@ -30,17 +30,17 @@ export default class CompanyOverview extends React.Component<Props> {
         label: 'E-Mail',
       },
       {
-        id: '',
+        id: 'street',
         label: 'Strasse',
         format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].street : '') : ''}</>,
       },
       {
-        id: '',
+        id: 'postcode',
         label: 'PLZ',
         format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].postcode : '') : ''}</>,
       },
       {
-        id: '',
+        id: 'city',
         label: 'Ort',
         format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].city : '') : ''}</>,
       },

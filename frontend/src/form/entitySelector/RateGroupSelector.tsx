@@ -14,11 +14,6 @@ interface Props extends FormProps {
   observer
 )
 export class RateGroupSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.rateGroupStore!.fetchAll();
-  }
-
   public get options() {
     return this.props.rateGroupStore!.rateGroups.map(e => ({
       value: e.id,

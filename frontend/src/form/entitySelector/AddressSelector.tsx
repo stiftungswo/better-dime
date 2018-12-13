@@ -46,10 +46,14 @@ export class AddressSelector extends React.Component<Props> {
   }
 
   public render() {
-    return this.props.customerId ? (
-      <Select options={this.options} {...this.props} />
-    ) : (
-      <Select options={[]} isDisabled placeholder={'zuerst Kunde auswählen'} {...this.props} />
-    );
+    if (this.props.customerId) {
+      if (this.props.customerStore!.customer) {
+        return <Select options={this.options} {...this.props} />;
+      } else {
+        return <Select options={[]} isDisabled placeholder={'Adressen werden abgerufen ...'} {...this.props} />;
+      }
+    } else {
+      return <Select options={[]} isDisabled placeholder={'zuerst Kunde auswählen'} {...this.props} />;
+    }
   }
 }

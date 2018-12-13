@@ -8,6 +8,7 @@ import { EffortStore } from '../../stores/effortStore';
 
 interface Props extends FormProps {
   effortStore?: EffortStore;
+  projectId: number;
   projectStore?: ProjectStore;
 }
 
@@ -21,15 +22,15 @@ export class ProjectPositionSelector extends React.Component<Props> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.form.values.project_id !== prevProps.form.values.project_id) {
+    if (this.props.projectId !== prevProps.projectId) {
       this.props.form.setFieldValue(this.props.field.name, undefined);
       this.updateProjectInStore();
     }
   }
 
   protected async updateProjectInStore() {
-    if (this.props.form.values.project_id) {
-      await this.props.projectStore!.fetchOne(this.props.form.values.project_id);
+    if (this.props.projectId) {
+      await this.props.projectStore!.fetchOne(this.props.projectId);
       this.props.effortStore!.selectedProject = this.props.projectStore!.project;
     }
   }
@@ -46,6 +47,14 @@ export class ProjectPositionSelector extends React.Component<Props> {
   }
 
   public render() {
-    return <Select options={this.options} {...this.props} />;
+    if (this.props.projectId) {
+      if (this.props.projectStore!.project) {
+        return <Select options={this.options} {...this.props} />;
+      } else {
+        return <Select options={[]} isDisabled placeholder={'Projekt-Positionen werden abgerufen ...'} {...this.props} />;
+      }
+    } else {
+      return <Select options={[]} isDisabled placeholder={'Zuerst Projekt auswählen'} {...this.props} />;
+    }
   }
 }

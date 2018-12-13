@@ -32,7 +32,7 @@ class Project extends Model
         'project_category_id', 'rate_group_id'
     ];
 
-    protected $hidden = ['efforts', 'offer'];
+    protected $hidden = ['efforts', 'offer', 'invoices'];
 
     public function accountant()
     {

@@ -37,10 +37,6 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
     dialogOpen: false,
   };
 
-  public componentWillMount() {
-    this.props.serviceStore!.fetchAll();
-  }
-
   public handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {

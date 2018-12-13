@@ -14,16 +14,13 @@ interface Props extends FormProps {
   observer
 )
 export class CompanySelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.companyStore!.fetchAll();
-  }
-
   public get options() {
-    return this.props.companyStore!.entities.map(e => ({
-      value: e.id,
-      label: e.name,
-    }));
+    return this.props
+      .companyStore!.entities.filter(c => !c.hidden || this.props.field.value === c.id)
+      .map(e => ({
+        value: e.id,
+        label: e.name,
+      }));
   }
 
   public render() {

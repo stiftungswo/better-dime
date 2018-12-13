@@ -25,6 +25,11 @@ import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
 import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
 import { DimePaper } from '../../layout/DimePaper';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceStore } from '../../stores/serviceStore';
 
 interface InfoFieldProps {
   value: string;
@@ -53,14 +58,28 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
 );
 
 export interface Props extends FormViewProps<Project> {
-  mainStore?: MainStore;
-  projectStore?: ProjectStore;
   customerStore?: CustomerStore;
+  employeeStore?: EmployeeStore;
+  mainStore?: MainStore;
   project: Project;
+  projectCategoryStore?: ProjectCategoryStore;
+  projectStore?: ProjectStore;
+  rateGroupStore?: RateGroupStore;
+  rateUnitStore?: RateUnitStore;
+  serviceStore?: ServiceStore;
 }
 
 @compose(
-  inject('mainStore', 'projectStore', 'customerStore'),
+  inject(
+    'customerStore',
+    'employeeStore',
+    'mainStore',
+    'projectCategoryStore',
+    'projectStore',
+    'rateGroupStore',
+    'rateUnitStore',
+    'serviceStore'
+  ),
   observer
 )
 export default class ProjectForm extends React.Component<Props> {
@@ -76,13 +95,28 @@ export default class ProjectForm extends React.Component<Props> {
     }
   };
 
+  public state = {
+    loading: true,
+  };
+
+  public componentWillMount() {
+    Promise.all([
+      this.props.customerStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+      this.props.projectCategoryStore!.fetchAll(),
+      this.props.rateGroupStore!.fetchAll(),
+      this.props.rateUnitStore!.fetchAll(),
+      this.props.serviceStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
+  }
+
   public render() {
     const { project, mainStore, projectStore } = this.props;
 
     return (
       <FormView
         paper={false}
-        loading={empty(project) || this.props.loading}
+        loading={empty(project) || this.props.loading || this.state.loading}
         title={this.props.title}
         validationSchema={projectSchema}
         initialValues={project}

@@ -17,22 +17,41 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { DimeContent } from '../../layout/DimeContent';
 import { Button } from '@material-ui/core';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { ProjectStore } from '../../stores/projectStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
 
 interface Props {
   effortStore?: EffortStore;
+  employeeStore?: EmployeeStore;
+  projectStore?: ProjectStore;
   projectCommentStore?: ProjectCommentStore;
+  rateUnitStore?: RateUnitStore;
+  serviceStore?: ServiceStore;
   timetrackFilterStore?: TimetrackFilterStore;
 }
 
 @compose(
-  inject('effortStore', 'projectCommentStore', 'timetrackFilterStore'),
+  inject('effortStore', 'employeeStore', 'projectStore', 'projectCommentStore', 'rateUnitStore', 'serviceStore', 'timetrackFilterStore'),
   observer
 )
 export default class Timetrack extends React.Component<Props> {
-  public componentDidMount() {
+  public state = {
+    loading: true,
+  };
+
+  public componentWillMount() {
     const filter = this.props.timetrackFilterStore!.filter;
-    this.props.effortStore!.fetchFiltered(filter);
-    this.props.projectCommentStore!.fetchFiltered(filter);
+
+    Promise.all([
+      this.props.effortStore!.fetchFiltered(filter),
+      this.props.employeeStore!.fetchAll(),
+      this.props.projectStore!.fetchAll(),
+      this.props.projectCommentStore!.fetchFiltered(filter),
+      this.props.rateUnitStore!.fetchAll(),
+      this.props.serviceStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
   }
 
   public handleEffortAdd = () => {
@@ -108,7 +127,6 @@ export default class Timetrack extends React.Component<Props> {
   };
 
   public render() {
-    const filterStore = this.props.timetrackFilterStore!;
     return (
       <>
         <DimeAppBar title={'Zeiterfassung'}>
@@ -116,7 +134,7 @@ export default class Timetrack extends React.Component<Props> {
           <DimeAppBarButton icon={AddEffortIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />
         </DimeAppBar>
 
-        <DimeContent loading={false} paper={false}>
+        <DimeContent loading={this.state.loading} paper={this.state.loading}>
           <Grid container={true} spacing={8}>
             <TimetrackFilterForm />
 

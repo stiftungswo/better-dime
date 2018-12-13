@@ -13,7 +13,6 @@ interface Props extends InputFieldProps {
 }
 
 interface State {
-  rateUnit: undefined | RateUnit;
   rateUnits: RateUnit[];
   selectedFactor: number;
   value: number;
@@ -25,22 +24,23 @@ interface State {
 )
 export class TimeEffortValueField extends React.Component<Props> {
   public state: State = {
-    rateUnit: undefined,
     rateUnits: [],
     selectedFactor: 1,
     value: this.props.form.values.value || 1,
   };
 
   public async componentDidMount() {
-    await this.props.rateUnitStore!.fetchOne(this.props.rateUnitId);
-    await this.props.rateUnitStore!.fetchAll();
     this.setState({
       rateUnits: this.props.rateUnitStore!.rateUnits!.filter((r: RateUnit) => r.is_time),
-      selectedFactor: this.props.rateUnitStore!.rateUnit!.factor,
     });
 
-    if (this.props.form.values.value) {
-      this.setState({ value: this.props.form.values.value / this.state.selectedFactor });
+    const potentialRateUnit = this.props.rateUnitStore!.rateUnits!.find((r: RateUnit) => r.id === this.props.rateUnitId);
+    if (potentialRateUnit) {
+      this.setState({ selectedFactor: potentialRateUnit.factor });
+    }
+
+    if (this.props.field.value && potentialRateUnit) {
+      this.setState({ value: this.props.field.value / potentialRateUnit.factor });
     }
   }
 
@@ -64,7 +64,7 @@ export class TimeEffortValueField extends React.Component<Props> {
   };
 
   public render() {
-    if (this.state.rateUnits.length > 0 && !this.state.rateUnit) {
+    if (this.state.rateUnits.length > 0) {
       return (
         <Grid container alignItems="center" spacing={8}>
           <Grid item xs={9}>

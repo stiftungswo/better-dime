@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ServiceStore } from '../../stores/serviceStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
@@ -15,11 +14,6 @@ interface Props extends FormProps {
   observer
 )
 export default class CostgroupSelector extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-    props.costgroupStore!.fetchAll();
-  }
-
   public get options() {
     return this.props.costgroupStore!.entities.map(e => ({
       value: e.number,

@@ -67,7 +67,13 @@ export default class EffortMoveDialog extends React.Component<Props> {
                       <Field component={ProjectSelector} name="project_id" label={'Projekt'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field component={ProjectPositionSelector} name="project_position" label={'Aktivität'} placeholder={'Beibehalten'} />
+                      <Field
+                        projectId={formikProps.values.project_id}
+                        component={ProjectPositionSelector}
+                        name="project_position"
+                        label={'Aktivität'}
+                        placeholder={'Beibehalten'}
+                      />
                     </Grid>
                   </Grid>
                 </Form>
