@@ -18,6 +18,7 @@ import { Service } from '../services/types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { MainStore } from '../../stores/mainStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { Typography } from '@material-ui/core';
 
 export interface Props {
   mainStore?: MainStore;
@@ -59,8 +60,18 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Services'} numSelected={0} addAction={() => this.setState({ dialogOpen: true })} />
+            <TableToolbar
+              title={'Services'}
+              numSelected={0}
+              addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
+            />
             <div style={{ overflowX: 'auto' }}>
+              {!this.props.formikProps.values.rate_group_id && (
+                <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
+                  <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden
+                  können.
+                </Typography>
+              )}
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
                   <TableRow>

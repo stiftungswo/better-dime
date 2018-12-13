@@ -12,16 +12,18 @@ import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { Observer } from 'mobx-react';
 
 const template = {
-  end: moment(['year'])
+  end: moment()
     .endOf('year')
     .format('YYYY-MM-DD'),
   pensum: 100,
-  start: moment(['year'])
+  start: moment()
     .startOf('year')
     .format('YYYY-MM-DD'),
   vacation_takeover: 0,
   yearly_vacation_budget: 10080,
 };
+
+// TODO create DayField for Vacation per Year
 
 interface Props {
   disabled?: boolean;

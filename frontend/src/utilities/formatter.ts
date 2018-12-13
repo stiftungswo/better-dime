@@ -20,7 +20,8 @@ export class Formatter {
     }
   };
 
-  public formatCurrency = (amount: number, showUnit = true) => (amount / 100).toFixed(2) + (showUnit ? ' CHF' : '');
+  public formatCurrency = (amount: number | string | undefined, showUnit = true) =>
+    isNaN(Number(amount)) ? '0 CHF' : (Number(amount) / 100).toFixed(2) + (showUnit ? ' CHF' : '');
 
   public trimString = (str: string) => {
     if (str.length > 150) {

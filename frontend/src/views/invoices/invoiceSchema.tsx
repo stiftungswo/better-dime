@@ -5,6 +5,7 @@ export const invoiceSchema = yup.object({
   name: yup.string().required(),
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
+  customer_id: yup.number().required(),
   description: yup.string().required(),
   fixed_price: nullableNumber(),
   start: dimeDate().required(),
@@ -34,7 +35,7 @@ export const invoiceSchema = yup.object({
         weight: yup.number().required(),
       })
     )
-    .min(1),
+    .min(1, 'Eine Rechnung benötigt mindestens eine zugewiesene Kostenstelle.'),
 });
 
 export const invoiceTemplate = {
@@ -43,6 +44,7 @@ export const invoiceTemplate = {
   description: '',
   address_id: '',
   accountant_id: '',
+  customer_id: undefined,
   positions: [],
   discounts: [],
   costgroup_distributions: [],

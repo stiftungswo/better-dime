@@ -1,5 +1,8 @@
 import * as yup from 'yup';
 import { dimeDate } from '../../utilities/validationHelpers';
+import { validationLocalization } from '../../utilities/validationLocalization';
+
+validationLocalization();
 
 export const editEmployeeSchema = yup.object({
   archived: yup.boolean(),

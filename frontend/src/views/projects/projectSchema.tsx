@@ -5,6 +5,7 @@ export const projectSchema = yup.object({
   name: yup.string().required(),
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
+  customer_id: yup.number().required(),
   description: yup.string().required(),
   chargeable: yup.boolean(),
   archived: yup.boolean(),
@@ -14,9 +15,10 @@ export const projectSchema = yup.object({
   fixed_price: nullableNumber(),
   positions: yup.array(
     yup.object({
-      description: yup.string(),
+      description: yup.string().nullable(true),
       price_per_rate: yup.number().required(),
       rate_unit_id: yup.number().required(),
+      vat: yup.number().required(),
     })
   ),
 });
@@ -28,4 +30,8 @@ export const projectTemplate = {
   deadline: '',
   fixed_price: '',
   positions: [],
+  category_id: undefined,
+  customer_id: undefined,
+  address_id: undefined,
+  rate_group_id: undefined,
 };

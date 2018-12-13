@@ -5,6 +5,7 @@ export const offerSchema = yup.object({
   name: yup.string().required(),
   accountant_id: yup.number().required(),
   address_id: yup.number().required(),
+  customer_id: yup.number().required(),
   description: yup.string().required(),
   fixed_price: nullableNumber(),
   rate_group_id: yup.number().required(),
@@ -37,4 +38,7 @@ export const offerTemplate = {
   description: '',
   positions: [],
   discounts: [],
+  customer_id: undefined,
+  address_id: undefined,
+  rate_group_id: undefined,
 };

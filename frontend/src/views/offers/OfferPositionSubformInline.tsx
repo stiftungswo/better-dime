@@ -18,6 +18,7 @@ import { Service } from '../services/types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { ServiceStore } from '../../stores/serviceStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { Typography } from '@material-ui/core';
 
 export interface Props {
   mainStore?: MainStore;
@@ -68,9 +69,17 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                 <TableToolbar
                   title={'Services'}
                   numSelected={0}
-                  addAction={disabled ? undefined : () => this.setState({ dialogOpen: true })}
+                  addAction={
+                    disabled || !this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })
+                  }
                 />
                 <div style={{ overflowX: 'auto' }}>
+                  {!this.props.formikProps.values.rate_group_id && (
+                    <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
+                      <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden
+                      können.
+                    </Typography>
+                  )}
                   <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                     <TableHead>
                       <TableRow>

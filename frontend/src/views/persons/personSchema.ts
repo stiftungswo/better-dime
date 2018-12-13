@@ -12,7 +12,10 @@ export const personSchema = yup.object({
       city: yup.string().required(),
       country: yup.string().required(),
       description: yup.string(),
-      postcode: yup.number().required(),
+      postcode: yup
+        .number()
+        .required()
+        .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
       street: yup.string().required(),
       supplement: yup.string().nullable(true),
     })

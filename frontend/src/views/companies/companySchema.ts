@@ -9,9 +9,12 @@ export const companySchema = yup.object({
   addresses: yup.array(
     yup.object({
       city: yup.string().required(),
-      country: yup.string().required(),
-      description: yup.string(),
-      postcode: yup.number().required(),
+      country: yup.string().nullable(true),
+      description: yup.string().nullable(true),
+      postcode: yup
+        .number()
+        .required()
+        .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
       street: yup.string().required(),
       supplement: yup.string().nullable(true),
     })

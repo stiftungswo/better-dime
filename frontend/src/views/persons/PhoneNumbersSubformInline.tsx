@@ -32,7 +32,7 @@ export interface Props {
 export default class PhoneNumberSubformInline extends React.Component<Props> {
   public handleAdd = (arrayHelpers: ArrayHelpers) => {
     arrayHelpers.push({
-      category: 0,
+      category: undefined,
       number: '',
     });
   };
