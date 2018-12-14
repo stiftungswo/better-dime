@@ -21,6 +21,14 @@ export const projectSchema = yup.object({
       vat: yup.number().required(),
     })
   ),
+  costgroup_distributions: yup
+    .array(
+      yup.object({
+        costgroup_number: yup.number().required(),
+        weight: yup.number().required(),
+      })
+    )
+    .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
 });
 
 export const projectTemplate = {
@@ -34,4 +42,5 @@ export const projectTemplate = {
   customer_id: undefined,
   address_id: undefined,
   rate_group_id: undefined,
+  costgroup_distributions: [],
 };

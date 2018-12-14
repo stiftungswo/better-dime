@@ -106,6 +106,7 @@ export interface Project {
   archived: boolean;
   category_id: number;
   chargeable: boolean;
+  costgroup_distributions: ProjectCostgroup[];
   deadline: null;
   description: string | null;
   fixed_price: null | number;
@@ -123,6 +124,15 @@ export interface Project {
   positions: ProjectPosition[];
   offer: Offer;
   invoice_ids: number[];
+}
+
+export interface ProjectCostgroup {
+  costgroup_number: number;
+  project_id: number;
+  weight: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ProjectPosition {

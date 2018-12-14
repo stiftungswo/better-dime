@@ -30,6 +30,9 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
+import { CostgroupStore } from '../../stores/costgroupStore';
+import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
+import { ProjectBudgetTable } from './ProjectBudgetTable';
 
 interface InfoFieldProps {
   value: string;
@@ -58,6 +61,7 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
 );
 
 export interface Props extends FormViewProps<Project> {
+  costgroupStore?: CostgroupStore;
   customerStore?: CustomerStore;
   employeeStore?: EmployeeStore;
   mainStore?: MainStore;
@@ -71,6 +75,7 @@ export interface Props extends FormViewProps<Project> {
 
 @compose(
   inject(
+    'costgroupStore',
     'customerStore',
     'employeeStore',
     'mainStore',
@@ -101,6 +106,7 @@ export default class ProjectForm extends React.Component<Props> {
 
   public componentWillMount() {
     Promise.all([
+      this.props.costgroupStore!.fetchAll(),
       this.props.customerStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),
       this.props.projectCategoryStore!.fetchAll(),
@@ -186,38 +192,29 @@ export default class ProjectForm extends React.Component<Props> {
                     <Grid item xs={12}>
                       <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
                     </Grid>
-                    {project.id && project.offer_id && (
-                      <>
-                        {/*TODO this design is not so great. Maybe just use a table like Breakdown and be a bit more consistent?*/}
-                        <Grid item xs={12} lg={6}>
-                          <InfoField
-                            fullWidth
-                            label={'Verbleibendes Budget'}
-                            value={`${mainStore!.formatCurrency(project.current_price, false)} / ${mainStore!.formatCurrency(
-                              project.budget_price,
-                              false
-                            )}`}
-                            error={project.current_price > project.budget_price}
-                            unit={'CHF'}
-                          />
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
-                          <InfoField
-                            fullWidth
-                            label={'Verbleibende Zeit'}
-                            value={`${mainStore!.formatDuration(project.current_time, 'h', false)} / ${mainStore!.formatDuration(
-                              project.budget_time,
-                              'h',
-                              false
-                            )}`}
-                            error={project.current_time > project.budget_time}
-                            unit={'h'}
-                          />
-                        </Grid>
-                      </>
-                    )}
                   </Grid>
                 </DimePaper>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} lg={8}>
+                    <DimePaper>
+                      <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                    </DimePaper>
+                  </Grid>
+
+                  {project.id && project.offer_id && (
+                    <Grid item xs={12} lg={4}>
+                      <ProjectBudgetTable
+                        moneyBudget={props.values.budget_price}
+                        moneyUsed={props.values.current_price}
+                        timeBudget={props.values.budget_time}
+                        timeUsed={props.values.current_time}
+                      />
+                    </Grid>
+                  )}
+                </Grid>
               </Grid>
 
               <Grid item xs={12}>
