@@ -38,7 +38,7 @@
     <div class="margin-top">
         <b>Rechnung Nr. {{ invoice.id }}</b><br/><br/>
         <b>Zusammenfassung:</b><br/>
-        <p>{{ invoice.description }}</p>
+        {{ description | raw }}
     </div>
 
     <div class="margin-top report-area">
@@ -64,7 +64,11 @@
                 {% for effort in items.efforts %}
                     <div class="clear-float">
                         <div class="float-left first-column padding-right">
-                            {{ effort.position_description }}
+                            {% if effort.position_description is empty %}
+                                {{ effort.service_name }}
+                            {% else %}
+                                {{ effort.position_description }}
+                            {% endif %}
                         </div>
                         <div class="float-left text-align-right additional-columns padding-right">
                             {{ effort.effort_unit_is_time ? (effort.efforts_sum / effort.effort_unit_factor)|round(2, 'floor')  : effort.efforts_sum }}

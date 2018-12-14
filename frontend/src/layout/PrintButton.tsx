@@ -22,10 +22,22 @@ interface Props {
 export default class PrintButton extends React.Component<Props> {
   public render = () => {
     const BadgeIcon = this.props.icon;
-    return (
-      <a href={this.props.mainStore!.getPrintUrl(this.props.path)} target={'_blank'} style={{ color: 'white' }}>
-        <ActionButton icon={PrintIcon} secondaryIcon={BadgeIcon} title={this.props.title || 'Drucken'} color={this.props.color} />
-      </a>
-    );
+    if (this.props.disabled) {
+      return (
+        <ActionButton disabled icon={PrintIcon} secondaryIcon={BadgeIcon} title={this.props.title || 'Drucken'} color={this.props.color} />
+      );
+    } else {
+      return (
+        <a href={this.props.mainStore!.getPrintUrl(this.props.path)} target={'_blank'} style={{ color: 'white' }}>
+          <ActionButton
+            icon={PrintIcon}
+            secondaryIcon={BadgeIcon}
+            title={this.props.title || 'Drucken'}
+            color={this.props.color}
+            disabled={false}
+          />
+        </a>
+      );
+    }
   };
 }

@@ -11,6 +11,7 @@ class ProjectEffortFilter
         return self::fetch($params)
             ->groupBy('efforts_date')
             ->groupBy('position_description')
+            ->groupBy('service_name')
             ->groupBy('effort_unit_is_time')
             ->groupBy('effort_unit_factor')
             ->groupBy('effort_unit_name')
@@ -21,6 +22,7 @@ class ProjectEffortFilter
                 DB::raw('rate_units.is_time as effort_unit_is_time'),
                 DB::raw('rate_units.factor as effort_unit_factor'),
                 DB::raw('rate_units.name as effort_unit_name'),
+                DB::raw('services.name as service_name'),
             ])->get();
     }
 

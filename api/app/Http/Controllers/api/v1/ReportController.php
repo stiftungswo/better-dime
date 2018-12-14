@@ -10,20 +10,20 @@ use App\Services\Export\ServiceHoursPerProjectReport;
 use App\Services\Filter\DailyEfforts;
 use App\Services\Filter\ProjectCommentFilter;
 use App\Services\Filter\ProjectEffortFilter;
+use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use Parsedown;
 
 class ReportController extends BaseController
 {
 
     public function printEffortReport($id)
     {
-        // TODO revisit this report as soon as we implement a converted production build to check layout
-        //      also to recheck the rendered data
         $invoice = Invoice::findOrFail($id);
 
         if ($invoice->project) {
@@ -40,28 +40,31 @@ class ReportController extends BaseController
             ]);
 
             // sort in stuff
-            $tempArr = [];
-            $efforts->each(function ($e) use (&$tempArr) {
-                if (!array_key_exists($e->efforts_date, $tempArr)) {
-                    $tempArr[$e->efforts_date] = [];
+            $commentsAndEffortsPerDate = [];
+            $efforts->each(function ($e) use (&$commentsAndEffortsPerDate) {
+                if (!array_key_exists($e->efforts_date, $commentsAndEffortsPerDate)) {
+                    $commentsAndEffortsPerDate[$e->efforts_date] = [];
                 }
-                $tempArr[$e->efforts_date]['efforts'][] = (array)$e;
+                $commentsAndEffortsPerDate[$e->efforts_date]['efforts'][] = (array)$e;
             });
 
-            $comments->each(function ($c) use (&$tempArr) {
-                if (!array_key_exists($c->date, $tempArr)) {
-                    $tempArr[$c->date] = [];
+            $comments->each(function ($c) use (&$commentsAndEffortsPerDate) {
+                if (!array_key_exists($c->date, $commentsAndEffortsPerDate)) {
+                    $commentsAndEffortsPerDate[$c->date] = [];
                 }
-                $tempArr[$c->date]['comments'][] = (array)$c;
+                $commentsAndEffortsPerDate[$c->date]['comments'][] = (array)$c;
             });
 
-            ksort($tempArr);
+            ksort($commentsAndEffortsPerDate);
+            $parsedown = new Parsedown();
+            $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
 
             // initialize PDF, render view and pass it back
             $pdf = new PDF(
                 'effort_report',
                 [
-                    'content' => $tempArr,
+                    'content' => $commentsAndEffortsPerDate,
+                    'description' => $description,
                     'invoice' => $invoice
                 ]
             );

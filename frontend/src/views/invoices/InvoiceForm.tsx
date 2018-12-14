@@ -75,8 +75,13 @@ export default class InvoiceForm extends React.Component<Props> {
               <PrintButton
                 path={`invoices/${invoice.id}/print_effort_report`}
                 color={'inherit'}
-                title={'Aufwandsrapport drucken'}
+                title={
+                  invoice.project_id
+                    ? 'Aufwandsrapport drucken'
+                    : 'Da die Rechnung kein verlinktes Projekt hat, kann kein Aufwandrapport erzeugt werden.'
+                }
                 icon={StatisticsIcon}
+                disabled={!invoice.project_id}
               />
               <PrintButton path={`invoices/${invoice.id}/print_esr`} color={'inherit'} title={'Einzahlungsschein drucken'} icon={ESRIcon} />
               <PrintButton path={`invoices/${invoice.id}/print`} color={'inherit'} title={'Rechnung drucken'} icon={InvoiceIcon} />
