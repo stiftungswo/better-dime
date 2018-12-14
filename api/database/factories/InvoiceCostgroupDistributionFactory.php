@@ -8,7 +8,7 @@ $factory->define(\App\Models\Invoice\InvoiceCostgroupDistribution::class, functi
 
     return [
         'costgroup_number' => function () {
-            return factory(\App\Models\Invoice\Costgroup::class)->create()->weight;
+            return factory(\App\Models\Costgroup\Costgroup::class)->create()->weight;
         },
         'invoice_id' => function () {
             return factory(\App\Models\Invoice\Invoice::class)->create()->id;

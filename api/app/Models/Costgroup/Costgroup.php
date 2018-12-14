@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Invoice;
+namespace App\Models\Costgroup;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

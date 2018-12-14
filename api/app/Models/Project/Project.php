@@ -18,7 +18,7 @@ class Project extends Model
 {
     use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
-    protected $softCascade = ['comments', 'efforts', 'positions'];
+    protected $softCascade = ['comments', 'costgroup_distributions', 'efforts', 'positions'];
 
     protected $casts = [
         'archived' => 'boolean',
@@ -57,6 +57,11 @@ class Project extends Model
     public function comments()
     {
         return $this->hasMany(ProjectComment::class);
+    }
+
+    public function costgroup_distributions()
+    {
+        return $this->hasMany(ProjectCostgroupDistribution::class);
     }
 
     public function efforts()
@@ -174,5 +179,24 @@ class Project extends Model
     public function getDeletableAttribute()
     {
         return $this->efforts->isEmpty() && $this->invoices->isEmpty();
+    }
+
+    /**
+     * Returns the distribution of the costgroups of this project
+     */
+    public function getDistributionOfCostgroupsAttribute()
+    {
+        if ($this->costgroup_distributions->isEmpty()) {
+            return [];
+        } else {
+            $sum = $this->costgroup_distributions->sum('weight');
+
+            return $this->costgroup_distributions->map(function ($cd) use ($sum) {
+                return [
+                    "costgroup_number" => $cd->costgroup_number,
+                    "ratio" => round($cd->weight / $sum * 100, 0)
+                ];
+            });
+        }
     }
 }

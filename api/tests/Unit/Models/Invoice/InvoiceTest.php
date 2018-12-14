@@ -4,7 +4,7 @@ namespace Tests\Unit\Models\Invoice;
 
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
-use App\Models\Invoice\Costgroup;
+use App\Models\Costgroup\Costgroup;
 use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;

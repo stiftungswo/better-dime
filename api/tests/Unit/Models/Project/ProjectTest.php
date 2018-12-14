@@ -4,9 +4,11 @@ namespace Tests\Unit\Models\Project;
 
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
+use App\Models\Costgroup\Costgroup;
 use App\Models\Offer\Offer;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectCategory;
+use App\Models\Project\ProjectCostgroupDistribution;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateGroup;
@@ -213,5 +215,37 @@ class ProjectTest extends \TestCase
     {
         $project = factory(Project::class)->create();
         $this->assertTrue($project->refresh()->deletable);
+    }
+
+    public function testEmptyDistributionOfCostgroup()
+    {
+        $project = factory(Project::class)->create();
+        $this->assertEmpty($project->distribution_of_costgroups);
+    }
+
+    public function testPopulatedDistributionOfCostgroup()
+    {
+        $project = factory(Project::class)->create();
+        $costgroup1 = factory(Costgroup::class)->create();
+        $costgroup2 = factory(Costgroup::class)->create();
+        factory(ProjectCostgroupDistribution::class)->create([
+            'project_id' => $project->id,
+            'costgroup_number' => $costgroup1->number,
+            'weight' => 60
+        ]);
+        factory(ProjectCostgroupDistribution::class)->create([
+            'project_id' => $project->id,
+            'costgroup_number' => $costgroup2->number,
+            'weight' => 40
+        ]);
+
+        $this->assertContains([
+            'costgroup_number' => $costgroup1->number,
+            'ratio' => 60
+        ], $project->distribution_of_costgroups);
+        $this->assertContains([
+            'costgroup_number' => $costgroup2->number,
+            'ratio' => 40
+        ], $project->distribution_of_costgroups);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tests\Integrations\Controllers;
 
-use App\Models\Invoice\Costgroup;
+use App\Models\Costgroup\Costgroup;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class CostgroupControllerTest extends \TestCase

@@ -94,6 +94,22 @@ class CreateProjectsEtc extends Migration
             $table->integer('updated_by')->nullable();
             $table->integer('deleted_by')->nullable();
         });
+
+        Schema::create('project_costgroup_distributions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('costgroup_number')->unsigned()->nullable();
+            $table->foreign('costgroup_number')->references('number')->on('costgroups')->onDelete('set null');
+            $table->integer('project_id')->unsigned();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->integer('weight');
+
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
+        });
     }
 
     /**
@@ -103,6 +119,7 @@ class CreateProjectsEtc extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('project_costgroup_distributions');
         Schema::dropIfExists('project_comments');
         Schema::dropIfExists('project_efforts');
         Schema::dropIfExists('project_positions');

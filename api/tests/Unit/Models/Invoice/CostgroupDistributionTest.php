@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Models\Invoice;
 
-use App\Models\Invoice\Costgroup;
+use App\Models\Costgroup\Costgroup;
 use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 

@@ -2,10 +2,12 @@
 
 namespace Tests\Unit\Services\Creator;
 
+use App\Models\Costgroup\Costgroup;
 use App\Models\Invoice\Invoice;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Project\Project;
+use App\Models\Project\ProjectCostgroupDistribution;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateUnit;
@@ -91,5 +93,26 @@ class CreateInvoiceFromProjectTest extends \TestCase
         $this->assertEquals($project_position->price_per_rate, $invoice_position->price_per_rate);
         $this->assertEquals($project_position->vat, $invoice_position->vat);
         $this->assertEquals($project_position->id, $invoice_position->project_position->id);
+    }
+
+    public function testCostgroupDistributionsShouldBeAdded()
+    {
+        $costgroup = factory(Costgroup::class)->create();
+        $project = factory(Project::class)->create();
+
+        $projectCostgroupDistribution = factory(ProjectCostgroupDistribution::class)->create([
+            'costgroup_number' => $costgroup->number,
+            'project_id' => $project->id,
+            'weight' => rand(50, 100)
+        ]);
+
+        $creator = new CreateInvoiceFromProject($project);
+        $invoice = $creator->create();
+        $this->assertCount(1, $invoice->costgroup_distributions);
+        $invoiceCostgroupDistribution = $invoice->costgroup_distributions->first();
+
+        $this->assertEquals($projectCostgroupDistribution->costgroup_number, $invoiceCostgroupDistribution->costgroup_number);
+        $this->assertEquals($invoice->id, $invoiceCostgroupDistribution->invoice_id);
+        $this->assertEquals($projectCostgroupDistribution->weight, $invoiceCostgroupDistribution->weight);
     }
 }

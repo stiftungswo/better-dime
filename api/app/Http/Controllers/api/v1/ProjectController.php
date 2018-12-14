@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Project\Project;
-use App\Models\Project\ProjectEffort;
+use App\Models\Project\ProjectCostgroupDistribution;
 use App\Models\Project\ProjectPosition;
 use App\Services\Creator\CreateInvoiceFromProject;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class ProjectController extends BaseController
     public function duplicate($id)
     {
         $project = Project::findOrFail($id);
-        return self::get($this->duplicateObject($project, ['positions'], ['offer_id']));
+        return self::get($this->duplicateObject($project, ['costgroup_distributions', 'positions'], ['offer_id']));
     }
 
     public function index()
@@ -46,6 +46,14 @@ class ProjectController extends BaseController
     {
         $this->validateRequest($request);
         $project = Project::create(Input::toArray());
+
+        // because we enforce in the validation that costgroups must be present, we dont need to check it here as well
+        foreach (Input::get('costgroup_distributions') as $costgroup) {
+            /** @var ProjectCostgroupDistribution $pcd */
+            $pcd = ProjectCostgroupDistribution::make($costgroup);
+            $pcd->project()->associate($project);
+            $pcd->save();
+        }
 
         if (Input::get('positions')) {
             foreach (Input::get('positions') as $position) {
@@ -67,6 +75,9 @@ class ProjectController extends BaseController
             'archived' => 'boolean',
             'category_id' => 'required|integer',
             'chargeable' => 'boolean',
+            'costgroup_distributions' => 'required|array',
+            'costgroup_distributions.*.costgroup_number' => 'required|integer',
+            'costgroup_distributions.*.weight' => 'required|integer',
             'deadline' => 'date|nullable',
             'description' => 'required|string',
             'fixed_price' => 'integer|nullable',
@@ -84,7 +95,7 @@ class ProjectController extends BaseController
 
     public function get($id)
     {
-        return Project::with(['positions', 'positions.service'])->findOrFail($id)
+        return Project::with(['costgroup_distributions', 'positions', 'positions.service'])->findOrFail($id)
             ->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids']);
     }
 
@@ -92,14 +103,16 @@ class ProjectController extends BaseController
     {
         $this->validateRequest($request);
 
-        /** @var Project $p */
-        $p = Project::findOrFail($id);
+        /** @var Project $project */
+        $project = Project::findOrFail($id);
         try {
             DB::beginTransaction();
-            $p->update(Input::toArray());
+            $project->update(Input::toArray());
+
+            $this->executeNestedUpdate(Input::get('costgroup_distributions'), $project->costgroup_distributions, ProjectCostgroupDistribution::class, 'project', $project);
 
             if (Input::get('positions')) {
-                $this->executeNestedUpdate(Input::get('positions'), $p->positions, ProjectPosition::class, 'project', $p);
+                $this->executeNestedUpdate(Input::get('positions'), $project->positions, ProjectPosition::class, 'project', $project);
             }
         } catch (\Exception $e) {
             DB::rollBack();

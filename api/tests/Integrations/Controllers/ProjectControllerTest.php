@@ -96,6 +96,7 @@ class ProjectControllerTest extends \TestCase
         $this->assertArrayHasKey('budget_time', $decodedResponse);
         $this->assertArrayHasKey('current_price', $decodedResponse);
         $this->assertArrayHasKey('current_time', $decodedResponse);
+        $this->assertArrayHasKey('costgroup_distributions', $decodedResponse);
     }
 
     public function testInvalidPost()
@@ -151,7 +152,7 @@ class ProjectControllerTest extends \TestCase
         $template = $this->projectTemplate();
         $template['positions']['0']['id'] = $projectPositionList[0]->id;
 
-        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id, $template);
+        $this->asAdmin()->json('PUT', 'api/v1/projects/' . $project->id, $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
     }
 
@@ -167,6 +168,13 @@ class ProjectControllerTest extends \TestCase
         $this->assertContains($invoice2->id, $res['invoice_ids']);
     }
 
+    public function testCostgroupsRequired()
+    {
+        $template = $this->projectTemplate();
+        $template['costgroup_distributions'] = [];
+        $this->asAdmin()->json('POST', 'api/v1/projects', $template)->assertResponseStatus(422);
+    }
+
     private function projectTemplate()
     {
         return [
@@ -175,6 +183,16 @@ class ProjectControllerTest extends \TestCase
             'archived' => false,
             'category_id' => factory(\App\Models\Project\ProjectCategory::class)->create()->id,
             'chargeable' => true,
+            'costgroup_distributions' => [
+                [
+                    'costgroup_number' => factory(\App\Models\Costgroup\Costgroup::class)->create()->number,
+                    'weight' => 80
+                ],
+                [
+                    'costgroup_number' => factory(\App\Models\Costgroup\Costgroup::class)->create()->number,
+                    'weight' => 20
+                ]
+            ],
             'deadline' => '2019-12-31',
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'fixed_price' => 5678420,

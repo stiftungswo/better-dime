@@ -3,6 +3,7 @@
 namespace App\Services\Creator;
 
 use App\Models\Invoice\Invoice;
+use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
 use App\Models\Project\Project;
@@ -82,6 +83,16 @@ class CreateInvoiceFromProject extends BaseCreator
             $ip->save();
         });
 
+        $this->project->costgroup_distributions->each(function ($pcd) {
+           /** @var InvoiceCostgroupDistribution $invoiceCostgroupDistribution */
+            $invoiceCostgroupDistribution = new InvoiceCostgroupDistribution();
+            $invoiceCostgroupDistribution->costgroup_number = $pcd->costgroup_number;
+            $invoiceCostgroupDistribution->invoice_id = $this->invoice->id;
+            $invoiceCostgroupDistribution->weight = $pcd->weight;
+
+            $invoiceCostgroupDistribution->save();
+        });
+
         $offer = $this->project->offer;
         if (!is_null($offer)) {
             $offer->discounts->each(function ($od) {
@@ -94,7 +105,7 @@ class CreateInvoiceFromProject extends BaseCreator
             });
         }
 
-        return $this->invoice->fresh(['discounts', 'positions']);
+        return $this->invoice->fresh(['costgroup_distributions', 'discounts', 'positions']);
     }
 
     private function checkAndAssignInvoiceProperty(string $property, $oldPropertyName = null)

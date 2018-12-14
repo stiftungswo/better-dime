@@ -165,6 +165,9 @@ class DatabaseSeeder extends Seeder
             ]));
         });
 
+        print("Seeding costgroups ...\n");
+        $costgroups = factory(\App\Models\Costgroup\Costgroup::class, 6)->create();
+
         print("Seeding project categories ...\n");
         $projectCategories = factory(\App\Models\Project\ProjectCategory::class, 10)->create();
 
@@ -175,7 +178,7 @@ class DatabaseSeeder extends Seeder
             $projects[] = $creator->create();
         });
 
-        $projects->each(function ($p) use ($projectCategories) {
+        $projects->each(function ($p) use ($projectCategories, $costgroups) {
             /** @var \App\Models\Project\Project $p */
             $p->update([
                 'category_id' => $projectCategories->random()->id,
@@ -183,6 +186,14 @@ class DatabaseSeeder extends Seeder
             $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->make([
                 'project_id' => $p->id
             ]));
+
+            $p->costgroup_distributions()->saveMany([factory(\App\Models\Project\ProjectCostgroupDistribution::class)->make([
+                'costgroup_number' => $costgroups->random()->number,
+                'project_id' => $p->id,
+            ]), factory(\App\Models\Project\ProjectCostgroupDistribution::class)->make([
+                'costgroup_number' => $costgroups->random()->number,
+                'project_id' => $p->id,
+            ])]);
         });
 
         print("Seeding holiday project ...\n");
@@ -225,9 +236,6 @@ class DatabaseSeeder extends Seeder
             $creator = new \App\Services\Creator\CreateInvoiceFromProject($p);
             $invoices[] = $creator->create();
         });
-
-        print("Seeding costgroups ...\n");
-        $costgroups = factory(\App\Models\Invoice\Costgroup::class, 6)->create();
 
         $invoices->each(function ($i) use ($costgroups) {
             $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([

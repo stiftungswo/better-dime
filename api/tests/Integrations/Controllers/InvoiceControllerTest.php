@@ -180,11 +180,11 @@ class InvoiceControllerTest extends \TestCase
             'address_id' => factory(\App\Models\Customer\Address::class)->create()->id,
             'costgroup_distributions' => [
                 [
-                    'costgroup_number' => factory(\App\Models\Invoice\Costgroup::class)->create()->number,
+                    'costgroup_number' => factory(\App\Models\Costgroup\Costgroup::class)->create()->number,
                     'weight' => 80
                 ],
                 [
-                    'costgroup_number' => factory(\App\Models\Invoice\Costgroup::class)->create()->number,
+                    'costgroup_number' => factory(\App\Models\Costgroup\Costgroup::class)->create()->number,
                     'weight' => 20
                 ]
             ],

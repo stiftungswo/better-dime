@@ -13,13 +13,6 @@ class CreateInvoicesEtc extends Migration
      */
     public function up()
     {
-        Schema::create('costgroups', function (Blueprint $table) {
-            $table->unsignedInteger('number')->unique();
-            $table->string('name');
-            $table->softDeletes();
-            $table->timestamps();
-        });
-
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('accountant_id')->nullable();
@@ -110,6 +103,5 @@ class CreateInvoicesEtc extends Migration
         Schema::dropIfExists('invoice_positions');
         Schema::dropIfExists('invoice_costgroup_distributions');
         Schema::dropIfExists('invoices');
-        Schema::dropIfExists('costgroups');
     }
 }
