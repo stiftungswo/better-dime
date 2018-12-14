@@ -44,7 +44,7 @@ class CreateInvoicesEtc extends Migration
             $table->integer('deleted_by')->nullable();
         });
 
-        Schema::create('costgroup_distributions', function (Blueprint $table) {
+        Schema::create('invoice_costgroup_distributions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('costgroup_number')->unsigned()->nullable();
             $table->foreign('costgroup_number')->references('number')->on('costgroups')->onDelete('set null');
@@ -108,7 +108,7 @@ class CreateInvoicesEtc extends Migration
     {
         Schema::dropIfExists('invoice_discounts');
         Schema::dropIfExists('invoice_positions');
-        Schema::dropIfExists('costgroup_invoice');
+        Schema::dropIfExists('invoice_costgroup_distributions');
         Schema::dropIfExists('invoices');
         Schema::dropIfExists('costgroups');
     }

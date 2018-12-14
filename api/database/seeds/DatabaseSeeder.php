@@ -230,10 +230,10 @@ class DatabaseSeeder extends Seeder
         $costgroups = factory(\App\Models\Invoice\Costgroup::class, 6)->create();
 
         $invoices->each(function ($i) use ($costgroups) {
-            $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
+            $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([
                 'costgroup_number' => $costgroups->random()->number,
                 'invoice_id' => $i->id,
-            ]), factory(\App\Models\Invoice\CostgroupDistribution::class)->make([
+            ]), factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([
                 'costgroup_number' => $costgroups->random()->number,
                 'invoice_id' => $i->id,
             ])]);

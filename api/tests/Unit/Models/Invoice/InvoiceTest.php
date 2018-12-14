@@ -5,7 +5,7 @@ namespace Tests\Unit\Models\Invoice;
 use App\Models\Customer\Address;
 use App\Models\Employee\Employee;
 use App\Models\Invoice\Costgroup;
-use App\Models\Invoice\CostgroupDistribution;
+use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -49,12 +49,12 @@ class InvoiceTest extends \TestCase
         $invoice = factory(Invoice::class)->create();
         $costgroup1 = factory(Costgroup::class)->create();
         $costgroup2 = factory(Costgroup::class)->create();
-        factory(CostgroupDistribution::class)->create([
+        factory(InvoiceCostgroupDistribution::class)->create([
             'invoice_id' => $invoice->id,
             'costgroup_number' => $costgroup1->number,
             'weight' => 60
         ]);
-        factory(CostgroupDistribution::class)->create([
+        factory(InvoiceCostgroupDistribution::class)->create([
             'invoice_id' => $invoice->id,
             'costgroup_number' => $costgroup2->number,
             'weight' => 40

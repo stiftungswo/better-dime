@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-$factory->define(\App\Models\Invoice\CostgroupDistribution::class, function () {
+$factory->define(\App\Models\Invoice\InvoiceCostgroupDistribution::class, function () {
     $faker = Faker\Factory::create('de_CH');
 
     return [

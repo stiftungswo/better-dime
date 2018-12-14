@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 
-class CostgroupDistribution extends Model
+class InvoiceCostgroupDistribution extends Model
 {
     use SoftDeletes, BlameableTrait;
 

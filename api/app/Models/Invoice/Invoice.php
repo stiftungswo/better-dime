@@ -36,7 +36,7 @@ class Invoice extends Model
 
     public function costgroup_distributions()
     {
-        return $this->hasMany(CostgroupDistribution::class);
+        return $this->hasMany(InvoiceCostgroupDistribution::class);
     }
 
     public function discounts()

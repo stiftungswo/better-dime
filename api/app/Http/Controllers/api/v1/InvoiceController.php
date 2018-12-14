@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Models\Invoice\CostgroupDistribution;
+use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
@@ -46,8 +46,8 @@ class InvoiceController extends BaseController
 
         // because we enforce in the validation that costgroups must be present, we dont need to check it here as well
         foreach (Input::get('costgroup_distributions') as $costgroup) {
-            /** @var CostgroupDistribution $cd */
-            $cd = CostgroupDistribution::make($costgroup);
+            /** @var InvoiceCostgroupDistribution $cd */
+            $cd = InvoiceCostgroupDistribution::make($costgroup);
             $cd->invoice()->associate($invoice);
             $cd->save();
         }
@@ -129,7 +129,7 @@ class InvoiceController extends BaseController
         try {
             DB::beginTransaction();
             $invoice->update(Input::toArray());
-            $this->executeNestedUpdate(Input::get('costgroup_distributions'), $invoice->costgroup_distributions, CostgroupDistribution::class, 'invoice', $invoice);
+            $this->executeNestedUpdate(Input::get('costgroup_distributions'), $invoice->costgroup_distributions, InvoiceCostgroupDistribution::class, 'invoice', $invoice);
 
             if (Input::get('discounts')) {
                 $this->executeNestedUpdate(Input::get('discounts'), $invoice->discounts, InvoiceDiscount::class, 'invoice', $invoice);
