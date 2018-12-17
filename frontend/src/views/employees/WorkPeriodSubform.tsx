@@ -23,8 +23,6 @@ const template = {
   yearly_vacation_budget: 10080,
 };
 
-// TODO create DayField for Vacation per Year
-
 interface Props {
   disabled?: boolean;
   formikProps: FormikProps<Employee>;
@@ -126,10 +124,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <DimeTableCell>{formattedHours(w.period_vacation_budget)}</DimeTableCell>
                           <DimeTableCell>{formattedHours(w.vacation_till_today)}</DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} name={fieldName('vacation_takeover')} />
+                            <Field delayed component={DurationField} factor={60} name={fieldName('vacation_takeover')} sign={'h'} />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} name={fieldName('yearly_vacation_budget')} />
+                            <Field delayed component={DurationField} factor={504} name={fieldName('yearly_vacation_budget')} sign={'d'} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

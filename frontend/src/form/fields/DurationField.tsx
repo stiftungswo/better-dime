@@ -6,6 +6,8 @@ import { FormProps, ValidatedFormGroupWithLabel } from './common';
 
 interface Props extends FormProps {
   children: ReactNode;
+  factor: number;
+  sign: string;
 }
 
 export class DurationField extends React.Component<Props> {
@@ -18,13 +20,8 @@ export class DurationField extends React.Component<Props> {
     value: 0,
   };
 
-  private mode = {
-    factor: 60,
-    sign: 'h',
-  };
-
   public get format() {
-    return this.props.field.value / this.mode.factor;
+    return this.props.field.value / this.props.factor;
   }
 
   public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +30,7 @@ export class DurationField extends React.Component<Props> {
     if (value === '') {
       this.props.form.setFieldValue(this.props.field.name, null);
     } else {
-      this.props.form.setFieldValue(this.props.field.name, Number(value) * this.mode.factor);
+      this.props.form.setFieldValue(this.props.field.name, Number(value) * this.props.factor);
     }
   };
 
@@ -48,7 +45,7 @@ export class DurationField extends React.Component<Props> {
           fullWidth={fullWidth}
           value={this.state.value}
           onChange={this.handleChange}
-          endAdornment={<InputAdornment position={'end'}>{this.mode.sign}</InputAdornment>}
+          endAdornment={<InputAdornment position={'end'}>{this.props.sign}</InputAdornment>}
         />
       </ValidatedFormGroupWithLabel>
     );

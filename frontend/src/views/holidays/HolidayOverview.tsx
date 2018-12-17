@@ -70,11 +70,11 @@ export default class HolidayOverview extends React.Component<Props> {
             }
           />
         )}
-        renderForm={props => (
+        renderForm={() => (
           <>
             <Field component={TextField} name={'name'} label={'Name'} fullWidth />
             <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <Field component={DurationField} name={'duration'} label={'Dauer'} fullWidth />
+            <Field fullWidth component={DurationField} factor={60} name={'duration'} label={'Dauer'} sign={'h'} />
           </>
         )}
       />
