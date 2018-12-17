@@ -79,6 +79,7 @@ class CreateInvoiceFromProjectTest extends \TestCase
         $rateUnitId = factory(RateUnit::class)->create()->id;
 
         $project_position = factory(ProjectPosition::class)->create([
+            'description' => 'Eine Beschreibung zu dieser Offer-Position',
             'rate_unit_id' => $rateUnitId,
             'project_id' => $project->id
         ]);
@@ -93,6 +94,28 @@ class CreateInvoiceFromProjectTest extends \TestCase
         $this->assertEquals($project_position->price_per_rate, $invoice_position->price_per_rate);
         $this->assertEquals($project_position->vat, $invoice_position->vat);
         $this->assertEquals($project_position->id, $invoice_position->project_position->id);
+    }
+
+    public function testPositionWithNullProjectPositionDescription()
+    {
+        {
+            $project = factory(Project::class)->create();
+            $rateUnitId = factory(RateUnit::class)->create()->id;
+
+            $project_position = factory(ProjectPosition::class)->create([
+                'description' => null,
+                'rate_unit_id' => $rateUnitId,
+                'project_id' => $project->id
+            ]);
+
+            $creator = new CreateInvoiceFromProject($project);
+            $invoice = $creator->create();
+            $this->assertCount(1, $invoice->positions);
+            $invoice_position = $invoice->positions->first();
+
+            // should take service name now
+            $this->assertEquals($project_position->service->name, $invoice_position->description);
+        }
     }
 
     public function testCostgroupDistributionsShouldBeAdded()
