@@ -40,6 +40,7 @@ class CreateOffersEtc extends Migration
         Schema::create('offer_positions', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('amount');
+            $table->string('description')->nullable()->default(null);
             $table->unsignedInteger('offer_id');
             $table->foreign('offer_id')->references('id')->on('offers')->onDelete('cascade');
             $table->integer('order');

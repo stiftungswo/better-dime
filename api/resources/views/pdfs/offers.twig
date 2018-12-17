@@ -43,41 +43,42 @@
 
 <div class="force-page-break"></div>
 <b style="font-size: 16px;">Kostenübersicht</b>
-{{
-    tableGen(
-        {
-            "table": {
-                "class": "table"
-            },
-            "tfoot-tr": {
-                "class": "bold-cells"
-            }
-        },
-        {
-            "Bezeichnung": {"attr": { "class": "first-row" }},
-            "Ansatz CHF": {"attr": { "class": "second-row text-align-right" }},
-            "Einheit": {"attr": { "class": "third-row" }},
-            "Anzahl": {"attr": { "class": "fourth-row" }},
-            "MwSt. Satz": {"attr": { "class": "fifth-row text-align-right" }},
-            "Teilbetrag CHF exkl. MwSt.": {"attr": { "class": "sixth-row text-align-right" }}
-        },
-        breakdown.positions,
-        {
-            "service.name": {},
-            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "chf"},
-            "rate_unit.billing_unit": {},
-            "amount": {},
-            "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
-            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "chf"}
-        },
-        [
-            {
-                "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
-                (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-            }
-        ]
-    )
-}}
+
+<table class="table">
+    <thead>
+    <tr>
+        <td class="first-row">Position</td>
+        <td class="second-row text-align-right">Ansatz</td>
+        <td class="third-row">Einheit</td>
+        <td class="fourth-row">Anzahl</td>
+        <td class="fifth row text-align-right">MwSt. Satz</td>
+        <td class="sixth-row text-align-right">Teilbetrag exkl. MwSt.</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for position in breakdown.positions %}
+        <tr>
+            <td>
+                {{ position.service.name }}
+                {% if position.description is defined %}
+                    <br /><span style="font-size: 12px;">{{ position.description }}</span>
+                {% endif %}
+            </td>
+            <td class="text-align-right">{{ (position.price_per_rate / 100) | number_format(2, '.', "'") }} CHF</td>
+            <td>{{ position.rate_unit.billing_unit }}</td>
+            <td>{{ position.amount }}</td>
+            <td class="text-align-right">{{ position.vat * 100 }} %</td>
+            <td class="text-align-right">{{ (position.calculated_total / 100) | number_format(2, '.', "'")}} CHF</td>
+        </tr>
+    {%  endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5" class="text-align-right">Subtotal</td>
+        <td class="text-align-right">{{ ((breakdown.subtotal) / 100) | number_format(2, '.', "'") }} CHF</td>
+    </tr>
+    </tfoot>
+</table>
 
 {% if breakdown.discounts is not empty %}
 {{ tableGen(
@@ -92,7 +93,7 @@
     },
     {
         "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
-        "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+        "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
     },
     breakdown.discounts,
     {
@@ -125,7 +126,7 @@
         },
         {
             "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
-            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+            "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
         },
         breakdown.vats,
         {
@@ -152,7 +153,7 @@
         <div class="signature">
             <div class="bold">Unterschrift des Auftragsnehmers:</div>
             <div class="date_location">Ort / Datum:</div>
-            <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }}</div
+            <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }} </div>
         </div>
         <div class="signature">
             <div class="bold">Unterschrift des Auftraggebers:</div>

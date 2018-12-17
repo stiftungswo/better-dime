@@ -51,11 +51,15 @@ class CreateProjectFromOffer extends BaseCreator
         foreach ($this->offer->positions as $offerPosition) {
             /** @var OfferPosition $offerPosition */
             // create project position
-            $attributes = ['description', 'service_id', 'price_per_rate', 'rate_unit_id', 'vat'];
+            $attributes = ['service_id', 'price_per_rate', 'rate_unit_id', 'vat'];
             $projectPosition = new ProjectPosition();
 
             foreach ($attributes as $attribute) {
                 $projectPosition = $this->throwExceptionIfNull($offerPosition, $projectPosition, $attribute);
+            }
+
+            if ($offerPosition->description) {
+                $projectPosition->description = $offerPosition->description;
             }
 
             $this->project->positions()->save($projectPosition);

@@ -8,6 +8,7 @@ $factory->define(\App\Models\Offer\OfferPosition::class, function () {
 
     return [
         'amount' => $faker->numberBetween(10, 504),
+        'description' => $faker->sentence,
         'offer_id' => function () {
             return factory(\App\Models\Offer\Offer::class)->create()->id;
         },

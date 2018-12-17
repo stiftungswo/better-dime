@@ -21,6 +21,7 @@ export const offerSchema = yup.object({
   positions: yup.array(
     yup.object({
       amount: yup.number().required(),
+      description: yup.string().nullable(true),
       order: yup.number().required(),
       price_per_rate: yup.number().required(),
       rate_unit_id: yup.number().required(),

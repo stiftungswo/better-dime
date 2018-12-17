@@ -184,6 +184,7 @@ class OfferControllerTest extends \TestCase
             'positions' => [
                 [
                     'amount' => 30,
+                    'description' => 'Samen',
                     'order' => 1,
                     'price_per_rate' => 500,
                     'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create()->id,
@@ -191,6 +192,7 @@ class OfferControllerTest extends \TestCase
                     'vat' => '0.025'
                 ], [
                     'amount' => 10,
+                    'description' => 'Zivis',
                     'order' => 2,
                     'price_per_rate' => 8500,
                     'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create()->id,

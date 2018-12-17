@@ -16,7 +16,7 @@ class OfferPosition extends Model
         'amount' => 'float',
     ];
 
-    protected $fillable = ['amount', 'offer_id', 'order', 'price_per_rate', 'rate_unit_id', 'service_id', 'vat'];
+    protected $fillable = ['amount', 'description', 'offer_id', 'order', 'price_per_rate', 'rate_unit_id', 'service_id', 'vat'];
 
     public function offer()
     {
@@ -56,15 +56,6 @@ class OfferPosition extends Model
             return $this->amount;
         } else {
             return 0;
-        }
-    }
-
-    public function getDescriptionAttribute()
-    {
-        if ($this->service && $this->service->name) {
-            return $this->service->name;
-        } else {
-            return "No service assigned";
         }
     }
 }

@@ -290,7 +290,7 @@ class TableGenerator
                 break;
 
             default:
-                return $content;
+                return is_null($content) ? '' : $content;
                 break;
         }
     }

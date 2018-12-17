@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
-import { NumberField } from '../../form/fields/common';
+import { NumberField, TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -80,13 +80,14 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     <TableHead>
                       <TableRow>
                         <DimeTableCell style={{ width: '5%' }}>Sort.</DimeTableCell>
-                        <DimeTableCell style={{ width: '25%' }}>Service</DimeTableCell>
+                        <DimeTableCell style={{ width: '15%' }}>Service</DimeTableCell>
+                        <DimeTableCell style={{ width: '17%' }}>Beschreibung</DimeTableCell>
                         <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                        <DimeTableCell style={{ width: '20%' }}>Tariftyp</DimeTableCell>
+                        <DimeTableCell style={{ width: '15%' }}>Tariftyp</DimeTableCell>
                         <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
                         <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
-                        <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                        <DimeTableCell style={{ width: '10%' }}>Aktionen</DimeTableCell>
+                        <DimeTableCell>Total CHF (mit MWSt.)</DimeTableCell>
+                        <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -105,6 +106,18 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                               />
                             </DimeTableCell>
                             <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
+                            <DimeTableCell>
+                              <Field
+                                delayed
+                                component={TextField}
+                                name={name('description')}
+                                margin={'none'}
+                                disabled={disabled}
+                                fullWidth
+                                multiline
+                                rowsMax={6}
+                              />
+                            </DimeTableCell>
                             <DimeTableCell>
                               <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
                             </DimeTableCell>
