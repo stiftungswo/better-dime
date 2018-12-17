@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\BaseController;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\ProjectEffort;
+use App\Services\Export\RevenueReport;
 use App\Services\Export\ServiceHoursPerCategoryReport;
 use App\Services\Export\ServiceHoursPerProjectReport;
 use App\Services\Filter\DailyEfforts;
 use App\Services\Filter\ProjectCommentFilter;
 use App\Services\Filter\ProjectEffortFilter;
+use App\Services\Filter\RevenuePositions;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use Carbon\Carbon;
@@ -107,5 +109,25 @@ class ReportController extends BaseController
         $to = new Carbon(Input::get('to'));
 
         return DailyEfforts::get($from, $to);
+    }
+
+    public function revenue(Request $request)
+    {
+        $this->validate($request, [
+            "from" => "date",
+            "to" => "date"
+        ]);
+
+        $from = new Carbon(Input::get('from'));
+        $to = new Carbon(Input::get('to'));
+        $format = new Carbon(Input::get('format'));
+
+
+        $report = RevenuePositions::fetchRevenueReport($from, $to);
+        if ($format === 'json') {
+            return $report;
+        } else {
+            return Excel::download(new RevenueReport($report), "revenue_report.xlsx");
+        }
     }
 }

@@ -27,4 +27,13 @@ class Person extends Customer
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function getFullNameAttribute(): string
+    {
+        if ($this->first_name && $this->last_name) {
+            return $this->first_name . ' ' . $this->last_name;
+        } else {
+            return '';
+        }
+    }
 }

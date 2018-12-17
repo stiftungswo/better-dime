@@ -32,9 +32,10 @@ import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
 import CompanyCreate from './views/companies/CompanyCreate';
 import { CustomerImportExportOverview } from './views/customers/CustomerImportExportOverview';
-import DailyReport from './views/DailyReport';
+import DailyReport from './views/reports/DailyReport';
 import NotFound from './views/NotFound';
 import { ServiceReports } from './views/reports/ServiceReports';
+import { RevenueReport } from './views/reports/RevenueReport';
 
 class App extends React.Component {
   public render() {
@@ -76,6 +77,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/customers/transfer" component={CustomerImportExportOverview} />
             <ProtectedRoute exact path="/reports/daily" component={DailyReport} />
             <ProtectedRoute exact path="/reports/service" component={ServiceReports} />
+            <ProtectedRoute exact path="/reports/revenue" component={RevenueReport} />
             <Route>
               <NotFound />
             </Route>

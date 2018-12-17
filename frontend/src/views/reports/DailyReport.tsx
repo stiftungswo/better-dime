@@ -1,23 +1,23 @@
 import * as React from 'react';
-import { DimeAppBar } from '../layout/DimeAppBar';
-import { DimePaper } from '../layout/DimePaper';
-import compose from '../utilities/compose';
+import { DimeAppBar } from '../../layout/DimeAppBar';
+import { DimePaper } from '../../layout/DimePaper';
+import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { DailyReportEffort, DailyReportStore } from '../stores/dailyReportStore';
+import { DailyReportEffort, DailyReportStore } from '../../stores/dailyReportStore';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableBody from '@material-ui/core/TableBody/TableBody';
-import { MainStore } from '../stores/mainStore';
+import { MainStore } from '../../stores/mainStore';
 import Grid from '@material-ui/core/Grid/Grid';
-import { formikFieldCompatible } from '../form/fields/Select';
-import { DatePicker } from '../form/fields/DatePicker';
+import { formikFieldCompatible } from '../../form/fields/Select';
+import { DatePicker } from '../../form/fields/DatePicker';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import { DimeContent } from '../layout/DimeContent';
-import { DimeTableCell } from '../layout/DimeTableCell';
+import { DimeContent } from '../../layout/DimeContent';
+import { DimeTableCell } from '../../layout/DimeTableCell';
 
 interface Props {
   dailyReportStore?: DailyReportStore;

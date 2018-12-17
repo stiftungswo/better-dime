@@ -59,4 +59,9 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
     {
         return $this->hasMany(WorkPeriod::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . " " . $this->last_name;
+    }
 }

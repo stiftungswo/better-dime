@@ -129,7 +129,7 @@ class CostBreakdown
 
         $distributions = [];
         foreach ($sums as $vat => $sum) {
-            $distributions[$vat] = $sum / $total;
+            $distributions[$vat] = $total == 0 ? 0 : $sum / $total;
         }
 
         return $distributions;

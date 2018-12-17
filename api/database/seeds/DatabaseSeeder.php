@@ -172,12 +172,19 @@ class DatabaseSeeder extends Seeder
         $projectCategories = factory(\App\Models\Project\ProjectCategory::class, 10)->create();
 
         print("Seeding projects ...\n");
-        $projects = collect([]);
-        $offers->each(function ($o) use ($projects) {
+        $projectsWithOffer = collect([]);
+        //leave some offers without a corresponding project
+        $offersWithProject = $offers->slice(0, -5);
+        $offersWithProject->each(function ($o) use ($projectsWithOffer) {
             $creator = new \App\Services\Creator\CreateProjectFromOffer($o);
-            $projects[] = $creator->create();
+            $projectsWithOffer[] = $creator->create();
         });
 
+        $projectsWithoutOffer = factory(\App\Models\Project\Project::class, 5)->create([
+            "offer_id" => null
+        ]);
+
+        $projects = $projectsWithOffer->concat($projectsWithoutOffer);
         $projects->each(function ($p) use ($projectCategories, $costgroups) {
             /** @var \App\Models\Project\Project $p */
             $p->update([
@@ -232,10 +239,27 @@ class DatabaseSeeder extends Seeder
 
         $invoices = collect([]);
         print("Seeding invoices ...\n");
-        $projects->each(function ($p) use ($invoices) {
+        $projectsWithInvoice = $projectsWithOffer->slice(0, -3)->concat($projectsWithoutOffer->slice(0, -2));
+        //have some projects with multiple invoices
+        $projectsWithInvoice = $projectsWithInvoice->concat($projectsWithInvoice->random(5));
+        $projectsWithInvoice->each(function ($p) use ($invoices) {
             $creator = new \App\Services\Creator\CreateInvoiceFromProject($p);
             $invoices[] = $creator->create();
         });
+
+        // create some invoices without a project
+        factory(\App\Models\Invoice\Invoice::class, 3)->create([
+            "project_id" => null,
+        ])->each(function ($invoice) use (&$invoices, $customers) {
+            $invoice->customer()->associate($customers->random()->id);
+            $invoice->save();
+
+            factory(\App\Models\Invoice\InvoicePosition::class, 3)->create([
+                "invoice_id" => $invoice->id
+            ]);
+            $invoices[] = $invoice;
+        });
+
 
         $invoices->each(function ($i) use ($costgroups) {
             $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([
