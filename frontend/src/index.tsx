@@ -15,7 +15,7 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import * as Sentry from '@sentry/browser';
 
 const browserHistory = createBrowserHistory();
-const sentryDSN = 'SENTRY_DSN';
+const sentryDSN = 'SENTRY_DSN'; //this value will be replaced by a build script
 
 if (sentryDSN.startsWith('https')) {
   console.log('yes raven');
@@ -23,8 +23,6 @@ if (sentryDSN.startsWith('https')) {
 } else {
   console.log('no raven');
 }
-
-// TODO implement in Dime Layout to change scope to current user, observed from mainState
 
 ReactDOM.render(
   <SnackbarProvider maxSnack={1}>

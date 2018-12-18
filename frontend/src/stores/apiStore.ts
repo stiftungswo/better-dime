@@ -3,6 +3,7 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { History } from 'history';
 import { OptionsObject } from 'notistack';
 import jwt_decode from 'jwt-decode';
+import * as Sentry from '@sentry/browser';
 
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
@@ -43,6 +44,7 @@ export class ApiStore {
 
   constructor(private history: History, private enqueueSnackbar: (message: string, options?: OptionsObject) => void) {
     this.restoreApiToken();
+    this.updateSentryContext();
     this.initializeApiClient(this._token);
   }
 
@@ -66,7 +68,7 @@ export class ApiStore {
       (error: AxiosError) => {
         if (error.response && error.response.status === 401) {
           console.log('Unathorized API access, redirect to login'); //tslint:disable-line:no-console
-          this.history.push('/login');
+          this.logout();
         }
         return Promise.reject(error);
       }
@@ -83,6 +85,7 @@ export class ApiStore {
     this._token = '';
     this.setAuthHeader(null);
     this.history.push('/');
+    this.updateSentryContext();
   }
 
   @action
@@ -94,6 +97,7 @@ export class ApiStore {
     });
     runInAction(() => {
       this.setToken(res.data.token);
+      this.updateSentryContext();
     });
   }
 
@@ -101,6 +105,19 @@ export class ApiStore {
     this._token = token;
     localStorage.setItem(KEY_TOKEN, token);
     this.setAuthHeader(token);
+  }
+
+  private updateSentryContext() {
+    if (this.isLoggedIn) {
+      Sentry.configureScope(scope =>
+        scope.setUser({
+          id: String(this.userId),
+          full_name: this.meDetail ? `${this.meDetail.first_name} ${this.meDetail.last_name}` : undefined,
+        })
+      );
+    } else {
+      Sentry.configureScope(scope => scope.setUser({}));
+    }
   }
 
   @computed
