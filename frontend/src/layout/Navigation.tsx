@@ -23,11 +23,12 @@ import {
 } from './icons';
 
 interface NavigationProps {
-  handleDrawerOpen: () => void;
   drawerOpen: boolean;
+  handleDrawerOpen: () => void;
+  isAdmin: boolean;
 }
 
-export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) => (
+export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: NavigationProps) => (
   <React.Fragment>
     <NavItem to={'/timetrack'} exact label={'Zeiterfassung'} icon={TimetrackIcon} />
     <NavItem to={'/offers'} exact label={'Offerten'} icon={OfferIcon} />
@@ -47,7 +48,7 @@ export const Navigation = ({ handleDrawerOpen, drawerOpen }: NavigationProps) =>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />
       <NavItem nested to={'/rate_groups'} label={'Tarif-Gruppen'} icon={RateGroupIcon} />
-      <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />
+      {isAdmin && <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />}
       <NavItem nested to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
       <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
     </Collapsible>

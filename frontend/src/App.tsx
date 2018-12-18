@@ -59,7 +59,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />
             <ProtectedRoute exact path="/holidays" component={HolidayOverview} />
-            <ProtectedRoute exact path="/rate_units" component={RateUnitOverview} />
+            <ProtectedRoute exact requiresAdmin path="/rate_units" component={RateUnitOverview} />
             <ProtectedRoute exact path="/rate_groups" component={RateGroupOverview} />
             <ProtectedRoute exact path="/services" component={ServiceOverview} />
             <ProtectedRoute exact path="/services/new" component={ServiceCreate} />

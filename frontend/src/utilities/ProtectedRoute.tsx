@@ -7,6 +7,7 @@ import { ApiStore } from '../stores/apiStore';
 interface ProtectedRouteProps extends RouteProps {
   apiStore?: ApiStore;
   component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>; // tslint:disable-line
+  requiresAdmin?: boolean;
 }
 
 @compose(
@@ -19,7 +20,18 @@ export class ProtectedRoute extends React.Component<ProtectedRouteProps> {
       pathname: '/login',
       state: { referrer: props.location!.pathname },
     };
+
+    const siteNotFound = {
+      pathname: '/404',
+      state: { referrer: props.location!.pathname },
+    };
+
     const Component = this.props.component;
+
+    if (this.props.requiresAdmin && !this.props.apiStore!.isAdmin) {
+      return <Redirect to={siteNotFound} />;
+    }
+
     return this.props.apiStore!.isLoggedIn ? <Component {...props} /> : <Redirect to={login} />;
   };
 
