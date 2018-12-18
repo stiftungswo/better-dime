@@ -23,10 +23,6 @@ class CostBreakdownTest extends \TestCase
 
     public function testMixedDiscounts()
     {
-        // TODO Mit Dani diskutieren, ob der Wert 253.92 neu stimmt (anstatt 259.20 von seiner Implementation).
-        // Theoretisch stimmt der neue Wert: 500 - (10 + (500 * 0.5)) = 240
-        // 240 + (300 / 500 * 0.08 * 240) + (200 / 500 * 0.025 * 240) = 253.92
-        // es kommt wohl daher, dass die alte Berechnung basierend darauf war, in welcher Reihenfolge die Discounts kamen
         $offer = $this->offerTemplate();
         $offer->discounts()->saveMany([
             $this->makeDiscount(['name' => 'Tenbucks', 'value' => 1000, 'percentage' => false]),

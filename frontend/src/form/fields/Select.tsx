@@ -12,14 +12,8 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DimeTheme from '../../layout/DimeTheme';
-import { ValidatedFormGroupWithLabel } from './common';
+import { FormProps, ValidatedFormGroupWithLabel } from './common';
 import { CancelIcon } from '../../layout/icons';
-
-/*  TODO: If you want to use the MenuPlacement in combination with the Portal, the Menu "is stuck" in the FormControl div
-    TODO: Neither the portal nor the overflowX solution are working for the Subforms (e.g. Services in OfferForm)
-          The portal causes to scroll with the whole page because it is somehow attached to the current viewport
-          The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
- */
 
 const styles = (theme: Theme) => ({
   root: {
@@ -176,6 +170,14 @@ const components = {
   ValueContainer,
 };
 
+/*
+ * If the select is cut off by its container, set the `portal` prop to true.
+ *
+ * NOTE: If you want to use `menuPlacement` in combination with `portal`, the Menu "is stuck" in the FormControl div.
+ *    neither the portal nor the overflowX solution are working for the Subforms (e.g. Services in OfferForm)
+ *    The portal causes to scroll with the whole page because it is somehow attached to the current viewport
+ *    The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
+ */
 class IntegrationReactSelect extends React.Component<any> {
   public get value() {
     if (this.props.isMulti) {

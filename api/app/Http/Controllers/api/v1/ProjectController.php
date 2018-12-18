@@ -130,6 +130,4 @@ class ProjectController extends BaseController
         $creator = new CreateInvoiceFromProject($project);
         return $creator->create();
     }
-
-    // TODO reimplement "Projects with potential invoices" after invoices are implemented
 }

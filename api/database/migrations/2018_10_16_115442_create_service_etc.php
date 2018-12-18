@@ -24,7 +24,7 @@ class CreateServiceEtc extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->double('vat');
-            $table->boolean('archived'); //TODO extract trait?
+            $table->boolean('archived');
 
             $table->timestamps();
             $table->softDeletes();
@@ -41,7 +41,7 @@ class CreateServiceEtc extends Migration
             $table->double('factor')->default(1);
             $table->boolean('is_time');
             $table->string('name');
-            $table->boolean('archived')->default(false); //TODO extract trait?
+            $table->boolean('archived')->default(false);
 
             $table->timestamps();
             $table->softDeletes();

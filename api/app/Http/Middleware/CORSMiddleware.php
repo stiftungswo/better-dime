@@ -5,6 +5,10 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Response;
 
+/*
+ * This Middleware returns each all common HTTP methods for each route requested - it doesn't actually verify anything,
+ * but it gets rid of CORS errors.
+ */
 class CORSMiddleware
 {
     /**
@@ -17,7 +21,6 @@ class CORSMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // TODO: Should check whether route has been registered
         if ($this->isPreflightRequest($request)) {
             $response = $this->createEmptyResponse();
         } else {

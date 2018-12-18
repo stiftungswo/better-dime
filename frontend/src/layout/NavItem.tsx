@@ -29,8 +29,6 @@ interface NavItemProps extends WithStyles<typeof styles> {
 export const NavItem = compose(withStyles(styles(DimeTheme)))(
   ({ to, exact = false, query = '', label, icon, classes, nested = false }: NavItemProps) => {
     const Icon = icon || ArrowRightIcon;
-
-    //FIXME this left-padding seems to be overwritten by other styles that are also present
     const nestedClassNames = nested ? classes.nested : '';
 
     return (

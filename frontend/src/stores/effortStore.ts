@@ -10,7 +10,6 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
   public efforts: ProjectEffortListing[] = [];
 
-  /* TODO: save the last selected user, project and project position in the employeeSettings */
   @observable
   public editing: boolean = false;
 
