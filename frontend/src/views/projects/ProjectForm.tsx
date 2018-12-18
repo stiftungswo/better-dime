@@ -33,6 +33,9 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import { ProjectBudgetTable } from './ProjectBudgetTable';
+import ProjectPositionSubformDialogs from './ProjectPositionSubformDialogs';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { withWidth } from '@material-ui/core';
 
 interface InfoFieldProps {
   value: string;
@@ -71,6 +74,7 @@ export interface Props extends FormViewProps<Project> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
+  width?: Breakpoint;
 }
 
 @compose(
@@ -85,7 +89,8 @@ export interface Props extends FormViewProps<Project> {
     'rateUnitStore',
     'serviceStore'
   ),
-  observer
+  observer,
+  withWidth()
 )
 export default class ProjectForm extends React.Component<Props> {
   // set rateGroup based on selected customer.
@@ -219,7 +224,11 @@ export default class ProjectForm extends React.Component<Props> {
 
               <Grid item xs={12}>
                 <DimePaper>
-                  <ProjectPositionSubformInline formikProps={props} name={'positions'} />
+                  {this.props.width === 'xl' || this.props.width === 'lg' ? (
+                    <ProjectPositionSubformInline formikProps={props} name={'positions'} />
+                  ) : (
+                    <ProjectPositionSubformDialogs formikProps={props} name={'positions'} />
+                  )}
                 </DimePaper>
               </Grid>
             </Grid>

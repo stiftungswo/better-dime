@@ -31,6 +31,9 @@ import { RateGroupStore } from '../../stores/rateGroupStore';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
+import withWidth from '@material-ui/core/withWidth/withWidth';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import OfferPositionSubformDialogs from './OfferPositionSubformDialogs';
 
 export interface Props extends FormViewProps<Offer> {
   customerStore?: CustomerStore;
@@ -41,11 +44,13 @@ export interface Props extends FormViewProps<Offer> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
+  width?: Breakpoint;
 }
 
 @compose(
   inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore'),
-  observer
+  observer,
+  withWidth()
 )
 export default class OfferForm extends React.Component<Props> {
   // set rateGroup based on selected customer.
@@ -187,7 +192,11 @@ export default class OfferForm extends React.Component<Props> {
 
                   <Grid item xs={12}>
                     <DimePaper>
-                      <OfferPositionSubformInline formikProps={props} name={'positions'} disabled={locked} />
+                      {this.props.width === 'xl' || this.props.width === 'lg' ? (
+                        <OfferPositionSubformInline formikProps={props} name={'positions'} disabled={locked} />
+                      ) : (
+                        <OfferPositionSubformDialogs formikProps={props} name={'positions'} />
+                      )}
                     </DimePaper>
                   </Grid>
 

@@ -12,6 +12,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 import { DimeTableCell } from './DimeTableCell';
+import classNames from 'classnames';
 
 const styles = createStyles({
   hideActions: {
@@ -23,6 +24,10 @@ const styles = createStyles({
         visibility: 'visible',
       },
     },
+  },
+  error: {
+    //TODO use bright red color from theme
+    backgroundColor: 'red',
   },
 });
 
@@ -70,6 +75,7 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   data: Array<T>;
   onClickRow?: (e: T, index: number) => void;
   noSort?: boolean;
+  errorChecker?: (index: number) => boolean;
   selected?: number[];
   setSelected?: (e: T, state: boolean) => void;
 }
@@ -166,31 +172,34 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedData.map((row, index) => (
-            <TableRow
-              className={classes.hideActions}
-              hover
-              key={index}
-              onClick={this.handleRowClick(row, index)}
-              component={SafeClickableTableRow}
-            >
-              {this.props.selected && (
-                <DimeTableCell padding={'checkbox'}>
-                  <RowCheckbox row={row} />
-                </DimeTableCell>
-              )}
-              {columns.map(col => (
-                <DimeTableCell key={col.id} numeric={col.numeric}>
-                  {format(col, row)}
-                </DimeTableCell>
-              ))}
-              {this.props.renderActions && (
-                <DimeTableCell numeric>
-                  <span className={'actions'}>{this.props.renderActions(row)}</span>
-                </DimeTableCell>
-              )}
-            </TableRow>
-          ))}
+          {sortedData.map((row, index) => {
+            const hasErrors = this.props.errorChecker && this.props.errorChecker(index);
+            return (
+              <TableRow
+                className={classNames(classes.hideActions, { [classes.error]: hasErrors })}
+                hover
+                key={index}
+                onClick={this.handleRowClick(row, index)}
+                component={SafeClickableTableRow}
+              >
+                {this.props.selected && (
+                  <DimeTableCell padding={'checkbox'}>
+                    <RowCheckbox row={row} />
+                  </DimeTableCell>
+                )}
+                {columns.map(col => (
+                  <DimeTableCell key={col.id} numeric={col.numeric}>
+                    {format(col, row)}
+                  </DimeTableCell>
+                ))}
+                {this.props.renderActions && (
+                  <DimeTableCell numeric>
+                    <span className={'actions'}>{this.props.renderActions(row)}</span>
+                  </DimeTableCell>
+                )}
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     );
