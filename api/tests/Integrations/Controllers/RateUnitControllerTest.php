@@ -33,10 +33,20 @@ class RateUnitControllerTest extends \TestCase
         $this->assertFalse($rateUnit->refresh()->archived);
     }
 
+    public function testArchiveWithInsufficientPermissions()
+    {
+        $rateUnit = factory(RateUnit::class)->create([
+            'archived' => true
+        ]);
+        $this->asUser()->json('PUT', 'api/v1/rate_units/' . $rateUnit->id . '/archive', [
+            'archived' => false
+        ])->assertResponseStatus(401);
+    }
+
     public function testIndex()
     {
         $rateUnitId = factory(RateUnit::class)->create()->id;
-        $this->asAdmin()->json('GET', 'api/v1/rate_units')->assertResponseOk();
+        $this->asUser()->json('GET', 'api/v1/rate_units')->assertResponseOk();
         $decodedResponse = $this->responseToArray();
         $this->assertEquals($rateUnitId, end($decodedResponse)['id']);
     }
@@ -44,13 +54,13 @@ class RateUnitControllerTest extends \TestCase
     public function testInvalidGet()
     {
         // can't get because object does not exist
-        $this->asAdmin()->json('GET', 'api/v1/rate_units/1789764')->assertResponseStatus(404);
+        $this->asUser()->json('GET', 'api/v1/rate_units/1789764')->assertResponseStatus(404);
     }
 
     public function testValidGet()
     {
         $rateUnit = factory(RateUnit::class)->create();
-        $this->asAdmin()->json('GET', 'api/v1/rate_units/' . $rateUnit->id)->assertResponseOk();
+        $this->asUser()->json('GET', 'api/v1/rate_units/' . $rateUnit->id)->assertResponseOk();
         $this->assertEquals($rateUnit->effort_unit, $this->responseToArray()['effort_unit']);
     }
 
@@ -65,6 +75,11 @@ class RateUnitControllerTest extends \TestCase
         $template = $this->rateUnitTemplate();
         $this->asAdmin()->json('POST', 'api/v1/rate_units', $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
+    }
+
+    public function testPostWithInsufficientPermissions()
+    {
+        $this->asUser()->json('POST', 'api/v1/rate_units', $this->rateUnitTemplate())->assertResponseStatus(401);
     }
 
     public function testInvalidObjectPut()
@@ -86,6 +101,13 @@ class RateUnitControllerTest extends \TestCase
         $template = $this->rateUnitTemplate();
         $this->asAdmin()->json('PUT', 'api/v1/rate_units/' . $rateUnitId, $template)->assertResponseOk();
         $this->assertResponseMatchesTemplate($template);
+    }
+
+    public function testPutWithInsufficientPermissions()
+    {
+        $rateUnitId = factory(RateUnit::class)->create()->id;
+        $template = $this->rateUnitTemplate();
+        $this->asUser()->json('PUT', 'api/v1/rate_units/' . $rateUnitId, $template)->assertResponseStatus(401);
     }
 
     private function rateUnitTemplate()

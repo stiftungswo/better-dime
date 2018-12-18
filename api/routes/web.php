@@ -18,6 +18,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/admin', ['middleware' => 'admin', function () {
+    return 'Admin check successfully';
+}]);
+
 $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($router) {
     $router->group(['namespace' => 'v1', 'prefix' => 'v1'], function () use ($router) {
         $router->post('employees/login', 'AuthController@authenticate');
@@ -139,11 +143,20 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
             });
 
             $router->group(['prefix' => 'rate_units'], function () use ($router) {
-                $router->put('/{id}/archive', ['uses' => 'RateUnitController@archive']);
+                $router->put('/{id}/archive', [
+                    'uses' => 'RateUnitController@archive',
+                    'middleware' => 'admin'
+                ]);
                 $router->get('/', ['uses' => 'RateUnitController@index']);
-                $router->post('/', ['uses' => 'RateUnitController@post']);
-                $router->get('/{id}', ['uses' => 'RateUnitController@get']);
-                $router->put('/{id}', ['uses' => 'RateUnitController@put']);
+                $router->post('/', [
+                    'uses' => 'RateUnitController@post',
+                    'middleware' => 'admin'
+                ]);
+                $router->get('/{id}', ['uses' => 'RateUnitController@get' ]);
+                $router->put('/{id}', [
+                    'uses' => 'RateUnitController@put',
+                    'middleware' => 'admin'
+                ]);
             });
 
             $router->group(['prefix' => 'rate_groups'], function () use ($router) {
