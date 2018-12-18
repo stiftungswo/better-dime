@@ -74,4 +74,8 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
     const res = await this.mainStore.api.put<Invoice>('/invoices/' + entity.id, entity);
     this.invoice = res.data;
   }
+
+  protected async doDuplicate(id: number) {
+    return this.mainStore.api.post<Invoice>('/invoices/' + id + '/duplicate');
+  }
 }
