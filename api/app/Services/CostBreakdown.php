@@ -9,7 +9,7 @@ class CostBreakdown
     public static function calculate($breakdownable)
     {
         /** @var Collection $positions */
-        $positions = $breakdownable->positions;
+        $positions = $breakdownable->positions->sortBy('order');
 
         // calculate subtotal without VAT
         $subtotal = intval($positions->map(function ($position) {
