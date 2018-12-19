@@ -14,10 +14,8 @@ type Listing = ProjectListing | ServiceListing | EmployeeListing;
 export class TimetrackFilterStore {
   @observable
   public projectEffortFilter: ProjectEffortFilter = {
-    start: moment()
-      .subtract(1, 'weeks')
-      .format('YYYY-MM-DD'),
-    end: moment().format('YYYY-MM-DD'),
+    start: moment().subtract(1, 'weeks'),
+    end: moment(),
     combineTimes: false,
     employeeIds: this.mainStore.userId ? [this.mainStore.userId] : [],
     serviceIds: [],

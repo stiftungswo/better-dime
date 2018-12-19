@@ -12,13 +12,9 @@ import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { Observer } from 'mobx-react';
 
 const template = {
-  end: moment()
-    .endOf('year')
-    .format('YYYY-MM-DD'),
+  end: moment().endOf('year'),
   pensum: 100,
-  start: moment()
-    .startOf('year')
-    .format('YYYY-MM-DD'),
+  start: moment().startOf('year'),
   vacation_takeover: 0,
   yearly_vacation_budget: 10080,
 };

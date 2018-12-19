@@ -11,6 +11,7 @@ import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { TextField } from '../../form/fields/common';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { dimeDate } from '../../utilities/validationHelpers';
 
 interface Props {
   onClose: () => void;
@@ -21,7 +22,7 @@ interface Props {
 
 const schema = yup.object({
   comment: yup.string().required(),
-  date: yup.string().required(),
+  date: dimeDate(),
   project_id: yup.number().required(),
 });
 
@@ -33,9 +34,10 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
   public handleSubmit = async (entity: ProjectComment) => {
     const projectCommentStore = this.props.projectCommentStore!;
     if (projectCommentStore.entity) {
-      await projectCommentStore.put(entity);
+      await projectCommentStore.put(schema.cast(entity));
     } else {
-      await projectCommentStore.post(entity);
+      //TODO widen filters to make sure the new comment is visible (see TimetrackFormDialog)
+      await projectCommentStore.post(schema.cast(entity));
     }
     await projectCommentStore.fetchFiltered(this.props.timetrackFilterStore!.filter);
     projectCommentStore.editing = false;

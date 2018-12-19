@@ -2,6 +2,7 @@
 
 import { Service } from './views/services/types';
 import { FormikBag } from 'formik';
+import { Moment } from 'moment';
 
 export interface Offer {
   id?: number;
@@ -236,8 +237,8 @@ export interface ProjectEffort {
 }
 
 export interface ProjectEffortFilter {
-  start: string;
-  end: string;
+  start: Moment;
+  end: Moment;
   combineTimes: boolean;
   employeeIds: number[];
   serviceIds: number[];
@@ -264,7 +265,7 @@ export interface ProjectEffortListing {
 
 export interface ProjectEffortTemplate {
   comment: string;
-  date: string;
+  date: Moment;
   employee_ids: number[];
   position_id: number | null;
   project_id: number | null;
@@ -274,7 +275,7 @@ export interface ProjectEffortTemplate {
 export interface ProjectComment {
   id?: number;
   comment: string;
-  date: string;
+  date: Moment | string;
   project_id?: number;
   deleted_at?: string;
   created_at?: string;

@@ -9,6 +9,8 @@ import * as Sentry from '@sentry/browser';
 const baseUrlOverride = 'BASE_URL';
 export const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
 
+export const apiDateFormat = 'YYYY-MM-DD';
+
 const KEY_TOKEN = 'dime_token';
 
 interface JwtToken {

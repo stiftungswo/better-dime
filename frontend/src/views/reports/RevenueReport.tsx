@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { Typography } from '@material-ui/core';
+import { apiDateFormat } from '../../stores/apiStore';
 
 interface Props {
   mainStore?: MainStore;
@@ -21,12 +21,8 @@ interface Props {
 )
 export class RevenueReport extends React.Component<Props> {
   public state = {
-    start: moment()
-      .startOf('year')
-      .format('YYYY-MM-DD'),
-    end: moment()
-      .endOf('year')
-      .format('YYYY-MM-DD'),
+    start: moment().startOf('year'),
+    end: moment().endOf('year'),
     grouping: 'project',
   };
 
@@ -58,11 +54,7 @@ export class RevenueReport extends React.Component<Props> {
               />
             </Grid>
             <Grid item xs={12}>
-              <a
-                href={this.props.mainStore!.getPrintUrl('reports/revenue') + '&from=' + this.state.start + '&to=' + this.state.end}
-                target={'_blank'}
-                style={{ textDecoration: 'none', color: 'white' }}
-              >
+              <a href={this.getHref()} target={'_blank'} style={{ textDecoration: 'none', color: 'white' }}>
                 <Button color={'primary'} variant="contained">
                   Herunterladen
                 </Button>
@@ -71,6 +63,13 @@ export class RevenueReport extends React.Component<Props> {
           </Grid>
         </DimeContent>
       </>
+    );
+  }
+
+  private getHref() {
+    return (
+      this.props.mainStore!.getPrintUrl('reports/revenue') +
+      `&from=${this.state.start.format(apiDateFormat)}&to=${this.state.end.format(apiDateFormat)}`
     );
   }
 }

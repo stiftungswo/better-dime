@@ -17,9 +17,9 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { MainStore } from '../../stores/mainStore';
 import { Formatter } from '../../utilities/formatter';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import moment from 'moment';
 
 const styles = createStyles({
   hideActions: {
@@ -88,9 +88,9 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
     let joinedForces: (ProjectEffortListing | ProjectComment)[] = efforts;
     joinedForces = joinedForces.concat(comments);
     joinedForces = joinedForces.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateA.getTime() - dateB.getTime();
+      const dateA = moment(a.date);
+      const dateB = moment(b.date);
+      return dateA.valueOf() - dateB.valueOf();
     });
 
     if (efforts.length > 0 || comments.length > 0) {

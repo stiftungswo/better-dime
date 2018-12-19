@@ -3,6 +3,7 @@ import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, Proj
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
 import { MainStore } from './mainStore';
+import { apiDateFormat } from './apiStore';
 
 export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
@@ -19,7 +20,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
   public effortTemplate: ProjectEffortTemplate = {
     comment: '',
-    date: moment().format('YYYY-MM-DD'),
+    date: moment(),
     employee_ids: this.mainStore.userId ? [this.mainStore.userId] : [],
     position_id: null,
     project_id: null,
@@ -56,8 +57,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     try {
       const res = await this.mainStore.api.get<ProjectEffortListing[]>('/project_efforts', {
         params: {
-          start: filter.start,
-          end: filter.end,
+          start: filter.start.format(apiDateFormat),
+          end: filter.end.format(apiDateFormat),
           employee_ids: filter.employeeIds.join(','),
           project_ids: filter.projectIds.join(','),
           service_ids: filter.serviceIds.join(','),

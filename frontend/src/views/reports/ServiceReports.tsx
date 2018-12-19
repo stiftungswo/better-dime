@@ -11,6 +11,7 @@ import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { ExportGroupingSelector } from '../../form/entitySelector/ExportGroupingSelector';
 import { Typography } from '@material-ui/core';
+import { apiDateFormat } from '../../stores/apiStore';
 
 interface Props {
   mainStore?: MainStore;
@@ -22,12 +23,8 @@ interface Props {
 )
 export class ServiceReports extends React.Component<Props> {
   public state = {
-    start: moment()
-      .startOf('year')
-      .format('YYYY-MM-DD'),
-    end: moment()
-      .endOf('year')
-      .format('YYYY-MM-DD'),
+    start: moment().startOf('year'),
+    end: moment().endOf('year'),
     grouping: 'project',
   };
 
@@ -71,19 +68,7 @@ export class ServiceReports extends React.Component<Props> {
               />
             </Grid>
             <Grid item xs={12}>
-              <a
-                href={
-                  this.props.mainStore!.getPrintUrl('reports/service_hours') +
-                  '&start=' +
-                  this.state.start +
-                  '&end=' +
-                  this.state.end +
-                  '&group_by=' +
-                  this.state.grouping
-                }
-                target={'_blank'}
-                style={{ textDecoration: 'none', color: 'white' }}
-              >
+              <a href={this.getHref()} target={'_blank'} style={{ textDecoration: 'none', color: 'white' }}>
                 <Button color={'primary'} variant="contained">
                   Herunterladen
                 </Button>
@@ -92,6 +77,13 @@ export class ServiceReports extends React.Component<Props> {
           </Grid>
         </DimeContent>
       </>
+    );
+  }
+
+  private getHref() {
+    return (
+      this.props.mainStore!.getPrintUrl('reports/service_hours') +
+      `&start=${this.state.start.format(apiDateFormat)}&end=${this.state.end.format(apiDateFormat)}&group_by=${this.state.grouping}`
     );
   }
 }

@@ -22,6 +22,8 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import moment from 'moment';
 import { ProjectStore } from '../../stores/projectStore';
 import { captureException } from '../../utilities/helpers';
+import { apiDateFormat } from '../../stores/apiStore';
+import { dimeDate } from '../../utilities/validationHelpers';
 
 interface Props {
   onClose: () => void;
@@ -36,7 +38,7 @@ const schema = yup.object({
   comment: yup.string(),
   employee_id: yup.number().required(),
   position_id: yup.number().required(),
-  date: yup.string().required(),
+  date: dimeDate().required(),
   value: yup.number().required(),
 });
 
@@ -56,14 +58,14 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
       await Promise.all([
         this.widenFilterSettings(entity),
         ...entity.employee_ids.map((e: number) => {
-          const newEffort: ProjectEffort = { employee_id: e, ...entity } as ProjectEffort;
+          const newEffort = { employee_id: e, ...entity, date: entity.date.format(apiDateFormat) } as ProjectEffort;
           return effortStore.post(newEffort);
         }),
       ]);
     }
 
     if ('comment' in entity && entity.comment !== '') {
-      const newProjectComment: ProjectComment = { ...entity } as ProjectComment;
+      const newProjectComment: ProjectComment = { ...entity, date: entity.date.format(apiDateFormat) } as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
       await this.props.projectCommentStore!.fetchFiltered(filter);
     }
@@ -105,11 +107,11 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     const filterStart = moment(filter.start);
 
     if (effortDate.isAfter(filterEnd)) {
-      filter.end = effortDate.format('YYYY-MM-DD');
+      filter.end = effortDate.clone();
     }
 
     if (effortDate.isBefore(filterStart)) {
-      filter.start = effortDate.format('YYYY-MM-DD');
+      filter.start = effortDate.clone();
     }
   };
 

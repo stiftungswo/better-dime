@@ -3,6 +3,7 @@ import { ProjectComment, ProjectEffortFilter } from '../types';
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
 import { MainStore } from './mainStore';
+import { apiDateFormat } from './apiStore';
 
 export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   protected get entityName(): { singular: string; plural: string } {
@@ -22,7 +23,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   @observable
   public projectCommentTemplate: ProjectComment = {
     comment: '',
-    date: moment().format('YYYY-MM-DD'),
+    date: moment(),
     project_id: undefined,
   };
 
@@ -51,8 +52,8 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     try {
       const res = await this.mainStore.api.get<ProjectComment[]>('/project_comments', {
         params: {
-          start: filter.start,
-          end: filter.end,
+          start: filter.start.format(apiDateFormat),
+          end: filter.end.format(apiDateFormat),
         },
       });
       this.projectComments = res.data;

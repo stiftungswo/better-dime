@@ -1,6 +1,7 @@
 import { action, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import moment from 'moment';
+import { apiDateFormat } from './apiStore';
 
 export interface DailyReportResponse {
   dates: string[];
@@ -28,16 +29,12 @@ export class DailyReportStore {
   public detail?: DailyReportEffort[] = undefined;
 
   @observable
-  //TODO centralize this formating somehow
   public from = moment()
     .subtract(6, 'days')
-    .startOf('day')
-    .format('YYYY-MM-DD');
+    .startOf('day');
 
   @observable
-  public to = moment()
-    .endOf('day')
-    .format('YYYY-MM-DD');
+  public to = moment().endOf('day');
 
   constructor(private mainStore: MainStore) {}
 
@@ -45,8 +42,8 @@ export class DailyReportStore {
   public async fetch() {
     const res = await this.mainStore.api.get<DailyReportResponse>('/reports/daily', {
       params: {
-        from: this.from,
-        to: this.to,
+        from: this.from.format(apiDateFormat),
+        to: this.to.format(apiDateFormat),
       },
     });
     this.result = observable(res.data);
