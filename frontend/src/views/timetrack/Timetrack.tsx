@@ -98,7 +98,7 @@ export default class Timetrack extends React.Component<Props> {
       }
       case 'project': {
         const entities = filterStore.projects;
-        effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
+        effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0) + filterStore.comments.length;
         groups = () =>
           entities.map(e => (
             <TimetrackProjectGroup

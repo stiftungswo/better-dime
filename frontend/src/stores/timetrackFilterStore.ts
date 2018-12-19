@@ -7,6 +7,7 @@ import { ProjectStore } from './projectStore';
 import { ServiceListing } from '../types';
 import { EffortStore } from './effortStore';
 import { ServiceStore } from './serviceStore';
+import { ProjectCommentStore } from './projectCommentStore';
 
 export type Grouping = 'employee' | 'project' | 'service';
 type Listing = ProjectListing | ServiceListing | EmployeeListing;
@@ -35,7 +36,8 @@ export class TimetrackFilterStore {
     private employeeStore: EmployeeStore,
     private projectStore: ProjectStore,
     private serviceStore: ServiceStore,
-    private effortStore: EffortStore
+    private effortStore: EffortStore,
+    private projectCommentStore: ProjectCommentStore
   ) {}
 
   @computed
@@ -77,13 +79,28 @@ export class TimetrackFilterStore {
     });
   }
 
+  appendEfforts = <T extends Listing>(entities: T[], filterKey: keyof ProjectEffortListing) =>
+    entities.map(e => Object.assign({}, e, { efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id) }));
+
   @computed
   get projects() {
-    return this.getGroup({
-      filterIds: this.projectEffortFilter.projectIds,
-      entities: this.projectStore.projects,
-      filterEfforts: (effort, project) => effort.project_id === project.id,
-    });
+    const filter = this.projectEffortFilter;
+    const filteredProjects =
+      filter.projectIds.length === 0
+        ? this.projectStore.projects
+        : this.projectStore.projects.filter(p => filter.projectIds.includes(p.id));
+    const projectsWithEfforts = this.appendEfforts(filteredProjects, 'project_id');
+
+    if (filter.showEmptyGroups) {
+      return projectsWithEfforts;
+    } else {
+      return projectsWithEfforts.filter(p => {
+        if (p.efforts.length > 0) {
+          return true;
+        }
+        return this.projectCommentStore.projectComments.filter(c => c.project_id === p.id).length > 0;
+      });
+    }
   }
 
   @computed
@@ -93,5 +110,11 @@ export class TimetrackFilterStore {
       entities: this.serviceStore.services,
       filterEfforts: (effort, service) => effort.service_id === service.id,
     });
+  }
+
+  @computed
+  get comments() {
+    const filterIds = this.projectEffortFilter.projectIds;
+    return this.projectCommentStore.projectComments.filter(c => filterIds.includes(c.project_id!));
   }
 }

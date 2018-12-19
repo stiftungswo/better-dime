@@ -66,7 +66,15 @@ class StoreProviderInner extends React.Component<Props> {
     const serviceStore = new ServiceStore(mainStore);
     const projectStore = new ProjectStore(mainStore);
     const effortStore = new EffortStore(mainStore);
-    const timetrackFilterStore = new TimetrackFilterStore(mainStore, employeeStore, projectStore, serviceStore, effortStore);
+    const projectCommentStore = new ProjectCommentStore(mainStore);
+    const timetrackFilterStore = new TimetrackFilterStore(
+      mainStore,
+      employeeStore,
+      projectStore,
+      serviceStore,
+      effortStore,
+      projectCommentStore
+    );
 
     this.stores = {
       formatter,
@@ -86,7 +94,7 @@ class StoreProviderInner extends React.Component<Props> {
       invoiceStore: new InvoiceStore(mainStore),
       costgroupStore: new CostgroupStore(mainStore),
       effortStore,
-      projectCommentStore: new ProjectCommentStore(mainStore),
+      projectCommentStore,
       peopleStore: new PeopleStore(mainStore),
       companyStore: new CompanyStore(mainStore),
       customerImportStore: new CustomerImportStore(mainStore),
