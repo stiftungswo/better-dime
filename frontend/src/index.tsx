@@ -39,5 +39,3 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
-
-export const todo = () => console.error('not yet implemented');
