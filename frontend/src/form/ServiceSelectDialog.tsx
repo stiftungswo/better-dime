@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button/Button';
 import { ServiceStore } from '../stores/serviceStore';
 import { formikFieldCompatible } from './fields/Select';
 import { ServiceSelector } from './entitySelector/ServiceSelector';
-import { Service } from '../views/services/types';
+import { Service } from '../types';
 
 interface Props {
   open: boolean;

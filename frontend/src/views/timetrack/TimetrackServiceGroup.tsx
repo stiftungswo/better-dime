@@ -1,19 +1,23 @@
 import React from 'react';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { ProjectEffortListing } from '../../types';
+import { ProjectEffortListing, ServiceListing } from '../../types';
 import { Column } from '../../layout/Overview';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
-import { TimetrackServiceGroupProps } from './types';
+import { EntityGroup, WithEfforts } from './types';
+
+interface Props extends EntityGroup {
+  entity: ServiceListing & WithEfforts;
+}
 
 @compose(
   inject('effortStore', 'formatter'),
   observer
 )
-export default class TimetrackServiceGroup extends React.Component<TimetrackServiceGroupProps> {
+export default class TimetrackServiceGroup extends React.Component<Props> {
   private columns: Column<ProjectEffortListing>[];
 
-  constructor(props: TimetrackServiceGroupProps) {
+  constructor(props: Props) {
     super(props);
     const formatter = props.formatter!;
     this.columns = [

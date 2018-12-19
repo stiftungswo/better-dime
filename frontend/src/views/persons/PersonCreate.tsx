@@ -3,7 +3,8 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import PersonForm from './PersonForm';
 import compose from '../../utilities/compose';
-import { PeopleStore, Person } from 'src/stores/peopleStore';
+import { PeopleStore } from 'src/stores/peopleStore';
+import { Person } from '../../types';
 
 export interface Props extends RouteComponentProps {
   peopleStore?: PeopleStore;
@@ -28,6 +29,7 @@ export default class PersonCreate extends React.Component<Props> {
 
   public render() {
     const person: Person = {
+      type: 'person',
       id: 0,
       comment: '',
       company_id: null,

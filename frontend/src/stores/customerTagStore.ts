@@ -1,12 +1,7 @@
-import { action, observable, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-export interface CustomerTag {
-  id: number;
-  archived: boolean;
-  name: string;
-}
+import { CustomerTag } from '../types';
 
 export class CustomerTagStore extends AbstractStore<CustomerTag> {
   @observable

@@ -1,20 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-import { Address, PhoneNumber } from '../types';
-
-export interface Company {
-  id: number;
-  comment: string;
-  email: string;
-  hidden: boolean;
-  name: string;
-  rate_group_id: number;
-  tags?: number[];
-  persons?: number[];
-  addresses?: Address[];
-  phone_numbers?: PhoneNumber[];
-}
+import { Company } from '../types';
 
 export class CompanyStore extends AbstractStore<Company> {
   @observable

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProjectComment, ProjectEffortListing } from '../../types';
 import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
-import { ProjectListing } from '../../stores/projectStore';
+import { ProjectListing } from '../../types';
 import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import compose from '../../utilities/compose';

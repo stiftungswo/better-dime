@@ -7,8 +7,9 @@ import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
 import { Field } from 'formik';
-import { CustomerTag, CustomerTagStore } from '../../stores/customerTagStore';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
+import { CustomerTag } from '../../types';
 
 interface Props {
   mainStore?: MainStore;

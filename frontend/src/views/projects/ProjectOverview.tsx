@@ -1,10 +1,10 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ProjectListing, ProjectStore } from '../../stores/projectStore';
+import { ProjectStore } from '../../stores/projectStore';
 import compose from '../../utilities/compose';
 import Overview, { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
-import { Project } from '../../types';
+import { Project, ProjectListing } from '../../types';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 export type Props = {

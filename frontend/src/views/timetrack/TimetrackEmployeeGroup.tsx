@@ -1,22 +1,26 @@
 import React from 'react';
-import { ProjectEffortListing } from '../../types';
+import { EmployeeListing, ProjectEffortListing } from '../../types';
 import { Column } from '../../layout/Overview';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { TimetrackEmployeeGroupProps } from './types';
+import { EntityGroup, WithEfforts } from './types';
 import { AddEffortIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
 import { sum } from '../../utilities/helpers';
+
+interface Props extends EntityGroup {
+  entity: EmployeeListing & WithEfforts;
+}
 
 @compose(
   inject('effortStore', 'formatter'),
   observer
 )
-export default class TimetrackEmployeeGroup extends React.Component<TimetrackEmployeeGroupProps> {
+export default class TimetrackEmployeeGroup extends React.Component<Props> {
   private columns: Column<ProjectEffortListing>[];
 
-  public constructor(props: TimetrackEmployeeGroupProps) {
+  public constructor(props: Props) {
     super(props);
     const formatter = props.formatter!;
     this.columns = [

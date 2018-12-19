@@ -1,11 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { InvoiceListing, InvoiceStore } from '../../stores/invoiceStore';
+import { InvoiceStore } from '../../stores/invoiceStore';
 import compose from '../../utilities/compose';
 import Overview, { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { MainStore } from '../../stores/mainStore';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { InvoiceListing } from '../../types';
 
 export type Props = {
   mainStore?: MainStore;

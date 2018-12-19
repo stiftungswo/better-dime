@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Holiday, HolidayStore } from '../../stores/holidayStore';
+import { HolidayStore } from '../../stores/holidayStore';
 import { Field } from 'formik';
 import { Column } from '../../layout/Overview';
 import { TextField } from '../../form/fields/common';
@@ -11,6 +11,7 @@ import { DurationField } from '../../form/fields/DurationField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { holidaySchema, holidayTemplate } from './holidaySchema';
+import { Holiday } from '../../types';
 
 interface Props {
   holidayStore?: HolidayStore;

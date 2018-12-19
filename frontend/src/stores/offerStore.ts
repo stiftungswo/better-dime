@@ -1,13 +1,7 @@
 import { computed, observable } from 'mobx';
-import { Offer, Project } from '../types';
+import { Offer, OfferListing, Project } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-export interface OfferListing {
-  id: number;
-  name: string;
-  short_description: string;
-}
 
 export class OfferStore extends AbstractStore<Offer, OfferListing> {
   protected get entityName(): { singular: string; plural: string } {

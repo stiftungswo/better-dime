@@ -1,27 +1,7 @@
 import { computed, observable } from 'mobx';
-import { Invoice, Project } from '../types';
+import { Invoice, Project, ProjectListing } from '../types';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-export interface ProjectListing {
-  id: number;
-  accountant_id: number;
-  customer_id: number | null;
-  address_id: number;
-  archived: boolean;
-  category_id: number;
-  chargeable: boolean;
-  deadline: null | string;
-  description: string;
-  fixed_price: number | null;
-  name: string;
-  offer_id: number | null;
-  rate_group_id: number;
-  vacation_project: boolean;
-  created_at: string;
-  updated_at: string;
-  deletable: boolean;
-}
 
 export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   protected get entityName(): { singular: string; plural: string } {

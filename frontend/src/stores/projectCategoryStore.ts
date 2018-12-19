@@ -1,12 +1,7 @@
-import { action, observable, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-export interface ProjectCategory {
-  archived: boolean;
-  id: number;
-  name: string;
-}
+import { ProjectCategory } from '../types';
 
 export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   protected get entityName() {

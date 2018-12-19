@@ -1,7 +1,8 @@
 import { computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-import { Service, ServiceListing } from '../views/services/types';
+import { Service } from '../types';
+import { ServiceListing } from '../types';
 
 export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected get entityName() {

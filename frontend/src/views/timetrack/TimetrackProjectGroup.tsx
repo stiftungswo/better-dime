@@ -2,15 +2,21 @@ import React from 'react';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { TimetrackProjectCombinedTable } from './TimetrackProjectCombinedTable';
-import { TimetrackProjectGroupProps } from './types';
+import { EntityGroup, WithEfforts } from './types';
 import { TimetrackProjectSoloTable } from './TimetrackProjectSoloTable';
 import { sum } from '../../utilities/helpers';
+import { ProjectListing } from '../../types';
+
+interface Props extends EntityGroup {
+  entity: ProjectListing & WithEfforts;
+  showProjectComments: boolean;
+}
 
 @compose(
   inject('effortStore', 'formatter'),
   observer
 )
-export default class TimetrackProjectGroup extends React.Component<TimetrackProjectGroupProps> {
+export default class TimetrackProjectGroup extends React.Component<Props> {
   public onEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
     this.props.effortStore!.effortTemplate!.project_id = this.props.entity.id;

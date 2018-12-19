@@ -1,14 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-import { DimeDate } from '../types';
-
-export interface Holiday {
-  id: number;
-  duration: number;
-  date: DimeDate;
-  name: string;
-}
+import { Holiday } from '../types';
 
 export class HolidayStore extends AbstractStore<Holiday> {
   protected get entityName() {

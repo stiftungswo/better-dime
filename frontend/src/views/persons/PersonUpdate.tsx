@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PeopleStore, Person } from '../../stores/peopleStore';
+import { PeopleStore } from '../../stores/peopleStore';
 import { RouteComponentProps } from 'react-router';
 import PersonForm from './PersonForm';
 import compose from '../../utilities/compose';
 import { toJS } from 'mobx';
-import { Address } from 'src/types';
+import { Address, Person } from 'src/types';
 
 interface PersonDetailRouterProps {
   id?: string;

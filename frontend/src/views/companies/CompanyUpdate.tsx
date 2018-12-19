@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { CompanyStore, Company } from '../../stores/companyStore';
+import { CompanyStore } from '../../stores/companyStore';
 import { RouteComponentProps } from 'react-router';
 import compose from '../../utilities/compose';
 import { toJS } from 'mobx';
-import { Address } from 'src/types';
+import { Address, Company } from 'src/types';
 import CompanyForm from './CompanyForm';
 
 interface PersonDetailRouterProps {

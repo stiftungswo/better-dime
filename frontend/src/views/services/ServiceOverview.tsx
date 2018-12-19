@@ -1,12 +1,13 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Service, ServiceListing } from './types';
+import { Service } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ServiceListing } from '../../types';
 
 export type Props = {
   serviceStore?: ServiceStore;

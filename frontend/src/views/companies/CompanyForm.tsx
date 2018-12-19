@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { PeopleStore, Person } from '../../stores/peopleStore';
+import { PeopleStore } from '../../stores/peopleStore';
 import { Field, FormikProps } from 'formik';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -9,7 +9,7 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import PhoneNumberSubformInline from '../persons/PhoneNumbersSubformInline';
 import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
-import { Company } from 'src/stores/companyStore';
+import { Company, Person } from 'src/types';
 import { OverviewTable } from 'src/layout/OverviewTable';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from 'src/stores/mainStore';

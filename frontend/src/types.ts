@@ -1,8 +1,9 @@
-//TODO clean this up; either pull the Service types here, or split this up into several files
-
-import { Service } from './views/services/types';
 import { FormikBag } from 'formik';
 import { Moment } from 'moment';
+
+// --
+// Domain Types
+// --
 
 export interface Offer {
   id?: number;
@@ -134,6 +135,31 @@ export interface ProjectCostgroup {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+}
+
+export interface Service {
+  id?: number;
+  name: string;
+  description: string;
+  vat: number;
+  chargeable: boolean;
+  archived: boolean;
+  service_rates: ServiceRate[];
+}
+
+export interface ServiceRate {
+  id?: number;
+  rate_group_id: number;
+  service_id: number;
+  rate_unit_id: number;
+  value: number;
+}
+
+export interface ServiceListing {
+  id: number;
+  name: string;
+  description: string;
+  archived: boolean;
 }
 
 export interface ProjectPosition {
@@ -282,32 +308,39 @@ export interface ProjectComment {
   updated_at?: string;
 }
 
-// TODO: we should be able to define customer something like this
-// type Customer = Person | Company;
-// interface Person {
-//   type: 'person';
-//   ...
-// }
-
-export interface Customer {
+export interface Company {
+  type: 'company';
   id: number;
-  type: CustomerType;
   comment: string;
   email: string;
   hidden: boolean;
-  name?: string;
+  name: string;
   rate_group_id: number;
-  created_at: string;
-  updated_at: string;
+  tags?: number[];
   persons?: number[];
-  tags: number[];
-  addresses: Address[];
-  company_id?: number | null;
-  department?: null;
-  first_name?: string;
-  last_name?: string;
-  salutation?: string;
+  addresses?: Address[];
+  phone_numbers?: PhoneNumber[];
 }
+
+export interface Person {
+  type: 'person';
+  id: number;
+  comment: string;
+  company?: Company;
+  company_id: number | null;
+  department: string | null;
+  email: string;
+  first_name: string;
+  hidden: boolean;
+  last_name: string;
+  rate_group_id: number | null;
+  salutation: string;
+  tags: number[];
+  addresses?: Address[];
+  phone_numbers?: PhoneNumber[];
+}
+
+export type Customer = Person | Company;
 
 export interface Address {
   id: number;
@@ -321,24 +354,6 @@ export interface Address {
   created_at: string;
   updated_at: string;
 }
-
-export enum CustomerType {
-  Company = 'company',
-  Person = 'person',
-}
-
-//tslint:disable-next-line:no-any ; really don't care for that type, and it comes from deep inside Formik
-export type HandleFormikSubmit<Values> = (values: Values, formikBag: FormikBag<any, Values>) => void;
-
-export interface Listing {
-  id?: number;
-  archived?: boolean;
-}
-
-export type DimeDate = string;
-
-//tslint:disable-next-line:no-any ; If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
-export type FormValues = any;
 
 export interface WorkPeriod {
   id: number;
@@ -363,3 +378,102 @@ export interface CustomerFilter {
   export_format: number;
   include_hidden: boolean;
 }
+
+export interface EmployeeListing {
+  id: number;
+  archived: boolean;
+  email: string;
+  first_name: string;
+  last_name: string;
+  can_login: boolean;
+}
+
+export interface ProjectListing {
+  id: number;
+  accountant_id: number;
+  customer_id: number | null;
+  address_id: number;
+  archived: boolean;
+  category_id: number;
+  chargeable: boolean;
+  deadline: null | string;
+  description: string;
+  fixed_price: number | null;
+  name: string;
+  offer_id: number | null;
+  rate_group_id: number;
+  vacation_project: boolean;
+  created_at: string;
+  updated_at: string;
+  deletable: boolean;
+}
+
+export interface InvoiceListing {
+  id: number;
+  accountant_id: number;
+  address_id: number;
+  description: string;
+  end: string;
+  fixed_price: null;
+  project_id: number;
+  name: string;
+  start: string;
+}
+
+export interface OfferListing {
+  id: number;
+  name: string;
+  short_description: string;
+}
+
+export interface RateGroup {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export interface CustomerTag {
+  id: number;
+  archived: boolean;
+  name: string;
+}
+
+export interface Holiday {
+  id: number;
+  duration: number;
+  date: DimeDate;
+  name: string;
+}
+
+export interface ProjectCategory {
+  archived: boolean;
+  id: number;
+  name: string;
+}
+
+export interface RateUnit {
+  id: number;
+  billing_unit: string;
+  effort_unit: string;
+  factor: number;
+  is_time: boolean;
+  name: string;
+  archived: boolean;
+}
+
+// --
+// Helper types
+// --
+
+//tslint:disable-next-line:no-any ; really don't care for that type, and it comes from deep inside Formik
+export type HandleFormikSubmit<Values> = (values: Values, formikBag: FormikBag<any, Values>) => void;
+
+export interface Listing {
+  id?: number;
+  archived?: boolean;
+}
+
+export type DimeDate = string;
+
+//tslint:disable-next-line:no-any ; If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
+export type FormValues = any;

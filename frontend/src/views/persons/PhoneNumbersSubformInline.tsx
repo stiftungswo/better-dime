@@ -6,15 +6,15 @@ import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { PhoneNumber } from '../../types';
+import { Person, PhoneNumber } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import TableToolbar from '../../layout/TableToolbar';
-import { PeopleStore, Person } from 'src/stores/peopleStore';
+import { PeopleStore } from 'src/stores/peopleStore';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { TextField } from 'src/form/fields/common';
 import Select from 'src/form/fields/Select';
 import { DimePaper } from '../../layout/DimePaper';
-import { Company } from '../../stores/companyStore';
+import { Company } from '../../types';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
 export interface Props {

@@ -3,7 +3,8 @@ import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
-import { ProjectCategory, ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { ProjectCategory } from '../../types';
 
 interface Props extends FormProps {
   projectCategoryStore?: ProjectCategoryStore;

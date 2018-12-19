@@ -1,9 +1,10 @@
 import React from 'react';
-import { CustomerTag, CustomerTagStore } from '../../stores/customerTagStore';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { FormProps } from '../fields/common';
 import Select from '../fields/Select';
+import { CustomerTag } from '../../types';
 
 interface Props extends FormProps {
   customerTagStore?: CustomerTagStore;

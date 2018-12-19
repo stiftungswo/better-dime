@@ -1,11 +1,12 @@
 import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import Select, { formikFieldCompatible } from '../Select';
-import { RateUnit, RateUnitStore } from '../../../stores/rateUnitStore';
+import { RateUnitStore } from '../../../stores/rateUnitStore';
 import { InputFieldProps } from '../common';
 import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { LoadingSpinner } from '../../../layout/LoadingSpinner';
+import { RateUnit } from '../../../types';
 
 interface Props extends InputFieldProps {
   rateUnitId: number;

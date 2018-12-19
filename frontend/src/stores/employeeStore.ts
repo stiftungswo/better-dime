@@ -1,16 +1,7 @@
 import { computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
-import { Employee } from '../types';
+import { Employee, EmployeeListing } from '../types';
 import { AbstractStore } from './abstractStore';
-
-export interface EmployeeListing {
-  id: number;
-  archived: boolean;
-  email: string;
-  first_name: string;
-  last_name: string;
-  can_login: boolean;
-}
 
 export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   @observable

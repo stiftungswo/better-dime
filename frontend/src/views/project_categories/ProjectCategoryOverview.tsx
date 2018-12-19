@@ -7,8 +7,9 @@ import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
 import { Field } from 'formik';
-import { ProjectCategory, ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
+import { ProjectCategory } from '../../types';
 
 interface Props {
   mainStore?: MainStore;

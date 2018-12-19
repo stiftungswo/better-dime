@@ -4,7 +4,7 @@ import { Field, FieldArray, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
-import { Service, ServiceRate } from './types';
+import { Service } from '../../types';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -21,6 +21,7 @@ import { serviceSchema } from './serviceSchema';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceRate } from '../../types';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;

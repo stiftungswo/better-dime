@@ -3,7 +3,8 @@ import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import Overview, { Column } from '../../layout/Overview';
-import { RateGroup, RateGroupStore } from '../../stores/rateGroupStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { RateGroup } from '../../types';
 
 interface Props {
   mainStore?: MainStore;

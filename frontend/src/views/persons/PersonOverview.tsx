@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PeopleStore, Person } from '../../stores/peopleStore';
+import { PeopleStore } from '../../stores/peopleStore';
 import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { InvoiceListing } from '../../stores/invoiceStore';
+import { InvoiceListing } from '../../types';
+import { Person } from '../../types';
 
 type Props = {
   peopleStore?: PeopleStore;

@@ -4,7 +4,7 @@ import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
-import { ServiceListing } from '../../views/services/types';
+import { ServiceListing } from '../../types';
 
 interface Props extends FormProps {
   serviceStore?: ServiceStore;

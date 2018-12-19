@@ -1,9 +1,10 @@
 import React from 'react';
-import { RateUnit, RateUnitStore } from '../../stores/rateUnitStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
 import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import Select from '../fields/Select';
 import compose from '../../utilities/compose';
+import { RateUnit } from '../../types';
 
 interface Props extends FormProps {
   rateUnitStore?: RateUnitStore;

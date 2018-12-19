@@ -1,16 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
-
-export interface RateUnit {
-  id: number;
-  billing_unit: string;
-  effort_unit: string;
-  factor: number;
-  is_time: boolean;
-  name: string;
-  archived: boolean;
-}
+import { RateUnit } from '../types';
 
 export class RateUnitStore extends AbstractStore<RateUnit> {
   protected get entityName() {

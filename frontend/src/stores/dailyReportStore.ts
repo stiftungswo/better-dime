@@ -8,7 +8,7 @@ export interface DailyReportResponse {
   employees: Employee[];
 }
 
-export interface Employee {
+interface Employee {
   employee_id: number;
   name: string;
   efforts: { [key: string]: DailyReportEffort[] };

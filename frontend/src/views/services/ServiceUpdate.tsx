@@ -4,7 +4,7 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { RouteComponentProps } from 'react-router';
 import { InjectedNotistackProps } from 'notistack';
 import ServiceForm from './ServiceForm';
-import { Service } from './types';
+import { Service } from '../../types';
 import { inject } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { toJS } from 'mobx';

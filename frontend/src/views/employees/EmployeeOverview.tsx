@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { EmployeeListing, EmployeeStore } from '../../stores/employeeStore';
-import { Employee } from '../../types';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { Employee, EmployeeListing } from '../../types';
 import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';

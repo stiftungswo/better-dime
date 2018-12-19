@@ -3,7 +3,8 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import CompanyForm from './CompanyForm';
 import compose from '../../utilities/compose';
-import { Company, CompanyStore } from 'src/stores/companyStore';
+import { CompanyStore } from 'src/stores/companyStore';
+import { Company } from '../../types';
 
 export interface Props extends RouteComponentProps {
   companyStore?: CompanyStore;
@@ -27,6 +28,7 @@ export default class CompanyCreate extends React.Component<Props> {
 
   public render() {
     const company: Company = {
+      type: 'company',
       id: 0,
       comment: '',
       email: '',

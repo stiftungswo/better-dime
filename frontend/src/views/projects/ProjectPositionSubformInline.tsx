@@ -14,7 +14,7 @@ import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Service } from '../services/types';
+import { Service } from '../../types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { MainStore } from '../../stores/mainStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';

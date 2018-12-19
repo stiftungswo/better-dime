@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { Person } from '../../stores/peopleStore';
+import { Person } from '../../types';
 import { Field, FormikProps } from 'formik';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';

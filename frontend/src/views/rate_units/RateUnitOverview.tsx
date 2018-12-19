@@ -3,13 +3,14 @@ import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
-import { RateUnit, RateUnitStore } from '../../stores/rateUnitStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import { Field } from 'formik';
 import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
 import { Grid } from '@material-ui/core';
+import { RateUnit } from '../../types';
 
 interface Props {
   mainStore?: MainStore;

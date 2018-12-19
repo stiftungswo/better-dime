@@ -1,10 +1,10 @@
-import { ProjectEffortFilter, ProjectEffortListing } from '../types';
+import { EmployeeListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing } from '../types';
 import { MainStore } from './mainStore';
 import { computed, observable, ObservableMap } from 'mobx';
 import moment from 'moment';
-import { EmployeeListing, EmployeeStore } from './employeeStore';
-import { ProjectListing, ProjectStore } from './projectStore';
-import { ServiceListing } from '../views/services/types';
+import { EmployeeStore } from './employeeStore';
+import { ProjectStore } from './projectStore';
+import { ServiceListing } from '../types';
 import { EffortStore } from './effortStore';
 import { ServiceStore } from './serviceStore';
 

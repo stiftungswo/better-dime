@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Company, CompanyStore } from '../../stores/companyStore';
+import { CompanyStore } from '../../stores/companyStore';
 import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { Company } from '../../types';
 
 type Props = {
   companyStore?: CompanyStore;
