@@ -1,13 +1,14 @@
-import { EmployeeListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing } from '../types';
+import { EmployeeListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing, ServiceListing } from '../types';
 import { MainStore } from './mainStore';
 import { computed, observable, ObservableMap } from 'mobx';
 import moment from 'moment';
 import { EmployeeStore } from './employeeStore';
 import { ProjectStore } from './projectStore';
-import { ServiceListing } from '../types';
 import { EffortStore } from './effortStore';
 import { ServiceStore } from './serviceStore';
 import { ProjectCommentStore } from './projectCommentStore';
+import { WithEfforts } from '../views/timetrack/types';
+import { compose } from '@typed/compose';
 
 export type Grouping = 'employee' | 'project' | 'service';
 type Listing = ProjectListing | ServiceListing | EmployeeListing;
@@ -49,67 +50,54 @@ export class TimetrackFilterStore {
     this.projectEffortFilter = projectEffortFilter;
   }
 
-  private filterEmptyGroups = <T extends { efforts: ProjectEffortListing[] }>(group: T[]) => {
+  private filterBy = <T extends Listing>(filterIds: number[]) => (entities: T[]) =>
+    filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
+
+  private filterEmptyGroups = <T extends WithEfforts>(group: T[]) => {
     return this.projectEffortFilter.showEmptyGroups ? group : group.filter(g => g.efforts.length > 0);
   };
 
-  private getGroup = <T extends Listing>({
-    entities,
-    filterIds,
-    filterEfforts,
-  }: {
-    entities: T[];
-    filterIds: number[];
-    filterEfforts: (effort: ProjectEffortListing, entity: T) => boolean;
-  }): Array<T & { efforts: ProjectEffortListing[] }> => {
-    const results = filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
-    return this.filterEmptyGroups(
-      results.map(entity =>
-        Object.assign({}, entity, { efforts: this.effortStore.efforts.filter(effort => filterEfforts(effort, entity)) })
-      )
-    );
-  };
-
-  @computed
-  get employees() {
-    return this.getGroup({
-      filterIds: this.projectEffortFilter.employeeIds,
-      entities: this.employeeStore.employees,
-      filterEfforts: (effort, employee) => effort.effort_employee_id === employee.id,
-    });
-  }
-
-  appendEfforts = <T extends Listing>(entities: T[], filterKey: keyof ProjectEffortListing) =>
-    entities.map(e => Object.assign({}, e, { efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id) }));
-
-  @computed
-  get projects() {
-    const filter = this.projectEffortFilter;
-    const filteredProjects =
-      filter.projectIds.length === 0
-        ? this.projectStore.projects
-        : this.projectStore.projects.filter(p => filter.projectIds.includes(p.id));
-    const projectsWithEfforts = this.appendEfforts(filteredProjects, 'project_id');
-
-    if (filter.showEmptyGroups) {
-      return projectsWithEfforts;
+  private filterEmptyProjects = (projects: (ProjectListing & WithEfforts)[]) => {
+    if (this.projectEffortFilter.showEmptyGroups) {
+      return projects;
     } else {
-      return projectsWithEfforts.filter(p => {
+      return projects.filter(p => {
         if (p.efforts.length > 0) {
           return true;
         }
         return this.projectCommentStore.projectComments.filter(c => c.project_id === p.id).length > 0;
       });
     }
+  };
+
+  private appendEfforts = <T extends Listing>(filterKey: keyof ProjectEffortListing) => (entities: (T)[]): (T & WithEfforts)[] =>
+    entities.map(e => Object.assign({}, e, { efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id) }));
+
+  @computed
+  get employees(): (EmployeeListing & WithEfforts)[] {
+    return compose(
+      this.filterEmptyGroups,
+      this.appendEfforts('effort_employee_id'),
+      this.filterBy(this.projectEffortFilter.employeeIds)
+    )(this.employeeStore.employees) as any; //tslint:disable-line:no-any ; compose is messing up the return type
   }
 
   @computed
-  get services() {
-    return this.getGroup({
-      filterIds: this.projectEffortFilter.serviceIds,
-      entities: this.serviceStore.services,
-      filterEfforts: (effort, service) => effort.service_id === service.id,
-    });
+  get services(): (ServiceListing & WithEfforts)[] {
+    return compose(
+      this.filterEmptyGroups,
+      this.appendEfforts('service_id'),
+      this.filterBy(this.projectEffortFilter.serviceIds)
+    )(this.serviceStore.services) as any; //tslint:disable-line:no-any ; compose is messing up the return type
+  }
+
+  @computed
+  get projects(): (ProjectListing & WithEfforts)[] {
+    return compose(
+      this.filterEmptyProjects,
+      this.appendEfforts('project_id'),
+      this.filterBy(this.projectEffortFilter.projectIds)
+    )(this.projectStore.projects);
   }
 
   @computed

@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.2.2",
     "@material-ui/icons": "^3.0.1",
     "@sentry/browser": "^4.3.0",
+    "@typed/compose": "^1.0.0",
     "@types/classnames": "^2.2.6",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "^4.14.119",

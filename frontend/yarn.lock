@@ -204,6 +204,11 @@
   dependencies:
     "@sentry/types" "4.3.0"
 
+"@typed/compose@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@typed/compose/-/compose-1.0.0.tgz#e4e5fc7132b84c701acb5346a361da28fad63081"
+  integrity sha1-5OX8cTK4THAay1NGo2HaKPrWMIE=
+
 "@types/classnames@^2.2.6":
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.6.tgz#dbe8a666156d556ed018e15a4c65f08937c3f628"
