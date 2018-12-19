@@ -19,6 +19,7 @@ import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
 import { ApiStore } from '../stores/apiStore';
+import { AxiosError } from 'axios';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -71,15 +72,18 @@ const loginSchema = yup.object({
   observer
 )
 class Login extends React.Component<Props> {
-  public handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = (values, formikBag) => {
-    this.props
-      .apiStore!.postLogin({ ...values })
-      .then(() => {
-        this.props.history.replace('/');
-      })
-      //TODO we should differentiate whether the user input an error or the backend is crashing and the user should stop trying
-      .catch(e => this.props.mainStore!.displayError('Anmeldung fehlgeschlagen'))
-      .then(() => formikBag.setSubmitting(false));
+  public handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = async (values, formikBag) => {
+    try {
+      await this.props.apiStore!.postLogin({ ...values });
+      this.props.history.replace('/');
+    } catch (e) {
+      if (e.toString().includes('400')) {
+        this.props.mainStore!.displayError('Ungültiger Benutzername/Passwort');
+      } else {
+        this.props.mainStore!.displayError('Bei der Anmeldung ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
+    }
+    formikBag.setSubmitting(false);
   };
 
   public render() {
