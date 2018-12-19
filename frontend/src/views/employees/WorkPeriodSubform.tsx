@@ -120,10 +120,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <DimeTableCell>{formattedHours(w.period_vacation_budget)}</DimeTableCell>
                           <DimeTableCell>{formattedHours(w.vacation_till_today)}</DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} factor={60} name={fieldName('vacation_takeover')} sign={'h'} />
+                            <Field delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} factor={504} name={fieldName('yearly_vacation_budget')} sign={'d'} />
+                            <Field delayed component={DurationField} timeUnit={'workday'} name={fieldName('yearly_vacation_budget')} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
