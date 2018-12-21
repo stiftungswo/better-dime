@@ -53,15 +53,11 @@ export class CustomerExportForm extends React.Component<Props> {
 
                 <Grid item xs={12} md={4}>
                   <a
-                    href={
-                      this.props.mainStore!.getPrintUrl('customers/export') +
-                      '&customer_tags=' +
-                      formikProps.values.customer_tags.join(',') +
-                      '&include_hidden=' +
-                      (formikProps.values.include_hidden ? '1' : '0') +
-                      '&export_format=' +
-                      formikProps.values.export_format
-                    }
+                    href={this.props.mainStore!.apiURL('customers/export', {
+                      customer_tags: formikProps.values.customer_tags.join(','),
+                      include_hidden: formikProps.values.include_hidden ? '1' : '0',
+                      export_format: formikProps.values.export_format,
+                    })}
                     target={'_blank'}
                     style={{ textDecoration: 'none', color: 'white' }}
                   >

@@ -15,3 +15,5 @@ export const sum = (arr: number[]) => arr.reduce((a, b) => Number(a) + Number(b)
 
 // tslint:disable-next-line:no-any
 export const captureException = (e: any) => Sentry.captureException(e);
+
+export { default as buildURL } from 'axios/lib/helpers/buildURL';

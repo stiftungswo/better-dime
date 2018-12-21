@@ -67,9 +67,9 @@ export class RevenueReport extends React.Component<Props> {
   }
 
   private getHref() {
-    return (
-      this.props.mainStore!.getPrintUrl('reports/revenue') +
-      `&from=${this.state.start.format(apiDateFormat)}&to=${this.state.end.format(apiDateFormat)}`
-    );
+    return this.props.mainStore!.apiURL('reports/revenue', {
+      from: this.state.start.format(apiDateFormat),
+      to: this.state.end.format(apiDateFormat),
+    });
   }
 }

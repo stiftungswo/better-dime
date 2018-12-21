@@ -3,6 +3,7 @@ import { History } from 'history';
 import { ApiStore, baseUrl } from './apiStore';
 import { Formatter } from '../utilities/formatter';
 import { Notifier } from '../utilities/notifier';
+import { buildURL } from '../utilities/helpers';
 
 /*
 This class manages global UI state and provides some facades for often used functionality
@@ -58,7 +59,10 @@ export class MainStore {
     this.history.push(path);
   }
 
-  public getPrintUrl(path: string): string {
-    return `${baseUrl}/${path}?auth=${this.apiStore.token}`;
+  public apiURL(path: string, params: object = {}, includeAuth: boolean = true): string {
+    return buildURL(baseUrl + '/' + path, {
+      ...params,
+      auth: includeAuth ? this.apiStore.token : undefined,
+    });
   }
 }
