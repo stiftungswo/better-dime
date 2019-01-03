@@ -19,6 +19,7 @@ export interface Column<T> {
   numeric?: boolean;
   label: string;
   format?: (t: T) => React.ReactNode;
+  defaultSort?: 'asc' | 'desc';
 }
 
 interface Props<ListingType> {

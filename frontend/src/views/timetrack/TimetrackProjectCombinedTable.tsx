@@ -90,7 +90,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
     joinedForces = joinedForces.sort((a, b) => {
       const dateA = moment(a.date);
       const dateB = moment(b.date);
-      return dateA.valueOf() - dateB.valueOf();
+      return dateB.valueOf() - dateA.valueOf();
     });
 
     if (efforts.length > 0 || comments.length > 0) {

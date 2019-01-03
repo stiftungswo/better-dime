@@ -85,10 +85,18 @@ type Direction = 'asc' | 'desc';
 class OverviewTableInner<T extends { id?: number }> extends React.Component<TableProps<T>, TableState> {
   constructor(props: TableProps<T>) {
     super(props);
-    this.state = {
-      order: 'desc',
-      orderBy: 'id',
-    };
+    const defaultSortColumn = props.columns.find(c => Boolean(c.defaultSort));
+    if (defaultSortColumn) {
+      this.state = {
+        order: defaultSortColumn.defaultSort,
+        orderBy: defaultSortColumn.id,
+      };
+    } else {
+      this.state = {
+        order: 'desc',
+        orderBy: 'id',
+      };
+    }
   }
 
   public handleRequestSort = (event: React.MouseEvent<HTMLElement>, property: string) => {

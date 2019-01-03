@@ -26,6 +26,7 @@ export default class TimetrackServiceGroup extends React.Component<Props> {
         numeric: false,
         label: 'Datum',
         format: e => formatter.formatDate(e.date),
+        defaultSort: 'desc',
       },
       {
         id: 'employee_full_name',
