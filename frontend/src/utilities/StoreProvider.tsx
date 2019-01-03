@@ -25,6 +25,7 @@ import { DailyReportStore } from '../stores/dailyReportStore';
 import { ApiStore } from '../stores/apiStore';
 import { Formatter } from './formatter';
 import { Notifier } from './notifier';
+import { IReactionDisposer, reaction } from 'mobx';
 
 export interface Props extends InjectedNotistackProps {
   history: History;
@@ -55,10 +56,29 @@ class StoreProviderInner extends React.Component<Props> {
     customerImportStore: CustomerImportStore;
     dailyReportStore: DailyReportStore;
   };
+  private disposeAuthChangeReaction: IReactionDisposer;
 
   constructor(props: Props) {
     super(props);
+    this.initializeStores();
 
+    this.disposeAuthChangeReaction = reaction(
+      () => this.stores.apiStore.token,
+      token => {
+        if (token) {
+          this.resetStores();
+        }
+      }
+    );
+  }
+
+  componentWillUnmount(): void {
+    if (this.disposeAuthChangeReaction) {
+      this.disposeAuthChangeReaction();
+    }
+  }
+
+  private initializeStores() {
     const apiStore = new ApiStore(this.props.history, this.props.enqueueSnackbar);
     const formatter = new Formatter(apiStore);
     const mainStore = new MainStore(apiStore, formatter, new Notifier(this.props.enqueueSnackbar), this.props.history);
@@ -100,6 +120,15 @@ class StoreProviderInner extends React.Component<Props> {
       customerImportStore: new CustomerImportStore(mainStore),
       dailyReportStore: new DailyReportStore(mainStore),
     };
+  }
+
+  private resetStores() {
+    Object.keys(this.stores).forEach(name => {
+      const store = this.stores[name];
+      if (store.reset) {
+        store.reset();
+      }
+    });
   }
 
   public render = () => {

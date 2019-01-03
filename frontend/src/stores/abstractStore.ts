@@ -20,6 +20,10 @@ interface AbstractMethods {
 export class AbstractStore<T, OverviewType = T> {
   constructor(protected mainStore: MainStore, protected urlPath?: string, protected activeMethods?: AbstractMethods) {}
 
+  public reset() {
+    this.searchQuery = '';
+  }
+
   protected get entityName() {
     return { singular: 'Die Entität', plural: 'Die Entitäten' };
   }

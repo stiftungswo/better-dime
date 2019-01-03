@@ -15,19 +15,10 @@ type Listing = ProjectListing | ServiceListing | EmployeeListing;
 
 export class TimetrackFilterStore {
   @observable
-  public projectEffortFilter: ProjectEffortFilter = {
-    start: moment().subtract(1, 'weeks'),
-    end: moment(),
-    combineTimes: false,
-    employeeIds: this.mainStore.userId ? [this.mainStore.userId] : [],
-    serviceIds: [],
-    showEmptyGroups: false,
-    projectIds: [],
-    showProjectComments: true,
-  };
+  public projectEffortFilter: ProjectEffortFilter;
 
   @observable
-  public grouping: Grouping = 'employee';
+  public grouping: Grouping;
 
   @observable
   public selectedEffortIds = new ObservableMap<number, boolean>();
@@ -39,7 +30,9 @@ export class TimetrackFilterStore {
     private serviceStore: ServiceStore,
     private effortStore: EffortStore,
     private projectCommentStore: ProjectCommentStore
-  ) {}
+  ) {
+    this.reset();
+  }
 
   @computed
   get filter(): ProjectEffortFilter {
@@ -49,29 +42,6 @@ export class TimetrackFilterStore {
   set filter(projectEffortFilter: ProjectEffortFilter) {
     this.projectEffortFilter = projectEffortFilter;
   }
-
-  private filterBy = <T extends Listing>(filterIds: number[]) => (entities: T[]) =>
-    filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
-
-  private filterEmptyGroups = <T extends WithEfforts>(group: T[]) => {
-    return this.projectEffortFilter.showEmptyGroups ? group : group.filter(g => g.efforts.length > 0);
-  };
-
-  private filterEmptyProjects = (projects: (ProjectListing & WithEfforts)[]) => {
-    if (this.projectEffortFilter.showEmptyGroups) {
-      return projects;
-    } else {
-      return projects.filter(p => {
-        if (p.efforts.length > 0) {
-          return true;
-        }
-        return this.projectCommentStore.projectComments.filter(c => c.project_id === p.id).length > 0;
-      });
-    }
-  };
-
-  private appendEfforts = <T extends Listing>(filterKey: keyof ProjectEffortListing) => (entities: (T)[]): (T & WithEfforts)[] =>
-    entities.map(e => Object.assign({}, e, { efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id) }));
 
   @computed
   get employees(): (EmployeeListing & WithEfforts)[] {
@@ -105,4 +75,43 @@ export class TimetrackFilterStore {
     const filterIds = this.projectEffortFilter.projectIds;
     return this.projectCommentStore.projectComments.filter(c => filterIds.includes(c.project_id!));
   }
+
+  public reset() {
+    this.projectEffortFilter = {
+      start: moment().subtract(1, 'weeks'),
+      end: moment(),
+      combineTimes: false,
+      employeeIds: this.mainStore.userId ? [this.mainStore.userId] : [],
+      serviceIds: [],
+      showEmptyGroups: false,
+      projectIds: [],
+      showProjectComments: true,
+    };
+
+    this.grouping = 'employee';
+    this.selectedEffortIds = new ObservableMap<number, boolean>();
+  }
+
+  private filterBy = <T extends Listing>(filterIds: number[]) => (entities: T[]) =>
+    filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
+
+  private filterEmptyGroups = <T extends WithEfforts>(group: T[]) => {
+    return this.projectEffortFilter.showEmptyGroups ? group : group.filter(g => g.efforts.length > 0);
+  };
+
+  private filterEmptyProjects = (projects: (ProjectListing & WithEfforts)[]) => {
+    if (this.projectEffortFilter.showEmptyGroups) {
+      return projects;
+    } else {
+      return projects.filter(p => {
+        if (p.efforts.length > 0) {
+          return true;
+        }
+        return this.projectCommentStore.projectComments.filter(c => c.project_id === p.id).length > 0;
+      });
+    }
+  };
+
+  private appendEfforts = <T extends Listing>(filterKey: keyof ProjectEffortListing) => (entities: (T)[]): (T & WithEfforts)[] =>
+    entities.map(e => Object.assign({}, e, { efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id) }));
 }
