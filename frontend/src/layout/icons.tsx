@@ -17,7 +17,7 @@ From https://material-ui.com/style/icons/#svg-icons :
     so is not recommended unless you configure tree-shaking. It may also impact Hot Module Reload performance.
  */
 import * as React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon/SvgIcon';
 
 //UI
 export { default as MenuIcon } from '@material-ui/icons/Menu';
@@ -42,7 +42,6 @@ export { default as RestoreIcon } from '@material-ui/icons/Unarchive';
 export { default as CancelIcon } from '@material-ui/icons/Cancel';
 export { default as SaveIcon } from '@material-ui/icons/Save';
 export { default as AddCommentIcon } from '@material-ui/icons/AddCommentOutlined';
-export { default as PaperIcon } from '@material-ui/icons/Description';
 export { default as ESRIcon } from '@material-ui/icons/AttachMoney';
 export { default as StatisticsIcon } from '@material-ui/icons/Equalizer';
 export { default as AddEffortIcon } from '@material-ui/icons/AddAlarm';
@@ -53,10 +52,7 @@ export { default as ImportExportIcon } from '@material-ui/icons/Sync';
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
 export { default as EmployeeIcon } from '@material-ui/icons/Person';
-// export { default as OfferIcon } from '@material-ui/icons/InsertDriveFile';
 export { default as OfferIcon } from '@material-ui/icons/Description';
-// export { default as InvoiceIcon } from '@material-ui/icons/CreditCard';
-// export { default as ProjectIcon } from '@material-ui/icons/Assignment';
 export { default as ServiceIcon } from '@material-ui/icons/RoomService';
 export { default as RateGroupIcon } from '@material-ui/icons/Domain';
 export { default as RateUnitIcon } from '@material-ui/icons/AttachMoney';
@@ -70,8 +66,8 @@ export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
 export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';
 export { default as ReportIcon } from '@material-ui/icons/ShowChart';
 
-const icon = (path: any, viewBox = 512) => {
-  return (props: any) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);
+const icon = (path: React.ReactNode, viewBox = 512) => {
+  return (props: SvgIconProps) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);
 };
 
 // To add a new icon, open its svg file and copy the relevant paths like seen below. If the icon isn't sized properly
@@ -91,6 +87,3 @@ export const InvoiceIcon = icon(
   />,
   60
 );
-
-//<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-//<div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
