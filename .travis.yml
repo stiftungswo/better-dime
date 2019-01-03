@@ -30,9 +30,7 @@ jobs:
     script: ./ci/test_backend.sh
     name: "Run automated tests for backend"
   - script: ./ci/check_format.sh
-    name: "Check formatting of backend"
-  - script: ./ci/sane_icons.sh
-    name: "Check icon imports in frontend"
+    name: "Check formatting of source code"
 
     # run the deployment step
   - stage: deploy
