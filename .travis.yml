@@ -38,7 +38,7 @@ jobs:
   - stage: deploy
     script: skip
     env:
-    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "master" ]; then echo "prod"; else echo "test"; fi)
+    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod"; else echo "test"; fi)
     deploy:
     - provider: script
       script: ci/deploy.sh $DEPLOY_SYSTEM
