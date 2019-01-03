@@ -14,6 +14,9 @@ $factory->define(\App\Models\Invoice\Invoice::class, function () {
         'address_id' => function () {
             return factory(\App\Models\Customer\Address::class)->create()->id;
         },
+        'customer_id' => function () {
+            return factory(rand(0, 1) == 1 ? \App\Models\Customer\Person::class : \App\Models\Customer\Company::class)->create()->id;
+        },
         'description' => $faker->markdown(),
         'end' => $faker->dateTimeBetween('-12 months'),
         'fixed_price' => $faker->numberBetween(150000, 1000000),

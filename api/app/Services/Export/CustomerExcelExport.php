@@ -42,7 +42,7 @@ class CustomerExcelExport implements FromCollection, ShouldAutoSize, WithHeading
                 return $p->number;
             })->implode(', '),
             $customer->addresses->map(function (\App\Models\Customer\Address $a) {
-                return $a->dropdown_label;
+                return (string)$a;
             })->implode("\n"),
             $customer->comment
         ];

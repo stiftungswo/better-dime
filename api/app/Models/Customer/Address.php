@@ -19,20 +19,9 @@ class Address extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function getDropdownLabelAttribute()
+    public function __toString()
     {
         $baseArray = [];
-        if ($this->customer) {
-            if ($this->customer->company) {
-                $baseArray[] = $this->customer->company->name;
-            } elseif ($this->customer->name) {
-                $baseArray[] = $this->customer->name;
-            }
-
-            if ($this->customer->first_name) {
-                $baseArray[] = $this->customer->first_name . ' ' . $this->customer->last_name;
-            }
-        }
 
         $baseArray[] = $this->street;
         !$this->supplement ?: array_push($baseArray, $this->supplement);

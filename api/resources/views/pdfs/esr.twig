@@ -40,7 +40,7 @@
         </div>
 
         <div style="margin: 7% 0 0 0; font-size: 14px;">
-            {{ invoice.address.dropdown_label | replace({',': "<br>"}) | raw }}
+            {{ addressLabel | raw }}
         </div>
     </div>
     <div style="float: left; width: 28%; padding-right: 2%">
@@ -64,7 +64,7 @@
         </div>
 
         <div style="margin: 20% 0 0 0; font-size: 14px;">
-            {{ invoice.address.dropdown_label | replace({',': "<br>"}) | raw }}
+            {{ addressLabel | raw }}
         </div>
     </div>
 </div>

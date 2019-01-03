@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
+use App\Services\AddressLabelBuilder;
 use App\Services\Creator\CreateProjectFromOffer;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
@@ -111,10 +112,14 @@ class OfferController extends BaseController
         // group h1 / h2 / h3 and the following tags to divs
         $description = GroupMarkdownToDiv::group($parsedown->text($offer->description));
 
+        // render address
+        $addressLabel = AddressLabelBuilder::build($offer);
+
         // initialize PDFController, render view and pass it back
         $pdf = new PDF(
             'offers',
             [
+                'addressLabel' => $addressLabel,
                 'offer' => $offer,
                 'breakdown' => $offer->breakdown,
                 'basePath' => $app->basepath(),

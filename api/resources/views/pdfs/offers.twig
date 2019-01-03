@@ -7,7 +7,7 @@
 {% block customer %}
     <div class="clear-float">
         <div class="recipient-address float-right">
-            {{ offer.address.dropdown_label | replace({',': "<br>"}) | raw }}
+            {{ addressLabel | raw }}
         </div>
     </div>
 {% endblock %}

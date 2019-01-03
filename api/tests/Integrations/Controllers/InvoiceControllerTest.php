@@ -188,6 +188,7 @@ class InvoiceControllerTest extends \TestCase
                     'weight' => 20
                 ]
             ],
+            'customer_id' => factory(\App\Models\Customer\Company::class)->create()->id,
             'description' => 'Die Meier / Tobler wünscht eine Neuanpflanzung ihrer steriler Wiese vor dem Hauptgebäude. Durch die Neuanpflanzung soll über die nächsten drei Jahre eine ökologisch hochwertige Fläche entstehen, welche als Heimat für eine Vielzahl von Tieren und Pflanzen diesen soll.',
             'discounts' => [
                 [

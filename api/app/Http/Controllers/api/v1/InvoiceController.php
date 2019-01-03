@@ -7,6 +7,7 @@ use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
+use App\Services\AddressLabelBuilder;
 use App\Services\CostBreakdown;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
@@ -82,10 +83,14 @@ class InvoiceController extends BaseController
         // group h1 / h2 / h3 and the following tags to divs
         $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
 
+        // render address
+        $addressLabel = AddressLabelBuilder::build($invoice);
+
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
             'invoice',
             [
+                'addressLabel' => $addressLabel,
                 'breakdown' => CostBreakdown::calculate($invoice),
                 'invoice' => $invoice,
                 'description' => $description
@@ -108,10 +113,14 @@ class InvoiceController extends BaseController
         $first_part .= " ";
         $first_part .= implode('', array_slice($splitted, -2, 2));
 
+        // render address
+        $addressLabel = AddressLabelBuilder::build($invoice);
+
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
             'esr',
             [
+                'addressLabel' => $addressLabel,
                 'breakdown' => $breakdown,
                 'invoice' => $invoice,
                 'formatted_total' => $first_part
