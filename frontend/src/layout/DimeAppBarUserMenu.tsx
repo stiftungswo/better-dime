@@ -47,9 +47,15 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
   };
 
   render() {
-    const { first_name, last_name } = this.props.apiStore!.meDetail!;
-    const shortName = `${first_name.slice(0, 1)}${last_name.slice(0, 1)}`;
-    const fullName = `${first_name} ${last_name}`;
+    const meDetail = this.props.apiStore!.meDetail;
+    let shortName = '?';
+    let fullName = '?';
+
+    if (meDetail) {
+      const { first_name, last_name } = meDetail!;
+      shortName = `${first_name.slice(0, 1)}${last_name.slice(0, 1)}`;
+      fullName = `${first_name} ${last_name}`;
+    }
 
     const open = this.props.mainStore!.userMenuOpen;
     const { userMenuAnchorEl } = this.props.mainStore!;
