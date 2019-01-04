@@ -1,7 +1,7 @@
 #!/bin/bash -vue
 
 # do build the frontend first
-yarn --cwd frontend build || true
+yarn --cwd frontend build
 
 if [ ! -f $HOME/.ssh/id_rsa ]; then
   echo "Setting up SSH key"
