@@ -9,6 +9,10 @@
                 line-height: 110%;
             }
 
+            body {
+                margin-bottom: 25px;
+            }
+
             div.recipient-address {
                 margin-right: 12%;
                 margin-top: -20px;
@@ -152,6 +156,11 @@
             div.signing-area {
                 margin-top: 5%;
             }
+
+            .avoid-page-break {
+                page-break-inside: avoid;
+            }
+
         </style>
         {% block additional_styles %}{% endblock additional_styles %}
     {% endblock %}

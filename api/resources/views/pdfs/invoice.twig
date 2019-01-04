@@ -91,6 +91,41 @@
     ) }}
 
     {% if breakdown.discounts is not empty %}
+        <div class="avoid-page-break">
+            {{ tableGen(
+                {
+                    "table": {
+                    "class": "table",
+                    "style": "margin-top: 30px;"
+                },
+                    "tfoot-tr-1": {
+                    "class": "bold-cells"
+                }
+                },
+                {
+                    "Abzug": {"attr": { "colspan": "5" }},
+                    "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+                },
+                breakdown.discounts,
+                {
+                    "name": {"attr": {"colspan": "5"}},
+                    "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                },
+                [
+                    {
+                        "Abzüge Total": {"attr": {"colspan": "5" }},
+                        (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    },
+                    {
+                        "Subtotal": {"attr": {"colspan": "5"}},
+                        (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    }
+                ]
+            ) }}
+        </div>
+    {% endif %}
+
+    <div class="avoid-page-break">
         {{ tableGen(
             {
                 "table": {
@@ -102,57 +137,26 @@
             }
             },
             {
-                "Abzug": {"attr": { "colspan": "5" }},
+                "MwSt. Satz": {"attr": { "colspan": "5"}},
                 "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
             },
-            breakdown.discounts,
+            breakdown.vats,
             {
-                "name": {"attr": {"colspan": "5"}},
+                "vat": {"attr": {"colspan": "5"}, "format": "percent"},
                 "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
             },
             [
                 {
-                    "Abzüge Total": {"attr": {"colspan": "5" }},
-                    (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
+                    (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
                 },
                 {
-                    "Subtotal": {"attr": {"colspan": "5"}},
-                    (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    "Rechnungstotal": {"attr": {"colspan": "5" }},
+                    (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
                 }
             ]
         ) }}
-    {% endif %}
-
-    {{ tableGen(
-        {
-            "table": {
-            "class": "table",
-            "style": "margin-top: 30px;"
-        },
-            "tfoot-tr-1": {
-            "class": "bold-cells"
-        }
-        },
-        {
-            "MwSt. Satz": {"attr": { "colspan": "5"}},
-            "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
-        },
-        breakdown.vats,
-        {
-            "vat": {"attr": {"colspan": "5"}, "format": "percent"},
-            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
-        },
-        [
-            {
-                "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
-                (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-            },
-            {
-                "Rechnungstotal": {"attr": {"colspan": "5" }},
-                (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
-            }
-        ]
-    ) }}
+    </div>
 {% endblock %}
 
 

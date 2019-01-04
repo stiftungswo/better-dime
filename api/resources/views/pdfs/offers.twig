@@ -1,7 +1,8 @@
 {% extends 'pdfs/static/base' %}
 
 {% block title %}
-<title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}vom {{ "now"|date("d.m.Y") }}</title>
+    <title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}
+        vom {{ "now"|date("d.m.Y") }}</title>
 {% endblock %}
 
 {% block customer %}
@@ -13,153 +14,155 @@
 {% endblock %}
 
 {% block content %}
-<div class="header clear-float">
-    <div>
-        {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+    <div class="header clear-float">
+        <div>
+            {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+        </div>
+
+        <div>
+            Sachbearbeiter: {{ offer.accountant.first_name ~ ' ' ~ offer.accountant.last_name }}
+        </div>
+
+        <div class="offer-title">
+            <b>Offerte:<br>{{ offer.name }}</b>
+        </div>
+
+        <div style="padding-top: -10px;">
+            <p>Leistungsangebot Nr. {{ offer.id }}
+                {% if offer.project %}<br>Projekt Nr. {{ offer.project.id }}{% endif %}
+            </p>
+        </div>
+
+        <div class="bold">
+            {% if offer.short_description %}{{ offer.short_description }}{% endif %}
+        </div>
+
+        <div class="description">
+            {{ description | raw }}
+        </div>
     </div>
 
-    <div>
-        Sachbearbeiter: {{ offer.accountant.first_name ~ ' ' ~ offer.accountant.last_name }}
-    </div>
+    <div class="force-page-break"></div>
+    <b style="font-size: 16px;">Kostenübersicht</b>
 
-    <div class="offer-title">
-        <b>Offerte:<br>{{ offer.name }}</b>
-    </div>
-
-    <div style="padding-top: -10px;">
-        <p>Leistungsangebot Nr. {{ offer.id }}
-        {% if offer.project %}<br>Projekt Nr. {{ offer.project.id }}{% endif %}
-        </p>
-    </div>
-
-    <div class="bold">
-        {% if offer.short_description %}{{ offer.short_description }}{% endif %}
-    </div>
-
-    <div class="description">
-        {{ description | raw }}
-    </div>
-</div>
-
-<div class="force-page-break"></div>
-<b style="font-size: 16px;">Kostenübersicht</b>
-
-<table class="table">
-    <thead>
-    <tr>
-        <td class="first-row">Position</td>
-        <td class="second-row text-align-right">Ansatz</td>
-        <td class="third-row">Einheit</td>
-        <td class="fourth-row">Anzahl</td>
-        <td class="fifth row text-align-right">MwSt. Satz</td>
-        <td class="sixth-row text-align-right">Teilbetrag exkl. MwSt.</td>
-    </tr>
-    </thead>
-    <tbody>
-    {% for position in breakdown.positions %}
+    <table class="table">
+        <thead>
         <tr>
-            <td>
-                {{ position.service.name }}
-                {% if position.description is defined %}
-                    <br /><span style="font-size: 12px;">{{ position.description }}</span>
-                {% endif %}
-            </td>
-            <td class="text-align-right">{{ (position.price_per_rate / 100) | number_format(2, '.', "'") }} CHF</td>
-            <td>{{ position.rate_unit.billing_unit }}</td>
-            <td>{{ position.amount }}</td>
-            <td class="text-align-right">{{ position.vat * 100 }} %</td>
-            <td class="text-align-right">{{ (position.calculated_total / 100) | number_format(2, '.', "'")}} CHF</td>
+            <td class="first-row">Position</td>
+            <td class="second-row text-align-right">Ansatz CHF</td>
+            <td class="third-row">Einheit</td>
+            <td class="fourth-row">Anzahl</td>
+            <td class="fifth row text-align-right">MwSt. Satz</td>
+            <td class="sixth-row text-align-right">Teilbetrag CHF exkl. MwSt.</td>
         </tr>
-    {%  endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="5" class="text-align-right">Subtotal</td>
-        <td class="text-align-right">{{ ((breakdown.subtotal) / 100) | number_format(2, '.', "'") }} CHF</td>
-    </tr>
-    </tfoot>
-</table>
+        </thead>
+        <tbody>
+        {% for position in breakdown.positions %}
+            <tr>
+                <td>
+                    {{ position.service.name }}
+                    {% if position.description is defined %}
+                        <br/><span style="font-size: 12px;">{{ position.description }}</span>
+                    {% endif %}
+                </td>
+                <td class="text-align-right">{{ (position.price_per_rate / 100) | number_format(2, '.', "'") }}</td>
+                <td>{{ position.rate_unit.billing_unit }}</td>
+                <td>{{ position.amount }}</td>
+                <td class="text-align-right">{{ position.vat * 100 }} %</td>
+                <td class="text-align-right">{{ (position.calculated_total / 100) | number_format(2, '.', "'") }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="5" class="text-align-right">Subtotal</td>
+            <td class="text-align-right">{{ ((breakdown.subtotal) / 100) | number_format(2, '.', "'") }}</td>
+        </tr>
+        </tfoot>
+    </table>
 
-{% if breakdown.discounts is not empty %}
-{{ tableGen(
-    {
-        "table": {
-        "class": "table",
-        "style": "margin-top: 30px;"
-    },
-        "tfoot-tr-1": {
-        "class": "bold-cells"
-    }
-    },
-    {
-        "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
-        "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
-    },
-    breakdown.discounts,
-    {
-        "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
-        "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
-    },
-    [
-        {
-            "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
-            (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-        },
-        {
-            "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
-            (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
-        }
-    ]
-) }}
-{% endif %}
+    {% if breakdown.discounts is not empty %}
+        <div class="avoid-page-break">
+            {{ tableGen(
+                {
+                    "table": {
+                    "class": "table",
+                    "style": "margin-top: 30px;"
+                },
+                    "tfoot-tr-1": {
+                    "class": "bold-cells"
+                }
+                },
+                {
+                    "Abzug": {"attr": { "colspan": "5", "class": "text-align-right" }},
+                    "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
+                },
+                breakdown.discounts,
+                {
+                    "name": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                    "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                },
+                [
+                    {
+                        "Abzüge Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                        (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    },
+                    {
+                        "Subtotal": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                        (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    }
+                ]
+            ) }}
+        </div>
+    {% endif %}
 
-{{
-    tableGen(
-        {
-            "table": {
+    <div class="avoid-page-break">
+        {{ tableGen(
+            {
+                "table": {
                 "class": "table",
                 "style": "margin-top: 30px;"
             },
-            "tfoot-tr-1": {
+                "tfoot-tr-1": {
                 "class": "bold-cells"
             }
-        },
-        {
-            "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
-            "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
-        },
-        breakdown.vats,
-        {
-            "vat": {"attr": {"colspan": "5", "class": "text-align-right"}, "format": "percent"},
-            "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
-        },
-        [
-            {
-                "Mehrwertsteuer Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
-                (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
             },
             {
-                "Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
-                (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
-            }
-        ]
-    )
-}}
+                "MwSt. Satz": {"attr": { "colspan": "5", "class": "text-align-right" }},
+                "Betrag": {"attr": { "class": "sixth-row text-align-right" }}
+            },
+            breakdown.vats,
+            {
+                "vat": {"attr": {"colspan": "5", "class": "text-align-right"}, "format": "percent"},
+                "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+            },
+            [
+                {
+                    "Mehrwertsteuer Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                    (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                },
+                {
+                    "Total": {"attr": {"colspan": "5", "class": "text-align-right"}},
+                    (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
+                }
+            ]
+        ) }}
+    </div>
 
-<div>
-    <p class="bold">Bitte unterschrieben retournieren bis {{ "now" | date_modify("+30 days") | date("d.m.Y") }}.</p>
+    <div class="avoid-page-break">
+        <p class="bold">Bitte unterschrieben retournieren bis {{ "now" | date_modify("+30 days") | date("d.m.Y") }}.</p>
 
-    <div class="clear-float signing-area">
-        <div class="signature">
-            <div class="bold">Unterschrift des Auftragsnehmers:</div>
-            <div class="date_location">Ort / Datum:</div>
-            <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }} </div>
-        </div>
-        <div class="signature">
-            <div class="bold">Unterschrift des Auftraggebers:</div>
-            <div class="date_location">Ort / Datum:</div>
-            <div class="dateline" style="border-bottom: 1px dotted black;"><p></p></div>
+        <div class="clear-float signing-area">
+            <div class="signature">
+                <div class="bold">Unterschrift des Auftragsnehmers:</div>
+                <div class="date_location">Ort / Datum:</div>
+                <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }} </div>
+            </div>
+            <div class="signature">
+                <div class="bold">Unterschrift des Auftraggebers:</div>
+                <div class="date_location">Ort / Datum:</div>
+                <div class="dateline" style="border-bottom: 1px dotted black;"><p></p></div>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
