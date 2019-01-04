@@ -48,6 +48,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
       service_id: service.id,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
+      formikKey: Math.random(),
     });
   };
 
@@ -84,10 +85,10 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {values.positions.map((p: ProjectPosition, index: number) => {
+                  {values.positions.map((p: ProjectPosition & { formikKey?: number }, index: number) => {
                     const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                     return (
-                      <TableRow key={index}>
+                      <TableRow key={p.id || p.formikKey}>
                         <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
                         <DimeTableCell>
                           <Field delayed component={TextField} name={name('description')} margin={'none'} />

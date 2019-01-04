@@ -14,11 +14,12 @@ import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
-const template = {
+const template = () => ({
+  formikKey: Math.random(),
   name: '',
   percentage: false,
   value: 0,
-};
+});
 
 export interface Props {
   mainStore?: MainStore;
@@ -41,7 +42,7 @@ export default class OfferDiscountSubform extends React.Component<Props> {
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Abzüge'} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template)} />
+            <TableToolbar title={'Abzüge'} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template())} />
             <Table>
               <TableHead>
                 <TableRow>
@@ -52,10 +53,10 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {values.discounts.map((p: OfferDiscount, index: number) => {
+                {values.discounts.map((p: OfferDiscount & { formikKey?: number }, index: number) => {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={p.id || p.formikKey}>
                       <DimeTableCell>
                         <Field delayed component={TextField} name={name('name')} disabled={disabled} />
                       </DimeTableCell>

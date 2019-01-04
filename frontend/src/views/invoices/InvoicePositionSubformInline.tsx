@@ -16,14 +16,15 @@ import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
-const template = {
-  amount: '',
+const template = () => ({
+  amount: 0,
   description: '',
+  formikKey: Math.random(),
   order: 100,
-  vat: 0.077,
-  rate_unit_id: '',
   price_per_rate: 0,
-};
+  rate_unit_id: 0,
+  vat: 0.077,
+});
 
 export interface Props {
   mainStore?: MainStore;
@@ -44,7 +45,7 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Rechnungsposten'} addAction={() => arrayHelpers.push(template)} />
+            <TableToolbar title={'Rechnungsposten'} addAction={() => arrayHelpers.push(template())} />
             <div style={{ overflowX: 'auto' }}>
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
@@ -60,11 +61,11 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {values.positions.map((p: InvoicePosition, index: number) => {
+                  {values.positions.map((p: InvoicePosition & { formikKey?: number }, index: number) => {
                     const name = <T extends keyof InvoicePosition>(fieldName: T) => `${this.props.name}.${index}.${fieldName}`;
                     const total = p.amount * p.price_per_rate * (1 + p.vat);
                     return (
-                      <TableRow key={index}>
+                      <TableRow key={p.id || p.formikKey}>
                         <DimeTableCell>
                           <Field delayed component={NumberField} name={name('order')} margin={'none'} />
                         </DimeTableCell>

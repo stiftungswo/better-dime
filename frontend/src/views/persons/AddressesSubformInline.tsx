@@ -16,6 +16,16 @@ import { DimePaper } from '../../layout/DimePaper';
 import { Company } from '../../types';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
+const template = () => ({
+  city: '',
+  country: '',
+  description: '',
+  formikKey: Math.random(),
+  postcode: 0,
+  street: '',
+  supplement: '',
+});
+
 export interface Props {
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
@@ -30,14 +40,7 @@ export interface Props {
 )
 export default class AddressesSubformInline extends React.Component<Props> {
   public handleAdd = (arrayHelpers: ArrayHelpers) => {
-    arrayHelpers.push({
-      street: '',
-      postcode: 0,
-      city: '',
-      country: '',
-      supplement: '',
-      description: '',
-    });
+    arrayHelpers.push(template());
   };
 
   public render() {
@@ -61,10 +64,10 @@ export default class AddressesSubformInline extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(values.addresses ? values.addresses : []).map((a: Address, index: number) => {
+                {(values.addresses ? values.addresses : []).map((a: Address & { formikKey?: number }, index: number) => {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={a.id || a.formikKey}>
                       <DimeTableCell>
                         <Field delayed component={TextField} name={name('street')} margin={'none'} />
                       </DimeTableCell>

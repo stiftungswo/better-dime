@@ -49,6 +49,8 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
       service_id: service.id,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
+      formikKey: Math.random(),
+      description: '',
     });
   };
 
@@ -91,11 +93,11 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {values.positions.map((p: OfferPosition, index: number) => {
+                      {values.positions.map((p: OfferPosition & { formikKey?: number }, index: number) => {
                         const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                         const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
                         return (
-                          <TableRow key={index}>
+                          <TableRow key={p.id || p.formikKey}>
                             <DimeTableCell>
                               <Field
                                 delayed

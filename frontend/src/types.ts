@@ -129,6 +129,7 @@ export interface Project {
 }
 
 export interface ProjectCostgroup {
+  id: number;
   costgroup_number: number;
   project_id: number;
   weight: number;
@@ -211,6 +212,7 @@ export interface Invoice {
 }
 
 export interface InvoiceCostgroup {
+  id: number;
   costgroup_number: number;
   invoice_id: number;
   weight: number;
@@ -224,7 +226,7 @@ export interface InvoicePosition {
   amount: number;
   description: string;
   invoice_id: number;
-  order: null;
+  order: null | number;
   price_per_rate: number;
   project_position_id: number;
   rate_unit_id: number;

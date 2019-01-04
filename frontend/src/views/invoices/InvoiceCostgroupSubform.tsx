@@ -15,10 +15,11 @@ import CostgroupSelector from '../../form/entitySelector/CostgroupSelector';
 import { ErrorText } from '../../layout/ErrorText';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 
-const template = {
-  weight: 10,
+const template = () => ({
   costgroup_number: '',
-};
+  formikKey: Math.random(),
+  weight: 10,
+});
 
 export interface Props {
   mainStore?: MainStore;
@@ -46,7 +47,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
             <TableToolbar
               title={'Kostenstellen'}
               error={Boolean(currentError)}
-              addAction={disabled ? undefined : () => arrayHelpers.push(template)}
+              addAction={disabled ? undefined : () => arrayHelpers.push(template())}
             />
             <Table>
               <TableHead>
@@ -65,11 +66,11 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                     </DimeTableCell>
                   </TableRow>
                 )}
-                {values.costgroup_distributions.map((p: InvoiceCostgroup, index: number) => {
+                {values.costgroup_distributions.map((p: InvoiceCostgroup & { formikKey?: number }, index: number) => {
                   const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
                   const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
-                    <TableRow key={index}>
+                    <TableRow key={p.id || p.formikKey}>
                       <DimeTableCell>
                         <Field delayed component={NumberField} name={fieldName('weight')} />
                       </DimeTableCell>

@@ -13,6 +13,7 @@ import { Observer } from 'mobx-react';
 
 const template = {
   end: moment().endOf('year'),
+  formikKey: Math.random(),
   pensum: 100,
   start: moment().startOf('year'),
   vacation_takeover: 0,
@@ -97,12 +98,12 @@ export class WorkPeriodSubform extends React.Component<Props> {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {values.work_periods.map((w: WorkPeriod, index: number) => {
+                    {values.work_periods.map((w: WorkPeriod & { formikKey?: number }, index: number) => {
                       const formattedHours = (value: number): string => (isNaN(value) ? '-' : (value / 60).toFixed(1) + 'h');
                       const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
 
                       return (
-                        <TableRow key={index}>
+                        <TableRow key={w.id || w.formikKey}>
                           <DimeTableCell>
                             <Field component={DatePicker} name={fieldName('start')} />
                           </DimeTableCell>

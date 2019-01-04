@@ -33,6 +33,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
   public handleAdd = (arrayHelpers: ArrayHelpers) => {
     arrayHelpers.push({
       category: undefined,
+      formikKey: Math.random(),
       number: '',
     });
   };
@@ -62,22 +63,24 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(values.phone_numbers ? values.phone_numbers : []).map((_: PhoneNumber, index: number) => {
-                  const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                  return (
-                    <TableRow key={index}>
-                      <DimeTableCell>
-                        <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
-                      </DimeTableCell>
-                      <DimeTableCell>
-                        <Field delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
-                      </DimeTableCell>
-                      <DimeTableCell>
-                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                      </DimeTableCell>
-                    </TableRow>
-                  );
-                })}
+                {(values.phone_numbers ? values.phone_numbers : []).map(
+                  (phoneNumber: PhoneNumber & { formikKey?: number }, index: number) => {
+                    const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
+                    return (
+                      <TableRow key={phoneNumber.id || phoneNumber.formikKey}>
+                        <DimeTableCell>
+                          <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
+                        </DimeTableCell>
+                        <DimeTableCell>
+                          <Field delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
+                        </DimeTableCell>
+                        <DimeTableCell>
+                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                        </DimeTableCell>
+                      </TableRow>
+                    );
+                  }
+                )}
               </TableBody>
             </Table>
           </DimePaper>
