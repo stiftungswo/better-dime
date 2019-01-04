@@ -6,7 +6,7 @@ import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Project } from '../../types';
+import { Invoice, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { MainStore } from '../../stores/mainStore';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
@@ -33,6 +33,9 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import { ProjectBudgetTable } from './ProjectBudgetTable';
+import { ActionButton } from '../../layout/ActionButton';
+import { AddIcon, InvoiceIcon } from '../../layout/icons';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 interface InfoFieldProps {
   value: string;
@@ -60,7 +63,7 @@ const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldPro
   </MuiFormControl>
 );
 
-export interface Props extends FormViewProps<Project> {
+export type Props = {
   costgroupStore?: CostgroupStore;
   customerStore?: CustomerStore;
   employeeStore?: EmployeeStore;
@@ -71,7 +74,8 @@ export interface Props extends FormViewProps<Project> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
-}
+} & RouteComponentProps &
+  FormViewProps<Project>;
 
 @compose(
   inject(
@@ -87,7 +91,7 @@ export interface Props extends FormViewProps<Project> {
   ),
   observer
 )
-export default class ProjectForm extends React.Component<Props> {
+class ProjectForm extends React.Component<Props> {
   // set rateGroup based on selected customer.
   handleCustomerChange: OnChange<Project> = (current, next, formik) => {
     if (current.values.customer_id !== next.values.customer_id) {
@@ -128,11 +132,24 @@ export default class ProjectForm extends React.Component<Props> {
         initialValues={project}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
+        appBarButtons={
+          project && project.id ? (
+            <ActionButton
+              action={() => projectStore!.createInvoice(project.id!).then((i: Invoice) => this.props.history.push(`/invoices/${i.id}`))}
+              color={'inherit'}
+              icon={InvoiceIcon}
+              secondaryIcon={AddIcon}
+              title={'Neue Rechnung aus Projekt generieren'}
+            />
+          ) : (
+            undefined
+          )
+        }
         render={(props: FormikProps<Project>) => (
           <form onSubmit={props.handleSubmit}>
             <Grid container spacing={24}>
               <Grid item xs={12} lg={8}>
-                {project.id && <Navigator project={project} projectStore={projectStore!} />}
+                {project.id && <Navigator project={project} />}
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
@@ -229,3 +246,5 @@ export default class ProjectForm extends React.Component<Props> {
     );
   }
 }
+
+export default withRouter(ProjectForm);

@@ -7,7 +7,7 @@ import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
-import { Offer } from '../../types';
+import { Offer, Project } from '../../types';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { AddressSelector } from '../../form/entitySelector/AddressSelector';
 import { StatusSelector } from '../../form/entitySelector/StatusSelector';
@@ -31,8 +31,11 @@ import { RateGroupStore } from '../../stores/rateGroupStore';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { AddIcon, ProjectIcon } from '../../layout/icons';
+import { ActionButton } from '../../layout/ActionButton';
 
-export interface Props extends FormViewProps<Offer> {
+export type Props = {
   customerStore?: CustomerStore;
   employeeStore?: EmployeeStore;
   offer: Offer;
@@ -41,13 +44,14 @@ export interface Props extends FormViewProps<Offer> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
-}
+} & FormViewProps<Offer> &
+  RouteComponentProps;
 
 @compose(
   inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore'),
   observer
 )
-export default class OfferForm extends React.Component<Props> {
+class OfferForm extends React.Component<Props> {
   // set rateGroup based on selected customer.
   handleCustomerChange: OnChange<Offer> = (current, next, formik) => {
     if (current.values.customer_id !== next.values.customer_id) {
@@ -75,7 +79,7 @@ export default class OfferForm extends React.Component<Props> {
   }
 
   public render() {
-    const { offer } = this.props;
+    const { offer, offerStore } = this.props;
 
     return (
       <FormView
@@ -86,7 +90,24 @@ export default class OfferForm extends React.Component<Props> {
         initialValues={offer}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        appBarButtons={offer && offer.id ? <PrintButton path={`offers/${offer.id}/print`} color={'inherit'} /> : undefined}
+        appBarButtons={
+          offer && offer.id ? (
+            <>
+              <PrintButton path={`offers/${offer.id}/print`} color={'inherit'} />
+              {!offer.project_id && (
+                <ActionButton
+                  action={() => offerStore!.createProject(offer.id!).then((p: Project) => this.props.history.push(`/projects/${p.id}`))}
+                  color={'inherit'}
+                  icon={ProjectIcon}
+                  secondaryIcon={AddIcon}
+                  title={'Projekt aus Offerte erstellen'}
+                />
+              )}
+            </>
+          ) : (
+            undefined
+          )
+        }
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (
@@ -94,7 +115,7 @@ export default class OfferForm extends React.Component<Props> {
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
-                    {offer.id && <Navigator offer={offer} offerStore={this.props.offerStore!} projectStore={this.props.projectStore!} />}
+                    {offer.id && <Navigator offer={offer} />}
                     <DimePaper>
                       <Grid container spacing={24}>
                         {locked && (
@@ -214,3 +235,5 @@ export default class OfferForm extends React.Component<Props> {
     );
   }
 }
+
+export default withRouter(OfferForm);
