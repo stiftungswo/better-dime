@@ -13,7 +13,7 @@ interface NavigatorProps extends RouteComponentProps {
 export default withRouter(({ project: { offer_id, invoice_ids, id }, projectStore, history }: NavigatorProps) => {
   const offers = offer_id ? [offer_id] : [];
   return (
-    <Tabs value={offers.length}>
+    <Tabs value={offers.length} scrollable>
       {offers.map(pId => (
         <Tab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={`Offerte ${pId}`} />
       ))}

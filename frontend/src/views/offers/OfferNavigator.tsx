@@ -13,7 +13,7 @@ interface NavigatorProps extends RouteComponentProps {
 }
 
 export default withRouter(({ offer: { project_id, invoice_ids, id }, history, offerStore, projectStore }: NavigatorProps) => (
-  <Tabs value={0}>
+  <Tabs scrollable value={0}>
     <Tab label={`Offerte ${id}`} />
     {project_id ? (
       <Tab onClick={() => history.push(`/projects/${project_id}`)} label={`Projekt ${project_id}`} />
