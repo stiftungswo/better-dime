@@ -51,7 +51,7 @@ class Invoice extends Model
 
     public function positions()
     {
-        return $this->hasMany(InvoicePosition::class);
+        return $this->hasMany(InvoicePosition::class)->orderBy('order', 'asc');
     }
 
     public function project()

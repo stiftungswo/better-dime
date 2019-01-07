@@ -19,6 +19,8 @@ import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { ServiceStore } from '../../stores/serviceStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { Typography } from '@material-ui/core';
+import { DraggableTableBody } from '../invoices/DraggableTableBody';
+import { DragHandle } from '../../layout/icons';
 
 export interface Props {
   mainStore?: MainStore;
@@ -81,7 +83,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                   <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                     <TableHead>
                       <TableRow>
-                        <DimeTableCell style={{ width: '5%' }}>Sort.</DimeTableCell>
+                        <DimeTableCell style={{ width: '5%' }} />
                         <DimeTableCell style={{ width: '15%' }}>Service</DimeTableCell>
                         <DimeTableCell style={{ width: '17%' }}>Beschreibung</DimeTableCell>
                         <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
@@ -92,20 +94,17 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                         <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
-                      {values.positions.map((p: OfferPosition & { formikKey?: number }, index: number) => {
+                    <DraggableTableBody
+                      arrayHelpers={arrayHelpers}
+                      name={this.props.name}
+                      renderRow={({ row, index, provided }) => {
+                        const p = row as OfferPosition;
                         const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                         const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
                         return (
-                          <TableRow key={p.id || p.formikKey}>
-                            <DimeTableCell>
-                              <Field
-                                delayed
-                                component={NumberField}
-                                name={`positions.${index}.order`}
-                                margin={'none'}
-                                disabled={disabled}
-                              />
+                          <>
+                            <DimeTableCell {...provided.dragHandleProps}>
+                              <DragHandle />
                             </DimeTableCell>
                             <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
                             <DimeTableCell>
@@ -136,10 +135,10 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                             <DimeTableCell>
                               <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                             </DimeTableCell>
-                          </TableRow>
+                          </>
                         );
-                      })}
-                    </TableBody>
+                      }}
+                    />
                   </Table>
                 </div>
                 {this.state.dialogOpen && (

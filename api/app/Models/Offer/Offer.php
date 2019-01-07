@@ -42,7 +42,7 @@ class Offer extends Model
 
     public function positions()
     {
-        return $this->hasMany(OfferPosition::class);
+        return $this->hasMany(OfferPosition::class)->orderBy('order', 'asc');
     }
 
     public function project()

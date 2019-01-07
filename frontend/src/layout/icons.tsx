@@ -48,6 +48,7 @@ export { default as AddEffortIcon } from '@material-ui/icons/AddAlarm';
 export { default as VisibleIcon } from '@material-ui/icons/Visibility';
 export { default as InvisibleIcon } from '@material-ui/icons/VisibilityOff';
 export { default as ImportExportIcon } from '@material-ui/icons/Sync';
+export { default as DragHandle } from '@material-ui/icons/DragHandle';
 
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
