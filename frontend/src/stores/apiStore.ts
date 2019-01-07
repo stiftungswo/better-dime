@@ -4,6 +4,7 @@ import { History } from 'history';
 import { OptionsObject } from 'notistack';
 import jwt_decode from 'jwt-decode';
 import * as Sentry from '@sentry/browser';
+import moment from 'moment';
 
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
@@ -82,11 +83,13 @@ export class ApiStore {
   }
 
   @action
-  public logout(): void {
+  public logout(redirect = true): void {
     localStorage.removeItem(KEY_TOKEN);
     this._token = '';
     this.setAuthHeader(null);
-    this.history.push('/');
+    if (redirect) {
+      this.history.push('/');
+    }
     this.updateSentryContext();
   }
 
@@ -124,7 +127,7 @@ export class ApiStore {
 
   @computed
   public get isLoggedIn() {
-    return Boolean(this._token);
+    return Boolean(this._token) && moment.unix(this.userInfo!.exp).isAfter();
   }
 
   @computed

@@ -27,12 +27,18 @@ export class ProtectedRoute extends React.Component<ProtectedRouteProps> {
     };
 
     const Component = this.props.component;
+    const apiStore = this.props.apiStore!;
 
-    if (this.props.requiresAdmin && !this.props.apiStore!.isAdmin) {
-      return <Redirect to={siteNotFound} />;
+    if (apiStore.isLoggedIn) {
+      if (this.props.requiresAdmin && !apiStore.isAdmin) {
+        return <Redirect to={siteNotFound} />;
+      } else {
+        return <Component {...props} />;
+      }
+    } else {
+      apiStore.logout(false);
+      return <Redirect to={login} />;
     }
-
-    return this.props.apiStore!.isLoggedIn ? <Component {...props} /> : <Redirect to={login} />;
   };
 
   public render() {
