@@ -76,7 +76,7 @@ class ServiceController extends BaseController
     {
         $this->validate($request, [
             'archived' => 'boolean',
-            'description' => 'string',
+            'description' => 'string|nullable',
             'name' => 'required|string',
             'vat' => 'required|numeric'
         ]);
