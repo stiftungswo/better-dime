@@ -26,7 +26,7 @@ import { apiDateFormat } from '../../stores/apiStore';
 import { dimeDate } from '../../utilities/validationHelpers';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 
-interface Props {
+interface Props extends InjectedProps {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
@@ -35,12 +35,30 @@ interface Props {
   projectStore?: ProjectStore;
 }
 
-const schema = yup.object({
-  comment: yup.string(),
+interface State {
+  lastEntry?: ProjectEffortTemplate | ProjectEffort;
+  closeAfterSubmit: boolean;
+}
+
+//tslint:ignore-next-line:no-any; this is supposed to work with any value
+const falsy = (value: any) => !Boolean(value);
+
+const createSchema = (additional: object) =>
+  yup.object({
+    comment: yup.string(),
+    project_id: yup.number().required(),
+    position_id: yup.number().required(),
+    date: dimeDate().required(),
+    value: yup.number().required(),
+    ...additional,
+  });
+
+const soloSchema = createSchema({
   employee_id: yup.number().required(),
-  position_id: yup.number().required(),
-  date: dimeDate().required(),
-  value: yup.number().required(),
+});
+
+const multiSchema = createSchema({
+  employee_ids: yup.array().min(1),
 });
 
 @compose(
@@ -48,9 +66,10 @@ const schema = yup.object({
   observer,
   withMobileDialog()
 )
-export class TimetrackFormDialog extends React.Component<Props & InjectedProps> {
+export class TimetrackFormDialog extends React.Component<Props, State> {
   state = {
-    lastEntry: null,
+    lastEntry: undefined,
+    closeAfterSubmit: false,
   };
   public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
     const filter = this.props.timetrackFilterStore!.filter;
@@ -80,6 +99,9 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     await effortStore.fetchFiltered(filter);
     formikProps.setSubmitting(false);
     this.setState({ lastEntry: entity });
+    if (this.state.closeAfterSubmit) {
+      this.props.effortStore!.editing = false;
+    }
   };
 
   //widen the filter so the newly added entities are displayed
@@ -133,6 +155,10 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     }
   };
 
+  public get mode() {
+    return Boolean(this.props.effortStore!.effort) ? 'edit' : 'create';
+  }
+
   public render() {
     const { fullScreen } = this.props;
 
@@ -141,7 +167,7 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
         enableReinitialize
         onSubmit={this.handleSubmit}
-        validationSchema={schema}
+        validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
@@ -182,16 +208,16 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
                 <Button
-                  onClick={async () => {
-                    await this.handleSubmit(formikProps.values, formikProps);
-                    this.props.effortStore!.editing = false;
-                  }}
+                  onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
                   Speichern
                 </Button>
                 {!formikProps.values.id && (
-                  <Button onClick={() => this.handleSubmit(formikProps.values, formikProps)} disabled={formikProps.isSubmitting}>
+                  <Button
+                    onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
+                    disabled={formikProps.isSubmitting}
+                  >
                     Speichern und weiter
                   </Button>
                 )}
