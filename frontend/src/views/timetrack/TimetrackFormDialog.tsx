@@ -23,7 +23,7 @@ import moment from 'moment';
 import { ProjectStore } from '../../stores/projectStore';
 import { captureException } from '../../utilities/helpers';
 import { apiDateFormat } from '../../stores/apiStore';
-import { dimeDate } from '../../utilities/validationHelpers';
+import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 
 interface Props extends InjectedProps {
@@ -40,25 +40,24 @@ interface State {
   closeAfterSubmit: boolean;
 }
 
-//tslint:ignore-next-line:no-any; this is supposed to work with any value
-const falsy = (value: any) => !Boolean(value);
-
 const createSchema = (additional: object) =>
-  yup.object({
-    comment: yup.string(),
-    project_id: yup.number().required(),
-    position_id: yup.number().required(),
-    date: dimeDate().required(),
-    value: yup.number().required(),
-    ...additional,
-  });
+  localizeSchema(() =>
+    yup.object({
+      comment: yup.string(),
+      project_id: selector(),
+      position_id: selector(),
+      date: dimeDate().required(),
+      value: requiredNumber(),
+      ...additional,
+    })
+  );
 
 const soloSchema = createSchema({
   employee_id: yup.number().required(),
 });
 
 const multiSchema = createSchema({
-  employee_ids: yup.array().min(1),
+  employee_ids: yup.array().min(1, 'Dies ist ein erforderliches Feld.'),
 });
 
 @compose(

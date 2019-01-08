@@ -1,53 +1,54 @@
 import * as yup from 'yup';
-import { dimeDate } from '../../utilities/validationHelpers';
-import { validationLocalization } from '../../utilities/validationLocalization';
+import { dimeDate, localizeSchema, requiredNumber } from '../../utilities/validation';
 
-validationLocalization();
+export const editEmployeeSchema = localizeSchema(() =>
+  yup.object({
+    archived: yup.boolean(),
+    can_login: yup.boolean().required(),
+    email: yup.string().required(),
+    holidays_per_year: yup.number().nullable(true),
+    is_admin: yup.boolean().required(),
+    first_name: yup.string().required(),
+    last_name: yup.string().required(),
+    password: yup.string(),
+    password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
+    work_periods: yup.array(
+      yup.object({
+        end: dimeDate().required(),
+        pensum: requiredNumber(),
+        start: dimeDate().required(),
+        vacation_takeover: requiredNumber(),
+        yearly_vacation_budget: requiredNumber(),
+      })
+    ),
+  })
+);
 
-export const editEmployeeSchema = yup.object({
-  archived: yup.boolean(),
-  can_login: yup.boolean().required(),
-  email: yup.string().required(),
-  holidays_per_year: yup.number().nullable(true),
-  is_admin: yup.boolean().required(),
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
-  password: yup.string(),
-  password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
-  work_periods: yup.array(
-    yup.object({
-      end: dimeDate().required(),
-      pensum: yup.number().required(),
-      start: dimeDate().required(),
-      vacation_takeover: yup.number().required(),
-      yearly_vacation_budget: yup.number().required(),
-    })
-  ),
-});
-
-export const newEmployeeSchema = yup.object({
-  archived: yup.boolean(),
-  can_login: yup.boolean().required(),
-  email: yup.string().required(),
-  holidays_per_year: yup.number().nullable(true),
-  is_admin: yup.boolean().required(),
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
-  password: yup.string().required(),
-  password_repeat: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.')
-    .required(),
-  work_periods: yup.array(
-    yup.object({
-      end: dimeDate().required(),
-      pensum: yup.number().required(),
-      start: dimeDate().required(),
-      vacation_takeover: yup.number().required(),
-      yearly_vacation_budget: yup.number().required(),
-    })
-  ),
-});
+export const newEmployeeSchema = localizeSchema(() =>
+  yup.object({
+    archived: yup.boolean(),
+    can_login: yup.boolean().required(),
+    email: yup.string().required(),
+    holidays_per_year: yup.number().nullable(true),
+    is_admin: yup.boolean().required(),
+    first_name: yup.string().required(),
+    last_name: yup.string().required(),
+    password: yup.string().required(),
+    password_repeat: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.')
+      .required(),
+    work_periods: yup.array(
+      yup.object({
+        end: dimeDate().required(),
+        pensum: requiredNumber(),
+        start: dimeDate().required(),
+        vacation_takeover: requiredNumber(),
+        yearly_vacation_budget: requiredNumber(),
+      })
+    ),
+  })
+);
 
 export const employeeTemplate = {
   archived: false,

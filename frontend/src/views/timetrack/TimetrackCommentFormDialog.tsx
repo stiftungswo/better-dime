@@ -11,7 +11,7 @@ import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { TextField } from '../../form/fields/common';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { dimeDate } from '../../utilities/validationHelpers';
+import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 import moment from 'moment';
 
 interface Props {
@@ -21,11 +21,13 @@ interface Props {
   timetrackFilterStore?: TimetrackFilterStore;
 }
 
-const schema = yup.object({
-  comment: yup.string().required(),
-  date: dimeDate(),
-  project_id: yup.number().required(),
-});
+const schema = localizeSchema(() =>
+  yup.object({
+    comment: yup.string().required(),
+    date: dimeDate(),
+    project_id: selector(),
+  })
+);
 
 @compose(
   inject('projectCommentStore', 'timetrackFilterStore', 'mainStore'),

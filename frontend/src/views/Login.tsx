@@ -19,6 +19,7 @@ import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
 import { ApiStore } from '../stores/apiStore';
+import { localizeSchema } from '../utilities/validation';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -70,10 +71,12 @@ export interface Props extends RouteComponentProps, InjectedNotistackProps, With
   mainStore?: MainStore;
 }
 
-const loginSchema = yup.object({
-  email: yup.string().required(),
-  password: yup.string().required(),
-});
+const loginSchema = localizeSchema(() =>
+  yup.object({
+    email: yup.string().required(),
+    password: yup.string().required(),
+  })
+);
 
 @compose(
   withRouter,

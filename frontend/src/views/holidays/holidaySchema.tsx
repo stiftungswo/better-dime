@@ -1,11 +1,14 @@
 import * as yup from 'yup';
-import { dimeDate } from '../../utilities/validationHelpers';
+import { dimeDate, localizeSchema, requiredNumber } from '../../utilities/validation';
 
-export const holidaySchema = yup.object({
-  name: yup.string().required(),
-  date: dimeDate().required(),
-  duration: yup.number().required(),
-});
+export const holidaySchema = localizeSchema(() =>
+  yup.object({
+    name: yup.string().required(),
+    date: dimeDate().required(),
+    duration: requiredNumber(),
+  })
+);
+
 export const holidayTemplate = {
   name: '',
   date: null,

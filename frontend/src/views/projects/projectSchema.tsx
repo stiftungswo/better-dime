@@ -1,35 +1,37 @@
 import * as yup from 'yup';
-import { dimeDate, nullableNumber } from '../../utilities/validationHelpers';
+import { dimeDate, localizeSchema, nullableNumber, requiredNumber, selector } from '../../utilities/validation';
 
-export const projectSchema = yup.object({
-  name: yup.string().required(),
-  accountant_id: yup.number().required(),
-  address_id: yup.number().required(),
-  customer_id: yup.number().required(),
-  description: yup.string().required(),
-  chargeable: yup.boolean(),
-  archived: yup.boolean(),
-  deadline: dimeDate().nullable(true),
-  category_id: yup.number().required(),
-  rate_group_id: yup.number().required(),
-  fixed_price: nullableNumber(),
-  positions: yup.array(
-    yup.object({
-      description: yup.string().nullable(true),
-      price_per_rate: yup.number().required(),
-      rate_unit_id: yup.number().required(),
-      vat: yup.number().required(),
-    })
-  ),
-  costgroup_distributions: yup
-    .array(
+export const projectSchema = localizeSchema(() =>
+  yup.object({
+    name: yup.string().required(),
+    accountant_id: selector(),
+    address_id: selector(),
+    customer_id: selector(),
+    description: yup.string().required(),
+    chargeable: yup.boolean(),
+    archived: yup.boolean(),
+    deadline: dimeDate().nullable(true),
+    category_id: selector(),
+    rate_group_id: selector(),
+    fixed_price: nullableNumber(),
+    positions: yup.array(
       yup.object({
-        costgroup_number: yup.number().required(),
-        weight: yup.number().required(),
+        description: yup.string().nullable(true),
+        price_per_rate: requiredNumber(),
+        rate_unit_id: selector(),
+        vat: requiredNumber(),
       })
-    )
-    .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
-});
+    ),
+    costgroup_distributions: yup
+      .array(
+        yup.object({
+          costgroup_number: requiredNumber(),
+          weight: requiredNumber(),
+        })
+      )
+      .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
+  })
+);
 
 export const projectTemplate = {
   id: undefined,

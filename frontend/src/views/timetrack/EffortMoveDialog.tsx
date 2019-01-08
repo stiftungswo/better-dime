@@ -11,15 +11,17 @@ import Grid from '@material-ui/core/Grid/Grid';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { EffortStore } from '../../stores/effortStore';
 import * as yup from 'yup';
-import { nullableNumber } from '../../utilities/validationHelpers';
+import { localizeSchema, nullableNumber, selector } from '../../utilities/validation';
 import Button from '@material-ui/core/Button/Button';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { HandleFormikSubmit } from '../../types';
 
-const schema = yup.object({
-  project_id: yup.number().required(),
-  project_position: nullableNumber(),
-});
+const schema = localizeSchema(() =>
+  yup.object({
+    project_id: selector(),
+    project_position: nullableNumber(),
+  })
+);
 
 const template = {
   project_id: '',

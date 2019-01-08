@@ -1,35 +1,37 @@
 import * as yup from 'yup';
-import { nullableNumber } from '../../utilities/validationHelpers';
+import { localizeSchema, nullableNumber, requiredNumber, selector } from '../../utilities/validation';
 
-export const offerSchema = yup.object({
-  name: yup.string().required(),
-  accountant_id: yup.number().required(),
-  address_id: yup.number().required(),
-  customer_id: yup.number().required(),
-  description: yup.string().required(),
-  fixed_price: nullableNumber(),
-  rate_group_id: yup.number().required(),
-  short_description: yup.string().required(),
-  status: yup.number().required(),
-  discounts: yup.array(
-    yup.object({
-      name: yup.string().required(),
-      percentage: yup.boolean().required(),
-      value: yup.number().required(),
-    })
-  ),
-  positions: yup.array(
-    yup.object({
-      amount: yup.number().required(),
-      description: yup.string().nullable(true),
-      order: yup.number().required(),
-      price_per_rate: yup.number().required(),
-      rate_unit_id: yup.number().required(),
-      service_id: yup.number().required(),
-      vat: yup.number().required(),
-    })
-  ),
-});
+export const offerSchema = localizeSchema(() =>
+  yup.object({
+    name: yup.string().required(),
+    accountant_id: selector(),
+    address_id: selector(),
+    customer_id: selector(),
+    description: yup.string().required(),
+    fixed_price: nullableNumber(),
+    rate_group_id: selector(),
+    short_description: yup.string().required(),
+    status: selector(),
+    discounts: yup.array(
+      yup.object({
+        name: yup.string().required(),
+        percentage: yup.boolean().required(),
+        value: requiredNumber(),
+      })
+    ),
+    positions: yup.array(
+      yup.object({
+        amount: requiredNumber(),
+        description: yup.string().nullable(true),
+        order: requiredNumber(),
+        price_per_rate: requiredNumber(),
+        rate_unit_id: selector(),
+        service_id: selector(),
+        vat: requiredNumber(),
+      })
+    ),
+  })
+);
 
 export const offerTemplate = {
   id: undefined,
