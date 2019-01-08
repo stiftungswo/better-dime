@@ -24,6 +24,7 @@ import { ProjectStore } from '../../stores/projectStore';
 import { captureException } from '../../utilities/helpers';
 import { apiDateFormat } from '../../stores/apiStore';
 import { dimeDate } from '../../utilities/validationHelpers';
+import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 
 interface Props {
   onClose: () => void;
@@ -65,7 +66,10 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
     }
 
     if ('comment' in entity && entity.comment !== '') {
-      const newProjectComment: ProjectComment = { ...entity, date: entity.date.format(apiDateFormat) } as ProjectComment;
+      const newProjectComment: ProjectComment = {
+        ...entity,
+        date: entity.date.format(apiDateFormat),
+      } as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
       await this.props.projectCommentStore!.fetchFiltered(filter);
     }
@@ -134,57 +138,61 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
         onSubmit={this.handleSubmit}
         validationSchema={schema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
-          <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
-            <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
+          <FormikSubmitDetector {...formikProps}>
+            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+              <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
-            <DialogContent>
-              {!formikProps.values.id && <Field portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />}
-              {formikProps.values.id && <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
-              <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
-              <Field
-                portal
-                projectId={formikProps.values.project_id}
-                component={ProjectPositionSelector}
-                name={'position_id'}
-                label={'Aktivität'}
-              />
-              <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-              {formikProps.values.project_id && formikProps.values.position_id && (
-                <>
-                  <Field component={EffortValueField} name={'value'} label={'Wert'} fullWidth />
-                  {!formikProps.values.id && (
-                    <Field
-                      delayed
-                      fullWidth
-                      multiline
-                      component={TextField}
-                      name={'comment'}
-                      label={'Kommentar zu Projekt und Tag'}
-                      margin={'none'}
-                    />
-                  )}
-                </>
-              )}
-            </DialogContent>
+              <DialogContent>
+                {!formikProps.values.id && (
+                  <Field portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />
+                )}
+                {formikProps.values.id && <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
+                <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
+                <Field
+                  portal
+                  projectId={formikProps.values.project_id}
+                  component={ProjectPositionSelector}
+                  name={'position_id'}
+                  label={'Aktivität'}
+                />
+                <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
+                {formikProps.values.project_id && formikProps.values.position_id && (
+                  <>
+                    <Field component={EffortValueField} name={'value'} label={'Wert'} fullWidth />
+                    {!formikProps.values.id && (
+                      <Field
+                        delayed
+                        fullWidth
+                        multiline
+                        component={TextField}
+                        name={'comment'}
+                        label={'Kommentar zu Projekt und Tag'}
+                        margin={'none'}
+                      />
+                    )}
+                  </>
+                )}
+              </DialogContent>
 
-            <DialogActions>
-              <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
-              <Button
-                onClick={async () => {
-                  await this.handleSubmit(formikProps.values, formikProps);
-                  this.props.effortStore!.editing = false;
-                }}
-                disabled={formikProps.isSubmitting}
-              >
-                Speichern
-              </Button>
-              {!formikProps.values.id && (
-                <Button onClick={() => this.handleSubmit(formikProps.values, formikProps)} disabled={formikProps.isSubmitting}>
-                  Speichern und weiter
+              <DialogActions>
+                <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
+                <Button
+                  onClick={async () => {
+                    await this.handleSubmit(formikProps.values, formikProps);
+                    this.props.effortStore!.editing = false;
+                  }}
+                  disabled={formikProps.isSubmitting}
+                >
+                  Speichern
                 </Button>
-              )}
-            </DialogActions>
-          </Dialog>
+                {!formikProps.values.id && (
+                  <Button onClick={() => this.handleSubmit(formikProps.values, formikProps)} disabled={formikProps.isSubmitting}>
+                    Speichern und weiter
+                  </Button>
+                )}
+              </DialogActions>
+            </Dialog>
+          </FormikSubmitDetector>
         )}
       />
     );

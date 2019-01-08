@@ -11,6 +11,7 @@ import { withMobileDialog } from '@material-ui/core';
 import { InjectedProps } from '@material-ui/core/withMobileDialog';
 import { Schema } from 'yup';
 import { HandleFormikSubmit } from '../types';
+import { FormikSubmitDetector } from './FormikSubmitDetector';
 
 interface DialogFormProps<T> {
   title: string;
@@ -54,7 +55,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         {...rest}
         onSubmit={this.handleSubmit}
         render={(formikProps: FormikProps<Values>) => (
-          <>
+          <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
               <DialogContent>{this.props.render(formikProps)}</DialogContent>
@@ -65,7 +66,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
                 </Button>
               </DialogActions>
             </Dialog>
-          </>
+          </FormikSubmitDetector>
         )}
       />
     );

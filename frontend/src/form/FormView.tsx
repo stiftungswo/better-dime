@@ -1,4 +1,4 @@
-import { Formik, FormikBag, FormikConfig, FormikProps, FormikState } from 'formik';
+import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Fragment } from 'react';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
@@ -6,6 +6,7 @@ import { DimeContent } from '../layout/DimeContent';
 import { Prompt } from 'react-router';
 import { SaveIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
+import { FormikSubmitDetector } from './FormikSubmitDetector';
 
 export interface FormViewProps<T> {
   title: string;
@@ -20,10 +21,7 @@ interface Props<T> extends FormViewProps<T> {
   render: (props: FormikProps<T>) => React.ReactNode;
 }
 
-export class FormView<Values = object, ExtraProps = {}> extends React.Component<
-  FormikConfig<Values> & ExtraProps & Props<Values>,
-  FormikState<Values>
-> {
+export class FormView<Values = object, ExtraProps = {}> extends React.Component<FormikConfig<Values> & ExtraProps & Props<Values>> {
   private handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     try {
       await this.props.onSubmit(this.props.validationSchema.cast(values));
@@ -46,14 +44,14 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
         enableReinitialize
         onSubmit={this.handleSubmit}
         render={(formikProps: FormikProps<Values>) => (
-          <Fragment>
+          <FormikSubmitDetector {...formikProps}>
             <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <DimeAppBar title={this.props.title}>
               {appBarButtons}
               <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
             <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>
-          </Fragment>
+          </FormikSubmitDetector>
         )}
       />
     );
