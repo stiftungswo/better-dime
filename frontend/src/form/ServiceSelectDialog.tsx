@@ -39,7 +39,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
     return (
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ minWidth: '400px' }}>
           <ServiceSelector
             fullWidth
             {...formikFieldCompatible({
