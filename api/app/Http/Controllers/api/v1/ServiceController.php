@@ -78,6 +78,10 @@ class ServiceController extends BaseController
             'archived' => 'boolean',
             'description' => 'string|nullable',
             'name' => 'required|string',
+            'service_rates' => 'present|array',
+            'service_rates.*.rate_group_id' => 'required|integer',
+            'service_rates.*.rate_unit_id' => 'required|integer',
+            'service_rates.*.value' => 'required|integer',
             'vat' => 'required|numeric'
         ]);
     }

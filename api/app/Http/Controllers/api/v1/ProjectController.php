@@ -47,7 +47,6 @@ class ProjectController extends BaseController
         $this->validateRequest($request);
         $project = Project::create(Input::toArray());
 
-        // because we enforce in the validation that costgroups must be present, we dont need to check it here as well
         foreach (Input::get('costgroup_distributions') as $costgroup) {
             /** @var ProjectCostgroupDistribution $pcd */
             $pcd = ProjectCostgroupDistribution::make($costgroup);
@@ -55,13 +54,11 @@ class ProjectController extends BaseController
             $pcd->save();
         }
 
-        if (Input::get('positions')) {
-            foreach (Input::get('positions') as $position) {
-                /** @var ProjectPosition $pn */
-                $pn = ProjectPosition::make($position);
-                $pn->project()->associate($project);
-                $pn->save();
-            }
+        foreach (Input::get('positions') as $position) {
+            /** @var ProjectPosition $pn */
+            $pn = ProjectPosition::make($position);
+            $pn->project()->associate($project);
+            $pn->save();
         }
 
         return self::get($project->id);
@@ -84,6 +81,7 @@ class ProjectController extends BaseController
             'vacation_project' => 'boolean',
             'name' => 'required|string',
             'offer_id' => 'integer|nullable',
+            'positions' => 'present|array',
             'positions.*.description' => 'string|nullable',
             'positions.*.price_per_rate' => 'required|integer',
             'positions.*.rate_unit_id' => 'required|integer',
@@ -111,9 +109,7 @@ class ProjectController extends BaseController
 
             $this->executeNestedUpdate(Input::get('costgroup_distributions'), $project->costgroup_distributions, ProjectCostgroupDistribution::class, 'project', $project);
 
-            if (Input::get('positions')) {
-                $this->executeNestedUpdate(Input::get('positions'), $project->positions, ProjectPosition::class, 'project', $project);
-            }
+            $this->executeNestedUpdate(Input::get('positions'), $project->positions, ProjectPosition::class, 'project', $project);
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;

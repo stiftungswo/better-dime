@@ -85,17 +85,6 @@ class PersonControllerTest extends \TestCase
         $this->asAdmin()->json('PUT', 'api/v1/people/' . $personId, [])->assertResponseStatus(422);
     }
 
-    public function testInvalidNestedPut()
-    {
-        // can't update because parameters are invalid
-        $personId = factory(Person::class)->create()->id;
-        $template = $this->personTemplate();
-        unset($template['phone_numbers']);
-        $template['phone_numbers'] = ['werqwer'];
-
-        $this->asAdmin()->json('PUT', 'api/v1/people/' . $personId, $template)->assertResponseStatus(500);
-    }
-
     public function testValidPut()
     {
         // also add one nested relation, delete one and update one
@@ -158,7 +147,6 @@ class PersonControllerTest extends \TestCase
             'rate_group_id' => factory(\App\Models\Service\RateGroup::class)->create()->id,
             'salutation' => 'Prof. Dr.',
             'tags' => $idsOfTags->toArray()
-
         ];
     }
 }

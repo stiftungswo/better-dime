@@ -86,17 +86,6 @@ class CompanyControllerTest extends \TestCase
         $this->asAdmin()->json('PUT', 'api/v1/companies/' . $companyId, [])->assertResponseStatus(422);
     }
 
-    public function testInvalidNestedPut()
-    {
-        // can't update because parameters are invalid
-        $companyId = factory(Company::class)->create()->id;
-        $template = $this->companyTemplate();
-        unset($template['phone_numbers']);
-        $template['phone_numbers'] = ['werqwer'];
-
-        $this->asAdmin()->json('PUT', 'api/v1/companies/' . $companyId, $template)->assertResponseStatus(500);
-    }
-
     public function testValidPut()
     {
         // also add one nested relation, delete one and update one

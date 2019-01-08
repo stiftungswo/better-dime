@@ -42,30 +42,24 @@ class PersonController extends BaseController
         $person = Person::create(Input::toArray());
 
         // tags is an array of existing CustomerTag ids
-        if (Input::get('tags')) {
-            foreach (Input::get('tags') as $tag) {
-                /** @var CustomerTag $t */
-                $t = CustomerTag::findOrFail($tag);
-                $t->customers()->save($person);
-            }
+        foreach (Input::get('tags') as $tag) {
+            /** @var CustomerTag $t */
+            $t = CustomerTag::findOrFail($tag);
+            $t->customers()->save($person);
         }
 
-        if (Input::get('phone_numbers')) {
-            foreach (Input::get('phone_numbers') as $phoneNumber) {
-                /** @var Phone $pn */
-                $pn = Phone::make($phoneNumber);
-                $pn->customer()->associate($person);
-                $pn->save();
-            }
+        foreach (Input::get('phone_numbers') as $phoneNumber) {
+            /** @var Phone $pn */
+            $pn = Phone::make($phoneNumber);
+            $pn->customer()->associate($person);
+            $pn->save();
         }
 
-        if (Input::get('addresses')) {
-            foreach (Input::get('addresses') as $address) {
-                /** @var Address $a */
-                $a = Address::make($address);
-                $a->customer()->associate($person);
-                $a->save();
-            }
+        foreach (Input::get('addresses') as $address) {
+            /** @var Address $a */
+            $a = Address::make($address);
+            $a->customer()->associate($person);
+            $a->save();
         }
 
         return self::get($person->id);
@@ -82,17 +76,11 @@ class PersonController extends BaseController
             DB::beginTransaction();
             $p->update(Input::toArray());
 
-            if (Input::get('tags')) {
-                $p->customer_tags()->sync(Input::get('tags'));
-            }
+            $p->customer_tags()->sync(Input::get('tags'));
 
-            if (Input::get('phone_numbers')) {
-                $this->executeNestedUpdate(Input::get('phone_numbers'), $p->phone_numbers, Phone::class, 'customer', $p);
-            }
+            $this->executeNestedUpdate(Input::get('phone_numbers'), $p->phone_numbers, Phone::class, 'customer', $p);
 
-            if (Input::get('addresses')) {
-                $this->executeNestedUpdate(Input::get('addresses'), $p->addresses, Address::class, 'customer', $p);
-            }
+            $this->executeNestedUpdate(Input::get('addresses'), $p->addresses, Address::class, 'customer', $p);
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -106,7 +94,7 @@ class PersonController extends BaseController
     private function validateRequest(Request $request)
     {
         $this->validate($request, [
-            'addresses' => 'array',
+            'addresses' => 'present|array',
             'comment' => 'string|nullable',
             'company_id' => 'integer|nullable',
             'chargable' => 'boolean',
@@ -115,9 +103,12 @@ class PersonController extends BaseController
             'first_name' => 'required|string|max:255',
             'hidden' => 'boolean',
             'last_name' => 'required|string|max:255',
-            'salutation' => 'string|nullable|max:20',
+            'phone_numbers' => 'present|array',
+            'phone_numbers.*.category' => 'required|integer',
+            'phone_numbers.*.number' => 'required|string',
             'rate_group_id' => 'required|integer',
-            'tags' => 'array'
+            'salutation' => 'string|nullable|max:20',
+            'tags' => 'present|array'
         ]);
     }
 }

@@ -45,22 +45,18 @@ class OfferController extends BaseController
         $this->validateRequest($request);
         $offer = Offer::create(Input::toArray());
 
-        if (Input::get('discounts')) {
-            foreach (Input::get('discounts') as $discount) {
-                /** @var OfferDiscount $od */
-                $od = OfferDiscount::make($discount);
-                $od->offer()->associate($offer);
-                $od->save();
-            }
+        foreach (Input::get('discounts') as $discount) {
+            /** @var OfferDiscount $od */
+            $od = OfferDiscount::make($discount);
+            $od->offer()->associate($offer);
+            $od->save();
         }
 
-        if (Input::get('positions')) {
-            foreach (Input::get('positions') as $position) {
-                /** @var OfferPosition $op */
-                $op = OfferPosition::make($position);
-                $op->offer()->associate($offer);
-                $op->save();
-            }
+        foreach (Input::get('positions') as $position) {
+            /** @var OfferPosition $op */
+            $op = OfferPosition::make($position);
+            $op->offer()->associate($offer);
+            $op->save();
         }
 
         return self::get($offer->id);
@@ -74,25 +70,21 @@ class OfferController extends BaseController
             DB::beginTransaction();
             $offer->update(Input::toArray());
 
-            if (Input::get('discounts')) {
-                $this->executeNestedUpdate(
-                    Input::get('discounts'),
-                    $offer->discounts,
-                    OfferDiscount::class,
-                    'offer',
-                    $offer
-                );
-            }
+            $this->executeNestedUpdate(
+                Input::get('discounts'),
+                $offer->discounts,
+                OfferDiscount::class,
+                'offer',
+                $offer
+            );
 
-            if (Input::get('positions')) {
-                $this->executeNestedUpdate(
-                    Input::get('positions'),
-                    $offer->positions,
-                    OfferPosition::class,
-                    'offer',
-                    $offer
-                );
-            }
+            $this->executeNestedUpdate(
+                Input::get('positions'),
+                $offer->positions,
+                OfferPosition::class,
+                'offer',
+                $offer
+            );
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -160,11 +152,13 @@ class OfferController extends BaseController
             'customer_id' => 'required|integer',
             'address_id' => 'required|integer',
             'description' => 'required|string',
+            'discounts' => 'present|array',
             'discounts.*.name' => 'required|string|max:255',
             'discounts.*.percentage' => 'required|boolean',
             'discounts.*.value' => 'required|numeric',
             'fixed_price' => 'integer|nullable',
             'name' => 'required|string|max:255',
+            'positions' => 'present|array',
             'positions.*.amount' => 'required|numeric',
             'positions.*.description' => 'nullable|string',
             'positions.*.order' => 'required|integer',

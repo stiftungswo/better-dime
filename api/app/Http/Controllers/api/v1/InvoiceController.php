@@ -45,7 +45,6 @@ class InvoiceController extends BaseController
         $this->validateRequest($request);
         $invoice = Invoice::create(Input::toArray());
 
-        // because we enforce in the validation that costgroups must be present, we dont need to check it here as well
         foreach (Input::get('costgroup_distributions') as $costgroup) {
             /** @var InvoiceCostgroupDistribution $cd */
             $cd = InvoiceCostgroupDistribution::make($costgroup);
@@ -53,22 +52,18 @@ class InvoiceController extends BaseController
             $cd->save();
         }
 
-        if (Input::get('discounts')) {
-            foreach (Input::get('discounts') as $discount) {
-                /** @var InvoiceDiscount $id */
-                $id = InvoiceDiscount::make($discount);
-                $id->invoice()->associate($invoice);
-                $id->save();
-            }
+        foreach (Input::get('discounts') as $discount) {
+            /** @var InvoiceDiscount $id */
+            $id = InvoiceDiscount::make($discount);
+            $id->invoice()->associate($invoice);
+            $id->save();
         }
 
-        if (Input::get('positions')) {
-            foreach (Input::get('positions') as $position) {
-                /** @var InvoicePosition $ip */
-                $ip = InvoicePosition::make($position);
-                $ip->invoice()->associate($invoice);
-                $ip->save();
-            }
+        foreach (Input::get('positions') as $position) {
+            /** @var InvoicePosition $ip */
+            $ip = InvoicePosition::make($position);
+            $ip->invoice()->associate($invoice);
+            $ip->save();
         }
 
         return self::get($invoice->id);
@@ -140,13 +135,9 @@ class InvoiceController extends BaseController
             $invoice->update(Input::toArray());
             $this->executeNestedUpdate(Input::get('costgroup_distributions'), $invoice->costgroup_distributions, InvoiceCostgroupDistribution::class, 'invoice', $invoice);
 
-            if (Input::get('discounts')) {
-                $this->executeNestedUpdate(Input::get('discounts'), $invoice->discounts, InvoiceDiscount::class, 'invoice', $invoice);
-            }
+            $this->executeNestedUpdate(Input::get('discounts'), $invoice->discounts, InvoiceDiscount::class, 'invoice', $invoice);
 
-            if (Input::get('positions')) {
-                $this->executeNestedUpdate(Input::get('positions'), $invoice->positions, InvoicePosition::class, 'invoice', $invoice);
-            }
+            $this->executeNestedUpdate(Input::get('positions'), $invoice->positions, InvoicePosition::class, 'invoice', $invoice);
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -165,11 +156,13 @@ class InvoiceController extends BaseController
             'costgroup_distributions.*.costgroup_number' => 'required|integer',
             'costgroup_distributions.*.weight' => 'required|integer',
             'description' => 'required|string',
+            'discounts' => 'present|array',
             'discounts.*.name' => 'required|string|max:255',
             'discounts.*.percentage' => 'required|boolean',
             'discounts.*.value' => 'required|numeric',
             'end' => 'required|date',
             'fixed_price' => 'integer|nullable',
+            'positions' => 'present|array',
             'positions.*.amount' => 'required|numeric',
             'positions.*.description' => 'required|string|max:255',
             'positions.*.order' => 'integer|nullable',

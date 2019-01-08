@@ -32,13 +32,11 @@ class EmployeeController extends BaseController
         $this->validateRequest($request);
         $employee = Employee::create(Input::toArray());
 
-        if (Input::get('work_periods')) {
-            foreach (Input::get('work_periods') as $workPeriod) {
-                /** @var WorkPeriod $wp */
-                $wp = WorkPeriod::make($workPeriod);
-                $wp->employee()->associate($employee);
-                $wp->save();
-            }
+        foreach (Input::get('work_periods') as $workPeriod) {
+            /** @var WorkPeriod $wp */
+            $wp = WorkPeriod::make($workPeriod);
+            $wp->employee()->associate($employee);
+            $wp->save();
         }
 
         return self::get($employee->id);
@@ -53,9 +51,7 @@ class EmployeeController extends BaseController
             DB::beginTransaction();
             $employee->update(Input::toArray());
 
-            if (Input::get('work_periods')) {
-                $this->executeNestedUpdate(Input::get('work_periods'), $employee->work_periods, WorkPeriod::class, 'employee', $employee);
-            }
+            $this->executeNestedUpdate(Input::get('work_periods'), $employee->work_periods, WorkPeriod::class, 'employee', $employee);
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
@@ -88,6 +84,7 @@ class EmployeeController extends BaseController
             'is_admin' => 'boolean',
             'last_name' => 'required|string',
             'password' => 'string',
+            'work_periods' => 'present|array',
             'work_periods.*.end' => 'required|date',
             'work_periods.*.pensum' => 'required|integer',
             'work_periods.*.start' => 'required|date',
