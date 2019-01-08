@@ -12,8 +12,14 @@ $factory->define(\App\Models\Offer\OfferPosition::class, function () {
         'offer_id' => function () {
             return factory(\App\Models\Offer\Offer::class)->create()->id;
         },
+        'rate_unit_id' => function () {
+            return factory(\App\Models\Service\RateUnit::class)->create()->id;
+        },
         'order' => $faker->numberBetween(1, 50),
         'price_per_rate' => $faker->numberBetween(3000, 18000),
+        'service_id' => function () {
+            return factory(\App\Models\Service\Service::class)->create()->id;
+        },
         'vat' => $faker->randomElement([0.025, 0.077]),
     ];
 });

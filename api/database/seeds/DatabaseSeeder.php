@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
         $employees = factory(\App\Models\Employee\Employee::class, 20)->create();
         $employees->each(function ($e) {
             /** @var \App\Models\Employee\Employee $e */
-            $e->work_periods()->saveMany(factory(\App\Models\Employee\WorkPeriod::class, rand(1, 3))->make());
+            factory(\App\Models\Employee\WorkPeriod::class, rand(1, 3))->create([
+                'employee_id' => $e->id
+            ]);
         });
 
         print("Seeding public holidays ...\n");
@@ -97,30 +99,38 @@ class DatabaseSeeder extends Seeder
             }
         ]);
 
-
         $companies->each(function ($c, $i) use ($customerTags) {
-            $min = $i===0 ? 1 : 0; //make sure at least one company has an address
+            $min = $i === 0 ? 1 : 0; //make sure at least one company has an address
 
             /** @var \App\Models\Customer\Company $c */
             $c->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-            $c->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
-            $c->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->make());
+            factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->create([
+                'customer_id' => $c->id
+            ]);
+            factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->create([
+                'customer_id' => $c->id
+            ]);
         });
 
         print("Seeding people ...\n");
         $people = factory(\App\Models\Customer\Person::class)->times(10)->create([
+            'company_id' => null,
             'rate_group_id' => function () {
                 return \App\Models\Service\RateGroup::all()->random()->id;
             }
         ]);
 
         $people->each(function ($p, $i) use ($customerTags) {
-            $min = $i===0 ? 1 : 0; //make sure at least one person has an address
+            $min = $i === 0 ? 1 : 0; //make sure at least one person has an address
 
             /** @var \App\Models\Customer\Person $p */
             $p->customer_tags()->attach($customerTags->random(rand(1, 3))->pluck('id')->toArray());
-            $p->phone_numbers()->saveMany(factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->make());
-            $p->addresses()->saveMany(factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->make());
+            factory(\App\Models\Customer\Phone::class)->times(rand(0, 2))->create([
+                'customer_id' => $p->id
+            ]);
+            factory(\App\Models\Customer\Address::class)->times(rand($min, 2))->create([
+                'customer_id' => $p->id
+            ]);
         });
 
         print("Attaching some people to a company ...\n");
@@ -131,7 +141,7 @@ class DatabaseSeeder extends Seeder
         });
 
         print("Fetching entites for later seeding steps ...\n");
-        $customers = \App\Models\Customer\Company::with('addresses')->get()->filter(function ($c) {
+        $customersWithAddresses = \App\Models\Customer\Company::with('addresses')->get()->filter(function ($c) {
             return $c->addresses->isNotEmpty();
         });
         $rateGroups = \App\Models\Service\RateGroup::all();
@@ -139,11 +149,11 @@ class DatabaseSeeder extends Seeder
         print("Seeding offers ...\n");
         $offers = collect([]);
         for ($i = 0; $i < 20; $i++) {
-            $customer = $customers->random();
+            $customer = $customersWithAddresses->random();
             $offers->push(factory(\App\Models\Offer\Offer::class)->create([
                 'accountant_id' => $employees->random()->id,
-                'customer_id' => $customer->id,
                 'address_id' => $customer->addresses->random()->id,
+                'customer_id' => $customer->id,
                 'rate_group_id' => $rateGroups->random()->id
             ]));
         }
@@ -151,18 +161,17 @@ class DatabaseSeeder extends Seeder
         print("Seeding offer positions and discounts ...\n");
         $offers->each(function ($o) use ($rateUnits, $services) {
             /** @var \App\Models\Offer\Offer $o */
-            $positions = [];
             foreach (range(1, rand(2, 5)) as $i) {
-                $positions[] = factory(\App\Models\Offer\OfferPosition::class)->make([
+                factory(\App\Models\Offer\OfferPosition::class)->create([
                     'offer_id' => $o->id,
                     'rate_unit_id' => $rateUnits->random()->id,
                     'service_id' => $services->random()->id
                 ]);
             }
-            $o->positions()->saveMany($positions);
-            $o->discounts()->saveMany(factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->make([
+
+            factory(\App\Models\Offer\OfferDiscount::class)->times(rand(0, 2))->create([
                 'offer_id' => $o->id,
-            ]));
+            ]);
         });
 
         print("Seeding costgroups ...\n");
@@ -180,45 +189,53 @@ class DatabaseSeeder extends Seeder
             $projectsWithOffer[] = $creator->create();
         });
 
-        $projectsWithoutOffer = factory(\App\Models\Project\Project::class, 5)->create([
-            "offer_id" => null
-        ]);
+        $projectsWithoutOffer = collect([]);
+        for ($i = 0; $i < 5; $i++) {
+            $customer = $customersWithAddresses->random();
+
+            $projectsWithoutOffer->push(factory(\App\Models\Project\Project::class)->create([
+                'accountant_id' => $employees->random()->id,
+                'address_id' => $customer->addresses->random()->id,
+                'category_id' => $projectCategories->random()->id,
+                'customer_id' => $customer->id,
+                'offer_id' => null,
+                'rate_group_id' => $rateGroups->random()->id
+            ]));
+        }
 
         $projects = $projectsWithOffer->concat($projectsWithoutOffer);
         $projects->each(function ($p) use ($projectCategories, $costgroups) {
             /** @var \App\Models\Project\Project $p */
-            $p->update([
-                'category_id' => $projectCategories->random()->id,
-            ]);
-            $p->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->make([
+            factory(\App\Models\Project\ProjectComment::class)->times(rand(0, 10))->create([
                 'project_id' => $p->id
-            ]));
+            ]);
 
-            $p->costgroup_distributions()->saveMany([factory(\App\Models\Project\ProjectCostgroupDistribution::class)->make([
-                'costgroup_number' => $costgroups->random()->number,
+            factory(\App\Models\Project\ProjectCostgroupDistribution::class, 2)->create([
+                'costgroup_number' => function () use ($costgroups) {
+                    return $costgroups->random()->number;
+                },
                 'project_id' => $p->id,
-            ]), factory(\App\Models\Project\ProjectCostgroupDistribution::class)->make([
-                'costgroup_number' => $costgroups->random()->number,
-                'project_id' => $p->id,
-            ])]);
+            ]);
         });
 
         print("Seeding holiday project ...\n");
-        $customer = $customers->random();
+        $customer = $customersWithAddresses->random();
         $holidayProject = factory(\App\Models\Project\Project::class)->create([
             'accountant_id' => $employees->random()->id,
-            'customer_id' => $customer->id,
             'address_id' => $customer->addresses->random()->id,
             'category_id' => $projectCategories->random()->id,
+            'customer_id' => $customer->id,
+            'offer_id' => null,
+            'rate_group_id' => $rateGroups->random()->id,
             'vacation_project' => true,
-            'rate_group_id' => $rateGroups->random()->id
         ]);
 
-        $holidayProject->positions()->save(factory(\App\Models\Project\ProjectPosition::class)->make([
+        factory(\App\Models\Project\ProjectPosition::class)->create([
             'description' => 'Ferien',
+            'project_id' => $holidayProject->id,
             'rate_unit_id' => $rateUnits->firstWhere('is_time', true)->id,
             'service_id' => $services->random()->id
-        ]));
+        ]);
 
         $projects = $projects->merge([$holidayProject]);
 
@@ -229,17 +246,18 @@ class DatabaseSeeder extends Seeder
             })->flatten()->each(function ($pp) use ($faker, $wp) {
                 $date = $faker->dateTimeBetween($wp->start, $wp->end);
 
-                $pp->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class)->times(rand(0, 2))->make([
+                factory(\App\Models\Project\ProjectEffort::class)->times(rand(0, 2))->create([
                     'employee_id' => $wp->employee->id,
                     'date' => $date,
                     'position_id' => $pp->id
-                ]));
+                ]);
             });
         });
 
         $invoices = collect([]);
         print("Seeding invoices ...\n");
         $projectsWithInvoice = $projectsWithOffer->slice(0, -3)->concat($projectsWithoutOffer->slice(0, -2));
+
         //have some projects with multiple invoices
         $projectsWithInvoice = $projectsWithInvoice->concat($projectsWithInvoice->random(5));
         $projectsWithInvoice->each(function ($p) use ($invoices) {
@@ -248,27 +266,31 @@ class DatabaseSeeder extends Seeder
         });
 
         // create some invoices without a project
-        factory(\App\Models\Invoice\Invoice::class, 3)->create([
-            "project_id" => null,
-        ])->each(function ($invoice) use (&$invoices, $customers) {
-            $invoice->customer()->associate($customers->random()->id);
-            $invoice->save();
+        for ($i = 0; $i < 5; $i++) {
+            $customer = $customersWithAddresses->random();
 
-            factory(\App\Models\Invoice\InvoicePosition::class, 3)->create([
-                "invoice_id" => $invoice->id
+            $invoice = factory(\App\Models\Invoice\Invoice::class)->create([
+                'accountant_id' => $employees->random()->id,
+                'address_id' => $customer->addresses->random()->id,
+                'customer_id' => $customer->id,
+                'project_id' => null,
             ]);
-            $invoices[] = $invoice;
-        });
+            $invoices->push($invoice);
 
+            factory(\App\Models\Invoice\InvoicePosition::class, rand(0, 5))->create([
+                'invoice_id' => $invoice->id,
+                'project_position_id' => null,
+                'rate_unit_id' => function () use ($rateUnits) {
+                    return $rateUnits->random()->id;
+                }
+            ]);
+        }
 
         $invoices->each(function ($i) use ($costgroups) {
-            $i->costgroup_distributions()->saveMany([factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([
+            factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class, 2)->create([
                 'costgroup_number' => $costgroups->random()->number,
                 'invoice_id' => $i->id,
-            ]), factory(\App\Models\Invoice\InvoiceCostgroupDistribution::class)->make([
-                'costgroup_number' => $costgroups->random()->number,
-                'invoice_id' => $i->id,
-            ])]);
+            ]);
         });
     }
 }

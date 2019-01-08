@@ -19,6 +19,9 @@ $factory->define(\App\Models\Project\Project::class, function () {
         'category_id' => function () {
             return factory(\App\Models\Project\ProjectCategory::class)->create()->id;
         },
+        'customer_id' => function () {
+            return factory(rand(0, 1) == 1 ? \App\Models\Customer\Person::class : \App\Models\Customer\Company::class)->create()->id;
+        },
         'chargeable' => $faker->boolean,
         'deadline' => $faker->dateTimeBetween('+30 days', '+270 days'),
         'description' => $faker->sentence,
