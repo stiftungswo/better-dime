@@ -49,6 +49,9 @@ const schema = yup.object({
   withMobileDialog()
 )
 export class TimetrackFormDialog extends React.Component<Props & InjectedProps> {
+  state = {
+    lastEntry: null,
+  };
   public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
     const filter = this.props.timetrackFilterStore!.filter;
     const effortStore = this.props.effortStore!;
@@ -76,6 +79,7 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
 
     await effortStore.fetchFiltered(filter);
     formikProps.setSubmitting(false);
+    this.setState({ lastEntry: entity });
   };
 
   //widen the filter so the newly added entities are displayed
@@ -121,7 +125,7 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
 
   public handleClose = (props: FormikProps<ProjectEffort>) => () => {
     if (props.dirty) {
-      if (confirm('Änderungen verwerfen?')) {
+      if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
         this.props.onClose();
       }
     } else {
@@ -134,7 +138,8 @@ export class TimetrackFormDialog extends React.Component<Props & InjectedProps> 
 
     return (
       <Formik
-        initialValues={this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
+        initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
+        enableReinitialize
         onSubmit={this.handleSubmit}
         validationSchema={schema}
         render={(formikProps: FormikProps<ProjectEffort>) => (

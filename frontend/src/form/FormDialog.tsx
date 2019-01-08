@@ -34,7 +34,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
 
   public handleClose = (props: FormikProps<Values>) => () => {
     if (props.dirty) {
-      if (confirm('Änderungen verwerfen?')) {
+      if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
         this.props.onClose();
       }
     } else {
@@ -56,7 +56,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         onSubmit={this.handleSubmit}
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Prompt when={formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
+            <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
               <DialogContent>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
