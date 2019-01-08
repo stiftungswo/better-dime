@@ -68,7 +68,7 @@
                             {% endif %}
                         </div>
                         <div class="float-left text-align-right additional-columns padding-right">
-                            {{ effort.effort_unit_is_time ? (effort.efforts_sum / effort.effort_unit_factor)|round(2, 'floor')  : effort.efforts_sum }}
+                            {{ (effort.effort_unit_is_time ? (effort.efforts_sum / effort.effort_unit_factor) : effort.efforts_sum) | round(2) }}
                         </div>
                         <div class="float-left additional-columns padding-right">
                             {{ effort.effort_unit_name }}

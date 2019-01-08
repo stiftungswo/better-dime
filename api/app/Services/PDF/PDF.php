@@ -22,7 +22,7 @@ class PDF
         $renderedContent = $this->getRenderedTemplate($template, $data);
 
         $this->pdf->loadHTML($renderedContent)
-        ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait');
     }
 
     public function getRenderedTemplate(string $template, array $data)
@@ -30,7 +30,7 @@ class PDF
         if (!isset($data['base'])) {
             $app = new Application();
             $data['base']['path'] = $app->basepath();
-            $data['base']['pdf']  = $this->pdf;
+            $data['base']['pdf'] = $this->pdf;
         }
         return Twig::render("pdfs.$template", $data);
     }
@@ -54,14 +54,12 @@ class PDF
         $canvas = $this->pdf->getDomPDF()->get_canvas();
         // var_dump($canvas);
         $canvas->page_script('
-            if ($PAGE_COUNT > 1) {
                 $font = $fontMetrics->get_font("Roboto, Arial, Helvetica, sans-serif", "normal");
                 $size = 11;
                 $pageText = "Seite " . $PAGE_NUM . " von " . $PAGE_COUNT;
                 $y = 790;
                 $x = 475;
                 $pdf->text($x, $y, $pageText, $font, $size);
-            }
         ');
     }
 }

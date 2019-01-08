@@ -23,14 +23,14 @@
         </div>
 
         <div class="offer-title">
-            <b>Rechnung:<br>{{ invoice. name }}</b>
+            <b>Rechnung: {{ invoice. name }}</b>
         </div>
 
         <table class="top_table">
             <tr>
                 <td width="30%">Rechnung Nr. {{ invoice.id }}</td>
-                {% if invoice.offer %}
-                    <td width="30%">Offerte Nr. {{ invoice.offer.id }}</td>
+                {% if invoice.offer_id %}
+                    <td width="30%">Offerte Nr. {{ invoice.offer_id }}</td>
                 {% endif %}
                 <td>MwSt.-ID {{ env('SENDER_MWST') }}</td>
             </tr>
@@ -157,6 +157,8 @@
             ]
         ) }}
     </div>
+
+    Zahlbar 30 Tage netto
 {% endblock %}
 
 
