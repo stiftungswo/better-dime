@@ -36,7 +36,7 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
 
   @action
   public async doPost(projectCategory: ProjectCategory) {
-    await this.mainStore.api.post('/project_categories/', projectCategory);
+    await this.mainStore.api.post('/project_categories', projectCategory);
     await this.doFetchAll();
   }
 

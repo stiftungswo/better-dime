@@ -54,7 +54,7 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
   }
 
   protected async doPost(entity: Invoice): Promise<void> {
-    const res = await this.mainStore.api.post<Invoice>('/invoices/', entity);
+    const res = await this.mainStore.api.post<Invoice>('/invoices', entity);
     this.invoice = res.data;
   }
 

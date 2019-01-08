@@ -63,7 +63,7 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   }
 
   protected async doPost(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.post<Project>('/projects/', entity);
+    const res = await this.mainStore.api.post<Project>('/projects', entity);
     this.project = res.data;
   }
 

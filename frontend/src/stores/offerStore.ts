@@ -59,7 +59,7 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   }
 
   protected async doPost(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.post<Offer>('/offers/', entity);
+    const res = await this.mainStore.api.post<Offer>('/offers', entity);
     this.offer = res.data;
   }
 

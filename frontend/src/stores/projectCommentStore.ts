@@ -70,7 +70,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
   @action
   protected async doPost(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.api.post<ProjectComment>('/project_comments/', entity);
+    const res = await this.mainStore.api.post<ProjectComment>('/project_comments', entity);
     this.projectComment = res.data;
   }
 
