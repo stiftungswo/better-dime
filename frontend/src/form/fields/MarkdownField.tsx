@@ -12,22 +12,14 @@ const styles = (theme: Theme) => {
     container: {
       marginTop: '16px', //this is the 'normal' margin of formControl, but where could this be stored in theme?
       '& *': {
-        paddingTop: 0,
-        paddingBottom: 0,
-        marginTop: 0,
-        marginBottom: 0,
         fontSize,
       },
       '& p': {
-        margin: 0,
-        paddingTop: 0,
-        paddingBottom: 0,
         fontSize,
         width: '100%',
       },
       '& h1, & h2, & h3': {
         paddingTop: '8px',
-        paddingBottom: 0,
         fontSize,
         fontWeight: 'bold',
       },
