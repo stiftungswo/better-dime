@@ -13,6 +13,7 @@ import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import CurrencyField from '../../form/fields/CurrencyField';
 
 const template = () => ({
   formikKey: Math.random(),
@@ -67,7 +68,7 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                         {p.percentage ? (
                           <Field delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
-                          <Field delayed component={NumberField} unit={'CHF'} name={name('value')} disabled={disabled} />
+                          <Field delayed component={CurrencyField} unit={'CHF'} name={name('value')} disabled={disabled} />
                         )}
                       </DimeTableCell>
                       <DimeTableCell>
