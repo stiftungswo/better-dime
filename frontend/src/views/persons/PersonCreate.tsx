@@ -23,7 +23,7 @@ export default class PersonCreate extends React.Component<Props> {
     return this.props.peopleStore!.post(person).then(() => {
       this.setState({ submitted: true });
       const idOfNewPerson = this.props!.peopleStore!.person!.id;
-      this.props.history.replace('/people/' + idOfNewPerson);
+      this.props.history.replace('/persons/' + idOfNewPerson);
     });
   };
 
@@ -38,7 +38,7 @@ export default class PersonCreate extends React.Component<Props> {
       first_name: '',
       hidden: false,
       last_name: '',
-      rate_group_id: 0,
+      rate_group_id: null,
       salutation: '',
       tags: [],
       addresses: [],
