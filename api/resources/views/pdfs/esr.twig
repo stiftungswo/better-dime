@@ -26,13 +26,13 @@
 <div style="margin-top: 67%; margin-left: -20px; width: 100%; height: 35%">
     <div style="float: left; width: 28%; padding-right: 2%">
         <div style="margin: 7% 0 0 0; font-size: 14px; height: 33%">
-            <div style="font-weight: bold;">{{ env('SENDER_NAME') }}</div>
-            {{ env('SENDER_STREET') }}<br>
-            {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}
+            <div style="font-weight: bold;">{{ settings.sender_name }}</div>
+            {{ settings.sender_street }}<br>
+            {{ settings.sender_zip }} {{ settings.sender_city }}
         </div>
 
         <div class="text-align-right" style="margin:3% 8% 0 10%; font-size: 10px; text-align: right;">
-            {{ env('SENDER_BANK_ACCOUNT_NR') }}
+            {{ settings.sender_bank }}
         </div>
 
         <div style="margin: 5.5% -1.5% 0 0; text-align: right; width: 100%">
@@ -45,13 +45,13 @@
     </div>
     <div style="float: left; width: 28%; padding-right: 2%">
         <div style="margin: 7% 0 0 0; font-size: 14px; height: 33%">
-            <div style="font-weight: bold;">{{ env('SENDER_NAME') }}</div>
-            {{ env('SENDER_STREET') }}<br>
-            {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}
+            <div style="font-weight: bold;">{{ settings.sender_name }}</div>
+            {{ settings.sender_street }}<br>
+            {{ settings.sender_zip }} {{ settings.sender_city }}
         </div>
 
         <div class="text-align-right" style="margin:3% 0 0 10%; font-size: 10px; text-align: right;">
-            {{ env('SENDER_BANK_ACCOUNT_NR') }}
+            {{ settings.sender_bank }}
         </div>
 
         <div style="margin: 5.5% -7% 0 0; text-align: right; width: 100%">

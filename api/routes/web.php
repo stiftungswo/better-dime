@@ -188,6 +188,13 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/service_hours', ['uses' => 'ReportController@exportServiceHoursReport']);
                 $router->get('/revenue', ['uses' => 'ReportController@revenue']);
             });
+
+            $router->group(['prefix' => 'global_settings'], function () use ($router) {
+                $router->get('/', ['uses' => 'GlobalSettingController@index']);
+                $router->put('/', [
+                    'middleware' => 'admin',
+                    'uses' => 'GlobalSettingController@put']);
+            });
         });
     });
 });

@@ -16,7 +16,7 @@
 {% block content %}
     <div class="header clear-float">
         <div>
-            {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+            {{ settings.sender_city }}, {{ "now"|date("d.m.Y") }}
         </div>
 
         <div>
@@ -156,7 +156,7 @@
             <div class="signature">
                 <div class="bold">Unterschrift des Auftragsnehmers:</div>
                 <div class="date_location">Ort / Datum:</div>
-                <div class="dateline">{{ env('SENDER_CITY') ~ ', ' ~ "now"|date("d.m.Y") }} </div>
+                <div class="dateline">{{ settings.sender_city ~ ', ' ~ "now"|date("d.m.Y") }} </div>
             </div>
             <div class="signature">
                 <div class="bold">Unterschrift des Auftraggebers:</div>

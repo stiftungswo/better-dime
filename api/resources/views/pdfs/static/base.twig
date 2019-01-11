@@ -163,19 +163,19 @@
         {% block additional_styles %}{% endblock additional_styles %}
     {% endblock %}
     {% block title %}
-        <title>{{  env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}</title>
+        <title>{{  settings.sender_city }}, {{ "now"|date("d.m.Y") }}</title>
     {% endblock %}
 </head>
 <body>
     {% block header %}
         <div class="clear-float">
             <div class="float-left">
-                <p>{{ env('SENDER_NAME') }}<br>
-                    {{ env('SENDER_STREET') }}<br>
-                    {{ env('SENDER_PLZ') }} {{ env('SENDER_CITY') }}<br>
-                    Telefon: {{ env('SENDER_PHONE') }}<br>
-                    Mail: {{ env('SENDER_MAIL') }}<br>
-                    {{ env('SENDER_WEB') }} 
+                <p>{{ settings.sender_name }}<br>
+                    {{ settings.sender_street }}<br>
+                    {{ settings.sender_zip }} {{ settings.sender_city }}<br>
+                    Telefon: {{ settings.sender_phone }}<br>
+                    Mail: {{ settings.sender_mail }}<br>
+                    {{ settings.sender_web }}
                 </p>
             </div>
 

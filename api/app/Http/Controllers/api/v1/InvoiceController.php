@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
+use App\Models\GlobalSettings;
 use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoiceDiscount;
@@ -81,10 +82,13 @@ class InvoiceController extends BaseController
         // render address
         $addressLabel = AddressLabelBuilder::build($invoice);
 
+        $settings = GlobalSettings::all()->first();
+
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
             'invoice',
             [
+                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'breakdown' => CostBreakdown::calculate($invoice),
                 'invoice' => $invoice,
@@ -111,10 +115,13 @@ class InvoiceController extends BaseController
         // render address
         $addressLabel = AddressLabelBuilder::build($invoice);
 
+        $settings = GlobalSettings::all()->first();
+
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
             'esr',
             [
+                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'breakdown' => $breakdown,
                 'invoice' => $invoice,

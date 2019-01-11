@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
+use App\Models\GlobalSettings;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\ProjectEffort;
 use App\Services\Export\RevenueReport;
@@ -61,10 +62,13 @@ class ReportController extends BaseController
             $parsedown = new Parsedown();
             $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
 
+            $settings = GlobalSettings::all()->first();
+
             // initialize PDF, render view and pass it back
             $pdf = new PDF(
                 'effort_report',
                 [
+                    'settings' => $settings,
                     'content' => $commentsAndEffortsPerDate,
                     'description' => $description,
                     'invoice' => $invoice

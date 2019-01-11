@@ -15,7 +15,7 @@
 {% block content %}
     <div class="header clear-float">
         <div>
-            {{ env('SENDER_CITY') }}, {{ "now"|date("d.m.Y") }}
+            {{ settings.sender_city }}, {{ "now"|date("d.m.Y") }}
         </div>
 
         <div>
@@ -32,7 +32,7 @@
                 {% if invoice.offer_id %}
                     <td width="30%">Offerte Nr. {{ invoice.offer_id }}</td>
                 {% endif %}
-                <td>MwSt.-ID {{ env('SENDER_MWST') }}</td>
+                <td>MwSt.-ID {{ settings.sender_vat }}</td>
             </tr>
             <tr>
                 {% if invoice.project %}

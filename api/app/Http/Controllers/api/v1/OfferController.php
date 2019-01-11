@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
+use App\Models\GlobalSettings;
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferDiscount;
 use App\Models\Offer\OfferPosition;
@@ -107,10 +108,13 @@ class OfferController extends BaseController
         // render address
         $addressLabel = AddressLabelBuilder::build($offer);
 
+        $settings = GlobalSettings::all()->first();
+
         // initialize PDFController, render view and pass it back
         $pdf = new PDF(
             'offers',
             [
+                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'offer' => $offer,
                 'breakdown' => $offer->breakdown,
