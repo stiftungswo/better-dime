@@ -17,7 +17,7 @@ class Company extends Customer
         'comment', 'email', 'hidden', 'name', 'rate_group_id'
     ];
 
-    protected $softCascade = ['addresses', 'phone_numbers', 'people'];
+    protected $softCascade = ['addresses', 'phone_numbers'];
 
     protected static $persisted = ['name'];
 
@@ -42,5 +42,17 @@ class Company extends Customer
     public function people()
     {
         return $this->hasMany(Person::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        // The SoftCascade has issues with the Single Table Inheritance
+        // it fails to soft delete people of the company because it does not provide the necessary type to execute the query
+        // so we manually delete them
+        static::deleting(function ($company) {
+            $company->people()->delete();
+        });
     }
 }
