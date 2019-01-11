@@ -17,7 +17,7 @@
         "maatwebsite/excel": "^3.1",
         "nanigans/single-table-inheritance": "0.8.*",
         "rcrowe/twigbridge": "^0.9.9",
-        "richan-fongdasen/eloquent-blameable": "master",
+        "richan-fongdasen/eloquent-blameable": "^1.2",
         "sentry/sentry-laravel": "^0.11.0",
         "symfony/var-dumper": "^4.1",
         "vlucas/phpdotenv": "~2.2"
@@ -55,11 +55,5 @@
         "optimize-autoloader": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/andyundso/eloquent-blameable.git"
-        }
-    ]
+    "prefer-stable": true
 }
