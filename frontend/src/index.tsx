@@ -5,7 +5,6 @@ import * as ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import registerServiceWorker from './utilities/registerServiceWorker';
-import { SnackbarProvider } from 'notistack';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
@@ -14,6 +13,7 @@ import { StoreProvider } from './utilities/StoreProvider';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import * as Sentry from '@sentry/browser';
+import { DimeSnackbar } from './layout/Snackbar';
 
 const browserHistory = createBrowserHistory();
 const sentryDSN = 'SENTRY_DSN'; //this value will be replaced by a build script
@@ -26,17 +26,16 @@ if (sentryDSN.startsWith('https')) {
 }
 
 ReactDOM.render(
-  <SnackbarProvider maxSnack={1}>
-    <StoreProvider history={browserHistory}>
-      <MuiThemeProvider theme={DimeTheme}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <Router history={browserHistory}>
-            <App />
-          </Router>
-        </MuiPickersUtilsProvider>
-      </MuiThemeProvider>
-    </StoreProvider>
-  </SnackbarProvider>,
+  <StoreProvider history={browserHistory}>
+    <MuiThemeProvider theme={DimeTheme}>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <DimeSnackbar />
+        <Router history={browserHistory}>
+          <App />
+        </Router>
+      </MuiPickersUtilsProvider>
+    </MuiThemeProvider>
+  </StoreProvider>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();

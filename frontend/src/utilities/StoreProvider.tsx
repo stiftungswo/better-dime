@@ -1,4 +1,3 @@
-import { InjectedNotistackProps, withSnackbar } from 'notistack';
 import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
 import { OfferStore } from '../stores/offerStore';
@@ -27,12 +26,13 @@ import { Formatter } from './formatter';
 import { Notifier } from './notifier';
 import { IReactionDisposer, reaction } from 'mobx';
 
-export interface Props extends InjectedNotistackProps {
+export interface Props {
   history: History;
 }
 
-class StoreProviderInner extends React.Component<Props> {
+export class StoreProvider extends React.Component<Props> {
   private stores: {
+    notifier: Notifier;
     formatter: Formatter;
     apiStore: ApiStore;
     mainStore: MainStore;
@@ -79,9 +79,10 @@ class StoreProviderInner extends React.Component<Props> {
   }
 
   private initializeStores() {
-    const apiStore = new ApiStore(this.props.history, this.props.enqueueSnackbar);
+    const apiStore = new ApiStore(this.props.history);
     const formatter = new Formatter(apiStore);
-    const mainStore = new MainStore(apiStore, formatter, new Notifier(this.props.enqueueSnackbar), this.props.history);
+    const notifier = new Notifier();
+    const mainStore = new MainStore(apiStore, formatter, notifier, this.props.history);
     const employeeStore = new EmployeeStore(mainStore);
     const serviceStore = new ServiceStore(mainStore);
     const projectStore = new ProjectStore(mainStore);
@@ -97,6 +98,7 @@ class StoreProviderInner extends React.Component<Props> {
     );
 
     this.stores = {
+      notifier,
       formatter,
       apiStore,
       mainStore,
@@ -135,5 +137,3 @@ class StoreProviderInner extends React.Component<Props> {
     return <Provider {...this.stores}>{this.props.children}</Provider>;
   };
 }
-
-export const StoreProvider = withSnackbar(StoreProviderInner);

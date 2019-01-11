@@ -2,7 +2,6 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ServiceStore } from '../../stores/serviceStore';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import ServiceForm from './ServiceForm';
 import { Service } from '../../types';
 import { inject } from 'mobx-react';
@@ -13,7 +12,7 @@ interface ServiceDetailRouterProps {
   id?: string;
 }
 
-export interface Props extends RouteComponentProps<ServiceDetailRouterProps>, InjectedNotistackProps {
+export interface Props extends RouteComponentProps<ServiceDetailRouterProps> {
   serviceStore?: ServiceStore;
 }
 

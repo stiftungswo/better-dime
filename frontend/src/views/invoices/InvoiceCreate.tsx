@@ -2,7 +2,6 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { InvoiceStore } from '../../stores/invoiceStore';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
@@ -10,7 +9,7 @@ import { FormValues, Invoice } from '../../types';
 import { invoiceTemplate } from './invoiceSchema';
 import { MainStore } from '../../stores/mainStore';
 
-export interface Props extends RouteComponentProps, InjectedNotistackProps {
+export interface Props extends RouteComponentProps {
   invoiceStore?: InvoiceStore;
   mainStore?: MainStore;
   rateGroupStore?: RateGroupStore;

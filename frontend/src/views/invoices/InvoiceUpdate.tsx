@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import InvoiceForm from './InvoiceForm';
 import compose from '../../utilities/compose';
 import { InvoiceStore } from '../../stores/invoiceStore';
@@ -12,7 +11,7 @@ interface InvoiceDetailRouterProps {
   id?: string;
 }
 
-export interface Props extends RouteComponentProps<InvoiceDetailRouterProps>, InjectedNotistackProps {
+export interface Props extends RouteComponentProps<InvoiceDetailRouterProps> {
   invoiceStore?: InvoiceStore;
 }
 

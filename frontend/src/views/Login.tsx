@@ -13,7 +13,6 @@ import { EmailField, PasswordField } from '../form/fields/common';
 import { RouteComponentProps, withRouter } from 'react-router';
 import dimeTheme from '../layout/DimeTheme';
 import { Theme } from '@material-ui/core';
-import { InjectedNotistackProps } from 'notistack';
 import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
 import { LogoIcon } from '../layout/icons';
@@ -66,7 +65,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
     },
   });
 
-export interface Props extends RouteComponentProps, InjectedNotistackProps, WithStyles<typeof styles> {
+export interface Props extends RouteComponentProps, WithStyles<typeof styles> {
   apiStore?: ApiStore;
   mainStore?: MainStore;
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import ProjectForm from './ProjectForm';
 import compose from '../../utilities/compose';
 import { ProjectStore } from '../../stores/projectStore';
@@ -12,7 +11,7 @@ interface ProjectDetailRouterProps {
   id?: string;
 }
 
-export interface Props extends RouteComponentProps<ProjectDetailRouterProps>, InjectedNotistackProps {
+export interface Props extends RouteComponentProps<ProjectDetailRouterProps> {
   projectStore?: ProjectStore;
 }
 

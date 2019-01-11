@@ -61,7 +61,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   protected displayInProgress() {
-    this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: 60000 });
+    this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: null });
   }
 
   @action

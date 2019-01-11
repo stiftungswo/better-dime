@@ -49,6 +49,7 @@ export { default as VisibleIcon } from '@material-ui/icons/Visibility';
 export { default as InvisibleIcon } from '@material-ui/icons/VisibilityOff';
 export { default as ImportExportIcon } from '@material-ui/icons/Sync';
 export { default as DragHandle } from '@material-ui/icons/DragHandle';
+export { default as CloseIcon } from '@material-ui/icons/Close';
 
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';

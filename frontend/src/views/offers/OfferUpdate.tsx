@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import OfferForm from './OfferForm';
 import compose from '../../utilities/compose';
 import { OfferStore } from '../../stores/offerStore';
@@ -12,7 +11,7 @@ interface OfferDetailRouterProps {
   id?: string;
 }
 
-export interface Props extends RouteComponentProps<OfferDetailRouterProps>, InjectedNotistackProps {
+export interface Props extends RouteComponentProps<OfferDetailRouterProps> {
   offerStore?: OfferStore;
 }
 

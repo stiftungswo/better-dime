@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { action, computed, observable, runInAction } from 'mobx';
 import { History } from 'history';
-import { OptionsObject } from 'notistack';
 import jwt_decode from 'jwt-decode';
 import * as Sentry from '@sentry/browser';
 import moment from 'moment';
@@ -45,7 +44,7 @@ export class ApiStore {
     return this._api;
   }
 
-  constructor(private history: History, private enqueueSnackbar: (message: string, options?: OptionsObject) => void) {
+  constructor(private history: History) {
     this.restoreApiToken();
     this.updateSentryContext();
     this.initializeApiClient(this._token);

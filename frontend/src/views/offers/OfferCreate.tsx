@@ -2,7 +2,6 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { OfferStore } from '../../stores/offerStore';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import OfferForm from './OfferForm';
 import compose from '../../utilities/compose';
 import { RateGroupStore } from '../../stores/rateGroupStore';
@@ -10,7 +9,7 @@ import { FormValues, Offer } from '../../types';
 import { offerTemplate } from './offerSchema';
 import { MainStore } from '../../stores/mainStore';
 
-export interface Props extends RouteComponentProps, InjectedNotistackProps {
+export interface Props extends RouteComponentProps {
   offerStore?: OfferStore;
   mainStore?: MainStore;
   rateGroupStore?: RateGroupStore;

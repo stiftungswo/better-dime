@@ -2,7 +2,6 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { ServiceStore } from '../../stores/serviceStore';
 import { RouteComponentProps } from 'react-router';
-import { InjectedNotistackProps } from 'notistack';
 import ServiceForm from './ServiceForm';
 import compose from '../../utilities/compose';
 import { RateGroup, Service } from '../../types';
@@ -12,7 +11,7 @@ import { empty } from '../../utilities/helpers';
 import { serviceTemplate } from './serviceSchema';
 import { FormValues } from '../../types';
 
-export interface Props extends RouteComponentProps, InjectedNotistackProps {
+export interface Props extends RouteComponentProps {
   serviceStore?: ServiceStore;
   rateGroupStore?: RateGroupStore;
 }
