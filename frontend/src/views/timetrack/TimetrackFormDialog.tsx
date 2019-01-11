@@ -40,25 +40,32 @@ interface State {
   closeAfterSubmit: boolean;
 }
 
-const createSchema = (additional: object) =>
-  localizeSchema(() =>
-    yup.object({
-      comment: yup.string(),
-      project_id: selector(),
-      position_id: selector(),
-      date: dimeDate().required(),
-      value: requiredNumber(),
-      ...additional,
+const baseEffortFields = {
+  comment: yup.string(),
+  project_id: selector(),
+  position_id: selector(),
+  date: dimeDate().required(),
+  value: requiredNumber(),
+};
+
+const soloSchema = localizeSchema(() =>
+  yup
+    .object({
+      employee_id: yup.number().required(),
     })
-  );
+    .shape(baseEffortFields)
+);
 
-const soloSchema = createSchema({
-  employee_id: yup.number().required(),
-});
-
-const multiSchema = createSchema({
-  employee_ids: yup.array().min(1, 'Dies ist ein erforderliches Feld.'),
-});
+const multiSchema = localizeSchema(() =>
+  yup
+    .object({
+      employee_ids: yup
+        .array()
+        .of(yup.number())
+        .min(1, 'Dies ist ein erforderliches Feld.'),
+    })
+    .shape(baseEffortFields)
+);
 
 @compose(
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore'),
@@ -75,13 +82,13 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     const effortStore = this.props.effortStore!;
 
     if (effortStore.entity && 'employee_id' in entity) {
-      await effortStore.put(entity);
+      await effortStore.put(soloSchema.cast(entity));
     } else if ('employee_ids' in entity) {
       await Promise.all([
         this.widenFilterSettings(entity),
         ...entity.employee_ids.map((e: number) => {
           const newEffort = { employee_id: e, ...entity, date: entity.date.format(apiDateFormat) } as ProjectEffort;
-          return effortStore.post(newEffort);
+          return effortStore.post(soloSchema.cast(newEffort));
         }),
       ]);
     }
