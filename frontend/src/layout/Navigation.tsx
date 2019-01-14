@@ -18,6 +18,7 @@ import {
   RateUnitIcon,
   ReportIcon,
   ServiceIcon,
+  SettingsIcon,
   TagsIcon,
   TimetrackIcon,
 } from './icons';
@@ -52,6 +53,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
       {isAdmin && <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />}
       <NavItem nested to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
       <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
+      {isAdmin && <NavItem nested to={'/global_settings'} label={'Einstellungen'} icon={SettingsIcon} />}
     </Collapsible>
   </React.Fragment>
 );

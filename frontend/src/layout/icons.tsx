@@ -67,6 +67,7 @@ export { default as CustomersIcon } from '@material-ui/icons/People';
 export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
 export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';
 export { default as ReportIcon } from '@material-ui/icons/ShowChart';
+export { default as SettingsIcon } from '@material-ui/icons/Settings';
 
 const icon = (path: React.ReactNode, viewBox = 512) => {
   return (props: SvgIconProps) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);
