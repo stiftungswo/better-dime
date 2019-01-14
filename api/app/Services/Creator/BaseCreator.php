@@ -4,7 +4,7 @@ namespace App\Services\Creator;
 
 class BaseCreator
 {
-    protected function throwExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
+    protected function assignOrThrowExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
     {
         if (is_null($oldPropertyName)) {
             $oldPropertyName = $property;

@@ -19,7 +19,7 @@ class ProjectPosition extends Model
         'vat' => 'float'
     ];
 
-    protected $fillable = ['description', 'price_per_rate', 'project_id', 'rate_unit_id', 'service_id', 'vat'];
+    protected $fillable = ['description', 'price_per_rate', 'project_id', 'rate_unit_id', 'service_id', 'vat', 'order'];
 
     protected $hidden = ['efforts', 'rate_unit'];
 

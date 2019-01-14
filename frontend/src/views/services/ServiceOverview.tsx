@@ -31,6 +31,12 @@ export default class ServiceOverview extends React.Component<Props> {
         label: 'ID',
       },
       {
+        id: 'order',
+        numeric: true,
+        label: 'R.',
+        defaultSort: 'asc',
+      },
+      {
         id: 'name',
         numeric: false,
         label: 'Name',

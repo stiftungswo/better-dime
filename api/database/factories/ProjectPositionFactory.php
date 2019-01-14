@@ -20,5 +20,6 @@ $factory->define(\App\Models\Project\ProjectPosition::class, function () {
             return factory(\App\Models\Service\Service::class)->create()->id;
         },
         'vat' => $faker->randomElement([0.025, 0.077]),
+        'order' => $faker->numberBetween(1000, 9999),
     ];
 });

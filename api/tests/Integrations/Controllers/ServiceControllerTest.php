@@ -146,7 +146,8 @@ class ServiceControllerTest extends \TestCase
                     'rate_unit_id' => factory(RateUnit::class)->create()->id,
                     'value' => 7331
                 ]
-            ]
+            ],
+            'order' => 9001
         ];
     }
 }

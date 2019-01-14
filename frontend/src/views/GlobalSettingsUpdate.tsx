@@ -25,6 +25,7 @@ import { DimePaper } from '../layout/DimePaper';
 import { FormHeader } from '../layout/FormHeader';
 import { GlobalSettings, GlobalSettingStore } from '../stores/globalSettingStore';
 import { empty } from '../utilities/helpers';
+import { MarkdownField } from '../form/fields/MarkdownField';
 
 export interface Props extends RouteComponentProps {
   mainStore?: MainStore;
@@ -85,6 +86,16 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                       <Field fullWidth required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
                       <Field fullWidth required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
                       <Field fullWidth required component={TextField} name={'sender_web'} label={'Website'} />
+                    </DimePaper>
+                    <DimePaper>
+                      <FormHeader>Allgemein</FormHeader>
+                      <Field
+                        fullWidth
+                        required
+                        component={MarkdownField}
+                        name={'service_order_comment'}
+                        label={'Beschreibung für Reihenfolge der Services'}
+                      />
                     </DimePaper>
                   </Grid>
                 </Grid>

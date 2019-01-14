@@ -146,6 +146,7 @@ export interface Service {
   chargeable: boolean;
   archived: boolean;
   service_rates: ServiceRate[];
+  order: number;
 }
 
 export interface ServiceRate {
@@ -179,6 +180,7 @@ export interface ProjectPosition {
   efforts_value_with_unit: string;
   is_time: boolean;
   service: Service;
+  order: number;
 }
 
 export interface Status {

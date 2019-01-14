@@ -19,7 +19,7 @@ interface Props<T> {
   orderField?: string;
 }
 
-export const DraggableTableBody = <T extends { id?: number; formikKey?: number }>({
+export const DraggableTableBody = <T extends { id?: number; formikKey?: number; order: number }>({
   arrayHelpers,
   renderRow,
   name,
@@ -29,10 +29,14 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number }
     if (!result.destination) {
       return;
     }
-    arrayHelpers.move(result.source.index, result.destination.index);
-    arrayHelpers.form.values[name].forEach((_: object, index: number) => {
-      arrayHelpers.form.setFieldValue(`${name}.${index}.${orderField}`, index);
-    });
+    const srcIndex = result.source.index;
+    const dstIndex = result.destination.index;
+    const positions = arrayHelpers.form.values[name];
+
+    const newOrder = dstIndex > srcIndex ? positions[dstIndex][orderField] + 1 : positions[dstIndex][orderField] - 1;
+
+    arrayHelpers.form.setFieldValue(`${name}.${srcIndex}.${orderField}`, newOrder);
+    arrayHelpers.move(srcIndex, dstIndex);
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>

@@ -34,6 +34,7 @@ class GlobalSettingController extends BaseController
             'sender_vat' => 'required|string|max:255',
             'sender_bank' => 'required|string|max:255',
             'sender_web' => 'required|string|max:255',
+            'service_order_comment' => 'required|string|max:4000',
         ]);
     }
 }

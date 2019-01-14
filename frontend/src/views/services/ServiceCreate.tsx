@@ -43,7 +43,7 @@ export default class ServiceCreate extends React.Component<Props> {
   }
 
   @computed
-  get service(): Service {
+  get service() {
     // We prepopulate the form with all registered ServiceRates from the backend, to ensure all of them have been
     // connected with this service. This does not handle the case where a new ServiceRate is created later, but
     // we don't intend to create any in the future, so we just ignore that case.
@@ -58,7 +58,8 @@ export default class ServiceCreate extends React.Component<Props> {
       <ServiceForm
         title={'Service erstellen'}
         onSubmit={this.handleSubmit}
-        service={this.service}
+        //tslint:disable-next-line:no-any ; at some point we need to address the disparity between template and domain types
+        service={this.service as any}
         loading={empty(this.serviceRates)}
         submitted={this.state.submitted}
         rateUnitSelectDisabled={false}

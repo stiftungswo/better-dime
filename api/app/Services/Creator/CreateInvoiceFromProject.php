@@ -71,10 +71,10 @@ class CreateInvoiceFromProject extends BaseCreator
             $ip->amount = $pp->efforts_value;
             $ip->description = $pp->description ?: $pp->service->name;
 
-            $attributes = ['price_per_rate', 'vat'];
+            $attributes = ['price_per_rate', 'vat', 'order'];
 
             foreach ($attributes as $attribute) {
-                $ip = $this->throwExceptionIfNull($pp, $ip, $attribute);
+                $ip = $this->assignOrThrowExceptionIfNull($pp, $ip, $attribute);
             }
 
             $ip->project_position()->associate($pp);
@@ -110,6 +110,6 @@ class CreateInvoiceFromProject extends BaseCreator
 
     private function checkAndAssignInvoiceProperty(string $property, $oldPropertyName = null)
     {
-        return $this->throwExceptionIfNull($this->project, $this->invoice, $property, $oldPropertyName);
+        return $this->assignOrThrowExceptionIfNull($this->project, $this->invoice, $property, $oldPropertyName);
     }
 }

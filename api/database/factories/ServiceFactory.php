@@ -12,5 +12,6 @@ $factory->define(Service::class, function () {
         'description' => $faker->sentence,
         'vat' => $faker->randomElement([0.025, 0.077]),
         'archived' => $faker->boolean(20),
+        'order' => $faker->numberBetween(1000, 9999)
     ];
 });

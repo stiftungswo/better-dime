@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { Field, FieldArray, FormikProps } from 'formik';
-import { SwitchField, TextField } from '../../form/fields/common';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
 import { Service } from '../../types';
@@ -22,16 +22,19 @@ import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceRate } from '../../types';
+import { GlobalSettingStore } from '../../stores/globalSettingStore';
+import { MarkdownRender } from '../../layout/MarkdownRender';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
+  globalSettingStore?: GlobalSettingStore;
   service: Service | undefined;
 }
 
 @compose(
-  inject('rateGroupStore', 'rateUnitStore'),
+  inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore'),
   observer
 )
 export default class ServiceForm extends React.Component<Props> {
@@ -40,9 +43,11 @@ export default class ServiceForm extends React.Component<Props> {
   };
 
   public componentWillMount() {
-    Promise.all([this.props.rateGroupStore!.fetchAll(), this.props.rateUnitStore!.fetchAll()]).then(() =>
-      this.setState({ loading: false })
-    );
+    Promise.all([
+      this.props.rateGroupStore!.fetchAll(),
+      this.props.rateUnitStore!.fetchAll(),
+      this.props.globalSettingStore!.fetchOne(0),
+    ]).then(() => this.setState({ loading: false }));
   }
 
   public render() {
@@ -65,13 +70,13 @@ export default class ServiceForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={24}>
                       <Grid item xs={12}>
-                        <Field fullWidth component={TextField} name={'name'} label={'Name'} />
+                        <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
                       <Grid item xs={12}>
                         <Field component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
                       </Grid>
                       <Grid item xs={12} lg={6}>
-                        <Field component={PercentageField} name={'vat'} label={'Mehrwertsteuer'} fullWidth />
+                        <Field component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} fullWidth />
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
@@ -79,6 +84,16 @@ export default class ServiceForm extends React.Component<Props> {
                         </Grid>
                         <Grid item xs={12}>
                           <Field component={SwitchField} name={'archived'} label={'Archiviert'} fullWidth={true} />
+                        </Grid>
+                      </Grid>
+                      <Grid item>
+                        <Grid container spacing={8}>
+                          <Grid item xs={12} lg={4}>
+                            <Field component={NumberField} required name={'order'} label={'Reihenfolge'} fullWidth />
+                          </Grid>
+                          <Grid item xs={12} lg={8}>
+                            <MarkdownRender>{this.props.globalSettingStore!.settings!.service_order_comment}</MarkdownRender>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>

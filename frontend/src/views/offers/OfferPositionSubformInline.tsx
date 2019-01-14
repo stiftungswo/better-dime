@@ -21,6 +21,7 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { Typography } from '@material-ui/core';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 import { DragHandle } from '../../layout/icons';
+import { getInsertionIndex } from '../../utilities/getInsertionIndex';
 
 export interface Props {
   mainStore?: MainStore;
@@ -44,9 +45,11 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
     if (!rate) {
       throw new Error('no rate was found');
     }
-    arrayHelpers.push({
+
+    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), service.order, (a, b) => a - b);
+    arrayHelpers.insert(insertIndex, {
       amount: '',
-      order: 100,
+      order: service.order,
       vat: service.vat,
       service_id: service.id,
       rate_unit_id: rate.rate_unit_id,

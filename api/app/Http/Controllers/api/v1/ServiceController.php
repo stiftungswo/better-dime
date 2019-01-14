@@ -82,7 +82,8 @@ class ServiceController extends BaseController
             'service_rates.*.rate_group_id' => 'required|integer',
             'service_rates.*.rate_unit_id' => 'required|integer',
             'service_rates.*.value' => 'required|integer',
-            'vat' => 'required|numeric'
+            'vat' => 'required|numeric',
+            'order' => 'required|numeric'
         ]);
     }
 }

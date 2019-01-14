@@ -14,6 +14,7 @@ export interface GlobalSettings {
   sender_vat: string;
   sender_bank: string;
   sender_web: string;
+  service_order_comment: string;
 }
 
 export class GlobalSettingStore extends AbstractStore<GlobalSettings> {

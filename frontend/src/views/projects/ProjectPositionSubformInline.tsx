@@ -19,6 +19,9 @@ import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { MainStore } from '../../stores/mainStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { Typography } from '@material-ui/core';
+import { getInsertionIndex } from '../../utilities/getInsertionIndex';
+import { DragHandle } from '../../layout/icons';
+import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 export interface Props {
   mainStore?: MainStore;
@@ -41,9 +44,11 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     if (!rate) {
       throw new Error('no rate was found');
     }
-    arrayHelpers.push({
+
+    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), service.order, (a, b) => a - b);
+    arrayHelpers.insert(insertIndex, {
       description: '',
-      order: 100,
+      order: service.order,
       vat: service.vat,
       service_id: service.id,
       rate_unit_id: rate.rate_unit_id,
@@ -74,6 +79,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
               <Table padding={'dense'} style={{ minWidth: '1200px' }}>
                 <TableHead>
                   <TableRow>
+                    <DimeTableCell style={{ width: '5%' }} />
                     <DimeTableCell style={{ width: '20%' }}>Service</DimeTableCell>
                     <DimeTableCell style={{ width: '20%' }}>Beschreibung</DimeTableCell>
                     <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
@@ -81,14 +87,20 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                     <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
                     <DimeTableCell style={{ width: '10%' }}>Anzahl</DimeTableCell>
                     <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                    <DimeTableCell style={{ width: '10%' }}>Aktionen</DimeTableCell>
+                    <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {values.positions.map((p: ProjectPosition & { formikKey?: number }, index: number) => {
+                <DraggableTableBody
+                  arrayHelpers={arrayHelpers}
+                  name={this.props.name}
+                  renderRow={({ row, index, provided }) => {
+                    const p = row as ProjectPosition;
                     const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                     return (
-                      <TableRow key={p.id || p.formikKey}>
+                      <>
+                        <DimeTableCell {...provided.dragHandleProps}>
+                          <DragHandle />
+                        </DimeTableCell>
                         <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
                         <DimeTableCell>
                           <Field delayed component={TextField} name={name('description')} margin={'none'} />
@@ -107,10 +119,10 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                         <DimeTableCell>
                           <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
                         </DimeTableCell>
-                      </TableRow>
+                      </>
                     );
-                  })}
-                </TableBody>
+                  }}
+                />
               </Table>
             </div>
             {this.state.dialogOpen && (

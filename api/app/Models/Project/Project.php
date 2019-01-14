@@ -81,7 +81,7 @@ class Project extends Model
 
     public function positions()
     {
-        return $this->hasMany(ProjectPosition::class);
+        return $this->hasMany(ProjectPosition::class)->orderBy('order', 'asc');
     }
 
     public function rate_group()

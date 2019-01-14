@@ -16,6 +16,7 @@ export const serviceSchema = localizeSchema(() =>
         value: requiredNumber(),
       })
     ),
+    order: requiredNumber(),
   })
 );
 
@@ -27,4 +28,5 @@ export const serviceTemplate = {
   chargeable: true,
   archived: false,
   service_rates: [],
+  order: null,
 };

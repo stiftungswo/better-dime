@@ -11,7 +11,7 @@ class Service extends Model
     use SoftDeletes, BlameableTrait;
 
     protected $fillable = [
-        'name', 'description', 'vat', 'archived'
+        'name', 'description', 'vat', 'archived', 'order'
     ];
 
     protected $casts = [
