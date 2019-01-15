@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { CustomerStore } from '../../stores/customerStore';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
-import { Company, Customer, Person } from '../../types';
+import { Customer, Person } from '../../types';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   customerStore?: CustomerStore;
 }
 
@@ -32,7 +32,7 @@ export class CustomerSelector extends React.Component<Props> {
 
   public get options() {
     return this.props
-      .customerStore!.entities.filter((c: Customer) => !c.hidden || this.props.field.value === c.id)
+      .customerStore!.entities.filter((c: Customer) => !c.hidden || this.props.value === c.id)
       .map(c => ({
         value: c.id,
         label: c.type === 'person' ? this.renderPersonName(c).trim() : c.name,

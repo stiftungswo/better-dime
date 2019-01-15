@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { Field, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
@@ -29,6 +29,7 @@ import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { CostgroupStore } from '../../stores/costgroupStore';
+import { DimeField } from '../../form/fields/formik';
 
 export interface Props extends FormViewProps<Invoice> {
   costgroupStore?: CostgroupStore;
@@ -102,13 +103,13 @@ export default class InvoiceForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <Grid container spacing={8}>
                             <Grid item xs={12}>
-                              <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
+                              <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <Field fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                              <DimeField fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={AddressSelector}
@@ -118,7 +119,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12}>
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={EmployeeSelector}
@@ -127,15 +128,15 @@ export default class InvoiceForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <Field fullWidth required component={DatePicker} name={'start'} label={'Startdatum'} />
+                              <DimeField fullWidth required component={DatePicker} name={'start'} label={'Startdatum'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <Field fullWidth required component={DatePicker} name={'end'} label={'Enddatum'} />
+                              <DimeField fullWidth required component={DatePicker} name={'end'} label={'Enddatum'} />
                             </Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                          <Field
+                          <DimeField
                             delayed
                             fullWidth
                             required
@@ -172,7 +173,7 @@ export default class InvoiceForm extends React.Component<Props> {
                       <DimePaper>
                         <FormHeader>Berechnung</FormHeader>
                         <BreakdownTable breakdown={invoice.breakdown} />
-                        <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                        <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                       </DimePaper>
                     </Grid>
                   )}

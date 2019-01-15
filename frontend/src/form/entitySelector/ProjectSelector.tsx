@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { ProjectStore } from '../../stores/projectStore';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import Select from '../fields/Select';
+import Select, { DimeSelectFieldProps } from '../fields/Select';
 
-interface Props extends FormProps {
+interface Props<T = number> extends DimeSelectFieldProps<T> {
   projectStore?: ProjectStore;
 }
 
@@ -13,10 +12,10 @@ interface Props extends FormProps {
   inject('projectStore'),
   observer
 )
-export class ProjectSelector extends React.Component<Props> {
+export class ProjectSelector<T> extends React.Component<Props<T>> {
   public get options() {
     return this.props
-      .projectStore!.projects.filter(p => !p.archived || this.props.field.value === p.id)
+      .projectStore!.projects.filter(p => !p.archived || this.props.value === p.id)
       .map(e => ({
         value: e.id,
         label: `${e.id} ${e.name}`,

@@ -10,7 +10,6 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { MainStore } from '../../stores/mainStore';
 import Grid from '@material-ui/core/Grid/Grid';
-import { formikFieldCompatible } from '../../form/fields/Select';
 import { DatePicker } from '../../form/fields/DatePicker';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
@@ -42,24 +41,10 @@ export default class DailyReport extends React.Component<Props> {
               <DimePaper>
                 <Grid container spacing={8}>
                   <Grid item xs={12} md={3}>
-                    <DatePicker
-                      fullWidth
-                      {...formikFieldCompatible({
-                        label: 'Von',
-                        value: dailyReportStore.from,
-                        onChange: d => (dailyReportStore.from = d),
-                      })}
-                    />
+                    <DatePicker label={'Von'} value={dailyReportStore.from} onChange={d => (dailyReportStore.from = d!)} />
                   </Grid>
                   <Grid item xs={12} md={3}>
-                    <DatePicker
-                      fullWidth
-                      {...formikFieldCompatible({
-                        label: 'Bis',
-                        value: dailyReportStore.to,
-                        onChange: d => (dailyReportStore.to = d),
-                      })}
-                    />
+                    <DatePicker label={'Bis'} value={dailyReportStore.to} onChange={d => (dailyReportStore.to = d!)} />
                   </Grid>
                   <Grid item xs={12}>
                     <Button onClick={dailyReportStore.fetch} color={'primary'} variant="contained">

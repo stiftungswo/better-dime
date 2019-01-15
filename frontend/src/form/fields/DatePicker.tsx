@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { DatePicker as MUIDatePicker } from 'material-ui-pickers';
 import moment, { Moment } from 'moment';
-import { FormProps } from './common';
-import { getIn } from 'formik';
+import { DimeCustomFieldProps } from './common';
 import { inject, observer } from 'mobx-react';
 import { Formatter } from '../../utilities/formatter';
 
-const castValue = (value: Moment | string | null | undefined) => {
+type ValueType = Moment | string | null | undefined;
+
+const castValue = (value: ValueType) => {
   if (!value) {
     return value;
   }
@@ -17,17 +18,18 @@ const castValue = (value: Moment | string | null | undefined) => {
   }
 };
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<ValueType, Moment | null> {
   formatter?: Formatter;
+  errorMessage?: string;
+  onError?: (message: string) => void;
 }
 
 @inject('formatter')
 @observer
 export class DatePicker extends React.Component<Props> {
   render() {
-    const { field, form, required, formatter, ...rest } = this.props;
+    const { value, onChange, required, formatter, errorMessage, onError, InputComponent, ...rest } = this.props;
     const userDateFormat = formatter!.userDateFormat;
-    const currentError = getIn(form.errors, field.name);
     return (
       <MUIDatePicker
         keyboard
@@ -35,14 +37,18 @@ export class DatePicker extends React.Component<Props> {
         format={userDateFormat.format}
         mask={userDateFormat.mask}
         placeholder={moment().format(userDateFormat.format)}
-        value={castValue(field.value)}
-        onChange={(date?: Moment) => form.setFieldValue(field.name, date)}
+        value={castValue(value)}
+        onChange={onChange}
         disableOpenOnEnter
         animateYearScrolling={false}
         clearable={!required}
-        error={!!currentError}
-        helperText={currentError}
-        onError={(_, error: string) => form.setFieldError(field.name, error)}
+        error={Boolean(errorMessage)}
+        helperText={errorMessage}
+        onError={(_, message: string) => {
+          if (onError) {
+            onError(message);
+          }
+        }}
         {...rest}
       />
     );

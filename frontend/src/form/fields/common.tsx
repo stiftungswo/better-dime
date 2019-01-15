@@ -1,112 +1,94 @@
-import React, { Component, ReactNode } from 'react';
-import { ErrorMessage, FieldProps } from 'formik';
+import React, { ReactNode } from 'react';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input, { InputProps } from '@material-ui/core/Input/Input';
 import Switch from '@material-ui/core/Switch/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import { PropTypes } from '@material-ui/core';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
-/**
- * This component tries to improve Formik performance by delaying the onChange call until the input field is blurred.
- * Formik's <FastField> is supposed to do this already, but it seemed to be syncing onChange anyway. This _might_ introduce some issues
- * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
- */
-export class DelayedInput extends React.Component<InputProps, { value?: string }> {
-  public constructor(props: InputProps) {
-    super(props);
-    this.state = {
-      value: String(props.value),
-    };
-  }
-
-  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: e.target.value });
-
-  public handleBlur: any = this.props.onChange; //tslint:disable-line:no-any
-
-  public render = () => {
-    return <Input {...this.props} value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} />;
-  };
+interface SharedProps {
+  label?: string;
+  name?: string;
+  required?: boolean;
 }
 
-export type FormProps = {
-  label: string;
-  children?: ReactNode;
+export interface WidthToggle {
   fullWidth?: boolean;
+}
+
+export interface DimeFormControlProps extends SharedProps, WidthToggle {
   margin?: PropTypes.Margin;
-  required?: boolean;
-  multiline?: boolean;
-} & FieldProps;
-export type InputFieldProps = {
-  type: string;
+  children: ReactNode;
+  errorMessage?: string;
+}
+
+interface FormikInjectableProps {
+  InputComponent?: React.ComponentType<InputProps>;
+  errorMessage?: string;
+}
+
+interface DimeFieldProps extends SharedProps, FormikInjectableProps {
+  type?: string;
   unit?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
-  delayed?: boolean;
   disabled?: boolean;
-} & FormProps;
+  multiline?: boolean;
+}
 
-export const ValidatedFormGroupWithLabel = ({
-  label,
-  field,
-  form: { touched, errors },
-  children,
-  fullWidth,
-  margin = 'normal',
-  required,
-}: FormProps) => {
-  const hasErrors: boolean = !!errors[field.name] && !!touched[field.name];
+export interface DimeInputFieldProps<T = string> extends DimeFieldProps {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: T;
+}
 
+export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps {
+  value: T;
+  onChange: (value: OutputValue) => void;
+}
+
+export const DimeFormControl = (props: DimeFormControlProps) => {
+  const { label, children, fullWidth, margin = 'normal', required, name, errorMessage } = props;
   return (
-    <FormControl margin={margin} error={hasErrors} fullWidth={fullWidth}>
+    <FormControl margin={margin} error={Boolean(errorMessage)} fullWidth={fullWidth}>
       {label && (
-        <InputLabel required={required} htmlFor={field.name}>
+        <InputLabel required={required} htmlFor={name}>
           {label}
         </InputLabel>
       )}
       {children}
-      <ErrorMessage name={field.name} render={error => <FormHelperText error={true}>{error}</FormHelperText>} />
+      {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
     </FormControl>
   );
 };
 
-export const InputFieldWithValidation = ({
-  label,
-  field,
-  form,
-  fullWidth = false,
-  unit,
-  margin,
-  required,
-  multiline,
-  delayed = false,
-  ...rest
-}: InputFieldProps) => {
-  const InputComponent = delayed ? DelayedInput : Input;
+export const DimeInputField = (props: DimeInputFieldProps & Partial<DimeFormControlProps>) => {
+  const { label, unit, margin, required, value, InputComponent = Input, errorMessage, ...rest } = props;
   return (
-    <ValidatedFormGroupWithLabel label={label} field={field} form={form} fullWidth={fullWidth} margin={margin} required={required}>
+    <DimeFormControl
+      label={label}
+      fullWidth={rest.fullWidth}
+      margin={margin}
+      required={required}
+      name={rest.name}
+      errorMessage={errorMessage}
+    >
       <InputComponent
-        fullWidth={fullWidth}
         endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
-        multiline={multiline}
-        {...field}
-        value={field.value === null ? '' : field.value}
+        value={value === null ? '' : value}
         {...rest}
       />
-    </ValidatedFormGroupWithLabel>
+    </DimeFormControl>
   );
 };
 
-export const SwitchField = ({ label, field }: FormProps) => (
-  <FormControlLabel control={<Switch checked={field.value} {...field} />} label={label} />
+export const SwitchField = ({ label, value, onChange }: DimeInputFieldProps<boolean>) => (
+  <FormControlLabel control={<Switch checked={value} onChange={onChange} />} label={label} />
 );
 
-export const EmailField = (props: InputFieldProps) => <InputFieldWithValidation type={'email'} {...props} />;
+export const EmailField = (props: DimeInputFieldProps) => <DimeInputField type={'email'} {...props} />;
 
-export const NumberField = (props: InputFieldProps) => <InputFieldWithValidation type={'number'} {...props} />;
+export const NumberField = (props: DimeInputFieldProps) => <DimeInputField type={'number'} {...props} />;
 
-export const PasswordField = (props: InputFieldProps) => <InputFieldWithValidation type={'password'} {...props} />;
+export const PasswordField = (props: DimeInputFieldProps) => <DimeInputField type={'password'} {...props} />;
 
-export const TextField = (props: InputFieldProps & { multiline?: boolean }) => <InputFieldWithValidation type={'text'} {...props} />;
+export const TextField = (props: DimeInputFieldProps) => <DimeInputField type={'text'} {...props} />;

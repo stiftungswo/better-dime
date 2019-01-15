@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { Employee } from '../../types';
-import { Field, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
@@ -9,6 +9,7 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import { FormHeader } from '../../layout/FormHeader';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
 import { DimePaper } from '../../layout/DimePaper';
+import { DimeField } from '../../form/fields/formik';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
@@ -40,25 +41,30 @@ export default class EmployeeForm extends React.Component<Props> {
 
                     <Grid container={true} spacing={16}>
                       <Grid item={true} xs={12} sm={6}>
-                        <Field component={TextField} name={'first_name'} label={'Vorname'} fullWidth={true} />
+                        <DimeField component={TextField} name={'first_name'} label={'Vorname'} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12} sm={6}>
-                        <Field component={TextField} name={'last_name'} label={'Nachname'} fullWidth={true} />
+                        <DimeField component={TextField} name={'last_name'} label={'Nachname'} fullWidth={true} />
                       </Grid>
                     </Grid>
 
                     <Grid container={true}>
                       <Grid item={true} xs={12}>
-                        <Field component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
+                        <DimeField component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
                       </Grid>
                     </Grid>
 
                     <Grid container={true} spacing={16}>
                       <Grid item={true} xs={12} sm={6}>
-                        <Field component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
+                        <DimeField component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12} sm={6}>
-                        <Field component={PasswordField} name={'password_repeat'} label={'Neues Passwort wiederholen'} fullWidth={true} />
+                        <DimeField
+                          component={PasswordField}
+                          name={'password_repeat'}
+                          label={'Neues Passwort wiederholen'}
+                          fullWidth={true}
+                        />
                       </Grid>
                     </Grid>
                   </DimePaper>
@@ -76,19 +82,19 @@ export default class EmployeeForm extends React.Component<Props> {
 
                     <Grid container={true} spacing={16}>
                       <Grid item={true} xs={12} sm={6}>
-                        <Field component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
+                        <DimeField component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
                       </Grid>
                     </Grid>
 
                     <Grid container={true} spacing={8}>
                       <Grid item={true} xs={12}>
-                        <Field component={SwitchField} name={'can_login'} label={'Login aktiviert?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'can_login'} label={'Login aktiviert?'} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12}>
-                        <Field component={SwitchField} name={'archived'} label={'Benutzer archiviert?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'archived'} label={'Benutzer archiviert?'} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12}>
-                        <Field component={SwitchField} name={'is_admin'} label={'Benutzer hat Administratorrecht?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'is_admin'} label={'Benutzer hat Administratorrecht?'} fullWidth={true} />
                       </Grid>
                     </Grid>
                   </DimePaper>

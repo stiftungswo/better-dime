@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
+import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -16,6 +16,7 @@ import Select from 'src/form/fields/Select';
 import { DimePaper } from '../../layout/DimePaper';
 import { Company } from '../../types';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DimeField } from '../../form/fields/formik';
 
 export interface Props {
   mainStore?: MainStore;
@@ -69,10 +70,10 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                     return (
                       <TableRow key={phoneNumber.id || phoneNumber.formikKey}>
                         <DimeTableCell>
-                          <Field delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
+                          <DimeField delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
                         </DimeTableCell>
                         <DimeTableCell>
-                          <Field delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
+                          <DimeField delayed fullWidth component={TextField} name={name('number')} margin={'none'} />
                         </DimeTableCell>
                         <DimeTableCell>
                           <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />

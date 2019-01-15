@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Field, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
+import { DimeField } from '../../form/fields/formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
@@ -162,14 +163,14 @@ class ProjectForm extends React.Component<Props> {
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
-                      <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
+                      <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <Effect onChange={this.handleCustomerChange} />
-                      <Field fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                      <DimeField fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field
+                      <DimeField
                         fullWidth
                         required
                         component={AddressSelector}
@@ -179,11 +180,11 @@ class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                      <DimeField fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 
                     <Grid item xs={12} lg={8}>
-                      <Field
+                      <DimeField
                         fullWidth
                         required
                         component={EmployeeSelector}
@@ -192,10 +193,10 @@ class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <Field fullWidth required component={ProjectCategorySelector} name={'category_id'} label={'Tätigkeitsbereich'} />
+                      <DimeField fullWidth required component={ProjectCategorySelector} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field
+                      <DimeField
                         delayed
                         fullWidth
                         required
@@ -207,16 +208,16 @@ class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <Field fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
+                      <DimeField fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <Field delayed fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                      <DimeField delayed fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
+                      <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field component={SwitchField} name={'archived'} label={'Archiviert'} />
+                      <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} />
                     </Grid>
                   </Grid>
                 </DimePaper>

@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button/Button';
 import { LoadingSpinner } from '../../layout/LoadingSpinner';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import { SwitchField } from '../../form/fields/common';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
 import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
@@ -13,6 +13,7 @@ import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer
 import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
 import { CustomerImportFAQ } from './CustomerImportFAQ';
 import { DimePaper } from '../../layout/DimePaper';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   customerImportStore?: CustomerImportStore;
@@ -78,15 +79,15 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                 <form onSubmit={formikProps.handleSubmit}>
                   <Grid container spacing={24} alignItems={'center'}>
                     <Grid item xs={12} md={4}>
-                      <Field delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
+                      <DimeField delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field delayed fullWidth component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
+                      <DimeField delayed fullWidth component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <Field delayed fullWidth component={RateGroupSelector} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
+                      <DimeField delayed fullWidth component={RateGroupSelector} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
                     </Grid>
                   </Grid>
 

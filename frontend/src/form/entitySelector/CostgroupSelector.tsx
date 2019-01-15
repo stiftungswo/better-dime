@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
 import { CostgroupStore } from '../../stores/costgroupStore';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   costgroupStore?: CostgroupStore;
 }
 

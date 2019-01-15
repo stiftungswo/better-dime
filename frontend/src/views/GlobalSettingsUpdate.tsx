@@ -1,23 +1,11 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
-import { Field, Formik, FormikProps } from 'formik';
-import { EmailField, PasswordField, TextField } from '../form/fields/common';
-import { RouteComponentProps, withRouter } from 'react-router';
-import dimeTheme from '../layout/DimeTheme';
-import { Theme } from '@material-ui/core';
+import { FormikProps } from 'formik';
+import { TextField } from '../form/fields/common';
+import { RouteComponentProps } from 'react-router';
 import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
-import { LogoIcon } from '../layout/icons';
-import { HandleFormikSubmit } from '../types';
-import { ApiStore } from '../stores/apiStore';
 import { localizeSchema } from '../utilities/validation';
 import { FormView } from '../form/FormView';
 import Grid from '@material-ui/core/Grid';
@@ -26,6 +14,7 @@ import { FormHeader } from '../layout/FormHeader';
 import { GlobalSettings, GlobalSettingStore } from '../stores/globalSettingStore';
 import { empty } from '../utilities/helpers';
 import { MarkdownField } from '../form/fields/MarkdownField';
+import { DimeField } from '../form/fields/formik';
 
 export interface Props extends RouteComponentProps {
   mainStore?: MainStore;
@@ -77,19 +66,20 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                   <Grid item>
                     <DimePaper>
                       <FormHeader>Dokumente</FormHeader>
-                      <Field fullWidth required component={TextField} name={'sender_name'} label={'Name'} />
-                      <Field fullWidth required component={TextField} name={'sender_street'} label={'Strasse'} />
-                      <Field fullWidth required component={TextField} name={'sender_zip'} label={'PLZ'} />
-                      <Field fullWidth required component={TextField} name={'sender_city'} label={'Ort'} />
-                      <Field fullWidth required component={TextField} name={'sender_phone'} label={'Telefon'} />
-                      <Field fullWidth required component={TextField} name={'sender_mail'} label={'Email'} />
-                      <Field fullWidth required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
-                      <Field fullWidth required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
-                      <Field fullWidth required component={TextField} name={'sender_web'} label={'Website'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_name'} label={'Name'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_street'} label={'Strasse'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_zip'} label={'PLZ'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_city'} label={'Ort'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_phone'} label={'Telefon'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_mail'} label={'Email'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
+                      <DimeField fullWidth required component={TextField} name={'sender_web'} label={'Website'} />
                     </DimePaper>
                     <DimePaper>
                       <FormHeader>Allgemein</FormHeader>
-                      <Field
+                      <DimeField
+                        delayed
                         fullWidth
                         required
                         component={MarkdownField}

@@ -1,11 +1,11 @@
 import React from 'react';
 import { RateGroupStore } from '../../stores/rateGroupStore';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import Select from '../fields/Select';
 import compose from '../../utilities/compose';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   rateGroupStore?: RateGroupStore;
 }
 

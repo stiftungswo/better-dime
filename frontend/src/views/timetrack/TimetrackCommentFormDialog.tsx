@@ -5,14 +5,14 @@ import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import * as yup from 'yup';
 import { FormDialog } from '../../form/FormDialog';
-import { HandleFormikSubmit, ProjectComment } from '../../types';
-import { Field, FormikBag } from 'formik';
+import { ProjectComment } from '../../types';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { TextField } from '../../form/fields/common';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 import moment from 'moment';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   onClose: () => void;
@@ -82,9 +82,9 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
         onSubmit={this.handleSubmit}
         render={() => (
           <>
-            <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <Field component={ProjectSelector} name={'project_id'} label={'Projekt'} fullWidth />
-            <Field component={TextField} name={'comment'} label={'Kommentar'} fullWidth multiline rowsMax={6} />
+            <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
+            <DimeField component={ProjectSelector} name={'project_id'} label={'Projekt'} fullWidth />
+            <DimeField component={TextField} name={'comment'} label={'Kommentar'} fullWidth multiline rowsMax={6} />
           </>
         )}
       />

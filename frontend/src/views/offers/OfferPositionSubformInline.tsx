@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { ArrayHelpers, Field, FieldArray, FormikProps } from 'formik';
+import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { NumberField, TextField } from '../../form/fields/common';
-import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import { inject, Observer, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { Offer, OfferPosition } from '../../types';
+import { Offer, OfferPosition, Service } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
 import CurrencyField from '../../form/fields/CurrencyField';
-import { Service } from '../../types';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { ServiceStore } from '../../stores/serviceStore';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -22,6 +20,7 @@ import { Typography } from '@material-ui/core';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 import { DragHandle } from '../../layout/icons';
 import { getInsertionIndex } from '../../utilities/getInsertionIndex';
+import { DimeField } from '../../form/fields/formik';
 
 export interface Props {
   mainStore?: MainStore;
@@ -111,7 +110,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                             </DimeTableCell>
                             <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
                             <DimeTableCell>
-                              <Field
+                              <DimeField
                                 delayed
                                 component={TextField}
                                 name={name('description')}
@@ -123,16 +122,22 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                               />
                             </DimeTableCell>
                             <DimeTableCell>
-                              <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} disabled={disabled} />
+                              <DimeField
+                                delayed
+                                component={CurrencyField}
+                                name={name('price_per_rate')}
+                                margin={'none'}
+                                disabled={disabled}
+                              />
                             </DimeTableCell>
                             <DimeTableCell>
-                              <Field disabled portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                              <DimeField disabled portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                             </DimeTableCell>
                             <DimeTableCell>
-                              <Field delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
+                              <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
                             </DimeTableCell>
                             <DimeTableCell>
-                              <Field delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
+                              <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
                             </DimeTableCell>
                             <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
                             <DimeTableCell>

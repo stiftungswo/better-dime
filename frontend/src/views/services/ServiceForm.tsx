@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { Field, FieldArray, FormikProps } from 'formik';
+import { FieldArray, FormikProps } from 'formik';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
-import { Service } from '../../types';
+import { Service, ServiceRate } from '../../types';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -21,9 +21,9 @@ import { serviceSchema } from './serviceSchema';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { RateUnitStore } from '../../stores/rateUnitStore';
-import { ServiceRate } from '../../types';
 import { GlobalSettingStore } from '../../stores/globalSettingStore';
 import { MarkdownRender } from '../../layout/MarkdownRender';
+import { DimeField } from '../../form/fields/formik';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
@@ -70,26 +70,27 @@ export default class ServiceForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={24}>
                       <Grid item xs={12}>
-                        <Field fullWidth required component={TextField} name={'name'} label={'Name'} />
+                        <DimeField fullWidth required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
                       <Grid item xs={12}>
-                        <Field component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
+                        <DimeField component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
                       </Grid>
                       <Grid item xs={12} lg={6}>
-                        <Field component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} fullWidth />
+                        <DimeField component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} fullWidth />
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
-                          <Field component={SwitchField} name={'chargeable'} label={'Verrechenbar'} fullWidth={true} />
+                          {/*FIXME this field doesn't exist on the backend?*/}
+                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} fullWidth={true} />
                         </Grid>
                         <Grid item xs={12}>
-                          <Field component={SwitchField} name={'archived'} label={'Archiviert'} fullWidth={true} />
+                          <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} fullWidth={true} />
                         </Grid>
                       </Grid>
-                      <Grid item>
+                      <Grid item xs={12}>
                         <Grid container spacing={8}>
                           <Grid item xs={12} lg={4}>
-                            <Field component={NumberField} required name={'order'} label={'Reihenfolge'} fullWidth />
+                            <DimeField component={NumberField} required name={'order'} label={'Reihenfolge'} fullWidth />
                           </Grid>
                           <Grid item xs={12} lg={8}>
                             <MarkdownRender>{this.props.globalSettingStore!.settings!.service_order_comment}</MarkdownRender>
@@ -123,14 +124,14 @@ export default class ServiceForm extends React.Component<Props> {
                                     <TableRow key={index}>
                                       <DimeTableCell>{rateGroup ? rateGroup.name : rateGroupId}</DimeTableCell>
                                       <DimeTableCell>
-                                        <Field
+                                        <DimeField
                                           disabled={this.props.rateUnitSelectDisabled}
                                           component={RateUnitSelector}
                                           name={`service_rates.${index}.rate_unit_id`}
                                         />
                                       </DimeTableCell>
                                       <DimeTableCell>
-                                        <Field component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
+                                        <DimeField component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
                                       </DimeTableCell>
                                     </TableRow>
                                   );

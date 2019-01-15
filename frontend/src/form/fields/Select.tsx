@@ -12,7 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import DimeTheme from '../../layout/DimeTheme';
-import { FormProps, ValidatedFormGroupWithLabel } from './common';
+import { DimeCustomFieldProps, DimeFormControl } from './common';
 import { CancelIcon } from '../../layout/icons';
 
 const styles = (theme: Theme) => ({
@@ -181,19 +181,19 @@ const components = {
 class IntegrationReactSelect extends React.Component<any> {
   public get value() {
     if (this.props.isMulti) {
-      return this.props.options.filter((e: any) => this.props.field.value.includes(e.value));
+      return this.props.options.filter((e: any) => this.props.value.includes(e.value));
     } else {
-      return this.props.options.find((e: any) => e.value === this.props.field.value) || '';
+      return this.props.options.find((e: any) => e.value === this.props.value) || '';
     }
   }
 
   public handleChange = (selected: any) => {
     const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
-    this.props.form.setFieldValue(this.props.field.name, selected ? value : null);
+    this.props.onChange(selected ? value : null);
   };
 
   render() {
-    const { classes, theme, field, form, label, margin, required, disabled, placeholder = 'Bitte auswählen...', ...rest } = this
+    const { classes, theme, label, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, ...rest } = this
       .props as any;
 
     const myLabel = this.props.label
@@ -217,10 +217,8 @@ class IntegrationReactSelect extends React.Component<any> {
       menuPortal: (base: any) => ({ ...base, zIndex: 9001 }),
     };
 
-    const hasErrors: boolean = !!form.errors[field.name] && !!form.touched[field.name];
-
     return (
-      <ValidatedFormGroupWithLabel label={''} field={field} form={form} margin={margin} fullWidth>
+      <DimeFormControl label={''} margin={margin} fullWidth errorMessage={errorMessage}>
         <Select
           menuPortalTarget={this.props.portal ? document.body : undefined}
           menuPlacement={this.props.portal ? 'auto' : undefined}
@@ -228,46 +226,29 @@ class IntegrationReactSelect extends React.Component<any> {
           classes={classes}
           styles={selectStyles}
           components={components}
-          value={this.value}
-          onChange={this.handleChange}
           textFieldProps={myLabel}
           isDisabled={disabled}
-          error={hasErrors}
+          error={Boolean(errorMessage)}
           margin={margin}
           placeholder={placeholder}
           noOptionsMessage={() => 'Keine Optionen verfügbar'}
           {...rest}
+          value={this.value}
+          onChange={this.handleChange}
         />
-      </ValidatedFormGroupWithLabel>
+      </DimeFormControl>
     );
   }
 }
 
 export default withStyles(styles(DimeTheme) as any, { withTheme: true })(IntegrationReactSelect);
 
-/*
- *  This makes our selectors usable without a Formik field, in the rare cases that a selector is needed without being tied to a Formik.
- *  It would probably make more sense if the selectors were usable without formik by default and then wrapepd to be formik compatible.
- *  Use it like this:
- *
- *        <ServiceSelector
- *          {...formikCompatible({
- *            label: 'Service',
- *            value: this.state.serviceId,
- *            onChange: service_id => this.setState({service_id})
- *          })}
- *        />
- */
-export const formikFieldCompatible = ({ label, value, onChange }: { label: string; value: any; onChange: (value: any) => void }): any => ({
-  label,
-  field: {
-    name: label + '_compat',
-    onChange,
-    value,
-  },
-  form: {
-    values: [],
-    errors: [],
-    setFieldValue: (_: any, v: any) => onChange(v),
-  },
-});
+type Single = number | null;
+type Multi = number[] | [];
+
+type ValueType<T> = T extends number[] ? Multi : T extends Single ? Single : never;
+
+export interface DimeSelectFieldProps<T> extends DimeCustomFieldProps<ValueType<T>> {
+  isMulti?: boolean;
+  fullWidth?: boolean;
+}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ArrayHelpers, FieldArray, FormikProps, Field } from 'formik';
+import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -15,6 +15,7 @@ import { NumberField, TextField } from 'src/form/fields/common';
 import { DimePaper } from '../../layout/DimePaper';
 import { Company } from '../../types';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DimeField } from '../../form/fields/formik';
 
 const template = () => ({
   city: '',
@@ -69,22 +70,22 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   return (
                     <TableRow key={a.id || a.formikKey}>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('street')} margin={'none'} />
+                        <DimeField delayed component={TextField} name={name('street')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('supplement')} margin={'none'} />
+                        <DimeField delayed component={TextField} name={name('supplement')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={NumberField} name={name('postcode')} margin={'none'} />
+                        <DimeField delayed component={NumberField} name={name('postcode')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('city')} margin={'none'} />
+                        <DimeField delayed component={TextField} name={name('city')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('country')} margin={'none'} />
+                        <DimeField delayed component={TextField} name={name('country')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('description')} margin={'none'} multiline={true} />
+                        <DimeField delayed component={TextField} name={name('description')} margin={'none'} multiline={true} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />

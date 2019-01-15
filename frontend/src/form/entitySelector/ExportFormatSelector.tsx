@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from '../fields/Select';
-import { FormProps } from '../fields/common';
+import { DimeCustomFieldProps } from '../fields/common';
 
 const options = [
   {
@@ -13,7 +13,7 @@ const options = [
   },
 ];
 
-export class ExportFormatSelector extends React.Component<FormProps> {
+export class ExportFormatSelector extends React.Component<DimeCustomFieldProps<number | null>> {
   public render() {
     return <Select options={options} {...this.props} />;
   }

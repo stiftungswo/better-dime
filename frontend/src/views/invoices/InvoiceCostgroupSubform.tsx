@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Field, FieldArray, FormikProps, getIn } from 'formik';
+import { FieldArray, FormikProps, getIn } from 'formik';
 import { NumberField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
@@ -14,6 +14,7 @@ import TableToolbar from '../../layout/TableToolbar';
 import CostgroupSelector from '../../form/entitySelector/CostgroupSelector';
 import { ErrorText } from '../../layout/ErrorText';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DimeField } from '../../form/fields/formik';
 
 const template = () => ({
   costgroup_number: '',
@@ -72,11 +73,11 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                   return (
                     <TableRow key={p.id || p.formikKey}>
                       <DimeTableCell>
-                        <Field delayed component={NumberField} name={fieldName('weight')} />
+                        <DimeField delayed component={NumberField} name={fieldName('weight')} />
                       </DimeTableCell>
                       <DimeTableCell>{distribution}%</DimeTableCell>
                       <DimeTableCell>
-                        <Field component={CostgroupSelector} name={fieldName('costgroup_number')} />
+                        <DimeField component={CostgroupSelector} name={fieldName('costgroup_number')} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

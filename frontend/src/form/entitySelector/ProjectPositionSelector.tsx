@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormProps } from '../fields/common';
 import { ProjectStore } from '../../stores/projectStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import Select from '../fields/Select';
 import { EffortStore } from '../../stores/effortStore';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   effortStore?: EffortStore;
   projectId: number;
   projectStore?: ProjectStore;
@@ -23,7 +23,7 @@ export class ProjectPositionSelector extends React.Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     if (this.props.projectId !== prevProps.projectId) {
-      this.props.form.setFieldValue(this.props.field.name, null);
+      this.props.onChange(null);
       this.updateProjectInStore();
     }
   }

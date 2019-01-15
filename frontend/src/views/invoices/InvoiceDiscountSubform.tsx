@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Field, FieldArray, FormikProps } from 'formik';
+import { FieldArray, FormikProps } from 'formik';
 import { SwitchField, TextField } from '../../form/fields/common';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
@@ -14,6 +14,7 @@ import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DimeField } from '../../form/fields/formik';
 
 const template = () => ({
   formikKey: Math.random(),
@@ -59,16 +60,16 @@ export default class InvoiceDiscountSubform extends React.Component<Props> {
                   return (
                     <TableRow key={p.id || p.formikKey}>
                       <DimeTableCell>
-                        <Field delayed component={TextField} name={name('name')} disabled={disabled} />
+                        <DimeField delayed component={TextField} name={name('name')} disabled={disabled} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field component={SwitchField} name={name('percentage')} disabled={disabled} />
+                        <DimeField component={SwitchField} name={name('percentage')} disabled={disabled} />
                       </DimeTableCell>
                       <DimeTableCell>
                         {p.percentage ? (
-                          <Field delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
+                          <DimeField delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
-                          <Field delayed component={CurrencyField} name={name('value')} disabled={disabled} />
+                          <DimeField delayed component={CurrencyField} name={name('value')} disabled={disabled} />
                         )}
                       </DimeTableCell>
                       <DimeTableCell>

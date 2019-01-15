@@ -14,7 +14,6 @@ import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
 import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import { formikFieldCompatible } from '../../form/fields/Select';
 import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
 interface Props {
@@ -56,84 +55,58 @@ export class TimetrackFilterForm extends React.Component<Props> {
           <TimetrackExpansionPanel title={'Filter'}>
             <Grid container alignItems={'center'} spacing={24}>
               <Grid item xs={12} md={3}>
-                <DatePicker
-                  fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Start',
-                    value: filter.start,
-                    onChange: d => (filter.start = d),
-                  })}
-                />
+                <DatePicker label={'Start'} value={filter.start} onChange={d => (filter.start = d!)} />
               </Grid>
 
               <Grid item xs={12} md={3}>
-                <DatePicker
-                  fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Ende',
-                    value: filter.end,
-                    onChange: d => (filter.end = d),
-                  })}
-                />
+                <DatePicker label={'Ende'} value={filter.end} onChange={d => (filter.end = d!)} />
               </Grid>
 
               <Grid item xs={12} md={3}>
                 <SwitchField
-                  fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Leere Gruppen anzeigen',
-                    value: filter.showEmptyGroups,
-                    onChange: e => (filter.showEmptyGroups = e.target.checked),
-                  })}
+                  label={'Leere Gruppen anzeigen'}
+                  value={filter.showEmptyGroups}
+                  onChange={e => (filter.showEmptyGroups = e.target.checked)}
                 />
               </Grid>
 
               <Grid item xs={12} md={3}>
                 {this.props.timetrackFilterStore!.grouping === 'project' && (
                   <SwitchField
-                    fullWidth
-                    {...formikFieldCompatible({
-                      label: 'Projekt-Kommentare anzeigen',
-                      value: filter.showProjectComments,
-                      onChange: e => (filter.showProjectComments = e.target.checked),
-                    })}
+                    label={'Projekt-Kommentare anzeigen'}
+                    value={filter.showProjectComments}
+                    onChange={e => (filter.showProjectComments = e.target.checked)}
                   />
                 )}
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <EmployeeSelector
+                <EmployeeSelector<number[]>
                   isMulti
                   fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Mitarbeiter',
-                    value: filter.employeeIds,
-                    onChange: v => (filter.employeeIds = v),
-                  })}
+                  label={'Mitarbeiter'}
+                  value={filter.employeeIds}
+                  onChange={v => (filter.employeeIds = v)}
                 />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ProjectSelector
+                <ProjectSelector<number[]>
                   isMulti
                   fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Projekte',
-                    value: filter.projectIds,
-                    onChange: v => (filter.projectIds = v),
-                  })}
+                  label={'Projekte'}
+                  value={filter.projectIds}
+                  onChange={v => (filter.projectIds = v)}
                 />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ServiceSelector
+                <ServiceSelector<number[]>
                   isMulti
                   fullWidth
-                  {...formikFieldCompatible({
-                    label: 'Services',
-                    value: filter.serviceIds,
-                    onChange: v => (filter.serviceIds = v),
-                  })}
+                  label={'Services'}
+                  value={filter.serviceIds}
+                  onChange={v => (filter.serviceIds = v)}
                 />
               </Grid>
 

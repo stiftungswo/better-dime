@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as yup from 'yup';
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import { EmailField, PasswordField } from '../form/fields/common';
 import { RouteComponentProps, withRouter } from 'react-router';
 import dimeTheme from '../layout/DimeTheme';
@@ -19,6 +19,7 @@ import { LogoIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
 import { ApiStore } from '../stores/apiStore';
 import { localizeSchema } from '../utilities/validation';
+import { DimeField } from '../form/fields/formik';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -120,8 +121,8 @@ class Login extends React.Component<Props> {
               onSubmit={this.handleSubmit}
               render={props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
-                  <Field component={EmailField} name="email" label="E-Mail" fullWidth={true} />
-                  <Field component={PasswordField} name="password" label="Passwort" fullWidth={true} />
+                  <DimeField component={EmailField} name="email" label="E-Mail" fullWidth={true} />
+                  <DimeField component={PasswordField} name="password" label="Passwort" fullWidth={true} />
                   <Button
                     type="submit"
                     disabled={props.isSubmitting}

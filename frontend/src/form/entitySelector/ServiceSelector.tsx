@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { ServiceStore } from '../../stores/serviceStore';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import Select from '../fields/Select';
+import Select, { DimeSelectFieldProps } from '../fields/Select';
 import { ServiceListing } from '../../types';
 
-interface Props extends FormProps {
+interface Props<T = number> extends DimeSelectFieldProps<T> {
   serviceStore?: ServiceStore;
 }
 
@@ -14,10 +13,10 @@ interface Props extends FormProps {
   inject('serviceStore'),
   observer
 )
-export class ServiceSelector extends React.Component<Props> {
+export class ServiceSelector<T> extends React.Component<Props<T>> {
   public get options() {
     return this.props
-      .serviceStore!.entities.filter((e: ServiceListing) => !e.archived || this.props.field.value === e.id)
+      .serviceStore!.entities.filter((e: ServiceListing) => !e.archived || this.props.value === e.id)
       .map(e => ({
         value: e.id,
         label: e.name,

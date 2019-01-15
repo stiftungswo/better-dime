@@ -7,7 +7,6 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 import { ServiceStore } from '../stores/serviceStore';
-import { formikFieldCompatible } from './fields/Select';
 import { ServiceSelector } from './entitySelector/ServiceSelector';
 import { Service } from '../types';
 
@@ -24,7 +23,7 @@ interface Props {
 )
 export class ServiceSelectDialog extends React.Component<Props> {
   state = {
-    serviceId: undefined,
+    serviceId: null,
   };
 
   handleSubmit = () => {
@@ -40,13 +39,11 @@ export class ServiceSelectDialog extends React.Component<Props> {
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          <ServiceSelector
+          <ServiceSelector<number>
             fullWidth
-            {...formikFieldCompatible({
-              label: 'Service',
-              value: this.state.serviceId,
-              onChange: serviceId => this.setState({ serviceId }),
-            })}
+            label={'Service'}
+            value={this.state.serviceId}
+            onChange={serviceId => this.setState({ serviceId })}
           />
         </DialogContent>
         <DialogActions>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, Formik, FormikBag, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
 import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -25,6 +25,7 @@ import { captureException } from '../../utilities/helpers';
 import { apiDateFormat } from '../../stores/apiStore';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props extends InjectedProps {
   onClose: () => void;
@@ -181,23 +182,29 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <Field portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />
+                  <DimeField portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />
                 )}
-                {formikProps.values.id && <Field portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
-                <Field portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
-                <Field
+                {formikProps.values.id && <DimeField portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
+                <DimeField portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
+                <DimeField
                   portal
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelector}
                   name={'position_id'}
                   label={'Aktivität'}
                 />
-                <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
+                <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
-                    <Field component={EffortValueField} name={'value'} label={'Wert'} fullWidth />
+                    <DimeField
+                      component={EffortValueField}
+                      positionId={formikProps.values.position_id}
+                      name={'value'}
+                      label={'Wert'}
+                      fullWidth
+                    />
                     {!formikProps.values.id && (
-                      <Field
+                      <DimeField
                         delayed
                         fullWidth
                         multiline

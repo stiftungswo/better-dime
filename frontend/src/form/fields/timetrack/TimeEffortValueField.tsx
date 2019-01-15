@@ -1,14 +1,14 @@
 import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
-import Select, { formikFieldCompatible } from '../Select';
+import Select from '../Select';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
-import { InputFieldProps } from '../common';
 import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { LoadingSpinner } from '../../../layout/LoadingSpinner';
 import { RateUnit } from '../../../types';
+import { DimeCustomFieldProps } from '../common';
 
-interface Props extends InputFieldProps {
+interface Props extends DimeCustomFieldProps<number> {
   rateUnitId: number;
   rateUnitStore?: RateUnitStore;
 }
@@ -27,7 +27,7 @@ export class TimeEffortValueField extends React.Component<Props> {
   public state: State = {
     rateUnits: [],
     selectedFactor: 1,
-    value: this.props.form.values.value || 1,
+    value: this.props.value || 1,
   };
 
   public async componentDidMount() {
@@ -40,14 +40,14 @@ export class TimeEffortValueField extends React.Component<Props> {
       this.setState({ selectedFactor: potentialRateUnit.factor });
     }
 
-    if (this.props.field.value && potentialRateUnit) {
-      this.setState({ value: this.props.field.value / potentialRateUnit.factor });
+    if (this.props.value && potentialRateUnit) {
+      this.setState({ value: this.props.value / potentialRateUnit.factor });
     }
   }
 
   protected options() {
     return this.state
-      .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.field.value === e.id)
+      .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.value === e.id)
       .map(e => ({
         value: e.factor,
         label: e.effort_unit,
@@ -56,12 +56,12 @@ export class TimeEffortValueField extends React.Component<Props> {
 
   protected updateSelectedFactor = (factor: number) => {
     this.setState({ selectedFactor: factor, value: (this.state.value * this.state.selectedFactor) / factor });
-    this.props.form.setFieldValue(this.props.field.name, factor * this.state.value);
+    this.props.onChange(factor * this.state.value);
   };
 
   protected updateValue = (value: string) => {
     this.setState({ value });
-    this.props.form.setFieldValue(this.props.field.name, this.state.selectedFactor * Number(value));
+    this.props.onChange(this.state.selectedFactor * Number(value));
   };
 
   public render() {
@@ -82,11 +82,9 @@ export class TimeEffortValueField extends React.Component<Props> {
             <Select
               options={this.options()}
               portal
-              {...formikFieldCompatible({
-                label: 'Zeiteinheit',
-                value: this.state.selectedFactor,
-                onChange: (value: number) => this.updateSelectedFactor(value),
-              })}
+              label={'Zeiteinheit'}
+              value={this.state.selectedFactor}
+              onChange={(value: number) => this.updateSelectedFactor(value)}
             />
           </Grid>
         </Grid>

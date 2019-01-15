@@ -1,6 +1,6 @@
 import React from 'react';
 import { Employee, WorkPeriod } from '../../types';
-import { Field, FieldArray, FormikProps, getIn } from 'formik';
+import { FieldArray, FormikProps, getIn } from 'formik';
 import TableToolbar from '../../layout/TableToolbar';
 import moment from 'moment';
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DurationField } from '../../form/fields/DurationField';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { Observer } from 'mobx-react';
+import { DimeField } from '../../form/fields/formik';
 
 const template = {
   end: moment().endOf('year'),
@@ -105,13 +106,13 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       return (
                         <TableRow key={w.id || w.formikKey}>
                           <DimeTableCell>
-                            <Field component={DatePicker} name={fieldName('start')} />
+                            <DimeField component={DatePicker} name={fieldName('start')} />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <Field component={DatePicker} name={fieldName('end')} />
+                            <DimeField component={DatePicker} name={fieldName('end')} />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
+                            <DimeField delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
                           </DimeTableCell>
                           <DimeTableCell>{formattedHours(w.target_time)}</DimeTableCell>
                           <DimeTableCell>{formattedHours(w.effective_time)}</DimeTableCell>
@@ -121,10 +122,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <DimeTableCell>{formattedHours(w.period_vacation_budget)}</DimeTableCell>
                           <DimeTableCell>{formattedHours(w.vacation_till_today)}</DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
+                            <DimeField delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <Field delayed component={DurationField} timeUnit={'workday'} name={fieldName('yearly_vacation_budget')} />
+                            <DimeField delayed component={DurationField} timeUnit={'workday'} name={fieldName('yearly_vacation_budget')} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

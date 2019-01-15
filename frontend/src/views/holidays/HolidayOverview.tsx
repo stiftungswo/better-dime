@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { HolidayStore } from '../../stores/holidayStore';
-import { Field } from 'formik';
 import { Column } from '../../layout/Overview';
 import { TextField } from '../../form/fields/common';
 import { EditableOverview } from '../../layout/EditableOverview';
@@ -12,6 +11,7 @@ import { DatePicker } from '../../form/fields/DatePicker';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { holidaySchema, holidayTemplate } from './holidaySchema';
 import { Holiday } from '../../types';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   holidayStore?: HolidayStore;
@@ -37,6 +37,7 @@ export default class HolidayOverview extends React.Component<Props> {
         id: 'date',
         numeric: false,
         label: 'Datum',
+        defaultSort: 'desc',
         format: h => this.props.mainStore!.formatDate(h.date),
       },
       {
@@ -73,9 +74,9 @@ export default class HolidayOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <Field component={TextField} name={'name'} label={'Name'} fullWidth />
-            <Field component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <Field fullWidth component={DurationField} timeUnit={'hour'} name={'duration'} label={'Dauer'} />
+            <DimeField component={TextField} name={'name'} label={'Name'} fullWidth />
+            <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
+            <DimeField fullWidth component={DurationField} timeUnit={'hour'} name={'duration'} label={'Dauer'} />
           </>
         )}
       />

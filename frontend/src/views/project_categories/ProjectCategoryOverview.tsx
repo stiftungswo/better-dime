@@ -5,11 +5,11 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
-import { Field } from 'formik';
+import { SwitchField, TextField } from '../../form/fields/common';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 import { ProjectCategory } from '../../types';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   mainStore?: MainStore;
@@ -59,8 +59,8 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <Field component={InputFieldWithValidation} name={'name'} label={'Name'} fullWidth />
-            <Field component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
+            <DimeField component={TextField} name={'name'} label={'Name'} fullWidth />
+            <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
           </>
         )}
       />

@@ -7,10 +7,10 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
-import { Field } from 'formik';
 import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
 import { Grid } from '@material-ui/core';
 import { RateUnit } from '../../types';
+import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   mainStore?: MainStore;
@@ -75,27 +75,27 @@ export default class RateUnitOverview extends React.Component<Props> {
         renderForm={props => (
           <Grid container spacing={16}>
             <Grid item xs={12}>
-              <Field component={TextField} name={'name'} label={'Name'} fullWidth />
+              <DimeField component={TextField} name={'name'} label={'Name'} fullWidth />
             </Grid>
 
             <Grid item xs={4}>
-              <Field component={NumberField} name={'factor'} label={'Umrechnungsfaktor'} />
+              <DimeField component={NumberField} name={'factor'} label={'Umrechnungsfaktor'} />
             </Grid>
 
             <Grid item xs={4}>
-              <Field component={TextField} name={'billing_unit'} label={'Verrechnungseinheit'} />
+              <DimeField component={TextField} name={'billing_unit'} label={'Verrechnungseinheit'} />
             </Grid>
 
             <Grid item xs={4}>
-              <Field component={TextField} name={'effort_unit'} label={'Zeiterfassungseinheit'} />
+              <DimeField component={TextField} name={'effort_unit'} label={'Zeiterfassungseinheit'} />
             </Grid>
 
             <Grid item xs={6}>
-              <Field component={SwitchField} name={'is_time'} label={'Zeiteinheit?'} />
+              <DimeField component={SwitchField} name={'is_time'} label={'Zeiteinheit?'} />
             </Grid>
 
             <Grid item xs={6}>
-              <Field component={SwitchField} name={'archived'} label={'Archiviert?'} />
+              <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} />
             </Grid>
           </Grid>
         )}

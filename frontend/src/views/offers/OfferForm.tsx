@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Fragment } from 'react';
 import { Field, FormikProps } from 'formik';
-import { TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
 import Grid from '@material-ui/core/Grid/Grid';
 import { empty } from '../../utilities/helpers';
 import { inject, observer } from 'mobx-react';
@@ -34,6 +34,7 @@ import { ServiceStore } from '../../stores/serviceStore';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { AddIcon, ProjectIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
+import { TextField } from '../../form/fields/common';
 
 export type Props = {
   customerStore?: CustomerStore;
@@ -129,11 +130,11 @@ class OfferForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <Grid container spacing={8}>
                             <Grid item xs={12}>
-                              <Field delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
+                              <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={4}>
                               <Effect onChange={this.handleCustomerChange} />
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={CustomerSelector}
@@ -143,7 +144,7 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={AddressSelector}
@@ -154,7 +155,7 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={RateGroupSelector}
@@ -164,7 +165,7 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={8}>
-                              <Field
+                              <DimeField
                                 fullWidth
                                 required
                                 component={EmployeeSelector}
@@ -174,10 +175,10 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <Field fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
+                              <DimeField fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
                             </Grid>
                             <Grid item xs={12}>
-                              <Field
+                              <DimeField
                                 delayed
                                 fullWidth
                                 required
@@ -190,7 +191,7 @@ class OfferForm extends React.Component<Props> {
                           </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                          <Field
+                          <DimeField
                             delayed
                             fullWidth
                             required
@@ -222,7 +223,7 @@ class OfferForm extends React.Component<Props> {
                       <DimePaper>
                         <FormHeader>Berechnung</FormHeader>
                         <BreakdownTable breakdown={offer.breakdown} />
-                        <Field delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} disabled={locked} />
+                        <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} disabled={locked} />
                       </DimePaper>
                     </Grid>
                   )}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
-import { FormProps, SwitchField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
 import { ExportFormatSelector } from '../../form/entitySelector/ExportFormatSelector';
 import Button from '@material-ui/core/Button/Button';
 import { DimePaper } from '../../layout/DimePaper';
@@ -10,6 +10,7 @@ import { CustomerFilter } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
+import { SwitchField } from '../../form/fields/common';
 
 const initialValues: CustomerFilter = {
   customer_tags: [],
@@ -17,7 +18,7 @@ const initialValues: CustomerFilter = {
   include_hidden: true,
 };
 
-interface Props extends FormProps {
+interface Props {
   mainStore?: MainStore;
 }
 
@@ -40,15 +41,15 @@ export class CustomerExportForm extends React.Component<Props> {
             render={formikProps => (
               <Grid container alignItems={'center'} spacing={24}>
                 <Grid item xs={12} md={4}>
-                  <Field delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
+                  <DimeField delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <Field delayed fullWidth component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'include_hidden'} />
+                  <DimeField delayed fullWidth component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'include_hidden'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <Field delayed fullWidth component={ExportFormatSelector} label={'Export-Format'} name={'export_format'} />
+                  <DimeField delayed fullWidth component={ExportFormatSelector} label={'Export-Format'} name={'export_format'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from '../fields/Select';
-import { FormProps } from '../fields/common';
+import { DimeCustomFieldProps, WidthToggle } from '../fields/common';
 
 const options = [
   {
@@ -13,7 +13,7 @@ const options = [
   },
 ];
 
-export class ExportGroupingSelector extends React.Component<FormProps> {
+export class ExportGroupingSelector extends React.Component<DimeCustomFieldProps<'project' | 'category'> & WidthToggle> {
   public render() {
     return <Select options={options} {...this.props} />;
   }

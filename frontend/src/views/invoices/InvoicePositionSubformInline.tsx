@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Field, FieldArray, FormikProps } from 'formik';
+import { FieldArray, FormikProps } from 'formik';
 import { NumberField, TextField } from '../../form/fields/common';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -16,6 +16,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
 import { DraggableTableBody } from './DraggableTableBody';
+import { DimeField } from '../../form/fields/formik';
 
 const template = () => ({
   amount: 0,
@@ -72,19 +73,19 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
                         <DragHandle />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed fullWidth component={TextField} name={name('description')} margin={'none'} />
+                        <DimeField delayed fullWidth component={TextField} name={name('description')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
+                        <DimeField delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                        <DimeField component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={NumberField} name={name('amount')} margin={'none'} />
+                        <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <Field delayed component={PercentageField} name={name('vat')} margin={'none'} />
+                        <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
                       <DimeTableCell>

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { CustomerStore } from '../../stores/customerStore';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
 import { Address } from '../../types';
 import { computed } from 'mobx';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   customerStore?: CustomerStore;
   customerId: number;
 }
@@ -29,9 +29,7 @@ export class AddressSelector extends React.Component<Props> {
   };
 
   protected async updateCustomerInStore() {
-    if (this.props.form.values.customer_id) {
-      await this.props.customerStore!.fetchOne(this.props.customerId);
-    }
+    await this.props.customerStore!.fetchOne(this.props.customerId);
   }
 
   @computed

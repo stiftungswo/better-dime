@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { FormProps } from '../fields/common';
 import Select from '../fields/Select';
+import { DimeCustomFieldProps } from '../fields/common';
 
-type Props = FormProps;
+type Props = DimeCustomFieldProps<number>;
 
 const statuses = {
   1: 'Offeriert',

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { FormProps, InputFieldProps, ValidatedFormGroupWithLabel } from './common';
-import { TransformingField } from './TransformingField';
+import { TransformingField, TransformingFieldProps } from './TransformingField';
 
 const units = {
   hour: {
@@ -13,15 +12,16 @@ const units = {
   },
 };
 
-interface Props extends InputFieldProps {
+interface Props extends TransformingFieldProps<number> {
   timeUnit: keyof typeof units;
 }
 
 export class DurationField extends React.Component<Props> {
   public render = () => {
-    const { sign, factor } = units[this.props.timeUnit];
+    const { timeUnit, ...rest } = this.props;
+    const { sign, factor } = units[timeUnit];
     const toString = (n: number) => (n / factor).toFixed(2);
     const toValue = (s: string) => Number(s) * factor;
-    return <TransformingField {...this.props} toValue={toValue} toString={toString} type={'number'} unit={sign} />;
+    return <TransformingField {...rest} toValue={toValue} toString={toString} type={'number'} unit={sign} />;
   };
 }

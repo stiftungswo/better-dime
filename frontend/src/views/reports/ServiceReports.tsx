@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import Grid from '@material-ui/core/Grid';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { formikFieldCompatible } from '../../form/fields/Select';
 import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
@@ -38,33 +37,17 @@ export class ServiceReports extends React.Component<Props> {
 
           <Grid container alignItems={'center'} spacing={24}>
             <Grid item xs={12} md={4}>
-              <DatePicker
-                fullWidth
-                {...formikFieldCompatible({
-                  label: 'Von',
-                  value: this.state.start,
-                  onChange: d => this.setState({ start: d }),
-                })}
-              />
+              <DatePicker label={'Von'} value={this.state.start} onChange={d => this.setState({ start: d })} />
             </Grid>
             <Grid item xs={12} md={4}>
-              <DatePicker
-                fullWidth
-                {...formikFieldCompatible({
-                  label: 'Bis',
-                  value: this.state.end,
-                  onChange: d => this.setState({ end: d }),
-                })}
-              />
+              <DatePicker label={'Bis'} value={this.state.end} onChange={d => this.setState({ end: d })} />
             </Grid>
             <Grid item xs={12} md={4}>
               <ExportGroupingSelector
                 fullWidth
-                {...formikFieldCompatible({
-                  label: 'Gruppierung',
-                  value: this.state.grouping,
-                  onChange: d => this.setState({ grouping: d }),
-                })}
+                label={'Gruppierung'}
+                value={this.state.grouping as 'project' | 'category'}
+                onChange={d => this.setState({ grouping: d })}
               />
             </Grid>
             <Grid item xs={12}>

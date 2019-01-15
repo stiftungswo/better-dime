@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FormProps } from '../fields/common';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
 import { CompanyStore } from '../../stores/companyStore';
+import { DimeCustomFieldProps } from '../fields/common';
 
-interface Props extends FormProps {
+interface Props extends DimeCustomFieldProps<number | null> {
   companyStore?: CompanyStore;
 }
 
@@ -16,7 +16,7 @@ interface Props extends FormProps {
 export class CompanySelector extends React.Component<Props> {
   public get options() {
     return this.props
-      .companyStore!.entities.filter(c => !c.hidden || this.props.field.value === c.id)
+      .companyStore!.entities.filter(c => !c.hidden || this.props.value === c.id)
       .map(e => ({
         value: e.id,
         label: e.name,

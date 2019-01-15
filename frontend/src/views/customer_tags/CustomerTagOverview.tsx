@@ -5,11 +5,11 @@ import { inject, observer } from 'mobx-react';
 import { Column } from '../../layout/Overview';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { InputFieldWithValidation, SwitchField } from '../../form/fields/common';
-import { Field } from 'formik';
 import { CustomerTagStore } from '../../stores/customerTagStore';
 import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
 import { CustomerTag } from '../../types';
+import { DimeField } from '../../form/fields/formik';
+import { SwitchField, TextField } from '../../form/fields/common';
 
 interface Props {
   mainStore?: MainStore;
@@ -59,8 +59,8 @@ export default class CustomerTagOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <Field delayed component={InputFieldWithValidation} name={'name'} label={'Name'} fullWidth />
-            <Field delayed component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
+            <DimeField delayed component={TextField} name={'name'} label={'Name'} fullWidth />
+            <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
           </>
         )}
       />
