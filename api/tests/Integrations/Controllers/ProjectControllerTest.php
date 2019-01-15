@@ -4,6 +4,7 @@ namespace Tests\Integrations\Controllers;
 
 use App\Models\Project\Project;
 use App\Models\Project\ProjectPosition;
+use App\Models\Service\RateUnit;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectControllerTest extends \TestCase
@@ -173,6 +174,27 @@ class ProjectControllerTest extends \TestCase
         $template = $this->projectTemplate();
         $template['costgroup_distributions'] = [];
         $this->asAdmin()->json('POST', 'api/v1/projects', $template)->assertResponseStatus(422);
+    }
+
+    public function testValidPrintEffortReport()
+    {
+        $project = factory(Project::class)->create();
+        $rate_unit = factory(RateUnit::class)->create();
+        $project->positions()->saveMany(factory(ProjectPosition::class, 5)->make([
+            'project_id' => $project->id,
+            'rate_unit_id' => $rate_unit->id
+        ]));
+        $project->positions()->each(function ($p) {
+            $p->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 5)->make());
+        });
+        $project->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class, 5)->make());
+
+        $this->asAdmin()->json('GET', 'api/v1/projects/' . $project->id . '/print_effort_report')->assertResponseOk();
+    }
+
+    public function testPrintEffortReportForInvoiceWithoutProject()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/projects/3284092384092038/print_effort_report')->assertResponseStatus(404);
     }
 
     private function projectTemplate()

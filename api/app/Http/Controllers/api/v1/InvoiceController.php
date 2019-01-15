@@ -12,6 +12,7 @@ use App\Services\AddressLabelBuilder;
 use App\Services\CostBreakdown;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
+use App\Services\ProjectEffortReportFetcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -130,6 +131,31 @@ class InvoiceController extends BaseController
         );
 
         return $pdf->print();
+    }
+
+    public function printEffortReport($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+
+        if ($invoice->project) {
+            $commentsAndEffortsPerDate = ProjectEffortReportFetcher::fetch($invoice->project->id, $invoice->start, $invoice->end);
+            $parsedown = new Parsedown();
+            $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
+
+            // initialize PDF, render view and pass it back
+            $pdf = new PDF(
+                'invoice_effort_report',
+                [
+                    'content' => $commentsAndEffortsPerDate,
+                    'description' => $description,
+                    'invoice' => $invoice
+                ]
+            );
+
+            return $pdf->print();
+        } else {
+            return response('Invoice ' . $invoice->id . ' has no project assigned!', 400);
+        }
     }
 
     public function put($id, Request $request)

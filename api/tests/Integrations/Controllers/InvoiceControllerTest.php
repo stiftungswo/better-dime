@@ -7,6 +7,7 @@ use App\Models\Invoice\InvoiceDiscount;
 use App\Models\Invoice\InvoicePosition;
 use App\Models\Offer\Offer;
 use App\Models\Project\Project;
+use App\Models\Service\RateUnit;
 use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class InvoiceControllerTest extends \TestCase
@@ -171,6 +172,33 @@ class InvoiceControllerTest extends \TestCase
     {
         $this->asAdmin()->json('POST', 'api/v1/invoices', $this->invoiceTemplate())->assertResponseOk();
         $this->asAdmin()->json('GET', 'api/v1/invoices/' . $this->responseToArray()['id'] . '/print_esr')->assertResponseOk();
+    }
+
+    public function testValidPrintEffortReport()
+    {
+        $project = factory(Project::class)->create();
+        $rate_unit = factory(RateUnit::class)->create();
+        $project->positions()->saveMany(factory(\App\Models\Project\ProjectPosition::class, 5)->make([
+            'project_id' => $project->id,
+            'rate_unit_id' => $rate_unit->id
+        ]));
+        $project->positions()->each(function ($p) {
+            $p->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 5)->make());
+        });
+        $project->comments()->saveMany(factory(\App\Models\Project\ProjectComment::class, 5)->make());
+        $creator = new \App\Services\Creator\CreateInvoiceFromProject($project);
+        $invoice = $creator->create();
+
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoice->id . '/print_effort_report')->assertResponseOk();
+    }
+
+    public function testPrintEffortReportForInvoiceWithoutProject()
+    {
+        $invoice = factory(Invoice::class)->create([
+            'project_id' => null
+        ]);
+        $this->asAdmin()->json('GET', 'api/v1/invoices/' . $invoice->id . '/print_effort_report')->assertResponseStatus(400);
+        $this->assertEquals('Invoice ' . $invoice->id . ' has no project assigned!', $this->response->getContent());
     }
 
     private function invoiceTemplate()

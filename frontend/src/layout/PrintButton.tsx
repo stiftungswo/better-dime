@@ -13,6 +13,7 @@ interface Props {
   color?: PropTypes.Color;
   mainStore?: MainStore;
   title?: string;
+  urlParams?: object;
 }
 
 @compose(
@@ -28,7 +29,7 @@ export default class PrintButton extends React.Component<Props> {
       );
     } else {
       return (
-        <a href={this.props.mainStore!.apiURL(this.props.path)} target={'_blank'} style={{ color: 'white' }}>
+        <a href={this.props.mainStore!.apiURL(this.props.path, this.props.urlParams)} target={'_blank'} style={{ color: 'white' }}>
           <ActionButton
             icon={PrintIcon}
             secondaryIcon={BadgeIcon}

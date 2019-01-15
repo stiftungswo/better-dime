@@ -7,9 +7,13 @@ use App\Models\Project\Project;
 use App\Models\Project\ProjectCostgroupDistribution;
 use App\Models\Project\ProjectPosition;
 use App\Services\Creator\CreateInvoiceFromProject;
+use App\Services\PDF\GroupMarkdownToDiv;
+use App\Services\PDF\PDF;
+use App\Services\ProjectEffortReportFetcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Parsedown;
 
 class ProjectController extends BaseController
 {
@@ -62,6 +66,42 @@ class ProjectController extends BaseController
         }
 
         return self::get($project->id);
+    }
+
+    public function printEffortReport($id, Request $request)
+    {
+        $validatedData = $this->validate($request, [
+            'end' => 'nullable|date',
+            'start' => 'nullable|date'
+        ]);
+
+        if (empty($validatedData['start'])) {
+            $validatedData['start'] = null;
+        }
+
+        if (empty($validatedData['end'])) {
+            $validatedData['end'] = null;
+        }
+
+        $project = Project::findOrFail($id);
+
+        $commentsAndEffortsPerDate = ProjectEffortReportFetcher::fetch($project->id, $validatedData['start'], $project['end']);
+        $parsedown = new Parsedown();
+        $description = GroupMarkdownToDiv::group($parsedown->text($project->description));
+
+        // initialize PDF, render view and pass it back
+        $pdf = new PDF(
+            'project_effort_report',
+            [
+                'content' => $commentsAndEffortsPerDate,
+                'end' => $validatedData['end'],
+                'description' => $description,
+                'project' => $project,
+                'start' => $validatedData['start']
+            ]
+        );
+
+        return $pdf->print();
     }
 
     private function validateRequest(Request $request)

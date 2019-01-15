@@ -34,8 +34,9 @@ import { CostgroupStore } from '../../stores/costgroupStore';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import { ProjectBudgetTable } from './ProjectBudgetTable';
 import { ActionButton } from '../../layout/ActionButton';
-import { AddIcon, InvoiceIcon } from '../../layout/icons';
+import { AddIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
 import { RouteComponentProps, withRouter } from 'react-router';
+import PrintButton from '../../layout/PrintButton';
 
 interface InfoFieldProps {
   value: string;
@@ -134,13 +135,21 @@ class ProjectForm extends React.Component<Props> {
         submitted={this.props.submitted}
         appBarButtons={
           project && project.id ? (
-            <ActionButton
-              action={() => projectStore!.createInvoice(project.id!).then((i: Invoice) => this.props.history.push(`/invoices/${i.id}`))}
-              color={'inherit'}
-              icon={InvoiceIcon}
-              secondaryIcon={AddIcon}
-              title={'Neue Rechnung aus Projekt generieren'}
-            />
+            <>
+              <PrintButton
+                path={`projects/${project.id}/print_effort_report`}
+                color={'inherit'}
+                title={'Aufwandsrapport drucken'}
+                icon={StatisticsIcon}
+              />
+              <ActionButton
+                action={() => projectStore!.createInvoice(project.id!).then((i: Invoice) => this.props.history.push(`/invoices/${i.id}`))}
+                color={'inherit'}
+                icon={InvoiceIcon}
+                secondaryIcon={AddIcon}
+                title={'Neue Rechnung aus Projekt generieren'}
+              />
+            </>
           ) : (
             undefined
           )

@@ -66,7 +66,7 @@ class ReportController extends BaseController
 
             // initialize PDF, render view and pass it back
             $pdf = new PDF(
-                'effort_report',
+                'invoice_effort_report',
                 [
                     'settings' => $settings,
                     'content' => $commentsAndEffortsPerDate,

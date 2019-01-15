@@ -6,7 +6,7 @@ import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
+import { AddCommentIcon, AddEffortIcon, PrintIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { EffortStore } from '../../stores/effortStore';
@@ -20,6 +20,7 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { Formatter } from '../../utilities/formatter';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import moment from 'moment';
+import PrintButton from '../../layout/PrintButton';
 
 const styles = createStyles({
   hideActions: {
@@ -44,6 +45,7 @@ interface Props extends WithStyles<typeof styles> {
   effortStore?: EffortStore;
   timetrackFilterStore?: TimetrackFilterStore;
   formatter?: Formatter;
+  effortReportUrlParams: () => object;
 }
 
 @compose(
@@ -75,6 +77,11 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
 
   public projectGroupActions = (
     <>
+      <PrintButton
+        path={'projects/' + this.props.entity.id + '/print_effort_report'}
+        title={'Aufwandsrapport drucken'}
+        urlParams={this.props.effortReportUrlParams()}
+      />
       <ActionButton icon={AddCommentIcon} action={this.handleProjectCommentAdd} title={'Kommentar hinzufügen'} />
       <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
     </>

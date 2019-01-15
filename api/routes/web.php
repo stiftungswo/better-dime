@@ -75,7 +75,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'InvoiceController@delete']);
                 $router->get('/{id}/print', ['uses' => 'InvoiceController@print']);
                 $router->get('/{id}/print_esr', ['uses' => 'InvoiceController@print_esr']);
-                $router->get('/{id}/print_effort_report', ['uses' => 'ReportController@printEffortReport']);
+                $router->get('/{id}/print_effort_report', ['uses' => 'InvoiceController@printEffortReport']);
             });
 
             $router->group(['prefix' => 'holidays'], function () use ($router) {
@@ -115,6 +115,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'ProjectController@put']);
                 $router->delete('/{id}', ['uses' => 'ProjectController@delete']);
                 $router->post('/{id}/create_invoice', ['uses' => 'ProjectController@createInvoice']);
+                $router->get('/{id}/print_effort_report', ['uses' => 'ProjectController@printEffortReport']);
             });
 
             $router->group(['prefix' => 'project_categories'], function () use ($router) {

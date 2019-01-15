@@ -6,14 +6,17 @@ import { AddEffortIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
 import { inject, observer } from 'mobx-react';
 import { Formatter } from '../../utilities/formatter';
+import PrintButton from '../../layout/PrintButton';
 
 interface Props {
   displayTotal: string;
   onEffortAdd: () => void;
   efforts: ProjectEffortListing[];
+  entityId: number;
   onClickRow: (entity: ProjectEffortListing) => void;
   title: string;
   formatter?: Formatter;
+  effortReportUrlParams: () => object;
 }
 
 @inject('mainStore', 'formatter')
@@ -53,6 +56,11 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
 
   public projectGroupActions = (
     <>
+      <PrintButton
+        path={'projects/' + this.props.entityId + '/print_effort_report'}
+        title={'Aufwandsrapport drucken'}
+        urlParams={this.props.effortReportUrlParams()}
+      />
       <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.props.onEffortAdd} />
     </>
   );
