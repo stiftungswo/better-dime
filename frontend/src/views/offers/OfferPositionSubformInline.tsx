@@ -11,7 +11,7 @@ import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
-import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
+import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
 import { ServiceStore } from '../../stores/serviceStore';
@@ -131,7 +131,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                               />
                             </DimeTableCell>
                             <DimeTableCell>
-                              <DimeField disabled portal component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                              <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                             </DimeTableCell>
                             <DimeTableCell>
                               <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />

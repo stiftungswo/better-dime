@@ -11,7 +11,7 @@ import { Invoice, InvoiceCostgroup } from '../../types';
 import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
-import CostgroupSelector from '../../form/entitySelector/CostgroupSelector';
+import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
 import { ErrorText } from '../../layout/ErrorText';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DimeField } from '../../form/fields/formik';
@@ -77,7 +77,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell>{distribution}%</DimeTableCell>
                       <DimeTableCell>
-                        <DimeField component={CostgroupSelector} name={fieldName('costgroup_number')} />
+                        <DimeField component={CostgroupSelect} name={fieldName('costgroup_number')} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

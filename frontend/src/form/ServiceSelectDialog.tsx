@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Button from '@material-ui/core/Button/Button';
 import { ServiceStore } from '../stores/serviceStore';
-import { ServiceSelector } from './entitySelector/ServiceSelector';
+import { ServiceSelect } from './entitySelect/ServiceSelect';
 import { Service } from '../types';
 
 interface Props {
@@ -39,7 +39,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          <ServiceSelector<number>
+          <ServiceSelect<number>
             fullWidth
             label={'Service'}
             value={this.state.serviceId}

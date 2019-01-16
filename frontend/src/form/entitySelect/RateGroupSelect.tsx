@@ -13,7 +13,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('rateGroupStore'),
   observer
 )
-export class RateGroupSelector extends React.Component<Props> {
+export class RateGroupSelect extends React.Component<Props> {
   public get options() {
     return this.props.rateGroupStore!.rateGroups.map(e => ({
       value: e.id,

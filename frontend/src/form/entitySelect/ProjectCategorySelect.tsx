@@ -2,21 +2,22 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select from '../fields/Select';
-import { CompanyStore } from '../../stores/companyStore';
+import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
+import { ProjectCategory } from '../../types';
 import { DimeCustomFieldProps } from '../fields/common';
 
 interface Props extends DimeCustomFieldProps<number | null> {
-  companyStore?: CompanyStore;
+  projectCategoryStore?: ProjectCategoryStore;
 }
 
 @compose(
-  inject('companyStore'),
+  inject('projectCategoryStore'),
   observer
 )
-export class CompanySelector extends React.Component<Props> {
+export class ProjectCategorySelect extends React.Component<Props> {
   public get options() {
     return this.props
-      .companyStore!.entities.filter(c => !c.hidden || this.props.value === c.id)
+      .projectCategoryStore!.entities.filter((e: ProjectCategory) => !e.archived || this.props.value === e.id)
       .map(e => ({
         value: e.id,
         label: e.name,
@@ -24,6 +25,6 @@ export class CompanySelector extends React.Component<Props> {
   }
 
   public render() {
-    return <Select options={this.options} {...this.props} isClearable={true} />;
+    return <Select options={this.options} {...this.props} />;
   }
 }

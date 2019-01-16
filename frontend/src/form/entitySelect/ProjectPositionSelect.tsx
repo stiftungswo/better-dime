@@ -16,7 +16,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('effortStore', 'projectStore'),
   observer
 )
-export class ProjectPositionSelector extends React.Component<Props> {
+export class ProjectPositionSelect extends React.Component<Props> {
   componentDidMount() {
     this.updateProjectInStore();
   }

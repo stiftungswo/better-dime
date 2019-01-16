@@ -9,7 +9,7 @@ import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
+import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { inject, Observer, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
@@ -126,7 +126,7 @@ export default class ServiceForm extends React.Component<Props> {
                                       <DimeTableCell>
                                         <DimeField
                                           disabled={this.props.rateUnitSelectDisabled}
-                                          component={RateUnitSelector}
+                                          component={RateUnitSelect}
                                           name={`service_rates.${index}.rate_unit_id`}
                                         />
                                       </DimeTableCell>

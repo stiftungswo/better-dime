@@ -8,9 +8,9 @@ import { SwitchField } from '../../form/fields/common';
 import Button from '@material-ui/core/Button/Button';
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
-import { ServiceSelector } from '../../form/entitySelector/ServiceSelector';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
+import { ServiceSelect } from '../../form/entitySelect/ServiceSelect';
 import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
@@ -81,7 +81,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <EmployeeSelector<number[]>
+                <EmployeeSelect<number[]>
                   isMulti
                   fullWidth
                   label={'Mitarbeiter'}
@@ -91,7 +91,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ProjectSelector<number[]>
+                <ProjectSelect<number[]>
                   isMulti
                   fullWidth
                   label={'Projekte'}
@@ -101,7 +101,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ServiceSelector<number[]>
+                <ServiceSelect<number[]>
                   isMulti
                   fullWidth
                   label={'Services'}

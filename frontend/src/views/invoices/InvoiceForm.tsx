@@ -8,8 +8,8 @@ import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { Invoice } from '../../types';
-import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { AddressSelector } from '../../form/entitySelector/AddressSelector';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { InvoiceStore } from '../../stores/invoiceStore';
@@ -23,7 +23,7 @@ import { BreakdownTable } from '../../layout/BreakdownTable';
 import Navigator from './InvoiceNavigator';
 import { ESRIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
 import { invoiceSchema } from './invoiceSchema';
-import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { DimePaper } from '../../layout/DimePaper';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -106,13 +106,13 @@ export default class InvoiceForm extends React.Component<Props> {
                               <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                              <DimeField fullWidth required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
                               <DimeField
                                 fullWidth
                                 required
-                                component={AddressSelector}
+                                component={AddressSelect}
                                 customerId={props.values.customer_id}
                                 name={'address_id'}
                                 label={'Adresse'}
@@ -122,7 +122,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               <DimeField
                                 fullWidth
                                 required
-                                component={EmployeeSelector}
+                                component={EmployeeSelect}
                                 name={'accountant_id'}
                                 label={'Verantwortlicher Mitarbeiter'}
                               />

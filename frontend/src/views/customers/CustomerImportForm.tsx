@@ -7,8 +7,8 @@ import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { Formik } from 'formik';
 import { SwitchField } from '../../form/fields/common';
-import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
-import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer } from '../../stores/customerImportStore';
 import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
 import { CustomerImportFAQ } from './CustomerImportFAQ';
@@ -79,7 +79,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                 <form onSubmit={formikProps.handleSubmit}>
                   <Grid container spacing={24} alignItems={'center'}>
                     <Grid item xs={12} md={4}>
-                      <DimeField delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
+                      <DimeField delayed fullWidth component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
@@ -87,7 +87,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <DimeField delayed fullWidth component={RateGroupSelector} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
+                      <DimeField delayed fullWidth component={RateGroupSelect} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
                     </Grid>
                   </Grid>
 

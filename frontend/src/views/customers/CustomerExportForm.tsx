@@ -1,9 +1,9 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { Formik } from 'formik';
-import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
 import { DimeField } from '../../form/fields/formik';
-import { ExportFormatSelector } from '../../form/entitySelector/ExportFormatSelector';
+import { ExportFormatSelect } from '../../form/entitySelect/ExportFormatSelect';
 import Button from '@material-ui/core/Button/Button';
 import { DimePaper } from '../../layout/DimePaper';
 import { CustomerFilter } from '../../types';
@@ -41,7 +41,7 @@ export class CustomerExportForm extends React.Component<Props> {
             render={formikProps => (
               <Grid container alignItems={'center'} spacing={24}>
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed fullWidth component={CustomerTagSelector} label={'Kundentags auswählen'} name={'customer_tags'} />
+                  <DimeField delayed fullWidth component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
@@ -49,7 +49,7 @@ export class CustomerExportForm extends React.Component<Props> {
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed fullWidth component={ExportFormatSelector} label={'Export-Format'} name={'export_format'} />
+                  <DimeField delayed fullWidth component={ExportFormatSelect} label={'Export-Format'} name={'export_format'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>

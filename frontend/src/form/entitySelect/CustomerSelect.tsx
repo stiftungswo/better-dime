@@ -14,7 +14,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('customerStore'),
   observer
 )
-export class CustomerSelector extends React.Component<Props> {
+export class CustomerSelect extends React.Component<Props> {
   private renderPersonName(person: Person) {
     let company: Customer | undefined;
     let baseName: string = `${person.salutation} ${person.first_name} ${person.last_name}`;

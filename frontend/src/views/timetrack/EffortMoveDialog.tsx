@@ -5,8 +5,8 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import { inject, observer } from 'mobx-react';
 import { ProjectStore } from '../../stores/projectStore';
 import { Field, Form, Formik } from 'formik';
-import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
-import { ProjectPositionSelector } from '../../form/entitySelector/ProjectPositionSelector';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
+import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import Grid from '@material-ui/core/Grid/Grid';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import { EffortStore } from '../../stores/effortStore';
@@ -66,12 +66,12 @@ export default class EffortMoveDialog extends React.Component<Props> {
                 <Form>
                   <Grid container spacing={8}>
                     <Grid item xs={12}>
-                      <Field component={ProjectSelector} name="project_id" label={'Projekt'} />
+                      <Field component={ProjectSelect} name="project_id" label={'Projekt'} />
                     </Grid>
                     <Grid item xs={12}>
                       <Field
                         projectId={formikProps.values.project_id}
-                        component={ProjectPositionSelector}
+                        component={ProjectPositionSelect}
                         name="project_position"
                         label={'Aktivität'}
                         placeholder={'Beibehalten'}

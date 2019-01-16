@@ -9,9 +9,9 @@ import { empty } from '../../utilities/helpers';
 import { FormView, FormViewProps } from '../../form/FormView';
 import AddressesSubformInline from './AddressesSubformInline';
 import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
-import { CompanySelector } from '../../form/entitySelector/CompanySelector';
-import { RateGroupSelector } from 'src/form/entitySelector/RateGroupSelector';
-import { CustomerTagSelector } from '../../form/entitySelector/CustomerTagSelector';
+import { CompanySelect } from '../../form/entitySelect/CompanySelect';
+import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
 import { DimePaper } from '../../layout/DimePaper';
 import { personSchema } from './personSchema';
 import { CompanyStore } from '../../stores/companyStore';
@@ -74,7 +74,7 @@ export default class PersonForm extends React.Component<Props> {
                         <DimeField fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={CompanySelector} name={'company_id'} label={'Firma'} />
+                        <DimeField fullWidth delayed component={CompanySelect} name={'company_id'} label={'Firma'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField fullWidth delayed component={TextField} name={'department'} label={'Zuständigkeitsbereich'} />
@@ -83,13 +83,13 @@ export default class PersonForm extends React.Component<Props> {
                         <DimeField fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                        <DimeField fullWidth delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField isMulti fullWidth delayed component={CustomerTagSelector} name={'tags'} label={'Tags'} />
+                        <DimeField isMulti fullWidth delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
                       </Grid>
                     </Grid>
                   </DimePaper>

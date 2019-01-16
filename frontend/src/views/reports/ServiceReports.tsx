@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
-import { ExportGroupingSelector } from '../../form/entitySelector/ExportGroupingSelector';
+import { ExportGroupingSelect } from '../../form/entitySelect/ExportGroupingSelect';
 import { Typography } from '@material-ui/core';
 import { apiDateFormat } from '../../stores/apiStore';
 
@@ -43,7 +43,7 @@ export class ServiceReports extends React.Component<Props> {
               <DatePicker label={'Bis'} value={this.state.end} onChange={d => this.setState({ end: d })} />
             </Grid>
             <Grid item xs={12} md={4}>
-              <ExportGroupingSelector
+              <ExportGroupingSelect
                 fullWidth
                 label={'Gruppierung'}
                 value={this.state.grouping as 'project' | 'category'}

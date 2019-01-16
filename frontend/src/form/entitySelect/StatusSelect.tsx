@@ -10,7 +10,7 @@ const statuses = {
   3: 'Abgelehnt',
 };
 
-export class StatusSelector extends React.Component<Props> {
+export class StatusSelect extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
   }

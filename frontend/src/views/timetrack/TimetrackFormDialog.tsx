@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, FormikProps } from 'formik';
-import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { EffortStore } from '../../stores/effortStore';
 import * as yup from 'yup';
@@ -9,7 +9,7 @@ import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../type
 import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { MainStore } from '../../stores/mainStore';
-import { ProjectPositionSelector } from '../../form/entitySelector/ProjectPositionSelector';
+import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core';
@@ -182,14 +182,14 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <DimeField portal isMulti component={EmployeeSelector} name={'employee_ids'} label={'Mitarbeiter'} />
+                  <DimeField portal isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'} />
                 )}
-                {formikProps.values.id && <DimeField portal component={EmployeeSelector} name={'employee_id'} label={'Mitarbeiter'} />}
-                <DimeField portal component={ProjectSelector} name={'project_id'} label={'Projekt'} />
+                {formikProps.values.id && <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
+                <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField
                   portal
                   projectId={formikProps.values.project_id}
-                  component={ProjectPositionSelector}
+                  component={ProjectPositionSelect}
                   name={'position_id'}
                   label={'Aktivität'}
                 />

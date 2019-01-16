@@ -13,7 +13,7 @@ const options = [
   },
 ];
 
-export class ExportGroupingSelector extends React.Component<DimeCustomFieldProps<'project' | 'category'> & WidthToggle> {
+export class ExportGroupingSelect extends React.Component<DimeCustomFieldProps<'project' | 'category'> & WidthToggle> {
   public render() {
     return <Select options={options} {...this.props} />;
   }

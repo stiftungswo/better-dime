@@ -14,7 +14,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('rateUnitStore'),
   observer
 )
-export class RateUnitSelector extends React.Component<Props> {
+export class RateUnitSelect extends React.Component<Props> {
   public get options() {
     return this.props
       .rateUnitStore!.rateUnits.filter((e: RateUnit) => !e.archived || this.props.value === e.id)

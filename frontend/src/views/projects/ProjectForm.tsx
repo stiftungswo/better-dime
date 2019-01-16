@@ -8,23 +8,23 @@ import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { Invoice, Project } from '../../types';
-import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { MainStore } from '../../stores/mainStore';
-import { AddressSelector } from '../../form/entitySelector/AddressSelector';
-import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
+import { AddressSelect } from '../../form/entitySelect/AddressSelect';
+import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import MuiTextField from '@material-ui/core/TextField';
 import MuiFormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
-import { ProjectCategorySelector } from '../../form/entitySelector/ProjectCategorySelector';
+import { ProjectCategorySelect } from '../../form/entitySelect/ProjectCategorySelect';
 import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 import { ProjectStore } from '../../stores/projectStore';
 import Navigator from './ProjectNavigator';
 import { projectSchema } from './projectSchema';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
-import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { DimePaper } from '../../layout/DimePaper';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -167,33 +167,33 @@ class ProjectForm extends React.Component<Props> {
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <Effect onChange={this.handleCustomerChange} />
-                      <DimeField fullWidth required component={CustomerSelector} name={'customer_id'} label={'Kunde'} />
+                      <DimeField fullWidth required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <DimeField
                         fullWidth
                         required
-                        component={AddressSelector}
+                        component={AddressSelect}
                         customerId={props.values.customer_id}
                         name={'address_id'}
                         label={'Adresse'}
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <DimeField fullWidth required component={RateGroupSelector} name={'rate_group_id'} label={'Tarif'} />
+                      <DimeField fullWidth required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 
                     <Grid item xs={12} lg={8}>
                       <DimeField
                         fullWidth
                         required
-                        component={EmployeeSelector}
+                        component={EmployeeSelect}
                         name={'accountant_id'}
                         label={'Verantwortlicher Mitarbeiter'}
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <DimeField fullWidth required component={ProjectCategorySelector} name={'category_id'} label={'Tätigkeitsbereich'} />
+                      <DimeField fullWidth required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
                       <DimeField

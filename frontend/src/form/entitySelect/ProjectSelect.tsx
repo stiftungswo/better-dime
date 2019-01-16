@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { ServiceStore } from '../../stores/serviceStore';
+import { ProjectStore } from '../../stores/projectStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select, { DimeSelectFieldProps } from '../fields/Select';
-import { ServiceListing } from '../../types';
 
 interface Props<T = number> extends DimeSelectFieldProps<T> {
-  serviceStore?: ServiceStore;
+  projectStore?: ProjectStore;
 }
 
 @compose(
-  inject('serviceStore'),
+  inject('projectStore'),
   observer
 )
-export class ServiceSelector<T> extends React.Component<Props<T>> {
+export class ProjectSelect<T> extends React.Component<Props<T>> {
   public get options() {
     return this.props
-      .serviceStore!.entities.filter((e: ServiceListing) => !e.archived || this.props.value === e.id)
+      .projectStore!.projects.filter(p => !p.archived || this.props.value === p.id)
       .map(e => ({
         value: e.id,
-        label: e.name,
+        label: `${e.id} ${e.name}`,
       }));
   }
 

@@ -14,7 +14,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('customerTagStore'),
   observer
 )
-export class CustomerTagSelector extends React.Component<Props> {
+export class CustomerTagSelect extends React.Component<Props> {
   public get options() {
     return this.props
       .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.value === ct.id)

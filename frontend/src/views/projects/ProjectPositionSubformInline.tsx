@@ -10,7 +10,7 @@ import { Project, ProjectPosition } from '../../types';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
-import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
+import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Service } from '../../types';
@@ -109,7 +109,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                           <DimeField delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                         </DimeTableCell>
                         <DimeTableCell>
-                          <DimeField disabled required component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                          <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                         </DimeTableCell>
                         <DimeTableCell>
                           <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />

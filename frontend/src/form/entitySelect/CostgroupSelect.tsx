@@ -13,7 +13,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('costgroupStore'),
   observer
 )
-export default class CostgroupSelector extends React.Component<Props> {
+export default class CostgroupSelect extends React.Component<Props> {
   public get options() {
     return this.props.costgroupStore!.entities.map(e => ({
       value: e.number,

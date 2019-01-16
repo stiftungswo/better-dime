@@ -8,10 +8,10 @@ import { inject, observer } from 'mobx-react';
 import { FormView, FormViewProps } from '../../form/FormView';
 import compose from '../../utilities/compose';
 import { Offer, Project } from '../../types';
-import { EmployeeSelector } from '../../form/entitySelector/EmployeeSelector';
-import { AddressSelector } from '../../form/entitySelector/AddressSelector';
-import { StatusSelector } from '../../form/entitySelector/StatusSelector';
-import { RateGroupSelector } from '../../form/entitySelector/RateGroupSelector';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { AddressSelect } from '../../form/entitySelect/AddressSelect';
+import { StatusSelect } from '../../form/entitySelect/StatusSelect';
+import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -25,7 +25,7 @@ import { ProjectStore } from '../../stores/projectStore';
 import { offerSchema } from './offerSchema';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { CustomerStore } from '../../stores/customerStore';
-import { CustomerSelector } from '../../form/entitySelector/CustomerSelector';
+import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { DimePaper } from '../../layout/DimePaper';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -137,7 +137,7 @@ class OfferForm extends React.Component<Props> {
                               <DimeField
                                 fullWidth
                                 required
-                                component={CustomerSelector}
+                                component={CustomerSelect}
                                 name={'customer_id'}
                                 label={'Kunde'}
                                 disabled={locked}
@@ -147,7 +147,7 @@ class OfferForm extends React.Component<Props> {
                               <DimeField
                                 fullWidth
                                 required
-                                component={AddressSelector}
+                                component={AddressSelect}
                                 customerId={props.values.customer_id}
                                 name={'address_id'}
                                 label={'Adresse'}
@@ -158,7 +158,7 @@ class OfferForm extends React.Component<Props> {
                               <DimeField
                                 fullWidth
                                 required
-                                component={RateGroupSelector}
+                                component={RateGroupSelect}
                                 name={'rate_group_id'}
                                 label={'Tarif'}
                                 disabled={locked}
@@ -168,14 +168,14 @@ class OfferForm extends React.Component<Props> {
                               <DimeField
                                 fullWidth
                                 required
-                                component={EmployeeSelector}
+                                component={EmployeeSelect}
                                 name={'accountant_id'}
                                 label={'Verantwortlicher Mitarbeiter'}
                                 disabled={locked}
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <DimeField fullWidth required component={StatusSelector} name={'status'} label={'Status'} />
+                              <DimeField fullWidth required component={StatusSelect} name={'status'} label={'Status'} />
                             </Grid>
                             <Grid item xs={12}>
                               <DimeField

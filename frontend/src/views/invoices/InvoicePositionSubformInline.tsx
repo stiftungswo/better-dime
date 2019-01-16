@@ -11,7 +11,7 @@ import { MainStore } from '../../stores/mainStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import TableToolbar from '../../layout/TableToolbar';
 import PercentageField from '../../form/fields/PercentageField';
-import { RateUnitSelector } from '../../form/entitySelector/RateUnitSelector';
+import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
@@ -79,7 +79,7 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
                         <DimeField delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <DimeField component={RateUnitSelector} name={name('rate_unit_id')} margin={'none'} />
+                        <DimeField component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} />

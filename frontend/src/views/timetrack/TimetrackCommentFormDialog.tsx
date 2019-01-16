@@ -6,7 +6,7 @@ import { inject, observer } from 'mobx-react';
 import * as yup from 'yup';
 import { FormDialog } from '../../form/FormDialog';
 import { ProjectComment } from '../../types';
-import { ProjectSelector } from '../../form/entitySelector/ProjectSelector';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { TextField } from '../../form/fields/common';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
@@ -83,7 +83,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
         render={() => (
           <>
             <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <DimeField component={ProjectSelector} name={'project_id'} label={'Projekt'} fullWidth />
+            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} fullWidth />
             <DimeField component={TextField} name={'comment'} label={'Kommentar'} fullWidth multiline rowsMax={6} />
           </>
         )}

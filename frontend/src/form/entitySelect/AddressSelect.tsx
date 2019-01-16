@@ -16,7 +16,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
   inject('customerStore'),
   observer
 )
-export class AddressSelector extends React.Component<Props> {
+export class AddressSelect extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
     this.updateCustomerInStore();
