@@ -39,18 +39,18 @@ export default class EmployeeForm extends React.Component<Props> {
                   <DimePaper>
                     <FormHeader> Allgemeine Informationen </FormHeader>
 
-                    <Grid container={true} spacing={16}>
-                      <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={TextField} name={'first_name'} label={'Vorname'} fullWidth={true} />
+                    <Grid container spacing={16}>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField component={TextField} name={'first_name'} label={'Vorname'} />
                       </Grid>
-                      <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={TextField} name={'last_name'} label={'Nachname'} fullWidth={true} />
+                      <Grid item xs={12} sm={6}>
+                        <DimeField component={TextField} name={'last_name'} label={'Nachname'} />
                       </Grid>
                     </Grid>
 
-                    <Grid container={true}>
-                      <Grid item={true} xs={12}>
-                        <DimeField component={EmailField} name={'email'} label={'E-Mail'} fullWidth={true} />
+                    <Grid container>
+                      <Grid item xs={12}>
+                        <DimeField component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                     </Grid>
 
@@ -59,12 +59,7 @@ export default class EmployeeForm extends React.Component<Props> {
                         <DimeField component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12} sm={6}>
-                        <DimeField
-                          component={PasswordField}
-                          name={'password_repeat'}
-                          label={'Neues Passwort wiederholen'}
-                          fullWidth={true}
-                        />
+                        <DimeField component={PasswordField} name={'password_repeat'} label={'Neues Passwort wiederholen'} />
                       </Grid>
                     </Grid>
                   </DimePaper>

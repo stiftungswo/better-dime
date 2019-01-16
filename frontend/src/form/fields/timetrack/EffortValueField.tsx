@@ -33,10 +33,10 @@ export class EffortValueField extends React.Component<Props> {
           return <FlatEffortValueField rateUnitId={selectedPosition.rate_unit_id} {...this.props} />;
         }
       } else {
-        return <TextField label={'Ausgewählte Position nicht gefunden.'} disabled fullWidth />;
+        return <TextField label={'Ausgewählte Position nicht gefunden.'} disabled />;
       }
     } else {
-      return <TextField label={'Kein Projekt oder Aktivität ausgewählt.'} disabled fullWidth />;
+      return <TextField label={'Kein Projekt oder Aktivität ausgewählt.'} disabled />;
     }
   }
 }

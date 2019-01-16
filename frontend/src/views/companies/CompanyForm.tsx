@@ -98,22 +98,22 @@ export default class CompanyForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={16}>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={TextField} name={'name'} label={'Name'} />
+                        <DimeField delayed component={TextField} name={'name'} label={'Name'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={EmailField} name={'email'} label={'E-Mail'} />
+                        <DimeField delayed component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                        <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                        <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField fullWidth delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                        <DimeField delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField isMulti fullWidth delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
+                        <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
                       </Grid>
                     </Grid>
                   </DimePaper>

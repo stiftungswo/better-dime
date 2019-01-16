@@ -193,20 +193,13 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   name={'position_id'}
                   label={'Aktivität'}
                 />
-                <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
+                <DimeField component={DatePicker} name={'date'} label={'Datum'} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
-                    <DimeField
-                      component={EffortValueField}
-                      positionId={formikProps.values.position_id}
-                      name={'value'}
-                      label={'Wert'}
-                      fullWidth
-                    />
+                    <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />
                     {!formikProps.values.id && (
                       <DimeField
                         delayed
-                        fullWidth
                         multiline
                         component={TextField}
                         name={'comment'}

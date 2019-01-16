@@ -70,18 +70,18 @@ export default class ServiceForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={24}>
                       <Grid item xs={12}>
-                        <DimeField fullWidth required component={TextField} name={'name'} label={'Name'} />
+                        <DimeField required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
                       <Grid item xs={12}>
-                        <DimeField component={TextField} name={'description'} label={'Beschreibung'} fullWidth />
+                        <DimeField component={TextField} name={'description'} label={'Beschreibung'} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
-                        <DimeField component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} fullWidth />
+                        <DimeField component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
                           {/*FIXME this field doesn't exist on the backend?*/}
-                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} fullWidth={true} />
+                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} fullWidth={true} />
@@ -90,7 +90,7 @@ export default class ServiceForm extends React.Component<Props> {
                       <Grid item xs={12}>
                         <Grid container spacing={8}>
                           <Grid item xs={12} lg={4}>
-                            <DimeField component={NumberField} required name={'order'} label={'Reihenfolge'} fullWidth />
+                            <DimeField component={NumberField} required name={'order'} label={'Reihenfolge'} />
                           </Grid>
                           <Grid item xs={12} lg={8}>
                             <MarkdownRender>{this.props.globalSettingStore!.settings!.service_order_comment}</MarkdownRender>
@@ -131,7 +131,7 @@ export default class ServiceForm extends React.Component<Props> {
                                         />
                                       </DimeTableCell>
                                       <DimeTableCell>
-                                        <DimeField component={CurrencyField} name={`service_rates.${index}.value`} unit={'CHF'} />
+                                        <DimeField component={CurrencyField} name={`service_rates.${index}.value`} />
                                       </DimeTableCell>
                                     </TableRow>
                                   );

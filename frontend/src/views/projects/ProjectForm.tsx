@@ -163,15 +163,14 @@ class ProjectForm extends React.Component<Props> {
                 <DimePaper>
                   <Grid container spacing={24}>
                     <Grid item xs={12}>
-                      <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
+                      <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <Effect onChange={this.handleCustomerChange} />
-                      <DimeField fullWidth required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
+                      <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
                       <DimeField
-                        fullWidth
                         required
                         component={AddressSelect}
                         customerId={props.values.customer_id}
@@ -180,25 +179,18 @@ class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <DimeField fullWidth required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                      <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
                     </Grid>
 
                     <Grid item xs={12} lg={8}>
-                      <DimeField
-                        fullWidth
-                        required
-                        component={EmployeeSelect}
-                        name={'accountant_id'}
-                        label={'Verantwortlicher Mitarbeiter'}
-                      />
+                      <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
                     </Grid>
                     <Grid item xs={12} lg={4}>
-                      <DimeField fullWidth required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
+                      <DimeField required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
                     </Grid>
                     <Grid item xs={12}>
                       <DimeField
                         delayed
-                        fullWidth
                         required
                         component={TextField}
                         multiline
@@ -208,10 +200,10 @@ class ProjectForm extends React.Component<Props> {
                       />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <DimeField fullWidth component={DatePicker} name={'deadline'} label={'Deadline'} />
+                      <DimeField component={DatePicker} name={'deadline'} label={'Deadline'} />
                     </Grid>
                     <Grid item xs={12} lg={8}>
-                      <DimeField delayed fullWidth component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                      <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                     </Grid>
                     <Grid item xs={12}>
                       <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />

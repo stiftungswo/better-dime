@@ -121,12 +121,12 @@ class Login extends React.Component<Props> {
               onSubmit={this.handleSubmit}
               render={props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
-                  <DimeField component={EmailField} name="email" label="E-Mail" fullWidth={true} />
-                  <DimeField component={PasswordField} name="password" label="Passwort" fullWidth={true} />
+                  <DimeField component={EmailField} name="email" label="E-Mail" />
+                  <DimeField component={PasswordField} name="password" label="Passwort" />
                   <Button
                     type="submit"
                     disabled={props.isSubmitting}
-                    fullWidth={true}
+                    fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}

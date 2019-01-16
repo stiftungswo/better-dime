@@ -59,8 +59,8 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'name'} label={'Name'} fullWidth />
-            <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
+            <DimeField component={TextField} name={'name'} label={'Name'} />
+            <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} />
           </>
         )}
       />

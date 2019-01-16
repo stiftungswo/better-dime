@@ -79,15 +79,15 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                 <form onSubmit={formikProps.handleSubmit}>
                   <Grid container spacing={24} alignItems={'center'}>
                     <Grid item xs={12} md={4}>
-                      <DimeField delayed fullWidth component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
+                      <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <DimeField delayed fullWidth component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
+                      <DimeField delayed component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                      <DimeField delayed fullWidth component={RateGroupSelect} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
+                      <DimeField delayed component={RateGroupSelect} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
                     </Grid>
                   </Grid>
 

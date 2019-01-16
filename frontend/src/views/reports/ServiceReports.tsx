@@ -44,7 +44,6 @@ export class ServiceReports extends React.Component<Props> {
             </Grid>
             <Grid item xs={12} md={4}>
               <ExportGroupingSelect
-                fullWidth
                 label={'Gruppierung'}
                 value={this.state.grouping as 'project' | 'category'}
                 onChange={d => this.setState({ grouping: d })}

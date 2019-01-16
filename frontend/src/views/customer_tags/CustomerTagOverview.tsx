@@ -59,8 +59,8 @@ export default class CustomerTagOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <DimeField delayed component={TextField} name={'name'} label={'Name'} fullWidth />
-            <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} fullWidth />
+            <DimeField delayed component={TextField} name={'name'} label={'Name'} />
+            <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} />
           </>
         )}
       />

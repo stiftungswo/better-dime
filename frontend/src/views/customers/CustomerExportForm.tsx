@@ -41,15 +41,15 @@ export class CustomerExportForm extends React.Component<Props> {
             render={formikProps => (
               <Grid container alignItems={'center'} spacing={24}>
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed fullWidth component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
+                  <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed fullWidth component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'include_hidden'} />
+                  <DimeField delayed component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'include_hidden'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed fullWidth component={ExportFormatSelect} label={'Export-Format'} name={'export_format'} />
+                  <DimeField delayed component={ExportFormatSelect} label={'Export-Format'} name={'export_format'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>

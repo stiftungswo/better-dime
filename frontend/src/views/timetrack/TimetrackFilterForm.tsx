@@ -44,7 +44,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
     return (
       <>
         <Grid item xs={12}>
-          <Tabs fullWidth value={this.props.timetrackFilterStore!.grouping} onChange={this.changeGroupBy}>
+          <Tabs value={this.props.timetrackFilterStore!.grouping} onChange={this.changeGroupBy}>
             <Tab value={'employee'} label={'Mitarbeiter'} />
             <Tab value={'project'} label={'Projekt'} />
             <Tab value={'service'} label={'Service'} />
@@ -83,7 +83,6 @@ export class TimetrackFilterForm extends React.Component<Props> {
               <Grid item xs={12} md={4}>
                 <EmployeeSelect<number[]>
                   isMulti
-                  fullWidth
                   label={'Mitarbeiter'}
                   value={filter.employeeIds}
                   onChange={v => (filter.employeeIds = v)}
@@ -91,23 +90,11 @@ export class TimetrackFilterForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ProjectSelect<number[]>
-                  isMulti
-                  fullWidth
-                  label={'Projekte'}
-                  value={filter.projectIds}
-                  onChange={v => (filter.projectIds = v)}
-                />
+                <ProjectSelect<number[]> isMulti label={'Projekte'} value={filter.projectIds} onChange={v => (filter.projectIds = v)} />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ServiceSelect<number[]>
-                  isMulti
-                  fullWidth
-                  label={'Services'}
-                  value={filter.serviceIds}
-                  onChange={v => (filter.serviceIds = v)}
-                />
+                <ServiceSelect<number[]> isMulti label={'Services'} value={filter.serviceIds} onChange={v => (filter.serviceIds = v)} />
               </Grid>
 
               <Grid item xs={12} md={4}>

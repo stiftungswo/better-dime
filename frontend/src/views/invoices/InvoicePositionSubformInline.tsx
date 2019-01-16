@@ -73,7 +73,7 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
                         <DragHandle />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <DimeField delayed fullWidth component={TextField} name={name('description')} margin={'none'} />
+                        <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DimeField delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />

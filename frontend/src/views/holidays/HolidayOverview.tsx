@@ -74,9 +74,9 @@ export default class HolidayOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'name'} label={'Name'} fullWidth />
-            <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <DimeField fullWidth component={DurationField} timeUnit={'hour'} name={'duration'} label={'Dauer'} />
+            <DimeField component={TextField} name={'name'} label={'Name'} />
+            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+            <DimeField component={DurationField} timeUnit={'hour'} name={'duration'} label={'Dauer'} />
           </>
         )}
       />

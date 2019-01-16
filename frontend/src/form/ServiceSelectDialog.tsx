@@ -39,12 +39,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          <ServiceSelect<number>
-            fullWidth
-            label={'Service'}
-            value={this.state.serviceId}
-            onChange={serviceId => this.setState({ serviceId })}
-          />
+          <ServiceSelect<number> label={'Service'} value={this.state.serviceId} onChange={serviceId => this.setState({ serviceId })} />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleSubmit} disabled={!this.state.serviceId}>

@@ -130,22 +130,14 @@ class OfferForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <Grid container spacing={8}>
                             <Grid item xs={12}>
-                              <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} disabled={locked} />
+                              <DimeField delayed required component={TextField} name={'name'} label={'Name'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={4}>
                               <Effect onChange={this.handleCustomerChange} />
-                              <DimeField
-                                fullWidth
-                                required
-                                component={CustomerSelect}
-                                name={'customer_id'}
-                                label={'Kunde'}
-                                disabled={locked}
-                              />
+                              <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={4}>
                               <DimeField
-                                fullWidth
                                 required
                                 component={AddressSelect}
                                 customerId={props.values.customer_id}
@@ -155,18 +147,10 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <DimeField
-                                fullWidth
-                                required
-                                component={RateGroupSelect}
-                                name={'rate_group_id'}
-                                label={'Tarif'}
-                                disabled={locked}
-                              />
+                              <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} disabled={locked} />
                             </Grid>
                             <Grid item xs={12} lg={8}>
                               <DimeField
-                                fullWidth
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
@@ -175,12 +159,11 @@ class OfferForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={4}>
-                              <DimeField fullWidth required component={StatusSelect} name={'status'} label={'Status'} />
+                              <DimeField required component={StatusSelect} name={'status'} label={'Status'} />
                             </Grid>
                             <Grid item xs={12}>
                               <DimeField
                                 delayed
-                                fullWidth
                                 required
                                 component={TextField}
                                 name={'short_description'}
@@ -193,7 +176,6 @@ class OfferForm extends React.Component<Props> {
                         <Grid item xs={12}>
                           <DimeField
                             delayed
-                            fullWidth
                             required
                             component={MarkdownField}
                             multiline
@@ -223,7 +205,14 @@ class OfferForm extends React.Component<Props> {
                       <DimePaper>
                         <FormHeader>Berechnung</FormHeader>
                         <BreakdownTable breakdown={offer.breakdown} />
-                        <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} disabled={locked} />
+                        <DimeField
+                          fullWidth={false}
+                          delayed
+                          component={CurrencyField}
+                          name={'fixed_price'}
+                          label={'Fixpreis'}
+                          disabled={locked}
+                        />
                       </DimePaper>
                     </Grid>
                   )}

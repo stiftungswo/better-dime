@@ -103,14 +103,13 @@ export default class InvoiceForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <Grid container spacing={8}>
                             <Grid item xs={12}>
-                              <DimeField delayed fullWidth required component={TextField} name={'name'} label={'Name'} />
+                              <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField fullWidth required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
+                              <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
                               <DimeField
-                                fullWidth
                                 required
                                 component={AddressSelect}
                                 customerId={props.values.customer_id}
@@ -120,7 +119,6 @@ export default class InvoiceForm extends React.Component<Props> {
                             </Grid>
                             <Grid item xs={12}>
                               <DimeField
-                                fullWidth
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
@@ -128,17 +126,16 @@ export default class InvoiceForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField fullWidth required component={DatePicker} name={'start'} label={'Startdatum'} />
+                              <DimeField required component={DatePicker} name={'start'} label={'Startdatum'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField fullWidth required component={DatePicker} name={'end'} label={'Enddatum'} />
+                              <DimeField required component={DatePicker} name={'end'} label={'Enddatum'} />
                             </Grid>
                           </Grid>
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField
                             delayed
-                            fullWidth
                             required
                             component={MarkdownField}
                             multiline
@@ -173,7 +170,7 @@ export default class InvoiceForm extends React.Component<Props> {
                       <DimePaper>
                         <FormHeader>Berechnung</FormHeader>
                         <BreakdownTable breakdown={invoice.breakdown} />
-                        <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                        <DimeField fullWidth={false} delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                       </DimePaper>
                     </Grid>
                   )}

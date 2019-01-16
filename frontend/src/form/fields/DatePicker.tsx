@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DatePicker as MUIDatePicker } from 'material-ui-pickers';
 import moment, { Moment } from 'moment';
-import { DimeCustomFieldProps } from './common';
+import { DimeCustomFieldProps, WidthToggle } from './common';
 import { inject, observer } from 'mobx-react';
 import { Formatter } from '../../utilities/formatter';
 
@@ -18,7 +18,7 @@ const castValue = (value: ValueType) => {
   }
 };
 
-interface Props extends DimeCustomFieldProps<ValueType, Moment | null> {
+interface Props extends DimeCustomFieldProps<ValueType, Moment | null>, WidthToggle {
   formatter?: Formatter;
   errorMessage?: string;
   onError?: (message: string) => void;
@@ -28,7 +28,7 @@ interface Props extends DimeCustomFieldProps<ValueType, Moment | null> {
 @observer
 export class DatePicker extends React.Component<Props> {
   render() {
-    const { value, onChange, required, formatter, errorMessage, onError, InputComponent, ...rest } = this.props;
+    const { value, onChange, required, formatter, errorMessage, onError, InputComponent, fullWidth = true, ...rest } = this.props;
     const userDateFormat = formatter!.userDateFormat;
     return (
       <MUIDatePicker
@@ -49,6 +49,7 @@ export class DatePicker extends React.Component<Props> {
             onError(message);
           }
         }}
+        fullWidth={fullWidth}
         {...rest}
       />
     );

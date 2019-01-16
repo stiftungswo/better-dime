@@ -116,7 +116,6 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                                 name={name('description')}
                                 margin={'none'}
                                 disabled={disabled}
-                                fullWidth
                                 multiline
                                 rowsMax={6}
                               />

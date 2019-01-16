@@ -73,7 +73,6 @@ export class TimeEffortValueField extends React.Component<Props> {
               label={'Wert'}
               value={this.state.value}
               onChange={e => this.updateValue(e.target.value)}
-              fullWidth
               style={{ marginTop: '16px', marginBottom: '8px' }}
               inputProps={{ step: '0.01' }}
             />

@@ -82,9 +82,9 @@ function inputComponent({ inputRef, ...props }: any) {
 function Control(props: any) {
   return (
     <TextField
-      fullWidth
       margin={props.selectProps.margin}
       error={props.selectProps.error}
+      fullWidth={props.selectProps.fullWidth}
       InputProps={{
         inputComponent,
         disabled: props.isDisabled,
@@ -193,8 +193,18 @@ class IntegrationReactSelect extends React.Component<any> {
   };
 
   render() {
-    const { classes, theme, label, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, ...rest } = this
-      .props as any;
+    const {
+      classes,
+      theme,
+      label,
+      margin,
+      required,
+      disabled,
+      placeholder = 'Bitte auswählen...',
+      errorMessage,
+      fullWidth = true,
+      ...rest
+    } = this.props as any;
 
     const myLabel = this.props.label
       ? {
@@ -218,7 +228,7 @@ class IntegrationReactSelect extends React.Component<any> {
     };
 
     return (
-      <DimeFormControl label={''} margin={margin} fullWidth errorMessage={errorMessage}>
+      <DimeFormControl label={''} margin={margin} fullWidth={fullWidth} errorMessage={errorMessage}>
         <Select
           menuPortalTarget={this.props.portal ? document.body : undefined}
           menuPlacement={this.props.portal ? 'auto' : undefined}
@@ -235,6 +245,7 @@ class IntegrationReactSelect extends React.Component<any> {
           {...rest}
           value={this.value}
           onChange={this.handleChange}
+          fullWidth={fullWidth}
         />
       </DimeFormControl>
     );

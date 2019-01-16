@@ -82,9 +82,9 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
         onSubmit={this.handleSubmit}
         render={() => (
           <>
-            <DimeField component={DatePicker} name={'date'} label={'Datum'} fullWidth />
-            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} fullWidth />
-            <DimeField component={TextField} name={'comment'} label={'Kommentar'} fullWidth multiline rowsMax={6} />
+            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+            <DimeField component={TextField} name={'comment'} label={'Kommentar'} multiline rowsMax={6} />
           </>
         )}
       />

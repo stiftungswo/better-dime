@@ -47,7 +47,7 @@ export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps
 }
 
 export const DimeFormControl = (props: DimeFormControlProps) => {
-  const { label, children, fullWidth, margin = 'normal', required, name, errorMessage } = props;
+  const { label, children, fullWidth = true, margin = 'normal', required, name, errorMessage } = props;
   return (
     <FormControl margin={margin} error={Boolean(errorMessage)} fullWidth={fullWidth}>
       {label && (
@@ -62,19 +62,13 @@ export const DimeFormControl = (props: DimeFormControlProps) => {
 };
 
 export const DimeInputField = (props: DimeInputFieldProps & Partial<DimeFormControlProps>) => {
-  const { label, unit, margin, required, value, InputComponent = Input, errorMessage, ...rest } = props;
+  const { label, unit, margin, required, value, InputComponent = Input, errorMessage, fullWidth = true, ...rest } = props;
   return (
-    <DimeFormControl
-      label={label}
-      fullWidth={rest.fullWidth}
-      margin={margin}
-      required={required}
-      name={rest.name}
-      errorMessage={errorMessage}
-    >
+    <DimeFormControl label={label} fullWidth={fullWidth} margin={margin} required={required} name={rest.name} errorMessage={errorMessage}>
       <InputComponent
         endAdornment={unit ? <InputAdornment position={'end'}>{unit}</InputAdornment> : undefined}
         value={value === null ? '' : value}
+        fullWidth={fullWidth}
         {...rest}
       />
     </DimeFormControl>

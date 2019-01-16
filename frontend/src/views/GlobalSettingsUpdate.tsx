@@ -66,21 +66,20 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                   <Grid item>
                     <DimePaper>
                       <FormHeader>Dokumente</FormHeader>
-                      <DimeField fullWidth required component={TextField} name={'sender_name'} label={'Name'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_street'} label={'Strasse'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_zip'} label={'PLZ'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_city'} label={'Ort'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_phone'} label={'Telefon'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_mail'} label={'Email'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
-                      <DimeField fullWidth required component={TextField} name={'sender_web'} label={'Website'} />
+                      <DimeField required component={TextField} name={'sender_name'} label={'Name'} />
+                      <DimeField required component={TextField} name={'sender_street'} label={'Strasse'} />
+                      <DimeField required component={TextField} name={'sender_zip'} label={'PLZ'} />
+                      <DimeField required component={TextField} name={'sender_city'} label={'Ort'} />
+                      <DimeField required component={TextField} name={'sender_phone'} label={'Telefon'} />
+                      <DimeField required component={TextField} name={'sender_mail'} label={'Email'} />
+                      <DimeField required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
+                      <DimeField required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
+                      <DimeField required component={TextField} name={'sender_web'} label={'Website'} />
                     </DimePaper>
                     <DimePaper>
                       <FormHeader>Allgemein</FormHeader>
                       <DimeField
                         delayed
-                        fullWidth
                         required
                         component={MarkdownField}
                         name={'service_order_comment'}
