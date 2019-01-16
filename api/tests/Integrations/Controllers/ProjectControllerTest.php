@@ -192,7 +192,7 @@ class ProjectControllerTest extends \TestCase
         $this->asAdmin()->json('GET', 'api/v1/projects/' . $project->id . '/print_effort_report')->assertResponseOk();
     }
 
-    public function testPrintEffortReportForInvoiceWithoutProject()
+    public function testPrintEffortReportWithInvalidProjectId()
     {
         $this->asAdmin()->json('GET', 'api/v1/projects/3284092384092038/print_effort_report')->assertResponseStatus(404);
     }

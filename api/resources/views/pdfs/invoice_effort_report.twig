@@ -1,26 +1,5 @@
 {% extends 'pdfs/static/effort_reports' %}
 
-{% block additional_styles %}
-    <style>
-        div.margin-top {
-            margin-top: 30px;
-        }
-
-        div.report-area .padding-right {
-            padding-right: 2%;
-        }
-
-        div.first-column {
-            width: 58%;
-        }
-
-        div.additional-columns {
-            width: 18%;
-        }
-
-    </style>
-{% endblock %}
-
 {% block title %}
     <title>Aufwandsrapport: {{ invoice.name }}</title>
 {% endblock %}

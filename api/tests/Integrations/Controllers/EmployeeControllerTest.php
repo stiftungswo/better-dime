@@ -92,6 +92,30 @@ class EmployeeControllerTest extends \TestCase
         $this->assertResponseMatchesTemplate($template);
     }
 
+    public function testValidPrintEffortReport()
+    {
+        $project = factory(\App\Models\Project\Project::class)->create();
+        $rate_unit = factory(\App\Models\Service\RateUnit::class)->create();
+        $employeeId = factory(Employee::class)->create()->id;
+
+        $project->positions()->saveMany(factory(\App\Models\Project\ProjectPosition::class, 5)->make([
+            'project_id' => $project->id,
+            'rate_unit_id' => $rate_unit->id
+        ]));
+        $project->positions()->each(function ($p) use ($employeeId) {
+            $p->efforts()->saveMany(factory(\App\Models\Project\ProjectEffort::class, 5)->make([
+                'employee_id' => $employeeId
+            ]));
+        });
+
+        $this->asAdmin()->json('GET', 'api/v1/employees/' . $employeeId . '/print_effort_report?start=2019-01-01&end=2019-12-31')->assertResponseOk();
+    }
+
+    public function testPrintEffortReportWithInvalidProjectId()
+    {
+        $this->asAdmin()->json('GET', 'api/v1/employees/1337890/print_effort_report?start=2019-01-01&end=2019-12-31')->assertResponseStatus(404);
+    }
+
     private function employeeTemplate()
     {
         return [

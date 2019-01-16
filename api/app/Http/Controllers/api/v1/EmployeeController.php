@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\BaseController;
 use App\Models\Employee\Employee;
 use App\Models\Employee\WorkPeriod;
+use App\Models\Project\ProjectEffort;
+use App\Services\PDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -40,6 +42,52 @@ class EmployeeController extends BaseController
         }
 
         return self::get($employee->id);
+    }
+
+    public function printEffortReport($id, Request $request)
+    {
+        $validatedData = $this->validate($request, [
+            'end' => 'required|date',
+            'start' => 'required|date'
+        ]);
+        $employee = Employee::findOrFail($id);
+
+        $projectEfforts = ProjectEffort::with(['position', 'position.service', 'position.rate_unit', 'position.project'])
+            ->where([
+            ['date', '>=', $validatedData['start']],
+            ['date', '<=', $validatedData['end']],
+            ['employee_id', '=', $id]
+            ])->get();
+
+        $effortsPerDate = [];
+        $totalHours = 0;
+
+        $projectEfforts->each(function ($e) use (&$effortsPerDate, &$totalHours) {
+            if (!array_key_exists($e->date, $effortsPerDate)) {
+                $effortsPerDate[$e->date] = [];
+            }
+            $effortsPerDate[$e->date][] = $e;
+
+            if ($e->position->rate_unit->is_time) {
+                $totalHours += $e->value;
+            }
+        });
+
+        ksort($effortsPerDate);
+
+        // initialize PDF, render view and pass it back
+        $pdf = new PDF(
+            'employee_effort_report',
+            [
+                'content' => $effortsPerDate,
+                'employee' => $employee,
+                'end' => $validatedData['end'],
+                'start' => $validatedData['start'],
+                'total_hours' => $totalHours
+            ]
+        );
+
+        return $pdf->print();
     }
 
     public function put($id, Request $request)

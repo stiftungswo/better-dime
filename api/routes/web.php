@@ -60,6 +60,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->post('/', ['uses' => 'EmployeeController@post']);
                 $router->get('/{id}', ['uses' => 'EmployeeController@get']);
                 $router->put('/{id}', ['uses' => 'EmployeeController@put']);
+                $router->get('/{id}/print_effort_report', ['uses' => 'EmployeeController@printEffortReport']);
             });
 
             $router->group(['prefix' => 'employee_settings'], function () use ($router) {

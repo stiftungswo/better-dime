@@ -8,13 +8,16 @@ import { EntityGroup, WithEfforts } from './types';
 import { AddEffortIcon } from '../../layout/icons';
 import { ActionButton } from '../../layout/ActionButton';
 import { sum } from '../../utilities/helpers';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import PrintButton from '../../layout/PrintButton';
 
 interface Props extends EntityGroup {
   entity: EmployeeListing & WithEfforts;
+  timetrackFilterStore?: TimetrackFilterStore;
 }
 
 @compose(
-  inject('effortStore', 'formatter'),
+  inject('effortStore', 'formatter', 'timetrackFilterStore'),
   observer
 )
 export default class TimetrackEmployeeGroup extends React.Component<Props> {
@@ -54,6 +57,13 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
     ];
   }
 
+  public generateEffortReportUrl = (): object => {
+    return {
+      end: this.props.timetrackFilterStore!.filter.end.format('YYYY-MM-DD'),
+      start: this.props.timetrackFilterStore!.filter.start.format('YYYY-MM-DD'),
+    };
+  };
+
   public onEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
     this.props.effortStore!.effortTemplate!.employee_ids = [this.props.entity.id];
@@ -71,7 +81,16 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         efforts={efforts}
         title={`${entity.first_name} ${entity.last_name}`}
         onClickRow={this.props.onClickRow}
-        actions={<ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.onEffortAdd} />}
+        actions={
+          <>
+            <PrintButton
+              path={'employees/' + this.props.entity.id + '/print_effort_report'}
+              title={'Stundenübersicht drucken'}
+              urlParams={this.generateEffortReportUrl()}
+            />
+            <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.onEffortAdd} />
+          </>
+        }
         displayTotal={this.props.formatter!.formatTotalWorkHours(workedMinutes)}
       />
     );
