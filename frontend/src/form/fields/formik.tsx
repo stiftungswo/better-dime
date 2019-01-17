@@ -36,8 +36,10 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
   const handleChange = (x: any) => {
     if (x === null) {
       form.setFieldValue(field.name, null);
+    } else if (x.target && x.target.type === 'checkbox') {
+      form.setFieldValue(field.name, x.target.checked);
     } else if (x.target) {
-      form.setFieldValue(field.name, x.target.value || x.target.checked);
+      form.setFieldValue(field.name, x.target.value);
     } else {
       form.setFieldValue(field.name, x);
     }
