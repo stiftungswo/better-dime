@@ -18,6 +18,10 @@ class AddressLabelBuilder
             $baseArray[] = $document->customer->name;
         }
 
+        if ($document->customer->department) {
+            $baseArray[] = $document->customer->department;
+        }
+
         if ($document->customer->first_name) {
             if ($document->customer->salutation) {
                 $baseArray[] = "{$document->customer->salutation} {$document->customer->first_name} {$document->customer->last_name}";

@@ -77,10 +77,10 @@ export default class PersonForm extends React.Component<Props> {
                         <DimeField delayed component={CompanySelect} name={'company_id'} label={'Firma'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={TextField} name={'department'} label={'Zuständigkeitsbereich'} />
+                        <DimeField delayed component={TextField} name={'department'} label={'Abteilung'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                        <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen (Intern)'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
