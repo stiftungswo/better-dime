@@ -100,10 +100,10 @@ class WorkPeriod extends Model
     {
         $start = Carbon::parse($this->start);
 
-        if ($this->end < Carbon::now()) {
+        if ($this->end < Carbon::now()->startOfDay()) {
             $end = Carbon::parse($this->end);
         } else {
-            $end = Carbon::now();
+            $end = Carbon::now()->startOfDay();
         }
 
         $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($end)->addDay());
@@ -127,10 +127,10 @@ class WorkPeriod extends Model
     {
         $start = Carbon::parse($this->start);
 
-        if ($this->end < Carbon::now()) {
+        if ($this->end < Carbon::now()->startOfDay()) {
             $end = Carbon::parse($this->end);
         } else {
-            $end = Carbon::now();
+            $end = Carbon::now()->startOfDay();
         }
 
         return $this->calculateBookedTime($start, $end, true);
@@ -138,7 +138,7 @@ class WorkPeriod extends Model
 
     private function calculateBookedTime(Carbon $start, Carbon $end, $onlyVacations = false)
     {
-        if ($start > Carbon::now()) {
+        if ($start > Carbon::now()->startOfDay()) {
             return 0;
         }
 
