@@ -15,6 +15,7 @@ interface Props extends DimeCustomFieldProps<number> {
 
 interface State {
   rateUnits: RateUnit[];
+  rateUnitId: number;
   selectedFactor: number;
   value: number;
 }
@@ -26,6 +27,7 @@ interface State {
 export class TimeEffortValueField extends React.Component<Props> {
   public state: State = {
     rateUnits: [],
+    rateUnitId: 1,
     selectedFactor: 1,
     value: this.props.value || 1,
   };
@@ -37,7 +39,7 @@ export class TimeEffortValueField extends React.Component<Props> {
 
     const potentialRateUnit = this.props.rateUnitStore!.rateUnits!.find((r: RateUnit) => r.id === this.props.rateUnitId);
     if (potentialRateUnit) {
-      this.setState({ selectedFactor: potentialRateUnit.factor });
+      this.setState({ rateUnitId: potentialRateUnit.id, selectedFactor: potentialRateUnit.factor });
     }
 
     if (this.props.value && potentialRateUnit) {
@@ -49,14 +51,25 @@ export class TimeEffortValueField extends React.Component<Props> {
     return this.state
       .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.value === e.id)
       .map(e => ({
-        value: e.factor,
+        value: e.id,
         label: e.effort_unit,
       }));
   }
 
-  protected updateSelectedFactor = (factor: number) => {
-    this.setState({ selectedFactor: factor, value: (this.state.value * this.state.selectedFactor) / factor });
-    this.props.onChange(factor * this.state.value);
+  protected updateSelectedRateUnit = (id: number) => {
+    const selectedRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === id);
+
+    if (selectedRateUnit) {
+      this.setState({
+        rateUnitId: selectedRateUnit.id,
+        selectedFactor: selectedRateUnit.factor,
+        value: (this.state.value * this.state.selectedFactor) / selectedRateUnit.factor,
+      });
+
+      this.props.onChange(selectedRateUnit.factor * this.state.value);
+    } else {
+      throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
+    }
   };
 
   protected updateValue = (value: string) => {
@@ -70,6 +83,7 @@ export class TimeEffortValueField extends React.Component<Props> {
         <Grid container alignItems="center" spacing={8}>
           <Grid item xs={9}>
             <TextField
+              fullWidth
               label={'Wert'}
               value={this.state.value}
               onChange={e => this.updateValue(e.target.value)}
@@ -82,8 +96,8 @@ export class TimeEffortValueField extends React.Component<Props> {
               options={this.options()}
               portal
               label={'Zeiteinheit'}
-              value={this.state.selectedFactor}
-              onChange={(value: number) => this.updateSelectedFactor(value)}
+              value={this.state.rateUnitId}
+              onChange={(id: number) => this.updateSelectedRateUnit(id)}
             />
           </Grid>
         </Grid>
