@@ -39,6 +39,7 @@ class GlobalSettingControllerTest extends \TestCase
     private function settingsTemplate()
     {
         return [
+            'service_order_comment' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
             'sender_name' => 'Example Company',
             'sender_street' => 'Salami Street 1',
             'sender_zip' => '1234',
