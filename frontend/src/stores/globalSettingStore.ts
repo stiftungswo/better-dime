@@ -47,7 +47,7 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
   }
 
   protected async doFetchOne() {
-    const res = await this.mainStore.api.get<GlobalSettings>('/global_settings/');
+    const res = await this.mainStore.api.get<GlobalSettings>('/global_settings');
     this.settings = res.data;
   }
 }
