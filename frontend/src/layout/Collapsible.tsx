@@ -6,8 +6,11 @@ import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import Collapse from '@material-ui/core/Collapse/Collapse';
 import List from '@material-ui/core/List/List';
 import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
+import { WithStyles } from '@material-ui/core';
+import { styles } from './NavItem';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-interface CollapsibleProps {
+interface CollapsibleProps extends WithStyles<typeof styles> {
   handleDrawerOpen: () => void;
   drawerOpen: boolean;
   label: string;
@@ -18,7 +21,9 @@ interface CollapsibleState {
   open: boolean;
 }
 
-export class Collapsible extends React.Component<CollapsibleProps, CollapsibleState> {
+const listComponent: any = 'div'; //tslint:disable-line:no-any ; types seem wrong - this works well
+
+class CollapsibleInner extends React.Component<CollapsibleProps, CollapsibleState> {
   public state = {
     open: false,
   };
@@ -39,8 +44,8 @@ export class Collapsible extends React.Component<CollapsibleProps, CollapsibleSt
   public render() {
     const Icon = this.props.icon || ArrowRightIcon;
     return (
-      <Fragment>
-        <ListItem button onClick={this.handleClick}>
+      <>
+        <ListItem button onClick={this.handleClick} className={this.props.classes.default}>
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
@@ -48,11 +53,13 @@ export class Collapsible extends React.Component<CollapsibleProps, CollapsibleSt
           {this.open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse in={this.open} timeout={'auto'} unmountOnExit>
-          <List component={'div'} disablePadding>
+          <List component={listComponent} disablePadding>
             {this.props.children}
           </List>
         </Collapse>
-      </Fragment>
+      </>
     );
   }
 }
+
+export const Collapsible = withStyles(styles)(CollapsibleInner);

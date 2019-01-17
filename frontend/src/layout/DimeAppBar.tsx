@@ -84,7 +84,7 @@ class DimeAppBarInner extends React.Component<Props> {
     const { drawerOpen } = this.props.mainStore!;
 
     return (
-      <AppBar position={'absolute'} className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}>
+      <AppBar position={'fixed'} className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}>
         <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
           <IconButton
             color={'inherit'}

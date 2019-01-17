@@ -30,7 +30,7 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: NavigationProps) => (
-  <React.Fragment>
+  <>
     <NavItem to={'/timetrack'} exact label={'Zeiterfassung'} icon={TimetrackIcon} />
     <NavItem to={'/offers'} exact label={'Offerten'} icon={OfferIcon} />
     <NavItem to={'/projects'} exact label={'Projekte'} icon={ProjectIcon} />
@@ -55,5 +55,5 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
       <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
       {isAdmin && <NavItem nested to={'/global_settings'} label={'Einstellungen'} icon={SettingsIcon} />}
     </Collapsible>
-  </React.Fragment>
+  </>
 );

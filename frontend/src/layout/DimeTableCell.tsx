@@ -10,13 +10,13 @@ const styles = () =>
     },
   });
 
-type DimeTableCellProps = {} & TableCellProps & WithStyles<typeof styles>;
+type DimeTableCellProps = { numeric?: boolean } & TableCellProps & WithStyles<typeof styles>;
 
 export const DimeTableCell = compose(withStyles(styles))((props: DimeTableCellProps) => {
-  const { classes, ...restProps } = props;
+  const { classes, numeric, ...restProps } = props;
 
   return (
-    <TableCell className={classes.tableCell} {...restProps}>
+    <TableCell className={classes.tableCell} align={numeric ? 'right' : 'left'} {...restProps}>
       {props.children}
     </TableCell>
   );

@@ -5,9 +5,10 @@ import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
 import { PrintIcon } from './icons';
 import { ActionButton } from './ActionButton';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 
 interface Props {
-  icon?: React.ReactType;
+  icon?: React.ReactType<SvgIconProps>;
   path: string;
   disabled?: boolean;
   color?: PropTypes.Color;

@@ -10,7 +10,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import DimeTheme from './layout/DimeTheme';
 import { StoreProvider } from './utilities/StoreProvider';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MomentUtils from '@date-io/moment';
 import * as Sentry from '@sentry/browser';
 import { DimeSnackbar } from './layout/Snackbar';
 

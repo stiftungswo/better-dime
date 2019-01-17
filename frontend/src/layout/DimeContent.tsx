@@ -1,5 +1,4 @@
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import DimeTheme from './DimeTheme';
 import * as React from 'react';
 import { styles } from './DimeLayout';
 import { DimePaper } from './DimePaper';
@@ -12,12 +11,12 @@ interface DimeContentProps extends WithStyles<typeof styles> {
   paper?: boolean;
 }
 
-export const DimeContent = withStyles(styles(DimeTheme))(({ classes, children, loading, paper = true }: DimeContentProps) => {
+export const DimeContent = withStyles(styles)(({ classes, children, loading, paper = true }: DimeContentProps) => {
   // sooner or later, this should be replaced by Suspense for Data Fetching (scheduled to release mid 2019)
   const content = loading ? <LoadingSpinner /> : children;
   return (
     <main className={classes.content}>
-      <div className={classes.appBarSpacer} />
+      <div className={classes.toolbar} />
       <ErrorBoundary>{paper ? <DimePaper>{content}</DimePaper> : content}</ErrorBoundary>
     </main>
   );

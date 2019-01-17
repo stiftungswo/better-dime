@@ -3,15 +3,18 @@ import * as React from 'react';
 import { ComponentType } from 'react';
 import compose from '../utilities/compose';
 import withStyles from '@material-ui/core/es/styles/withStyles';
-import DimeTheme from './DimeTheme';
 import { Route, RouteComponentProps } from 'react-router';
 import UnstyledLink from './UnstyledLink';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import { ArrowRightIcon } from './icons';
+import classNames from 'classnames';
 
-const styles = (theme: Theme) => ({
+export const styles = (theme: Theme) => ({
+  default: {
+    paddingLeft: theme.spacing.unit * 3,
+  },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
@@ -26,7 +29,7 @@ interface NavItemProps extends WithStyles<typeof styles> {
   nested: boolean;
 }
 
-export const NavItem = compose(withStyles(styles(DimeTheme)))(
+export const NavItem = compose(withStyles(styles))(
   ({ to, exact = false, query = '', label, icon, classes, nested = false }: NavItemProps) => {
     const Icon = icon || ArrowRightIcon;
     const nestedClassNames = nested ? classes.nested : '';
@@ -37,7 +40,7 @@ export const NavItem = compose(withStyles(styles(DimeTheme)))(
         exact={exact}
         children={({ match }: RouteComponentProps) => (
           <UnstyledLink to={to + query}>
-            <ListItem button={true} selected={!!match} className={nestedClassNames}>
+            <ListItem button selected={Boolean(match)} className={classNames(classes.default, { [classes.nested]: nested })}>
               <ListItemIcon>
                 <Icon />
               </ListItemIcon>
