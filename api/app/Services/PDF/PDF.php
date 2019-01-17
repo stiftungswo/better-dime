@@ -2,6 +2,7 @@
 
 namespace App\Services\PDF;
 
+use App\Models\GlobalSettings;
 use Illuminate\Support\Facades\App;
 use Laravel\Lumen\Application;
 use TwigBridge\Facade\Twig;
@@ -19,7 +20,7 @@ class PDF
         $this->pdf = App::make('dompdf.wrapper');
         $this->pdf->getDomPDF()->set_option("isPhpEnabled", true);
 
-        $renderedContent = $this->getRenderedTemplate($template, $data);
+        $renderedContent = $this->getRenderedTemplate($template, array_merge($data, ['settings' => GlobalSettings::all()->first()]));
 
         $this->pdf->loadHTML($renderedContent)
             ->setPaper('a4', 'portrait');

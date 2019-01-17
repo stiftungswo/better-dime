@@ -89,7 +89,6 @@ class InvoiceController extends BaseController
         $pdf = new PDF(
             'invoice',
             [
-                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'breakdown' => CostBreakdown::calculate($invoice),
                 'invoice' => $invoice,
@@ -122,7 +121,6 @@ class InvoiceController extends BaseController
         $pdf = new PDF(
             'esr',
             [
-                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'breakdown' => $breakdown,
                 'invoice' => $invoice,

@@ -114,7 +114,6 @@ class OfferController extends BaseController
         $pdf = new PDF(
             'offers',
             [
-                'settings' => $settings,
                 'addressLabel' => $addressLabel,
                 'offer' => $offer,
                 'breakdown' => $offer->breakdown,

@@ -68,7 +68,6 @@ class ReportController extends BaseController
             $pdf = new PDF(
                 'invoice_effort_report',
                 [
-                    'settings' => $settings,
                     'content' => $commentsAndEffortsPerDate,
                     'description' => $description,
                     'invoice' => $invoice
