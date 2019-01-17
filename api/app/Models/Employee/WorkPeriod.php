@@ -109,7 +109,7 @@ class WorkPeriod extends Model
         $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($end)->addDay());
         $pensum = $this->pensum / 100;
         $targetTimeWithoutHolidays = $weekdays * 8.4 * 60;
-        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
+        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $end);
         $targetTimeUntilToday = round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
 
         return $this->calculateBookedTime($start, $end) - $targetTimeUntilToday;
