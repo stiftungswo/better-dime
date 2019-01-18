@@ -76,9 +76,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     return (
       <Fragment>
         <DimeAppBar title={this.props.title}>
-          {this.props.searchable && (
-            <AppBarSearch onChange={e => this.updateQueryState(e.target.value)} defaultValue={this.props.store!.searchQuery} />
-          )}
+          {this.props.searchable && <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} />}
           {this.props.archivable && (
             <DimeAppBarButton
               icon={ArchiveIcon}
