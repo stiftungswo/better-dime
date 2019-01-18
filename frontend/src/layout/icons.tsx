@@ -50,6 +50,8 @@ export { default as InvisibleIcon } from '@material-ui/icons/VisibilityOff';
 export { default as ImportExportIcon } from '@material-ui/icons/Sync';
 export { default as DragHandle } from '@material-ui/icons/DragHandle';
 export { default as CloseIcon } from '@material-ui/icons/Close';
+export { default as ForwardIcon } from '@material-ui/icons/ArrowForwardIos';
+export { default as BackIcon } from '@material-ui/icons/ArrowBackIos';
 
 //Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
@@ -68,6 +70,7 @@ export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
 export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';
 export { default as ReportIcon } from '@material-ui/icons/ShowChart';
 export { default as SettingsIcon } from '@material-ui/icons/Settings';
+export { default as NowIcon } from '@material-ui/icons/MyLocation';
 
 const icon = (path: React.ReactNode, viewBox = 512) => {
   return (props: SvgIconProps) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);

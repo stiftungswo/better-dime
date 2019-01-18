@@ -9,6 +9,7 @@ import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { apiDateFormat } from '../../stores/apiStore';
+import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
@@ -32,11 +33,13 @@ export class RevenueReport extends React.Component<Props> {
 
         <DimeContent loading={false}>
           <Grid container alignItems={'center'} spacing={24}>
-            <Grid item xs={12} md={3}>
-              <DatePicker label={'Von'} value={this.state.start} onChange={d => this.setState({ start: d })} />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <DatePicker label={'Bis'} value={this.state.end} onChange={d => this.setState({ end: d })} />
+            <Grid item xs={12} md={6}>
+              <DateSpanPicker
+                fromValue={this.state.start}
+                onChangeFrom={d => this.setState({ start: d })}
+                toValue={this.state.end}
+                onChangeTo={d => this.setState({ end: d })}
+              />
             </Grid>
             <Grid item xs={12}>
               <a href={this.getHref()} target={'_blank'} style={{ textDecoration: 'none', color: 'white' }}>

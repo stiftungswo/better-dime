@@ -15,6 +15,7 @@ import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStor
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
+import { DateSpanPicker } from '../reports/DateSpanPicker';
 
 interface Props {
   effortStore?: EffortStore;
@@ -54,12 +55,13 @@ export class TimetrackFilterForm extends React.Component<Props> {
         <Grid item xs={12}>
           <TimetrackExpansionPanel title={'Filter'}>
             <Grid container alignItems={'center'} spacing={24}>
-              <Grid item xs={12} md={3}>
-                <DatePicker label={'Start'} value={filter.start} onChange={d => (filter.start = d!)} />
-              </Grid>
-
-              <Grid item xs={12} md={3}>
-                <DatePicker label={'Ende'} value={filter.end} onChange={d => (filter.end = d!)} />
+              <Grid item xs={12} md={6}>
+                <DateSpanPicker
+                  fromValue={filter.start}
+                  onChangeFrom={d => (filter.start = d!)}
+                  toValue={filter.end}
+                  onChangeTo={d => (filter.end = d!)}
+                />
               </Grid>
 
               <Grid item xs={12} md={3}>

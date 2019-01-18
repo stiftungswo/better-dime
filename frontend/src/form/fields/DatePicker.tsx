@@ -22,6 +22,7 @@ interface Props extends DimeCustomFieldProps<ValueType, Moment | null>, WidthTog
   formatter?: Formatter;
   errorMessage?: string;
   onError?: (message: string) => void;
+  className?: string;
 }
 
 @inject('formatter')

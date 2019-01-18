@@ -10,13 +10,13 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import { MainStore } from '../../stores/mainStore';
 import Grid from '@material-ui/core/Grid/Grid';
-import { DatePicker } from '../../form/fields/DatePicker';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import { DimeContent } from '../../layout/DimeContent';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   dailyReportStore?: DailyReportStore;
@@ -40,11 +40,13 @@ export default class DailyReport extends React.Component<Props> {
             <Grid item xs={12}>
               <DimePaper>
                 <Grid container spacing={8}>
-                  <Grid item xs={12} md={3}>
-                    <DatePicker label={'Von'} value={dailyReportStore.from} onChange={d => (dailyReportStore.from = d!)} />
-                  </Grid>
-                  <Grid item xs={12} md={3}>
-                    <DatePicker label={'Bis'} value={dailyReportStore.to} onChange={d => (dailyReportStore.to = d!)} />
+                  <Grid item xs={12} md={8}>
+                    <DateSpanPicker
+                      fromValue={dailyReportStore.from}
+                      onChangeFrom={d => (dailyReportStore.from = d!)}
+                      toValue={dailyReportStore.to}
+                      onChangeTo={d => (dailyReportStore.to = d!)}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <Button onClick={dailyReportStore.fetch} color={'primary'} variant="contained">

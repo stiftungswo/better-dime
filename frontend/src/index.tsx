@@ -14,6 +14,10 @@ import MomentUtils from '@date-io/moment';
 import * as Sentry from '@sentry/browser';
 import { DimeSnackbar } from './layout/Snackbar';
 
+import moment from 'moment';
+import 'moment/locale/de-ch';
+moment.locale('de-ch');
+
 const browserHistory = createBrowserHistory();
 const sentryDSN = 'SENTRY_DSN'; //this value will be replaced by a build script
 

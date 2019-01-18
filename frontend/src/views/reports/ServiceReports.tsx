@@ -3,13 +3,13 @@ import moment from 'moment';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import Grid from '@material-ui/core/Grid';
-import { DatePicker } from '../../form/fields/DatePicker';
 import Button from '@material-ui/core/Button';
 import { MainStore } from '../../stores/mainStore';
 import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import { ExportGroupingSelect } from '../../form/entitySelect/ExportGroupingSelect';
 import { Typography } from '@material-ui/core';
+import { DateSpanPicker } from './DateSpanPicker';
 import { apiDateFormat } from '../../stores/apiStore';
 
 interface Props {
@@ -36,11 +36,13 @@ export class ServiceReports extends React.Component<Props> {
           <Typography variant={'h5'}>Stunden pro Service</Typography>
 
           <Grid container alignItems={'center'} spacing={24}>
-            <Grid item xs={12} md={4}>
-              <DatePicker label={'Von'} value={this.state.start} onChange={d => this.setState({ start: d })} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <DatePicker label={'Bis'} value={this.state.end} onChange={d => this.setState({ end: d })} />
+            <Grid item xs={12} md={8}>
+              <DateSpanPicker
+                fromValue={this.state.start}
+                onChangeFrom={d => this.setState({ start: d })}
+                toValue={this.state.end}
+                onChangeTo={d => this.setState({ end: d })}
+              />
             </Grid>
             <Grid item xs={12} md={4}>
               <ExportGroupingSelect
