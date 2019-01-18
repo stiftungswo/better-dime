@@ -46,7 +46,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                   addAction={disabled ? undefined : () => arrayHelpers.push(template)}
                 />
 
-                <Table style={{ minWidth: '1200px' }}>
+                <Table style={{ minWidth: '1300px' }}>
                   <TableHead>
                     <TableRow>
                       <DimeTableCell style={{ width: '15%' }}>Start</DimeTableCell>
@@ -90,12 +90,18 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip title={'Stunden, welche innerhalb dieser Periode auf ein Ferienprojekt gebucht wurden.'}>
-                          <p>Ferien gebucht</p>
+                          <p>Restliches Ferienguthaben</p>
                         </Tooltip>
                       </DimeTableCell>
-                      <DimeTableCell style={{ width: '9%' }}>Übertrag</DimeTableCell>
-                      <DimeTableCell style={{ width: '9%' }}>Jährliches Ferienbudget</DimeTableCell>
-                      <DimeTableCell style={{ width: '9%' }}>Aktionen</DimeTableCell>
+                      <DimeTableCell style={{ width: '11%' }}>
+                        <Tooltip
+                          title={'Der Übertrag rechnet sich aus der Zahl im "Heute"-Feld addiert mit dem restlichen Ferienguthaben.'}
+                        >
+                          <p>Übertrag</p>
+                        </Tooltip>
+                      </DimeTableCell>
+                      <DimeTableCell style={{ width: '8%' }}>Jährliches Ferienbudget</DimeTableCell>
+                      <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -120,7 +126,9 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.effort_till_today)}
                           </DimeTableCell>
                           <DimeTableCell>{formattedHours(w.period_vacation_budget)}</DimeTableCell>
-                          <DimeTableCell>{formattedHours(w.vacation_till_today)}</DimeTableCell>
+                          <DimeTableCell style={{ color: w.remaining_vacation_budget < 0 ? 'red' : 'green' }}>
+                            {formattedHours(w.remaining_vacation_budget)}
+                          </DimeTableCell>
                           <DimeTableCell>
                             <DimeField delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
                           </DimeTableCell>

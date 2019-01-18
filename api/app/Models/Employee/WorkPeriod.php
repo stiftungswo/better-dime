@@ -36,7 +36,7 @@ class WorkPeriod extends Model
         so you get the effective amount of minutes the employee has taken vacations
     */
 
-    protected $appends = ['effective_time', 'effort_till_today', 'period_vacation_budget', 'target_time', 'vacation_till_today'];
+    protected $appends = ['effective_time', 'effort_till_today', 'period_vacation_budget', 'target_time', 'remaining_vacation_budget'];
 
     protected $casts = [
         'vacation_takeover' => 'float'
@@ -123,17 +123,12 @@ class WorkPeriod extends Model
         return $this->calculateBookedTime($start, $end);
     }
 
-    public function getVacationTillTodayAttribute()
+    public function getRemainingVacationBudgetAttribute()
     {
         $start = Carbon::parse($this->start);
+        $end = Carbon::parse($this->end);
 
-        if ($this->end < Carbon::now()->startOfDay()) {
-            $end = Carbon::parse($this->end);
-        } else {
-            $end = Carbon::now()->startOfDay();
-        }
-
-        return $this->calculateBookedTime($start, $end, true);
+        return $this->period_vacation_budget - $this->calculateBookedTime($start, $end, true);
     }
 
     private function calculateBookedTime(Carbon $start, Carbon $end, $onlyVacations = false)

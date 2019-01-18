@@ -369,11 +369,11 @@ export interface WorkPeriod {
   end: string;
   pensum: number;
   period_vacation_budget: number;
+  remaining_vacation_budget: number;
   target_time: number;
   start: string;
   updated_at: string;
   vacation_takeover: number;
-  vacation_till_today: number;
   yearly_vacation_budget: number;
 }
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Models\Employee;
 
-use App\Models\Employee\Employee;
 use App\Models\Employee\Holiday;
 use App\Models\Employee\WorkPeriod;
 use Laravel\Lumen\Testing\DatabaseTransactions;
@@ -95,7 +94,7 @@ class WorkPeriodTest extends \TestCase
         ];
 
         foreach ($testDataset as $testData) {
-            $employeeId = factory(Employee::class)->create()->id;
+            $employeeId = factory(\App\Models\Employee\Employee::class)->create()->id;
             $workPeriod = factory(WorkPeriod::class)->create([
                 'employee_id' => $employeeId,
                 'start' => $testData[0],
@@ -166,7 +165,7 @@ class WorkPeriodTest extends \TestCase
         $this->assertEquals(3 * 504 - $workPeriod->target_time, $workPeriod->effort_till_today);
     }
 
-    public function testVacationTillTodayAttribute()
+    public function testRemainingVacationBudgetAttribute()
     {
         $employeeId = factory(\App\Models\Employee\Employee::class)->create()->id;
         $projectId = factory(\App\Models\Project\Project::class)->create(['vacation_project' => true])->id;
@@ -217,10 +216,10 @@ class WorkPeriodTest extends \TestCase
         ]);
 
         // so it should only have 3 * 504 in it
-        $this->assertEquals(3 * 504, $workPeriod->vacation_till_today);
+        $this->assertEquals($workPeriod->period_vacation_budget - 3 * 504, $workPeriod->remaining_vacation_budget);
 
         // lets move the start back, so it returns 0, because the period did not start yet
         $workPeriod->update(['start' => '2019-06-01']);
-        $this->assertEquals(0, $workPeriod->vacation_till_today);
+        $this->assertEquals($workPeriod->period_vacation_budget - 0, $workPeriod->remaining_vacation_budget);
     }
 }
