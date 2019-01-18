@@ -33,6 +33,7 @@ export interface Props {
   formikProps: FormikProps<Person | Company>;
   name: string;
   disabled?: boolean;
+  inherited?: Address[];
 }
 
 @compose(
@@ -46,6 +47,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
 
   public render() {
     const { values } = this.props.formikProps;
+    const { inherited = [] } = this.props;
     return (
       <FieldArray
         name={this.props.name}
@@ -65,6 +67,17 @@ export default class AddressesSubformInline extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {inherited.map((a: Address) => (
+                  <TableRow key={a.id}>
+                    <DimeTableCell>{a.street}</DimeTableCell>
+                    <DimeTableCell>{a.supplement}</DimeTableCell>
+                    <DimeTableCell>{a.postcode}</DimeTableCell>
+                    <DimeTableCell>{a.city}</DimeTableCell>
+                    <DimeTableCell>{a.country}</DimeTableCell>
+                    <DimeTableCell>{a.description}</DimeTableCell>
+                    <DimeTableCell>(von Firma)</DimeTableCell>
+                  </TableRow>
+                ))}
                 {(values.addresses ? values.addresses : []).map((a: Address & { formikKey?: number }, index: number) => {
                   const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
                   return (

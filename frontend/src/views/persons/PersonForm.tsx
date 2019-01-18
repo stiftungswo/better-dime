@@ -19,6 +19,7 @@ import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { CustomerTagStore } from '../../stores/customerTagStore';
+import Effect, { OnChange } from '../../utilities/Effect';
 
 export interface Props extends FormViewProps<Person> {
   companyStore?: CompanyStore;
@@ -37,13 +38,38 @@ export default class PersonForm extends React.Component<Props> {
   };
 
   componentWillMount() {
-    Promise.all([this.props.companyStore!.fetchAll(), this.props.customerTagStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(
-      () => this.setState({ loading: false })
-    );
+    const person = this.props.person;
+    const loadCompany = person && person.company_id ? this.props.companyStore!.fetchOne(person.company_id) : Promise.resolve();
+    Promise.all([
+      this.props.companyStore!.fetchAll(),
+      this.props.customerTagStore!.fetchAll(),
+      this.props.rateGroupStore!.fetchAll(),
+      loadCompany,
+    ]).then(() => this.setState({ loading: false }));
   }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const person = this.props.person;
+    if (person && person.company_id && (!prevProps.person || person.company_id !== prevProps.person.company_id)) {
+      this.props.companyStore!.fetchOne(person!.company_id!);
+    }
+  }
+
+  handleCompanyChange: OnChange<Person> = (current, next, formik) => {
+    if (current.values.company_id !== next.values.company_id) {
+      if (next.values.company_id !== null) {
+        this.props.companyStore!.fetchOne(next.values.company_id);
+      } else {
+        this.props.companyStore!.company = undefined;
+      }
+    }
+  };
 
   public render() {
     const { person } = this.props;
+    const { company } = this.props.companyStore!;
+    const inheritedAddresses = company ? company.addresses : [];
+    const inheritedPhoneNumbers = company ? company.phone_numbers : [];
 
     return (
       <FormView
@@ -74,6 +100,7 @@ export default class PersonForm extends React.Component<Props> {
                         <DimeField delayed component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
+                        <Effect onChange={this.handleCompanyChange} />
                         <DimeField delayed component={CompanySelect} name={'company_id'} label={'Firma'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -95,10 +122,10 @@ export default class PersonForm extends React.Component<Props> {
                   </DimePaper>
                 </Grid>
                 <Grid item xs={12}>
-                  <AddressesSubformInline formikProps={props} name={'addresses'} />
+                  <AddressesSubformInline formikProps={props} name={'addresses'} inherited={inheritedAddresses} />
                 </Grid>
                 <Grid item xs={12}>
-                  <PhoneNumberSubformInline formikProps={props} name={'phone_numbers'} />
+                  <PhoneNumberSubformInline formikProps={props} name={'phone_numbers'} inherited={inheritedPhoneNumbers} />
                 </Grid>
               </Grid>
             </form>

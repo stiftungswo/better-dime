@@ -127,7 +127,7 @@ export default class CompanyForm extends React.Component<Props> {
                 <Grid item xs={12}>
                   {!loading && (
                     <DimePaper>
-                      <TableToolbar title={'Mitarbeiter'} addAction={'/persons/new'} />
+                      <TableToolbar title={'Mitarbeiter'} />
                       <OverviewTable
                         data={this.persons}
                         onClickRow={(m: Person) => {

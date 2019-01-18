@@ -24,6 +24,7 @@ export interface Props {
   formikProps: FormikProps<Person | Company>;
   name: string;
   disabled?: boolean;
+  inherited?: PhoneNumber[];
 }
 
 @compose(
@@ -49,6 +50,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
 
   public render() {
     const { values } = this.props.formikProps;
+    const { inherited = [] } = this.props;
     return (
       <FieldArray
         name={this.props.name}
@@ -64,6 +66,16 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                 </TableRow>
               </TableHead>
               <TableBody>
+                {inherited.map((phoneNumber: PhoneNumber) => {
+                  const category = this.options.find(o => o.value === phoneNumber.category);
+                  return (
+                    <TableRow key={phoneNumber.id}>
+                      <DimeTableCell>{category ? category.label : '?'}</DimeTableCell>
+                      <DimeTableCell>{phoneNumber.number}</DimeTableCell>
+                      <DimeTableCell>(von Firma)</DimeTableCell>
+                    </TableRow>
+                  );
+                })}
                 {(values.phone_numbers ? values.phone_numbers : []).map(
                   (phoneNumber: PhoneNumber & { formikKey?: number }, index: number) => {
                     const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
