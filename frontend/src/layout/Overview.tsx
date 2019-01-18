@@ -10,7 +10,6 @@ import { MainStore } from '../stores/mainStore';
 import { AppBarSearch } from './AppBarSearch';
 import { AddIcon, ArchiveIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
 import { Listing } from '../types';
-import debounce from 'lodash/debounce';
 
 export type SearchFilter<T> = (e: T, qry: string) => boolean;
 
@@ -65,9 +64,9 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     }
   };
 
-  public updateQueryState = debounce(query => {
+  public updateQueryState = (query: string) => {
     this.props.store.searchQuery = query;
-  }, 100);
+  };
 
   public render() {
     const mainStore = this.props.mainStore!;
@@ -76,7 +75,9 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     return (
       <Fragment>
         <DimeAppBar title={this.props.title}>
-          {this.props.searchable && <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} />}
+          {this.props.searchable && (
+            <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} delay={100} />
+          )}
           {this.props.archivable && (
             <DimeAppBarButton
               icon={ArchiveIcon}

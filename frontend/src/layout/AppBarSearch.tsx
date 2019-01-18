@@ -6,6 +6,7 @@ import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
+import debounce from 'lodash/debounce';
 
 export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
   createStyles({
@@ -59,6 +60,7 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
 interface Props extends WithStyles<typeof styles> {
   onChange: (value: string) => void;
   defaultValue: string;
+  delay?: number;
 }
 
 class AppBarSearchInner extends React.Component<Props> {
@@ -75,8 +77,16 @@ class AppBarSearchInner extends React.Component<Props> {
 
   handleChange = (value: string) => {
     this.setState({ value });
-    this.props.onChange(value);
+    if (value === '') {
+      this.props.onChange(value);
+    } else {
+      this.delayedOnChange(value);
+    }
   };
+
+  delayedOnChange = debounce(value => {
+    this.props.onChange(value);
+  }, this.props.delay || 0);
 
   render() {
     const { classes } = this.props;
