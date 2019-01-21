@@ -2,6 +2,8 @@
 
 namespace App\Services\PDF;
 
+use Carbon\Carbon;
+
 /**
  * the TableGenerator class provides a twig function called tableGen
  * the tableGen function works based on 5 arrays.
@@ -285,8 +287,16 @@ class TableGenerator
                 return \number_format($content, 0, '.', "'");
                 break;
 
+            case 'cast1':
+                return \number_format($content, 1, '.', "'");
+                break;
+
             case 'percent':
                 return $content * 100 . "%";
+                break;
+
+            case 'date':
+                return Carbon::parse($content)->format('d.m.Y');
                 break;
 
             default:

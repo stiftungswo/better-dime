@@ -218,6 +218,18 @@ return [
         */
         'filters' => [
             'get' => 'data_get',
+            'money' => [
+                'callback' => 'App\Services\TwigFilters::formatMoney',
+                'is_safe'  => [
+                    'html'
+                ]
+            ],
+            'vat' => [
+                'callback' => 'App\Services\TwigFilters::formatVat',
+                'is_safe'  => [
+                    'html'
+                ]
+            ]
         ],
     ],
 ];

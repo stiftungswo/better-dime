@@ -37,6 +37,7 @@ import NotFound from './views/NotFound';
 import { ServiceReports } from './views/reports/ServiceReports';
 import { RevenueReport } from './views/reports/RevenueReport';
 import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
+import { ProjectReport } from './views/reports/ProjectReport';
 
 class App extends React.Component {
   public render() {
@@ -79,6 +80,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/reports/daily" component={DailyReport} />
             <ProtectedRoute exact path="/reports/service" component={ServiceReports} />
             <ProtectedRoute exact path="/reports/revenue" component={RevenueReport} />
+            <ProtectedRoute exact path="/reports/project" component={ProjectReport} />
             <ProtectedRoute exact requiresAdmin path="/global_settings" component={GlobalSettingsUpdate} />
             <Route>
               <NotFound />

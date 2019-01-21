@@ -34,6 +34,7 @@ interface DimeFieldProps extends SharedProps, FormikInjectableProps {
   unit?: string;
   disabled?: boolean;
   multiline?: boolean;
+  onBlur?: () => void;
 }
 
 export interface DimeInputFieldProps<T = string> extends DimeFieldProps {

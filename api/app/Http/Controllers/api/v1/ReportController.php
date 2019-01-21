@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\BaseController;
 use App\Models\GlobalSettings;
 use App\Models\Invoice\Invoice;
+use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Services\Export\RevenueReport;
 use App\Services\Export\ServiceHoursPerCategoryReport;
@@ -61,8 +62,6 @@ class ReportController extends BaseController
             ksort($commentsAndEffortsPerDate);
             $parsedown = new Parsedown();
             $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
-
-            $settings = GlobalSettings::all()->first();
 
             // initialize PDF, render view and pass it back
             $pdf = new PDF(
@@ -123,7 +122,7 @@ class ReportController extends BaseController
 
         $from = new Carbon(Input::get('from'));
         $to = new Carbon(Input::get('to'));
-        $format = new Carbon(Input::get('format'));
+        $format = Input::get('format');
 
 
         $report = RevenuePositions::fetchRevenueReport($from, $to);
@@ -132,5 +131,66 @@ class ReportController extends BaseController
         } else {
             return Excel::download(new RevenueReport($report), "revenue_report.xlsx");
         }
+    }
+
+    public function project(Request $request)
+    {
+        $this->validate($request, [
+            "from" => "required|date",
+            "to" => "required|date",
+            "project_id" => "required|integer",
+            "daily_rate" => "required|integer",
+            "vat" => "required|numeric"
+        ]);
+
+        $from = new Carbon(Input::get('from'));
+        $to = new Carbon(Input::get('to'));
+        $projectId = Input::get('project_id');
+
+        $project = Project::findOrFail($projectId);
+
+        $efforts = $project->positions->flatMap(function ($position) {
+            return $position->efforts;
+        })->filter(function ($effort) use ($from, $to) {
+            return $effort->position->is_time && Carbon::parse($effort->date)->between($from, $to);
+        })->values()->map(function ($effort) {
+            return [
+                "date" => $effort->date,
+                "value" => $effort->value / $effort->position->rate_unit->factor,
+                "service" => $effort->position->service->name,
+                "employee" => $effort->employee->full_name
+            ];
+        });
+
+        $sums = $efforts->groupBy('employee')->map(function ($efforts, $employeeName) {
+            return [
+                "employee" => $employeeName,
+                "sum" => $efforts->map(function ($effort) {
+                    return $effort['value'];
+                })->sum()
+            ];
+        });
+
+        $chargedDays = $efforts->map(function ($effort) {
+            return $effort['date'];
+        })->unique()->values()->count();
+
+
+        // initialize PDF, render view and pass it back
+        $pdf = new PDF(
+            'project_report',
+            [
+                "project" => $project,
+                "from" => $from,
+                "to" => $to,
+                "efforts" => $efforts->sortBy('date')->sortBy('employee')->values(),
+                "sums" => $sums,
+                "chargedDays" => $chargedDays,
+                "dailyRate" => Input::get('daily_rate'),
+                "vat" => Input::get('vat')
+            ]
+        );
+
+        return $pdf->print();
     }
 }

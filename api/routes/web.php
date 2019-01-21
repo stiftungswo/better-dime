@@ -189,6 +189,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->get('/daily', ['uses' => 'ReportController@daily']);
                 $router->get('/service_hours', ['uses' => 'ReportController@exportServiceHoursReport']);
                 $router->get('/revenue', ['uses' => 'ReportController@revenue']);
+                $router->get('/project', ['uses' => 'ReportController@project']);
             });
 
             $router->group(['prefix' => 'global_settings'], function () use ($router) {
