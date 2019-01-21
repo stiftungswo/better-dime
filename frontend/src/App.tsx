@@ -38,6 +38,7 @@ import { ServiceReports } from './views/reports/ServiceReports';
 import { RevenueReport } from './views/reports/RevenueReport';
 import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
 import { ProjectReport } from './views/reports/ProjectReport';
+import EmployeeGroupOverview from './views/EmployeeGroupOverview';
 
 class App extends React.Component {
   public render() {
@@ -63,6 +64,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />
             <ProtectedRoute exact path="/holidays" component={HolidayOverview} />
             <ProtectedRoute exact requiresAdmin path="/rate_units" component={RateUnitOverview} />
+            <ProtectedRoute exact requiresAdmin path="/employee_groups" component={EmployeeGroupOverview} />
             <ProtectedRoute exact path="/rate_groups" component={RateGroupOverview} />
             <ProtectedRoute exact path="/services" component={ServiceOverview} />
             <ProtectedRoute exact path="/services/new" component={ServiceCreate} />

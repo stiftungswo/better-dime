@@ -18,7 +18,10 @@ $factory->define(Employee::class, function () {
         'holidays_per_year' => $faker->numberBetween(20, 25),
         'last_name' => $lastName,
         'password' => $faker->password,
-        'is_admin' => false
+        'is_admin' => false,
+        'employee_group_id' => function () {
+            return factory(\App\Models\Employee\EmployeeGroup::class)->create()->id;
+        },
     ];
 });
 

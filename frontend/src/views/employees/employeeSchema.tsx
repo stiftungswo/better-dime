@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { dimeDate, localizeSchema, requiredNumber } from '../../utilities/validation';
+import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
 export const editEmployeeSchema = localizeSchema(() =>
   yup.object({
@@ -21,6 +21,7 @@ export const editEmployeeSchema = localizeSchema(() =>
         yearly_vacation_budget: requiredNumber(),
       })
     ),
+    employee_group_id: selector(),
   })
 );
 
@@ -47,6 +48,7 @@ export const newEmployeeSchema = localizeSchema(() =>
         yearly_vacation_budget: requiredNumber(),
       })
     ),
+    employee_group_id: selector(),
   })
 );
 
@@ -66,4 +68,5 @@ export const employeeTemplate = {
   extendTimetrack: false,
   work_periods: [],
   password: '',
+  employee_group_id: 0,
 };

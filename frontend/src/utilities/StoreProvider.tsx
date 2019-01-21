@@ -26,6 +26,7 @@ import { Formatter } from './formatter';
 import { Notifier } from './notifier';
 import { IReactionDisposer, reaction } from 'mobx';
 import { GlobalSettingStore } from '../stores/globalSettingStore';
+import { EmployeeGroupStore } from '../stores/employeeGroupStore';
 
 export interface Props {
   history: History;
@@ -57,6 +58,7 @@ export class StoreProvider extends React.Component<Props> {
     customerImportStore: CustomerImportStore;
     dailyReportStore: DailyReportStore;
     globalSettingStore: GlobalSettingStore;
+    employeeGroupStore: EmployeeGroupStore;
   };
   private disposeAuthChangeReaction: IReactionDisposer;
 
@@ -124,6 +126,7 @@ export class StoreProvider extends React.Component<Props> {
       customerImportStore: new CustomerImportStore(mainStore),
       dailyReportStore: new DailyReportStore(mainStore),
       globalSettingStore: new GlobalSettingStore(mainStore),
+      employeeGroupStore: new EmployeeGroupStore(mainStore),
     };
   }
 

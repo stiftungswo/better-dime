@@ -52,6 +52,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />
       <NavItem nested to={'/rate_groups'} label={'Tarif-Gruppen'} icon={RateGroupIcon} />
       {isAdmin && <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />}
+      {isAdmin && <NavItem nested to={'/employee_groups'} label={'Mitarbeiter-Gruppen'} icon={EmployeeIcon} />}
       <NavItem nested to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
       <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
       {isAdmin && <NavItem nested to={'/global_settings'} label={'Einstellungen'} icon={SettingsIcon} />}

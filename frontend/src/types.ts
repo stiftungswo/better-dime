@@ -89,6 +89,12 @@ export interface Employee {
   extendTimetrack: boolean;
   password: string;
   work_periods: WorkPeriod[];
+  employee_group_id: number | null;
+  group_name?: string;
+  group?: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface PhoneNumber {
@@ -463,6 +469,11 @@ export interface RateUnit {
   is_time: boolean;
   name: string;
   archived: boolean;
+}
+
+export interface EmployeeGroup {
+  name: string;
+  id: number;
 }
 
 // --

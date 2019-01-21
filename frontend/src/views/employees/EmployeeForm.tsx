@@ -10,13 +10,28 @@ import { FormHeader } from '../../layout/FormHeader';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeField } from '../../form/fields/formik';
+import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
+import { inject, observer } from 'mobx-react';
+import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
   schema: object;
+  employeeGroupStore?: EmployeeGroupStore;
 }
 
+@inject('employeeGroupStore')
+@observer
 export default class EmployeeForm extends React.Component<Props> {
+  state = {
+    loading: true,
+  };
+
+  async componentWillMount() {
+    await this.props.employeeGroupStore!.fetchAll();
+    this.setState({ loading: false });
+  }
+
   public render() {
     const { employee, schema } = this.props;
 
@@ -24,7 +39,7 @@ export default class EmployeeForm extends React.Component<Props> {
       <FormView
         title={this.props.title}
         validationSchema={schema}
-        loading={empty(employee) || this.props.loading}
+        loading={empty(employee) || this.props.loading || this.state.loading}
         initialValues={{ ...employee, password: '', password_repeat: '' }}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
@@ -49,8 +64,11 @@ export default class EmployeeForm extends React.Component<Props> {
                     </Grid>
 
                     <Grid container>
-                      <Grid item xs={12}>
+                      <Grid item xs={12} sm={6}>
                         <DimeField component={EmailField} name={'email'} label={'E-Mail'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField component={EmployeeGroupSelect} name={'employee_group_id'} label={'Gruppe'} />
                       </Grid>
                     </Grid>
 

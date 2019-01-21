@@ -19,7 +19,7 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'is_admin', 'email', 'first_name', 'last_name', 'can_login', 'archived', 'holidays_per_year', 'password'
+        'is_admin', 'email', 'first_name', 'last_name', 'can_login', 'archived', 'holidays_per_year', 'password', 'employee_group_id'
     ];
 
     /**
@@ -41,6 +41,8 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
         'is_admin' => 'boolean'
     ];
 
+    protected $appends = ['group_name'];
+
     public function setPasswordAttribute($value)
     {
         if (!$value) {
@@ -55,6 +57,11 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
         return $this->hasOne(EmployeeSetting::class);
     }
 
+    public function group()
+    {
+        return $this->belongsTo(EmployeeGroup::class, "employee_group_id");
+    }
+
     public function work_periods()
     {
         return $this->hasMany(WorkPeriod::class);
@@ -63,5 +70,10 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
     public function getFullNameAttribute()
     {
         return $this->first_name . " " . $this->last_name;
+    }
+
+    public function getGroupNameAttribute()
+    {
+        return $this->group ? $this->group->name : "";
     }
 }

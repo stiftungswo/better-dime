@@ -12,9 +12,17 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create('de_CH');
+
+        print("Seeding employee groups ...\n");
+        $employeeGroups = factory(\App\Models\Employee\EmployeeGroup::class, 3)->create();
+
         print("Seeding employees ...\n");
         factory(\App\Models\Employee\Employee::class, 'admin')->create();
-        $employees = factory(\App\Models\Employee\Employee::class, 20)->create();
+        $employees = factory(\App\Models\Employee\Employee::class, 20)->create([
+            'employee_group_id' => function () use ($employeeGroups) {
+                return $employeeGroups->random()->id;
+            }
+        ]);
         $employees->each(function ($e) {
             /** @var \App\Models\Employee\Employee $e */
             factory(\App\Models\Employee\WorkPeriod::class, rand(1, 3))->create([

@@ -67,6 +67,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'EmployeeSettingController@put']);
             });
 
+            $router->group(['prefix' => 'employee_groups'], function () use ($router) {
+                $router->get('/', ['uses' => 'EmployeeGroupController@index']);
+                $router->post('/', ['uses' => 'EmployeeGroupController@post']);
+                $router->get('/{id}', ['uses' => 'EmployeeGroupController@get']);
+                $router->put('/{id}', ['uses' => 'EmployeeGroupController@put']);
+                $router->delete('/{id}', ['uses' => 'EmployeeGroupController@delete']);
+            });
+
             $router->group(['prefix' => 'invoices'], function () use ($router) {
                 $router->get('/', ['uses' => 'InvoiceController@index']);
                 $router->post('/', ['uses' => 'InvoiceController@post']);

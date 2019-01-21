@@ -40,6 +40,10 @@ export default class EmployeeOverview extends React.Component<Props> {
         label: 'E-Mail',
       },
       {
+        id: 'group_name',
+        label: 'Gruppe',
+      },
+      {
         id: 'can_login',
         label: 'Login aktiviert?',
         format: e => (e.can_login ? 'Ja' : 'Nein'),
