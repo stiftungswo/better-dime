@@ -50,7 +50,7 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
   return (
     <Component
       InputComponent={delayed ? DelayedInput : Input}
-      errorMessage={touched && error}
+      errorMessage={touched && error ? error : undefined}
       {...field}
       onChange={handleChange}
       onBlur={handleBlur}

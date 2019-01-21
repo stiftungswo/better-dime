@@ -19,7 +19,7 @@ export class TransformingField<T> extends React.Component<Props<T>> {
   };
 
   public get format() {
-    return this.props.value ? this.props.toString(this.props.value) : '';
+    return this.props.value === null || this.props.value === undefined ? '' : this.props.toString(this.props.value);
   }
 
   public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
