@@ -44,12 +44,16 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
       form.setFieldValue(field.name, x);
     }
   };
+  const handleBlur = () => {
+    form.setFieldTouched(field.name, true);
+  };
   return (
     <Component
       InputComponent={delayed ? DelayedInput : Input}
       errorMessage={touched && error}
       {...field}
       onChange={handleChange}
+      onBlur={handleBlur}
       {...rest}
     />
   );
