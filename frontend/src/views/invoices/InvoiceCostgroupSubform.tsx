@@ -19,7 +19,7 @@ import { DimeField } from '../../form/fields/formik';
 const template = () => ({
   costgroup_number: '',
   formikKey: Math.random(),
-  weight: 10,
+  weight: 100,
 });
 
 export interface Props {
