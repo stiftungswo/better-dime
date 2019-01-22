@@ -1,9 +1,15 @@
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import DimeTheme from './DimeTheme';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Theme } from '@material-ui/core';
 import * as React from 'react';
-import { styles } from './DimeLayout';
+import createStyles from '@material-ui/core/styles/createStyles';
 
-export const LoadingSpinner = withStyles(styles(DimeTheme))(({ classes }: WithStyles<typeof styles>) => (
+const styles = (theme: Theme) =>
+  createStyles({
+    progress: {
+      margin: theme.spacing.unit * 2,
+    },
+  });
+
+export const LoadingSpinner = withStyles(styles)(({ classes }: WithStyles<typeof styles>) => (
   <CircularProgress className={classes.progress} />
 ));

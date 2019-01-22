@@ -28,9 +28,12 @@ if (sentryDSN.startsWith('https')) {
   console.log('no raven');
 }
 
+const url = window.location.href;
+const mode = url.includes('localhost') || url.includes('test') ? 'dev' : 'prod';
+
 ReactDOM.render(
   <StoreProvider history={browserHistory}>
-    <MuiThemeProvider theme={DimeTheme}>
+    <MuiThemeProvider theme={DimeTheme(mode)}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <DimeSnackbar />
         <Router history={browserHistory}>

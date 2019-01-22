@@ -1,6 +1,5 @@
 import compose from '../utilities/compose';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import DimeTheme from './DimeTheme';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
@@ -8,9 +7,9 @@ import classNames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import Typography from '@material-ui/core/Typography/Typography';
-import { Button, CircularProgress, Theme, withWidth } from '@material-ui/core';
+import { Theme, withWidth } from '@material-ui/core';
 import { MainStore } from '../stores/mainStore';
-import { ActionButton, ActionButtonAction, ButtonProps } from './ActionButton';
+import { ActionButton, ButtonProps } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
@@ -107,7 +106,7 @@ class DimeAppBarInner extends React.Component<Props> {
   }
 }
 
-export const DimeAppBar = withStyles(styles(DimeTheme))(DimeAppBarInner);
+export const DimeAppBar = withStyles(styles)(DimeAppBarInner);
 
 export class DimeAppBarButton extends React.Component<ButtonProps> {
   public render = () => {

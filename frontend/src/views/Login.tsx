@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { EmailField, PasswordField } from '../form/fields/common';
 import { RouteComponentProps, withRouter } from 'react-router';
-import dimeTheme from '../layout/DimeTheme';
 import { Theme } from '@material-ui/core';
 import compose from '../utilities/compose';
 import { MainStore } from '../stores/mainStore';
@@ -164,4 +163,4 @@ class Login extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles(dimeTheme))(Login);
+export default withStyles(styles)(Login);

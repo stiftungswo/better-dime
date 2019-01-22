@@ -11,61 +11,62 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import DimeTheme from '../../layout/DimeTheme';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
 import { CancelIcon } from '../../layout/icons';
+import createStyles from '@material-ui/core/styles/createStyles';
 
-const styles = (theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    height: 250,
-  },
-  input: {
-    display: 'flex',
-    padding: 0,
-  },
-  valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center',
-  },
-  chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
-  },
-  chipFocused: {
-    backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
-  },
-  noOptionsMessage: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
-  },
-  singleValue: {
-    position: 'absolute',
-    whiteSpace: 'nowrap',
-    fontSize: 16,
-    maxWidth: 'calc(100% - 40px)',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-  },
-  disabled: {
-    color: theme.palette.text.disabled,
-  },
-  placeholder: {
-    position: 'absolute',
-    left: 2,
-    fontSize: 16,
-  },
-  paper: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0,
-  },
-  divider: {
-    height: theme.spacing.unit * 2,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      height: 250,
+    },
+    input: {
+      display: 'flex',
+      padding: 0,
+    },
+    valueContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      flex: 1,
+      alignItems: 'center',
+    },
+    chip: {
+      margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    },
+    chipFocused: {
+      backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
+    },
+    noOptionsMessage: {
+      padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    },
+    singleValue: {
+      position: 'absolute',
+      whiteSpace: 'nowrap',
+      fontSize: 16,
+      maxWidth: 'calc(100% - 40px)',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+    },
+    disabled: {
+      color: theme.palette.text.disabled,
+    },
+    placeholder: {
+      position: 'absolute',
+      left: 2,
+      fontSize: 16,
+    },
+    paper: {
+      position: 'absolute',
+      zIndex: 1,
+      marginTop: theme.spacing.unit,
+      left: 0,
+      right: 0,
+    },
+    divider: {
+      height: theme.spacing.unit * 2,
+    },
+  });
 
 function NoOptionsMessage(props: any) {
   return (
@@ -252,7 +253,7 @@ class IntegrationReactSelect extends React.Component<any> {
   }
 }
 
-export default withStyles(styles(DimeTheme) as any, { withTheme: true })(IntegrationReactSelect);
+export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
 
 type Single = number | null;
 type Multi = number[] | [];

@@ -2,7 +2,6 @@ import * as React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import { Theme, WithStyles, withWidth } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
-import DimeTheme from './DimeTheme';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton/IconButton';
@@ -84,9 +83,6 @@ export const styles = (theme: Theme) =>
       textAlign: 'left',
       padding: theme.spacing.unit * 2,
     },
-    progress: {
-      margin: theme.spacing.unit * 2,
-    },
     overflowX: {
       overflowX: 'auto',
     },
@@ -155,4 +151,4 @@ class DimeLayout extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles(DimeTheme))(DimeLayout);
+export default withStyles(styles)(DimeLayout);

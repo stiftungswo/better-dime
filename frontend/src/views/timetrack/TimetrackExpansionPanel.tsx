@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography/Typography';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
 import { ExpandMoreIcon } from '../../layout/icons';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import DimeTheme from '../../layout/DimeTheme';
 import createStyles from '@material-ui/core/styles/createStyles';
 import { Theme } from '@material-ui/core';
 import classNames from 'classnames';
@@ -70,4 +69,4 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
   }
 }
 
-export const TimetrackExpansionPanel = withStyles(styles(DimeTheme))(TimetrackExpansionPanelInner);
+export const TimetrackExpansionPanel = withStyles(styles)(TimetrackExpansionPanelInner);
