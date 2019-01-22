@@ -51,7 +51,7 @@ export class ProjectPositionSelect extends React.Component<Props> {
       if (this.props.projectStore!.project) {
         return <Select options={this.options} {...this.props} />;
       } else {
-        return <Select options={[]} isDisabled placeholder={'Projekt-Positionen werden abgerufen ...'} {...this.props} />;
+        return <Select options={[]} isDisabled isLoading placeholder={'Projekt-Positionen werden abgerufen ...'} {...this.props} />;
       }
     } else {
       return <Select options={[]} isDisabled placeholder={'Zuerst Projekt auswählen'} {...this.props} />;
