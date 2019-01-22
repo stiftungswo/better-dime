@@ -32,11 +32,8 @@ export default class ProjectUpdate extends React.Component<Props> {
   public get project() {
     const project = this.props.projectStore!.project;
     if (project) {
-      return {
-        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
-        ...toJS(project),
-        fixed_price: project.fixed_price || '',
-      };
+      //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+      return toJS(project);
     } else {
       return undefined;
     }

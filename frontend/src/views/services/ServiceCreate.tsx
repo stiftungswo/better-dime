@@ -38,7 +38,7 @@ export default class ServiceCreate extends React.Component<Props> {
     return this.props.rateGroupStore!.rateGroups.map((g: RateGroup) => ({
       rate_group_id: g.id,
       rate_unit_id: null,
-      value: '',
+      value: null,
     }));
   }
 
