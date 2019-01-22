@@ -7,6 +7,7 @@ use App\Models\Employee\Employee;
 use App\Models\Employee\WorkPeriod;
 use App\Models\Project\ProjectEffort;
 use App\Services\PDF\PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -87,7 +88,7 @@ class EmployeeController extends BaseController
             ]
         );
 
-        return $pdf->print();
+        return $pdf->print("Aufwandrapport $employee->name", Carbon::parse($validatedData['start']), Carbon::parse($validatedData['end']));
     }
 
     public function put($id, Request $request)

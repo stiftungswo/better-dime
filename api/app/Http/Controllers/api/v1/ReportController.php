@@ -73,7 +73,7 @@ class ReportController extends BaseController
                 ]
             );
 
-            return $pdf->print();
+            return $pdf->print("Aufwandrapport $invoice->name", Carbon::now());
         } else {
             return response('Invoice ' . $invoice->id . ' has no project assigned!', 400);
         }
@@ -191,6 +191,6 @@ class ReportController extends BaseController
             ]
         );
 
-        return $pdf->print();
+        return $pdf->print("Projektrapport $project->id $project->name", $from, $to);
     }
 }

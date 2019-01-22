@@ -11,6 +11,7 @@ use App\Services\AddressLabelBuilder;
 use App\Services\Creator\CreateProjectFromOffer;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -133,7 +134,7 @@ class OfferController extends BaseController
         //     ]
         // );
 
-        return $pdf->print();
+        return $pdf->print("Offerte $offer->name", Carbon::now());
     }
 
     public function createProject($id)

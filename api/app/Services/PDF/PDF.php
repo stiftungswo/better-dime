@@ -3,6 +3,7 @@
 namespace App\Services\PDF;
 
 use App\Models\GlobalSettings;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Laravel\Lumen\Application;
 use TwigBridge\Facade\Twig;
@@ -36,13 +37,21 @@ class PDF
         return Twig::render("pdfs.$template", $data);
     }
 
-    public function print()
+    public function print($filename = "download", Carbon $date = null, Carbon $toDate = null)
     {
         $this->pdf->getDomPDF()->render();
         if ($this->footer === true) {
             $this->addFooterCount();
         }
-        return $this->pdf->stream();
+
+        $renderedDate = "";
+        if ($date) {
+            $renderedDate .= " " . $date->format("d.m.Y");
+        }
+        if ($toDate) {
+            $renderedDate .= " " . $toDate->format("d.m.Y");
+        }
+        return $this->pdf->stream($filename . $renderedDate . ".pdf");
     }
 
     public function debug(string $template, array $data)

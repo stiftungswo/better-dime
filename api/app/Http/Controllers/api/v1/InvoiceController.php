@@ -13,6 +13,7 @@ use App\Services\CostBreakdown;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -96,7 +97,7 @@ class InvoiceController extends BaseController
             ]
         );
 
-        return $pdf->print();
+        return $pdf->print("Rechnung $invoice->id $invoice->name", Carbon::parse($invoice->end));
     }
 
     public function print_esr($id)
@@ -128,7 +129,7 @@ class InvoiceController extends BaseController
             ]
         );
 
-        return $pdf->print();
+        return $pdf->print("Einzahlungsschein $invoice->id $invoice->name", Carbon::parse($invoice->end));
     }
 
     public function printEffortReport($id)
@@ -150,7 +151,7 @@ class InvoiceController extends BaseController
                 ]
             );
 
-            return $pdf->print();
+            return $pdf->print("Aufwandrapport Rechnung $invoice->id $invoice->name", Carbon::now());
         } else {
             return response('Invoice ' . $invoice->id . ' has no project assigned!', 400);
         }

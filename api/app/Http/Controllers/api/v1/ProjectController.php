@@ -10,6 +10,7 @@ use App\Services\Creator\CreateInvoiceFromProject;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -101,7 +102,7 @@ class ProjectController extends BaseController
             ]
         );
 
-        return $pdf->print();
+        return $pdf->print("Aufwandrapport Projekt $project->id $project->name", Carbon::now());
     }
 
     private function validateRequest(Request $request)
