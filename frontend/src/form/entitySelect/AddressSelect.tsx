@@ -9,7 +9,7 @@ import { DimeCustomFieldProps } from '../fields/common';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   customerStore?: CustomerStore;
-  customerId: number;
+  customerId?: number;
 }
 
 @compose(
@@ -29,7 +29,9 @@ export class AddressSelect extends React.Component<Props> {
   };
 
   protected async updateCustomerInStore() {
-    await this.props.customerStore!.fetchOne(this.props.customerId);
+    if (this.props.customerId) {
+      await this.props.customerStore!.fetchOne(this.props.customerId);
+    }
   }
 
   @computed
