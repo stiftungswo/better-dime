@@ -39,6 +39,7 @@ import { RevenueReport } from './views/reports/RevenueReport';
 import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
 import { ProjectReport } from './views/reports/ProjectReport';
 import EmployeeGroupOverview from './views/EmployeeGroupOverview';
+import ProjectWithPotentialInvoicesOverview from './views/projects/ProjectWithPotentialInvoicesOverview';
 
 class App extends React.Component {
   public render() {
@@ -54,6 +55,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/offers/new" component={OfferCreate} />
             <ProtectedRoute exact path="/offers/:id" component={OfferUpdate} />
             <ProtectedRoute exact path="/projects" component={ProjectOverview} />
+            <ProtectedRoute exact path="/projects/potential_invoices" component={ProjectWithPotentialInvoicesOverview} />
             <ProtectedRoute exact path="/projects/new" component={ProjectCreate} />
             <ProtectedRoute exact path="/projects/:id" component={ProjectUpdate} />
             <ProtectedRoute exact path="/invoices" component={InvoiceOverview} />

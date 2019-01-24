@@ -119,6 +119,7 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}/archive', ['uses' => 'ProjectController@archive']);
                 $router->post('/{id}/duplicate', ['uses' => 'ProjectController@duplicate']);
                 $router->get('/', ['uses' => 'ProjectController@index']);
+                $router->get('/potential_invoices', ['uses' => 'ProjectController@projectsWithPotentialInvoices']);
                 $router->post('/', ['uses' => 'ProjectController@post']);
                 $router->get('/{id}', ['uses' => 'ProjectController@get']);
                 $router->put('/{id}', ['uses' => 'ProjectController@put']);

@@ -167,4 +167,28 @@ class ProjectController extends BaseController
         $creator = new CreateInvoiceFromProject($project);
         return $creator->create();
     }
+
+    public function projectsWithPotentialInvoices()
+    {
+        return DB::select(<<<QRY
+select last_effort.id as id, name, last_effort_date, last_invoice_date, datediff(last_effort_date, last_invoice_date) days_since_last_invoice
+from (
+       select projects.id, max(pe.date) as last_effort_date, max(projects.name) as name
+       from projects
+              inner join project_positions pp on projects.id = pp.project_id
+              inner join project_efforts pe on pp.id = pe.position_id
+       where projects.chargeable = 1
+       group by projects.id
+     ) last_effort
+       left join (
+  select projects.id, max(i.end) as last_invoice_date
+  from projects
+         left join invoices i on projects.id = i.project_id
+  group by projects.id
+) last_invoice on last_effort.id = last_invoice.id
+ where last_invoice_date < last_effort_date or last_invoice_date is null
+ order by id desc;
+QRY
+        );
+    }
 }

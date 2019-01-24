@@ -33,7 +33,10 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
   <>
     <NavItem to={'/timetrack'} exact label={'Zeiterfassung'} icon={TimetrackIcon} />
     <NavItem to={'/offers'} exact label={'Offerten'} icon={OfferIcon} />
-    <NavItem to={'/projects'} exact label={'Projekte'} icon={ProjectIcon} />
+    <Collapsible icon={ProjectIcon} label={'Projekte'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
+      <NavItem nested to={'/projects'} exact label={'Alle'} icon={ProjectIcon} />
+      <NavItem nested to={'/projects/potential_invoices'} exact label={'Nicht verrechnet'} icon={InvoiceIcon} />
+    </Collapsible>
     <NavItem to={'/invoices'} label={'Rechnungen'} icon={InvoiceIcon} />
     <NavItem to={'/employees'} label={'Mitarbeiter'} icon={EmployeeIcon} />
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>

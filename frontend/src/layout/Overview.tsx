@@ -33,6 +33,10 @@ interface Props<ListingType> {
   mainStore?: MainStore;
   archivable?: boolean;
   searchable?: boolean;
+  adapter?: {
+    getEntities: () => ListingType[];
+    fetch: () => Promise<void>;
+  };
 }
 
 interface State {
@@ -41,18 +45,26 @@ interface State {
 
 @inject('mainStore')
 @observer
-export default class Overview<ListingType extends Listing> extends React.Component<Props<ListingType>, State> {
+export default class Overview<ListingType extends Listing> extends React.Component<Props<Listing>, State> {
   constructor(props: Props<ListingType>) {
     super(props);
-    props.store!.fetchAll().then(() => this.setState({ loading: false }));
+    this.fetch().then(() => this.setState({ loading: false }));
     this.state = {
       loading: true,
     };
   }
 
+  fetch = async () => {
+    return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+  };
+
+  get entities() {
+    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
+  }
+
   public reload = () => {
     this.setState({ loading: true });
-    this.props.store!.fetchAll().then(() => this.setState({ loading: false }));
+    this.fetch().then(() => this.setState({ loading: false }));
   };
 
   public handleClick = (e: ListingType) => {
@@ -70,7 +82,6 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   public render() {
     const mainStore = this.props.mainStore!;
-    const entities = this.props.store!.filteredEntities;
 
     return (
       <Fragment>
@@ -94,7 +105,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
             <OverviewTable
               columns={this.props.columns}
               renderActions={this.props.renderActions}
-              data={entities}
+              data={this.entities}
               onClickRow={this.handleClick}
             />
           )}
