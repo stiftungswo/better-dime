@@ -55,19 +55,12 @@ export default class ProjectWithPotentialInvoicesOverview extends React.Componen
 
     return (
       <Overview<ProjectWithPotentialInvoices>
-        archivable
         title={'Nicht verrechnete Projekte'}
         store={projectStore}
         adapter={{
           fetch: () => projectStore.fetchProjectsWithOpenInvoices(),
           getEntities: () => projectStore.projectsWithPotentialInvoices,
         }}
-        renderActions={e => (
-          <ActionButtons
-          // archiveAction={!e.archived ? () => projectStore.archive(e.id, true) : undefined}
-          // restoreAction={e.archived ? () => projectStore.archive(e.id, false) : undefined}
-          />
-        )}
         onClickRow={'/projects/:id'}
         columns={this.columns}
       />

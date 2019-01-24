@@ -178,6 +178,7 @@ from (
               inner join project_positions pp on projects.id = pp.project_id
               inner join project_efforts pe on pp.id = pe.position_id
        where projects.chargeable = 1
+       and projects.archived = 0
        group by projects.id
      ) last_effort
        left join (
