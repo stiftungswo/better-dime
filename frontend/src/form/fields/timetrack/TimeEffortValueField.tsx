@@ -28,8 +28,8 @@ export class TimeEffortValueField extends React.Component<Props> {
   public state: State = {
     rateUnits: [],
     rateUnitId: 1,
-    selectedFactor: 1,
-    value: this.props.value || 1,
+    selectedFactor: 60,
+    value: this.props.value || 504,
   };
 
   public async componentDidMount() {
