@@ -13,6 +13,9 @@ export interface GlobalSettings {
   sender_mail: string;
   sender_vat: string;
   sender_bank: string;
+  sender_bank_detail: string;
+  sender_bank_iban: string;
+  sender_bank_bic: string;
   sender_web: string;
   service_order_comment: string;
 }

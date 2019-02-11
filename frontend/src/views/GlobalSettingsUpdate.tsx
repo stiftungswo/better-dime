@@ -31,6 +31,9 @@ const settingsSchema = localizeSchema(() =>
     sender_mail: yup.string().required(),
     sender_vat: yup.string().required(),
     sender_bank: yup.string().required(),
+    sender_bank_detail: yup.string().required(),
+    sender_bank_iban: yup.string().required(),
+    sender_bank_bic: yup.string().required(),
     sender_web: yup.string().required(),
   })
 );
@@ -74,6 +77,9 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                       <DimeField required component={TextField} name={'sender_mail'} label={'Email'} />
                       <DimeField required component={TextField} name={'sender_vat'} label={'MwSt. Nr.'} />
                       <DimeField required component={TextField} name={'sender_bank'} label={'Kontonummer'} />
+                      <DimeField required component={TextField} name={'sender_bank_detail'} label={'Bank Name & Ort'} />
+                      <DimeField required component={TextField} name={'sender_bank_iban'} label={'IBAN'} />
+                      <DimeField required component={TextField} name={'sender_bank_bic'} label={'BIC'} />
                       <DimeField required component={TextField} name={'sender_web'} label={'Website'} />
                     </DimePaper>
                     <DimePaper>

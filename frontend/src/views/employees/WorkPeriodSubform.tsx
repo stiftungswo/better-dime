@@ -89,7 +89,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
-                        <Tooltip title={'Stunden, welche innerhalb dieser Periode auf ein Ferienprojekt gebucht wurden.'}>
+                        <Tooltip title={'Das unverbuchte Guthaben an Ferienstunden.'}>
                           <p>Restliches Ferienguthaben</p>
                         </Tooltip>
                       </DimeTableCell>

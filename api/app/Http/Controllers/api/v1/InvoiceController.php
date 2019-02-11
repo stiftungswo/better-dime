@@ -126,7 +126,8 @@ class InvoiceController extends BaseController
                 'breakdown' => $breakdown,
                 'invoice' => $invoice,
                 'formatted_total' => $first_part
-            ]
+            ],
+            false
         );
 
         return $pdf->print("Einzahlungsschein $invoice->id $invoice->name", Carbon::parse($invoice->end));
