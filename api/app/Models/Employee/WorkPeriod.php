@@ -142,8 +142,8 @@ class WorkPeriod extends Model
             ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
             ->where([
                 ['project_efforts.deleted_at', '=', null],
-                ['project_efforts.date', '>=', $start->subDay()],
-                ['project_efforts.date', '<=', $end->addDay()],
+                ['project_efforts.date', '>=', $start->subDay()->endOfDay()],
+                ['project_efforts.date', '<=', $end->addDay()->endOfDay()],
                 ['project_efforts.employee_id', '=', $this->employee->id],
                 ['rate_units.is_time', '=', true]
             ]);

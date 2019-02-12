@@ -183,7 +183,9 @@ class ReportController extends BaseController
                 "project" => $project,
                 "from" => $from,
                 "to" => $to,
-                "efforts" => $efforts->sortBy('date')->sortBy('employee')->values(),
+                "efforts" => $efforts->sortBy(function ($effort) {
+                   return [$effort['employee'], $effort['date']];
+                }),
                 "sums" => $sums,
                 "chargedDays" => $chargedDays,
                 "dailyRate" => Input::get('daily_rate'),
