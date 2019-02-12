@@ -25,13 +25,20 @@ interface Props {
   disabled?: boolean;
   formikProps: FormikProps<Employee>;
   name: string;
+  yearly_vacation_budget: number | null;
 }
 
 export class WorkPeriodSubform extends React.Component<Props> {
   public render() {
+    const { yearly_vacation_budget } = this.props;
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     const currentError = getIn(touched, name) && getIn(errors, name);
+
+    const templateVals = {
+      ...template,
+      yearly_vacation_budget: yearly_vacation_budget ? yearly_vacation_budget * 504 : template.yearly_vacation_budget,
+    };
 
     return (
       <FieldArray
@@ -43,7 +50,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                 <TableToolbar
                   title={'Arbeitsperioden'}
                   error={Boolean(currentError)}
-                  addAction={disabled ? undefined : () => arrayHelpers.push(template)}
+                  addAction={disabled ? undefined : () => arrayHelpers.push(templateVals)}
                 />
 
                 <Table style={{ minWidth: '1300px' }}>

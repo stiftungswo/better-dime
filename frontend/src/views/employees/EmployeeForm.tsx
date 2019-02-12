@@ -85,7 +85,11 @@ export default class EmployeeForm extends React.Component<Props> {
 
                 <Grid item xs={12}>
                   <DimePaper>
-                    <WorkPeriodSubform formikProps={props} name={'work_periods'} />
+                    <WorkPeriodSubform
+                      formikProps={props}
+                      name={'work_periods'}
+                      yearly_vacation_budget={employee ? employee.holidays_per_year : null}
+                    />
                   </DimePaper>
                 </Grid>
 
