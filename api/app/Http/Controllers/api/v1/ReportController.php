@@ -184,7 +184,7 @@ class ReportController extends BaseController
                 "from" => $from,
                 "to" => $to,
                 "efforts" => $efforts->sortBy(function ($effort) {
-                   return [$effort['employee'], $effort['date']];
+                    return [$effort['employee'], $effort['date']];
                 }),
                 "sums" => $sums,
                 "chargedDays" => $chargedDays,
