@@ -48,6 +48,9 @@ class GlobalSettingControllerTest extends \TestCase
             'sender_mail' => 'dime@example.com',
             'sender_vat' => 'CHE-123.456.543',
             'sender_bank' => '07-007-07',
+            'sender_bank_iban' => 'CH24 0900 0000 8000 4067 9',
+            'sender_bank_bic' => 'POSTFXXXX',
+            'sender_bank_detail' => 'Postfinance AG, 3030 Bern',
             'sender_web' => 'https://github.com/stiftungswo/betterDime',
         ];
     }
