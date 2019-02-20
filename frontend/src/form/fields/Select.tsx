@@ -110,7 +110,7 @@ function Option(props: any) {
       style={{
         fontWeight: props.isSelected ? 500 : 400,
         whiteSpace: 'unset',
-        height: 'auto'
+        height: 'auto',
       }}
       {...props.innerProps}
     >

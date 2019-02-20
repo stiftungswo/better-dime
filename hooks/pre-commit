@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 jsfiles=$(git diff --cached --name-only --diff-filter=ACM "*.ts" "*.tsx" | sed s,frontend/,, | tr '\n' ' ')
 phpfiles=$(git diff --cached --name-only --diff-filter=ACM "*.php" | sed s,api/,, | tr '\n' ' ')
 
