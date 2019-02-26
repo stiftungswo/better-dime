@@ -43,7 +43,7 @@ class RevenueReport implements FromArray, ShouldAutoSize
     public function __construct(Collection $positions)
     {
         $this->positions = $positions->sortBy(function ($position) {
-            return [$position->name, $position->accountant];
+            return [$position->source, $position->name];
         });
 
         $this->costgroups = $positions->flatMap(function ($pos) {
