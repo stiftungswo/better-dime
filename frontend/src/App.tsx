@@ -40,6 +40,7 @@ import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
 import { ProjectReport } from './views/reports/ProjectReport';
 import EmployeeGroupOverview from './views/EmployeeGroupOverview';
 import ProjectWithPotentialInvoicesOverview from './views/projects/ProjectWithPotentialInvoicesOverview';
+import { PercentageReport } from './views/reports/PercentageReport';
 
 class App extends React.Component {
   public render() {
@@ -86,6 +87,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/reports/revenue" component={RevenueReport} />
             <ProtectedRoute exact path="/reports/project" component={ProjectReport} />
             <ProtectedRoute exact requiresAdmin path="/global_settings" component={GlobalSettingsUpdate} />
+            <ProtectedRoute exact path="/reports/costgroup" component={PercentageReport} />
             <Route>
               <NotFound />
             </Route>

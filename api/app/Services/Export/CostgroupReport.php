@@ -30,41 +30,68 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
  */
 
-class CostgroupReport
+class CostgroupReport implements FromArray, ShouldAutoSize
 {
+    private $efforts;
+    private $employees;
     private $costgroups;
 
-    public function __construct(Collection $costgroups)
+    public function __construct(Collection $efforts, Collection $costgroups)
     {
-        $this->costgroups = $costgroups;
+        $this->employees = $efforts->map(function ($effort) {
+            return ['name' => $effort->employee->fullName];
+        })->unique()->keyBy('name')->toArray();
+
+        $efforts->map(function ($effort) {
+            $name = $effort->employee->fullName;
+            $valueRaw = $effort->value;
+            $costgroupCount = $effort->project->costgroup_distributions->count();
+
+            if ($costgroupCount == 1) {
+                $number = $effort->project->costgroup_distributions->first()->costgroup_number;
+
+                if (!isset($this->employees[$name][$number])) {
+                    $this->employees[$name][$number] = 0;
+                }
+                $this->employees[$name][$number] += $valueRaw;
+            } else {
+                $fullWeight = $effort->project->costgroup_distributions->sum('weight');
+                foreach ($effort->project->costgroup_distributions as $costgroup) {
+                    $number = $costgroup->costgroup_number;
+                    $weight = $costgroup->weight;
+
+                    if (!isset($this->employees[$name][$number])) {
+                        $this->employees[$name][$number] = 0;
+                    }
+                    $this->employees[$name][$number] += $valueRaw * ($weight/$fullWeight);
+                }
+            }
+        });
+
+        $this->costgroups = $costgroups->map(function ($costgroup) {
+            return $costgroup->number;
+        })->toArray();
+
+        sort($this->costgroups);
+        array_values($this->employees);
+        sort($this->employees);
     }
 
     public function array(): array
     {
-        $baseHeaders = ['Typ', 'Name', 'Kategorie (Tätigkeitsbereich)', 'Auftraggeber', 'Start',
-            'Verantwortlicher Mitarbeiter', 'Aufwand CHF (Projekt)',
-            'Umsatz CHF (Rechnung)', 'Umsatz erwartet CHF (Offerte)'];
+        $baseHeaders = ['Name'];
 
         $headers = array_merge($baseHeaders, $this->costgroups);
 
         $rows = [$headers];
 
-        /** @var RevenuePosition $position */
-        foreach ($this->positions as $position) {
+        foreach ($this->employees as $employee) {
             $row = [];
-            $row[] = $position->source;
-            $row[] = $position->name;
-            $row[] = $position->category;
-            $row[] = $position->customer;
-            $row[] = $position->created->format('d.m.Y');
-            $row[] = $position->accountant;
-            $row[] = formatAmount($position->project_price);
-            $row[] = formatAmount($position->invoice_price);
-            $row[] = formatAmount($position->offer_price);
+            $row[] = $employee['name'];
 
             foreach ($this->costgroups as $costgroup) {
-                if (array_key_exists($costgroup, $position->costgroup_values)) {
-                    $row[] = formatAmount($position->costgroup_values[$costgroup]);
+                if (array_key_exists($costgroup, $employee)) {
+                    $row[] = $employee[$costgroup] / 60 . "h";
                 } else {
                     $row[] = null;
                 }

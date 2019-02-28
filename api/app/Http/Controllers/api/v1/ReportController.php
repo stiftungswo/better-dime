@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\BaseController;
-use App\Models\GlobalSettings;
+use App\Models\Costgroup\Costgroup;
+use App\Models\Employee\Employee;
 use App\Models\Invoice\Invoice;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
+use App\Services\Export\CostgroupReport;
 use App\Services\Export\RevenueReport;
 use App\Services\Export\ServiceHoursPerCategoryReport;
 use App\Services\Export\ServiceHoursPerProjectReport;
@@ -194,5 +196,33 @@ class ReportController extends BaseController
         );
 
         return $pdf->print("Projektrapport $project->id $project->name", $from, $to);
+    }
+
+    public function costgroup(Request $request)
+    {
+        $this->validate($request, [
+            "from" => "date",
+            "to" => "date"
+        ]);
+
+        $from = new Carbon(Input::get('from'));
+        $to = new Carbon(Input::get('to'));
+        $format = Input::get('format');
+
+        $efforts = ProjectEffort::whereBetween('date', [$from, $to])
+            ->whereHas('employee', function ($q) {
+                return $q->isSWOEmployee();
+            })
+            ->whereHas('position.rate_unit', function ($q) {
+                return $q->where('is_time', 1);
+            })
+            ->has('position.project.costgroup_distributions')
+            ->get();
+        $costgroups = Costgroup::select('number')->get();
+        if ($format === 'dump') {
+            return "<pre>".var_export($efforts, true)."</pre>";
+        } else {
+            return Excel::download(new CostgroupReport($efforts, $costgroups), "costgroup_report.xlsx");
+        }
     }
 }

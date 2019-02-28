@@ -2,6 +2,7 @@
 
 namespace App\Models\Employee;
 
+use App\Models\Project\ProjectEffort;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
@@ -72,8 +73,20 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
         return $this->first_name . " " . $this->last_name;
     }
 
+    public function project_efforts()
+    {
+        return $this->hasMany(ProjectEffort::class);
+    }
+
     public function getGroupNameAttribute()
     {
         return $this->group ? $this->group->name : "";
+    }
+
+    public function scopeIsSWOEmployee($query)
+    {
+        return $query->whereHas('group', function ($q) {
+            return $q->where('id', 1);
+        });
     }
 }

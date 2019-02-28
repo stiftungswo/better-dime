@@ -50,6 +50,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
       <NavItem nested to={'/reports/service'} label={'Service-Rapporte'} />
       <NavItem nested to={'/reports/revenue'} label={'Umsatzrapport'} />
       <NavItem nested to={'/reports/project'} label={'Projektrapport'} />
+      <NavItem nested to={'/reports/costgroup'} label={'Kostenstellenraport'} />
     </Collapsible>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
       <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />
