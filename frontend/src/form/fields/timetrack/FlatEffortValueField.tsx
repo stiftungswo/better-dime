@@ -1,5 +1,5 @@
 import React from 'react';
-import {DimeCustomFieldProps, NumberField} from '../common';
+import { DimeCustomFieldProps, NumberField } from '../common';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
 import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
