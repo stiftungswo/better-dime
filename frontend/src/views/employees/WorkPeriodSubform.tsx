@@ -107,7 +107,11 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <p>Übertrag</p>
                         </Tooltip>
                       </DimeTableCell>
-                      <DimeTableCell style={{ width: '8%' }}>Jährliches Ferienbudget</DimeTableCell>
+                      <DimeTableCell style={{ width: '8%' }}>
+                        <Tooltip title={'Das jährliche Ferienbudget ist immer auf ein 100% zu verstehen.'}>
+                          <p>Jährliches Ferienbudget</p>
+                        </Tooltip>
+                      </DimeTableCell>
                       <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
