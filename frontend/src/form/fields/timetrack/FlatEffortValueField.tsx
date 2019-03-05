@@ -1,5 +1,5 @@
 import React from 'react';
-import { DimeCustomFieldProps, DimeInputFieldProps, NumberField } from '../common';
+import {DimeCustomFieldProps, NumberField} from '../common';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
 import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
@@ -43,7 +43,7 @@ export class FlatEffortValueField extends React.Component<Props> {
         type={this.props.type}
         label={this.props.label}
         value={String(this.props.value)}
-        onChange={e => this.props.onChange(Number(e.target.value))}
+        onChange={e => this.props.onChange(e.target.value as any)}
         unit={this.state.name}
       />
     );
