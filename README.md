@@ -24,7 +24,7 @@ Dime is developed in and used by a foundation in the German speaking part of Swi
 #### Commit Hooks
 Damit der Code einheitlich formatiert bleibt, wird ein pre-commit Hook verwendet. Der Travis-Build failt, wenn der Code nicht richtig formatiert ist. 
 
-`ln -s hooks/pre-commit .git/hooks`
+``ln -s $(pwd)/hooks/pre-commit $(pwd)/.git/hooks``
 
 #### Homebrew für Mac
 Fast jede Linux-Distribution wird mit einem Paketmanager ausgeliefert. Diese ermöglichen dir, bequem neue Programme zu installieren, ohne dazu eine aufwendige Installation durchführen zu müssen. Unter Mac hat die Community homebrew entwickelt, um einen solchen Paketmanager auf Mac bereitzustellen.
