@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik, FormikProps } from 'formik';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { DatePicker } from '../../form/fields/DatePicker';
 import { EffortStore } from '../../stores/effortStore';
 import * as yup from 'yup';
 import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../types';
@@ -26,6 +25,7 @@ import { apiDateFormat } from '../../stores/apiStore';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 import { DimeField } from '../../form/fields/formik';
+import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 
 interface Props extends InjectedProps {
   onClose: () => void;
@@ -193,7 +193,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   name={'position_id'}
                   label={'Aktivität'}
                 />
-                <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+                <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />

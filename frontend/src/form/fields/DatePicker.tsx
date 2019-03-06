@@ -5,7 +5,7 @@ import { DimeCustomFieldProps, WidthToggle } from './common';
 import { inject, observer } from 'mobx-react';
 import { Formatter } from '../../utilities/formatter';
 
-type ValueType = Moment | string | null | undefined;
+export type ValueType = Moment | string | null | undefined;
 
 const castValue = (value: ValueType) => {
   if (!value) {
@@ -29,7 +29,7 @@ interface Props extends DimeCustomFieldProps<ValueType, Moment | null>, WidthTog
 @observer
 export class DatePicker extends React.Component<Props> {
   render() {
-    const { value, onChange, required, formatter, errorMessage, onError, InputComponent, fullWidth = true, ...rest } = this.props;
+    const { value, onChange, required, formatter, errorMessage, onError, fullWidth = true, ...rest } = this.props;
     const userDateFormat = formatter!.userDateFormat;
     return (
       <MUIDatePicker
