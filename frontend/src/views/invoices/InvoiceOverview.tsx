@@ -58,7 +58,6 @@ export default class InvoiceOverview extends React.Component<Props> {
         searchable
         title={'Rechnungen'}
         store={invoiceStore}
-        addAction={'/invoices/new'}
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {
