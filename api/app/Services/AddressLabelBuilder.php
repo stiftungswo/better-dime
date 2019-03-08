@@ -13,7 +13,7 @@ class AddressLabelBuilder
         $baseArray = [];
 
         if ($document->customer->company) {
-            $baseArray[] = $document->customer->company->name;
+            $baseArray[] = str_replace(" ", "&#160;", $document->customer->company->name);
         } elseif ($document->customer->name) {
             $baseArray[] = $document->customer->name;
         }
