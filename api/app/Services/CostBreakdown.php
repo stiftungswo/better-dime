@@ -31,6 +31,16 @@ class CostBreakdown
         // calculate totals
         $total = intval($totalWithDiscounts + $vatTotal);
 
+        $fixedPriceVats = array();
+        $fixedPriceVatsValue = null;
+        if (!is_null($breakdownable->fixed_price) && !is_null($breakdownable->fixed_price_vat)) {
+            $fixedPriceVats = [(object) [
+                'vat' => $breakdownable->fixed_price_vat,
+                'value' => $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat))
+            ]];
+            $fixedPriceVatsValue = $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat));
+        }
+
         return [
             'discounts' => $discounts,
             'discountTotal' => $discountsTotal,
@@ -41,11 +51,8 @@ class CostBreakdown
             'vats' => $vats,
             'vatTotal' => $vatTotal,
             'fixedPrice' => $breakdownable->fixed_price,
-            'fixedPriceVats' => [(object) [
-                'vat' => $breakdownable->fixed_price_vat,
-                'value' => $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat))
-            ]],
-            'fixedPriceVatValue' => $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat))
+            'fixedPriceVats' => $fixedPriceVats,
+            'fixedPriceVatValue' => $fixedPriceVatsValue
         ];
     }
 

@@ -14,7 +14,7 @@ class AddFixedPriceVat extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->decimal('fixed_price_vat', 4, 3);
+            $table->decimal('fixed_price_vat', 4, 3)->nullable();
         });
     }
 

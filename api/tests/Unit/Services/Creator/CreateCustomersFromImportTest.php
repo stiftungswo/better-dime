@@ -20,7 +20,7 @@ class CreateCustomersFromImportTest extends \TestCase
         CreateCustomersFromImport::create($template['rate_group_id'], $template['hidden'], $template['customers_to_import'], $template['customer_tags']);
 
         // first, check the company
-        $company = Company::with('addresses', 'phone_numbers')->where('name', '=', 'Stiftung Wirtschaft und Ökologie')->first();
+        $company = Company::with('addresses', 'phone_numbers')->where('name', '=', $template['customers_to_import'][0]['name'])->first();
         $this->assertEquals($template['customers_to_import'][0]['city'], $company->addresses->first()->city);
         $this->assertEquals($template['customers_to_import'][0]['comment'], $company->comment);
         $this->assertEquals($template['customers_to_import'][0]['country'], $company->addresses->first()->country);
