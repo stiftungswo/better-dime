@@ -16,6 +16,10 @@ class AddFixedPriceVat extends Migration
         Schema::table('invoices', function (Blueprint $table) {
             $table->decimal('fixed_price_vat', 4, 3)->nullable();
         });
+
+        Schema::table('offers', function (Blueprint $table) {
+            $table->decimal('fixed_price_vat', 4, 3)->nullable();
+        });
     }
 
     /**
@@ -26,6 +30,10 @@ class AddFixedPriceVat extends Migration
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
+            $table->dropColumn('fixed_price_vat');
+        });
+
+        Schema::table('offers', function (Blueprint $table) {
             $table->dropColumn('fixed_price_vat');
         });
     }
