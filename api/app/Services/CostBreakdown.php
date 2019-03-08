@@ -39,7 +39,13 @@ class CostBreakdown
             'subtotal' => $subtotal,
             'total' => $total,
             'vats' => $vats,
-            'vatTotal' => $vatTotal
+            'vatTotal' => $vatTotal,
+            'fixedPrice' => $breakdownable->fixed_price,
+            'fixedPriceVats' => [(object) [
+                'vat' => $breakdownable->fixed_price_vat,
+                'value' => $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat))
+            ]],
+            'fixedPriceVatValue' => $breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat))
         ];
     }
 

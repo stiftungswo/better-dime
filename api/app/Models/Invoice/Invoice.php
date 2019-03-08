@@ -15,7 +15,7 @@ class Invoice extends Model
 {
     use SoftDeletes, BlameableTrait, SoftCascadeTrait;
 
-    protected $fillable = ['accountant_id', 'address_id', 'customer_id', 'description', 'end', 'fixed_price', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
+    protected $fillable = ['accountant_id', 'address_id', 'customer_id', 'description', 'end', 'fixed_price', 'fixed_price_vat', 'name', 'order', 'price_per_rate', 'project_id', 'rate_unit_id', 'start'];
 
     protected $softCascade = ['costgroup_distributions', 'discounts', 'positions'];
 

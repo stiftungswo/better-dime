@@ -199,7 +199,7 @@ class TableGenerator
      *  the string of the tbody
      * @param [type] $footerString
      *  the string of the tfoot
-     * @return void
+     * @return string
      */
     private static function stitchTable($tableConf, $headerString, $rowsString, $footerString)
     {

@@ -30,6 +30,7 @@ import { EmployeeStore } from '../../stores/employeeStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { DimeField } from '../../form/fields/formik';
+import PercentageField from '../../form/fields/PercentageField';
 
 export interface Props extends FormViewProps<Invoice> {
   costgroupStore?: CostgroupStore;
@@ -168,9 +169,33 @@ export default class InvoiceForm extends React.Component<Props> {
                   {invoice.id && (
                     <Grid item xs={12} lg={4}>
                       <DimePaper>
-                        <FormHeader>Berechnung</FormHeader>
-                        <BreakdownTable breakdown={invoice.breakdown} />
-                        <DimeField fullWidth={false} delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                        <Grid container spacing={8}>
+                          <Grid item xs={12}>
+                            <FormHeader>Berechnung</FormHeader>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <BreakdownTable breakdown={invoice.breakdown} />
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <DimeField
+                              fullWidth={false}
+                              delayed
+                              component={CurrencyField}
+                              name={'fixed_price'}
+                              label={'Fixpreis'}
+                              margin={'normal'}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <DimeField
+                              fullWidth={false}
+                              delayed
+                              component={PercentageField}
+                              name={'fixed_price_vat'}
+                              label={'Fixpreis MwSt.'}
+                            />
+                          </Grid>
+                        </Grid>
                       </DimePaper>
                     </Grid>
                   )}

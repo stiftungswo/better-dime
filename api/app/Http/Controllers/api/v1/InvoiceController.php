@@ -107,7 +107,9 @@ class InvoiceController extends BaseController
         $breakdown = CostBreakdown::calculate($invoice);
 
         // format total
-        $splitted = str_split($breakdown['total']);
+        $total = is_null($breakdown['fixedPrice']) ? $breakdown['total'] : $breakdown['fixedPrice'];
+
+        $splitted = str_split($total);
         $first_part = "";
         $first_part .= implode('', array_slice($splitted, 0, -2));
         $first_part .= " ";
@@ -195,6 +197,7 @@ class InvoiceController extends BaseController
             'discounts.*.value' => 'required|numeric',
             'end' => 'required|date',
             'fixed_price' => 'integer|nullable',
+            'fixed_price_vat' => 'numeric|nullable',
             'positions' => 'present|array',
             'positions.*.amount' => 'required|numeric',
             'positions.*.description' => 'required|string|max:255',

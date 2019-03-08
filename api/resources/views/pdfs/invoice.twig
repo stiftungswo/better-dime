@@ -125,16 +125,24 @@
         </div>
     {% endif %}
 
+    {% set totalTitel = 'Rechnungstotal' %}
+    {% set vatTotalTitel = 'Mehrwertsteuer Total' %}
+
+    {% if breakdown.fixedPrice %}
+        {% set totalTitel = 'Aufwandstotal' %}
+        {% set vatTotalTitel = 'Aufwandsmehrwertsteuer Total' %}
+    {% endif %}
+
     <div class="avoid-page-break">
         {{ tableGen(
             {
                 "table": {
-                "class": "table",
-                "style": "margin-top: 30px;"
-            },
+                    "class": "table",
+                    "style": "margin-top: 30px;"
+                },
                 "tfoot-tr-1": {
-                "class": "bold-cells"
-            }
+                    "class": "bold-cells"
+                }
             },
             {
                 "MwSt. Satz": {"attr": { "colspan": "5"}},
@@ -147,16 +155,53 @@
             },
             [
                 {
-                    "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
+                    (vatTotalTitel): {"attr": {"colspan": "5"}},
                     (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
                 },
                 {
-                    "Rechnungstotal": {"attr": {"colspan": "5" }},
+                    (totalTitel): {"attr": {"colspan": "5" }},
                     (breakdown.total): {"format": "chf", "attr": {"class": "text-align-right"}}
                 }
             ]
         ) }}
     </div>
+
+    {% if breakdown.fixedPrice  %}
+        <div class="avoid-page-break">
+            {{ tableGen(
+                {
+                    "table": {
+                    "class": "table",
+                    "style": "margin-top: 30px;"
+                },
+                    "tfoot-tr-1": {
+                    "class": "bold-cells"
+                }
+                },
+                {
+                    "MwSt. Satz": {"attr": { "colspan": "5"}},
+                    "Betrag CHF": {"attr": { "class": "sixth-row text-align-right" }}
+                },
+                breakdown.fixedPriceVats,
+                {
+                    "vat": {"attr": {"colspan": "5"}, "format": "percent"},
+                    "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                },
+                [
+                    {
+                        "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
+                        (breakdown.fixedPriceVatValue): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    },
+                    {
+                        "Rechnungstotal": {"attr": {"colspan": "5" }},
+                        (breakdown.fixedPrice): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    }
+                ]
+            ) }}
+        </div>
+
+    {% endif %}
+
 
     Zahlbar 30 Tage netto
 {% endblock %}

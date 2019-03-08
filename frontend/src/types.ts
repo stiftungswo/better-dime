@@ -12,6 +12,7 @@ export interface Offer {
   customer_id: number;
   description: string;
   fixed_price: number | null;
+  fixed_price_vat: null | number;
   name: string;
   rate_group_id: number;
   short_description: string;
@@ -118,6 +119,7 @@ export interface Project {
   deadline: null;
   description: string | null;
   fixed_price: null | number;
+  fixed_price_vat: null | number;
   name: string;
   offer_id?: number;
   rate_group_id: number;
@@ -205,7 +207,8 @@ export interface Invoice {
   breakdown: Breakdown;
   description: string;
   end: string;
-  fixed_price: null;
+  fixed_price: null | number;
+  fixed_price_vat: null | number;
   project_id?: number;
   offer_id?: number;
   name: string;
@@ -425,6 +428,7 @@ export interface InvoiceListing {
   description: string;
   end: string;
   fixed_price: null;
+  fixed_price_vat: null;
   project_id: number;
   name: string;
   start: string;
