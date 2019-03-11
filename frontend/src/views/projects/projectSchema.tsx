@@ -26,7 +26,7 @@ export const projectSchema = localizeSchema(() =>
       .array(
         yup.object({
           costgroup_number: requiredNumber(),
-          weight: requiredNumber(),
+          weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
         })
       )
       .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
