@@ -116,7 +116,7 @@ class InvoiceController extends BaseController
         $first_part .= implode('', array_slice($splitted, -2, 2));
 
         // render address
-        $addressLabel = AddressLabelBuilder::build($invoice);
+        $addressLabel = AddressLabelBuilder::build($invoice, true);
 
         $settings = GlobalSettings::all()->first();
 

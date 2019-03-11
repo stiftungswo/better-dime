@@ -8,7 +8,7 @@ class AddressLabelBuilder
      * @param \App\Models\Offer\Offer|\App\Models\Invoice\Invoice $document
      * @return string
      */
-    public static function build($document)
+    public static function build($document, $esr = false)
     {
         $baseArray = [];
 
@@ -33,7 +33,7 @@ class AddressLabelBuilder
         $baseArray[] = $document->address->street;
         !$document->address->supplement ?: array_push($baseArray, $document->address->supplement);
         $baseArray[] = $document->address->postcode . ' ' . $document->address->city;
-        !$document->address->country ?: array_push($baseArray, $document->address->country);
+        !$document->address->country || $esr ?: array_push($baseArray, $document->address->country);
 
         return implode('<br>', $baseArray);
     }
