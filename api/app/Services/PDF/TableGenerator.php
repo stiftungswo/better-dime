@@ -90,7 +90,7 @@ class TableGenerator
      *  format: <format> -> format used to format for exampl ecurrency and percentages. To add a format include it in TableGenerator::formatContent
      * @return string the string of the generated rows
      */
-    private static function createRows($rows, $colConfs)
+    private static function createRows($rows, $colConfs, $tableConf)
     {
         if (empty($rows)) {
             return "";
@@ -171,7 +171,7 @@ class TableGenerator
                                     "td",
                                     self::formatContent(
                                         $content,
-                                        $conf['format'] ?? []
+                                        $conf['format'] ?? ""
                                     )
                                 );
                             }
@@ -280,6 +280,9 @@ class TableGenerator
     {
         switch ($format) {
             case 'chf':
+                return \number_format(round(($content / 100 + 0.000001) * 20) / 20, 2, '.', "'");
+                break;
+            case 'money':
                 return \number_format($content / 100, 2, '.', "'");
                 break;
             

@@ -76,16 +76,16 @@
         breakdown.positions,
         {
             "description": {},
-            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "chf"},
+            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "money"},
             "rate_unit.billing_unit": {},
             "amount": {},
             "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
-            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "chf"}
+            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "money"}
         },
         [
             {
                 "Subtotal": {"attr": {"colspan": "5" }},
-                (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                (breakdown.subtotal): {"format": "money", "attr": {"class": "text-align-right"}}
             }
         ]
     ) }}
@@ -109,16 +109,16 @@
                 breakdown.discounts,
                 {
                     "name": {"attr": {"colspan": "5"}},
-                    "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                    "value": {"attr": {"class": "text-align-right"}, "format": "money"},
                 },
                 [
                     {
                         "Abzüge Total": {"attr": {"colspan": "5" }},
-                        (breakdown.discountTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                        (breakdown.discountTotal): {"format": "money", "attr": {"class": "text-align-right"}}
                     },
                     {
                         "Subtotal": {"attr": {"colspan": "5"}},
-                        (breakdown.rawTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                        (breakdown.rawTotal): {"format": "money", "attr": {"class": "text-align-right"}}
                     }
                 ]
             ) }}
@@ -151,12 +151,12 @@
             breakdown.vats,
             {
                 "vat": {"attr": {"colspan": "5"}, "format": "percent"},
-                "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                "value": {"attr": {"class": "text-align-right"}, "format": "money"},
             },
             [
                 {
                     (vatTotalTitel): {"attr": {"colspan": "5"}},
-                    (breakdown.vatTotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                    (breakdown.vatTotal): {"format": "money", "attr": {"class": "text-align-right"}}
                 },
                 {
                     (totalTitel): {"attr": {"colspan": "5" }},
@@ -185,12 +185,12 @@
                 breakdown.fixedPriceVats,
                 {
                     "vat": {"attr": {"colspan": "5"}, "format": "percent"},
-                    "value": {"attr": {"class": "text-align-right"}, "format": "chf"},
+                    "value": {"attr": {"class": "text-align-right"}, "format": "money"},
                 },
                 [
                     {
                         "Mehrwertsteuer Total": {"attr": {"colspan": "5"}},
-                        (breakdown.fixedPriceVatValue): {"format": "chf", "attr": {"class": "text-align-right"}}
+                        (breakdown.fixedPriceVatsSum): {"attr": {"class": "text-align-right"}, "format": "money"}
                     },
                     {
                         "Rechnungstotal": {"attr": {"colspan": "5" }},
