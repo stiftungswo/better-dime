@@ -14,6 +14,7 @@ import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
 import { CancelIcon } from '../../layout/icons';
 import createStyles from '@material-ui/core/styles/createStyles';
+import { ActionMeta, ActionTypes } from 'react-select/lib/types';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -190,24 +191,18 @@ class IntegrationReactSelect extends React.Component<any> {
     }
   }
 
-  public handleChange = (selected: any) => {
-    const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
-    this.props.onChange(selected ? value : null);
+  public handleChange = (selected: any, action: ActionMeta) => {
+    if (action.action === 'clear') {
+      this.props.onChange(null);
+    } else {
+      const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
+      this.props.onChange(selected ? value : null);
+    }
   };
 
   render() {
-    const {
-      classes,
-      theme,
-      label,
-      margin,
-      required,
-      disabled,
-      placeholder = 'Bitte auswählen...',
-      errorMessage,
-      fullWidth = true,
-      ...rest
-    } = this.props as any;
+    const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, ...rest } = this
+      .props as any;
 
     const myLabel = this.props.label
       ? {
