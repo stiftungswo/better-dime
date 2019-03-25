@@ -2,48 +2,42 @@ language: php
 sudo: false
 php:
 - 7.2
-
 stages:
 - name: test
   if: commit_message =~ ^((?!skip-tests).)*$
 - name: deploy
   if: branch = master OR branch = production OR branch =~ \b-DEPLOY\b
-
 cache:
   directories:
-  - $HOME/.composer/cache/files
-  - $HOME/.cache/yarn
-
-# install programming languages
+  - "$HOME/.composer/cache/files"
+  - "$HOME/.cache/yarn"
 before_install:
 - nvm install 10
-
 install:
 - composer install -d api $COMPOSER_FLAGS
 - npm install -g yarn
 - yarn --cwd frontend install
-
 jobs:
   include:
-  # run the test steps
   - stage: test
-    script: ./ci/test_backend.sh
-    name: "Run automated tests for backend"
-  - script: ./ci/check_format.sh
-    name: "Check formatting of source code"
-
-    # run the deployment step
+    script: "./ci/test_backend.sh"
+    name: Run automated tests for backend
+  - script: "./ci/check_format.sh"
+    name: Check formatting of source code
   - stage: deploy
     script: skip
     env:
-    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod"; else echo "test"; fi)
+    - DEPLOY_SYSTEM: $(if [ "$TRAVIS_BRANCH" == "production" ]; then echo "prod";
+        else echo "test"; fi)
     deploy:
     - provider: script
       script: ci/deploy.sh $DEPLOY_SYSTEM
       skip_cleanup: true
       on:
         all_branches: true
-
 env:
   global:
-  - secure: "ELFgvd3Wm426wLb0jrQvHIQ9yqZsqvk7quQvMIWR7QcAf9IGsUwxlQHIT99Ol+czx+4oP4OMw+39obS9zBf4RmzOi1seqHrkix1bRjKtEgnYDZUum87V5AXRd1/4wv8o2+7TUli3fIF2bEK6CGhd7bs/Lt6TRD1GL6zVBnd6Wh4=" #target
+  - secure: ELFgvd3Wm426wLb0jrQvHIQ9yqZsqvk7quQvMIWR7QcAf9IGsUwxlQHIT99Ol+czx+4oP4OMw+39obS9zBf4RmzOi1seqHrkix1bRjKtEgnYDZUum87V5AXRd1/4wv8o2+7TUli3fIF2bEK6CGhd7bs/Lt6TRD1GL6zVBnd6Wh4=
+notifications:
+  slack:
+    secure: eq8Bc5kvNF8mxLu+uUVDUrl6wxAmUIJARxEEzNQaDnThPDqWD6t02mE/tcSvubNtwFT5GKDNSsIGc4GpIQBIL3okzK+qdiKDZ0cA/fPN9OOPkPCckAhkb3CxZytII3P+7+U2KOcNAubBxyrHtgNoMGn3ZQbURf7e8HXN8rMfDZV71uP5VayT7bPcVf/DOG+8Kh6kExYRHVuOjhPRODcn+KmxYRVd/pq3YXJVV2fff9x+0+i0Qk1H6ssFcOXYus036He08o+f6QGp4hiiiNwJxoyt9tBaxABW8n9J2tVPisAxUK4BRajYNGX3x2UiW3/Xs8nt5whMFGFFt1et/2yzLRVFD8e6vXL8ocx8jD2jRRVcFpkG+Ya3SWLs5ysAUt5B4SlbN3xSBNpSh1eWA8+DE7a/c91Kmg42QOH5HxqQd5p4/cY63OP7CR2gBFAIdwFFK5hTXlUfUAjR0FGzPeJK3ZeoF7Zhq/54SqO64WPc+qn0hnis7qINTUuaaAY16dtP0eVEjfYIM/jJpm1p7jTq7+tOFOWJF9NFYtJZsBOOFPuzS+41fkGil5BQddLRcig1ZqqJBRWWItHqX5Lr6lNfwsejrD9UAGinlh27HU3HC/6+Dg7jKZeqVODVmdYrV8hXm3h+PCYXtpY3g8ThIvHUzBxbIcYsZoIVRRhS8Kic0/4=
