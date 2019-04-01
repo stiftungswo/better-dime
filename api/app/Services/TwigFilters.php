@@ -5,7 +5,8 @@ namespace App\Services;
 //wire these up in twigbridge.php
 class TwigFilters
 {
-    static function formatChf($amount) {
+    static function formatChf($amount)
+    {
         return \number_format(round(($amount / 100 + 0.000001) * 20) / 20, 2, '.', "'");
     }
 
