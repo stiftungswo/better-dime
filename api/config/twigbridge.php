@@ -218,6 +218,12 @@ return [
         */
         'filters' => [
             'get' => 'data_get',
+            'chf' => [
+                'callback' => 'App\Services\TwigFilters::formatChf',
+                'is_safe'  => [
+                    'html'
+                ]
+            ],
             'money' => [
                 'callback' => 'App\Services\TwigFilters::formatMoney',
                 'is_safe'  => [

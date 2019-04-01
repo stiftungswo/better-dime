@@ -13,6 +13,7 @@ use App\Services\CostBreakdown;
 use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
+use App\Services\TwigFilters;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,8 +109,9 @@ class InvoiceController extends BaseController
 
         // format total
         $total = is_null($breakdown['fixedPrice']) ? $breakdown['total'] : $breakdown['fixedPrice'];
+        $formatedTotal = \number_format(round(($total / 100 + 0.000001) * 20) / 20, 2, '', '');
 
-        $splitted = str_split($total);
+        $splitted = str_split($formatedTotal);
         $first_part = "";
         $first_part .= implode('', array_slice($splitted, 0, -2));
         $first_part .= " ";
