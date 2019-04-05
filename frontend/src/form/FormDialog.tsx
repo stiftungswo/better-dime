@@ -54,6 +54,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
       <Formik
         {...rest}
         onSubmit={this.handleSubmit}
+        isInitialValid={true}
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />

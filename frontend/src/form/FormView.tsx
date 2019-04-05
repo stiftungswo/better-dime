@@ -43,6 +43,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
         {...rest}
         enableReinitialize
         onSubmit={this.handleSubmit}
+        isInitialValid={true}
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
