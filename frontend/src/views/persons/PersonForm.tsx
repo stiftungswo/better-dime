@@ -39,7 +39,14 @@ export default class PersonForm extends React.Component<Props> {
 
   componentWillMount() {
     const person = this.props.person;
-    const loadCompany = person && person.company_id ? this.props.companyStore!.fetchOne(person.company_id) : Promise.resolve();
+    const loadCompany = new Promise(res => {
+      if (person && person.company_id) {
+        this.props.companyStore!.fetchOne(person.company_id).then(() => res());
+      } else {
+        this.props.companyStore!.entity = undefined;
+        res();
+      }
+    });
     Promise.all([
       this.props.companyStore!.fetchAll(),
       this.props.customerTagStore!.fetchAll(),
