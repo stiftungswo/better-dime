@@ -93,7 +93,7 @@ export class TimetrackFilterStore {
   }
 
   private filterBy = <T extends Listing>(filterIds: number[]) => (entities: T[]) =>
-    filterIds.length === 0 ? entities : entities.filter(e => filterIds.includes(e.id));
+    filterIds && filterIds.length !== 0 ? entities.filter(e => filterIds.includes(e.id)) : entities;
 
   private filterEmptyGroups = <T extends WithEfforts>(group: T[]) => {
     return this.projectEffortFilter.showEmptyGroups ? group : group.filter(g => g.efforts.length > 0);

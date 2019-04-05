@@ -59,7 +59,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
         params: {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
-          employee_ids: filter.employeeIds.join(','),
+          employee_ids: filter.employeeIds ? filter.employeeIds.join(',') : '',
           project_ids: filter.projectIds.join(','),
           service_ids: filter.serviceIds.join(','),
           combine_times: filter.combineTimes,
@@ -67,7 +67,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
       });
       this.efforts = res.data;
     } catch (e) {
-      this.mainStore.displayError('Fehler beim laden der Leistungen');
+      this.mainStore.displayError('Fehler beim Laden der Leistungen');
     }
     this.loading = false;
   }

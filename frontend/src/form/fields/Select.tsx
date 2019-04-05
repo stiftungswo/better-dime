@@ -185,7 +185,7 @@ const components = {
 class IntegrationReactSelect extends React.Component<any> {
   public get value() {
     if (this.props.isMulti) {
-      return this.props.options.filter((e: any) => this.props.value.includes(e.value));
+      return this.props.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
     } else {
       return this.props.options.find((e: any) => e.value === this.props.value) || '';
     }
