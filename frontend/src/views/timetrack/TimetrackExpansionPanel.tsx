@@ -40,7 +40,11 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
     return (
       <Grid item xs={12}>
         <ExpansionPanel expanded={this.state.open} onChange={this.changeExpansion}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className={classNames({ [this.props.classes.selected]: selected })}>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            className={classNames({ [this.props.classes.selected]: selected })}
+            disableRipple={true}
+          >
             <Grid justify="space-between" container spacing={24} alignItems={'center'}>
               <Grid item>
                 <Typography variant={'h5'} color="inherit">

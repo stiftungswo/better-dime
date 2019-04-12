@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import { inject, observer } from 'mobx-react';
 import { ProjectStore } from '../../stores/projectStore';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikBag, FormikProps } from 'formik';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -15,6 +15,8 @@ import { localizeSchema, nullableNumber, selector } from '../../utilities/valida
 import Button from '@material-ui/core/Button/Button';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { HandleFormikSubmit } from '../../types';
+import { DimeField } from '../../form/fields/formik';
+import { FormDialog } from '../../form/FormDialog';
 
 const schema = localizeSchema(() =>
   yup.object({
@@ -41,55 +43,36 @@ interface Props {
 @inject('effortStore', 'projectStore', 'timetrackFilterStore')
 @observer
 export default class EffortMoveDialog extends React.Component<Props> {
-  public handleSubmit: HandleFormikSubmit<Values> = async (formValues, bag) => {
+  public handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
-    try {
-      await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);
-      await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
-      this.props.onClose();
-    } catch (e) {
-      bag.setSubmitting(false);
-    }
+
+    await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);
+    await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
+    this.props.onClose();
   };
 
   public render() {
     return (
-      <Dialog open onClose={this.props.onClose}>
-        <Formik
-          initialValues={template}
-          onSubmit={this.handleSubmit}
-          validationSchema={schema}
-          render={formikProps => (
-            <>
-              <DialogTitle>{this.props.effortIds.length} Aufwände verschieben</DialogTitle>
-              <DialogContent>
-                <Form>
-                  <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                      <Field component={ProjectSelect} name="project_id" label={'Projekt'} />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Field
-                        projectId={formikProps.values.project_id}
-                        component={ProjectPositionSelect}
-                        name="project_position"
-                        label={'Aktivität'}
-                        placeholder={'Beibehalten'}
-                      />
-                    </Grid>
-                  </Grid>
-                </Form>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.props.onClose}>Abbrechen</Button>
-                <Button onClick={() => formikProps.handleSubmit()} disabled={formikProps.isSubmitting}>
-                  Verschieben
-                </Button>
-              </DialogActions>
-            </>
-          )}
-        />
-      </Dialog>
+      <FormDialog
+        open
+        onClose={this.props.onClose}
+        title={`${this.props.effortIds.length} Aufwände verschieben`}
+        initialValues={template}
+        validationSchema={schema}
+        onSubmit={this.handleSubmit}
+        render={(formikProps: FormikProps<Values>) => (
+          <>
+            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+            <DimeField
+              component={ProjectPositionSelect}
+              projectId={formikProps.values.project_id}
+              name="project_position"
+              label={'Aktivität'}
+              placeholder={'Beibehalten'}
+            />
+          </>
+        )}
+      />
     );
   }
 }
