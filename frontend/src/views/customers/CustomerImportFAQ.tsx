@@ -1,5 +1,5 @@
-import React from 'react';
 import { Collapse, Typography } from '@material-ui/core';
+import React from 'react';
 
 interface TitleWithBodyProps {
   children: React.ReactNode;

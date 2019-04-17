@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
 import Overview, { Column } from '../../layout/Overview';
+import { MainStore } from '../../stores/mainStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateGroup } from '../../types';
+import compose from '../../utilities/compose';
 
 interface Props {
   mainStore?: MainStore;
@@ -13,12 +13,12 @@ interface Props {
 
 @compose(
   inject('mainStore', 'rateGroupStore'),
-  observer
+  observer,
 )
 export default class RateGroupOverview extends React.Component<Props> {
-  public columns: Array<Column<RateGroup>> = [];
+  columns: Array<Column<RateGroup>> = [];
 
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     this.columns = [
       {
@@ -34,7 +34,7 @@ export default class RateGroupOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     return <Overview searchable title={'Tarif-Gruppen'} store={this.props.rateGroupStore!} columns={this.columns} />;
   }
 }

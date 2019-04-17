@@ -40,7 +40,8 @@
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
-    "format": "prettier --write \"{src,cypress}/**/*.ts\" \"{src,cypress}/**/*.tsx\""
+    "format": "tslint --project . -t verbose --fix",
+    "lint": "tslint --project . -t verbose"
   },
   "devDependencies": {
     "@sentry/typescript": "^4.0.1",
@@ -51,7 +52,7 @@
     "@types/react-dom": "^16.0.9",
     "@types/react-router-dom": "^4.3.1",
     "@types/yup": "^0.26.4",
-    "prettier": "^1.14.3",
+    "tslint": "^5.16.0",
     "typescript": "^3.1.1"
   }
 }

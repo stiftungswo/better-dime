@@ -1,6 +1,6 @@
+import moment from 'moment';
 import * as yup from 'yup';
 import { Schema, setLocale } from 'yup';
-import moment from 'moment';
 import { apiDateFormat } from '../stores/apiStore';
 
 export const requiredMessage = 'Dies ist ein erforderliches Feld.';

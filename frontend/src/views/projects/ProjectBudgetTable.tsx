@@ -1,10 +1,10 @@
+import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { DimePaper } from '../../layout/DimePaper';
+import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import TableToolbar from '../../layout/TableToolbar';
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 
 interface Props {
   mainStore?: MainStore;
@@ -16,7 +16,7 @@ interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export class ProjectBudgetTable extends React.Component<Props> {
   render() {

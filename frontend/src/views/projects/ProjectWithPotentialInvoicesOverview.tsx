@@ -1,11 +1,11 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ProjectStore, ProjectWithPotentialInvoices } from '../../stores/projectStore';
-import compose from '../../utilities/compose';
-import Overview, { Column } from '../../layout/Overview';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { Project, ProjectListing } from '../../types';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { ProjectStore, ProjectWithPotentialInvoices } from '../../stores/projectStore';
+import { Project, ProjectListing } from '../../types';
+import compose from '../../utilities/compose';
 import { Formatter } from '../../utilities/formatter';
 
 export type Props = {
@@ -16,10 +16,10 @@ export type Props = {
 @compose(
   inject('projectStore', 'formatter'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class ProjectWithPotentialInvoicesOverview extends React.Component<Props> {
-  public columns: Column<ProjectWithPotentialInvoices>[];
+  columns: Array<Column<ProjectWithPotentialInvoices>>;
 
   constructor(props: Props) {
     super(props);
@@ -50,7 +50,7 @@ export default class ProjectWithPotentialInvoicesOverview extends React.Componen
     ];
   }
 
-  public render() {
+  render() {
     const projectStore = this.props.projectStore!;
 
     return (

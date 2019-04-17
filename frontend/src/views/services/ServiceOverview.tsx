@@ -1,13 +1,13 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Service } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import Overview, { Column } from '../../layout/Overview';
-import compose from '../../utilities/compose';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { ServiceListing } from '../../types';
+import compose from '../../utilities/compose';
 
 export type Props = {
   serviceStore?: ServiceStore;
@@ -17,10 +17,10 @@ export type Props = {
 @compose(
   inject('serviceStore', 'mainStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class ServiceOverview extends React.Component<Props> {
-  public columns: Array<Column<ServiceListing>> = [];
+  columns: Array<Column<ServiceListing>> = [];
 
   constructor(props: Props) {
     super(props);
@@ -50,7 +50,7 @@ export default class ServiceOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const serviceStore = this.props.serviceStore;
 
     return (

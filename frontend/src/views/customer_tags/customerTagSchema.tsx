@@ -5,7 +5,7 @@ export const customerTagSchema = localizeSchema(() =>
   yup.object({
     archived: yup.boolean(),
     name: yup.string().required(),
-  })
+  }),
 );
 
 export const customerTagTemplate = {

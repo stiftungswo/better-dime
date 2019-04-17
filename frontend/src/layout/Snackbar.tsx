@@ -1,13 +1,13 @@
+import { IconButton, Theme, WithStyles } from '@material-ui/core';
+import { green } from '@material-ui/core/colors';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import { IconButton, Theme, WithStyles } from '@material-ui/core';
 import { Notifier } from '../utilities/notifier';
 import { CloseIcon } from './icons';
-import createStyles from '@material-ui/core/styles/createStyles';
-import { green } from '@material-ui/core/colors';
-import withStyles from '@material-ui/core/styles/withStyles';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 const styles = createStyles((theme: Theme) => ({
   success: {
@@ -39,7 +39,7 @@ class DimeSnackbarInner extends React.Component<Props> {
           horizontal: 'left',
         }}
         open={notifier.open}
-        autoHideDuration={messageInfo.autoHideDuration as any} //tslint:disable-line:no-any ; null is valid according to docs
+        autoHideDuration={messageInfo.autoHideDuration as any} // tslint:disable-line:no-any ; null is valid according to docs
         onClose={notifier.handleClose}
         onExited={notifier.handleExited}
         ContentProps={{

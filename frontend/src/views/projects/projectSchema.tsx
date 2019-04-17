@@ -20,17 +20,17 @@ export const projectSchema = localizeSchema(() =>
         price_per_rate: requiredNumber(),
         rate_unit_id: selector(),
         vat: requiredNumber(),
-      })
+      }),
     ),
     costgroup_distributions: yup
       .array(
         yup.object({
           costgroup_number: requiredNumber(),
           weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
-        })
+        }),
       )
       .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
-  })
+  }),
 );
 
 export const projectTemplate = {

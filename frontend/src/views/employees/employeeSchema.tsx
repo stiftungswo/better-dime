@@ -19,10 +19,10 @@ export const editEmployeeSchema = localizeSchema(() =>
         start: dimeDate().required(),
         vacation_takeover: requiredNumber(),
         yearly_vacation_budget: requiredNumber(),
-      })
+      }),
     ),
     employee_group_id: selector(),
-  })
+  }),
 );
 
 export const newEmployeeSchema = localizeSchema(() =>
@@ -46,10 +46,10 @@ export const newEmployeeSchema = localizeSchema(() =>
         start: dimeDate().required(),
         vacation_takeover: requiredNumber(),
         yearly_vacation_budget: requiredNumber(),
-      })
+      }),
     ),
     employee_group_id: selector(),
-  })
+  }),
 );
 
 export const employeeTemplate = {

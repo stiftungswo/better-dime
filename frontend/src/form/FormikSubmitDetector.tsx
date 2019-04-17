@@ -1,7 +1,7 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import compose from '../utilities/compose';
+import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
+import compose from '../utilities/compose';
 
 interface Props {
   children: React.ReactNode;
@@ -12,17 +12,17 @@ interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export class FormikSubmitDetector extends React.Component<Props> {
-  // SOURCE: https://github.com/jaredpalmer/formik/issues/1019
-  public componentDidUpdate(prevProps: Props) {
+  //  SOURCE: https://github.com/jaredpalmer/formik/issues/1019
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.isSubmitting && !this.props.isSubmitting && !this.props.isValid) {
       this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
     }
   }
 
-  public render() {
+  render() {
     return <>{this.props.children}</>;
   }
 }

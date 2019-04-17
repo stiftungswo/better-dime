@@ -1,9 +1,9 @@
-import { AbstractStore } from './abstractStore';
-import { ProjectComment, ProjectEffortFilter } from '../types';
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
-import { MainStore } from './mainStore';
+import { ProjectComment, ProjectEffortFilter } from '../types';
+import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
+import { MainStore } from './mainStore';
 
 export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   protected get entityName(): { singular: string; plural: string } {
@@ -13,28 +13,8 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     };
   }
 
-  constructor(mainStore: MainStore) {
-    super(mainStore);
-  }
-
-  @observable
-  public editing: boolean = false;
-
-  @observable
-  public projectCommentTemplate: ProjectComment = {
-    comment: '',
-    date: moment(),
-    project_id: undefined,
-  };
-
-  @observable
-  public projectComments: ProjectComment[] = [];
-
-  @observable
-  public projectComment?: ProjectComment;
-
   @computed
-  get entities(): Array<ProjectComment> {
+  get entities(): ProjectComment[] {
     return this.projectComments;
   }
 
@@ -47,8 +27,28 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     this.projectComment = projectComment;
   }
 
+  @observable
+  editing: boolean = false;
+
+  @observable
+  projectCommentTemplate: ProjectComment = {
+    comment: '',
+    date: moment(),
+    project_id: undefined,
+  };
+
+  @observable
+  projectComments: ProjectComment[] = [];
+
+  @observable
+  projectComment?: ProjectComment;
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+  }
+
   @action
-  public async fetchFiltered(filter: ProjectEffortFilter) {
+  async fetchFiltered(filter: ProjectEffortFilter) {
     try {
       const res = await this.mainStore.api.get<ProjectComment[]>('/project_comments', {
         params: {

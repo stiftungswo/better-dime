@@ -1,24 +1,24 @@
-import { AbstractStore } from './abstractStore';
-import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
-import { MainStore } from './mainStore';
+import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
+import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
+import { MainStore } from './mainStore';
 
 export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
-  public effort?: ProjectEffort = undefined;
+  effort?: ProjectEffort = undefined;
   @observable
-  public efforts: ProjectEffortListing[] = [];
+  efforts: ProjectEffortListing[] = [];
 
   @observable
-  public editing: boolean = false;
+  editing: boolean = false;
 
   @observable
-  public moving: boolean = false;
+  moving: boolean = false;
 
   @observable
-  public effortTemplate: ProjectEffortTemplate = {
+  effortTemplate: ProjectEffortTemplate = {
     comment: '',
     date: moment(),
     employee_ids: this.mainStore.userId ? [this.mainStore.userId] : [],
@@ -27,20 +27,20 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     value: 1,
   };
   @observable
-  public loading: boolean = false;
+  loading: boolean = false;
   @observable
-  public selectedProject?: Project = undefined;
+  selectedProject?: Project = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
   @computed
-  public get entity(): ProjectEffort | undefined {
+  get entity(): ProjectEffort | undefined {
     return this.effort;
   }
 
-  public set entity(effort: ProjectEffort | undefined) {
+  set entity(effort: ProjectEffort | undefined) {
     this.effort = effort;
   }
 
@@ -52,7 +52,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   }
 
   @action
-  public async fetchFiltered(filter: ProjectEffortFilter) {
+  async fetchFiltered(filter: ProjectEffortFilter) {
     this.loading = true;
     try {
       const res = await this.mainStore.api.get<ProjectEffortListing[]>('/project_efforts', {
@@ -73,13 +73,13 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   }
 
   @action
-  public async move(effortIds: number[], targetProject: number, targetPosition: number | null) {
+  async move(effortIds: number[], targetProject: number, targetPosition: number | null) {
     await this.notifyProgress(() =>
       this.mainStore.api.put('project_efforts/move', {
         effort_ids: effortIds,
         project_id: targetProject,
         position_id: targetPosition || null,
-      })
+      }),
     );
   }
 

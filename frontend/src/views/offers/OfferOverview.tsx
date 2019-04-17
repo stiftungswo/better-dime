@@ -1,11 +1,11 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { OfferStore } from '../../stores/offerStore';
-import compose from '../../utilities/compose';
-import Overview, { Column } from '../../layout/Overview';
-import { ActionButtons } from '../../layout/ActionButtons';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { OfferStore } from '../../stores/offerStore';
 import { Offer, OfferListing } from '../../types';
+import compose from '../../utilities/compose';
 
 type Props = {
   offerStore?: OfferStore;
@@ -14,10 +14,10 @@ type Props = {
 @compose(
   inject('offerStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class OfferOverview extends React.Component<Props> {
-  public columns: Column<OfferListing>[];
+  columns: Array<Column<OfferListing>>;
 
   constructor(props: Props) {
     super(props);
@@ -38,7 +38,7 @@ export default class OfferOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const offerStore = this.props.offerStore!;
     return (
       <Overview

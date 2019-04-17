@@ -1,26 +1,26 @@
-import * as React from 'react';
-import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
-import { NumberField, TextField } from '../../form/fields/common';
+import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { Offer, OfferPosition, Service } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
-import TableToolbar from '../../layout/TableToolbar';
-import PercentageField from '../../form/fields/PercentageField';
+import * as React from 'react';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
+import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
-import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
-import { ServiceStore } from '../../stores/serviceStore';
-import { DimeTableCell } from '../../layout/DimeTableCell';
-import { Typography } from '@material-ui/core';
-import { DraggableTableBody } from '../invoices/DraggableTableBody';
-import { DragHandle } from '../../layout/icons';
-import { getInsertionIndex } from '../../utilities/getInsertionIndex';
 import { DimeField } from '../../form/fields/formik';
+import PercentageField from '../../form/fields/PercentageField';
+import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DragHandle } from '../../layout/icons';
+import TableToolbar from '../../layout/TableToolbar';
+import { MainStore } from '../../stores/mainStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import { Offer, OfferPosition, Service } from '../../types';
+import compose from '../../utilities/compose';
+import { getInsertionIndex } from '../../utilities/getInsertionIndex';
+import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 export interface Props {
   mainStore?: MainStore;
@@ -32,14 +32,14 @@ export interface Props {
 
 @compose(
   inject('mainStore', 'serviceStore'),
-  observer
+  observer,
 )
 export default class OfferPositionSubformInline extends React.Component<Props> {
   state = {
     dialogOpen: false,
   };
 
-  public handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
+  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
       throw new Error('no rate was found');
@@ -56,9 +56,9 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
       formikKey: Math.random(),
       description: '',
     });
-  };
+  }
 
-  public render() {
+  render() {
     const { values } = this.props.formikProps;
     const { disabled } = this.props;
     return (
@@ -72,8 +72,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                   title={'Services'}
                   numSelected={0}
                   addAction={
-                    disabled || !this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })
-                  }
+                    disabled || !this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
                 />
                 <div style={{ overflowX: 'auto' }}>
                   {!this.props.formikProps.values.rate_group_id && (

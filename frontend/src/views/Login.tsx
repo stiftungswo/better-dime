@@ -1,24 +1,24 @@
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
+import { Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import * as yup from 'yup';
+import Typography from '@material-ui/core/Typography';
 import { Formik } from 'formik';
-import { EmailField, PasswordField } from '../form/fields/common';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Theme } from '@material-ui/core';
-import compose from '../utilities/compose';
-import { MainStore } from '../stores/mainStore';
-import { LogoIcon } from '../layout/icons';
-import { HandleFormikSubmit } from '../types';
-import { ApiStore } from '../stores/apiStore';
-import { localizeSchema } from '../utilities/validation';
+import * as yup from 'yup';
+import { EmailField, PasswordField } from '../form/fields/common';
 import { DimeField } from '../form/fields/formik';
+import { LogoIcon } from '../layout/icons';
+import { ApiStore } from '../stores/apiStore';
+import { MainStore } from '../stores/mainStore';
+import { HandleFormikSubmit } from '../types';
+import compose from '../utilities/compose';
+import { localizeSchema } from '../utilities/validation';
 
 const styles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -54,11 +54,11 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       backgroundColor: palette.primary.main,
     },
     attributions: {
-      position: 'absolute',
-      bottom: spacing.unit,
-      right: spacing.unit,
-      textAlign: 'right',
-      color: '#ddd',
+      'position': 'absolute',
+      'bottom': spacing.unit,
+      'right': spacing.unit,
+      'textAlign': 'right',
+      'color': '#ddd',
       '& a': {
         color: '#ccc',
       },
@@ -74,16 +74,16 @@ const loginSchema = localizeSchema(() =>
   yup.object({
     email: yup.string().required(),
     password: yup.string().required(),
-  })
+  }),
 );
 
 @compose(
   withRouter,
   inject('mainStore', 'apiStore'),
-  observer
+  observer,
 )
 class Login extends React.Component<Props> {
-  public handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = async (values, formikBag) => {
+  handleSubmit: HandleFormikSubmit<{ email: string; password: string }> = async (values, formikBag) => {
     try {
       await this.props.apiStore!.postLogin({ ...values });
       this.props.history.replace('/');
@@ -95,9 +95,9 @@ class Login extends React.Component<Props> {
       }
     }
     formikBag.setSubmitting(false);
-  };
+  }
 
-  public render() {
+  render() {
     const { classes } = this.props;
 
     return (

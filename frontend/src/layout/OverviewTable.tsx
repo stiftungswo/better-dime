@@ -1,17 +1,17 @@
-import * as React from 'react';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
-import { Column } from './Overview';
 import { observer } from 'mobx-react';
+import * as React from 'react';
 import compose from '../utilities/compose';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { DimeTableCell } from './DimeTableCell';
+import { Column } from './Overview';
 
 const styles = createStyles({
   hideActions: {
@@ -26,7 +26,7 @@ const styles = createStyles({
   },
 });
 
-//tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
+// tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
 
 function desc(a: any, b: any, orderBy: string): number {
   if (b[orderBy] < a[orderBy]) {
@@ -38,7 +38,7 @@ function desc(a: any, b: any, orderBy: string): number {
   return 0;
 }
 
-function stableSort<T>(array: Array<T>, cmp: any): Array<T> {
+function stableSort<T>(array: T[], cmp: any): T[] {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a: any, b: any) => {
     const order = cmp(a[0], b[0]);
@@ -62,12 +62,12 @@ function format<T>(def: Column<T>, row: T): React.ReactNode {
   }
 }
 
-//tslint:enable:no-any
+// tslint:enable:no-any
 
 interface TableProps<T> extends WithStyles<typeof styles> {
   columns: Array<Column<T>>;
   renderActions?: (e: T) => React.ReactNode;
-  data: Array<T>;
+  data: T[];
   onClickRow?: (e: T, index: number) => void;
   noSort?: boolean;
   selected?: number[];
@@ -99,7 +99,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     }
   }
 
-  public handleRequestSort = (event: React.MouseEvent<HTMLElement>, property: string) => {
+  handleRequestSort = (event: React.MouseEvent<HTMLElement>, property: string) => {
     const orderBy = property;
     let order: Direction = 'desc';
 
@@ -108,19 +108,19 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     }
 
     this.setState({ order, orderBy });
-  };
+  }
 
-  public createSortHandler = (property: string) => (event: React.MouseEvent<HTMLElement>) => {
+  createSortHandler = (property: string) => (event: React.MouseEvent<HTMLElement>) => {
     this.handleRequestSort(event, property);
-  };
+  }
 
-  public handleRowClick = (row: T, index: number) => (e: React.MouseEvent<HTMLElement>) => {
+  handleRowClick = (row: T, index: number) => (e: React.MouseEvent<HTMLElement>) => {
     if (this.props.onClickRow) {
       this.props.onClickRow(row, index);
     }
-  };
+  }
 
-  public get selectAllState() {
+  get selectAllState() {
     const selected = this.props.selected;
     if (selected) {
       if (selected.length === 0) {
@@ -134,21 +134,21 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     return {};
   }
 
-  public handleSelectAll = () => {
+  handleSelectAll = () => {
     const selected = this.props.selected!;
     if (selected.length === 0) {
       this.props.data.forEach(e => this.props.setSelected!(e, true));
     } else {
       this.props.data.forEach(e => this.props.setSelected!(e, false));
     }
-  };
+  }
 
-  public RowCheckbox = ({ row }: { row: T }) => {
+  RowCheckbox = ({ row }: { row: T }) => {
     const checked = this.props.selected!.includes(row.id!);
     return <Checkbox checked={checked} onClick={() => this.props.setSelected!(row, !checked)} />;
-  };
+  }
 
-  public render() {
+  render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
     const sortedData = noSort ? data : stableSort(data, getSorting(order, orderBy));

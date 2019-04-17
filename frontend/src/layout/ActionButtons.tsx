@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { ActionButton, ActionButtonAction } from './ActionButton';
 import { DeleteButton } from './ConfirmationDialog';
-import * as React from 'react';
 import { ArchiveIcon, CopyIcon, EditIcon, RestoreIcon } from './icons';
 
 interface ActionProps {

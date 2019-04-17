@@ -1,11 +1,11 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { Employee, EmployeeListing } from '../../types';
-import Overview, { Column } from '../../layout/Overview';
 import compose from '../../utilities/compose';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { RouteComponentProps, withRouter } from 'react-router';
 
 type Props = {
   employeeStore?: EmployeeStore;
@@ -14,10 +14,10 @@ type Props = {
 @compose(
   inject('employeeStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class EmployeeOverview extends React.Component<Props> {
-  public columns: Array<Column<Employee>>;
+  columns: Array<Column<Employee>>;
 
   constructor(props: Props) {
     super(props);
@@ -51,7 +51,7 @@ export default class EmployeeOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const employeeStore = this.props.employeeStore;
 
     return (

@@ -1,11 +1,11 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { CompanyStore } from '../../stores/companyStore';
-import Overview, { Column } from '../../layout/Overview';
-import compose from '../../utilities/compose';
-import { ActionButtons } from '../../layout/ActionButtons';
+import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { CompanyStore } from '../../stores/companyStore';
 import { Company } from '../../types';
+import compose from '../../utilities/compose';
 
 type Props = {
   companyStore?: CompanyStore;
@@ -14,10 +14,10 @@ type Props = {
 @compose(
   inject('companyStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class CompanyOverview extends React.Component<Props> {
-  public columns: Array<Column<Company>>;
+  columns: Array<Column<Company>>;
 
   constructor(props: Props) {
     super(props);
@@ -48,7 +48,7 @@ export default class CompanyOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const companyStore = this.props.companyStore!;
 
     return (

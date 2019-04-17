@@ -1,8 +1,8 @@
 import { computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { Service } from '../types';
 import { ServiceListing } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export interface GlobalSettings {
   sender_name: string;
@@ -29,16 +29,16 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
   }
 
   @computed
-  public get entity(): GlobalSettings | undefined {
+  get entity(): GlobalSettings | undefined {
     return this.settings;
   }
 
-  public set entity(settings: GlobalSettings | undefined) {
+  set entity(settings: GlobalSettings | undefined) {
     this.settings = settings;
   }
 
   @observable
-  public settings?: GlobalSettings = undefined;
+  settings?: GlobalSettings = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);

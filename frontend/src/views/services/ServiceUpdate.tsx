@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
-import { ServiceStore } from '../../stores/serviceStore';
-import { RouteComponentProps } from 'react-router';
-import ServiceForm from './ServiceForm';
-import { Service } from '../../types';
-import { inject } from 'mobx-react';
-import compose from '../../utilities/compose';
 import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { inject } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { ServiceStore } from '../../stores/serviceStore';
+import { Service } from '../../types';
+import compose from '../../utilities/compose';
+import ServiceForm from './ServiceForm';
 
 interface ServiceDetailRouterProps {
   id?: string;
@@ -18,7 +18,7 @@ export interface Props extends RouteComponentProps<ServiceDetailRouterProps> {
 
 @compose(
   inject('offerStore', 'serviceStore'),
-  observer
+  observer,
 )
 export default class ServiceUpdate extends React.Component<Props> {
   constructor(props: Props) {
@@ -26,9 +26,9 @@ export default class ServiceUpdate extends React.Component<Props> {
     props.serviceStore!.fetchOne(Number(props.match.params.id));
   }
 
-  public handleSubmit = (service: Service) => this.props.serviceStore!.put(service);
+  handleSubmit = (service: Service) => this.props.serviceStore!.put(service);
 
-  public render() {
+  render() {
     const serviceStore = this.props.serviceStore!;
     const service: Service | undefined = serviceStore.service ? toJS(serviceStore.service) : undefined;
     const title = service ? `${service.name} - Services` : 'Service bearbeiten';

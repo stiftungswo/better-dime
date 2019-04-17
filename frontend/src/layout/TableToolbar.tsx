@@ -1,15 +1,15 @@
-import compose from '../utilities/compose';
+import { Theme } from '@material-ui/core';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography/Typography';
-import { FormHeader } from './FormHeader';
-import { DeleteButton } from './ConfirmationDialog';
-import { ActionButton, ActionButtonAction } from './ActionButton';
+import classNames from 'classnames';
 import * as React from 'react';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
+import compose from '../utilities/compose';
+import { ActionButton, ActionButtonAction } from './ActionButton';
+import { DeleteButton } from './ConfirmationDialog';
+import { FormHeader } from './FormHeader';
 import { AddIcon } from './icons';
-import { Theme } from '@material-ui/core';
 
 const toolbarStyles = (theme: Theme) => ({
   root: {

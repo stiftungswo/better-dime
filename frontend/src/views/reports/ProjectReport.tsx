@@ -1,21 +1,21 @@
-import React from 'react';
-import moment from 'moment';
-import { DimeAppBar } from '../../layout/DimeAppBar';
-import { DimeContent } from '../../layout/DimeContent';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { MainStore } from '../../stores/mainStore';
+import Grid from '@material-ui/core/Grid';
+import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { DateSpanPicker } from './DateSpanPicker';
+import moment from 'moment';
+import React from 'react';
+import * as yup from 'yup';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import CurrencyField from '../../form/fields/CurrencyField';
-import PercentageField from '../../form/fields/PercentageField';
-import { ProjectStore } from '../../stores/projectStore';
-import { Formik } from 'formik';
 import { DimeField } from '../../form/fields/formik';
+import PercentageField from '../../form/fields/PercentageField';
+import { DimeAppBar } from '../../layout/DimeAppBar';
+import { DimeContent } from '../../layout/DimeContent';
+import { MainStore } from '../../stores/mainStore';
+import { ProjectStore } from '../../stores/projectStore';
+import compose from '../../utilities/compose';
 import { dimeDate, requiredNumber, selector } from '../../utilities/validation';
-import * as yup from 'yup';
+import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
@@ -44,10 +44,10 @@ const schema = yup.object({
 
 @compose(
   inject('mainStore', 'projectStore'),
-  observer
+  observer,
 )
 export class ProjectReport extends React.Component<Props, State> {
-  public state = {
+  state = {
     loading: true,
   };
 
@@ -56,7 +56,7 @@ export class ProjectReport extends React.Component<Props, State> {
     this.setState({ loading: false });
   }
 
-  public render() {
+  render() {
     return (
       <>
         <DimeAppBar title={'Projektrapport'} />

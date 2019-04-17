@@ -1,16 +1,16 @@
-import React from 'react';
+import { Typography } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { inject, observer } from 'mobx-react';
 import moment from 'moment';
+import React from 'react';
+import { ExportGroupingSelect } from '../../form/entitySelect/ExportGroupingSelect';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import { MainStore } from '../../stores/mainStore';
-import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { ExportGroupingSelect } from '../../form/entitySelect/ExportGroupingSelect';
-import { Typography } from '@material-ui/core';
-import { DateSpanPicker } from './DateSpanPicker';
 import { apiDateFormat } from '../../stores/apiStore';
+import { MainStore } from '../../stores/mainStore';
+import compose from '../../utilities/compose';
+import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
@@ -18,16 +18,16 @@ interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export class ServiceReports extends React.Component<Props> {
-  public state = {
+  state = {
     start: moment().startOf('year'),
     end: moment().endOf('year'),
     grouping: 'project',
   };
 
-  public render() {
+  render() {
     return (
       <>
         <DimeAppBar title={'Service-Rapporte'} />

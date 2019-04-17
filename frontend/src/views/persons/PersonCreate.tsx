@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import PersonForm from './PersonForm';
-import compose from '../../utilities/compose';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { Person } from '../../types';
+import compose from '../../utilities/compose';
+import PersonForm from './PersonForm';
 
 export interface Props extends RouteComponentProps {
   peopleStore?: PeopleStore;
@@ -12,22 +12,22 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('peopleStore'),
-  observer
+  observer,
 )
 export default class PersonCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (person: Person) => {
+  handleSubmit = (person: Person) => {
     return this.props.peopleStore!.post(person).then(() => {
       this.setState({ submitted: true });
       const idOfNewPerson = this.props!.peopleStore!.person!.id;
       this.props.history.replace('/persons/' + idOfNewPerson);
     });
-  };
+  }
 
-  public render() {
+  render() {
     const person: Person = {
       type: 'person',
       id: 0,

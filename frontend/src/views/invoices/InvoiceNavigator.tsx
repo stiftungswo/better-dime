@@ -1,8 +1,8 @@
+import Tab from '@material-ui/core/Tab/Tab';
+import Tabs from '@material-ui/core/Tabs/Tabs';
+import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Invoice } from '../../types';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import * as React from 'react';
 
 interface NavigatorProps extends RouteComponentProps {
   invoice: Invoice;

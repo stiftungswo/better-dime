@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { Column } from '../../layout/Overview';
+import * as React from 'react';
+import { SwitchField, TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
+import { Column } from '../../layout/Overview';
 import { CustomerTagStore } from '../../stores/customerTagStore';
-import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
+import { MainStore } from '../../stores/mainStore';
 import { CustomerTag } from '../../types';
-import { DimeField } from '../../form/fields/formik';
-import { SwitchField, TextField } from '../../form/fields/common';
+import compose from '../../utilities/compose';
+import { customerTagSchema, customerTagTemplate } from './customerTagSchema';
 
 interface Props {
   mainStore?: MainStore;
@@ -18,12 +18,12 @@ interface Props {
 
 @compose(
   inject('mainStore', 'customerTagStore'),
-  observer
+  observer,
 )
 export default class CustomerTagOverview extends React.Component<Props> {
-  public columns: Array<Column<CustomerTag>> = [];
+  columns: Array<Column<CustomerTag>> = [];
 
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     this.columns = [
       {
@@ -39,7 +39,7 @@ export default class CustomerTagOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const customerTagStore = this.props.customerTagStore;
 
     return (

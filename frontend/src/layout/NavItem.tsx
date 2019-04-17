@@ -1,15 +1,15 @@
 import { Theme, WithStyles } from '@material-ui/core';
-import * as React from 'react';
-import { ComponentType } from 'react';
-import compose from '../utilities/compose';
 import withStyles from '@material-ui/core/es/styles/withStyles';
-import { Route, RouteComponentProps } from 'react-router';
-import UnstyledLink from './UnstyledLink';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import { ArrowRightIcon } from './icons';
 import classNames from 'classnames';
+import * as React from 'react';
+import { ComponentType } from 'react';
+import { Route, RouteComponentProps } from 'react-router';
+import compose from '../utilities/compose';
+import { ArrowRightIcon } from './icons';
+import UnstyledLink from './UnstyledLink';
 
 export const styles = (theme: Theme) => ({
   default: {
@@ -50,5 +50,5 @@ export const NavItem = compose(withStyles(styles))(
         )}
       />
     );
-  }
+  },
 );

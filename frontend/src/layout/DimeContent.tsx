@@ -1,9 +1,9 @@
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import * as React from 'react';
+import { ErrorBoundary } from '../utilities/ErrorBoundary';
 import { styles } from './DimeLayout';
 import { DimePaper } from './DimePaper';
 import { LoadingSpinner } from './LoadingSpinner';
-import { ErrorBoundary } from '../utilities/ErrorBoundary';
 
 interface DimeContentProps extends WithStyles<typeof styles> {
   children?: React.ReactNode;

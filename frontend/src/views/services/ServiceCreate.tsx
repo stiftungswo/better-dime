@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { inject, observer } from 'mobx-react';
-import { ServiceStore } from '../../stores/serviceStore';
-import { RouteComponentProps } from 'react-router';
-import ServiceForm from './ServiceForm';
-import compose from '../../utilities/compose';
-import { RateGroup, Service } from '../../types';
-import { RateGroupStore } from '../../stores/rateGroupStore';
 import { computed } from 'mobx';
-import { empty } from '../../utilities/helpers';
-import { serviceTemplate } from './serviceSchema';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import { RateGroup, Service } from '../../types';
 import { FormValues } from '../../types';
+import compose from '../../utilities/compose';
+import { empty } from '../../utilities/helpers';
+import ServiceForm from './ServiceForm';
+import { serviceTemplate } from './serviceSchema';
 
 export interface Props extends RouteComponentProps {
   serviceStore?: ServiceStore;
@@ -18,20 +18,20 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('serviceStore', 'rateGroupStore'),
-  observer
+  observer,
 )
 export default class ServiceCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (service: Service) => {
+  handleSubmit = (service: Service) => {
     return this.props.serviceStore!.post(service).then(() => {
       this.setState({ submitted: true });
       const idOfNewService = this.props!.serviceStore!.service!.id;
       this.props.history.replace('/services/' + idOfNewService);
     });
-  };
+  }
 
   @computed
   get serviceRates() {
@@ -53,12 +53,12 @@ export default class ServiceCreate extends React.Component<Props> {
     };
   }
 
-  public render() {
+  render() {
     return (
       <ServiceForm
         title={'Service erstellen'}
         onSubmit={this.handleSubmit}
-        //tslint:disable-next-line:no-any ; at some point we need to address the disparity between template and domain types
+        // tslint:disable-next-line:no-any ; at some point we need to address the disparity between template and domain types
         service={this.service as any}
         loading={empty(this.serviceRates)}
         submitted={this.state.submitted}

@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { ProjectStore } from '../../stores/projectStore';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import ProjectForm from './ProjectForm';
-import compose from '../../utilities/compose';
+import { MainStore } from '../../stores/mainStore';
+import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { FormValues, Project } from '../../types';
+import compose from '../../utilities/compose';
+import ProjectForm from './ProjectForm';
 import { projectTemplate } from './projectSchema';
-import { MainStore } from '../../stores/mainStore';
 
 export interface Props extends RouteComponentProps {
   projectStore?: ProjectStore;
@@ -17,7 +17,7 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('projectStore', 'mainStore'),
-  observer
+  observer,
 )
 export default class ProjectCreate extends React.Component<Props> {
   state = {
@@ -28,15 +28,15 @@ export default class ProjectCreate extends React.Component<Props> {
     super(props);
   }
 
-  public handleSubmit = (project: Project) => {
+  handleSubmit = (project: Project) => {
     return this.props.projectStore!.post(project).then(() => {
       this.setState({ submitted: true });
       const idOfNewProject = this.props!.projectStore!.project!.id;
       this.props.history.replace('/projects/' + idOfNewProject);
     });
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <ProjectForm
         title={'Projekt erstellen'}

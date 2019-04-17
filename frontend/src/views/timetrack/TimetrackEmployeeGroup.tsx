@@ -1,15 +1,15 @@
-import React from 'react';
-import { EmployeeListing, ProjectEffortListing } from '../../types';
-import { Column } from '../../layout/Overview';
-import { TimetrackEntityGroup } from './TimetrackEntityGroup';
-import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { EntityGroup, WithEfforts } from './types';
-import { AddEffortIcon } from '../../layout/icons';
+import React from 'react';
 import { ActionButton } from '../../layout/ActionButton';
-import { sum } from '../../utilities/helpers';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { AddEffortIcon } from '../../layout/icons';
+import { Column } from '../../layout/Overview';
 import PrintButton from '../../layout/PrintButton';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { EmployeeListing, ProjectEffortListing } from '../../types';
+import compose from '../../utilities/compose';
+import { sum } from '../../utilities/helpers';
+import { TimetrackEntityGroup } from './TimetrackEntityGroup';
+import { EntityGroup, WithEfforts } from './types';
 
 interface Props extends EntityGroup {
   entity: EmployeeListing & WithEfforts;
@@ -18,12 +18,12 @@ interface Props extends EntityGroup {
 
 @compose(
   inject('effortStore', 'formatter', 'timetrackFilterStore'),
-  observer
+  observer,
 )
 export default class TimetrackEmployeeGroup extends React.Component<Props> {
-  private columns: Column<ProjectEffortListing>[];
+  private columns: Array<Column<ProjectEffortListing>>;
 
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     const formatter = props.formatter!;
     this.columns = [
@@ -57,20 +57,20 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
     ];
   }
 
-  public generateEffortReportUrl = (): object => {
+  generateEffortReportUrl = (): object => {
     return {
       end: this.props.timetrackFilterStore!.filter.end.format('YYYY-MM-DD'),
       start: this.props.timetrackFilterStore!.filter.start.format('YYYY-MM-DD'),
     };
-  };
+  }
 
-  public onEffortAdd = () => {
+  onEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
     this.props.effortStore!.effortTemplate!.employee_ids = [this.props.entity.id];
     this.props.effortStore!.editing = true;
-  };
+  }
 
-  public render() {
+  render() {
     const { entity } = this.props;
     const efforts = entity.efforts;
     const workedMinutes = sum(efforts.filter(e => e.rate_unit_is_time).map(e => e.effort_value));

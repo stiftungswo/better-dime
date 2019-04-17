@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { Employee } from '../../types';
-import { inject, observer } from 'mobx-react';
-import { EmployeeStore } from '../../stores/employeeStore';
-import { RouteComponentProps } from 'react-router';
-import EmployeeForm from './EmployeeForm';
-import compose from '../../utilities/compose';
-import { editEmployeeSchema } from './employeeSchema';
 import { toJS } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { Employee } from '../../types';
+import compose from '../../utilities/compose';
+import EmployeeForm from './EmployeeForm';
+import { editEmployeeSchema } from './employeeSchema';
 
 interface EmployeeDetailRouterProps {
   id?: string;
@@ -18,7 +18,7 @@ export interface Props extends RouteComponentProps<EmployeeDetailRouterProps> {
 
 @compose(
   inject('employeeStore'),
-  observer
+  observer,
 )
 export default class EmployeeUpdate extends React.Component<Props> {
   constructor(props: Props) {
@@ -26,11 +26,11 @@ export default class EmployeeUpdate extends React.Component<Props> {
     props.employeeStore!.fetchOne(Number(props.match.params.id));
   }
 
-  public handleSubmit = (employee: Employee) => {
+  handleSubmit = (employee: Employee) => {
     return this.props.employeeStore!.put(employee);
-  };
+  }
 
-  public render() {
+  render() {
     const employee: Employee | undefined = this.props!.employeeStore!.employee;
     const title = employee ? `${employee.first_name} ${employee.last_name} - Mitarbeiter` : 'Mitarbeiter bearbeiten';
 

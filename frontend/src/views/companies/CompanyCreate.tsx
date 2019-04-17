@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import CompanyForm from './CompanyForm';
-import compose from '../../utilities/compose';
 import { CompanyStore } from 'src/stores/companyStore';
 import { Company } from '../../types';
+import compose from '../../utilities/compose';
+import CompanyForm from './CompanyForm';
 
 export interface Props extends RouteComponentProps {
   companyStore?: CompanyStore;
@@ -12,21 +12,21 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('companyStore'),
-  observer
+  observer,
 )
 export default class CompanyCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (company: Company) =>
+  handleSubmit = (company: Company) =>
     this.props.companyStore!.post(company).then(() => {
       this.setState({ submitted: true });
       const idOfNewPerson = this.props!.companyStore!.company!.id;
       this.props.history.replace('/companies/' + idOfNewPerson);
-    });
+    })
 
-  public render() {
+  render() {
     const company: Company = {
       type: 'company',
       id: 0,

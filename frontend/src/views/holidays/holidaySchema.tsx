@@ -6,7 +6,7 @@ export const holidaySchema = localizeSchema(() =>
     name: yup.string().required(),
     date: dimeDate().required(),
     duration: requiredNumber(),
-  })
+  }),
 );
 
 export const holidayTemplate = {

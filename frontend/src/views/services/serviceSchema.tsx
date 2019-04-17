@@ -14,10 +14,10 @@ export const serviceSchema = localizeSchema(() =>
         rate_group_id: selector(),
         rate_unit_id: selector(),
         value: requiredNumber(),
-      })
+      }),
     ),
     order: requiredNumber(),
-  })
+  }),
 );
 
 export const serviceTemplate = {

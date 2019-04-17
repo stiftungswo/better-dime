@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { RateGroup } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class RateGroupStore extends AbstractStore<RateGroup> {
   protected get entityName() {
@@ -12,31 +12,31 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
   }
 
   @observable
-  public rateGroups: RateGroup[] = [];
+  rateGroups: RateGroup[] = [];
 
   @observable
-  public rateGroup?: RateGroup;
+  rateGroup?: RateGroup;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (r: RateGroup) =>
-    r.name.toLowerCase().includes(this.searchQuery) || r.description.toLowerCase().includes(this.searchQuery);
+  filter = (r: RateGroup) =>
+    r.name.toLowerCase().includes(this.searchQuery) || r.description.toLowerCase().includes(this.searchQuery)
 
   @action
-  public async doFetchAll() {
+  async doFetchAll() {
     const res = await this.mainStore.api.get<RateGroup[]>('/rate_groups');
     this.rateGroups = res.data;
   }
 
   @action
-  public async doPost(rateGroup: RateGroup) {
+  async doPost(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 
   @action
-  public async doPut(rateGroup: RateGroup) {
+  async doPut(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 
@@ -55,7 +55,7 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
   }
 
   @computed
-  get entities(): Array<RateGroup> {
+  get entities(): RateGroup[] {
     return this.rateGroups;
   }
 }

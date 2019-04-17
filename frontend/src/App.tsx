@@ -1,49 +1,49 @@
 import * as React from 'react';
 
-import OfferOverview from './views/offers/OfferOverview';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Login from './views/Login';
 import DimeLayout from './layout/DimeLayout';
-import EmployeeOverview from './views/employees/EmployeeOverview';
-import EmployeeUpdateView from './views/employees/EmployeeUpdate';
-import EmployeeCreateView from './views/employees/EmployeeCreate';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
-import HolidayOverview from './views/holidays/HolidayOverview';
-import ServiceOverview from './views/services/ServiceOverview';
-import ServiceUpdate from './views/services/ServiceUpdate';
-import ServiceCreate from './views/services/ServiceCreate';
-import OfferCreate from './views/offers/OfferCreate';
-import OfferUpdate from './views/offers/OfferUpdate';
-import RateUnitOverview from './views/rate_units/RateUnitOverview';
-import RateGroupOverview from './views/rate_groups/RateGroupOverview';
-import ProjectCategoryOverview from './views/project_categories/ProjectCategoryOverview';
-import CustomerTagOverview from './views/customer_tags/CustomerTagOverview';
-import ProjectOverview from './views/projects/ProjectOverview';
-import ProjectUpdate from './views/projects/ProjectUpdate';
-import ProjectCreate from './views/projects/ProjectCreate';
-import InvoiceOverview from './views/invoices/InvoiceOverview';
-import InvoiceUpdate from './views/invoices/InvoiceUpdate';
-import InvoiceCreate from './views/invoices/InvoiceCreate';
-import Timetrack from './views/timetrack/Timetrack';
-import PersonOverview from './views/persons/PersonOverview';
-import PersonCreate from './views/persons/PersonCreate';
-import PersonUpdate from './views/persons/PersonUpdate';
+import CompanyCreate from './views/companies/CompanyCreate';
 import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
-import CompanyCreate from './views/companies/CompanyCreate';
+import CustomerTagOverview from './views/customer_tags/CustomerTagOverview';
 import { CustomerImportExportOverview } from './views/customers/CustomerImportExportOverview';
-import DailyReport from './views/reports/DailyReport';
-import NotFound from './views/NotFound';
-import { ServiceReports } from './views/reports/ServiceReports';
-import { RevenueReport } from './views/reports/RevenueReport';
-import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
-import { ProjectReport } from './views/reports/ProjectReport';
 import EmployeeGroupOverview from './views/EmployeeGroupOverview';
+import EmployeeCreateView from './views/employees/EmployeeCreate';
+import EmployeeOverview from './views/employees/EmployeeOverview';
+import EmployeeUpdateView from './views/employees/EmployeeUpdate';
+import { GlobalSettingsUpdate } from './views/GlobalSettingsUpdate';
+import HolidayOverview from './views/holidays/HolidayOverview';
+import InvoiceCreate from './views/invoices/InvoiceCreate';
+import InvoiceOverview from './views/invoices/InvoiceOverview';
+import InvoiceUpdate from './views/invoices/InvoiceUpdate';
+import Login from './views/Login';
+import NotFound from './views/NotFound';
+import OfferCreate from './views/offers/OfferCreate';
+import OfferOverview from './views/offers/OfferOverview';
+import OfferUpdate from './views/offers/OfferUpdate';
+import PersonCreate from './views/persons/PersonCreate';
+import PersonOverview from './views/persons/PersonOverview';
+import PersonUpdate from './views/persons/PersonUpdate';
+import ProjectCategoryOverview from './views/project_categories/ProjectCategoryOverview';
+import ProjectCreate from './views/projects/ProjectCreate';
+import ProjectOverview from './views/projects/ProjectOverview';
+import ProjectUpdate from './views/projects/ProjectUpdate';
 import ProjectWithPotentialInvoicesOverview from './views/projects/ProjectWithPotentialInvoicesOverview';
+import RateGroupOverview from './views/rate_groups/RateGroupOverview';
+import RateUnitOverview from './views/rate_units/RateUnitOverview';
+import DailyReport from './views/reports/DailyReport';
 import { PercentageReport } from './views/reports/PercentageReport';
+import { ProjectReport } from './views/reports/ProjectReport';
+import { RevenueReport } from './views/reports/RevenueReport';
+import { ServiceReports } from './views/reports/ServiceReports';
+import ServiceCreate from './views/services/ServiceCreate';
+import ServiceOverview from './views/services/ServiceOverview';
+import ServiceUpdate from './views/services/ServiceUpdate';
+import Timetrack from './views/timetrack/Timetrack';
 
 class App extends React.Component {
-  public render() {
+  render() {
     return (
       <Switch>
         <Route exact path="/login" component={Login} />

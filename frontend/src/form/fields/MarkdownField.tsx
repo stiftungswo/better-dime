@@ -1,9 +1,9 @@
-import * as React from 'react';
-import Grid from '@material-ui/core/Grid/Grid';
-import { DimeFormControl, DimeInputFieldProps } from './common';
 import { IconButton, InputAdornment, Tooltip } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid/Grid';
+import * as React from 'react';
 import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 import { MarkdownRender } from '../../layout/MarkdownRender';
+import { DimeFormControl, DimeInputFieldProps } from './common';
 import { DelayedInput } from './formik';
 
 export class MarkdownField extends React.Component<DimeInputFieldProps> {
@@ -40,5 +40,5 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
         </Grid>
       </Grid>
     );
-  };
+  }
 }

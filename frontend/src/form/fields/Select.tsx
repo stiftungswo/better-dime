@@ -1,20 +1,20 @@
 // https://material-ui.com/demos/autocomplete/#react-select
 // tslint:disable:no-any ; This is adapted from the above example and should work as is; however, we should probably add types some time.
 
-import React from 'react';
-import classNames from 'classnames';
-import Select from 'react-select';
-import { Theme, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import { Theme, withStyles } from '@material-ui/core/styles';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import { DimeCustomFieldProps, DimeFormControl } from './common';
-import { CancelIcon } from '../../layout/icons';
 import createStyles from '@material-ui/core/styles/createStyles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
+import React from 'react';
+import Select from 'react-select';
 import { ActionMeta, ActionTypes } from 'react-select/lib/types';
+import { CancelIcon } from '../../layout/icons';
+import { DimeCustomFieldProps, DimeFormControl } from './common';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -183,7 +183,7 @@ const components = {
  *    The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
  */
 class IntegrationReactSelect extends React.Component<any> {
-  public get value() {
+  get value() {
     if (this.props.isMulti) {
       return this.props.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
     } else {
@@ -191,14 +191,14 @@ class IntegrationReactSelect extends React.Component<any> {
     }
   }
 
-  public handleChange = (selected: any, action: ActionMeta) => {
+  handleChange = (selected: any, action: ActionMeta) => {
     if (action.action === 'clear') {
       this.props.onChange(null);
     } else {
       const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
       this.props.onChange(selected ? value : null);
     }
-  };
+  }
 
   render() {
     const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, ...rest } = this
@@ -217,7 +217,7 @@ class IntegrationReactSelect extends React.Component<any> {
     const selectStyles = {
       input: (base: any) => ({
         ...base,
-        color: theme.palette.text.primary,
+        'color': theme.palette.text.primary,
         '& input': {
           font: 'inherit',
         },

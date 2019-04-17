@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { OfferStore } from '../../stores/offerStore';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import OfferForm from './OfferForm';
-import compose from '../../utilities/compose';
+import { MainStore } from '../../stores/mainStore';
+import { OfferStore } from '../../stores/offerStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { FormValues, Offer } from '../../types';
+import compose from '../../utilities/compose';
+import OfferForm from './OfferForm';
 import { offerTemplate } from './offerSchema';
-import { MainStore } from '../../stores/mainStore';
 
 export interface Props extends RouteComponentProps {
   offerStore?: OfferStore;
@@ -17,22 +17,22 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('offerStore', 'mainStore'),
-  observer
+  observer,
 )
 export default class OfferCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (offer: Offer) => {
+  handleSubmit = (offer: Offer) => {
     return this.props.offerStore!.post(offer).then(() => {
       this.setState({ submitted: true });
       const idOfNewOffer = this.props!.offerStore!.offer!.id;
       this.props.history.replace('/offers/' + idOfNewOffer);
     });
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <OfferForm
         title={'Offerte erstellen'}

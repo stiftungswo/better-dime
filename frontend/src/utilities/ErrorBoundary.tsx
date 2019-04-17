@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { captureException } from './helpers';
 
-//tslint:disable-next-line:no-empty-interface
+// tslint:disable-next-line:no-empty-interface
 interface Props {}
 interface State {
   error: Error | null;

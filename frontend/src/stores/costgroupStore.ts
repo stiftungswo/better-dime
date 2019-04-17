@@ -1,7 +1,7 @@
-import { computed, observable, action } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
+import { action, computed, observable } from 'mobx';
 import { Costgroup } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class CostgroupStore extends AbstractStore<Costgroup> {
   protected get entityName() {
@@ -12,12 +12,12 @@ export class CostgroupStore extends AbstractStore<Costgroup> {
   }
 
   @computed
-  public get entities() {
+  get entities() {
     return this.costgroups;
   }
 
   @observable
-  public costgroups: Costgroup[] = [];
+  costgroups: Costgroup[] = [];
 
   constructor(mainStore: MainStore) {
     super(mainStore);

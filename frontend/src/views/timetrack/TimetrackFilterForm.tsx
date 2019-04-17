@@ -1,21 +1,21 @@
-import React, { ChangeEvent } from 'react';
-import { EmployeeStore } from '../../stores/employeeStore';
-import Grid from '@material-ui/core/Grid/Grid';
-import Tabs from '@material-ui/core/Tabs/Tabs';
-import Tab from '@material-ui/core/Tab/Tab';
-import { DatePicker } from '../../form/fields/DatePicker';
-import { SwitchField } from '../../form/fields/common';
 import Button from '@material-ui/core/Button/Button';
-import compose from '../../utilities/compose';
+import Grid from '@material-ui/core/Grid/Grid';
+import Tab from '@material-ui/core/Tab/Tab';
+import Tabs from '@material-ui/core/Tabs/Tabs';
 import { inject, observer } from 'mobx-react';
+import React, { ChangeEvent } from 'react';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { ServiceSelect } from '../../form/entitySelect/ServiceSelect';
-import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { SwitchField } from '../../form/fields/common';
+import { DatePicker } from '../../form/fields/DatePicker';
 import { EffortStore } from '../../stores/effortStore';
+import { EmployeeStore } from '../../stores/employeeStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
+import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import compose from '../../utilities/compose';
 import { DateSpanPicker } from '../reports/DateSpanPicker';
+import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
 interface Props {
   effortStore?: EffortStore;
@@ -26,20 +26,20 @@ interface Props {
 
 @compose(
   inject('effortStore', 'employeeStore', 'projectCommentStore', 'timetrackFilterStore'),
-  observer
+  observer,
 )
 export class TimetrackFilterForm extends React.Component<Props> {
-  public handleSubmit = () => {
+  handleSubmit = () => {
     const filter = this.props.timetrackFilterStore!.filter;
     this.props.effortStore!.fetchFiltered(filter);
     this.props.projectCommentStore!.fetchFiltered(filter);
-  };
+  }
 
-  public changeGroupBy = (event: ChangeEvent, value: Grouping) => {
+  changeGroupBy = (event: ChangeEvent, value: Grouping) => {
     this.props.timetrackFilterStore!.grouping = value;
-  };
+  }
 
-  public render() {
+  render() {
     const filter = this.props.timetrackFilterStore!.filter;
 
     return (

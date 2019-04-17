@@ -1,16 +1,16 @@
-import React from 'react';
-import { Employee, WorkPeriod } from '../../types';
-import { FieldArray, FormikProps, getIn } from 'formik';
-import TableToolbar from '../../layout/TableToolbar';
-import moment from 'moment';
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import { DatePicker } from '../../form/fields/DatePicker';
-import { NumberField } from '../../form/fields/common';
-import { DimeTableCell } from '../../layout/DimeTableCell';
-import { DurationField } from '../../form/fields/DurationField';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { FieldArray, FormikProps, getIn } from 'formik';
 import { Observer } from 'mobx-react';
+import moment from 'moment';
+import React from 'react';
+import { NumberField } from '../../form/fields/common';
+import { DatePicker } from '../../form/fields/DatePicker';
+import { DurationField } from '../../form/fields/DurationField';
 import { DimeField } from '../../form/fields/formik';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import TableToolbar from '../../layout/TableToolbar';
+import { Employee, WorkPeriod } from '../../types';
 
 const template = {
   end: moment().endOf('year'),
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export class WorkPeriodSubform extends React.Component<Props> {
-  public render() {
+  render() {
     const { yearly_vacation_budget } = this.props;
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;

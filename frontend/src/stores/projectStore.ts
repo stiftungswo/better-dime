@@ -1,7 +1,7 @@
 import { computed, observable } from 'mobx';
 import { Invoice, Project, ProjectListing } from '../types';
-import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export interface ProjectWithPotentialInvoices {
   id: number;
@@ -20,33 +20,55 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   }
 
   @computed
-  public get entity(): Project | undefined {
+  get entity(): Project | undefined {
     return this.project;
   }
 
-  public set entity(project: Project | undefined) {
+  set entity(project: Project | undefined) {
     this.project = project;
   }
 
   @computed
-  public get entities(): Array<ProjectListing> {
+  get entities(): ProjectListing[] {
     return this.projects;
   }
 
   @observable
-  public projects: ProjectListing[] = [];
+  projects: ProjectListing[] = [];
   @observable
-  public project?: Project = undefined;
+  project?: Project = undefined;
   @observable
-  public projectsWithPotentialInvoices: ProjectWithPotentialInvoices[];
+  projectsWithPotentialInvoices: ProjectWithPotentialInvoices[];
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (p: ProjectListing) => {
+  filter = (p: ProjectListing) => {
     return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
-  };
+  }
+
+  async createInvoice(id: number): Promise<Invoice> {
+    try {
+      this.displayInProgress();
+      const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
+      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
+      return res.data;
+    } catch (e) {
+      this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
+      throw e;
+    }
+  }
+
+  async fetchProjectsWithOpenInvoices(): Promise<void> {
+    try {
+      const res = await this.mainStore.api.get<ProjectWithPotentialInvoices[]>('/projects/potential_invoices');
+      this.projectsWithPotentialInvoices = res.data;
+    } catch (e) {
+      this.mainStore.displayError('Die Projekte konnten nicht geladen werden.');
+      throw e;
+    }
+  }
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/projects/' + id + '/archive', { archived });
@@ -80,27 +102,5 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   protected async doPut(entity: Project): Promise<void> {
     const res = await this.mainStore.api.put<Project>('/projects/' + entity.id, entity);
     this.project = res.data;
-  }
-
-  public async createInvoice(id: number): Promise<Invoice> {
-    try {
-      this.displayInProgress();
-      const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
-      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
-      return res.data;
-    } catch (e) {
-      this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
-      throw e;
-    }
-  }
-
-  public async fetchProjectsWithOpenInvoices(): Promise<void> {
-    try {
-      const res = await this.mainStore.api.get<ProjectWithPotentialInvoices[]>(`/projects/potential_invoices`);
-      this.projectsWithPotentialInvoices = res.data;
-    } catch (e) {
-      this.mainStore.displayError('Die Projekte konnten nicht geladen werden.');
-      throw e;
-    }
   }
 }

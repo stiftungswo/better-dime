@@ -1,12 +1,12 @@
-import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
-import Select from '../Select';
-import { RateUnitStore } from '../../../stores/rateUnitStore';
-import compose from '../../../utilities/compose';
 import { inject, observer } from 'mobx-react';
+import React from 'react';
 import { LoadingSpinner } from '../../../layout/LoadingSpinner';
+import { RateUnitStore } from '../../../stores/rateUnitStore';
 import { RateUnit } from '../../../types';
+import compose from '../../../utilities/compose';
 import { DimeCustomFieldProps } from '../common';
+import Select from '../Select';
 
 interface Props extends DimeCustomFieldProps<number> {
   rateUnitId: number;
@@ -22,17 +22,17 @@ interface State {
 
 @compose(
   inject('rateUnitStore'),
-  observer
+  observer,
 )
 export class TimeEffortValueField extends React.Component<Props> {
-  public state: State = {
+  state: State = {
     rateUnits: [],
     rateUnitId: 1,
     selectedFactor: 60,
     value: this.props.value || 504,
   };
 
-  public async componentDidMount() {
+  async componentDidMount() {
     this.setState({
       rateUnits: this.props.rateUnitStore!.rateUnits!.filter((r: RateUnit) => r.is_time),
     });
@@ -47,37 +47,7 @@ export class TimeEffortValueField extends React.Component<Props> {
     }
   }
 
-  protected options() {
-    return this.state
-      .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.value === e.id)
-      .map(e => ({
-        value: e.id,
-        label: e.effort_unit,
-      }));
-  }
-
-  protected updateSelectedRateUnit = (id: number) => {
-    const selectedRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === id);
-
-    if (selectedRateUnit) {
-      this.setState({
-        rateUnitId: selectedRateUnit.id,
-        selectedFactor: selectedRateUnit.factor,
-        value: (this.state.value * this.state.selectedFactor) / selectedRateUnit.factor,
-      });
-
-      this.props.onChange(selectedRateUnit.factor * this.state.value);
-    } else {
-      throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
-    }
-  };
-
-  protected updateValue = (value: string) => {
-    this.setState({ value });
-    this.props.onChange(this.state.selectedFactor * Number(value));
-  };
-
-  public render() {
+  render() {
     if (this.state.rateUnits.length > 0) {
       return (
         <Grid container alignItems="center" spacing={8}>
@@ -105,5 +75,35 @@ export class TimeEffortValueField extends React.Component<Props> {
     } else {
       return <LoadingSpinner />;
     }
+  }
+
+  protected options() {
+    return this.state
+      .rateUnits!.filter((e: RateUnit) => !e.archived || this.props.value === e.id)
+      .map(e => ({
+        value: e.id,
+        label: e.effort_unit,
+      }));
+  }
+
+  protected updateSelectedRateUnit = (id: number) => {
+    const selectedRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === id);
+
+    if (selectedRateUnit) {
+      this.setState({
+        rateUnitId: selectedRateUnit.id,
+        selectedFactor: selectedRateUnit.factor,
+        value: (this.state.value * this.state.selectedFactor) / selectedRateUnit.factor,
+      });
+
+      this.props.onChange(selectedRateUnit.factor * this.state.value);
+    } else {
+      throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
+    }
+  }
+
+  protected updateValue = (value: string) => {
+    this.setState({ value });
+    this.props.onChange(this.state.selectedFactor * Number(value));
   }
 }

@@ -1,13 +1,9 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { Company } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class CompanyStore extends AbstractStore<Company> {
-  @observable
-  public companies: Company[] = [];
-  @observable
-  public company?: Company = undefined;
 
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -17,24 +13,28 @@ export class CompanyStore extends AbstractStore<Company> {
   }
 
   @computed
-  public get entity(): Company | undefined {
+  get entity(): Company | undefined {
     return this.company;
   }
 
-  public set entity(company: Company | undefined) {
+  set entity(company: Company | undefined) {
     this.company = company;
   }
 
   @computed
-  public get entities() {
+  get entities() {
     return this.companies;
   }
+  @observable
+  companies: Company[] = [];
+  @observable
+  company?: Company = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (c: Company) => {
+  filter = (c: Company) => {
     let search = [c.name, c.email || ''];
 
     if (c.addresses && c.addresses.length > 0) {
@@ -42,7 +42,25 @@ export class CompanyStore extends AbstractStore<Company> {
     }
 
     return search.some(s => s.toLowerCase().includes(this.searchQuery));
-  };
+  }
+
+  @action
+  async doFetchOne(id: number) {
+    const res = await this.mainStore.api.get<Company>('/companies/' + id);
+    this.company = res.data;
+  }
+
+  @action
+  async doPost(company: Company) {
+    const res = await this.mainStore.api.post('/companies', company);
+    this.company = res.data;
+  }
+
+  @action
+  async doPut(company: Company) {
+    const res = await this.mainStore.api.put('/companies/' + company.id, company);
+    this.company = res.data;
+  }
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/companies/' + id);
@@ -57,23 +75,5 @@ export class CompanyStore extends AbstractStore<Company> {
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Company[]>('/companies');
     this.companies = res.data;
-  }
-
-  @action
-  public async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Company>('/companies/' + id);
-    this.company = res.data;
-  }
-
-  @action
-  public async doPost(company: Company) {
-    const res = await this.mainStore.api.post('/companies', company);
-    this.company = res.data;
-  }
-
-  @action
-  public async doPut(company: Company) {
-    const res = await this.mainStore.api.put('/companies/' + company.id, company);
-    this.company = res.data;
   }
 }

@@ -1,9 +1,9 @@
-import * as React from 'react';
 import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import * as React from 'react';
 import { Fragment } from 'react';
 import { ActionButton } from './ActionButton';
 import { DeleteIcon } from './icons';
@@ -19,11 +19,11 @@ interface ConfirmDialogProps {
 export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
   handleClose = () => {
     this.props.onClose();
-  };
+  }
 
   handleOk = () => {
     this.props.onConfirm();
-  };
+  }
 
   render() {
     const { children, title, open } = this.props;
@@ -56,24 +56,24 @@ interface DeleteButtonState {
 }
 
 export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButtonState> {
-  public state = {
+  state = {
     open: false,
   };
 
-  public handleOpen = () => {
+  handleOpen = () => {
     this.setState({ open: true });
-  };
+  }
 
-  public handleClose = () => {
+  handleClose = () => {
     this.setState({ open: false });
-  };
+  }
 
-  public handleConfirm = () => {
+  handleConfirm = () => {
     this.props.onConfirm();
     this.handleClose();
-  };
+  }
 
-  public render = () => {
+  render = () => {
     return (
       <>
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
@@ -82,5 +82,5 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
         <ActionButton disabled={this.props.disabled} icon={DeleteIcon} title={'Löschen'} action={this.handleOpen} />
       </>
     );
-  };
+  }
 }

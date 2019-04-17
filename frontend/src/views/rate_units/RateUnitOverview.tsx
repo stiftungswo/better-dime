@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
+import { Grid } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
-import { Column } from '../../layout/Overview';
-import { RateUnitStore } from '../../stores/rateUnitStore';
+import * as React from 'react';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { NumberField, SwitchField, TextField } from '../../form/fields/common';
-import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
-import { Grid } from '@material-ui/core';
+import { Column } from '../../layout/Overview';
+import { MainStore } from '../../stores/mainStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
 import { RateUnit } from '../../types';
-import { DimeField } from '../../form/fields/formik';
+import compose from '../../utilities/compose';
+import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
 
 interface Props {
   mainStore?: MainStore;
@@ -19,10 +19,10 @@ interface Props {
 
 @compose(
   inject('mainStore', 'rateUnitStore'),
-  observer
+  observer,
 )
 export default class RateUnitOverview extends React.Component<Props> {
-  public columns: Array<Column<RateUnit>> = [];
+  columns: Array<Column<RateUnit>> = [];
 
   constructor(props: Props) {
     super(props);
@@ -56,7 +56,7 @@ export default class RateUnitOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     return (
       <EditableOverview
         archivable

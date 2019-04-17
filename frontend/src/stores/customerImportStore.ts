@@ -1,7 +1,7 @@
-//tslint:disable:no-console
+// tslint:disable:no-console
 import { action, observable } from 'mobx';
-import { AbstractStore } from './abstractStore';
 import { ProjectEffort } from '../types';
+import { AbstractStore } from './abstractStore';
 
 export interface CustomerImportSettings {
   customer_tags: number[];
@@ -32,20 +32,20 @@ export interface NonPersistedImportCustomer {
 
 export class CustomerImportStore extends AbstractStore<NonPersistedImportCustomer> {
   @observable
-  public customersToImport?: NonPersistedImportCustomer[] = [];
+  customersToImport?: NonPersistedImportCustomer[] = [];
 
   @observable
-  public importSettings?: CustomerImportSettings = {
+  importSettings?: CustomerImportSettings = {
     customer_tags: [],
     hidden: false,
     rate_group_id: 1,
   };
 
   @observable
-  public importIsLoading?: boolean = false;
+  importIsLoading?: boolean = false;
 
   @action
-  public async verifyImportFile(file: File, name: string) {
+  async verifyImportFile(file: File, name: string) {
     try {
       this.importIsLoading = true;
       this.displayInProgress();
@@ -68,7 +68,7 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
   }
 
   @action
-  public async doImport(importSettings: CustomerImportSettings | undefined) {
+  async doImport(importSettings: CustomerImportSettings | undefined) {
     try {
       this.displayInProgress();
       this.importIsLoading = true;

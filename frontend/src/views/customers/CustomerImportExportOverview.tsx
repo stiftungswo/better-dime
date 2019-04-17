@@ -1,13 +1,13 @@
+import { Grid } from '@material-ui/core';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
-import { Grid } from '@material-ui/core';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { CustomerExportForm } from './CustomerExportForm';
-import { CustomerImportForm } from './CustomerImportForm';
 import { CustomerTagStore } from '../../stores/customerTagStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
+import compose from '../../utilities/compose';
+import { CustomerExportForm } from './CustomerExportForm';
+import { CustomerImportForm } from './CustomerImportForm';
 
 interface Props {
   customerTagStore?: CustomerTagStore;
@@ -16,20 +16,20 @@ interface Props {
 
 @compose(
   inject('customerTagStore', 'rateGroupStore'),
-  observer
+  observer,
 )
 export class CustomerImportExportOverview extends React.Component<Props> {
-  public state = {
+  state = {
     loading: true,
   };
 
-  public componentWillMount(): void {
+  componentWillMount(): void {
     Promise.all([this.props.customerTagStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(() =>
-      this.setState({ loading: false })
+      this.setState({ loading: false }),
     );
   }
 
-  public render() {
+  render() {
     return (
       <>
         <DimeAppBar title={'Kundendaten importieren / exportieren'} />

@@ -1,7 +1,7 @@
-import React from 'react';
 import { createStyles, TableCell, WithStyles, withStyles } from '@material-ui/core';
-import compose from '../utilities/compose';
 import { TableCellProps } from '@material-ui/core/TableCell';
+import React from 'react';
+import compose from '../utilities/compose';
 
 const styles = () =>
   createStyles({

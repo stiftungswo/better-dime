@@ -1,8 +1,8 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Redirect, Route, RouteComponentProps, RouteProps } from 'react-router';
-import compose from './compose';
 import { ApiStore } from '../stores/apiStore';
+import compose from './compose';
 
 interface ProtectedRouteProps extends RouteProps {
   apiStore?: ApiStore;
@@ -12,10 +12,10 @@ interface ProtectedRouteProps extends RouteProps {
 
 @compose(
   inject('apiStore'),
-  observer
+  observer,
 )
 export class ProtectedRoute extends React.Component<ProtectedRouteProps> {
-  public protect = (props: RouteComponentProps) => {
+  protect = (props: RouteComponentProps) => {
     const login = {
       pathname: '/login',
       state: { referrer: props.location!.pathname },
@@ -39,9 +39,9 @@ export class ProtectedRoute extends React.Component<ProtectedRouteProps> {
       apiStore.logout(false);
       return <Redirect to={login} />;
     }
-  };
+  }
 
-  public render() {
+  render() {
     return <Route {...this.props} component={undefined} render={this.protect} />;
   }
 }

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Typography from '@material-ui/core/Typography/Typography';
 import { PropTypes } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography/Typography';
+import * as React from 'react';
 
 interface FormHeaderProps {
   children: React.ReactNode;

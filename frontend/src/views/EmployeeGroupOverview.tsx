@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { MainStore } from '../stores/mainStore';
-import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { Column } from '../layout/Overview';
+import * as React from 'react';
+import * as yup from 'yup';
+import { SwitchField, TextField } from '../form/fields/common';
+import { DimeField } from '../form/fields/formik';
 import { ActionButtons } from '../layout/ActionButtons';
 import { EditableOverview } from '../layout/EditableOverview';
-import * as yup from 'yup';
-import { EmployeeGroup } from '../types';
-import { DimeField } from '../form/fields/formik';
-import { SwitchField, TextField } from '../form/fields/common';
+import { Column } from '../layout/Overview';
 import { EmployeeGroupStore } from '../stores/employeeGroupStore';
+import { MainStore } from '../stores/mainStore';
+import { EmployeeGroup } from '../types';
+import compose from '../utilities/compose';
 
 interface Props {
   mainStore?: MainStore;
@@ -26,12 +26,12 @@ const template = {
 
 @compose(
   inject('mainStore', 'employeeGroupStore'),
-  observer
+  observer,
 )
 export default class EmployeeGroupOverview extends React.Component<Props> {
-  public columns: Array<Column<EmployeeGroup>> = [];
+  columns: Array<Column<EmployeeGroup>> = [];
 
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     this.columns = [
       {
@@ -47,7 +47,7 @@ export default class EmployeeGroupOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const employeeGroupStore = this.props.employeeGroupStore;
 
     return (

@@ -1,15 +1,15 @@
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Fragment } from 'react';
-import { DimeContent } from './DimeContent';
-import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
 import { AbstractStore } from '../stores/abstractStore';
-import { ActionButtonAction } from './ActionButton';
-import { OverviewTable } from './OverviewTable';
-import { inject, observer } from 'mobx-react';
 import { MainStore } from '../stores/mainStore';
-import { AppBarSearch } from './AppBarSearch';
-import { AddIcon, ArchiveIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
 import { Listing } from '../types';
+import { ActionButtonAction } from './ActionButton';
+import { AppBarSearch } from './AppBarSearch';
+import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
+import { DimeContent } from './DimeContent';
+import { AddIcon, ArchiveIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
+import { OverviewTable } from './OverviewTable';
 
 export type SearchFilter<T> = (e: T, qry: string) => boolean;
 
@@ -22,7 +22,7 @@ export interface Column<T> {
 }
 
 interface Props<ListingType> {
-  //tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
+  // tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
   store: AbstractStore<any, ListingType>;
   title: string;
   children?: React.ReactNode;
@@ -56,31 +56,31 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   fetch = async () => {
     return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
-  };
+  }
 
   get entities() {
     return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
   }
 
-  public reload = () => {
+  reload = () => {
     this.setState({ loading: true });
     this.fetch().then(() => this.setState({ loading: false }));
-  };
+  }
 
-  public handleClick = (e: ListingType) => {
+  handleClick = (e: ListingType) => {
     const onClickRow = this.props.onClickRow;
     if (typeof onClickRow === 'string') {
       this.props.mainStore!.navigateTo(onClickRow.replace(':id', String(e.id)));
     } else if (typeof onClickRow === 'function') {
       onClickRow(e);
     }
-  };
+  }
 
-  public updateQueryState = (query: string) => {
+  updateQueryState = (query: string) => {
     this.props.store.searchQuery = query;
-  };
+  }
 
-  public render() {
+  render() {
     const mainStore = this.props.mainStore!;
 
     return (

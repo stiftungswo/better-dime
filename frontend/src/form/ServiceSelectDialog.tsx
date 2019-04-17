@@ -1,14 +1,14 @@
-import compose from '../utilities/compose';
+import Button from '@material-ui/core/Button/Button';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import Button from '@material-ui/core/Button/Button';
 import { ServiceStore } from '../stores/serviceStore';
-import { ServiceSelect } from './entitySelect/ServiceSelect';
 import { Service } from '../types';
+import compose from '../utilities/compose';
+import { ServiceSelect } from './entitySelect/ServiceSelect';
 
 interface Props {
   open: boolean;
@@ -19,7 +19,7 @@ interface Props {
 
 @compose(
   inject('serviceStore'),
-  observer
+  observer,
 )
 export class ServiceSelectDialog extends React.Component<Props> {
   state = {
@@ -32,7 +32,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
       this.props.onSubmit(service);
       this.props.onClose();
     });
-  };
+  }
 
   render() {
     return (

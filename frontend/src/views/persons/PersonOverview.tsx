@@ -1,12 +1,12 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { PeopleStore } from '../../stores/peopleStore';
-import Overview, { Column } from '../../layout/Overview';
-import compose from '../../utilities/compose';
-import { ActionButtons } from '../../layout/ActionButtons';
+import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { PeopleStore } from '../../stores/peopleStore';
 import { InvoiceListing } from '../../types';
 import { Person } from '../../types';
+import compose from '../../utilities/compose';
 
 type Props = {
   peopleStore?: PeopleStore;
@@ -15,10 +15,10 @@ type Props = {
 @compose(
   inject('peopleStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class PersonOverview extends React.Component<Props> {
-  public columns: Array<Column<Person>>;
+  columns: Array<Column<Person>>;
 
   constructor(props: Props) {
     super(props);
@@ -43,7 +43,7 @@ export default class PersonOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const peopleStore = this.props.peopleStore;
 
     return (

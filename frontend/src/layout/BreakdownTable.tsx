@@ -1,11 +1,11 @@
-import { MainStore } from '../stores/mainStore';
-import { Breakdown } from '../types';
-import compose from '../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import * as React from 'react';
 import Table from '@material-ui/core/Table/Table';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { MainStore } from '../stores/mainStore';
+import { Breakdown } from '../types';
+import compose from '../utilities/compose';
 import { DimeTableCell } from './DimeTableCell';
 
 interface BTProps {
@@ -15,7 +15,7 @@ interface BTProps {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export class BreakdownTable extends React.Component<BTProps> {
   render() {

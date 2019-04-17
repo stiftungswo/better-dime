@@ -1,26 +1,26 @@
+import Grid from '@material-ui/core/Grid/Grid';
+import { FormikProps } from 'formik';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Fragment } from 'react';
-import { PeopleStore } from '../../stores/peopleStore';
-import { FormikProps } from 'formik';
+import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
+import { OverviewTable } from 'src/layout/OverviewTable';
+import TableToolbar from 'src/layout/TableToolbar';
+import { MainStore } from 'src/stores/mainStore';
+import { Company, Person } from 'src/types';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
-import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
+import { DimeField } from '../../form/fields/formik';
 import { FormView, FormViewProps } from '../../form/FormView';
+import { DimePaper } from '../../layout/DimePaper';
+import { CustomerTagStore } from '../../stores/customerTagStore';
+import { PeopleStore } from '../../stores/peopleStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import compose from '../../utilities/compose';
+import { empty } from '../../utilities/helpers';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import PhoneNumberSubformInline from '../persons/PhoneNumbersSubformInline';
-import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
-import { Company, Person } from 'src/types';
-import { OverviewTable } from 'src/layout/OverviewTable';
-import { inject, observer } from 'mobx-react';
-import { MainStore } from 'src/stores/mainStore';
-import TableToolbar from 'src/layout/TableToolbar';
-import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
-import { DimePaper } from '../../layout/DimePaper';
 import { companySchema } from './companySchema';
-import compose from '../../utilities/compose';
-import { RateGroupStore } from '../../stores/rateGroupStore';
-import { CustomerTagStore } from '../../stores/customerTagStore';
-import { DimeField } from '../../form/fields/formik';
 
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
@@ -54,14 +54,14 @@ const personsColumns = [
 
 @compose(
   inject('customerTagStore', 'mainStore', 'peopleStore', 'rateGroupStore'),
-  observer
+  observer,
 )
 export default class CompanyForm extends React.Component<Props> {
   state = {
     loading: true,
   };
 
-  public get persons() {
+  get persons() {
     const { peopleStore } = this.props;
     const persons = this.props.company ? (this.props.company.persons ? this.props.company.persons : []) : [];
 
@@ -71,13 +71,13 @@ export default class CompanyForm extends React.Component<Props> {
     return people;
   }
 
-  public componentWillMount() {
+  componentWillMount() {
     Promise.all([this.props.customerTagStore!.fetchAll(), this.props.peopleStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(
-      () => this.setState({ loading: false })
+      () => this.setState({ loading: false }),
     );
   }
 
-  public render() {
+  render() {
     const { company, mainStore } = this.props;
     const { loading } = this.state;
 

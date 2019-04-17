@@ -1,11 +1,11 @@
-import * as React from 'react';
 import { PropTypes } from '@material-ui/core';
-import compose from '../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { MainStore } from '../stores/mainStore';
-import { PrintIcon } from './icons';
-import { ActionButton } from './ActionButton';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { MainStore } from '../stores/mainStore';
+import compose from '../utilities/compose';
+import { ActionButton } from './ActionButton';
+import { PrintIcon } from './icons';
 
 interface Props {
   icon?: React.ReactType<SvgIconProps>;
@@ -19,10 +19,10 @@ interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export default class PrintButton extends React.Component<Props> {
-  public render = () => {
+  render = () => {
     const BadgeIcon = this.props.icon;
     if (this.props.disabled) {
       return (
@@ -41,5 +41,5 @@ export default class PrintButton extends React.Component<Props> {
         </a>
       );
     }
-  };
+  }
 }

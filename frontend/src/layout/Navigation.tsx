@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { NavItem } from './NavItem';
 import { Collapsible } from './Collapsible';
 import {
   CompanyIcon,
@@ -22,6 +21,7 @@ import {
   TagsIcon,
   TimetrackIcon,
 } from './icons';
+import { NavItem } from './NavItem';
 
 interface NavigationProps {
   drawerOpen: boolean;

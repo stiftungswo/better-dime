@@ -1,14 +1,28 @@
-import { action, computed, observable } from 'mobx';
 import { History } from 'history';
-import { ApiStore, baseUrl } from './apiStore';
+import { action, computed, observable } from 'mobx';
 import { Formatter } from '../utilities/formatter';
-import { Notifier } from '../utilities/notifier';
 import { buildURL } from '../utilities/helpers';
+import { Notifier } from '../utilities/notifier';
+import { ApiStore, baseUrl } from './apiStore';
 
 /*
 This class manages global UI state and provides some facades for often used functionality
  */
 export class MainStore {
+
+  get api() {
+    return this.apiStore.api;
+  }
+
+  @computed
+  get isAdmin(): boolean {
+    return this.apiStore.isAdmin;
+  }
+
+  @computed
+  get userId(): number | undefined {
+    return this.apiStore.userId;
+  }
   @observable
   drawerOpen = false;
 
@@ -21,45 +35,31 @@ export class MainStore {
   @observable
   showArchived = false;
 
-  public get api() {
-    return this.apiStore.api;
-  }
+  // --- formatting
+  formatDate = this.formatter.formatDate;
+  formatDuration = this.formatter.formatDuration;
+  formatCurrency = this.formatter.formatCurrency;
+  trimString = this.formatter.trimString;
 
-  @computed
-  public get isAdmin(): boolean {
-    return this.apiStore.isAdmin;
-  }
-
-  @computed
-  public get userId(): number | undefined {
-    return this.apiStore.userId;
-  }
+  // --- snackbar
+  displayInfo = this.notifier.info;
+  displaySuccess = this.notifier.success;
+  displayError = this.notifier.error;
 
   constructor(
     private apiStore: ApiStore,
-    public readonly formatter: Formatter,
-    public readonly notifier: Notifier,
-    private history: History
+    readonly formatter: Formatter,
+    readonly notifier: Notifier,
+    private history: History,
   ) {}
-
-  // --- formatting
-  public formatDate = this.formatter.formatDate;
-  public formatDuration = this.formatter.formatDuration;
-  public formatCurrency = this.formatter.formatCurrency;
-  public trimString = this.formatter.trimString;
-
-  // --- snackbar
-  public displayInfo = this.notifier.info;
-  public displaySuccess = this.notifier.success;
-  public displayError = this.notifier.error;
 
   // --- routing / navigation
   @action
-  public navigateTo(path: string): void {
+  navigateTo(path: string): void {
     this.history.push(path);
   }
 
-  public apiURL(path: string, params: object = {}, includeAuth: boolean = true): string {
+  apiURL(path: string, params: object = {}, includeAuth: boolean = true): string {
     return buildURL(baseUrl + '/' + path, {
       ...params,
       auth: includeAuth ? this.apiStore.token : undefined,

@@ -1,25 +1,25 @@
+import Grid from '@material-ui/core/Grid/Grid';
+import { FormikProps } from 'formik';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Fragment } from 'react';
-import { Person } from '../../types';
-import { FormikProps } from 'formik';
-import { DimeField } from '../../form/fields/formik';
-import { EmailField, SwitchField, TextField } from '../../form/fields/common';
-import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
-import { FormView, FormViewProps } from '../../form/FormView';
-import AddressesSubformInline from './AddressesSubformInline';
-import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
-import { CompanySelect } from '../../form/entitySelect/CompanySelect';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
+import { CompanySelect } from '../../form/entitySelect/CompanySelect';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { EmailField, SwitchField, TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
+import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
-import { personSchema } from './personSchema';
 import { CompanyStore } from '../../stores/companyStore';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { RateGroupStore } from '../../stores/rateGroupStore';
 import { CustomerTagStore } from '../../stores/customerTagStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
+import { Person } from '../../types';
+import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
+import { empty } from '../../utilities/helpers';
+import AddressesSubformInline from './AddressesSubformInline';
+import { personSchema } from './personSchema';
+import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
 
 export interface Props extends FormViewProps<Person> {
   companyStore?: CompanyStore;
@@ -30,10 +30,10 @@ export interface Props extends FormViewProps<Person> {
 
 @compose(
   inject('companyStore', 'customerTagStore', 'rateGroupStore'),
-  observer
+  observer,
 )
 export default class PersonForm extends React.Component<Props> {
-  public state = {
+  state = {
     loading: true,
   };
 
@@ -70,9 +70,9 @@ export default class PersonForm extends React.Component<Props> {
         this.props.companyStore!.company = undefined;
       }
     }
-  };
+  }
 
-  public render() {
+  render() {
     const { person } = this.props;
     const { company } = this.props.companyStore!;
     const inheritedAddresses = company ? company.addresses : [];

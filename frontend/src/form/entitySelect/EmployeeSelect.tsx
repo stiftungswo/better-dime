@@ -1,21 +1,21 @@
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { EmployeeStore } from '../../stores/employeeStore';
-import { inject, observer } from 'mobx-react';
+import { Employee } from '../../types';
 import compose from '../../utilities/compose';
 import Select, { DimeSelectFieldProps } from '../fields/Select';
-import { Employee } from '../../types';
 
-//TODO can we use conditional types to deal with isMulti?
+// TODO can we use conditional types to deal with isMulti?
 interface Props<T = number> extends DimeSelectFieldProps<T> {
   employeeStore?: EmployeeStore;
 }
 
 @compose(
   inject('employeeStore'),
-  observer
+  observer,
 )
 export class EmployeeSelect<T> extends React.Component<Props<T>> {
-  public get options() {
+  get options() {
     return this.props
       .employeeStore!.employees.filter((e: Employee) => !e.archived || this.props.value === e.id)
       .map(e => ({
@@ -24,7 +24,7 @@ export class EmployeeSelect<T> extends React.Component<Props<T>> {
       }));
   }
 
-  public render() {
+  render() {
     return <Select options={this.options} {...this.props} />;
   }
 }

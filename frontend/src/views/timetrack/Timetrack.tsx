@@ -1,26 +1,26 @@
+import { Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid/Grid';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { DimeAppBar, DimeAppBarButton } from '../../layout/DimeAppBar';
+import { DimeContent } from '../../layout/DimeContent';
+import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
 import { LoadingSpinner } from '../../layout/LoadingSpinner';
-import Grid from '@material-ui/core/Grid/Grid';
-import { TimetrackFormDialog } from './TimetrackFormDialog';
+import { EffortStore } from '../../stores/effortStore';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { ProjectCommentStore } from '../../stores/projectCommentStore';
+import { ProjectStore } from '../../stores/projectStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { ProjectEffortListing } from '../../types';
 import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { TimetrackFilterForm } from './TimetrackFilterForm';
+import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
 import TimetrackEmployeeGroup from './TimetrackEmployeeGroup';
+import { TimetrackFilterForm } from './TimetrackFilterForm';
+import { TimetrackFormDialog } from './TimetrackFormDialog';
 import TimetrackProjectGroup from './TimetrackProjectGroup';
 import TimetrackServiceGroup from './TimetrackServiceGroup';
-import { EffortStore } from '../../stores/effortStore';
-import { ProjectEffortListing } from '../../types';
-import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import { TimetrackCommentFormDialog } from './TimetrackCommentFormDialog';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { AddCommentIcon, AddEffortIcon, LogoIcon } from '../../layout/icons';
-import { DimeContent } from '../../layout/DimeContent';
-import { Button } from '@material-ui/core';
-import { EmployeeStore } from '../../stores/employeeStore';
-import { ProjectStore } from '../../stores/projectStore';
-import { ServiceStore } from '../../stores/serviceStore';
-import { RateUnitStore } from '../../stores/rateUnitStore';
 
 interface Props {
   effortStore?: EffortStore;
@@ -34,14 +34,14 @@ interface Props {
 
 @compose(
   inject('effortStore', 'employeeStore', 'projectStore', 'projectCommentStore', 'rateUnitStore', 'serviceStore', 'timetrackFilterStore'),
-  observer
+  observer,
 )
 export default class Timetrack extends React.Component<Props> {
-  public state = {
+  state = {
     loading: true,
   };
 
-  public componentWillMount() {
+  componentWillMount() {
     const filter = this.props.timetrackFilterStore!.filter;
 
     Promise.all([
@@ -54,27 +54,27 @@ export default class Timetrack extends React.Component<Props> {
     ]).then(() => this.setState({ loading: false }));
   }
 
-  public handleEffortAdd = () => {
+  handleEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
     this.props.effortStore!.editing = true;
-  };
+  }
 
-  public handleCommentAdd = () => {
+  handleCommentAdd = () => {
     this.props.projectCommentStore!.projectComment = undefined;
     this.props.projectCommentStore!.editing = true;
-  };
+  }
 
-  public handleClose = () => {
+  handleClose = () => {
     this.props.projectCommentStore!.editing = false;
     this.props.effortStore!.editing = false;
-  };
+  }
 
-  public onClickRow = async (entity: ProjectEffortListing) => {
+  onClickRow = async (entity: ProjectEffortListing) => {
     await this.props.effortStore!.fetchOne(entity.id);
     this.props.effortStore!.editing = true;
-  };
+  }
 
-  public NoResults = () => (
+  NoResults = () => (
     <Grid item xs={12} style={{ textAlign: 'center', color: 'gray' }}>
       <p>
         <LogoIcon fontSize={'large'} />
@@ -82,9 +82,9 @@ export default class Timetrack extends React.Component<Props> {
       <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
       <Button onClick={() => (this.props.timetrackFilterStore!.filter.showEmptyGroups = true)}>Leere Gruppen anzeigen</Button>
     </Grid>
-  );
+  )
 
-  public renderGroups = () => {
+  renderGroups = () => {
     const filterStore = this.props.timetrackFilterStore!;
     const { NoResults } = this;
     let groups;
@@ -124,9 +124,9 @@ export default class Timetrack extends React.Component<Props> {
     } else {
       return <NoResults />;
     }
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <>
         <DimeAppBar title={'Zeiterfassung'}>

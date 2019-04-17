@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { FieldArray, FormikProps, getIn } from 'formik';
-import { NumberField } from '../../form/fields/common';
-import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { FieldArray, FormikProps, getIn } from 'formik';
 import { observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { Invoice, InvoiceCostgroup, Project, ProjectCostgroup } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
-import TableToolbar from '../../layout/TableToolbar';
+import * as React from 'react';
 import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
-import { ErrorText } from '../../layout/ErrorText';
-import { DimeTableCell } from '../../layout/DimeTableCell';
+import { NumberField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import { ErrorText } from '../../layout/ErrorText';
+import TableToolbar from '../../layout/TableToolbar';
+import { MainStore } from '../../stores/mainStore';
+import { Invoice, InvoiceCostgroup, Project, ProjectCostgroup } from '../../types';
+import compose from '../../utilities/compose';
 
 const template = () => ({
   costgroup_number: 0,
@@ -35,7 +35,7 @@ export class ProjectCostgroupSubform extends React.Component<Props> {
     super(props);
   }
 
-  public render() {
+  render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     const weightSum = values.costgroup_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
