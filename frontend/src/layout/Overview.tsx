@@ -1,6 +1,5 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
 import { Listing } from '../types';
@@ -84,7 +83,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     const mainStore = this.props.mainStore!;
 
     return (
-      <Fragment>
+      <React.Fragment>
         <DimeAppBar title={this.props.title}>
           {this.props.searchable && (
             <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} delay={100} />
@@ -111,7 +110,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
           )}
           {this.props.children}
         </DimeContent>
-      </Fragment>
+      </React.Fragment>
     );
   }
 }

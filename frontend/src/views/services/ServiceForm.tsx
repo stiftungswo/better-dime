@@ -6,7 +6,6 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
@@ -63,7 +62,7 @@ export default class ServiceForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         render={(props: FormikProps<Service>) => (
-          <Fragment>
+          <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12} lg={8}>
@@ -146,7 +145,7 @@ export default class ServiceForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </Fragment>
+          </React.Fragment>
         )}
       />
     );

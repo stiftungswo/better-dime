@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
@@ -94,7 +93,7 @@ export default class InvoiceForm extends React.Component<Props> {
         }
         render={(props: FormikProps<Invoice>) => {
           return (
-            <Fragment>
+            <React.Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
@@ -201,7 +200,7 @@ export default class InvoiceForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </Fragment>
+            </React.Fragment>
           );
         }}
       />

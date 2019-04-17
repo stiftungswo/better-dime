@@ -68,7 +68,8 @@ export default class HolidayOverview extends React.Component<Props> {
             }}
             deleteAction={() => holidayStore!.delete(e.id)}
             deleteMessage={
-              'Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!'
+              'Möchtest du diesen Feiertag wirklich löschen? ' +
+              'Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!'
             }
           />
         )}

@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
@@ -47,7 +46,7 @@ export default class EmployeeForm extends React.Component<Props> {
         render={(
           props: FormikProps<any> // tslint:disable-line
         ) => (
-          <Fragment>
+          <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
@@ -118,7 +117,7 @@ export default class EmployeeForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </Fragment>
+          </React.Fragment>
         )}
       />
     );

@@ -33,11 +33,13 @@ export default class CompanyUpdate extends React.Component<Props> {
     const company = this.props.companyStore!.company;
     if (company) {
       return {
-        // it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+        // it's important to detach the mobx proxy before passing it into formik
+        // formik's deepClone can fall into endless recursions with those proxies.
+
         ...toJS(company),
-        addresses: (company.addresses ? company.addresses : []).map((e: Address) => ({
-          ...e,
-          supplement: e.supplement || '',
+        addresses: (company.addresses ? company.addresses : []).map((address: Address) => ({
+          ...address,
+          supplement: address.supplement || '',
         })),
       };
     } else {

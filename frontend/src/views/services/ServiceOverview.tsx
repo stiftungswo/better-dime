@@ -5,8 +5,7 @@ import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Service } from '../../types';
-import { ServiceListing } from '../../types';
+import { Service, ServiceListing } from '../../types';
 import compose from '../../utilities/compose';
 
 export type Props = {

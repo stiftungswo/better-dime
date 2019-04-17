@@ -494,5 +494,6 @@ export interface Listing {
 
 export type DimeDate = string;
 
-// tslint:disable-next-line:no-any ; If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
+// If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
+// tslint:disable-next-line:no-any
 export type FormValues = any;

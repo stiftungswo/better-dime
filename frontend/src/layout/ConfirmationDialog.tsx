@@ -4,7 +4,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { ActionButton } from './ActionButton';
 import { DeleteIcon } from './icons';
 
@@ -55,6 +54,7 @@ interface DeleteButtonState {
   open: boolean;
 }
 
+// tslint:disable
 export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButtonState> {
   state = {
     open: false,

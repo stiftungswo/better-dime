@@ -6,7 +6,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as React from 'react';
-import { ComponentType, Fragment } from 'react';
 import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
 import { styles } from './NavItem';
 
@@ -14,7 +13,7 @@ interface CollapsibleProps extends WithStyles<typeof styles> {
   handleDrawerOpen: () => void;
   drawerOpen: boolean;
   label: string;
-  icon: ComponentType;
+  icon: React.ComponentType;
 }
 
 interface CollapsibleState {

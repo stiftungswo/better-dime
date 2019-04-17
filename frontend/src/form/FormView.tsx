@@ -1,6 +1,5 @@
 import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { Prompt } from 'react-router';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeContent';
@@ -27,10 +26,10 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
     const { appBarButtons, ...rest } = this.props as any;
     return this.props.loading ? (
-      <Fragment>
+      <React.Fragment>
         <DimeAppBar title={this.props.title} />
         <DimeContent loading />
-      </Fragment>
+      </React.Fragment>
     ) : (
       <Formik
         {...rest}

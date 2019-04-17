@@ -1,8 +1,7 @@
 import Grid from '@material-ui/core/Grid/Grid';
-import { Field, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
@@ -112,7 +111,7 @@ class OfferForm extends React.Component<Props> {
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (
-            <Fragment>
+            <React.Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
@@ -218,7 +217,7 @@ class OfferForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </Fragment>
+            </React.Fragment>
           );
         }}
       />

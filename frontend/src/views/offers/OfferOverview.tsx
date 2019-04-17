@@ -54,7 +54,9 @@ export default class OfferOverview extends React.Component<Props> {
             }}
             deleteAction={() => offerStore!.delete(e.id)}
             deleteMessage={
-              'Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.'
+              'Willst du diese Offerte wirklich löschen? ' +
+              'Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. ' +
+              'Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.'
             }
           />
         )}

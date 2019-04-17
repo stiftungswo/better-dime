@@ -17,7 +17,7 @@ import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { drawerWidth } from './DimeLayout';
 import { MenuIcon } from './icons';
 
-export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
+export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex }: Theme) =>
   createStyles({
     appBar: {
       zIndex: zIndex.drawer + 1,
@@ -108,8 +108,6 @@ class DimeAppBarInner extends React.Component<Props> {
 
 export const DimeAppBar = withStyles(styles)(DimeAppBarInner);
 
-export class DimeAppBarButton extends React.Component<ButtonProps> {
-  render = () => {
-    return <ActionButton {...this.props} color={'inherit'} />;
-  }
-}
+export const DimeAppBarButton = (props: ButtonProps) => {
+  return <ActionButton {...props} color={'inherit'} />;
+};

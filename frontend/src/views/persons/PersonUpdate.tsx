@@ -33,11 +33,12 @@ export default class PersonUpdate extends React.Component<Props> {
     const person = this.props.peopleStore!.person;
     if (person) {
       return {
-        // it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+        // it's important to detach the mobx proxy before passing it into formik
+        // formik's deepClone can fall into endless recursions with those proxies.
         ...toJS(person),
-        addresses: (person.addresses ? person.addresses : []).map((e: Address) => ({
-          ...e,
-          supplement: e.supplement || '',
+        addresses: (person.addresses ? person.addresses : []).map((address: Address) => ({
+          ...address,
+          supplement: address.supplement || '',
         })),
       };
     } else {

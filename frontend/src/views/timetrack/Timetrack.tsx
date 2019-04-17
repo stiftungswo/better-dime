@@ -86,7 +86,7 @@ export default class Timetrack extends React.Component<Props> {
 
   renderGroups = () => {
     const filterStore = this.props.timetrackFilterStore!;
-    const { NoResults } = this;
+    const { NoResults } = this; // tslint:disable-line
     let groups;
     let effortCount;
     switch (filterStore.grouping) {

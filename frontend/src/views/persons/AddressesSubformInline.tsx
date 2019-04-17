@@ -13,8 +13,7 @@ import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { Address, Person } from '../../types';
-import { Company } from '../../types';
+import { Address, Company, Person } from '../../types';
 import compose from '../../utilities/compose';
 
 const template = () => ({

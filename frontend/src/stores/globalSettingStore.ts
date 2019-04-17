@@ -1,6 +1,4 @@
 import { computed, observable } from 'mobx';
-import { Service } from '../types';
-import { ServiceListing } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 

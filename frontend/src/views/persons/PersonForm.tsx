@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { Fragment } from 'react';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
 import { CompanySelect } from '../../form/entitySelect/CompanySelect';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
@@ -88,7 +87,7 @@ export default class PersonForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         render={(props: FormikProps<Person>) => (
-          <Fragment>
+          <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
@@ -136,7 +135,7 @@ export default class PersonForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </Fragment>
+          </React.Fragment>
         )}
       />
     );

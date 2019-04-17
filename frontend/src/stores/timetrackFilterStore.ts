@@ -113,5 +113,5 @@ export class TimetrackFilterStore {
   }
 
   private appendEfforts = <T extends Listing>(filterKey: keyof ProjectEffortListing) => (entities: T[]): Array<T & WithEfforts> =>
-    entities.map(e => ({...e,  efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id)}))
+    entities.map(e => ({...e, efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id)}))
 }

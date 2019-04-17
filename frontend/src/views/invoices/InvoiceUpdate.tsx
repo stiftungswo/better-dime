@@ -38,7 +38,8 @@ export default class InvoiceUpdate extends React.Component<Props> {
 
   @computed
   get invoice() {
-    // it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+    // it's important to detach the mobx proxy before passing it into formik
+    // formik's deepClone can fall into endless recursions with those proxies.
     return toJS(this.props.invoiceStore!.invoice);
   }
 

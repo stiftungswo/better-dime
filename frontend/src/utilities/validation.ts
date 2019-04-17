@@ -1,12 +1,11 @@
 import moment from 'moment';
 import * as yup from 'yup';
-import { Schema, setLocale } from 'yup';
 import { apiDateFormat } from '../stores/apiStore';
 
 export const requiredMessage = 'Dies ist ein erforderliches Feld.';
 
-const initializeLocalization = () =>
-  setLocale({
+const initializeLocalization = () => {
+  return yup.setLocale({
     mixed: {
       required: requiredMessage,
       typeError: requiredMessage,
@@ -16,12 +15,13 @@ const initializeLocalization = () =>
       typeError: requiredMessage,
     },
   });
+};
 
 /**
  * setLocale changes the global state of yup and the order in which files are evaluated is not predictable. By wrapping
  * the creation of every schema in this function, we make sure setLocale has been called before creating the schema.
  */
-export const localizeSchema = <T>(creator: () => Schema<T>) => {
+export const localizeSchema = <T>(creator: () => yup.Schema<T>) => {
   initializeLocalization();
   return creator();
 };

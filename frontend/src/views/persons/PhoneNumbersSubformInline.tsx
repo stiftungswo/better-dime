@@ -14,8 +14,7 @@ import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { Person, PhoneNumber } from '../../types';
-import { Company } from '../../types';
+import { Company, Person, PhoneNumber } from '../../types';
 import compose from '../../utilities/compose';
 
 export interface Props {

@@ -5,7 +5,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import classNames from 'classnames';
 import * as React from 'react';
-import { ComponentType } from 'react';
 import { Route, RouteComponentProps } from 'react-router';
 import compose from '../utilities/compose';
 import { ArrowRightIcon } from './icons';
@@ -22,7 +21,7 @@ export const styles = (theme: Theme) => ({
 
 interface NavItemProps extends WithStyles<typeof styles> {
   label: string;
-  icon?: ComponentType;
+  icon?: React.ComponentType;
   to: string;
   exact?: boolean;
   query?: string;
@@ -32,7 +31,6 @@ interface NavItemProps extends WithStyles<typeof styles> {
 export const NavItem = compose(withStyles(styles))(
   ({ to, exact = false, query = '', label, icon, classes, nested = false }: NavItemProps) => {
     const Icon = icon || ArrowRightIcon;
-    const nestedClassNames = nested ? classes.nested : '';
 
     return (
       <Route

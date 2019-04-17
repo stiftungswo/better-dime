@@ -62,7 +62,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
+                            'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum ' +
+                            'addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
                           }
                         >
                           <p>Sollzeit</p>
@@ -71,7 +72,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
+                            'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, ' +
+                            'welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
                           }
                         >
                           <p>Istzeit</p>
@@ -80,7 +82,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Gebuchte Stunden innerhalb der Periode bis heute (oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
+                            'Gebuchte Stunden innerhalb der Periode bis heute ' +
+                            '(oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
                           }
                         >
                           <p>Heute</p>
@@ -89,7 +92,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. Dazu gezählt wird der Ferienübertrag.'
+                            'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. ' +
+                            'Dazu gezählt wird der Ferienübertrag.'
                           }
                         >
                           <p>Ferienguthaben</p>
@@ -141,10 +145,20 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
+                            <DimeField
+                              delayed
+                              component={DurationField}
+                              timeUnit={'hour'}
+                              name={fieldName('vacation_takeover')}
+                            />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField delayed component={DurationField} timeUnit={'workday'} name={fieldName('yearly_vacation_budget')} />
+                            <DimeField
+                              delayed
+                              component={DurationField}
+                              timeUnit={'workday'}
+                              name={fieldName('yearly_vacation_budget')}
+                            />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

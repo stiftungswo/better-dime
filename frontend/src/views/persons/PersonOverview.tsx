@@ -4,7 +4,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
 import { PeopleStore } from '../../stores/peopleStore';
-import { InvoiceListing } from '../../types';
 import { Person } from '../../types';
 import compose from '../../utilities/compose';
 
