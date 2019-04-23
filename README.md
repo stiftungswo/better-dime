@@ -1,5 +1,5 @@
 # Dime
-[![Build Status](https://travis-ci.org/stiftungswo/betterDime.svg?branch=master)](https://travis-ci.org/stiftungswo/betterDime)
+[![Build Status](https://semaphoreci.com/api/v1/stiftungswo/betterdime/branches/develop/badge.svg)](https://semaphoreci.com/stiftungswo/betterdime)
 [![codecov](https://codecov.io/gh/stiftungswo/betterDime/branch/master/graph/badge.svg)](https://codecov.io/gh/stiftungswo/betterDime)
 
 A complete rewrite of [Dime](https://github.com/stiftungswo/dime) using Laravel & React.
