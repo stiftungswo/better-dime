@@ -1,16 +1,16 @@
-import React from 'react';
-import { Employee, WorkPeriod } from '../../types';
-import { FieldArray, FormikProps, getIn } from 'formik';
-import TableToolbar from '../../layout/TableToolbar';
-import moment from 'moment';
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import { DatePicker } from '../../form/fields/DatePicker';
-import { NumberField } from '../../form/fields/common';
-import { DimeTableCell } from '../../layout/DimeTableCell';
-import { DurationField } from '../../form/fields/DurationField';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { FieldArray, FormikProps, getIn } from 'formik';
 import { Observer } from 'mobx-react';
+import moment from 'moment';
+import React from 'react';
+import { NumberField } from '../../form/fields/common';
+import { DatePicker } from '../../form/fields/DatePicker';
+import { DurationField } from '../../form/fields/DurationField';
 import { DimeField } from '../../form/fields/formik';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import TableToolbar from '../../layout/TableToolbar';
+import { Employee, WorkPeriod } from '../../types';
 
 const template = {
   end: moment().endOf('year'),
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export class WorkPeriodSubform extends React.Component<Props> {
-  public render() {
+  render() {
     const { yearly_vacation_budget } = this.props;
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
@@ -62,7 +62,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
+                            'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum ' +
+                            'addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
                           }
                         >
                           <p>Sollzeit</p>
@@ -71,7 +72,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
+                            'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, ' +
+                            'welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
                           }
                         >
                           <p>Istzeit</p>
@@ -80,7 +82,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Gebuchte Stunden innerhalb der Periode bis heute (oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
+                            'Gebuchte Stunden innerhalb der Periode bis heute ' +
+                            '(oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
                           }
                         >
                           <p>Heute</p>
@@ -89,7 +92,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
                           title={
-                            'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. Dazu gezählt wird der Ferienübertrag.'
+                            'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. ' +
+                            'Dazu gezählt wird der Ferienübertrag.'
                           }
                         >
                           <p>Ferienguthaben</p>
@@ -141,10 +145,20 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField delayed component={DurationField} timeUnit={'hour'} name={fieldName('vacation_takeover')} />
+                            <DimeField
+                              delayed
+                              component={DurationField}
+                              timeUnit={'hour'}
+                              name={fieldName('vacation_takeover')}
+                            />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField delayed component={DurationField} timeUnit={'workday'} name={fieldName('yearly_vacation_budget')} />
+                            <DimeField
+                              delayed
+                              component={DurationField}
+                              timeUnit={'workday'}
+                              name={fieldName('yearly_vacation_budget')}
+                            />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />

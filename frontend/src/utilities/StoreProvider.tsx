@@ -1,32 +1,32 @@
+import { History } from 'history';
+import { IReactionDisposer, reaction } from 'mobx';
+import { Provider } from 'mobx-react';
 import * as React from 'react';
+import { CompanyStore } from 'src/stores/companyStore';
+import { PeopleStore } from 'src/stores/peopleStore';
+import { ApiStore } from '../stores/apiStore';
+import { CostgroupStore } from '../stores/costgroupStore';
+import { CustomerImportStore } from '../stores/customerImportStore';
+import { CustomerStore } from '../stores/customerStore';
+import { CustomerTagStore } from '../stores/customerTagStore';
+import { DailyReportStore } from '../stores/dailyReportStore';
+import { EffortStore } from '../stores/effortStore';
+import { EmployeeGroupStore } from '../stores/employeeGroupStore';
+import { EmployeeStore } from '../stores/employeeStore';
+import { GlobalSettingStore } from '../stores/globalSettingStore';
+import { HolidayStore } from '../stores/holidayStore';
+import { InvoiceStore } from '../stores/invoiceStore';
 import { MainStore } from '../stores/mainStore';
 import { OfferStore } from '../stores/offerStore';
-import { EmployeeStore } from '../stores/employeeStore';
-import { ServiceStore } from '../stores/serviceStore';
-import { Provider } from 'mobx-react';
-import { History } from 'history';
-import { HolidayStore } from '../stores/holidayStore';
-import { RateUnitStore } from '../stores/rateUnitStore';
-import { RateGroupStore } from '../stores/rateGroupStore';
-import { CustomerStore } from '../stores/customerStore';
-import { ProjectStore } from '../stores/projectStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
-import { CustomerTagStore } from '../stores/customerTagStore';
-import { InvoiceStore } from '../stores/invoiceStore';
-import { CostgroupStore } from '../stores/costgroupStore';
-import { EffortStore } from '../stores/effortStore';
 import { ProjectCommentStore } from '../stores/projectCommentStore';
+import { ProjectStore } from '../stores/projectStore';
+import { RateGroupStore } from '../stores/rateGroupStore';
+import { RateUnitStore } from '../stores/rateUnitStore';
+import { ServiceStore } from '../stores/serviceStore';
 import { TimetrackFilterStore } from '../stores/timetrackFilterStore';
-import { PeopleStore } from 'src/stores/peopleStore';
-import { CompanyStore } from 'src/stores/companyStore';
-import { CustomerImportStore } from '../stores/customerImportStore';
-import { DailyReportStore } from '../stores/dailyReportStore';
-import { ApiStore } from '../stores/apiStore';
 import { Formatter } from './formatter';
 import { Notifier } from './notifier';
-import { IReactionDisposer, reaction } from 'mobx';
-import { GlobalSettingStore } from '../stores/globalSettingStore';
-import { EmployeeGroupStore } from '../stores/employeeGroupStore';
 
 export interface Props {
   history: History;
@@ -72,7 +72,7 @@ export class StoreProvider extends React.Component<Props> {
         if (token) {
           this.resetStores();
         }
-      }
+      },
     );
   }
 
@@ -80,6 +80,10 @@ export class StoreProvider extends React.Component<Props> {
     if (this.disposeAuthChangeReaction) {
       this.disposeAuthChangeReaction();
     }
+  }
+
+  render = () => {
+    return <Provider {...this.stores}>{this.props.children}</Provider>;
   }
 
   private initializeStores() {
@@ -98,7 +102,7 @@ export class StoreProvider extends React.Component<Props> {
       projectStore,
       serviceStore,
       effortStore,
-      projectCommentStore
+      projectCommentStore,
     );
 
     this.stores = {
@@ -138,8 +142,4 @@ export class StoreProvider extends React.Component<Props> {
       }
     });
   }
-
-  public render = () => {
-    return <Provider {...this.stores}>{this.props.children}</Provider>;
-  };
 }

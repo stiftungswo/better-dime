@@ -1,11 +1,11 @@
 import { createStyles, Theme, WithStyles } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
+import Button, { ButtonProps } from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import Badge from '@material-ui/core/Badge';
-import { BackIcon, ForwardIcon } from '../../layout/icons';
 import { DatePicker } from '../../form/fields/DatePicker';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { BackIcon, ForwardIcon } from '../../layout/icons';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -42,12 +42,12 @@ class DateSpanPickerInner extends React.Component<Props> {
     const to = from.clone().endOf(bounds);
     this.props.onChangeFrom(from);
     this.props.onChangeTo(to);
-  };
+  }
 
   current = (bound: unitOfTime.Base) => {
     this.props.onChangeFrom(moment().startOf(bound));
     this.props.onChangeTo(moment().endOf(bound));
-  };
+  }
 
   render() {
     const { classes } = this.props;

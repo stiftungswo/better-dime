@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { inject, observer } from 'mobx-react';
-import { CompanyStore } from '../../stores/companyStore';
-import { RouteComponentProps } from 'react-router';
-import compose from '../../utilities/compose';
 import { toJS } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Address, Company } from 'src/types';
+import { CompanyStore } from '../../stores/companyStore';
+import compose from '../../utilities/compose';
 import CompanyForm from './CompanyForm';
 
 interface PersonDetailRouterProps {
@@ -17,7 +17,7 @@ export interface Props extends RouteComponentProps<PersonDetailRouterProps> {
 
 @compose(
   inject('companyStore'),
-  observer
+  observer,
 )
 export default class CompanyUpdate extends React.Component<Props> {
   constructor(props: Props) {
@@ -25,19 +25,21 @@ export default class CompanyUpdate extends React.Component<Props> {
     props.companyStore!.fetchOne(Number(props.match.params.id));
   }
 
-  public handleSubmit = (company: Company) => {
+  handleSubmit = (company: Company) => {
     return this.props.companyStore!.put(company);
-  };
+  }
 
-  public get company() {
+  get company() {
     const company = this.props.companyStore!.company;
     if (company) {
       return {
-        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+        // it's important to detach the mobx proxy before passing it into formik
+        // formik's deepClone can fall into endless recursions with those proxies.
+
         ...toJS(company),
-        addresses: (company.addresses ? company.addresses : []).map((e: Address) => ({
-          ...e,
-          supplement: e.supplement || '',
+        addresses: (company.addresses ? company.addresses : []).map((address: Address) => ({
+          ...address,
+          supplement: address.supplement || '',
         })),
       };
     } else {
@@ -45,7 +47,7 @@ export default class CompanyUpdate extends React.Component<Props> {
     }
   }
 
-  public render() {
+  render() {
     const company = this.company;
     const title = company ? `${company.name} - Firma` : 'Kunde bearbeiten';
 

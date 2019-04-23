@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { Holiday } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class HolidayStore extends AbstractStore<Holiday> {
   protected get entityName() {
@@ -12,7 +12,7 @@ export class HolidayStore extends AbstractStore<Holiday> {
   }
 
   @computed
-  get entities(): Array<Holiday> {
+  get entities(): Holiday[] {
     return this.holidays;
   }
 
@@ -26,18 +26,18 @@ export class HolidayStore extends AbstractStore<Holiday> {
   }
 
   @observable
-  public holidays: Holiday[] = [];
+  holidays: Holiday[] = [];
 
   @observable
-  public holiday?: Holiday;
+  holiday?: Holiday;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (h: Holiday) => {
+  filter = (h: Holiday) => {
     return [h.name, this.mainStore!.formatDate(h.date)].some(s => s.toLowerCase().includes(this.searchQuery));
-  };
+  }
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/holidays/' + id);

@@ -1,25 +1,25 @@
-//tslint:disable:no-console
+// tslint:disable:no-console
 import '@babel/polyfill';
+import MomentUtils from '@date-io/moment';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import * as Sentry from '@sentry/browser';
+import { createBrowserHistory } from 'history';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Router } from 'react-router-dom';
 import App from './App';
 import './index.css';
-import { createBrowserHistory } from 'history';
-import { Router } from 'react-router-dom';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import DimeTheme from './layout/DimeTheme';
-import { StoreProvider } from './utilities/StoreProvider';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
-import * as Sentry from '@sentry/browser';
 import { DimeSnackbar } from './layout/Snackbar';
+import { StoreProvider } from './utilities/StoreProvider';
 
 import moment from 'moment';
 import 'moment/locale/de-ch';
 moment.locale('de-ch');
 
 const browserHistory = createBrowserHistory();
-const sentryDSN = 'SENTRY_DSN'; //this value will be replaced by a build script
+const sentryDSN = 'SENTRY_DSN'; // this value will be replaced by a build script
 
 if (sentryDSN.startsWith('https')) {
   console.log('yes raven');
@@ -42,5 +42,5 @@ ReactDOM.render(
       </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   </StoreProvider>,
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );

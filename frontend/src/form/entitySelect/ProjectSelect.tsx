@@ -1,6 +1,6 @@
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { ProjectStore } from '../../stores/projectStore';
-import { inject, observer } from 'mobx-react';
 import compose from '../../utilities/compose';
 import Select, { DimeSelectFieldProps } from '../fields/Select';
 
@@ -10,10 +10,10 @@ interface Props<T = number> extends DimeSelectFieldProps<T> {
 
 @compose(
   inject('projectStore'),
-  observer
+  observer,
 )
 export class ProjectSelect<T> extends React.Component<Props<T>> {
-  public get options() {
+  get options() {
     return this.props
       .projectStore!.projects.filter(p => !p.archived || this.props.value === p.id)
       .map(e => ({
@@ -22,7 +22,7 @@ export class ProjectSelect<T> extends React.Component<Props<T>> {
       }));
   }
 
-  public render() {
+  render() {
     return <Select options={this.options} {...this.props} />;
   }
 }

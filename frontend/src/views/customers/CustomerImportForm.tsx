@@ -1,19 +1,19 @@
-import React from 'react';
-import { MainStore } from '../../stores/mainStore';
 import { Grid, Input, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
-import { LoadingSpinner } from '../../layout/LoadingSpinner';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
 import { Formik } from 'formik';
-import { SwitchField } from '../../form/fields/common';
+import { inject, observer } from 'mobx-react';
+import React from 'react';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
 import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
-import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer } from '../../stores/customerImportStore';
-import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
-import { CustomerImportFAQ } from './CustomerImportFAQ';
-import { DimePaper } from '../../layout/DimePaper';
+import { SwitchField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
+import { DimePaper } from '../../layout/DimePaper';
+import { LoadingSpinner } from '../../layout/LoadingSpinner';
+import { CustomerImportSettings, CustomerImportStore, NonPersistedImportCustomer } from '../../stores/customerImportStore';
+import { MainStore } from '../../stores/mainStore';
+import compose from '../../utilities/compose';
+import { CustomerImportFAQ } from './CustomerImportFAQ';
+import { CustomerImportPreviewCard } from './CustomerImportPreviewCard';
 
 interface Props {
   customerImportStore?: CustomerImportStore;
@@ -26,24 +26,24 @@ interface CustomerImportFormState {
 
 @compose(
   inject('customerImportStore', 'mainStore'),
-  observer
+  observer,
 )
 export class CustomerImportForm extends React.Component<Props, CustomerImportFormState> {
-  public state = {
+  state = {
     faqOpen: false,
   };
 
-  public handleSubmit = (importSettings: CustomerImportSettings | undefined) => {
+  handleSubmit = (importSettings: CustomerImportSettings | undefined) => {
     this.props.customerImportStore!.doImport(importSettings).then(() => {
       this.props.customerImportStore!.customersToImport = [];
     });
-  };
+  }
 
-  public removeCustomer = (indexOfItem: number) => {
+  removeCustomer = (indexOfItem: number) => {
     this.props.customerImportStore!.customersToImport!.splice(indexOfItem, 1);
-  };
+  }
 
-  public render() {
+  render() {
     const { customerImportStore } = this.props;
 
     return (
@@ -111,7 +111,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                           if (event.currentTarget.files) {
                             this.props.customerImportStore!.verifyImportFile(
                               event.currentTarget.files[0],
-                              event.currentTarget.files[0].name
+                              event.currentTarget.files[0].name,
                             );
                           }
                         }}

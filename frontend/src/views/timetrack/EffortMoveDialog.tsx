@@ -1,28 +1,28 @@
-import * as React from 'react';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import { inject, observer } from 'mobx-react';
-import { ProjectStore } from '../../stores/projectStore';
-import { Field, Form, Formik, FormikBag, FormikProps } from 'formik';
-import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
-import Grid from '@material-ui/core/Grid/Grid';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { EffortStore } from '../../stores/effortStore';
-import * as yup from 'yup';
-import { localizeSchema, nullableNumber, selector } from '../../utilities/validation';
 import Button from '@material-ui/core/Button/Button';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { HandleFormikSubmit } from '../../types';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
+import Grid from '@material-ui/core/Grid/Grid';
+import { Field, Form, Formik, FormikBag, FormikProps } from 'formik';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import * as yup from 'yup';
+import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DimeField } from '../../form/fields/formik';
 import { FormDialog } from '../../form/FormDialog';
+import { EffortStore } from '../../stores/effortStore';
+import { ProjectStore } from '../../stores/projectStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { HandleFormikSubmit } from '../../types';
+import { localizeSchema, nullableNumber, selector } from '../../utilities/validation';
 
 const schema = localizeSchema(() =>
   yup.object({
     project_id: selector(),
     project_position: nullableNumber(),
-  })
+  }),
 );
 
 const template = {
@@ -43,15 +43,15 @@ interface Props {
 @inject('effortStore', 'projectStore', 'timetrackFilterStore')
 @observer
 export default class EffortMoveDialog extends React.Component<Props> {
-  public handleSubmit = async (formValues: Values) => {
+  handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
 
     await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);
     await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
     this.props.onClose();
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <FormDialog
         open

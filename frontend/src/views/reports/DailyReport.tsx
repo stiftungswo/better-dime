@@ -1,21 +1,21 @@
-import * as React from 'react';
-import { DimeAppBar } from '../../layout/DimeAppBar';
-import { DimePaper } from '../../layout/DimePaper';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { DailyReportEffort, DailyReportStore } from '../../stores/dailyReportStore';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import { MainStore } from '../../stores/mainStore';
-import Grid from '@material-ui/core/Grid/Grid';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import Grid from '@material-ui/core/Grid/Grid';
+import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
+import TableHead from '@material-ui/core/TableHead/TableHead';
+import TableRow from '@material-ui/core/TableRow/TableRow';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
+import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DailyReportEffort, DailyReportStore } from '../../stores/dailyReportStore';
+import { MainStore } from '../../stores/mainStore';
+import compose from '../../utilities/compose';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
 
 @compose(
   inject('dailyReportStore', 'mainStore'),
-  observer
+  observer,
 )
 export default class DailyReport extends React.Component<Props> {
   render() {
@@ -120,5 +120,5 @@ export default class DailyReport extends React.Component<Props> {
         {this.props.mainStore!.formatDuration(sum, 'h', true)}
       </DimeTableCell>
     );
-  };
+  }
 }

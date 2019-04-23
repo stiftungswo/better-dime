@@ -1,8 +1,8 @@
+import { inject, observer } from 'mobx-react';
 import React from 'react';
-import { DimeCustomFieldProps, NumberField } from '../common';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
 import compose from '../../../utilities/compose';
-import { inject, observer } from 'mobx-react';
+import { DimeCustomFieldProps, NumberField } from '../common';
 
 interface Props extends DimeCustomFieldProps<number> {
   rateUnitId: number;
@@ -11,33 +11,28 @@ interface Props extends DimeCustomFieldProps<number> {
 
 @compose(
   inject('rateUnitStore'),
-  observer
+  observer,
 )
 export class FlatEffortValueField extends React.Component<Props> {
+
+  state = {
+    name: '',
+  };
   constructor(props: Props) {
     super(props);
   }
 
-  public state = {
-    name: '',
-  };
-
-  public async componentDidMount() {
+  async componentDidMount() {
     this.updateRateUnitLabel();
   }
 
-  public async componentDidUpdate(prevProps: Props) {
+  async componentDidUpdate(prevProps: Props) {
     if (this.props.rateUnitId !== prevProps.rateUnitId) {
       this.updateRateUnitLabel();
     }
   }
 
-  protected async updateRateUnitLabel() {
-    await this.props.rateUnitStore!.fetchOne(this.props.rateUnitId);
-    this.setState({ name: this.props.rateUnitStore!.rateUnit!.name });
-  }
-
-  public render() {
+  render() {
     return (
       <NumberField
         type={'number'}
@@ -49,5 +44,10 @@ export class FlatEffortValueField extends React.Component<Props> {
         unit={this.state.name}
       />
     );
+  }
+
+  protected async updateRateUnitLabel() {
+    await this.props.rateUnitStore!.fetchOne(this.props.rateUnitId);
+    this.setState({ name: this.props.rateUnitStore!.rateUnit!.name });
   }
 }

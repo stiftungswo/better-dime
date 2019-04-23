@@ -16,7 +16,7 @@ export const invoiceSchema = localizeSchema(() =>
         name: yup.string().required(),
         percentage: yup.boolean().required(),
         value: requiredNumber(),
-      })
+      }),
     ),
     positions: yup.array(
       yup.object({
@@ -27,17 +27,17 @@ export const invoiceSchema = localizeSchema(() =>
         project_position_id: yup.number().nullable(true),
         rate_unit_id: selector(),
         vat: requiredNumber(),
-      })
+      }),
     ),
     costgroup_distributions: yup
       .array(
         yup.object({
           costgroup_number: selector(),
           weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
-        })
+        }),
       )
       .min(1, 'Eine Rechnung benötigt mindestens eine zugewiesene Kostenstelle.'),
-  })
+  }),
 );
 
 export const invoiceTemplate = {

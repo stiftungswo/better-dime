@@ -1,18 +1,17 @@
-import * as React from 'react';
-import { Fragment } from 'react';
-import { Employee } from '../../types';
-import { FormikProps } from 'formik';
-import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
-import { FormView, FormViewProps } from '../../form/FormView';
-import { FormHeader } from '../../layout/FormHeader';
-import { WorkPeriodSubform } from './WorkPeriodSubform';
-import { DimePaper } from '../../layout/DimePaper';
-import { DimeField } from '../../form/fields/formik';
-import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
+import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
+import { FormView, FormViewProps } from '../../form/FormView';
+import { DimePaper } from '../../layout/DimePaper';
+import { FormHeader } from '../../layout/FormHeader';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
+import { Employee } from '../../types';
+import { empty } from '../../utilities/helpers';
+import { WorkPeriodSubform } from './WorkPeriodSubform';
 
 export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
@@ -32,7 +31,7 @@ export default class EmployeeForm extends React.Component<Props> {
     this.setState({ loading: false });
   }
 
-  public render() {
+  render() {
     const { employee, schema } = this.props;
 
     return (
@@ -47,7 +46,7 @@ export default class EmployeeForm extends React.Component<Props> {
         render={(
           props: FormikProps<any> // tslint:disable-line
         ) => (
-          <Fragment>
+          <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12}>
@@ -118,7 +117,7 @@ export default class EmployeeForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </Fragment>
+          </React.Fragment>
         )}
       />
     );

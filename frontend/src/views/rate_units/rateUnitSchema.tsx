@@ -9,7 +9,7 @@ export const rateUnitSchema = localizeSchema(() =>
     factor: requiredNumber(),
     is_time: yup.boolean(),
     name: yup.string().required(),
-  })
+  }),
 );
 
 export const rateUnitTemplate = {

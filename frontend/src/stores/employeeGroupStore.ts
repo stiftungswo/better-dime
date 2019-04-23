@@ -1,13 +1,9 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { EmployeeGroup } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
-  @observable
-  public employeeGroups: EmployeeGroup[] = [];
-  @observable
-  public employeeGroup?: EmployeeGroup = undefined;
 
   protected get employeeName(): { singular: string; plural: string } {
     return {
@@ -26,42 +22,46 @@ export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
   }
 
   @computed
-  get entities(): Array<EmployeeGroup> {
+  get entities(): EmployeeGroup[] {
     return this.employeeGroups;
   }
+  @observable
+  employeeGroups: EmployeeGroup[] = [];
+  @observable
+  employeeGroup?: EmployeeGroup = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (r: EmployeeGroup) => r.name.includes(this.searchQuery);
-
-  protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/employee_groups/' + id);
-    this.doFetchAll();
-  }
+  filter = (r: EmployeeGroup) => r.name.includes(this.searchQuery);
 
   @action
-  public async doFetchAll() {
+  async doFetchAll() {
     const res = await this.mainStore.api.get<EmployeeGroup[]>('/employee_groups');
     this.employeeGroups = res.data;
   }
 
   @action
-  public async doFetchOne(id: number) {
+  async doFetchOne(id: number) {
     await this.mainStore.api.get<EmployeeGroup>('/employee_groups/' + id);
     await this.doFetchAll();
   }
 
   @action
-  public async doPost(employeeGroup: EmployeeGroup) {
+  async doPost(employeeGroup: EmployeeGroup) {
     await this.mainStore.api.post('/employee_groups', employeeGroup);
     await this.doFetchAll();
   }
 
   @action
-  public async doPut(employeeGroup: EmployeeGroup) {
+  async doPut(employeeGroup: EmployeeGroup) {
     await this.mainStore.api.put('/employee_groups/' + employeeGroup.id, employeeGroup);
     await this.doFetchAll();
+  }
+
+  protected async doDelete(id: number) {
+    await this.mainStore.api.delete('/employee_groups/' + id);
+    this.doFetchAll();
   }
 }

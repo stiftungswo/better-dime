@@ -1,16 +1,16 @@
+import { withMobileDialog } from '@material-ui/core';
+import Button from '@material-ui/core/Button/Button';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import { InjectedProps } from '@material-ui/core/withMobileDialog';
 import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import Button from '@material-ui/core/Button/Button';
-import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { Prompt } from 'react-router';
-import compose from '../utilities/compose';
-import { withMobileDialog } from '@material-ui/core';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
 import { Schema } from 'yup';
+import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../types';
+import compose from '../utilities/compose';
 import { FormikSubmitDetector } from './FormikSubmitDetector';
 
 interface DialogFormProps<T> {
@@ -27,12 +27,12 @@ interface DialogFormProps<T> {
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
   FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & InjectedProps
 > {
-  public handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
+  handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     await this.props.onSubmit(this.props.validationSchema.cast(values));
     formikBag.setSubmitting(false);
-  };
+  }
 
-  public handleClose = (props: FormikProps<Values>) => () => {
+  handleClose = (props: FormikProps<Values>) => () => {
     if (props.dirty) {
       if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
         this.props.onClose();
@@ -40,9 +40,9 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
     } else {
       this.props.onClose();
     }
-  };
+  }
 
-  public render() {
+  render() {
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
     const { fullScreen, ...rest } = this.props as any;
 

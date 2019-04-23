@@ -1,16 +1,16 @@
-import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
-import { Formik } from 'formik';
-import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
-import { DimeField } from '../../form/fields/formik';
-import { ExportFormatSelect } from '../../form/entitySelect/ExportFormatSelect';
 import Button from '@material-ui/core/Button/Button';
-import { DimePaper } from '../../layout/DimePaper';
-import { CustomerFilter } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
+import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
+import React from 'react';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { ExportFormatSelect } from '../../form/entitySelect/ExportFormatSelect';
 import { SwitchField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
+import { DimePaper } from '../../layout/DimePaper';
+import { MainStore } from '../../stores/mainStore';
+import { CustomerFilter } from '../../types';
+import compose from '../../utilities/compose';
 
 const initialValues: CustomerFilter = {
   customer_tags: [],
@@ -24,10 +24,10 @@ interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export class CustomerExportForm extends React.Component<Props> {
-  public render() {
+  render() {
     return (
       <Grid item xs={12}>
         <DimePaper>
@@ -37,7 +37,7 @@ export class CustomerExportForm extends React.Component<Props> {
 
           <Formik
             initialValues={initialValues}
-            onSubmit={() => {}} //tslint:disable-line:no-empty
+            onSubmit={() => {}} // tslint:disable-line:no-empty
             render={formikProps => (
               <Grid container alignItems={'center'} spacing={24}>
                 <Grid item xs={12} md={4}>

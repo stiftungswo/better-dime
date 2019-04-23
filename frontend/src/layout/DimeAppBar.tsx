@@ -1,23 +1,23 @@
-import compose from '../utilities/compose';
+import { Theme, withWidth } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import Typography from '@material-ui/core/Typography/Typography';
+import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import classNames from 'classnames';
-import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Typography from '@material-ui/core/Typography/Typography';
-import { Theme, withWidth } from '@material-ui/core';
-import { MainStore } from '../stores/mainStore';
-import { ActionButton, ButtonProps } from './ActionButton';
 import { EmployeeStore } from '../stores/employeeStore';
+import { MainStore } from '../stores/mainStore';
+import compose from '../utilities/compose';
+import { ActionButton, ButtonProps } from './ActionButton';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import { MenuIcon } from './icons';
-import createStyles from '@material-ui/core/styles/createStyles';
 import { drawerWidth } from './DimeLayout';
+import { MenuIcon } from './icons';
 
-export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
+export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex }: Theme) =>
   createStyles({
     appBar: {
       zIndex: zIndex.drawer + 1,
@@ -60,7 +60,7 @@ interface Props extends WithStyles<typeof styles> {
 @compose(
   withWidth(),
   inject('mainStore', 'employeeStore'),
-  observer
+  observer,
 )
 class DimeAppBarInner extends React.Component<Props> {
   constructor(props: Props) {
@@ -71,14 +71,14 @@ class DimeAppBarInner extends React.Component<Props> {
   handleMenu = (event: React.PointerEvent) => {
     this.props.mainStore!.userMenuAnchorEl = event.currentTarget as HTMLElement;
     this.props.mainStore!.userMenuOpen = false;
-  };
+  }
 
   handleClose = () => {
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
-  };
+  }
 
-  public render() {
+  render() {
     const { children, classes } = this.props;
     const { drawerOpen } = this.props.mainStore!;
 
@@ -108,8 +108,6 @@ class DimeAppBarInner extends React.Component<Props> {
 
 export const DimeAppBar = withStyles(styles)(DimeAppBarInner);
 
-export class DimeAppBarButton extends React.Component<ButtonProps> {
-  public render = () => {
-    return <ActionButton {...this.props} color={'inherit'} />;
-  };
-}
+export const DimeAppBarButton = (props: ButtonProps) => {
+  return <ActionButton {...props} color={'inherit'} />;
+};

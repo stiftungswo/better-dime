@@ -1,8 +1,8 @@
-import { RouteComponentProps, withRouter } from 'react-router';
-import Tabs from '@material-ui/core/Tabs/Tabs';
 import Tab from '@material-ui/core/Tab/Tab';
-import { Project } from '../../types';
+import Tabs from '@material-ui/core/Tabs/Tabs';
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Project } from '../../types';
 
 interface NavigatorProps extends RouteComponentProps {
   project: Project;

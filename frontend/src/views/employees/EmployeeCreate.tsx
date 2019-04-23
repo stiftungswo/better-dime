@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { Employee } from '../../types';
 import { inject, observer } from 'mobx-react';
-import { EmployeeStore } from '../../stores/employeeStore';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import EmployeeForm from './EmployeeForm';
+import { EmployeeStore } from '../../stores/employeeStore';
+import { Employee } from '../../types';
 import compose from '../../utilities/compose';
+import EmployeeForm from './EmployeeForm';
 import { employeeTemplate, newEmployeeSchema } from './employeeSchema';
 
 export interface Props extends RouteComponentProps {
@@ -13,22 +13,22 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('employeeStore'),
-  observer
+  observer,
 )
 export default class EmployeeCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (employee: Employee) => {
+  handleSubmit = (employee: Employee) => {
     return this.props.employeeStore!.post(employee).then(() => {
       this.setState({ submitted: true });
       const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
       this.props.history.replace('/employees/' + idOfNewEmployee);
     });
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <EmployeeForm
         title={'Mitarbeiter erfassen'}

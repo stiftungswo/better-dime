@@ -1,13 +1,9 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { CustomerTag } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class CustomerTagStore extends AbstractStore<CustomerTag> {
-  @observable
-  public customerTags: CustomerTag[] = [];
-  @observable
-  public customerTag?: CustomerTag = undefined;
 
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -26,42 +22,46 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
   }
 
   @computed
-  get entities(): Array<CustomerTag> {
+  get entities(): CustomerTag[] {
     return this.customerTags;
   }
+  @observable
+  customerTags: CustomerTag[] = [];
+  @observable
+  customerTag?: CustomerTag = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (r: CustomerTag) => r.name.includes(this.searchQuery);
-
-  protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived });
-    this.doFetchAll();
-  }
+  filter = (r: CustomerTag) => r.name.includes(this.searchQuery);
 
   @action
-  public async doFetchAll() {
+  async doFetchAll() {
     const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags');
     this.customerTags = res.data;
   }
 
   @action
-  public async doFetchOne(id: number) {
+  async doFetchOne(id: number) {
     await this.mainStore.api.get<CustomerTag>('/customer_tags/' + id);
     await this.doFetchAll();
   }
 
   @action
-  public async doPost(customerTag: CustomerTag) {
+  async doPost(customerTag: CustomerTag) {
     await this.mainStore.api.post('/customer_tags', customerTag);
     await this.doFetchAll();
   }
 
   @action
-  public async doPut(customerTag: CustomerTag) {
+  async doPut(customerTag: CustomerTag) {
     await this.mainStore.api.put('/customer_tags/' + customerTag.id, customerTag);
     await this.doFetchAll();
+  }
+
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived });
+    this.doFetchAll();
   }
 }

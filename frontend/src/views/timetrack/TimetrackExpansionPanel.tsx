@@ -1,14 +1,14 @@
-import React from 'react';
+import { Theme } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
 import Grid from '@material-ui/core/Grid/Grid';
-import Typography from '@material-ui/core/Typography/Typography';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
-import { ExpandMoreIcon } from '../../layout/icons';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import { Theme } from '@material-ui/core';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography/Typography';
 import classNames from 'classnames';
+import React from 'react';
+import { ExpandMoreIcon } from '../../layout/icons';
 
 export const styles = (theme: Theme) =>
   createStyles({
@@ -27,15 +27,15 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 class TimetrackExpansionPanelInner extends React.Component<Props> {
-  public state = {
+  state = {
     open: true,
   };
 
-  public changeExpansion = () => {
+  changeExpansion = () => {
     this.setState({ open: !this.state.open });
-  };
+  }
 
-  public render() {
+  render() {
     const selected = Boolean(this.props.selectedCount);
     return (
       <Grid item xs={12}>

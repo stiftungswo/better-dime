@@ -1,17 +1,17 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { HolidayStore } from '../../stores/holidayStore';
-import { Column } from '../../layout/Overview';
+import * as React from 'react';
 import { TextField } from '../../form/fields/common';
-import { EditableOverview } from '../../layout/EditableOverview';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
-import { DurationField } from '../../form/fields/DurationField';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { holidaySchema, holidayTemplate } from './holidaySchema';
-import { Holiday } from '../../types';
+import { DurationField } from '../../form/fields/DurationField';
 import { DimeField } from '../../form/fields/formik';
+import { ActionButtons } from '../../layout/ActionButtons';
+import { EditableOverview } from '../../layout/EditableOverview';
+import { Column } from '../../layout/Overview';
+import { HolidayStore } from '../../stores/holidayStore';
+import { MainStore } from '../../stores/mainStore';
+import { Holiday } from '../../types';
+import compose from '../../utilities/compose';
+import { holidaySchema, holidayTemplate } from './holidaySchema';
 
 interface Props {
   holidayStore?: HolidayStore;
@@ -20,10 +20,10 @@ interface Props {
 
 @compose(
   inject('holidayStore', 'mainStore'),
-  observer
+  observer,
 )
 export default class HolidayOverview extends React.Component<Props> {
-  public columns: Array<Column<Holiday>> = [];
+  columns: Array<Column<Holiday>> = [];
 
   constructor(props: Props) {
     super(props);
@@ -49,7 +49,7 @@ export default class HolidayOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const holidayStore = this.props.holidayStore;
 
     return (
@@ -68,7 +68,8 @@ export default class HolidayOverview extends React.Component<Props> {
             }}
             deleteAction={() => holidayStore!.delete(e.id)}
             deleteMessage={
-              'Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!'
+              'Möchtest du diesen Feiertag wirklich löschen? ' +
+              'Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!'
             }
           />
         )}

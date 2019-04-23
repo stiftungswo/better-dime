@@ -1,11 +1,11 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { ProjectStore } from '../../stores/projectStore';
-import compose from '../../utilities/compose';
-import Overview, { Column } from '../../layout/Overview';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { Project, ProjectListing } from '../../types';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { ProjectStore } from '../../stores/projectStore';
+import { Project, ProjectListing } from '../../types';
+import compose from '../../utilities/compose';
 
 export type Props = {
   projectStore?: ProjectStore;
@@ -14,10 +14,10 @@ export type Props = {
 @compose(
   inject('projectStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class ProjectOverview extends React.Component<Props> {
-  public columns: Column<ProjectListing>[];
+  columns: Array<Column<ProjectListing>>;
 
   constructor(props: Props) {
     super(props);
@@ -37,7 +37,7 @@ export default class ProjectOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const projectStore = this.props.projectStore;
 
     return (

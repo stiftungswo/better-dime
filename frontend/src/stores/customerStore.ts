@@ -1,6 +1,6 @@
 import { computed, observable } from 'mobx';
-import { AbstractStore } from './abstractStore';
 import { Customer } from '../types';
+import { AbstractStore } from './abstractStore';
 
 export class CustomerStore extends AbstractStore<Customer> {
   protected get entityName() {
@@ -11,24 +11,24 @@ export class CustomerStore extends AbstractStore<Customer> {
   }
 
   @computed
-  public get entities() {
+  get entities() {
     return this.customers;
   }
 
   @computed
-  public get entity() {
+  get entity() {
     return this.customer;
   }
 
-  public set entity(customer: Customer | undefined) {
+  set entity(customer: Customer | undefined) {
     this.customer = customer;
   }
 
   @observable
-  public customers: Customer[] = [];
+  customers: Customer[] = [];
 
   @observable
-  public customer?: Customer = undefined;
+  customer?: Customer = undefined;
 
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Customer[]>('/customers');

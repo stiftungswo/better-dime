@@ -1,10 +1,10 @@
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CustomerStore } from '../../stores/customerStore';
-import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import Select from '../fields/Select';
 import { Customer, Person } from '../../types';
+import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   customerStore?: CustomerStore;
@@ -12,9 +12,22 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('customerStore'),
-  observer
+  observer,
 )
 export class CustomerSelect extends React.Component<Props> {
+
+  get options() {
+    return this.props
+      .customerStore!.entities.filter((c: Customer) => !c.hidden || this.props.value === c.id)
+      .map(c => ({
+        value: c.id,
+        label: c.type === 'person' ? this.renderPersonName(c).trim() : c.name,
+      }));
+  }
+
+  render() {
+    return <Select options={this.options} {...this.props} />;
+  }
   private renderPersonName(person: Person) {
     let company: Customer | undefined;
     let baseName: string = `${person.salutation} ${person.first_name} ${person.last_name}`;
@@ -28,18 +41,5 @@ export class CustomerSelect extends React.Component<Props> {
     }
 
     return baseName;
-  }
-
-  public get options() {
-    return this.props
-      .customerStore!.entities.filter((c: Customer) => !c.hidden || this.props.value === c.id)
-      .map(c => ({
-        value: c.id,
-        label: c.type === 'person' ? this.renderPersonName(c).trim() : c.name,
-      }));
-  }
-
-  public render() {
-    return <Select options={this.options} {...this.props} />;
   }
 }

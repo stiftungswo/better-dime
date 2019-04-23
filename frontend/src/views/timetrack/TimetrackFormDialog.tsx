@@ -1,31 +1,31 @@
-import React from 'react';
-import { Formik, FormikProps } from 'formik';
-import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
-import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { EffortStore } from '../../stores/effortStore';
-import * as yup from 'yup';
-import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../types';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { MainStore } from '../../stores/mainStore';
-import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
-import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
-import Dialog from '@material-ui/core/Dialog/Dialog';
 import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
 import Button from '@material-ui/core/Button/Button';
+import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { TextField } from '../../form/fields/common';
-import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import { Formik, FormikProps } from 'formik';
+import { inject, observer } from 'mobx-react';
 import moment from 'moment';
-import { ProjectStore } from '../../stores/projectStore';
-import { captureException } from '../../utilities/helpers';
-import { apiDateFormat } from '../../stores/apiStore';
-import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
-import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import React from 'react';
+import * as yup from 'yup';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
+import { TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
+import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
+import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import { apiDateFormat } from '../../stores/apiStore';
+import { EffortStore } from '../../stores/effortStore';
+import { MainStore } from '../../stores/mainStore';
+import { ProjectCommentStore } from '../../stores/projectCommentStore';
+import { ProjectStore } from '../../stores/projectStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../types';
+import compose from '../../utilities/compose';
+import { captureException } from '../../utilities/helpers';
+import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
 interface Props extends InjectedProps {
   onClose: () => void;
@@ -54,7 +54,7 @@ const soloSchema = localizeSchema(() =>
     .object({
       employee_id: yup.number().required(),
     })
-    .shape(baseEffortFields)
+    .shape(baseEffortFields),
 );
 
 const multiSchema = localizeSchema(() =>
@@ -65,20 +65,24 @@ const multiSchema = localizeSchema(() =>
         .of(yup.number())
         .min(1, 'Dies ist ein erforderliches Feld.'),
     })
-    .shape(baseEffortFields)
+    .shape(baseEffortFields),
 );
 
 @compose(
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore'),
   observer,
-  withMobileDialog()
+  withMobileDialog(),
 )
 export class TimetrackFormDialog extends React.Component<Props, State> {
+
+  get mode() {
+    return Boolean(this.props.effortStore!.effort) ? 'edit' : 'create';
+  }
   state = {
     lastEntry: undefined,
     closeAfterSubmit: false,
   };
-  public handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
+  handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
     const filter = this.props.timetrackFilterStore!.filter;
     const effortStore = this.props.effortStore!;
 
@@ -109,50 +113,9 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     if (this.state.closeAfterSubmit) {
       this.props.effortStore!.editing = false;
     }
-  };
+  }
 
-  //widen the filter so the newly added entities are displayed
-  private widenFilterSettings = async (entity: ProjectEffortTemplate) => {
-    const filter = this.props.timetrackFilterStore!.filter;
-
-    if (filter.employeeIds.length > 0) {
-      const allIds = new Set(filter.employeeIds);
-      entity.employee_ids.forEach(id => allIds.add(id));
-      filter.employeeIds = Array.from(allIds.values());
-    }
-
-    if (filter.projectIds.length > 0) {
-      const allIds = new Set(filter.projectIds);
-      allIds.add(entity.project_id!);
-      filter.projectIds = Array.from(allIds.values());
-    }
-
-    if (filter.serviceIds.length > 0) {
-      try {
-        await this.props.projectStore!.fetchOne(entity.project_id!);
-        const position = this.props.projectStore!.project!.positions.find(pos => pos.id === entity.position_id)!;
-        const allIds = new Set(filter.serviceIds);
-        allIds.add(position.service_id);
-        filter.serviceIds = Array.from(allIds.values());
-      } catch (e) {
-        captureException(e);
-      }
-    }
-
-    const effortDate = moment(entity.date);
-    const filterEnd = moment(filter.end);
-    const filterStart = moment(filter.start);
-
-    if (effortDate.isAfter(filterEnd)) {
-      filter.end = effortDate.clone();
-    }
-
-    if (effortDate.isBefore(filterStart)) {
-      filter.start = effortDate.clone();
-    }
-  };
-
-  public handleClose = (props: FormikProps<ProjectEffort>) => () => {
+  handleClose = (props: FormikProps<ProjectEffort>) => () => {
     if (props.dirty) {
       if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
         this.props.onClose();
@@ -160,13 +123,9 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     } else {
       this.props.onClose();
     }
-  };
-
-  public get mode() {
-    return Boolean(this.props.effortStore!.effort) ? 'edit' : 'create';
   }
 
-  public render() {
+  render() {
     const { fullScreen } = this.props;
 
     return (
@@ -233,5 +192,46 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         )}
       />
     );
+  }
+
+  // widen the filter so the newly added entities are displayed
+  private widenFilterSettings = async (entity: ProjectEffortTemplate) => {
+    const filter = this.props.timetrackFilterStore!.filter;
+
+    if (filter.employeeIds.length > 0) {
+      const allIds = new Set(filter.employeeIds);
+      entity.employee_ids.forEach(id => allIds.add(id));
+      filter.employeeIds = Array.from(allIds.values());
+    }
+
+    if (filter.projectIds.length > 0) {
+      const allIds = new Set(filter.projectIds);
+      allIds.add(entity.project_id!);
+      filter.projectIds = Array.from(allIds.values());
+    }
+
+    if (filter.serviceIds.length > 0) {
+      try {
+        await this.props.projectStore!.fetchOne(entity.project_id!);
+        const position = this.props.projectStore!.project!.positions.find(pos => pos.id === entity.position_id)!;
+        const allIds = new Set(filter.serviceIds);
+        allIds.add(position.service_id);
+        filter.serviceIds = Array.from(allIds.values());
+      } catch (e) {
+        captureException(e);
+      }
+    }
+
+    const effortDate = moment(entity.date);
+    const filterEnd = moment(filter.end);
+    const filterStart = moment(filter.start);
+
+    if (effortDate.isAfter(filterEnd)) {
+      filter.end = effortDate.clone();
+    }
+
+    if (effortDate.isBefore(filterStart)) {
+      filter.start = effortDate.clone();
+    }
   }
 }

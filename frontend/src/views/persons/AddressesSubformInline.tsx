@@ -1,21 +1,20 @@
-import * as React from 'react';
-import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
-import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { Address, Person } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import TableToolbar from '../../layout/TableToolbar';
-import { PeopleStore } from 'src/stores/peopleStore';
-import { DeleteButton } from 'src/layout/ConfirmationDialog';
+import * as React from 'react';
 import { NumberField, TextField } from 'src/form/fields/common';
-import { DimePaper } from '../../layout/DimePaper';
-import { Company } from '../../types';
-import { DimeTableCell } from '../../layout/DimeTableCell';
+import { DeleteButton } from 'src/layout/ConfirmationDialog';
+import { PeopleStore } from 'src/stores/peopleStore';
 import { DimeField } from '../../form/fields/formik';
+import { DimePaper } from '../../layout/DimePaper';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import TableToolbar from '../../layout/TableToolbar';
+import { MainStore } from '../../stores/mainStore';
+import { Address, Company, Person } from '../../types';
+import compose from '../../utilities/compose';
 
 const template = () => ({
   city: '',
@@ -38,14 +37,14 @@ export interface Props {
 
 @compose(
   inject('mainStore', 'peopleStore'),
-  observer
+  observer,
 )
 export default class AddressesSubformInline extends React.Component<Props> {
-  public handleAdd = (arrayHelpers: ArrayHelpers) => {
+  handleAdd = (arrayHelpers: ArrayHelpers) => {
     arrayHelpers.push(template());
-  };
+  }
 
-  public render() {
+  render() {
     const { values } = this.props.formikProps;
     const { inherited = [] } = this.props;
     return (

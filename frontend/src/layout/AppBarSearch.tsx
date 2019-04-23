@@ -1,24 +1,24 @@
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import InputBase from '@material-ui/core/InputBase/InputBase';
-import * as React from 'react';
-import { CloseIcon, SearchIcon } from './icons';
 import { Theme } from '@material-ui/core';
-import createStyles from '@material-ui/core/styles/createStyles';
+import InputBase from '@material-ui/core/InputBase/InputBase';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
+import * as React from 'react';
+import { CloseIcon, SearchIcon } from './icons';
 
 export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
   createStyles({
     search: {
-      position: 'relative',
-      borderRadius: shape.borderRadius,
-      backgroundColor: fade(palette.common.white, 0.15),
+      'position': 'relative',
+      'borderRadius': shape.borderRadius,
+      'backgroundColor': fade(palette.common.white, 0.15),
       '&:hover': {
         backgroundColor: fade(palette.common.white, 0.25),
       },
-      marginLeft: 0,
-      width: '100%',
+      'marginLeft': 0,
+      'width': '100%',
       [breakpoints.up('sm')]: {
         marginLeft: spacing.unit,
         width: 'auto',
@@ -49,7 +49,7 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       transition: transitions.create('width'),
       width: '100%',
       [breakpoints.up('sm')]: {
-        width: 120,
+        'width': 120,
         '&:focus': {
           width: 200,
         },
@@ -68,6 +68,10 @@ class AppBarSearchInner extends React.Component<Props> {
     value: '',
   };
 
+  delayedOnChange = debounce(value => {
+    this.props.onChange(value);
+  }, this.props.delay || 0);
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -82,11 +86,7 @@ class AppBarSearchInner extends React.Component<Props> {
     } else {
       this.delayedOnChange(value);
     }
-  };
-
-  delayedOnChange = debounce(value => {
-    this.props.onChange(value);
-  }, this.props.delay || 0);
+  }
 
   render() {
     const { classes } = this.props;

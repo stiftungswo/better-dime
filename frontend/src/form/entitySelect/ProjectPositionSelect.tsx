@@ -1,10 +1,10 @@
+import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { EffortStore } from '../../stores/effortStore';
 import { ProjectStore } from '../../stores/projectStore';
 import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import Select from '../fields/Select';
-import { EffortStore } from '../../stores/effortStore';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   effortStore?: EffortStore;
@@ -14,9 +14,20 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('effortStore', 'projectStore'),
-  observer
+  observer,
 )
 export class ProjectPositionSelect extends React.Component<Props> {
+
+  get options() {
+    if (this.props.effortStore!.selectedProject) {
+      return this.props.effortStore!.selectedProject!.positions.map(e => ({
+        value: e.id,
+        label: e.service.name,
+      }));
+    } else {
+      return [];
+    }
+  }
   componentDidMount() {
     this.updateProjectInStore();
   }
@@ -28,25 +39,7 @@ export class ProjectPositionSelect extends React.Component<Props> {
     }
   }
 
-  protected async updateProjectInStore() {
-    if (this.props.projectId) {
-      await this.props.projectStore!.fetchOne(this.props.projectId);
-      this.props.effortStore!.selectedProject = this.props.projectStore!.project;
-    }
-  }
-
-  public get options() {
-    if (this.props.effortStore!.selectedProject) {
-      return this.props.effortStore!.selectedProject!.positions.map(e => ({
-        value: e.id,
-        label: e.service.name,
-      }));
-    } else {
-      return [];
-    }
-  }
-
-  public render() {
+  render() {
     if (this.props.projectId) {
       if (this.props.projectStore!.project) {
         return <Select options={this.options} {...this.props} />;
@@ -55,6 +48,13 @@ export class ProjectPositionSelect extends React.Component<Props> {
       }
     } else {
       return <Select options={[]} isDisabled placeholder={'Zuerst Projekt auswählen'} {...this.props} />;
+    }
+  }
+
+  protected async updateProjectInStore() {
+    if (this.props.projectId) {
+      await this.props.projectStore!.fetchOne(this.props.projectId);
+      this.props.effortStore!.selectedProject = this.props.projectStore!.project;
     }
   }
 }

@@ -1,10 +1,10 @@
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { CustomerTagStore } from '../../stores/customerTagStore';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import Select from '../fields/Select';
 import { CustomerTag } from '../../types';
+import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   customerTagStore?: CustomerTagStore;
@@ -12,10 +12,10 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('customerTagStore'),
-  observer
+  observer,
 )
 export class CustomerTagSelect extends React.Component<Props> {
-  public get options() {
+  get options() {
     return this.props
       .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.value === ct.id)
       .map(e => ({
@@ -24,7 +24,7 @@ export class CustomerTagSelect extends React.Component<Props> {
       }));
   }
 
-  public render() {
+  render() {
     return <Select isMulti options={this.options} {...this.props} isClearable />;
   }
 }

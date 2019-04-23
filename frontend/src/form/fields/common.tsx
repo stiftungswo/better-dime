@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input, { InputProps } from '@material-ui/core/Input/Input';
-import Switch from '@material-ui/core/Switch/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import { PropTypes } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Input, { InputProps } from '@material-ui/core/Input/Input';
+import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import Switch from '@material-ui/core/Switch/Switch';
+import React, { ReactNode } from 'react';
 
 interface SharedProps {
   label?: string;

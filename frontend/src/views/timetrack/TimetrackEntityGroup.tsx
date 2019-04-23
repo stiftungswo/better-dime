@@ -1,15 +1,15 @@
-import React from 'react';
-import { OverviewTable } from '../../layout/OverviewTable';
-import { Column } from '../../layout/Overview';
-import { ProjectEffortListing } from '../../types';
-import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 import { inject, observer } from 'mobx-react';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import React from 'react';
 import { ActionButton } from '../../layout/ActionButton';
-import { DeleteIcon, MoveIcon } from '../../layout/icons';
-import { EffortStore } from '../../stores/effortStore';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DeleteIcon, MoveIcon } from '../../layout/icons';
+import { Column } from '../../layout/Overview';
+import { OverviewTable } from '../../layout/OverviewTable';
+import { EffortStore } from '../../stores/effortStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { ProjectEffortListing } from '../../types';
 import EffortMoveDialog from './EffortMoveDialog';
+import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
 interface Props {
   actions?: React.ReactNode;
@@ -25,20 +25,20 @@ interface Props {
 @inject('timetrackFilterStore', 'effortStore')
 @observer
 export class TimetrackEntityGroup extends React.Component<Props> {
-  public handleDelete = async () => {
+  handleDelete = async () => {
     const effortStore = this.props.effortStore!;
     const filterStore = this.props.timetrackFilterStore!;
     await Promise.all(this.selectedIds.map(id => effortStore.delete(id)));
     await effortStore.fetchFiltered(filterStore.filter);
     this.selectedIds.forEach(id => filterStore.selectedEffortIds.set(id, false));
-  };
+  }
 
-  public handleMove = async () => {
+  handleMove = async () => {
     this.selectedIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
     this.props.effortStore!.moving = false;
-  };
+  }
 
-  public get selectedIds() {
+  get selectedIds() {
     const filterStore = this.props.timetrackFilterStore!;
     const effortIds = this.props.efforts.map(e => e.id);
     return Array.from(filterStore.selectedEffortIds.entries())
@@ -46,7 +46,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
       .map(([id, state]) => id);
   }
 
-  public render() {
+  render() {
     const { actions, columns, efforts, onClickRow, title, displayTotal } = this.props;
     const filterStore = this.props.timetrackFilterStore!;
     const effortStore = this.props.effortStore!;

@@ -1,19 +1,19 @@
-import * as React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
 import { Theme, WithStyles, withWidth } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
+import Divider from '@material-ui/core/Divider/Divider';
+import Drawer from '@material-ui/core/Drawer/Drawer';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import List from '@material-ui/core/List';
+import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Drawer from '@material-ui/core/Drawer/Drawer';
-import Divider from '@material-ui/core/Divider/Divider';
-import { Navigation } from './Navigation';
-import compose from '../utilities/compose';
 import { inject, observer } from 'mobx-react';
+import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
+import compose from '../utilities/compose';
 import { ChevronLeftIcon } from './icons';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import List from '@material-ui/core/List';
+import { Navigation } from './Navigation';
 
 export const drawerWidth = 240;
 
@@ -97,18 +97,18 @@ interface Props extends WithStyles<typeof styles> {
 @compose(
   withWidth(),
   inject('mainStore'),
-  observer
+  observer,
 )
 class DimeLayout extends React.Component<Props> {
-  public handleDrawerOpen = () => {
+  handleDrawerOpen = () => {
     this.props.mainStore!.drawerOpen = true;
-  };
+  }
 
-  public handleDrawerClose = () => {
+  handleDrawerClose = () => {
     this.props.mainStore!.drawerOpen = false;
-  };
+  }
 
-  public render() {
+  render() {
     const { children, classes } = this.props;
     const open = this.props.mainStore!.drawerOpen;
 

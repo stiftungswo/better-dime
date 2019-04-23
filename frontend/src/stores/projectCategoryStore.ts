@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
-import { AbstractStore } from './abstractStore';
 import { ProjectCategory } from '../types';
+import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   protected get entityName() {
@@ -9,41 +9,6 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
       singular: 'Der Tätigkeitsbereich',
       plural: 'Die Tätigkeitsbereiche',
     };
-  }
-
-  @observable
-  public projectCategories: ProjectCategory[] = [];
-
-  @observable
-  public projectCategory?: ProjectCategory;
-
-  constructor(mainStore: MainStore) {
-    super(mainStore);
-  }
-
-  public filter = (r: ProjectCategory) => r.name.toLowerCase().includes(this.searchQuery);
-
-  protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived });
-    this.doFetchAll();
-  }
-
-  @action
-  public async doFetchAll() {
-    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
-    this.projectCategories = res.data;
-  }
-
-  @action
-  public async doPost(projectCategory: ProjectCategory) {
-    await this.mainStore.api.post('/project_categories', projectCategory);
-    await this.doFetchAll();
-  }
-
-  @action
-  public async doPut(projectCategory: ProjectCategory) {
-    await this.mainStore.api.put('/project_categories/' + projectCategory.id, projectCategory);
-    await this.doFetchAll();
   }
 
   @computed
@@ -56,7 +21,42 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   }
 
   @computed
-  get entities(): Array<ProjectCategory> {
+  get entities(): ProjectCategory[] {
     return this.projectCategories;
+  }
+
+  @observable
+  projectCategories: ProjectCategory[] = [];
+
+  @observable
+  projectCategory?: ProjectCategory;
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+  }
+
+  filter = (r: ProjectCategory) => r.name.toLowerCase().includes(this.searchQuery);
+
+  @action
+  async doFetchAll() {
+    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
+    this.projectCategories = res.data;
+  }
+
+  @action
+  async doPost(projectCategory: ProjectCategory) {
+    await this.mainStore.api.post('/project_categories', projectCategory);
+    await this.doFetchAll();
+  }
+
+  @action
+  async doPut(projectCategory: ProjectCategory) {
+    await this.mainStore.api.put('/project_categories/' + projectCategory.id, projectCategory);
+    await this.doFetchAll();
+  }
+
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived });
+    this.doFetchAll();
   }
 }

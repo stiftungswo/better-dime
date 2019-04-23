@@ -1,18 +1,18 @@
+import { inject, observer } from 'mobx-react';
+import moment from 'moment';
 import React from 'react';
+import * as yup from 'yup';
+import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
+import { TextField } from '../../form/fields/common';
+import { DatePicker } from '../../form/fields/DatePicker';
+import { DimeField } from '../../form/fields/formik';
+import { FormDialog } from '../../form/FormDialog';
 import { MainStore } from '../../stores/mainStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import * as yup from 'yup';
-import { FormDialog } from '../../form/FormDialog';
-import { ProjectComment } from '../../types';
-import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { DatePicker } from '../../form/fields/DatePicker';
-import { TextField } from '../../form/fields/common';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { ProjectComment } from '../../types';
+import compose from '../../utilities/compose';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
-import moment from 'moment';
-import { DimeField } from '../../form/fields/formik';
 
 interface Props {
   onClose: () => void;
@@ -26,15 +26,15 @@ const schema = localizeSchema(() =>
     comment: yup.string().required(),
     date: dimeDate(),
     project_id: selector(),
-  })
+  }),
 );
 
 @compose(
   inject('projectCommentStore', 'timetrackFilterStore', 'mainStore'),
-  observer
+  observer,
 )
 export class TimetrackCommentFormDialog extends React.Component<Props> {
-  public handleSubmit = async (entity: ProjectComment) => {
+  handleSubmit = async (entity: ProjectComment) => {
     const projectCommentStore = this.props.projectCommentStore!;
     if (projectCommentStore.entity) {
       await projectCommentStore.put(schema.cast(entity));
@@ -44,9 +44,29 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
     }
     await projectCommentStore.fetchFiltered(this.props.timetrackFilterStore!.filter);
     projectCommentStore.editing = false;
-  };
+  }
 
-  //widen the filter so the newly added entities are displayed
+  render() {
+    return (
+      <FormDialog
+        open
+        onClose={this.props.onClose}
+        title={'Projekt-Kommentar erfassen'}
+        initialValues={this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
+        validationSchema={schema}
+        onSubmit={this.handleSubmit}
+        render={() => (
+          <>
+            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+            <DimeField component={TextField} name={'comment'} label={'Kommentar'} multiline rowsMax={6} />
+          </>
+        )}
+      />
+    );
+  }
+
+  // widen the filter so the newly added entities are displayed
   private widenFilterSettings = async (entity: ProjectComment) => {
     const filter = this.props.timetrackFilterStore!.filter;
 
@@ -69,25 +89,5 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
     if (commentDate.isBefore(filterStart)) {
       filter.start = commentDate.clone();
     }
-  };
-
-  public render() {
-    return (
-      <FormDialog
-        open
-        onClose={this.props.onClose}
-        title={'Projekt-Kommentar erfassen'}
-        initialValues={this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
-        validationSchema={schema}
-        onSubmit={this.handleSubmit}
-        render={() => (
-          <>
-            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
-            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
-            <DimeField component={TextField} name={'comment'} label={'Kommentar'} multiline rowsMax={6} />
-          </>
-        )}
-      />
-    );
   }
 }

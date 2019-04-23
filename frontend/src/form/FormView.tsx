@@ -1,9 +1,8 @@
 import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
-import { Fragment } from 'react';
+import { Prompt } from 'react-router';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeContent';
-import { Prompt } from 'react-router';
 import { SaveIcon } from '../layout/icons';
 import { HandleFormikSubmit } from '../types';
 import { FormikSubmitDetector } from './FormikSubmitDetector';
@@ -22,22 +21,15 @@ interface Props<T> extends FormViewProps<T> {
 }
 
 export class FormView<Values = object, ExtraProps = {}> extends React.Component<FormikConfig<Values> & ExtraProps & Props<Values>> {
-  private handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
-    try {
-      await this.props.onSubmit(this.props.validationSchema.cast(values));
-    } finally {
-      formikBag.setSubmitting(false);
-    }
-  };
 
-  public render() {
+  render() {
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
     const { appBarButtons, ...rest } = this.props as any;
     return this.props.loading ? (
-      <Fragment>
+      <React.Fragment>
         <DimeAppBar title={this.props.title} />
         <DimeContent loading />
-      </Fragment>
+      </React.Fragment>
     ) : (
       <Formik
         {...rest}
@@ -56,5 +48,12 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
         )}
       />
     );
+  }
+  private handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
+    try {
+      await this.props.onSubmit(this.props.validationSchema.cast(values));
+    } finally {
+      formikBag.setSubmitting(false);
+    }
   }
 }

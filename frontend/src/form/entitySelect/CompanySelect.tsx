@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import Select from '../fields/Select';
+import * as React from 'react';
 import { CompanyStore } from '../../stores/companyStore';
+import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   companyStore?: CompanyStore;
@@ -11,10 +11,10 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('companyStore'),
-  observer
+  observer,
 )
 export class CompanySelect extends React.Component<Props> {
-  public get options() {
+  get options() {
     return this.props
       .companyStore!.entities.filter(c => !c.hidden || this.props.value === c.id)
       .map(e => ({
@@ -23,7 +23,7 @@ export class CompanySelect extends React.Component<Props> {
       }));
   }
 
-  public render() {
+  render() {
     return <Select options={this.options} {...this.props} isClearable={true} />;
   }
 }

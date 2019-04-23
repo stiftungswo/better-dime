@@ -1,9 +1,9 @@
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RateGroupStore } from '../../stores/rateGroupStore';
-import { inject, observer } from 'mobx-react';
-import Select from '../fields/Select';
 import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   rateGroupStore?: RateGroupStore;
@@ -11,17 +11,17 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('rateGroupStore'),
-  observer
+  observer,
 )
 export class RateGroupSelect extends React.Component<Props> {
-  public get options() {
+  get options() {
     return this.props.rateGroupStore!.rateGroups.map(e => ({
       value: e.id,
       label: e.name,
     }));
   }
 
-  public render() {
+  render() {
     return <Select options={this.options} {...this.props} />;
   }
 }

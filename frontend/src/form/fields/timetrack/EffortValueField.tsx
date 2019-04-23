@@ -1,12 +1,12 @@
-import React from 'react';
-import compose from '../../../utilities/compose';
+import { TextField } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
+import React from 'react';
 import { EffortStore } from '../../../stores/effortStore';
 import { ProjectPosition } from '../../../types';
-import { TextField } from '@material-ui/core';
+import compose from '../../../utilities/compose';
+import { DimeCustomFieldProps } from '../common';
 import { FlatEffortValueField } from './FlatEffortValueField';
 import { TimeEffortValueField } from './TimeEffortValueField';
-import { DimeCustomFieldProps } from '../common';
 
 interface Props extends DimeCustomFieldProps<number> {
   rateUnitId: number;
@@ -16,10 +16,10 @@ interface Props extends DimeCustomFieldProps<number> {
 
 @compose(
   inject('effortStore'),
-  observer
+  observer,
 )
 export class EffortValueField extends React.Component<Props> {
-  public render() {
+  render() {
     const { positionId } = this.props;
     const { selectedProject } = this.props.effortStore!;
 

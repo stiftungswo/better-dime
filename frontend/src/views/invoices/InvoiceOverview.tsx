@@ -1,12 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { InvoiceStore } from '../../stores/invoiceStore';
-import compose from '../../utilities/compose';
-import Overview, { Column } from '../../layout/Overview';
-import { ActionButtons } from '../../layout/ActionButtons';
-import { MainStore } from '../../stores/mainStore';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ActionButtons } from '../../layout/ActionButtons';
+import Overview, { Column } from '../../layout/Overview';
+import { InvoiceStore } from '../../stores/invoiceStore';
+import { MainStore } from '../../stores/mainStore';
 import { InvoiceListing } from '../../types';
+import compose from '../../utilities/compose';
 
 export type Props = {
   mainStore?: MainStore;
@@ -16,10 +16,10 @@ export type Props = {
 @compose(
   inject('mainStore', 'invoiceStore'),
   observer,
-  withRouter
+  withRouter,
 )
 export default class InvoiceOverview extends React.Component<Props> {
-  public columns: Column<InvoiceListing>[];
+  columns: Array<Column<InvoiceListing>>;
 
   constructor(props: Props) {
     super(props);
@@ -51,7 +51,7 @@ export default class InvoiceOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const invoiceStore = this.props.invoiceStore!;
     return (
       <Overview

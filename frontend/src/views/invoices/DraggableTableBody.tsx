@@ -1,9 +1,9 @@
-import { FieldArrayRenderProps } from 'formik';
-import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
-import * as React from 'react';
 import { RootRef } from '@material-ui/core';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
+import { FieldArrayRenderProps } from 'formik';
+import * as React from 'react';
+import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
 
 interface Props<T> {
   arrayHelpers: FieldArrayRenderProps;
@@ -13,7 +13,7 @@ interface Props<T> {
       index: number;
       provided: DraggableProvided;
       snapshot: DraggableStateSnapshot;
-    }
+    },
   ) => React.ReactNode;
   name: string;
   orderField?: string;

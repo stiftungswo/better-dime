@@ -19,14 +19,14 @@ export const companySchema = localizeSchema(() =>
           .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
         street: yup.string().required(),
         supplement: yup.string().nullable(true),
-      })
+      }),
     ),
     phone_numbers: yup.array(
       yup.object({
         category: selector(),
         number: yup.string().required(),
-      })
+      }),
     ),
     tags: yup.array(yup.number().nullable(false)),
-  })
+  }),
 );

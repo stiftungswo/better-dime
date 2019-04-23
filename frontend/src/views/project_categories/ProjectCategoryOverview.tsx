@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { MainStore } from '../../stores/mainStore';
-import compose from '../../utilities/compose';
 import { inject, observer } from 'mobx-react';
-import { Column } from '../../layout/Overview';
+import * as React from 'react';
+import { SwitchField, TextField } from '../../form/fields/common';
+import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
-import { SwitchField, TextField } from '../../form/fields/common';
+import { Column } from '../../layout/Overview';
+import { MainStore } from '../../stores/mainStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
-import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 import { ProjectCategory } from '../../types';
-import { DimeField } from '../../form/fields/formik';
+import compose from '../../utilities/compose';
+import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 
 interface Props {
   mainStore?: MainStore;
@@ -18,12 +18,12 @@ interface Props {
 
 @compose(
   inject('mainStore', 'projectCategoryStore'),
-  observer
+  observer,
 )
 export default class ProjectCategoryOverview extends React.Component<Props> {
-  public columns: Array<Column<ProjectCategory>> = [];
+  columns: Array<Column<ProjectCategory>> = [];
 
-  public constructor(props: Props) {
+  constructor(props: Props) {
     super(props);
     this.columns = [
       {
@@ -39,7 +39,7 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
     ];
   }
 
-  public render() {
+  render() {
     const projectCategoryStore = this.props.projectCategoryStore;
 
     return (

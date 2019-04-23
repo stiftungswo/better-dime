@@ -1,36 +1,35 @@
-import * as React from 'react';
-import { Fragment } from 'react';
-import { FormikProps } from 'formik';
-import { TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
-import { FormView, FormViewProps } from '../../form/FormView';
-import compose from '../../utilities/compose';
-import { Invoice } from '../../types';
-import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import * as React from 'react';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
-import { MarkdownField } from '../../form/fields/MarkdownField';
-import CurrencyField from '../../form/fields/CurrencyField';
-import { InvoiceStore } from '../../stores/invoiceStore';
-import { FormHeader } from '../../layout/FormHeader';
-import PrintButton from '../../layout/PrintButton';
-import { DatePicker } from '../../form/fields/DatePicker';
-import InvoicePositionSubformInline from './InvoicePositionSubformInline';
-import InvoiceDiscountSubform from './InvoiceDiscountSubform';
-import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
-import { BreakdownTable } from '../../layout/BreakdownTable';
-import Navigator from './InvoiceNavigator';
-import { ESRIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
-import { invoiceSchema } from './invoiceSchema';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { TextField } from '../../form/fields/common';
+import CurrencyField from '../../form/fields/CurrencyField';
+import { DatePicker } from '../../form/fields/DatePicker';
+import { DimeField } from '../../form/fields/formik';
+import { MarkdownField } from '../../form/fields/MarkdownField';
+import PercentageField from '../../form/fields/PercentageField';
+import { FormView, FormViewProps } from '../../form/FormView';
+import { BreakdownTable } from '../../layout/BreakdownTable';
 import { DimePaper } from '../../layout/DimePaper';
+import { FormHeader } from '../../layout/FormHeader';
+import { ESRIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
+import PrintButton from '../../layout/PrintButton';
+import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
+import { InvoiceStore } from '../../stores/invoiceStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
-import { CostgroupStore } from '../../stores/costgroupStore';
-import { DimeField } from '../../form/fields/formik';
-import PercentageField from '../../form/fields/PercentageField';
+import { Invoice } from '../../types';
+import compose from '../../utilities/compose';
+import { empty } from '../../utilities/helpers';
+import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
+import InvoiceDiscountSubform from './InvoiceDiscountSubform';
+import Navigator from './InvoiceNavigator';
+import InvoicePositionSubformInline from './InvoicePositionSubformInline';
+import { invoiceSchema } from './invoiceSchema';
 
 export interface Props extends FormViewProps<Invoice> {
   costgroupStore?: CostgroupStore;
@@ -43,10 +42,10 @@ export interface Props extends FormViewProps<Invoice> {
 
 @compose(
   inject('costgroupStore', 'customerStore', 'employeeStore', 'invoiceStore', 'rateUnitStore'),
-  observer
+  observer,
 )
 export default class InvoiceForm extends React.Component<Props> {
-  public state = {
+  state = {
     loading: true,
   };
 
@@ -59,7 +58,7 @@ export default class InvoiceForm extends React.Component<Props> {
     ]).then(() => this.setState({ loading: false }));
   }
 
-  public render() {
+  render() {
     const { invoice } = this.props;
 
     return (
@@ -94,7 +93,7 @@ export default class InvoiceForm extends React.Component<Props> {
         }
         render={(props: FormikProps<Invoice>) => {
           return (
-            <Fragment>
+            <React.Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
@@ -201,7 +200,7 @@ export default class InvoiceForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </Fragment>
+            </React.Fragment>
           );
         }}
       />

@@ -1,8 +1,8 @@
-import React from 'react';
 import { Card, CardActions, CardContent, CardHeader, createStyles, Theme, Typography, WithStyles, withStyles } from '@material-ui/core';
-import compose from '../../utilities/compose';
 import Button from '@material-ui/core/Button/Button';
+import React from 'react';
 import { NonPersistedImportCustomer } from '../../stores/customerImportStore';
+import compose from '../../utilities/compose';
 
 const styles = ({ palette }: Theme) =>
   createStyles({

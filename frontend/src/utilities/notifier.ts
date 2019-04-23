@@ -28,19 +28,32 @@ export class Notifier {
   queue: MessageInfo[] = [];
 
   @action
-  public info = (message: string, options: NotifyOptions = {}) => {
+  info = (message: string, options: NotifyOptions = {}) => {
     this.enqueue(message, options);
-  };
+  }
 
   @action
-  public success = (message: string) => {
+  success = (message: string) => {
     this.enqueue(message, { variant: 'success' });
-  };
+  }
 
   @action
-  public error = (message: string) => {
+  error = (message: string) => {
     this.enqueue(message, { variant: 'error' });
-  };
+  }
+
+  @action
+  handleClose = (event: object, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.open = false;
+  }
+
+  @action
+  handleExited = () => {
+    this.processQueue();
+  }
 
   private enqueue = (message: string, { variant = 'info', autoHideDuration = 6000 }: NotifyOptions = {}) => {
     this.queue.push({
@@ -56,25 +69,12 @@ export class Notifier {
       this.open = false;
     }
     this.processQueue();
-  };
+  }
 
   private processQueue = () => {
     if (this.queue.length > 0) {
       this.messageInfo = this.queue.shift()!;
       this.open = true;
     }
-  };
-
-  @action
-  public handleClose = (event: object, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    this.open = false;
-  };
-
-  @action
-  public handleExited = () => {
-    this.processQueue();
-  };
+  }
 }

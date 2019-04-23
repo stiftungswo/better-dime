@@ -1,7 +1,7 @@
 import { computed, observable } from 'mobx';
 import { Invoice, InvoiceListing } from '../types';
-import { MainStore } from './mainStore';
 import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
   protected get entityName(): { singular: string; plural: string } {
@@ -12,30 +12,30 @@ export class InvoiceStore extends AbstractStore<Invoice, InvoiceListing> {
   }
 
   @computed
-  public get entity(): Invoice | undefined {
+  get entity(): Invoice | undefined {
     return this.invoice;
   }
 
-  public set entity(invoice: Invoice | undefined) {
+  set entity(invoice: Invoice | undefined) {
     this.invoice = invoice;
   }
 
-  get entities(): Array<InvoiceListing> {
+  get entities(): InvoiceListing[] {
     return this.invoices;
   }
 
   @observable
-  public invoices: InvoiceListing[] = [];
+  invoices: InvoiceListing[] = [];
   @observable
-  public invoice?: Invoice = undefined;
+  invoice?: Invoice = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (p: InvoiceListing) => {
+  filter = (p: InvoiceListing) => {
     return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
-  };
+  }
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/invoices/' + id);

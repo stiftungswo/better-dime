@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { FieldArray, FormikProps } from 'formik';
-import { NumberField, TextField } from '../../form/fields/common';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { Invoice, InvoicePosition } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
-import TableToolbar from '../../layout/TableToolbar';
-import PercentageField from '../../form/fields/PercentageField';
+import * as React from 'react';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
+import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
+import { DimeField } from '../../form/fields/formik';
+import PercentageField from '../../form/fields/PercentageField';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
+import TableToolbar from '../../layout/TableToolbar';
+import { MainStore } from '../../stores/mainStore';
+import { Invoice, InvoicePosition } from '../../types';
+import compose from '../../utilities/compose';
 import { DraggableTableBody } from './DraggableTableBody';
-import { DimeField } from '../../form/fields/formik';
 
 const template = () => ({
   amount: 0,
@@ -37,10 +37,10 @@ export interface Props {
 
 @compose(
   inject('mainStore'),
-  observer
+  observer,
 )
 export default class InvoicePositionSubformInline extends React.Component<Props> {
-  public render = () => (
+  render = () => (
     <FieldArray
       name={this.props.name}
       render={arrayHelpers => (
@@ -100,5 +100,5 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
         </>
       )}
     />
-  );
+  )
 }

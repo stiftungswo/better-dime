@@ -1,71 +1,54 @@
-//tslint:disable:no-console
+// tslint:disable:no-console
+import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
-import { AxiosResponse } from 'axios';
 
 /**
- * This class wraps all common store functions with success/error popups. The desired methods that start with "do" should be overriden in the specific stores.
+ * This class wraps all common store functions with success/error popups.
+ * The desired methods that start with "do" should be overriden in the specific stores.
  */
 export class AbstractStore<T, OverviewType = T> {
-  constructor(protected mainStore: MainStore) {}
-
-  public reset() {
-    this.searchQuery = '';
-  }
 
   protected get entityName() {
     return { singular: 'Die Entität', plural: 'Die Entitäten' };
   }
 
-  public get entity(): T | undefined {
+  get entity(): T | undefined {
     throw new Error('Not implemented');
   }
 
-  public set entity(e: T | undefined) {
+  set entity(e: T | undefined) {
     throw new Error('Not implemented');
   }
 
-  public get entities(): Array<OverviewType> {
+  get entities(): OverviewType[] {
     throw new Error('Not implemented');
   }
 
-  @observable
-  //tslint:disable-next-line:variable-name
-  private _searchQuery: string = '';
-
-  public get searchQuery() {
+  get searchQuery() {
     return this._searchQuery;
   }
 
-  public set searchQuery(query) {
+  set searchQuery(query) {
     this._searchQuery = query.toLowerCase();
   }
 
-  private mergeFilter = (e: OverviewType) => {
-    return this.filterArchived(e) && this.filter(e);
-  };
-
-  private filterArchived(e: OverviewType) {
-    //tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
-    return this.mainStore.showArchived || !(e as any).archived;
-  }
-
-  protected filter(e: OverviewType) {
-    //override this
-    return true;
-  }
-
   @computed
-  public get filteredEntities(): OverviewType[] {
+  get filteredEntities(): OverviewType[] {
     return this.entities.filter(this.mergeFilter);
   }
 
-  protected displayInProgress() {
-    this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: null });
+  @observable
+  // tslint:disable-next-line:variable-name
+  private _searchQuery: string = '';
+  constructor(protected mainStore: MainStore) {}
+
+  reset() {
+    this.searchQuery = '';
   }
 
   @action
-  public async fetchAll() {
+  async fetchAll() {
     try {
       await this.doFetchAll();
     } catch (e) {
@@ -75,12 +58,8 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected async doFetchAll() {
-    throw new Error('Not implemented');
-  }
-
   @action
-  public async fetchOne(id: number) {
+  async fetchOne(id: number) {
     try {
       this.entity = undefined;
       return await this.doFetchOne(id);
@@ -91,12 +70,8 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected async doFetchOne(id: number): Promise<T | void> {
-    throw new Error('Not implemented');
-  }
-
   @action
-  public async post(entity: T) {
+  async post(entity: T) {
     try {
       this.displayInProgress();
       await this.doPost(entity);
@@ -108,12 +83,8 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected async doPost(entity: T) {
-    throw new Error('Not implemented');
-  }
-
   @action
-  public async put(entity: T) {
+  async put(entity: T) {
     try {
       this.displayInProgress();
       await this.doPut(entity);
@@ -126,12 +97,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  protected async doPut(entity: T) {
-    throw new Error('Not implemented');
-  }
-
-  @action
-  public async delete(id: number) {
+  async delete(id: number) {
     try {
       this.displayInProgress();
       await this.doDelete(id);
@@ -144,12 +110,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  protected async doDelete(id: number) {
-    throw new Error('Not implemented');
-  }
-
-  @action
-  public async duplicate(id: number): Promise<T> {
+  async duplicate(id: number): Promise<T> {
     try {
       const newEntity: AxiosResponse = await this.doDuplicate(id);
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
@@ -162,12 +123,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
-  protected async doDuplicate(id: number): Promise<AxiosResponse> {
-    throw new Error('Not implemented');
-  }
-
-  @action
-  public async archive(id: number, archived: boolean) {
+  async archive(id: number, archived: boolean) {
     try {
       this.displayInProgress();
       await this.doArchive(id, archived);
@@ -179,12 +135,7 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
-  protected async doArchive(id: number, archived: boolean) {
-    throw new Error('Not implemented');
-  }
-
-  public async notifyProgress<P>(f: () => Promise<P>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
+  async notifyProgress<P>(f: () => Promise<P>, { errorMessage = 'Fehler!', successMessage = 'Erfolg!' } = {}) {
     try {
       this.displayInProgress();
       await f();
@@ -198,5 +149,55 @@ export class AbstractStore<T, OverviewType = T> {
       console.error(e);
       throw e;
     }
+  }
+
+  protected filter(e: OverviewType) {
+    // override this
+    return true;
+  }
+
+  protected displayInProgress() {
+    this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: null });
+  }
+
+  protected async doFetchAll() {
+    throw new Error('Not implemented');
+  }
+
+  protected async doFetchOne(id: number): Promise<T | void> {
+    throw new Error('Not implemented');
+  }
+
+  protected async doPost(entity: T) {
+    throw new Error('Not implemented');
+  }
+
+  @action
+  protected async doPut(entity: T) {
+    throw new Error('Not implemented');
+  }
+
+  @action
+  protected async doDelete(id: number) {
+    throw new Error('Not implemented');
+  }
+
+  @action
+  protected async doDuplicate(id: number): Promise<AxiosResponse> {
+    throw new Error('Not implemented');
+  }
+
+  @action
+  protected async doArchive(id: number, archived: boolean) {
+    throw new Error('Not implemented');
+  }
+
+  private mergeFilter = (e: OverviewType) => {
+    return this.filterArchived(e) && this.filter(e);
+  }
+
+  private filterArchived(e: OverviewType) {
+    // tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
+    return this.mainStore.showArchived || !(e as any).archived;
   }
 }

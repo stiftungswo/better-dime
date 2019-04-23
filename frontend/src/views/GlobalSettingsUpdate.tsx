@@ -1,20 +1,20 @@
+import Grid from '@material-ui/core/Grid';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import * as yup from 'yup';
-import { FormikProps } from 'formik';
-import { TextField } from '../form/fields/common';
 import { RouteComponentProps } from 'react-router';
-import compose from '../utilities/compose';
-import { MainStore } from '../stores/mainStore';
-import { localizeSchema } from '../utilities/validation';
+import * as yup from 'yup';
+import { TextField } from '../form/fields/common';
+import { DimeField } from '../form/fields/formik';
+import { MarkdownField } from '../form/fields/MarkdownField';
 import { FormView } from '../form/FormView';
-import Grid from '@material-ui/core/Grid';
 import { DimePaper } from '../layout/DimePaper';
 import { FormHeader } from '../layout/FormHeader';
 import { GlobalSettings, GlobalSettingStore } from '../stores/globalSettingStore';
+import { MainStore } from '../stores/mainStore';
+import compose from '../utilities/compose';
 import { empty } from '../utilities/helpers';
-import { MarkdownField } from '../form/fields/MarkdownField';
-import { DimeField } from '../form/fields/formik';
+import { localizeSchema } from '../utilities/validation';
 
 export interface Props extends RouteComponentProps {
   mainStore?: MainStore;
@@ -35,23 +35,23 @@ const settingsSchema = localizeSchema(() =>
     sender_bank_iban: yup.string().required(),
     sender_bank_bic: yup.string().required(),
     sender_web: yup.string().required(),
-  })
+  }),
 );
 
 @compose(
   inject('mainStore', 'globalSettingStore'),
-  observer
+  observer,
 )
 export class GlobalSettingsUpdate extends React.Component<Props> {
-  public componentWillMount = () => {
+  componentWillMount = () => {
     this.props.globalSettingStore!.fetchOne(0);
-  };
+  }
 
-  public handleSubmit = async (values: GlobalSettings) => {
+  handleSubmit = async (values: GlobalSettings) => {
     await this.props.globalSettingStore!.put(values);
-  };
+  }
 
-  public render() {
+  render() {
     const store = this.props.globalSettingStore!;
     return (
       <>

@@ -17,7 +17,7 @@ export const offerSchema = localizeSchema(() =>
         name: yup.string().required(),
         percentage: yup.boolean().required(),
         value: requiredNumber(),
-      })
+      }),
     ),
     positions: yup.array(
       yup.object({
@@ -28,9 +28,9 @@ export const offerSchema = localizeSchema(() =>
         rate_unit_id: selector(),
         service_id: selector(),
         vat: requiredNumber(),
-      })
+      }),
     ),
-  })
+  }),
 );
 
 export const offerTemplate = {

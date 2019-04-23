@@ -1,13 +1,13 @@
 import { createStyles, Theme, WithStyles } from '@material-ui/core';
+import Badge from '@material-ui/core/Badge';
+import Button, { ButtonProps } from '@material-ui/core/Button';
+import withStyles from '@material-ui/core/styles/withStyles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import Badge from '@material-ui/core/Badge';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { DatePicker, ValueType } from '../DatePicker';
 import { BackIcon, ForwardIcon } from '../../../layout/icons';
-import { DimeCustomFieldProps, WidthToggle } from '../common';
 import { Formatter } from '../../../utilities/formatter';
+import { DimeCustomFieldProps, WidthToggle } from '../common';
+import { DatePicker, ValueType } from '../DatePicker';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,7 +44,7 @@ class DateFastPickerInner extends React.Component<Props> {
 
       this.props.onChange(date);
     }
-  };
+  }
 
   render() {
     const { classes } = this.props;

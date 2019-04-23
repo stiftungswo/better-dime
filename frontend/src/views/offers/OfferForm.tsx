@@ -1,40 +1,39 @@
-import * as React from 'react';
-import { Fragment } from 'react';
-import { Field, FormikProps } from 'formik';
-import { DimeField } from '../../form/fields/formik';
 import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
-import { FormView, FormViewProps } from '../../form/FormView';
-import compose from '../../utilities/compose';
-import { Offer, Project } from '../../types';
-import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
-import { StatusSelect } from '../../form/entitySelect/StatusSelect';
-import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
-import OfferDiscountSubform from './OfferDiscountSubform';
-import { MarkdownField } from '../../form/fields/MarkdownField';
-import CurrencyField from '../../form/fields/CurrencyField';
-import { OfferStore } from '../../stores/offerStore';
-import { FormHeader } from '../../layout/FormHeader';
-import OfferPositionSubformInline from './OfferPositionSubformInline';
-import PrintButton from '../../layout/PrintButton';
-import { BreakdownTable } from '../../layout/BreakdownTable';
-import Navigator from './OfferNavigator';
-import { ProjectStore } from '../../stores/projectStore';
-import { offerSchema } from './offerSchema';
-import Effect, { OnChange } from '../../utilities/Effect';
-import { CustomerStore } from '../../stores/customerStore';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
+import { StatusSelect } from '../../form/entitySelect/StatusSelect';
+import { TextField } from '../../form/fields/common';
+import CurrencyField from '../../form/fields/CurrencyField';
+import { DimeField } from '../../form/fields/formik';
+import { MarkdownField } from '../../form/fields/MarkdownField';
+import { FormView, FormViewProps } from '../../form/FormView';
+import { ActionButton } from '../../layout/ActionButton';
+import { BreakdownTable } from '../../layout/BreakdownTable';
 import { DimePaper } from '../../layout/DimePaper';
-import { RateGroupStore } from '../../stores/rateGroupStore';
+import { FormHeader } from '../../layout/FormHeader';
+import { AddIcon, ProjectIcon } from '../../layout/icons';
+import PrintButton from '../../layout/PrintButton';
+import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
+import { OfferStore } from '../../stores/offerStore';
+import { ProjectStore } from '../../stores/projectStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { AddIcon, ProjectIcon } from '../../layout/icons';
-import { ActionButton } from '../../layout/ActionButton';
-import { TextField } from '../../form/fields/common';
+import { Offer, Project } from '../../types';
+import compose from '../../utilities/compose';
+import Effect, { OnChange } from '../../utilities/Effect';
+import { empty } from '../../utilities/helpers';
+import OfferDiscountSubform from './OfferDiscountSubform';
+import Navigator from './OfferNavigator';
+import OfferPositionSubformInline from './OfferPositionSubformInline';
+import { offerSchema } from './offerSchema';
 
 export type Props = {
   customerStore?: CustomerStore;
@@ -50,9 +49,13 @@ export type Props = {
 
 @compose(
   inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore'),
-  observer
+  observer,
 )
 class OfferForm extends React.Component<Props> {
+
+  state = {
+    loading: true,
+  };
   // set rateGroup based on selected customer.
   handleCustomerChange: OnChange<Offer> = (current, next, formik) => {
     if (current.values.customer_id !== next.values.customer_id) {
@@ -63,13 +66,9 @@ class OfferForm extends React.Component<Props> {
         }
       }
     }
-  };
+  }
 
-  public state = {
-    loading: true,
-  };
-
-  public componentWillMount() {
+  componentWillMount() {
     Promise.all([
       this.props.customerStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),
@@ -79,7 +78,7 @@ class OfferForm extends React.Component<Props> {
     ]).then(() => this.setState({ loading: false }));
   }
 
-  public render() {
+  render() {
     const { offer, offerStore } = this.props;
 
     return (
@@ -112,7 +111,7 @@ class OfferForm extends React.Component<Props> {
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (
-            <Fragment>
+            <React.Fragment>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12}>
@@ -218,7 +217,7 @@ class OfferForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </Fragment>
+            </React.Fragment>
           );
         }}
       />

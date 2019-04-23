@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { DatePicker as MUIDatePicker } from 'material-ui-pickers';
-import moment, { Moment } from 'moment';
-import { DimeCustomFieldProps, WidthToggle } from './common';
 import { inject, observer } from 'mobx-react';
+import moment, { Moment } from 'moment';
+import * as React from 'react';
 import { Formatter } from '../../utilities/formatter';
+import { DimeCustomFieldProps, WidthToggle } from './common';
 
 export type ValueType = Moment | string | null | undefined;
 

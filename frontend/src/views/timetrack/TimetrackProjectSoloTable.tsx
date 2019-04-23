@@ -1,12 +1,12 @@
-import React from 'react';
-import { TimetrackEntityGroup } from './TimetrackEntityGroup';
-import { Column } from '../../layout/Overview';
-import { ProjectEffortListing } from '../../types';
-import { AddEffortIcon } from '../../layout/icons';
-import { ActionButton } from '../../layout/ActionButton';
 import { inject, observer } from 'mobx-react';
-import { Formatter } from '../../utilities/formatter';
+import React from 'react';
+import { ActionButton } from '../../layout/ActionButton';
+import { AddEffortIcon } from '../../layout/icons';
+import { Column } from '../../layout/Overview';
 import PrintButton from '../../layout/PrintButton';
+import { ProjectEffortListing } from '../../types';
+import { Formatter } from '../../utilities/formatter';
+import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 
 interface Props {
   displayTotal: string;
@@ -22,9 +22,20 @@ interface Props {
 @inject('mainStore', 'formatter')
 @observer
 export class TimetrackProjectSoloTable extends React.Component<Props> {
-  public columns: Array<Column<ProjectEffortListing>> = [];
+  columns: Array<Column<ProjectEffortListing>> = [];
 
-  public constructor(props: Props) {
+  projectGroupActions = (
+    <>
+      <PrintButton
+        path={'projects/' + this.props.entityId + '/print_effort_report'}
+        title={'Aufwandsrapport drucken'}
+        urlParams={this.props.effortReportUrlParams()}
+      />
+      <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.props.onEffortAdd} />
+    </>
+  );
+
+  constructor(props: Props) {
     super(props);
     const formatter = props.formatter!;
 
@@ -54,18 +65,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
     ];
   }
 
-  public projectGroupActions = (
-    <>
-      <PrintButton
-        path={'projects/' + this.props.entityId + '/print_effort_report'}
-        title={'Aufwandsrapport drucken'}
-        urlParams={this.props.effortReportUrlParams()}
-      />
-      <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.props.onEffortAdd} />
-    </>
-  );
-
-  public render() {
+  render() {
     return (
       <TimetrackEntityGroup
         actions={this.projectGroupActions}

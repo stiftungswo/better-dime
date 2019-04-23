@@ -1,47 +1,46 @@
-import * as React from 'react';
-import { ComponentType, Fragment } from 'react';
+import { WithStyles } from '@material-ui/core';
+import Collapse from '@material-ui/core/Collapse/Collapse';
+import List from '@material-ui/core/List/List';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import Collapse from '@material-ui/core/Collapse/Collapse';
-import List from '@material-ui/core/List/List';
-import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
-import { WithStyles } from '@material-ui/core';
-import { styles } from './NavItem';
 import withStyles from '@material-ui/core/styles/withStyles';
+import * as React from 'react';
+import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
+import { styles } from './NavItem';
 
 interface CollapsibleProps extends WithStyles<typeof styles> {
   handleDrawerOpen: () => void;
   drawerOpen: boolean;
   label: string;
-  icon: ComponentType;
+  icon: React.ComponentType;
 }
 
 interface CollapsibleState {
   open: boolean;
 }
 
-const listComponent: any = 'div'; //tslint:disable-line:no-any ; types seem wrong - this works well
+const listComponent: any = 'div'; // tslint:disable-line:no-any ; types seem wrong - this works well
 
 class CollapsibleInner extends React.Component<CollapsibleProps, CollapsibleState> {
-  public state = {
+  state = {
     open: false,
   };
 
-  public handleClick = () => {
+  handleClick = () => {
     if (!this.props.drawerOpen) {
       this.setState({ open: true });
     } else {
       this.setState(state => ({ open: !state.open }));
     }
     this.props.handleDrawerOpen();
-  };
+  }
 
-  public get open() {
+  get open() {
     return this.state.open && this.props.drawerOpen;
   }
 
-  public render() {
+  render() {
     const Icon = this.props.icon || ArrowRightIcon;
     return (
       <>

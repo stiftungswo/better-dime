@@ -1,29 +1,28 @@
-import * as React from 'react';
-import { Fragment } from 'react';
-import { FieldArray, FormikProps } from 'formik';
-import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import Grid from '@material-ui/core/Grid/Grid';
-import { empty } from '../../utilities/helpers';
-import { Service, ServiceRate } from '../../types';
-import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
+import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
-import { FormView, FormViewProps } from '../../form/FormView';
-import compose from '../../utilities/compose';
+import * as React from 'react';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
+import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
+import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
-import TableToolbar from '../../layout/TableToolbar';
-import { serviceSchema } from './serviceSchema';
+import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import { RateUnitStore } from '../../stores/rateUnitStore';
-import { GlobalSettingStore } from '../../stores/globalSettingStore';
 import { MarkdownRender } from '../../layout/MarkdownRender';
-import { DimeField } from '../../form/fields/formik';
+import TableToolbar from '../../layout/TableToolbar';
+import { GlobalSettingStore } from '../../stores/globalSettingStore';
+import { RateUnitStore } from '../../stores/rateUnitStore';
+import { Service, ServiceRate } from '../../types';
+import compose from '../../utilities/compose';
+import { empty } from '../../utilities/helpers';
+import { serviceSchema } from './serviceSchema';
 
 export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
@@ -35,14 +34,14 @@ export interface Props extends FormViewProps<Service> {
 
 @compose(
   inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore'),
-  observer
+  observer,
 )
 export default class ServiceForm extends React.Component<Props> {
-  public state = {
+  state = {
     loading: true,
   };
 
-  public componentWillMount() {
+  componentWillMount() {
     Promise.all([
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
@@ -50,7 +49,7 @@ export default class ServiceForm extends React.Component<Props> {
     ]).then(() => this.setState({ loading: false }));
   }
 
-  public render() {
+  render() {
     const { service } = this.props;
 
     return (
@@ -63,7 +62,7 @@ export default class ServiceForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         render={(props: FormikProps<Service>) => (
-          <Fragment>
+          <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
                 <Grid item xs={12} lg={8}>
@@ -146,7 +145,7 @@ export default class ServiceForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </Fragment>
+          </React.Fragment>
         )}
       />
     );

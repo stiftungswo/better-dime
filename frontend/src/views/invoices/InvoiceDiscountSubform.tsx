@@ -1,20 +1,20 @@
-import * as React from 'react';
-import { FieldArray, FormikProps } from 'formik';
-import { SwitchField, TextField } from '../../form/fields/common';
-import TableBody from '@material-ui/core/TableBody/TableBody';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import { FieldArray, FormikProps } from 'formik';
 import { observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import { Invoice, InvoiceDiscount } from '../../types';
-import { MainStore } from '../../stores/mainStore';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
-import TableToolbar from '../../layout/TableToolbar';
-import PercentageField from '../../form/fields/PercentageField';
+import * as React from 'react';
+import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
-import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DimeField } from '../../form/fields/formik';
+import PercentageField from '../../form/fields/PercentageField';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import TableToolbar from '../../layout/TableToolbar';
+import { MainStore } from '../../stores/mainStore';
+import { Invoice, InvoiceDiscount } from '../../types';
+import compose from '../../utilities/compose';
 
 const template = () => ({
   formikKey: Math.random(),
@@ -36,7 +36,7 @@ export default class InvoiceDiscountSubform extends React.Component<Props> {
     super(props);
   }
 
-  public render() {
+  render() {
     const { values } = this.props.formikProps;
     const { disabled } = this.props;
     return (

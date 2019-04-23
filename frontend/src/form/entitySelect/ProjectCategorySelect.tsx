@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import compose from '../../utilities/compose';
-import Select from '../fields/Select';
+import * as React from 'react';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { ProjectCategory } from '../../types';
+import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
+import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<number | null> {
   projectCategoryStore?: ProjectCategoryStore;
@@ -12,10 +12,10 @@ interface Props extends DimeCustomFieldProps<number | null> {
 
 @compose(
   inject('projectCategoryStore'),
-  observer
+  observer,
 )
 export class ProjectCategorySelect extends React.Component<Props> {
-  public get options() {
+  get options() {
     return this.props
       .projectCategoryStore!.entities.filter((e: ProjectCategory) => !e.archived || this.props.value === e.id)
       .map(e => ({
@@ -24,7 +24,7 @@ export class ProjectCategorySelect extends React.Component<Props> {
       }));
   }
 
-  public render() {
+  render() {
     return <Select options={this.options} {...this.props} />;
   }
 }

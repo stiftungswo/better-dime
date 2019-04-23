@@ -1,26 +1,25 @@
-import React from 'react';
-import { ProjectComment, ProjectEffortListing } from '../../types';
-import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
-import { ProjectListing } from '../../types';
-import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
-import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import compose from '../../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { AddCommentIcon, AddEffortIcon, PrintIcon } from '../../layout/icons';
-import { ActionButton } from '../../layout/ActionButton';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
-import { EffortStore } from '../../stores/effortStore';
 import createStyles from '@material-ui/core/styles/createStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { Formatter } from '../../utilities/formatter';
-import { DimeTableCell } from '../../layout/DimeTableCell';
+import { inject, observer } from 'mobx-react';
 import moment from 'moment';
+import React from 'react';
+import { ActionButton } from '../../layout/ActionButton';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { DimeTableCell } from '../../layout/DimeTableCell';
+import { AddCommentIcon, AddEffortIcon } from '../../layout/icons';
 import PrintButton from '../../layout/PrintButton';
+import { EffortStore } from '../../stores/effortStore';
+import { ProjectCommentStore } from '../../stores/projectCommentStore';
+import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import { ProjectComment, ProjectEffortListing, ProjectListing } from '../../types';
+import compose from '../../utilities/compose';
+import { Formatter } from '../../utilities/formatter';
+import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
+import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
 const styles = createStyles({
   hideActions: {
@@ -50,32 +49,11 @@ interface Props extends WithStyles<typeof styles> {
 
 @compose(
   inject('projectCommentStore', 'effortStore', 'timetrackFilterStore', 'formatter'),
-  observer
+  observer,
 )
 class TimetrackProjectCombinedTableInner extends React.Component<Props> {
-  public handleClickCommentRow = async (entity: ProjectComment | undefined) => {
-    if (entity && entity.id) {
-      await this.props.projectCommentStore!.fetchOne(entity.id);
-      this.props.projectCommentStore!.editing = true;
-    }
-  };
 
-  public handleProjectCommentAdd = () => {
-    this.props.projectCommentStore!.projectCommentTemplate!.project_id = this.props.entity.id;
-    this.props.projectCommentStore!.editing = true;
-  };
-
-  public handleEffortDelete = async (id: number) => {
-    await this.props.effortStore!.delete(id);
-    await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
-  };
-
-  public handleCommentDelete = async (id: number) => {
-    await this.props.projectCommentStore!.delete(id);
-    await this.props.projectCommentStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
-  };
-
-  public projectGroupActions = (
+  projectGroupActions = (
     <>
       <PrintButton
         path={'projects/' + this.props.entity.id + '/print_effort_report'}
@@ -86,13 +64,34 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
       <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
     </>
   );
+  handleClickCommentRow = async (entity: ProjectComment | undefined) => {
+    if (entity && entity.id) {
+      await this.props.projectCommentStore!.fetchOne(entity.id);
+      this.props.projectCommentStore!.editing = true;
+    }
+  }
 
-  public render() {
+  handleProjectCommentAdd = () => {
+    this.props.projectCommentStore!.projectCommentTemplate!.project_id = this.props.entity.id;
+    this.props.projectCommentStore!.editing = true;
+  }
+
+  handleEffortDelete = async (id: number) => {
+    await this.props.effortStore!.delete(id);
+    await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
+  }
+
+  handleCommentDelete = async (id: number) => {
+    await this.props.projectCommentStore!.delete(id);
+    await this.props.projectCommentStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
+  }
+
+  render() {
     const { displayTotal, efforts, entity, onClickEffortRow, projectCommentStore, classes } = this.props;
     const comments = projectCommentStore!.projectComments.filter((comment: ProjectComment) => comment.project_id === entity.id);
     const formatter = this.props.formatter!;
 
-    let joinedForces: (ProjectEffortListing | ProjectComment)[] = efforts;
+    let joinedForces: Array<ProjectEffortListing | ProjectComment> = efforts;
     joinedForces = joinedForces.concat(comments);
     joinedForces = joinedForces.sort((a, b) => {
       const dateA = moment(a.date);

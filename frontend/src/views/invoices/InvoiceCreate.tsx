@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { inject, observer } from 'mobx-react';
-import { InvoiceStore } from '../../stores/invoiceStore';
+import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import InvoiceForm from './InvoiceForm';
-import compose from '../../utilities/compose';
+import { InvoiceStore } from '../../stores/invoiceStore';
+import { MainStore } from '../../stores/mainStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { FormValues, Invoice } from '../../types';
+import compose from '../../utilities/compose';
+import InvoiceForm from './InvoiceForm';
 import { invoiceTemplate } from './invoiceSchema';
-import { MainStore } from '../../stores/mainStore';
 
 export interface Props extends RouteComponentProps {
   invoiceStore?: InvoiceStore;
@@ -17,22 +17,22 @@ export interface Props extends RouteComponentProps {
 
 @compose(
   inject('invoiceStore', 'mainStore'),
-  observer
+  observer,
 )
 export default class InvoiceCreate extends React.Component<Props> {
   state = {
     submitted: false,
   };
 
-  public handleSubmit = (invoice: Invoice) => {
+  handleSubmit = (invoice: Invoice) => {
     return this.props.invoiceStore!.post(invoice).then(() => {
       this.setState({ submitted: true });
       const idOfNewInvoice = this.props!.invoiceStore!.invoice!.id;
       this.props.history.replace('/invoices/' + idOfNewInvoice);
     });
-  };
+  }
 
-  public render() {
+  render() {
     return (
       <InvoiceForm
         title={'Rechnung erstellen'}

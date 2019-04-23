@@ -1,13 +1,13 @@
 import { computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
 import { Employee, EmployeeListing } from '../types';
 import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   @observable
-  public employees: Employee[] = [];
+  employees: Employee[] = [];
   @observable
-  public employee?: Employee = undefined;
+  employee?: Employee = undefined;
 
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -17,11 +17,11 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   }
 
   @computed
-  public get entity(): Employee | undefined {
+  get entity(): Employee | undefined {
     return this.employee;
   }
 
-  public set entity(employee: Employee | undefined) {
+  set entity(employee: Employee | undefined) {
     this.employee = employee;
   }
 
@@ -34,9 +34,9 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
     super(mainStore);
   }
 
-  public filter = (p: EmployeeListing) => {
+  filter = (p: EmployeeListing) => {
     return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(this.searchQuery));
-  };
+  }
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/employees/' + id + '/archive', { archived });

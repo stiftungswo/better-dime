@@ -1,11 +1,11 @@
-import * as React from 'react';
-import compose from '../utilities/compose';
-import { inject, observer } from 'mobx-react';
-import { Avatar, MenuItem, Menu, ListItemIcon } from '@material-ui/core/es';
-import { MainStore } from 'src/stores/mainStore';
 import { IconButton, ListItemText } from '@material-ui/core';
-import { AccountIcon, LogoutIcon } from './icons';
+import { Avatar, ListItemIcon, Menu, MenuItem } from '@material-ui/core/es';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { MainStore } from 'src/stores/mainStore';
 import { ApiStore } from '../stores/apiStore';
+import compose from '../utilities/compose';
+import { AccountIcon, LogoutIcon } from './icons';
 
 interface DimeAppBarUserMenuProps {
   mainStore?: MainStore;
@@ -14,37 +14,12 @@ interface DimeAppBarUserMenuProps {
 
 @compose(
   inject('mainStore', 'apiStore'),
-  observer
+  observer,
 )
 export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps> {
   constructor(props: DimeAppBarUserMenuProps) {
     super(props);
   }
-
-  private handleMenu = (event: React.MouseEvent<HTMLInputElement>) => {
-    this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
-    this.props.mainStore!.userMenuOpen = true;
-  };
-
-  private handleClose = () => {
-    this.props.mainStore!.userMenuAnchorEl = null;
-    this.props.mainStore!.userMenuOpen = false;
-  };
-
-  private handleProfile = () => {
-    const myId = this.props.mainStore!.userId;
-    this.props.mainStore!.userMenuAnchorEl = null;
-    this.props.mainStore!.userMenuOpen = false;
-
-    this.props.mainStore!.navigateTo(`/employees/${myId}`);
-  };
-
-  private handleLogout = () => {
-    this.props.mainStore!.userMenuAnchorEl = null;
-    this.props.mainStore!.userMenuOpen = false;
-
-    this.props.apiStore!.logout();
-  };
 
   render() {
     const meDetail = this.props.apiStore!.meDetail;
@@ -94,5 +69,30 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
         </Menu>
       </div>
     );
+  }
+
+  private handleMenu = (event: React.MouseEvent<HTMLInputElement>) => {
+    this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
+    this.props.mainStore!.userMenuOpen = true;
+  }
+
+  private handleClose = () => {
+    this.props.mainStore!.userMenuAnchorEl = null;
+    this.props.mainStore!.userMenuOpen = false;
+  }
+
+  private handleProfile = () => {
+    const myId = this.props.mainStore!.userId;
+    this.props.mainStore!.userMenuAnchorEl = null;
+    this.props.mainStore!.userMenuOpen = false;
+
+    this.props.mainStore!.navigateTo(`/employees/${myId}`);
+  }
+
+  private handleLogout = () => {
+    this.props.mainStore!.userMenuAnchorEl = null;
+    this.props.mainStore!.userMenuOpen = false;
+
+    this.props.apiStore!.logout();
   }
 }

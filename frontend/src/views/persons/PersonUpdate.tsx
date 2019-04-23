@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { inject, observer } from 'mobx-react';
-import { PeopleStore } from '../../stores/peopleStore';
-import { RouteComponentProps } from 'react-router';
-import PersonForm from './PersonForm';
-import compose from '../../utilities/compose';
 import { toJS } from 'mobx';
+import { inject, observer } from 'mobx-react';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
 import { Address, Person } from 'src/types';
+import { PeopleStore } from '../../stores/peopleStore';
+import compose from '../../utilities/compose';
+import PersonForm from './PersonForm';
 
 interface PersonDetailRouterProps {
   id?: string;
@@ -17,7 +17,7 @@ export interface Props extends RouteComponentProps<PersonDetailRouterProps> {
 
 @compose(
   inject('peopleStore'),
-  observer
+  observer,
 )
 export default class PersonUpdate extends React.Component<Props> {
   constructor(props: Props) {
@@ -25,19 +25,20 @@ export default class PersonUpdate extends React.Component<Props> {
     props.peopleStore!.fetchOne(Number(props.match.params.id));
   }
 
-  public handleSubmit = (person: Person) => {
+  handleSubmit = (person: Person) => {
     return this.props.peopleStore!.put(person);
-  };
+  }
 
-  public get person() {
+  get person() {
     const person = this.props.peopleStore!.person;
     if (person) {
       return {
-        //it's important to detach the mobx proxy before passing it into formik - formik's deepClone can fall into endless recursions with those proxies.
+        // it's important to detach the mobx proxy before passing it into formik
+        // formik's deepClone can fall into endless recursions with those proxies.
         ...toJS(person),
-        addresses: (person.addresses ? person.addresses : []).map((e: Address) => ({
-          ...e,
-          supplement: e.supplement || '',
+        addresses: (person.addresses ? person.addresses : []).map((address: Address) => ({
+          ...address,
+          supplement: address.supplement || '',
         })),
       };
     } else {
@@ -45,7 +46,7 @@ export default class PersonUpdate extends React.Component<Props> {
     }
   }
 
-  public render() {
+  render() {
     const person = this.person;
     const title = person ? `${person.first_name} ${person.last_name} - Kunde` : 'Kunde bearbeiten';
 

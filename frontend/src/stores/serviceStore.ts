@@ -1,8 +1,7 @@
 import { computed, observable } from 'mobx';
-import { MainStore } from './mainStore';
+import { Service, ServiceListing } from '../types';
 import { AbstractStore } from './abstractStore';
-import { Service } from '../types';
-import { ServiceListing } from '../types';
+import { MainStore } from './mainStore';
 
 export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected get entityName() {
@@ -13,30 +12,35 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   }
 
   @computed
-  public get entity(): Service | undefined {
+  get entity(): Service | undefined {
     return this.service;
   }
 
-  public set entity(service: Service | undefined) {
+  set entity(service: Service | undefined) {
     this.service = service;
   }
 
   @computed
-  public get entities() {
+  get entities() {
     return this.services;
   }
 
   @observable
-  public services: ServiceListing[] = [];
+  services: ServiceListing[] = [];
   @observable
-  public service?: Service = undefined;
+  service?: Service = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  public filter = (s: ServiceListing) =>
-    [`${s.id}`, s.name, s.description || ''].some(field => field.toLowerCase().includes(this.searchQuery));
+  filter = (s: ServiceListing) =>
+    [`${s.id}`, s.name, s.description || ''].some(field => field.toLowerCase().includes(this.searchQuery))
+
+  getName(id: number) {
+    const service = this.services.find(s => s.id === id);
+    return service ? service.name : id;
+  }
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/services/' + id + '/archive', { archived });
@@ -66,10 +70,5 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   protected async doPut(entity: Service): Promise<void> {
     const res = await this.mainStore.api.put(`/services/${entity.id}`, entity);
     this.service = res.data;
-  }
-
-  public getName(id: number) {
-    const service = this.services.find(s => s.id === id);
-    return service ? service.name : id;
   }
 }
