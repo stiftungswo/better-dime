@@ -1,0 +1,5 @@
+.env.example
+.env.travis
+.gitignore
+/node_modules/
+/build/
