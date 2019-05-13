@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_13_111644) do
+ActiveRecord::Schema.define(version: 2019_05_13_113523) do
 
   create_table "global_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "sender_name", null: false
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(version: 2019_05_13_111644) do
     t.string "sender_bank_detail", null: false
     t.string "sender_bank_iban", null: false
     t.string "sender_bank_bic", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "holidays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.date "date", null: false
+    t.integer "duration", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
