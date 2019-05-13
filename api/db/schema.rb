@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_13_113523) do
+ActiveRecord::Schema.define(version: 2019_05_13_131923) do
+
+  create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "type", null: false
+    t.text "comment"
+    t.string "department"
+    t.bigint "customers_id"
+    t.string "email"
+    t.string "first_name"
+    t.string "last_name"
+    t.boolean "hidden", default: false, null: false
+    t.string "name"
+    t.bigint "rate_group_id"
+    t.string "salutation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customers_id"], name: "index_customers_on_customers_id"
+    t.index ["name"], name: "index_customers_on_name"
+    t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
+  end
 
   create_table "global_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "sender_name", null: false
@@ -38,4 +57,13 @@ ActiveRecord::Schema.define(version: 2019_05_13_113523) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rate_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "customers", "customers", column: "customers_id"
+  add_foreign_key "customers", "rate_groups"
 end
