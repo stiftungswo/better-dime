@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_13_131923) do
+ActiveRecord::Schema.define(version: 2019_05_13_144621) do
 
   create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "type", null: false
@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(version: 2019_05_13_131923) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "phones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "number"
+    t.integer "category"
+    t.bigint "customer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_phones_on_customer_id"
+  end
+
   create_table "rate_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
@@ -66,4 +75,5 @@ ActiveRecord::Schema.define(version: 2019_05_13_131923) do
 
   add_foreign_key "customers", "customers", column: "customers_id"
   add_foreign_key "customers", "rate_groups"
+  add_foreign_key "phones", "customers"
 end
