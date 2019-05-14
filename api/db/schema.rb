@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_114726) do
+ActiveRecord::Schema.define(version: 2019_05_14_143513) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -151,6 +151,39 @@ ActiveRecord::Schema.define(version: 2019_05_14_114726) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "billing_unit"
+    t.string "effort_unit"
+    t.decimal "factor", precision: 10
+    t.boolean "is_time"
+    t.string "name"
+    t.boolean "archived"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "service_rates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "rate_group_id"
+    t.bigint "service_id"
+    t.bigint "rate_unit_id"
+    t.integer "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rate_group_id"], name: "index_service_rates_on_rate_group_id"
+    t.index ["rate_unit_id"], name: "index_service_rates_on_rate_unit_id"
+    t.index ["service_id"], name: "index_service_rates_on_service_id"
+  end
+
+  create_table "services", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.decimal "vat", precision: 10
+    t.boolean "archived"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "addresses", "customers"
   add_foreign_key "customers", "customers", column: "customers_id"
   add_foreign_key "customers", "rate_groups"
@@ -162,4 +195,7 @@ ActiveRecord::Schema.define(version: 2019_05_14_114726) do
   add_foreign_key "invoices", "customers"
   add_foreign_key "invoices", "employees"
   add_foreign_key "phones", "customers"
+  add_foreign_key "service_rates", "rate_groups"
+  add_foreign_key "service_rates", "rate_units"
+  add_foreign_key "service_rates", "services"
 end
