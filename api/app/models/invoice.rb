@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class Invoice < ApplicationRecord
-  belongs_to :accountant, class_name: 'Employee' # TODO: add employee reference
+  belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :invoices
   belongs_to :customer
   belongs_to :address
-  belongs_to :project
+  # belongs_to :project # todo add projects
 
   has_many :invoice_discounts, dependent: :destroy
 end

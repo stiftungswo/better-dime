@@ -1,21 +1,20 @@
-class CreateInvoices < ActiveRecord::Migration[5.2]
+class CreateOffers < ActiveRecord::Migration[5.2]
   def change
-    create_table :invoices do |t|
+    create_table :offers do |t|
       t.references :customer, foreign_key: true
       t.references :address, foreign_key: true
       t.text :description
-      t.date :ending
-      t.date :beginning
       t.integer :fixed_price
       t.string :name
+      t.references :rate_group, foreign_key: true
+      t.text :short_description
+      t.integer :status
       t.decimal :fixed_price_vat
       t.bigint :accountant_id, null: false
 
       t.timestamps
     end
 
-    add_foreign_key :invoices, :employees, column: :accountant_id
-
-    # todo Add `t.references :project, foreign_key: true` in a later migration
+    add_foreign_key :offers, :employees, column: :accountant_id
   end
 end

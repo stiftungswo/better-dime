@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_143513) do
+ActiveRecord::Schema.define(version: 2019_05_14_144814) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -119,7 +119,6 @@ ActiveRecord::Schema.define(version: 2019_05_14_143513) do
   end
 
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "employee_id"
     t.bigint "customer_id"
     t.bigint "address_id"
     t.text "description"
@@ -128,11 +127,31 @@ ActiveRecord::Schema.define(version: 2019_05_14_143513) do
     t.integer "fixed_price"
     t.string "name"
     t.decimal "fixed_price_vat", precision: 10
+    t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["accountant_id"], name: "fk_rails_d3f137fd7a"
     t.index ["address_id"], name: "index_invoices_on_address_id"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
-    t.index ["employee_id"], name: "index_invoices_on_employee_id"
+  end
+
+  create_table "offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.bigint "address_id"
+    t.text "description"
+    t.integer "fixed_price"
+    t.string "name"
+    t.bigint "rate_group_id"
+    t.text "short_description"
+    t.integer "status"
+    t.decimal "fixed_price_vat", precision: 10
+    t.bigint "accountant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accountant_id"], name: "fk_rails_0fd97c6fab"
+    t.index ["address_id"], name: "index_offers_on_address_id"
+    t.index ["customer_id"], name: "index_offers_on_customer_id"
+    t.index ["rate_group_id"], name: "index_offers_on_rate_group_id"
   end
 
   create_table "phones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -184,6 +203,18 @@ ActiveRecord::Schema.define(version: 2019_05_14_143513) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.date "beginning"
+    t.date "ending"
+    t.integer "pensum"
+    t.decimal "vacation_takeover", precision: 10
+    t.integer "yearly_vacation_budget"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_work_periods_on_employee_id"
+  end
+
   add_foreign_key "addresses", "customers"
   add_foreign_key "customers", "customers", column: "customers_id"
   add_foreign_key "customers", "rate_groups"
@@ -193,9 +224,14 @@ ActiveRecord::Schema.define(version: 2019_05_14_143513) do
   add_foreign_key "invoice_discounts", "invoices"
   add_foreign_key "invoices", "addresses"
   add_foreign_key "invoices", "customers"
-  add_foreign_key "invoices", "employees"
+  add_foreign_key "invoices", "employees", column: "accountant_id"
+  add_foreign_key "offers", "addresses"
+  add_foreign_key "offers", "customers"
+  add_foreign_key "offers", "employees", column: "accountant_id"
+  add_foreign_key "offers", "rate_groups"
   add_foreign_key "phones", "customers"
   add_foreign_key "service_rates", "rate_groups"
   add_foreign_key "service_rates", "rate_units"
   add_foreign_key "service_rates", "services"
+  add_foreign_key "work_periods", "employees"
 end
