@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_144814) do
+ActiveRecord::Schema.define(version: 2019_05_14_161704) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -118,6 +118,20 @@ ActiveRecord::Schema.define(version: 2019_05_14_144814) do
     t.index ["invoice_id"], name: "index_invoice_discounts_on_invoice_id"
   end
 
+  create_table "invoice_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.decimal "amount", precision: 10
+    t.string "description"
+    t.bigint "invoice_id"
+    t.integer "order"
+    t.integer "price_per_rate"
+    t.bigint "rate_unit_id"
+    t.decimal "vat", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_invoice_positions_on_invoice_id"
+    t.index ["rate_unit_id"], name: "index_invoice_positions_on_rate_unit_id"
+  end
+
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "address_id"
@@ -133,6 +147,32 @@ ActiveRecord::Schema.define(version: 2019_05_14_144814) do
     t.index ["accountant_id"], name: "fk_rails_d3f137fd7a"
     t.index ["address_id"], name: "index_invoices_on_address_id"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
+  end
+
+  create_table "offer_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.bigint "offer_id"
+    t.boolean "percentage"
+    t.decimal "value", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["offer_id"], name: "index_offer_discounts_on_offer_id"
+  end
+
+  create_table "offer_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.decimal "amount", precision: 10
+    t.string "description"
+    t.bigint "offer_id"
+    t.integer "order"
+    t.integer "price_per_rate"
+    t.bigint "rate_unit_id"
+    t.bigint "service_id"
+    t.decimal "vat", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["offer_id"], name: "index_offer_positions_on_offer_id"
+    t.index ["rate_unit_id"], name: "index_offer_positions_on_rate_unit_id"
+    t.index ["service_id"], name: "index_offer_positions_on_service_id"
   end
 
   create_table "offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -161,6 +201,52 @@ ActiveRecord::Schema.define(version: 2019_05_14_144814) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_phones_on_customer_id"
+  end
+
+  create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "archived"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "project_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "comment"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "cost_group_id"
+    t.integer "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cost_group_id"], name: "fk_rails_47731351c6"
+  end
+
+  create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.date "date"
+    t.bigint "employee_id"
+    t.bigint "project_position_id"
+    t.decimal "value", precision: 10
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_project_efforts_on_employee_id"
+    t.index ["project_position_id"], name: "index_project_efforts_on_project_position_id"
+  end
+
+  create_table "project_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "description"
+    t.integer "price_per_rate"
+    t.bigint "rate_unit_id"
+    t.bigint "service_id"
+    t.decimal "vat", precision: 10
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rate_unit_id"], name: "index_project_positions_on_rate_unit_id"
+    t.index ["service_id"], name: "index_project_positions_on_service_id"
   end
 
   create_table "rate_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -222,14 +308,25 @@ ActiveRecord::Schema.define(version: 2019_05_14_144814) do
   add_foreign_key "invoice_cost_group_distributions", "cost_groups", primary_key: "number"
   add_foreign_key "invoice_cost_group_distributions", "invoices"
   add_foreign_key "invoice_discounts", "invoices"
+  add_foreign_key "invoice_positions", "invoices"
+  add_foreign_key "invoice_positions", "rate_units"
   add_foreign_key "invoices", "addresses"
   add_foreign_key "invoices", "customers"
   add_foreign_key "invoices", "employees", column: "accountant_id"
+  add_foreign_key "offer_discounts", "offers"
+  add_foreign_key "offer_positions", "offers"
+  add_foreign_key "offer_positions", "rate_units"
+  add_foreign_key "offer_positions", "services"
   add_foreign_key "offers", "addresses"
   add_foreign_key "offers", "customers"
   add_foreign_key "offers", "employees", column: "accountant_id"
   add_foreign_key "offers", "rate_groups"
   add_foreign_key "phones", "customers"
+  add_foreign_key "project_cost_group_distributions", "cost_groups", primary_key: "number"
+  add_foreign_key "project_efforts", "employees"
+  add_foreign_key "project_efforts", "project_positions"
+  add_foreign_key "project_positions", "rate_units"
+  add_foreign_key "project_positions", "services"
   add_foreign_key "service_rates", "rate_groups"
   add_foreign_key "service_rates", "rate_units"
   add_foreign_key "service_rates", "services"

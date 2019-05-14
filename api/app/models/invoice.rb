@@ -7,4 +7,5 @@ class Invoice < ApplicationRecord
   # belongs_to :project # todo add projects
 
   has_many :invoice_discounts, dependent: :destroy
+  has_many :invoice_positions, dependent: :destroy
 end
