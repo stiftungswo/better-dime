@@ -8,4 +8,5 @@ class Invoice < ApplicationRecord
 
   has_many :invoice_discounts, dependent: :destroy
   has_many :invoice_positions, dependent: :destroy
+  has_many :invoice_cost_group_distributions, dependent: :destroy
 end

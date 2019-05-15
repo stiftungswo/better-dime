@@ -8,4 +8,6 @@ class Customer < ApplicationRecord
   has_many :projects, dependent: :restrict_with_exception
 
   validates :type, inclusion: %w[Person Company]
+
+  alias phone_numbers phones
 end
