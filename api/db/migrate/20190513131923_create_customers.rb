@@ -9,13 +9,12 @@ class CreateCustomers < ActiveRecord::Migration[5.2]
       t.string :first_name, null: true
       t.string :last_name, null: true
       t.boolean :hidden, null: false, default: false
-      t.string :name, null: true
+      t.string :name, null: true, unique: true
       t.references :rate_group, foreign_key: true
       t.string :salutation, null: true
 
       t.timestamps
     end
 
-    add_index :customers, :name
   end
 end

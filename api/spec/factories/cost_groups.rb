@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :cost_group do
-    number { '' }
+    number { 100 }
     name { 'MyString' }
   end
 end

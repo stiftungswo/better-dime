@@ -9,6 +9,6 @@ FactoryBot.define do
     can_login { false }
     archived { false }
     holidays_per_year { 1 }
-    employee_group { nil }
+    employee_group
   end
 end
