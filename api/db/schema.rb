@@ -234,10 +234,10 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.date "date"
+    t.date "date", null: false
     t.bigint "employee_id"
     t.bigint "project_position_id"
-    t.decimal "value", precision: 10
+    t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_project_efforts_on_employee_id"
