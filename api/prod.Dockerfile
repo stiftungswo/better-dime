@@ -1,19 +1,17 @@
-FROM php:7.1-cli
+FROM ruby:2.5.1-alpine
 
-RUN apt-get update && apt-get install -y unzip libpng-dev
+LABEL maintainer="SWO"
+LABEL version="0.1"
+LABEL description="Dime backend"
 
-RUN docker-php-ext-install pdo pdo_mysql && \
-    php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');" && \
-    mv composer.phar /usr/local/bin/composer
-COPY . .
-RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/*
+RUN apk update && apk add mysql-client build-base mariadb-dev
 
-RUN docker-php-ext-install gd zip
+ENV BUNDLER_VERSION=2.0.1
+RUN gem install bundler -v "2.0.1" --no-document
+WORKDIR /api
+COPY Gemfile* ./
+RUN bundle install
+COPY . /api
 
-RUN composer install
-RUN php artisan migrate --no-interaction --force
-
-EXPOSE 8000
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "/public"]
+EXPOSE 3000
+CMD ["rails", "server", "-p", "3000", "-b", "0.0.0.0"]
