@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_14_161704) do
+ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -128,7 +128,9 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
     t.decimal "vat", precision: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_positions_id"
     t.index ["invoice_id"], name: "index_invoice_positions_on_invoice_id"
+    t.index ["project_positions_id"], name: "index_invoice_positions_on_project_positions_id"
     t.index ["rate_unit_id"], name: "index_invoice_positions_on_rate_unit_id"
   end
 
@@ -144,9 +146,11 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_id"
     t.index ["accountant_id"], name: "fk_rails_d3f137fd7a"
     t.index ["address_id"], name: "index_invoices_on_address_id"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
+    t.index ["project_id"], name: "index_invoices_on_project_id"
   end
 
   create_table "offer_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -215,6 +219,8 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_id"
+    t.index ["project_id"], name: "index_project_comments_on_project_id"
   end
 
   create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -222,7 +228,9 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
     t.integer "weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_id"
     t.index ["cost_group_id"], name: "fk_rails_47731351c6"
+    t.index ["project_id"], name: "index_project_cost_group_distributions_on_project_id"
   end
 
   create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -245,8 +253,34 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
     t.integer "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "project_id"
+    t.index ["project_id"], name: "index_project_positions_on_project_id"
     t.index ["rate_unit_id"], name: "index_project_positions_on_rate_unit_id"
     t.index ["service_id"], name: "index_project_positions_on_service_id"
+  end
+
+  create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "accountant_id", null: false
+    t.bigint "customer_id"
+    t.bigint "address_id"
+    t.boolean "archived", default: false, null: false
+    t.bigint "project_category_id"
+    t.boolean "chargeable", default: true, null: false
+    t.date "deadline", null: false
+    t.text "description"
+    t.integer "fixed_price"
+    t.string "name", null: false
+    t.bigint "offer_id"
+    t.bigint "rate_group_id"
+    t.boolean "vacation_project", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accountant_id"], name: "fk_rails_a7331964e9"
+    t.index ["address_id"], name: "index_projects_on_address_id"
+    t.index ["customer_id"], name: "index_projects_on_customer_id"
+    t.index ["offer_id"], name: "index_projects_on_offer_id"
+    t.index ["project_category_id"], name: "index_projects_on_project_category_id"
+    t.index ["rate_group_id"], name: "index_projects_on_rate_group_id"
   end
 
   create_table "rate_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -309,10 +343,12 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
   add_foreign_key "invoice_cost_group_distributions", "invoices"
   add_foreign_key "invoice_discounts", "invoices"
   add_foreign_key "invoice_positions", "invoices"
+  add_foreign_key "invoice_positions", "project_positions", column: "project_positions_id"
   add_foreign_key "invoice_positions", "rate_units"
   add_foreign_key "invoices", "addresses"
   add_foreign_key "invoices", "customers"
   add_foreign_key "invoices", "employees", column: "accountant_id"
+  add_foreign_key "invoices", "projects"
   add_foreign_key "offer_discounts", "offers"
   add_foreign_key "offer_positions", "offers"
   add_foreign_key "offer_positions", "rate_units"
@@ -322,11 +358,20 @@ ActiveRecord::Schema.define(version: 2019_05_14_161704) do
   add_foreign_key "offers", "employees", column: "accountant_id"
   add_foreign_key "offers", "rate_groups"
   add_foreign_key "phones", "customers"
+  add_foreign_key "project_comments", "projects"
   add_foreign_key "project_cost_group_distributions", "cost_groups", primary_key: "number"
+  add_foreign_key "project_cost_group_distributions", "projects"
   add_foreign_key "project_efforts", "employees"
   add_foreign_key "project_efforts", "project_positions"
+  add_foreign_key "project_positions", "projects"
   add_foreign_key "project_positions", "rate_units"
   add_foreign_key "project_positions", "services"
+  add_foreign_key "projects", "addresses"
+  add_foreign_key "projects", "customers"
+  add_foreign_key "projects", "employees", column: "accountant_id"
+  add_foreign_key "projects", "offers"
+  add_foreign_key "projects", "project_categories"
+  add_foreign_key "projects", "rate_groups"
   add_foreign_key "service_rates", "rate_groups"
   add_foreign_key "service_rates", "rate_units"
   add_foreign_key "service_rates", "services"

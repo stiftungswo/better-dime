@@ -5,6 +5,7 @@ class Customer < ApplicationRecord
 
   has_many :phones, dependent: :destroy
   has_many :offers, dependent: :restrict_with_exception
+  has_many :projects, dependent: :restrict_with_exception
 
   validates :type, inclusion: %w[Person Company]
 end

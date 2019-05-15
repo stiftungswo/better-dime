@@ -10,7 +10,5 @@ class CreateProjectPositions < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-
-    # TODO: add project:references
   end
 end

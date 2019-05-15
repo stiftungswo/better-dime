@@ -15,7 +15,5 @@ class CreateInvoices < ActiveRecord::Migration[5.2]
     end
 
     add_foreign_key :invoices, :employees, column: :accountant_id
-
-    # todo Add `t.references :project, foreign_key: true` in a later migration
   end
 end

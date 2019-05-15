@@ -9,7 +9,5 @@ class CreateProjectCostGroupDistributions < ActiveRecord::Migration[5.2]
 
     add_foreign_key :project_cost_group_distributions, :cost_groups, column: :cost_group_id, primary_key: :number
 
-    # TODO: add project:references
-
   end
 end

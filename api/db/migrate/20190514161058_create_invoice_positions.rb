@@ -11,7 +11,5 @@ class CreateInvoicePositions < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-
-    # TODO: add project_position:references
   end
 end

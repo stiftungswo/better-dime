@@ -7,6 +7,4 @@ class CreateProjectComments < ActiveRecord::Migration[5.2]
       t.timestamps
     end
   end
-
-  # TODO: add project:references
 end

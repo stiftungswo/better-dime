@@ -6,4 +6,5 @@ class Employee < ApplicationRecord
   has_many :offers, dependent: :restrict_with_exception, inverse_of: :accountant
   has_many :invoices, dependent: :restrict_with_exception, inverse_of: :accountant
   has_many :project_efforts, dependent: :restrict_with_exception
+  has_many :projects, dependent: :restrict_with_exception, inverse_of: :accountant
 end
