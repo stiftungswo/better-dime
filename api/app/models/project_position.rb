@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectPosition < ApplicationRecord
   belongs_to :rate_unit
   belongs_to :service

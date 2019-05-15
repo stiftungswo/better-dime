@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Offer < ApplicationRecord
   has_many :offer_discounts, dependent: :restrict_with_exception
   has_many :offer_positions, dependent: :restrict_with_exception

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :offer do
     accountant { nil }
     customer { nil }
     address { nil }
-    description { "MyText" }
+    description { 'MyText' }
     fixed_price { 1 }
-    name { "MyString" }
+    name { 'MyString' }
     rate_group { nil }
-    short_description { "MyText" }
+    short_description { 'MyText' }
     status { 1 }
-    fixed_price_vat { "9.99" }
+    fixed_price_vat { '9.99' }
   end
 end
