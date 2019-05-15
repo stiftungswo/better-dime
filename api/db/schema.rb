@@ -208,8 +208,8 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "archived"
-    t.string "name"
+    t.boolean "archived", default: false, null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -266,7 +266,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.boolean "archived", default: false, null: false
     t.bigint "project_category_id"
     t.boolean "chargeable", default: true, null: false
-    t.date "deadline", null: false
+    t.date "deadline"
     t.text "description"
     t.integer "fixed_price"
     t.string "name", null: false
