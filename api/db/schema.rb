@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "cost_group_id"
-    t.integer "weight"
+    t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
