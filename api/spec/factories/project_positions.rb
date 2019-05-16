@@ -2,11 +2,11 @@
 
 FactoryBot.define do
   factory :project_position do
-    description { 'MyString' }
-    price_per_rate { 1 }
-    rate_unit { nil }
-    service { nil }
-    vat { '9.99' }
+    description { 'MyDescription' }
+    price_per_rate { 9200 }
+    vat { 0.077 }
     order { 1 }
+    rate_unit
+    service
   end
 end

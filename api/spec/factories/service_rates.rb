@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :service_rate do
-    rate_group { nil }
-    service { nil }
-    rate_unit { nil }
     value { 1 }
+    rate_group
+    service
+    rate_unit
   end
 end

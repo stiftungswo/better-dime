@@ -3,12 +3,12 @@ class CreateOffers < ActiveRecord::Migration[5.2]
     create_table :offers do |t|
       t.references :customer, foreign_key: true
       t.references :address, foreign_key: true
-      t.text :description
+      t.text :description, null: false
       t.integer :fixed_price
-      t.string :name
+      t.string :name, null: false
       t.references :rate_group, foreign_key: true
-      t.text :short_description
-      t.integer :status
+      t.text :short_description, null: false
+      t.integer :status, null: false
       t.decimal :fixed_price_vat
       t.bigint :accountant_id, null: false
 
