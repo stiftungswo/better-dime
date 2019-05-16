@@ -6,5 +6,5 @@ class ProjectEffort < ApplicationRecord
 
   validates :date, :value, presence: true
   validates :value, numericality: { greater_than_or_equal_to: 0 }
-  validates :date, timeliness: { format: :date }
+  validates :date, timeliness: { type: :date }
 end

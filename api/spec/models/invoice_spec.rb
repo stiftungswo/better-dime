@@ -12,27 +12,13 @@ RSpec.describe Invoice, type: :model do
   it { is_expected.to validate_numericality_of(:fixed_price).only_integer }
   it { is_expected.to validate_numericality_of(:fixed_price_vat).is_greater_than_or_equal_to 0 }
 
-  describe '#ending' do
-    subject { build :invoice, beginning: beginning, ending: ending }
+  it_behaves_like 'ending is after beginning'
 
-    let(:beginning) { Time.zone.today }
-
-    context 'when ending is before beginning' do
-      let(:ending) { beginning - 1.day }
-
-      it 'is_invalid' do
-        expect(subject.valid?).to eq false
-      end
-    end
-
-    context 'when ending is after beginning' do
-      let(:ending) { beginning + 1.day }
-
-      it 'is_invalid' do
-        p subject.tap(&:validate).errors
-        expect(subject.valid?).to eq true
-      end
-    end
+  describe '#beginning' do
+    it_behaves_like 'only accepts dates', :beginning
   end
-  # TODO: Validate timeliness of beginning, ending.
+
+  describe '#ending' do
+    it_behaves_like 'only accepts dates', :ending
+  end
 end

@@ -36,5 +36,7 @@ module Api
       host: ENV.fetch('APP_HOST') { 'localhost' },
       port: ENV.fetch('APP_POST') { 3000 }
     }
+
+    config.use_plugin_parser = true
   end
 end

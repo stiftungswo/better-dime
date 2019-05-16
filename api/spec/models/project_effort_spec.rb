@@ -9,5 +9,7 @@ RSpec.describe ProjectEffort, type: :model do
   it { is_expected.to validate_presence_of :value }
   it { is_expected.to validate_numericality_of(:value).is_greater_than_or_equal_to(0) }
 
-  # TODO: add date validation spec
+  describe '#date' do
+    it_behaves_like 'only accepts dates', :date
+  end
 end
