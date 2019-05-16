@@ -9,4 +9,10 @@ class Offer < ApplicationRecord
   has_many :offer_discounts, dependent: :destroy
   has_many :offer_positions, dependent: :destroy
   has_one :project, dependent: :restrict_with_exception
+
+  validates :accountant, :customer, :address,
+            :description, :name, :rate_group,
+            :short_description, :status, presence: true
+
+  validates :name, length: { maximum: 255 }
 end

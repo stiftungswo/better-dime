@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :invoice_cost_group_distribution do
-    cost_group { nil }
-    invoice { nil }
-    weight { 1 }
+    cost_group
+    invoice
+    weight { 100 }
   end
 end

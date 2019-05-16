@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Invoice, type: :model do
+RSpec.describe Invoice, type: :model, philipp: true do
   it { is_expected.to validate_presence_of :accountant }
   it { is_expected.to validate_presence_of :address }
   it { is_expected.to validate_presence_of :description }
@@ -33,7 +33,6 @@ RSpec.describe Invoice, type: :model do
         expect(subject.valid?).to eq true
       end
     end
-
   end
   # TODO: Validate timeliness of beginning, ending.
 end
