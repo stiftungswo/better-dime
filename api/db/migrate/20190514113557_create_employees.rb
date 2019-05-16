@@ -1,13 +1,13 @@
 class CreateEmployees < ActiveRecord::Migration[5.2]
   def change
     create_table :employees do |t|
-      t.string :email
+      t.string :email, null: false
       t.boolean :admin
-      t.string :first_name
-      t.string :last_name
+      t.string :first_name, null: false
+      t.string :last_name, null: false
       t.boolean :can_login
       t.boolean :archived
-      t.integer :holidays_per_year
+      t.integer :holidays_per_year, null: true
       t.references :employee_group, foreign_key: true
 
       t.timestamps

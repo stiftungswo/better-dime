@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_15_071321) do
+ActiveRecord::Schema.define(version: 2019_05_15_123504) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.index ["number"], name: "index_cost_groups_on_number", unique: true
   end
 
+  create_table "customer_tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "archived"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "customer_tags_customers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "customer_tag_id", null: false
+    t.bigint "customer_id", null: false
+  end
+
   create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "type", null: false
     t.text "comment"
@@ -48,7 +60,6 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customers_id"], name: "index_customers_on_customers_id"
-    t.index ["name"], name: "index_customers_on_name"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
   end
 
