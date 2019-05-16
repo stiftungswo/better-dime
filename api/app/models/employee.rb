@@ -17,4 +17,8 @@ class Employee < ApplicationRecord
 
   devise :database_authenticatable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
+
+  def active_for_authentication?
+    super && can_login?
+  end
 end
