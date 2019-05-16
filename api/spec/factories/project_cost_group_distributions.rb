@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :project_cost_group_distribution do
-    cost_group { nil }
-    weight { 1 }
+    weight { 100 }
+    cost_group
   end
 end

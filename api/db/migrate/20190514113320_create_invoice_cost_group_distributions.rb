@@ -2,7 +2,7 @@ class CreateInvoiceCostGroupDistributions < ActiveRecord::Migration[5.2]
   def change
     create_table :invoice_cost_group_distributions do |t|
       t.references :cost_group, index: false, foreign_key: false
-      t.integer :weight
+      t.integer :weight, null: false, default: 100, null: false
 
       t.timestamps
     end

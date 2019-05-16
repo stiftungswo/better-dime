@@ -2,18 +2,22 @@
 
 FactoryBot.define do
   factory :project do
-    accountant { nil }
-    customer { nil }
-    address { nil }
     archived { false }
-    project_category { nil }
     chargeable { false }
-    deadline { '2019-05-15' }
-    description { 'MyText' }
+    deadline { Time.zone.today + 2.weeks }
+    description { 'my description' }
     fixed_price { 1 }
-    name { 'MyString' }
-    offer { nil }
-    rate_group { nil }
+    sequence(:name) { |i| "Project ##{i}" }
     vacation_project { false }
+    association :accountant, factory: :employee
+    association :customer, factory: :person
+    address
+    project_category
+    offer
+    rate_group
+
+    trait :with_company_customer do
+      association :customer, factory: :company
+    end
   end
 end

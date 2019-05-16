@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :global_setting do
     sender_name { 'MyString' }
     sender_street { 'MyString' }
-    sender_zip { '' }
+    sender_zip { 8080 }
     sender_phone { 'MyString' }
     sender_city { 'MyString' }
     sender_mail { 'MyString' }

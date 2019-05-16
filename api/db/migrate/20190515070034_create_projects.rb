@@ -7,7 +7,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.boolean :archived, null: false, default: false
       t.references :project_category, foreign_key: true
       t.boolean :chargeable, null: false, default: true
-      t.date :deadline, null: false
+      t.date :deadline
       t.text :description
       t.integer :fixed_price
       t.string :name, null: false
