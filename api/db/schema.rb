@@ -325,11 +325,11 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "employee_id"
-    t.date "beginning"
-    t.date "ending"
-    t.integer "pensum"
-    t.decimal "vacation_takeover", precision: 10
-    t.integer "yearly_vacation_budget"
+    t.date "beginning", null: false
+    t.date "ending", null: false
+    t.integer "pensum", null: false
+    t.decimal "vacation_takeover", precision: 10, null: false
+    t.integer "yearly_vacation_budget", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_work_periods_on_employee_id"
