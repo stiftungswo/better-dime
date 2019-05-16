@@ -10,6 +10,8 @@ Rails/SkipsModelValidations:
 
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - 'db/seeds.rb'
 
 Style/Documentation:
   Enabled: false
@@ -29,6 +31,8 @@ Metrics/BlockLength:
 
 Metrics/MethodLength:
   Max: 12
+  Exclude:
+    - 'db/seeds.rb'
 
 RSpec/MultipleExpectations:
   Enabled: false
@@ -49,5 +53,6 @@ AllCops:
     - 'log/**/*'
     - 'public/**/*'
     - 'tmp/**/*'
-    - 'db/**/*'
+    - 'db/migrate/*'
+    - 'db/schema.rb'
     - 'vendor/**/*'

@@ -5,7 +5,7 @@ class CreateEmployees < ActiveRecord::Migration[5.2]
       t.boolean :admin
       t.string :first_name, null: false
       t.string :last_name, null: false
-      t.boolean :can_login
+      t.boolean :can_login, null: false, default: true
       t.boolean :archived
       t.integer :holidays_per_year, null: true
       t.references :employee_group, foreign_key: true

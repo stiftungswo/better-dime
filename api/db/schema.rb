@@ -84,14 +84,17 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.boolean "admin"
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.boolean "can_login"
+    t.boolean "can_login", default: true, null: false
     t.boolean "archived"
     t.integer "holidays_per_year"
     t.bigint "employee_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
     t.datetime "discarded_at"
     t.index ["discarded_at"], name: "index_employees_on_discarded_at"
+    t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
   end
 
@@ -386,7 +389,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.index ["discarded_at"], name: "index_services_on_discarded_at"
   end
 
-  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "item_type", limit: 191, null: false
     t.bigint "item_id", null: false
     t.string "event", null: false
@@ -394,6 +397,17 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.text "object", limit: 4294967295
     t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
+  create_table "whitelisted_jwts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "jti", null: false
+    t.string "aud"
+    t.datetime "exp", null: false
+    t.bigint "employee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_whitelisted_jwts_on_employee_id"
+    t.index ["jti"], name: "index_whitelisted_jwts_on_jti", unique: true
   end
 
   create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -450,5 +464,6 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
   add_foreign_key "service_rates", "rate_groups"
   add_foreign_key "service_rates", "rate_units"
   add_foreign_key "service_rates", "services"
+  add_foreign_key "whitelisted_jwts", "employees", on_delete: :cascade
   add_foreign_key "work_periods", "employees"
 end
