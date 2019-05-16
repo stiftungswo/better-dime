@@ -90,6 +90,11 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.bigint "employee_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_employees_on_discarded_at"
+    t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
   end
 
@@ -384,7 +389,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.index ["discarded_at"], name: "index_services_on_discarded_at"
   end
 
-  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "item_type", limit: 191, null: false
     t.bigint "item_id", null: false
     t.string "event", null: false

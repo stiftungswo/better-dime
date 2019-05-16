@@ -2,13 +2,17 @@
 
 FactoryBot.define do
   factory :employee do
-    email { 'MyString' }
+    sequence(:email) { |i| "my#{i}@mail.com" }
     admin { false }
-    first_name { 'MyString' }
-    last_name { 'MyString' }
-    can_login { false }
+    first_name { 'Peter' }
+    last_name { 'Pan' }
+    can_login { true }
     archived { false }
-    holidays_per_year { 1 }
+    holidays_per_year { 12 }
     employee_group
+
+    trait :admin do
+      admin { true }
+    end
   end
 end
