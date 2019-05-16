@@ -7,4 +7,6 @@ class CostGroup < ApplicationRecord
 
   validates :number, :name, presence: true
   validates :number, uniqueness: true
+
+  self.primary_key = :number
 end

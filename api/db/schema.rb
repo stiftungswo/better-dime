@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_15_123504) do
+ActiveRecord::Schema.define(version: 2019_05_16_110634) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
   end
 
   create_table "customer_tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "archived", null: false
-    t.string "name", null: false
+    t.boolean "archived"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -64,16 +64,16 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
   end
 
   create_table "employee_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "email", null: false
+    t.string "email"
     t.boolean "admin"
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.boolean "can_login"
     t.boolean "archived"
     t.integer "holidays_per_year"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
 
   create_table "invoice_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "cost_group_id"
-    t.integer "weight", default: 100, null: false
+    t.integer "weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "invoice_id"
@@ -121,22 +121,22 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
 
   create_table "invoice_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "invoice_id"
-    t.string "name", null: false
-    t.boolean "percentage", null: false
-    t.decimal "value", precision: 10, null: false
+    t.string "name"
+    t.boolean "percentage"
+    t.decimal "value", precision: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invoice_id"], name: "index_invoice_discounts_on_invoice_id"
   end
 
   create_table "invoice_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10, null: false
-    t.string "description", null: false
+    t.decimal "amount", precision: 10
+    t.string "description"
     t.bigint "invoice_id"
     t.integer "order"
-    t.integer "price_per_rate", null: false
+    t.integer "price_per_rate"
     t.bigint "rate_unit_id"
-    t.decimal "vat", precision: 10, null: false
+    t.decimal "vat", precision: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_positions_id"
@@ -148,11 +148,11 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "address_id"
-    t.text "description", null: false
-    t.date "ending", null: false
-    t.date "beginning", null: false
+    t.text "description"
+    t.date "ending"
+    t.date "beginning"
     t.integer "fixed_price"
-    t.string "name", null: false
+    t.string "name"
     t.decimal "fixed_price_vat", precision: 10
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
@@ -165,24 +165,24 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
   end
 
   create_table "offer_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.bigint "offer_id"
-    t.boolean "percentage", null: false
-    t.decimal "value", precision: 10, null: false
+    t.boolean "percentage"
+    t.decimal "value", precision: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["offer_id"], name: "index_offer_discounts_on_offer_id"
   end
 
   create_table "offer_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10, null: false
+    t.decimal "amount", precision: 10
     t.string "description"
     t.bigint "offer_id"
-    t.integer "order", null: false
-    t.integer "price_per_rate", null: false
+    t.integer "order"
+    t.integer "price_per_rate"
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10, null: false
+    t.decimal "vat", precision: 10
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["offer_id"], name: "index_offer_positions_on_offer_id"
@@ -193,12 +193,12 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
   create_table "offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "address_id"
-    t.text "description", null: false
+    t.text "description"
     t.integer "fixed_price"
-    t.string "name", null: false
+    t.string "name"
     t.bigint "rate_group_id"
-    t.text "short_description", null: false
-    t.integer "status", null: false
+    t.text "short_description"
+    t.integer "status"
     t.decimal "fixed_price_vat", precision: 10
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
@@ -334,12 +334,22 @@ ActiveRecord::Schema.define(version: 2019_05_15_123504) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "item_type", limit: 191, null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object", limit: 4294967295
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
   create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "employee_id"
     t.date "beginning", null: false
     t.date "ending", null: false
     t.integer "pensum", null: false
-    t.decimal "vacation_takeover", precision: 10, default: "0", null: false
+    t.decimal "vacation_takeover", precision: 10, null: false
     t.integer "yearly_vacation_budget", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
