@@ -12,4 +12,9 @@ class Project < ApplicationRecord
   has_many :project_comments, dependent: :destroy
   has_many :project_cost_group_distributions, dependent: :destroy
   has_many :project_positions, dependent: :destroy
+
+  validates :fixed_price, numericality: { only_integer: true }
+  validates :accountant, :address, :archived,
+            :chargeable, :name, :project_category,
+            :rate_group, presence: true
 end

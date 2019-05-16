@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :project_comment do
-    comment { 'MyText' }
+    comment { 'MyComment' }
     date { '2019-05-14' }
   end
 end

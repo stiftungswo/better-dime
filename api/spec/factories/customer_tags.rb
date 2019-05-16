@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :cost_group do
-    number { 100 }
+  factory :customer_tag do
+    archived { false }
     name { 'MyString' }
   end
 end

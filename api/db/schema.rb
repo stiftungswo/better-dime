@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_15_071321) do
+ActiveRecord::Schema.define(version: 2019_05_15_123504) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.index ["number"], name: "index_cost_groups_on_number", unique: true
   end
 
+  create_table "customer_tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.boolean "archived"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "customer_tags_customers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "customer_tag_id", null: false
+    t.bigint "customer_id", null: false
+  end
+
   create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "type", null: false
     t.text "comment"
@@ -48,7 +60,6 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customers_id"], name: "index_customers_on_customers_id"
-    t.index ["name"], name: "index_customers_on_name"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
   end
 
@@ -208,15 +219,15 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "archived"
-    t.string "name"
+    t.boolean "archived", default: false, null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "project_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.text "comment"
-    t.date "date"
+    t.text "comment", null: false
+    t.date "date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
@@ -225,7 +236,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "cost_group_id"
-    t.integer "weight"
+    t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
@@ -234,10 +245,10 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.date "date"
+    t.date "date", null: false
     t.bigint "employee_id"
     t.bigint "project_position_id"
-    t.decimal "value", precision: 10
+    t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_project_efforts_on_employee_id"
@@ -246,11 +257,11 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "project_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
-    t.integer "price_per_rate"
+    t.integer "price_per_rate", default: 0, null: false
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10
-    t.integer "order"
+    t.decimal "vat", precision: 10, default: "0", null: false
+    t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
@@ -266,7 +277,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.boolean "archived", default: false, null: false
     t.bigint "project_category_id"
     t.boolean "chargeable", default: true, null: false
-    t.date "deadline", null: false
+    t.date "deadline"
     t.text "description"
     t.integer "fixed_price"
     t.string "name", null: false
@@ -291,12 +302,12 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "billing_unit"
-    t.string "effort_unit"
-    t.decimal "factor", precision: 10
-    t.boolean "is_time"
-    t.string "name"
-    t.boolean "archived"
+    t.string "billing_unit", null: false
+    t.string "effort_unit", null: false
+    t.decimal "factor", precision: 10, default: "1", null: false
+    t.boolean "is_time", default: false, null: false
+    t.string "name", null: false
+    t.boolean "archived", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -305,7 +316,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.bigint "rate_group_id"
     t.bigint "service_id"
     t.bigint "rate_unit_id"
-    t.integer "value"
+    t.integer "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rate_group_id"], name: "index_service_rates_on_rate_group_id"
@@ -314,22 +325,22 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "services", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "description"
-    t.decimal "vat", precision: 10
-    t.boolean "archived"
-    t.integer "order"
+    t.decimal "vat", precision: 10, null: false
+    t.boolean "archived", default: false, null: false
+    t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "employee_id"
-    t.date "beginning"
-    t.date "ending"
-    t.integer "pensum"
-    t.decimal "vacation_takeover", precision: 10
-    t.integer "yearly_vacation_budget"
+    t.date "beginning", null: false
+    t.date "ending", null: false
+    t.integer "pensum", null: false
+    t.decimal "vacation_takeover", precision: 10, null: false
+    t.integer "yearly_vacation_budget", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_work_periods_on_employee_id"

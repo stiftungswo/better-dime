@@ -5,7 +5,7 @@ class CreateWorkPeriods < ActiveRecord::Migration[5.2]
       t.date :beginning, null: false
       t.date :ending, null: false
       t.integer :pensum, null: false
-      t.decimal :vacation_takeover
+      t.decimal :vacation_takeover, null: false, default: 0
       t.integer :yearly_vacation_budget, null: false
 
       t.timestamps
