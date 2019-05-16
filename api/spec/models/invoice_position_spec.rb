@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe InvoicePosition, type: :model, philipp: true do
+RSpec.describe InvoicePosition, type: :model do
   it { is_expected.to validate_presence_of :amount }
   it { is_expected.to validate_presence_of :description }
   it { is_expected.to validate_presence_of :price_per_rate }

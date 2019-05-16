@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Invoice, type: :model, philipp: true do
+RSpec.describe Invoice, type: :model do
   it { is_expected.to validate_presence_of :accountant }
   it { is_expected.to validate_presence_of :address }
   it { is_expected.to validate_presence_of :description }

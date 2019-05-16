@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Offer, type: :model, philipp: true do
+RSpec.describe Offer, type: :model do
   it { is_expected.to validate_presence_of :accountant }
   it { is_expected.to validate_presence_of :customer }
   it { is_expected.to validate_presence_of :address }

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe OfferPosition, type: :model, philipp: true do
+RSpec.describe OfferPosition, type: :model do
   it { is_expected.to validate_presence_of :amount }
   it { is_expected.to validate_presence_of :order }
   it { is_expected.to validate_presence_of :rate_unit }
