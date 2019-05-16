@@ -246,11 +246,11 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
 
   create_table "project_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
-    t.integer "price_per_rate"
+    t.integer "price_per_rate", default: 0, null: false
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10
-    t.integer "order"
+    t.decimal "vat", precision: 10, default: "0", null: false
+    t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
@@ -291,12 +291,12 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "billing_unit"
-    t.string "effort_unit"
-    t.decimal "factor", precision: 10
-    t.boolean "is_time"
-    t.string "name"
-    t.boolean "archived"
+    t.string "billing_unit", null: false
+    t.string "effort_unit", null: false
+    t.decimal "factor", precision: 10, default: "1", null: false
+    t.boolean "is_time", default: false, null: false
+    t.string "name", null: false
+    t.boolean "archived", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -314,11 +314,11 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
   end
 
   create_table "services", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "description"
-    t.decimal "vat", precision: 10
-    t.boolean "archived"
-    t.integer "order"
+    t.decimal "vat", precision: 10, null: false
+    t.boolean "archived", default: false, null: false
+    t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

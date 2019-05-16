@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :service do
-    name { 'MyString' }
-    description { 'MyString' }
-    vat { '9.99' }
+    name { 'My service' }
+    description { 'A great service' }
+    vat { 0.077 }
     archived { false }
     order { 1 }
   end
