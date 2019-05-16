@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :rate_group do
-    name { 'MyString' }
-    description { 'MyString' }
+    sequence(:name) { |i| "My rate group #{i}" }
+    description { 'My rate group description' }
   end
 end
