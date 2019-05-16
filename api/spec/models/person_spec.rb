@@ -3,7 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Person, type: :model do
-  it { is_expected.to belong_to(:company).class_name('Company').with_foreign_key(:customers_id).optional().inverse_of(:people) }
+  it 'belongs to company' do
+    expect(described_class.new).to belong_to(:company)
+      .class_name('Company')
+      .with_foreign_key(:customers_id)
+      .optional
+      .inverse_of(:people)
+  end
 
   it { is_expected.to validate_presence_of :first_name }
   it { is_expected.to validate_presence_of :last_name }
