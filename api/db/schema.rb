@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_110634) do
+ActiveRecord::Schema.define(version: 2019_05_16_114935) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -22,7 +22,9 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.index ["customer_id"], name: "index_addresses_on_customer_id"
+    t.index ["discarded_at"], name: "index_addresses_on_discarded_at"
   end
 
   create_table "cost_groups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -30,14 +32,18 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_cost_groups_on_discarded_at"
     t.index ["number"], name: "index_cost_groups_on_number", unique: true
   end
 
   create_table "customer_tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.boolean "archived"
-    t.string "name"
+    t.boolean "archived", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_customer_tags_on_discarded_at"
   end
 
   create_table "customer_tags_customers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -59,27 +65,33 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.string "salutation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.index ["customers_id"], name: "index_customers_on_customers_id"
+    t.index ["discarded_at"], name: "index_customers_on_discarded_at"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
   end
 
   create_table "employee_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_employee_groups_on_discarded_at"
   end
 
   create_table "employees", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "email"
+    t.string "email", null: false
     t.boolean "admin"
-    t.string "first_name"
-    t.string "last_name"
+    t.string "first_name", null: false
+    t.string "last_name", null: false
     t.boolean "can_login"
     t.boolean "archived"
     t.integer "holidays_per_year"
     t.bigint "employee_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_employees_on_discarded_at"
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
   end
 
@@ -99,6 +111,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.string "sender_bank_bic", default: "EXABANK00000", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_global_settings_on_discarded_at"
   end
 
   create_table "holidays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -107,39 +121,47 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.integer "duration", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_holidays_on_discarded_at"
   end
 
   create_table "invoice_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "cost_group_id"
-    t.integer "weight"
+    t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "invoice_id"
+    t.datetime "discarded_at"
     t.index ["cost_group_id"], name: "fk_rails_ca9de3cea7"
+    t.index ["discarded_at"], name: "index_invoice_cost_group_distributions_on_discarded_at"
     t.index ["invoice_id"], name: "index_invoice_cost_group_distributions_on_invoice_id"
   end
 
   create_table "invoice_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "invoice_id"
-    t.string "name"
-    t.boolean "percentage"
-    t.decimal "value", precision: 10
+    t.string "name", null: false
+    t.boolean "percentage", null: false
+    t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_invoice_discounts_on_discarded_at"
     t.index ["invoice_id"], name: "index_invoice_discounts_on_invoice_id"
   end
 
   create_table "invoice_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10
-    t.string "description"
+    t.decimal "amount", precision: 10, null: false
+    t.string "description", null: false
     t.bigint "invoice_id"
     t.integer "order"
-    t.integer "price_per_rate"
+    t.integer "price_per_rate", null: false
     t.bigint "rate_unit_id"
-    t.decimal "vat", precision: 10
+    t.decimal "vat", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_positions_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_invoice_positions_on_discarded_at"
     t.index ["invoice_id"], name: "index_invoice_positions_on_invoice_id"
     t.index ["project_positions_id"], name: "index_invoice_positions_on_project_positions_id"
     t.index ["rate_unit_id"], name: "index_invoice_positions_on_rate_unit_id"
@@ -148,43 +170,49 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
   create_table "invoices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "address_id"
-    t.text "description"
-    t.date "ending"
-    t.date "beginning"
+    t.text "description", null: false
+    t.date "ending", null: false
+    t.date "beginning", null: false
     t.integer "fixed_price"
-    t.string "name"
+    t.string "name", null: false
     t.decimal "fixed_price_vat", precision: 10
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
+    t.datetime "discarded_at"
     t.index ["accountant_id"], name: "fk_rails_d3f137fd7a"
     t.index ["address_id"], name: "index_invoices_on_address_id"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
+    t.index ["discarded_at"], name: "index_invoices_on_discarded_at"
     t.index ["project_id"], name: "index_invoices_on_project_id"
   end
 
   create_table "offer_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.bigint "offer_id"
-    t.boolean "percentage"
-    t.decimal "value", precision: 10
+    t.boolean "percentage", null: false
+    t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_offer_discounts_on_discarded_at"
     t.index ["offer_id"], name: "index_offer_discounts_on_offer_id"
   end
 
   create_table "offer_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10
+    t.decimal "amount", precision: 10, null: false
     t.string "description"
     t.bigint "offer_id"
-    t.integer "order"
-    t.integer "price_per_rate"
+    t.integer "order", null: false
+    t.integer "price_per_rate", null: false
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10
+    t.decimal "vat", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_offer_positions_on_discarded_at"
     t.index ["offer_id"], name: "index_offer_positions_on_offer_id"
     t.index ["rate_unit_id"], name: "index_offer_positions_on_rate_unit_id"
     t.index ["service_id"], name: "index_offer_positions_on_service_id"
@@ -193,19 +221,21 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
   create_table "offers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "address_id"
-    t.text "description"
+    t.text "description", null: false
     t.integer "fixed_price"
-    t.string "name"
+    t.string "name", null: false
     t.bigint "rate_group_id"
-    t.text "short_description"
-    t.integer "status"
+    t.text "short_description", null: false
+    t.integer "status", null: false
     t.decimal "fixed_price_vat", precision: 10
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.index ["accountant_id"], name: "fk_rails_0fd97c6fab"
     t.index ["address_id"], name: "index_offers_on_address_id"
     t.index ["customer_id"], name: "index_offers_on_customer_id"
+    t.index ["discarded_at"], name: "index_offers_on_discarded_at"
     t.index ["rate_group_id"], name: "index_offers_on_rate_group_id"
   end
 
@@ -215,7 +245,9 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.bigint "customer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.index ["customer_id"], name: "index_phones_on_customer_id"
+    t.index ["discarded_at"], name: "index_phones_on_discarded_at"
   end
 
   create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -223,6 +255,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_project_categories_on_discarded_at"
   end
 
   create_table "project_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -231,6 +265,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_project_comments_on_discarded_at"
     t.index ["project_id"], name: "index_project_comments_on_project_id"
   end
 
@@ -240,7 +276,9 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
+    t.datetime "discarded_at"
     t.index ["cost_group_id"], name: "fk_rails_47731351c6"
+    t.index ["discarded_at"], name: "index_project_cost_group_distributions_on_discarded_at"
     t.index ["project_id"], name: "index_project_cost_group_distributions_on_project_id"
   end
 
@@ -251,6 +289,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_project_efforts_on_discarded_at"
     t.index ["employee_id"], name: "index_project_efforts_on_employee_id"
     t.index ["project_position_id"], name: "index_project_efforts_on_project_position_id"
   end
@@ -265,6 +305,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_project_positions_on_discarded_at"
     t.index ["project_id"], name: "index_project_positions_on_project_id"
     t.index ["rate_unit_id"], name: "index_project_positions_on_rate_unit_id"
     t.index ["service_id"], name: "index_project_positions_on_service_id"
@@ -286,9 +328,11 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.boolean "vacation_project", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
     t.index ["accountant_id"], name: "fk_rails_a7331964e9"
     t.index ["address_id"], name: "index_projects_on_address_id"
     t.index ["customer_id"], name: "index_projects_on_customer_id"
+    t.index ["discarded_at"], name: "index_projects_on_discarded_at"
     t.index ["offer_id"], name: "index_projects_on_offer_id"
     t.index ["project_category_id"], name: "index_projects_on_project_category_id"
     t.index ["rate_group_id"], name: "index_projects_on_rate_group_id"
@@ -299,6 +343,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.string "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_rate_groups_on_discarded_at"
   end
 
   create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -310,6 +356,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.boolean "archived", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_rate_units_on_discarded_at"
   end
 
   create_table "service_rates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -319,6 +367,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.integer "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_service_rates_on_discarded_at"
     t.index ["rate_group_id"], name: "index_service_rates_on_rate_group_id"
     t.index ["rate_unit_id"], name: "index_service_rates_on_rate_unit_id"
     t.index ["service_id"], name: "index_service_rates_on_service_id"
@@ -332,6 +382,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_services_on_discarded_at"
   end
 
   create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -349,10 +401,12 @@ ActiveRecord::Schema.define(version: 2019_05_16_110634) do
     t.date "beginning", null: false
     t.date "ending", null: false
     t.integer "pensum", null: false
-    t.decimal "vacation_takeover", precision: 10, null: false
+    t.decimal "vacation_takeover", precision: 10, default: "0", null: false
     t.integer "yearly_vacation_budget", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "discarded_at"
+    t.index ["discarded_at"], name: "index_work_periods_on_discarded_at"
     t.index ["employee_id"], name: "index_work_periods_on_employee_id"
   end
 
