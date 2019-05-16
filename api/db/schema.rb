@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 2019_05_15_071321) do
     t.bigint "rate_group_id"
     t.bigint "service_id"
     t.bigint "rate_unit_id"
-    t.integer "value"
+    t.integer "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rate_group_id"], name: "index_service_rates_on_rate_group_id"
