@@ -9,11 +9,15 @@ FactoryBot.define do
     fixed_price { 1 }
     sequence(:name) { |i| "Project ##{i}" }
     vacation_project { false }
-    accountant
-    customer
+    association :accountant, factory: :employee
+    association :customer, factory: :person
     address
     project_category
     offer
     rate_group
+
+    trait :with_company_customer do
+      association :customer, factory: :company
+    end
   end
 end

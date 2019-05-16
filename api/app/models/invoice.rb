@@ -9,4 +9,10 @@ class Invoice < ApplicationRecord
   has_many :invoice_discounts, dependent: :destroy
   has_many :invoice_positions, dependent: :destroy
   has_many :invoice_cost_group_distributions, dependent: :destroy
+
+  validates :accountant, :address, :description, :beginning, :ending, :name, presence: true
+  validates :beginning, :ending, timeliness: { type: :date }
+  validates :ending, timeliness: { after: :beginning }
+  validates :fixed_price, numericality: { only_integer: true }, if: -> { fixed_price.present? }
+  validates :fixed_price_vat, numericality: { greater_than_or_equal_to: 0 }, if: -> { fixed_price_vat.present? }
 end

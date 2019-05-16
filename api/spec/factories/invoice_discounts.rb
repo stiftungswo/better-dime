@@ -2,9 +2,14 @@
 
 FactoryBot.define do
   factory :invoice_discount do
-    invoice { nil }
-    name { 'MyString' }
+    invoice
+    name { 'My InvoiceDiscount' }
     percentage { false }
-    value { '9.99' }
+    value { 150.0 }
+
+    trait :with_percentage do
+      percentage { true }
+      value { 15.0 }
+    end
   end
 end
