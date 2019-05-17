@@ -389,7 +389,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.index ["discarded_at"], name: "index_services_on_discarded_at"
   end
 
-  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+  create_table "versions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "item_type", limit: 191, null: false
     t.bigint "item_id", null: false
     t.string "event", null: false
