@@ -13,7 +13,6 @@ RUN apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/*
 RUN docker-php-ext-install gd zip
 
 RUN composer install
-RUN php artisan migrate --no-interaction --force
 
 EXPOSE 8000
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "/public"]
