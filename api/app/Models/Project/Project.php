@@ -109,7 +109,7 @@ class Project extends Model
             return null;
         } else {
             if (is_null($this->offer->fixed_price)) {
-                return CostBreakdown::calculate($this->offer)['subtotal'];
+                return CostBreakdown::calculate($this->offer)['total'];
             } else {
                 return $this->offer->fixed_price;
             }
