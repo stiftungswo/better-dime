@@ -110,7 +110,7 @@ class ProjectForm extends React.Component<Props> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.costgroupStore!.fetchAll(),
       this.props.customerStore!.fetchAll(),

@@ -49,7 +49,7 @@ export default class InvoiceForm extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.costgroupStore!.fetchAll(),
       this.props.customerStore!.fetchAll(),

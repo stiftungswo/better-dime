@@ -41,7 +41,7 @@ export default class Timetrack extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const filter = this.props.timetrackFilterStore!.filter;
 
     Promise.all([

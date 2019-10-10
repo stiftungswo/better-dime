@@ -51,7 +51,7 @@ export class ProjectReport extends React.Component<Props, State> {
     loading: true,
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.props.projectStore!.fetchAll();
     this.setState({ loading: false });
   }

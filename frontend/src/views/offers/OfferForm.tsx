@@ -68,7 +68,7 @@ class OfferForm extends React.Component<Props> {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.customerStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),

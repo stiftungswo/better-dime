@@ -64,10 +64,12 @@ type DimeFieldProps = any; // tslint:disable-line:no-any ; formik field does thi
 
 // tslint:disable
 export class DimeField extends React.Component<DimeFieldProps, { component: React.ReactType }> {
-  componentWillMount() {
-    this.setState({
+  constructor(props: DimeFieldProps) {
+    super(props)
+
+    this.state = {
       component: wireFormik({ delayed: this.props.delayed })(this.props.component),
-    });
+    }
   }
 
   componentDidUpdate(prevProps: Readonly<DimeFieldProps>) {
