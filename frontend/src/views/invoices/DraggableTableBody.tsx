@@ -3,7 +3,14 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import { FieldArrayRenderProps } from 'formik';
 import * as React from 'react';
-import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
 
 interface Props<T> {
   arrayHelpers: FieldArrayRenderProps;
@@ -41,25 +48,24 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number; 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={'table'}>
-        {(dropProvided, dropSnapshot) => (
-          <RootRef rootRef={dropProvided.innerRef}>
-            <TableBody>
-              {arrayHelpers.form.values[name].map((row: T, index: number) => {
-                const key = row.id || row.formikKey;
-                return (
-                  <Draggable key={key} draggableId={String(key)} index={index}>
-                    {(provided, snapshot) => (
-                      <RootRef rootRef={provided.innerRef}>
-                        <TableRow key={key} {...provided.draggableProps}>
-                          {renderRow({ row, index, provided, snapshot })}
-                        </TableRow>
-                      </RootRef>
-                    )}
-                  </Draggable>
-                );
-              })}
-            </TableBody>
-          </RootRef>
+        {(dropProvided) => (
+          <TableBody ref={dropProvided.innerRef}>
+            {arrayHelpers.form.values[name].map((row: T, index: number) => {
+              const key = row.id || row.formikKey;
+              return (
+                <Draggable key={key} draggableId={String(key)} index={index}>
+                  {(provided, snapshot) => (
+                    <RootRef rootRef={provided.innerRef}>
+                      <TableRow key={key} {...provided.draggableProps}>
+                        {renderRow({ row, index, provided, snapshot })}
+                      </TableRow>
+                    </RootRef>
+                  )}
+                </Draggable>
+              );
+            })}
+            {dropProvided.placeholder}
+          </TableBody>
         )}
       </Droppable>
     </DragDropContext>
