@@ -75,7 +75,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                   können.
                 </Typography>
               )}
-              <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+              <Table size={'small'} style={{ minWidth: '1200px' }}>
                 <TableHead>
                   <TableRow>
                     <DimeTableCell style={{ width: '5%' }} />

@@ -2,7 +2,7 @@ import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core'
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import { InjectedProps, WithMobileDialog } from '@material-ui/core/withMobileDialog';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -27,7 +27,7 @@ import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
-interface Props extends InjectedProps {
+interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
@@ -68,16 +68,12 @@ const multiSchema = localizeSchema(() =>
     .shape(baseEffortFields),
 );
 
-@compose(
-  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore'),
-  observer,
-  withMobileDialog(),
-)
-export class TimetrackFormDialog extends React.Component<Props, State> {
+class InnerTimetrackFormDialog extends React.Component<Props, State> {
 
   get mode() {
     return Boolean(this.props.effortStore!.effort) ? 'edit' : 'create';
   }
+
   state = {
     lastEntry: undefined,
     closeAfterSubmit: false,
@@ -126,8 +122,6 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   }
 
   render() {
-    const { fullScreen } = this.props;
-
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
@@ -136,15 +130,16 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+            <Dialog open onClose={this.handleClose(formikProps)}>
               <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <DimeField portal isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'} />
+                  <DimeField portal isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'}/>
                 )}
-                {formikProps.values.id && <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
-                <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+                {formikProps.values.id &&
+                <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'}/>}
+                <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'}/>
                 <DimeField
                   portal
                   projectId={formikProps.values.project_id}
@@ -152,10 +147,15 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   name={'position_id'}
                   label={'Aktivität'}
                 />
-                <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />
+                <DimeField component={DateFastPicker} name={'date'} label={'Datum'}/>
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
-                    <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />
+                    <DimeField
+                      component={EffortValueField}
+                      positionId={formikProps.values.position_id}
+                      name={'value'}
+                      label={'Wert'}
+                    />
                     {!formikProps.values.id && (
                       <DimeField
                         delayed
@@ -235,3 +235,8 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     }
   }
 }
+
+// manual chaining of the components here since withMobileDialog wouldn't be applied correctly with compose
+export const TimetrackFormDialog = inject(
+  'effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore')(
+  observer(InnerTimetrackFormDialog));

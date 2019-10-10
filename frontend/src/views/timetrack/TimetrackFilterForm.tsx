@@ -54,7 +54,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
 
         <Grid item xs={12}>
           <TimetrackExpansionPanel title={'Filter'}>
-            <Grid container alignItems={'center'} spacing={24}>
+            <Grid container alignItems={'center'} spacing={6}>
               <Grid item xs={12} md={6}>
                 <DateSpanPicker
                   fromValue={filter.start}

@@ -1,4 +1,4 @@
-import { DatePicker as MUIDatePicker } from 'material-ui-pickers';
+import { KeyboardDatePicker as MUIDatePicker } from '@material-ui/pickers';
 import { inject, observer } from 'mobx-react';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
@@ -33,14 +33,11 @@ export class DatePicker extends React.Component<Props> {
     const userDateFormat = formatter!.userDateFormat;
     return (
       <MUIDatePicker
-        keyboard
         autoOk
         format={userDateFormat.format}
-        mask={userDateFormat.mask}
         placeholder={moment().format(userDateFormat.format)}
         value={castValue(value)}
         onChange={onChange}
-        disableOpenOnEnter
         animateYearScrolling={false}
         clearable={!required}
         error={Boolean(errorMessage)}

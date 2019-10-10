@@ -151,17 +151,15 @@ class ProjectForm extends React.Component<Props> {
                 title={'Neue Rechnung aus Projekt generieren'}
               />
             </>
-          ) : (
-            undefined
-          )
+          ) : undefined
         }
         render={(props: FormikProps<Project>) => (
           <form onSubmit={props.handleSubmit}>
-            <Grid container spacing={24}>
+            <Grid container spacing={6}>
               <Grid item xs={12} lg={8}>
                 {project.id && <Navigator project={project} />}
                 <DimePaper>
-                  <Grid container spacing={24}>
+                  <Grid container spacing={6}>
                     <Grid item xs={12}>
                       <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                     </Grid>
@@ -216,7 +214,7 @@ class ProjectForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container spacing={24}>
+                <Grid container spacing={6}>
                   <Grid item xs={12} lg={8}>
                     <DimePaper>
                       <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />

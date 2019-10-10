@@ -68,7 +68,7 @@ export class ProjectReport extends React.Component<Props, State> {
             }}
             validationSchema={schema}
             render={formikProps => (
-              <Grid container alignItems={'center'} spacing={24}>
+              <Grid container alignItems={'center'} spacing={6}>
                 <Grid item xs={12} md={12}>
                   <DateSpanPicker
                     fromValue={formikProps.values.from}

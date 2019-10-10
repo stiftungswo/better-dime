@@ -62,9 +62,9 @@ export const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing.unit * 7 + 1,
+      width: theme.spacing(7),
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing.unit * 9 + 1,
+        width: theme.spacing(9),
       },
     },
     toolbar: {
@@ -76,12 +76,12 @@ export const styles = (theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing(3),
     },
     // HAX
     mainContent: {
       textAlign: 'left',
-      padding: theme.spacing.unit * 2,
+      padding: theme.spacing(2),
     },
     overflowX: {
       overflowX: 'auto',

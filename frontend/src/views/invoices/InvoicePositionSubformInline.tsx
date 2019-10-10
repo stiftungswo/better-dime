@@ -47,7 +47,7 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
         <>
           <TableToolbar title={'Rechnungsposten'} addAction={() => arrayHelpers.push(template())} />
           <div style={{ overflowX: 'auto' }}>
-            <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+            <Table size={'small'} style={{ minWidth: '1200px' }}>
               <TableHead>
                 <TableRow>
                   <DimeTableCell style={{ width: '5%' }} />

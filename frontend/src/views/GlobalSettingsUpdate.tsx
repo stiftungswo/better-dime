@@ -60,12 +60,12 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
           loading={empty(store.settings)}
           title={'Einstellungen'}
           validationSchema={settingsSchema}
-          initialValues={store.settings}
+          initialValues={store.settings!}
           onSubmit={this.handleSubmit}
           render={(formikProps: FormikProps<GlobalSettings>) => {
             return (
               <form onSubmit={formikProps.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={2}>
                   <Grid item>
                     <DimePaper>
                       <FormHeader>Dokumente</FormHeader>

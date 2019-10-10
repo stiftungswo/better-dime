@@ -1,5 +1,8 @@
 import { IconButton, ListItemText } from '@material-ui/core';
-import { Avatar, ListItemIcon, Menu, MenuItem } from '@material-ui/core/es';
+import Avatar from '@material-ui/core/Avatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { MainStore } from 'src/stores/mainStore';
@@ -71,7 +74,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     );
   }
 
-  private handleMenu = (event: React.MouseEvent<HTMLInputElement>) => {
+  private handleMenu = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
     this.props.mainStore!.userMenuOpen = true;
   }

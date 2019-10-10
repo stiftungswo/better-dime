@@ -1,14 +1,12 @@
-import { Theme } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase/InputBase';
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { CloseIcon, SearchIcon } from './icons';
 
-export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
+export const styles = ({ palette, spacing, breakpoints, transitions, shape }: Theme) =>
   createStyles({
     search: {
       'position': 'relative',
@@ -20,12 +18,12 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       'marginLeft': 0,
       'width': '100%',
       [breakpoints.up('sm')]: {
-        marginLeft: spacing.unit,
+        marginLeft: spacing,
         width: 'auto',
       },
     },
     searchIcon: {
-      width: spacing.unit * 9,
+      width: spacing(9),
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -42,10 +40,10 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       width: '100%',
     },
     inputInput: {
-      paddingTop: spacing.unit,
-      paddingRight: spacing.unit,
-      paddingBottom: spacing.unit,
-      paddingLeft: spacing.unit * 10,
+      paddingTop: spacing,
+      paddingRight: spacing,
+      paddingBottom: spacing,
+      paddingLeft: spacing(10),
       transition: transitions.create('width'),
       width: '100%',
       [breakpoints.up('sm')]: {
@@ -110,4 +108,4 @@ class AppBarSearchInner extends React.Component<Props> {
   }
 }
 
-export const AppBarSearch = withStyles(styles)(AppBarSearchInner);
+export const AppBarSearch = withStyles({...styles})(AppBarSearchInner);

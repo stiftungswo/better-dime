@@ -1,11 +1,10 @@
-import { Omit } from '@material-ui/core';
-import { FormikBag, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import * as React from 'react';
 import { Schema } from 'yup';
 import { FormDialog } from '../form/FormDialog';
 import { AbstractStore } from '../stores/abstractStore';
-import { HandleFormikSubmit, Listing } from '../types';
-import Overview, { Column, SearchFilter } from './Overview';
+import { Listing } from '../types';
+import Overview, { Column } from './Overview';
 
 interface Props<T> {
   archivable?: boolean;

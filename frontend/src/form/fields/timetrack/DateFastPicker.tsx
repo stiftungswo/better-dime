@@ -19,7 +19,7 @@ const styles = (theme: Theme) =>
     },
     input: {
       flexGrow: 1,
-      margin: `0 ${theme.spacing.unit / 2}px`,
+      margin: `${theme.spacing(0, 0.5)}px`,
     },
   });
 
@@ -51,6 +51,7 @@ class DateFastPickerInner extends React.Component<Props> {
     const buttonProps: ButtonProps = {
       className: classes.button,
     };
+
     return (
       <span className={classes.container}>
         <Button onClick={this.backWeek} {...buttonProps}>

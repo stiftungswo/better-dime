@@ -3,14 +3,6 @@ import { Invoice, Project, ProjectListing } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export interface ProjectWithPotentialInvoices {
-  id: number;
-  name: string;
-  last_effort_date: string;
-  last_invoice_date: string | null;
-  days_since_last_invoice: number | null;
-}
-
 export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -37,8 +29,6 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   projects: ProjectListing[] = [];
   @observable
   project?: Project = undefined;
-  @observable
-  projectsWithPotentialInvoices: ProjectWithPotentialInvoices[];
 
   constructor(mainStore: MainStore) {
     super(mainStore);
@@ -56,16 +46,6 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
       return res.data;
     } catch (e) {
       this.mainStore.displayError('Beim erstellen der Rechnung ist ein Fehler aufgetreten');
-      throw e;
-    }
-  }
-
-  async fetchProjectsWithOpenInvoices(): Promise<void> {
-    try {
-      const res = await this.mainStore.api.get<ProjectWithPotentialInvoices[]>('/projects/potential_invoices');
-      this.projectsWithPotentialInvoices = res.data;
-    } catch (e) {
-      this.mainStore.displayError('Die Projekte konnten nicht geladen werden.');
       throw e;
     }
   }

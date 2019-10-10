@@ -2,9 +2,11 @@
 import '@babel/polyfill';
 import MomentUtils from '@date-io/moment';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import moment from 'moment';
+import 'moment/locale/de-ch';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
@@ -14,8 +16,6 @@ import DimeTheme from './layout/DimeTheme';
 import { DimeSnackbar } from './layout/Snackbar';
 import { StoreProvider } from './utilities/StoreProvider';
 
-import moment from 'moment';
-import 'moment/locale/de-ch';
 moment.locale('de-ch');
 
 const browserHistory = createBrowserHistory();

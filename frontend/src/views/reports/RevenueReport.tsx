@@ -32,7 +32,7 @@ export class RevenueReport extends React.Component<Props> {
         <DimeAppBar title={'Umsatzrapport'} />
 
         <DimeContent loading={false}>
-          <Grid container alignItems={'center'} spacing={24}>
+          <Grid container alignItems={'center'} spacing={6}>
             <Grid item xs={12} md={6}>
               <DateSpanPicker
                 fromValue={this.state.start}

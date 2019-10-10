@@ -113,11 +113,11 @@ class OfferForm extends React.Component<Props> {
           return (
             <React.Fragment>
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={6}>
                   <Grid item xs={12}>
                     {offer.id && <Navigator offer={offer} />}
                     <DimePaper>
-                      <Grid container spacing={24}>
+                      <Grid container spacing={6}>
                         {locked && (
                           <Grid item xs={12}>
                             <p>
@@ -127,7 +127,7 @@ class OfferForm extends React.Component<Props> {
                           </Grid>
                         )}
                         <Grid item xs={12} lg={8}>
-                          <Grid container spacing={8}>
+                          <Grid container spacing={2}>
                             <Grid item xs={12}>
                               <DimeField delayed required component={TextField} name={'name'} label={'Name'} disabled={locked} />
                             </Grid>

@@ -21,6 +21,7 @@ import { OfferStore } from '../stores/offerStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
 import { ProjectCommentStore } from '../stores/projectCommentStore';
 import { ProjectStore } from '../stores/projectStore';
+import { ProjectsWithPotentialInvoicesStore } from '../stores/projectsWithPotentialInvoicesStore';
 import { RateGroupStore } from '../stores/rateGroupStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
 import { ServiceStore } from '../stores/serviceStore';
@@ -59,6 +60,7 @@ export class StoreProvider extends React.Component<Props> {
     dailyReportStore: DailyReportStore;
     globalSettingStore: GlobalSettingStore;
     employeeGroupStore: EmployeeGroupStore;
+    projectsWithPotentialInvoicesStore: ProjectsWithPotentialInvoicesStore
   };
   private disposeAuthChangeReaction: IReactionDisposer;
 
@@ -131,6 +133,7 @@ export class StoreProvider extends React.Component<Props> {
       dailyReportStore: new DailyReportStore(mainStore),
       globalSettingStore: new GlobalSettingStore(mainStore),
       employeeGroupStore: new EmployeeGroupStore(mainStore),
+      projectsWithPotentialInvoicesStore: new ProjectsWithPotentialInvoicesStore(mainStore),
     };
   }
 

@@ -1,5 +1,4 @@
-import { Theme, WithStyles } from '@material-ui/core';
-import withStyles from '@material-ui/core/es/styles/withStyles';
+import { Theme, withStyles, WithStyles } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
@@ -12,10 +11,10 @@ import UnstyledLink from './UnstyledLink';
 
 export const styles = (theme: Theme) => ({
   default: {
-    paddingLeft: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing(4),
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing(4),
   },
 });
 

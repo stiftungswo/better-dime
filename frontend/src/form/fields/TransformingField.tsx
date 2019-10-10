@@ -5,13 +5,13 @@ export type TransformingFieldProps<T> = DimeCustomFieldProps<T | null>;
 
 interface Props<T> extends TransformingFieldProps<T> {
   toValue: (s: string) => T;
-  toString: (value: T) => string;
+  toText: (value: T) => string;
 }
 
 export class TransformingField<T> extends React.Component<Props<T>> {
 
   get format() {
-    return this.props.value === null || this.props.value === undefined ? '' : this.props.toString(this.props.value);
+    return this.props.value === null || this.props.value === undefined ? '' : this.props.toText(this.props.value);
   }
 
   state = {

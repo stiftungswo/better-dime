@@ -22,7 +22,7 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
       </Tooltip>
     );
     return (
-      <Grid container spacing={24}>
+      <Grid container>
         <Grid item xs={12} lg={this.state.preview ? 6 : 12}>
           <DimeFormControl label={label} required={required} errorMessage={errorMessage}>
             <InputComponent

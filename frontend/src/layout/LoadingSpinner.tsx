@@ -6,7 +6,7 @@ import * as React from 'react';
 const styles = (theme: Theme) =>
   createStyles({
     progress: {
-      margin: theme.spacing.unit * 2,
+      margin: theme.spacing(2),
     },
   });
 

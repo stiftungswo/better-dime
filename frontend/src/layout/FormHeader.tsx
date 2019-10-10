@@ -4,7 +4,7 @@ import * as React from 'react';
 
 interface FormHeaderProps {
   children: React.ReactNode;
-  color?: PropTypes.Color | 'textPrimary' | 'textSecondary' | 'error';
+  color?: 'textPrimary' | 'textSecondary' | 'error';
 }
 
 export const FormHeader = ({ children, color }: FormHeaderProps) => (

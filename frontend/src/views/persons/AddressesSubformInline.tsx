@@ -53,7 +53,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
         render={arrayHelpers => (
           <DimePaper>
             <TableToolbar title={'Adressen'} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
-            <Table padding={'dense'} style={{ minWidth: '1000px' }}>
+            <Table size={'small'} style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
                   <DimeTableCell style={{ width: '20%' }}>Strasse</DimeTableCell>

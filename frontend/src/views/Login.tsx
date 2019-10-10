@@ -25,38 +25,38 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
     layout: {
       width: 'auto',
       display: 'block', // Fix IE11 issue.
-      marginLeft: spacing.unit * 3,
-      marginRight: spacing.unit * 3,
-      [breakpoints.up(400 + spacing.unit * 3 * 2)]: {
+      marginLeft: spacing(3),
+      marginRight: spacing(3),
+      [breakpoints.up(400 + spacing(6))]: {
         width: 400,
         marginLeft: 'auto',
         marginRight: 'auto',
       },
     },
     paper: {
-      marginTop: spacing.unit * 8,
+      marginTop: spacing(8),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing.unit * 2}px ${spacing.unit * 3}px ${spacing.unit * 6}px`,
+      padding: `${spacing(2)}px ${spacing(3)}px ${spacing(6)}px`,
     },
     avatar: {
-      margin: spacing.unit,
+      margin: spacing,
       color: '#fff',
       backgroundColor: palette.primary.main,
     },
     form: {
       width: '100%', // Fix IE11 issue.
-      marginTop: spacing.unit,
+      marginTop: spacing,
     },
     submit: {
-      marginTop: spacing.unit * 3,
+      marginTop: spacing(3),
       backgroundColor: palette.primary.main,
     },
     attributions: {
       'position': 'absolute',
-      'bottom': spacing.unit,
-      'right': spacing.unit,
+      'bottom': spacing,
+      'right': spacing,
       'textAlign': 'right',
       'color': '#ddd',
       '& a': {
@@ -163,4 +163,4 @@ class Login extends React.Component<Props> {
   }
 }
 
-export default withStyles(styles)(Login);
+export default withStyles({...styles})(Login);

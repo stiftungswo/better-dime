@@ -50,7 +50,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
       <>
         <Grid item xs={12}>
           <DimePaper>
-            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
+            <Grid justify="space-between" container spacing={6} alignItems={'center'}>
               <Grid item>
                 <Typography gutterBottom variant={'h5'}>
                   Daten importieren
@@ -77,7 +77,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
               onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
-                  <Grid container spacing={24} alignItems={'center'}>
+                  <Grid container spacing={6} alignItems={'center'}>
                     <Grid item xs={12} md={4}>
                       <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                     </Grid>
@@ -91,7 +91,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                     </Grid>
                   </Grid>
 
-                  <Grid container alignItems={'center'} spacing={24}>
+                  <Grid container alignItems={'center'} spacing={6}>
                     <Grid item xs={12} md={4}>
                       <a
                         href={this.props.mainStore!.apiURL('customers/import/template')}

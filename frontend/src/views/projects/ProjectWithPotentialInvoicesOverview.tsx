@@ -1,20 +1,21 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
-import { ProjectStore, ProjectWithPotentialInvoices } from '../../stores/projectStore';
-import { Project, ProjectListing } from '../../types';
+import {
+  ProjectsWithPotentialInvoicesStore,
+  ProjectWithPotentialInvoices,
+} from '../../stores/projectsWithPotentialInvoicesStore';
 import compose from '../../utilities/compose';
 import { Formatter } from '../../utilities/formatter';
 
 export type Props = {
-  projectStore?: ProjectStore;
+  projectsWithPotentialInvoicesStore?: ProjectsWithPotentialInvoicesStore;
   formatter?: Formatter;
 } & RouteComponentProps;
 
 @compose(
-  inject('projectStore', 'formatter'),
+  inject('projectsWithPotentialInvoicesStore', 'formatter'),
   observer,
   withRouter,
 )
@@ -51,16 +52,12 @@ export default class ProjectWithPotentialInvoicesOverview extends React.Componen
   }
 
   render() {
-    const projectStore = this.props.projectStore!;
+    const projectsWithPotentialInvoicesStore = this.props.projectsWithPotentialInvoicesStore!;
 
     return (
       <Overview<ProjectWithPotentialInvoices>
         title={'Nicht verrechnete Projekte'}
-        store={projectStore}
-        adapter={{
-          fetch: () => projectStore.fetchProjectsWithOpenInvoices(),
-          getEntities: () => projectStore.projectsWithPotentialInvoices,
-        }}
+        store={projectsWithPotentialInvoicesStore}
         onClickRow={'/projects/:id'}
         columns={this.columns}
       />

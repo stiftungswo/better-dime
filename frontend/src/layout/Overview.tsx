@@ -32,10 +32,6 @@ interface Props<ListingType> {
   mainStore?: MainStore;
   archivable?: boolean;
   searchable?: boolean;
-  adapter?: {
-    getEntities: () => ListingType[];
-    fetch: () => Promise<void>;
-  };
 }
 
 interface State {
@@ -44,26 +40,18 @@ interface State {
 
 @inject('mainStore')
 @observer
-export default class Overview<ListingType extends Listing> extends React.Component<Props<Listing>, State> {
+export default class Overview<ListingType extends Listing> extends React.Component<Props<ListingType>, State> {
   constructor(props: Props<ListingType>) {
     super(props);
-    this.fetch().then(() => this.setState({ loading: false }));
+    props.store!.fetchAll().then(() => this.setState({ loading: false }));
     this.state = {
       loading: true,
     };
   }
 
-  fetch = async () => {
-    return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
-  }
-
-  get entities() {
-    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
-  }
-
   reload = () => {
     this.setState({ loading: true });
-    this.fetch().then(() => this.setState({ loading: false }));
+    this.props.store!.fetchAll().then(() => this.setState({ loading: false }));
   }
 
   handleClick = (e: ListingType) => {
@@ -81,9 +69,10 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   render() {
     const mainStore = this.props.mainStore!;
+    const entities = this.props.store!.filteredEntities;
 
     return (
-      <React.Fragment>
+      <>
         <DimeAppBar title={this.props.title}>
           {this.props.searchable && (
             <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} delay={100} />
@@ -104,13 +93,13 @@ export default class Overview<ListingType extends Listing> extends React.Compone
             <OverviewTable
               columns={this.props.columns}
               renderActions={this.props.renderActions}
-              data={this.entities}
+              data={entities}
               onClickRow={this.handleClick}
             />
           )}
           {this.props.children}
         </DimeContent>
-      </React.Fragment>
+      </>
     );
   }
 }

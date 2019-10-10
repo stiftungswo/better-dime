@@ -3,14 +3,13 @@ import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
-import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
+import { WithMobileDialog } from '@material-ui/core/withMobileDialog';
+import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
 import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../types';
-import compose from '../utilities/compose';
 import { FormikSubmitDetector } from './FormikSubmitDetector';
 
 interface DialogFormProps<T> {
@@ -23,9 +22,8 @@ interface DialogFormProps<T> {
   onClose: () => void;
 }
 
-@compose(withMobileDialog())
-export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
-  FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & InjectedProps
+export class InnerFormDialog<Values = object, ExtraProps = {}> extends React.Component<
+  FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & WithMobileDialog
 > {
   handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     await this.props.onSubmit(this.props.validationSchema.cast(values));
@@ -73,3 +71,5 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
     );
   }
 }
+
+export const FormDialog = withMobileDialog()(InnerFormDialog);

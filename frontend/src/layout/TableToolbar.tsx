@@ -13,7 +13,7 @@ import { AddIcon } from './icons';
 
 const toolbarStyles = (theme: Theme) => ({
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing,
   },
   highlight:
     theme.palette.type === 'light'

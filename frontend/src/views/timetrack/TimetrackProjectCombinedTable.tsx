@@ -53,17 +53,6 @@ interface Props extends WithStyles<typeof styles> {
 )
 class TimetrackProjectCombinedTableInner extends React.Component<Props> {
 
-  projectGroupActions = (
-    <>
-      <PrintButton
-        path={'projects/' + this.props.entity.id + '/print_effort_report'}
-        title={'Aufwandsrapport drucken'}
-        urlParams={this.props.effortReportUrlParams()}
-      />
-      <ActionButton icon={AddCommentIcon} action={this.handleProjectCommentAdd} title={'Kommentar hinzufügen'} />
-      <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
-    </>
-  );
   handleClickCommentRow = async (entity: ProjectComment | undefined) => {
     if (entity && entity.id) {
       await this.props.projectCommentStore!.fetchOne(entity.id);
@@ -101,7 +90,18 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
 
     if (efforts.length > 0 || comments.length > 0) {
       return (
-        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name} displayTotal={displayTotal}>
+        <TimetrackExpansionPanel
+          actions={
+            <ProjectGroupActions
+              effortReportUrlParams={this.props.effortReportUrlParams}
+              entity={this.props.entity}
+              handleProjectCommentAdd={this.handleProjectCommentAdd}
+              onEffortAdd={this.props.onEffortAdd}
+            />
+          }
+          title={entity.name}
+          displayTotal={displayTotal}
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -109,7 +109,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                 <DimeTableCell>Mitarbeiter</DimeTableCell>
                 <DimeTableCell>Aktivität</DimeTableCell>
                 <DimeTableCell numeric>Gebuchter Wert</DimeTableCell>
-                <DimeTableCell numeric />
+                <DimeTableCell numeric/>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -129,7 +129,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell numeric>
                         <span className={'actions'}>
-                          <DeleteButton onConfirm={() => this.handleCommentDelete(e.id!)} />
+                          <DeleteButton onConfirm={() => this.handleCommentDelete(e.id!)}/>
                         </span>
                       </DimeTableCell>
                     </TableRow>
@@ -148,10 +148,12 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       <DimeTableCell>
                         {e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name}
                       </DimeTableCell>
-                      <DimeTableCell numeric>{formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}</DimeTableCell>
+                      <DimeTableCell numeric>
+                        {formatter.formatRateEntry(e.effort_value, e.rate_unit_factor, e.effort_unit)}
+                      </DimeTableCell>
                       <DimeTableCell numeric>
                         <span className={'actions'}>
-                          <DeleteButton onConfirm={() => this.handleEffortDelete(e.id!)} />
+                          <DeleteButton onConfirm={() => this.handleEffortDelete(e.id!)}/>
                         </span>
                       </DimeTableCell>
                     </TableRow>
@@ -164,11 +166,41 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
       );
     } else {
       return (
-        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name}>
+        <TimetrackExpansionPanel
+          actions={
+          <ProjectGroupActions
+            effortReportUrlParams={this.props.effortReportUrlParams}
+            entity={this.props.entity}
+            handleProjectCommentAdd={this.handleProjectCommentAdd}
+            onEffortAdd={this.props.onEffortAdd}
+          />
+          }
+          title={entity.name}
+        >
           Keine Leistungen erfasst mit den gewählten Filtern.
         </TimetrackExpansionPanel>
       );
     }
   }
 }
+
+interface ProjectGroupActionProps {
+  effortReportUrlParams: () => object;
+  entity: ProjectListing;
+  handleProjectCommentAdd: () => void;
+  onEffortAdd: () => void;
+}
+
+const ProjectGroupActions = (props: ProjectGroupActionProps) => (
+  <>
+    <PrintButton
+      path={'projects/' + props.entity.id + '/print_effort_report'}
+      title={'Aufwandsrapport drucken'}
+      urlParams={props.effortReportUrlParams()}
+    />
+    <ActionButton icon={AddCommentIcon} action={props.handleProjectCommentAdd} title={'Kommentar hinzufügen'}/>
+    <ActionButton icon={AddEffortIcon} action={props.onEffortAdd} title={'Aufwand hinzufügen'}/>
+  </>
+);
+
 export const TimetrackProjectCombinedTable = withStyles(styles)(TimetrackProjectCombinedTableInner);

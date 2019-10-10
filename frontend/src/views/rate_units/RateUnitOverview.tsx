@@ -73,7 +73,7 @@ export default class RateUnitOverview extends React.Component<Props> {
           />
         )}
         renderForm={props => (
-          <Grid container spacing={16}>
+          <Grid container spacing={4}>
             <Grid item xs={12}>
               <DimeField component={TextField} name={'name'} label={'Name'} />
             </Grid>
