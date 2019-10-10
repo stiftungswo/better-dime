@@ -30,6 +30,7 @@ export { default as VisibilityOffIcon } from '@material-ui/icons/VisibilityOff';
 export { default as AddIcon } from '@material-ui/icons/Add';
 export { default as RefreshIcon } from '@material-ui/icons/Refresh';
 export { default as ChevronLeftIcon } from '@material-ui/icons/ChevronLeft';
+export { default as ChevronRightIcon } from '@material-ui/icons/ChevronRight';
 export { default as DeleteIcon } from '@material-ui/icons/Delete';
 export { default as ArrowRightIcon } from '@material-ui/icons/ArrowRight';
 export { default as ExpandLessIcon } from '@material-ui/icons/ExpandLess';

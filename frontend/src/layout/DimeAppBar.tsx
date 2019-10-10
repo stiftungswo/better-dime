@@ -14,40 +14,8 @@ import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
 import { ActionButton, ButtonProps } from './ActionButton';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
-import { drawerWidth } from './DimeLayout';
+import { drawerWidth, styles } from './DimeLayout';
 import { MenuIcon } from './icons';
-
-export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex }: Theme) =>
-  createStyles({
-    appBar: {
-      zIndex: zIndex.drawer + 1,
-      transition: transitions.create(['width', 'margin'], {
-        easing: transitions.easing.sharp,
-        duration: transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: transitions.create(['width', 'margin'], {
-        easing: transitions.easing.sharp,
-        duration: transitions.duration.enteringScreen,
-      }),
-    },
-    toolbar: {
-      paddingRight: 24, // keep right padding when drawer closed
-    },
-    menuButton: {
-      marginLeft: 12,
-      marginRight: 36,
-    },
-    menuButtonHidden: {
-      display: 'none',
-    },
-    title: {
-      flexGrow: 1,
-    },
-  });
 
 interface Props extends WithStyles<typeof styles> {
   children?: React.ReactNode;
@@ -84,17 +52,17 @@ class DimeAppBarInner extends React.Component<Props> {
 
     return (
       <AppBar position={'fixed'} className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}>
-        <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
+        <Toolbar disableGutters={!drawerOpen}>
           <IconButton
             color={'inherit'}
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
-            className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
+            className={classNames(classes.menuButton, drawerOpen && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
 
-          <Typography component={'h1'} variant={'h6'} color={'inherit'} noWrap={true} className={classes.title} align={'left'}>
+          <Typography variant={'h6'} noWrap>
             {this.props.title}
           </Typography>
 

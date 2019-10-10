@@ -34,32 +34,32 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
     <NavItem to={'/timetrack'} exact label={'Zeiterfassung'} icon={TimetrackIcon} />
     <NavItem to={'/offers'} exact label={'Offerten'} icon={OfferIcon} />
     <Collapsible icon={ProjectIcon} label={'Projekte'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
-      <NavItem nested to={'/projects'} exact label={'Alle'} icon={ProjectIcon} />
-      <NavItem nested to={'/projects/potential_invoices'} exact label={'Nicht verrechnet'} icon={InvoiceIcon} />
+      <NavItem to={'/projects'} exact label={'Alle'} icon={ProjectIcon} />
+      <NavItem to={'/projects/potential_invoices'} exact label={'Nicht verrechnet'} icon={InvoiceIcon} />
     </Collapsible>
     <NavItem to={'/invoices'} label={'Rechnungen'} icon={InvoiceIcon} />
     <NavItem to={'/employees'} label={'Mitarbeiter'} icon={EmployeeIcon} />
     <Collapsible icon={CustomersIcon} label={'Kunden'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
-      <NavItem nested to={'/persons'} label={'Personen'} icon={PersonIcon} />
-      <NavItem nested to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
-      <NavItem nested to={'/customer_tags'} label={'Tags'} icon={TagsIcon} />
-      <NavItem nested to={'/customers/transfer'} label={'Import / Export'} icon={ImportExportIcon} />
+      <NavItem to={'/persons'} label={'Personen'} icon={PersonIcon} />
+      <NavItem to={'/companies'} label={'Firmen'} icon={CompanyIcon} />
+      <NavItem to={'/customer_tags'} label={'Tags'} icon={TagsIcon} />
+      <NavItem to={'/customers/transfer'} label={'Import / Export'} icon={ImportExportIcon} />
     </Collapsible>
     <Collapsible icon={ReportIcon} label={'Rapporte'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
-      <NavItem nested to={'/reports/daily'} label={'Wochenrapport'} />
-      <NavItem nested to={'/reports/service'} label={'Service-Rapporte'} />
-      <NavItem nested to={'/reports/revenue'} label={'Umsatzrapport'} />
-      <NavItem nested to={'/reports/project'} label={'Projektrapport'} />
-      <NavItem nested to={'/reports/costgroup'} label={'Kostenstellenraport'} />
+      <NavItem to={'/reports/daily'} label={'Wochenrapport'} />
+      <NavItem to={'/reports/service'} label={'Service-Rapporte'} />
+      <NavItem to={'/reports/revenue'} label={'Umsatzrapport'} />
+      <NavItem to={'/reports/project'} label={'Projektrapport'} />
+      <NavItem to={'/reports/costgroup'} label={'Kostenstellenraport'} />
     </Collapsible>
     <Collapsible icon={MasterDataIcon} label={'Stammdaten'} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
-      <NavItem nested to={'/services'} label={'Services'} icon={ServiceIcon} />
-      <NavItem nested to={'/rate_groups'} label={'Tarif-Gruppen'} icon={RateGroupIcon} />
-      {isAdmin && <NavItem nested to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />}
-      {isAdmin && <NavItem nested to={'/employee_groups'} label={'Mitarbeiter-Gruppen'} icon={EmployeeIcon} />}
-      <NavItem nested to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
-      <NavItem nested to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
-      {isAdmin && <NavItem nested to={'/global_settings'} label={'Einstellungen'} icon={SettingsIcon} />}
+      <NavItem to={'/services'} label={'Services'} icon={ServiceIcon} />
+      <NavItem to={'/rate_groups'} label={'Tarif-Gruppen'} icon={RateGroupIcon} />
+      {isAdmin && <NavItem to={'/rate_units'} label={'Tarif-Typen'} icon={RateUnitIcon} />}
+      {isAdmin && <NavItem to={'/employee_groups'} label={'Mitarbeiter-Gruppen'} icon={EmployeeIcon} />}
+      <NavItem to={'/holidays'} label={'Feiertage'} icon={HolidayIcon} />
+      <NavItem to={'/project_categories'} label={'Tätigkeitsbereiche'} icon={ProjectCategoryIcon} />
+      {isAdmin && <NavItem to={'/global_settings'} label={'Einstellungen'} icon={SettingsIcon} />}
     </Collapsible>
   </>
 );

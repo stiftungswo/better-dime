@@ -9,43 +9,31 @@ import compose from '../utilities/compose';
 import { ArrowRightIcon } from './icons';
 import UnstyledLink from './UnstyledLink';
 
-export const styles = (theme: Theme) => ({
-  default: {
-    paddingLeft: theme.spacing(4),
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-});
-
-interface NavItemProps extends WithStyles<typeof styles> {
+interface NavItemProps {
   label: string;
   icon?: React.ComponentType;
   to: string;
   exact?: boolean;
   query?: string;
-  nested: boolean;
 }
 
-export const NavItem = compose(withStyles(styles))(
-  ({ to, exact = false, query = '', label, icon, classes, nested = false }: NavItemProps) => {
-    const Icon = icon || ArrowRightIcon;
+export const NavItem = ({ to, exact = false, query = '', label, icon }: NavItemProps) => {
+  const Icon = icon || ArrowRightIcon;
 
-    return (
-      <Route
-        path={to}
-        exact={exact}
-        children={({ match }: RouteComponentProps) => (
-          <UnstyledLink to={to + query}>
-            <ListItem button selected={Boolean(match)} className={classNames(classes.default, { [classes.nested]: nested })}>
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItem>
-          </UnstyledLink>
-        )}
-      />
-    );
-  },
-);
+  return (
+    <Route
+      path={to}
+      exact={exact}
+      children={({ match }: RouteComponentProps) => (
+        <UnstyledLink to={to + query}>
+          <ListItem button selected={Boolean(match)}>
+            <ListItemIcon>
+              <Icon/>
+            </ListItemIcon>
+            <ListItemText primary={label}/>
+          </ListItem>
+        </UnstyledLink>
+      )}
+    />
+  );
+};
