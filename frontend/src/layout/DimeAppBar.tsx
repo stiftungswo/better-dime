@@ -62,7 +62,7 @@ class DimeAppBarInner extends React.Component<Props> {
             <MenuIcon />
           </IconButton>
 
-          <Typography variant={'h6'} noWrap>
+          <Typography variant={'h6'} noWrap className={classes.title}>
             {this.props.title}
           </Typography>
 

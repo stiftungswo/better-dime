@@ -74,6 +74,9 @@ export const styles = (theme: Theme) =>
     overflowX: {
       overflowX: 'auto',
     },
+    title: {
+      flexGrow: 1,
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {

@@ -6,24 +6,24 @@ import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { CloseIcon, SearchIcon } from './icons';
 
-export const styles = ({ palette, spacing, breakpoints, transitions, shape }: Theme) =>
+export const styles = (theme: Theme) =>
   createStyles({
     search: {
       'position': 'relative',
-      'borderRadius': shape.borderRadius,
-      'backgroundColor': fade(palette.common.white, 0.15),
+      'borderRadius': theme.shape.borderRadius,
+      'backgroundColor': fade(theme.palette.common.white, 0.15),
       '&:hover': {
-        backgroundColor: fade(palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.common.white, 0.25),
       },
       'marginLeft': 0,
       'width': '100%',
-      [breakpoints.up('sm')]: {
-        marginLeft: spacing,
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(1),
         width: 'auto',
       },
     },
     searchIcon: {
-      width: spacing(9),
+      width: theme.spacing(7),
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -37,16 +37,12 @@ export const styles = ({ palette, spacing, breakpoints, transitions, shape }: Th
     },
     inputRoot: {
       color: 'inherit',
-      width: '100%',
     },
     inputInput: {
-      paddingTop: spacing,
-      paddingRight: spacing,
-      paddingBottom: spacing,
-      paddingLeft: spacing(10),
-      transition: transitions.create('width'),
+      padding: theme.spacing(1, 1, 1, 7),
+      transition: theme.transitions.create('width'),
       width: '100%',
-      [breakpoints.up('sm')]: {
+      [theme.breakpoints.up('sm')]: {
         'width': 120,
         '&:focus': {
           width: 200,
@@ -102,10 +98,11 @@ class AppBarSearchInner extends React.Component<Props> {
             root: classes.inputRoot,
             input: classes.inputInput,
           }}
+          inputProps={{ 'aria-label': 'search' }}
         />
       </div>
     );
   }
 }
 
-export const AppBarSearch = withStyles({...styles})(AppBarSearchInner);
+export const AppBarSearch = withStyles(styles)(AppBarSearchInner);
