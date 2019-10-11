@@ -21,7 +21,7 @@ services:
     - "33306:3306"
     volumes:
     - ./database:/var/lib/mysql
-  web-client:
+  frontend:
     image: node:12
     container_name: dime_web-client
     volumes:
