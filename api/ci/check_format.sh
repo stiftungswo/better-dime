@@ -1,6 +1,5 @@
 #!/bin/bash -vu
 # check backend (api)
-composer global require "squizlabs/php_codesniffer=*"
 # we run phpcbf twice to check if it was able to fix something
 # since it reports more than it can fix we check the status code twice and check if it changed
 # sadly there is no unique status code for "phpcbf fixed something and maybe there are unfixable errors"

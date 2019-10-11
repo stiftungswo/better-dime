@@ -5,9 +5,7 @@ services:
       context: ./api
       dockerfile: test.Dockerfile
     container_name: dime_api
-    volumes:
-    - ${SEMAPHORE_CACHE_DIR}/composer:/var/api/vendor
-    working_dir: /var/app
+    working_dir: /var/api
     depends_on:
     - mysql
     env_file: 'api/.env.semaphore'
@@ -17,8 +15,6 @@ services:
     container_name: dime_db
     environment:
     - MYSQL_ALLOW_EMPTY_PASSWORD=1
-    ports:
-    - "33306:3306"
     volumes:
     - ./database:/var/lib/mysql
   frontend:
