@@ -4,7 +4,7 @@ ENV APP_HOME /var/api
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-RUN apt update && apt install unzip libpng-dev -y && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/*
+RUN apt update && apt install wget unzip libpng-dev -y && apt clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/www/html/*
 RUN docker-php-ext-install pdo pdo_mysql gd zip
 
 RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php && \
