@@ -11,6 +11,9 @@ RUN php -r "readfile('https://getcomposer.org/installer');" > composer-setup.php
         php composer-setup.php && \
         php -r "unlink('composer-setup.php');" && \
         mv composer.phar /usr/local/bin/composer
+        
+RUN wget -O /tmp/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+RUN chmod +x /tmp/wait-for-it.sh
 
 COPY composer* $APP_HOME/
 RUN composer install --no-autoloader
