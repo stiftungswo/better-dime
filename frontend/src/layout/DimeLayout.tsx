@@ -77,6 +77,12 @@ export const styles = (theme: Theme) =>
     title: {
       flexGrow: 1,
     },
+    contentPaper: {
+      padding: theme.spacing(3),
+      display: 'flex',
+      overflow: 'auto',
+      flexDirection: 'column',
+    },
   });
 
 interface Props extends WithStyles<typeof styles> {
