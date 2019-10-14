@@ -1,0 +1,25 @@
+version: "3.2"
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: test.Dockerfile
+    container_name: dime_api
+    working_dir: /var/api
+    depends_on:
+    - mysql
+    env_file: 'api/.env.semaphore'
+  mysql:
+    image: mysql:5.7
+    command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
+    container_name: dime_db
+    environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+    - ./database:/var/lib/mysql
+  frontend:
+    image: node:12
+    container_name: dime_web-client
+    volumes:
+    - ./frontend:/var/frontend
+    working_dir: /var/frontend
