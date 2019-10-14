@@ -1,8 +1,7 @@
-import { Theme } from '@material-ui/core';
+import { Container, Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -20,48 +19,30 @@ import { HandleFormikSubmit } from '../types';
 import compose from '../utilities/compose';
 import { localizeSchema } from '../utilities/validation';
 
-const styles = ({ palette, spacing, breakpoints }: Theme) =>
+// code taken from https://github.com/mui-org/material-ui/blob/master/docs/src/pages/getting-started/templates/sign-in/SignIn.js
+const styles = (theme: Theme) =>
   createStyles({
-    layout: {
-      width: 'auto',
-      display: 'block', // Fix IE11 issue.
-      marginLeft: spacing(3),
-      marginRight: spacing(3),
-      [breakpoints.up(400 + spacing(6))]: {
-        width: 400,
-        marginLeft: 'auto',
-        marginRight: 'auto',
+    '@global': {
+      body: {
+        backgroundColor: theme.palette.common.white,
       },
     },
-    paper: {
-      marginTop: spacing(8),
+    'paper': {
+      margin: theme.spacing(8),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing(2)}px ${spacing(3)}px ${spacing(6)}px`,
     },
-    avatar: {
-      margin: spacing,
-      color: '#fff',
-      backgroundColor: palette.primary.main,
+    'avatar': {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.primary.main,
     },
-    form: {
-      width: '100%', // Fix IE11 issue.
-      marginTop: spacing,
+    'form': {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
     },
-    submit: {
-      marginTop: spacing(3),
-      backgroundColor: palette.primary.main,
-    },
-    attributions: {
-      'position': 'absolute',
-      'bottom': spacing,
-      'right': spacing,
-      'textAlign': 'right',
-      'color': '#ddd',
-      '& a': {
-        color: '#ccc',
-      },
+    'submit': {
+      margin: theme.spacing(3, 0, 2),
     },
   });
 
@@ -101,66 +82,44 @@ class Login extends React.Component<Props> {
     const { classes } = this.props;
 
     return (
-      <>
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LogoIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Dime-Anmeldung
-            </Typography>
-            <Formik
-              validationSchema={loginSchema}
-              initialValues={{
-                email: '',
-                password: '',
-              }}
-              onSubmit={this.handleSubmit}
-              render={props => (
-                <form className={classes.form} onSubmit={props.handleSubmit}>
-                  <DimeField component={EmailField} name="email" label="E-Mail" />
-                  <DimeField component={PasswordField} name="password" label="Passwort" />
-                  <Button
-                    type="submit"
-                    disabled={props.isSubmitting}
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={() => props.handleSubmit()}
-                  >
-                    Anmelden
-                  </Button>
-                </form>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LogoIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Dime-Anmeldung
+          </Typography>
+          <Formik
+            validationSchema={loginSchema}
+            initialValues={{
+              email: '',
+              password: '',
+            }}
+            onSubmit={this.handleSubmit}
+            render={props => (
+              <form className={classes.form} onSubmit={props.handleSubmit}>
+                <DimeField component={EmailField} name="email" label="E-Mail" />
+                <DimeField component={PasswordField} name="password" label="Passwort" />
+                <Button
+                  type="submit"
+                  disabled={props.isSubmitting}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={() => props.handleSubmit()}
+                >
+                  Anmelden
+                </Button>
+              </form>
               )}
-            />
-          </Paper>
-        </main>
-        <footer className={classes.attributions}>
-          <div>
-            Icons made by{' '}
-            <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">
-              Smashicons
-            </a>{' '}
-            and{' '}
-            <a href="https://www.freepik.com/" title="Freepik">
-              Freepik
-            </a>{' '}
-            from{' '}
-            <a href="https://www.flaticon.com/" title="Flaticon">
-              www.flaticon.com
-            </a>{' '}
-            is licensed by{' '}
-            <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">
-              CC 3.0 BY
-            </a>
-          </div>
-        </footer>
-      </>
+          />
+        </div>
+      </Container>
     );
   }
 }
 
-export default withStyles({...styles})(Login);
+export default withStyles(styles)(Login);
