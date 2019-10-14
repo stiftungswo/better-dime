@@ -26,10 +26,10 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
     const { appBarButtons, ...rest } = this.props as any;
     return this.props.loading ? (
-      <React.Fragment>
+      <>
         <DimeAppBar title={this.props.title} />
         <DimeContent loading />
-      </React.Fragment>
+      </>
     ) : (
       <Formik
         {...rest}

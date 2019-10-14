@@ -111,7 +111,7 @@ class OfferForm extends React.Component<Props> {
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
           return (
-            <React.Fragment>
+            <>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={6}>
                   <Grid item xs={12}>
@@ -217,7 +217,7 @@ class OfferForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </React.Fragment>
+            </>
           );
         }}
       />

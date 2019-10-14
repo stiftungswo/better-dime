@@ -104,7 +104,7 @@ class DimeLayout extends React.Component<Props> {
     const open = this.props.mainStore!.drawerOpen;
 
     return (
-      <React.Fragment>
+      <>
         <CssBaseline/>
         <div className={classes.root}>
           <Drawer
@@ -135,7 +135,7 @@ class DimeLayout extends React.Component<Props> {
 
           {children}
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

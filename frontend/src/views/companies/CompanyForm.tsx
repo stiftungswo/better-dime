@@ -90,7 +90,7 @@ export default class CompanyForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         render={(props: FormikProps<Company>) => (
-          <React.Fragment>
+          <>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={6}>
                 <Grid item xs={12}>
@@ -139,7 +139,7 @@ export default class CompanyForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </React.Fragment>
+          </>
         )}
       />
     );

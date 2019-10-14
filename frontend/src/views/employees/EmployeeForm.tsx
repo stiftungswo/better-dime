@@ -47,7 +47,7 @@ export default class EmployeeForm extends React.Component<Props> {
         render={(
           props: FormikProps<any> // tslint:disable-line
         ) => (
-          <React.Fragment>
+          <>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={6}>
                 <Grid item xs={12}>
@@ -118,7 +118,7 @@ export default class EmployeeForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             </form>
-          </React.Fragment>
+          </>
         )}
       />
     );

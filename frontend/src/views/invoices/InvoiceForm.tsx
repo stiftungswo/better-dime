@@ -91,7 +91,7 @@ export default class InvoiceForm extends React.Component<Props> {
         }
         render={(props: FormikProps<Invoice>) => {
           return (
-            <React.Fragment>
+            <>
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={6}>
                   <Grid item xs={12}>
@@ -198,7 +198,7 @@ export default class InvoiceForm extends React.Component<Props> {
                   )}
                 </Grid>
               </form>
-            </React.Fragment>
+            </>
           );
         }}
       />
