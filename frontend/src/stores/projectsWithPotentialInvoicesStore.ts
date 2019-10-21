@@ -10,7 +10,8 @@ export interface ProjectWithPotentialInvoices {
   days_since_last_invoice: number | null;
 }
 
-export class ProjectsWithPotentialInvoicesStore extends AbstractStore<Project, ProjectWithPotentialInvoices> {
+export class ProjectsWithPotentialInvoicesStore extends AbstractStore<ProjectWithPotentialInvoices,
+  ProjectWithPotentialInvoices> {
   protected get entityName(): { singular: string; plural: string } {
     return {
       singular: 'Das Projekt mit potenziellen Rechnungen',
@@ -19,7 +20,7 @@ export class ProjectsWithPotentialInvoicesStore extends AbstractStore<Project, P
   }
 
   @observable
-  projectsWithPotentialInvoices: ProjectWithPotentialInvoices[];
+  projectsWithPotentialInvoices: ProjectWithPotentialInvoices[] = [];
 
   @computed
   get entities(): ProjectWithPotentialInvoices[] {
