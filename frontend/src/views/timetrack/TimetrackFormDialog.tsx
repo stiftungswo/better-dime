@@ -1,8 +1,6 @@
-import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core';
+import { DialogContent, DialogTitle } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { InjectedProps, WithMobileDialog } from '@material-ui/core/withMobileDialog';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -16,6 +14,7 @@ import { DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import DimeDialog from '../../layout/DimeDialog';
 import { apiDateFormat } from '../../stores/apiStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
@@ -23,7 +22,6 @@ import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { ProjectStore } from '../../stores/projectStore';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../types';
-import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
@@ -130,18 +128,18 @@ class InnerTimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)}>
+            <DimeDialog open onClose={this.handleClose(formikProps)}>
               <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <DimeField portal isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'}/>
+                  <DimeField menuPositionFixed isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'}/>
                 )}
                 {formikProps.values.id &&
-                <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'}/>}
-                <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'}/>
+                <DimeField menuPositionFixed component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'}/>}
+                <DimeField menuPositionFixed component={ProjectSelect} name={'project_id'} label={'Projekt'}/>
                 <DimeField
-                  portal
+                  menuPositionFixed
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
@@ -187,7 +185,7 @@ class InnerTimetrackFormDialog extends React.Component<Props, State> {
                   </Button>
                 )}
               </DialogActions>
-            </Dialog>
+            </DimeDialog>
           </FormikSubmitDetector>
         )}
       />

@@ -223,7 +223,7 @@ class IntegrationReactSelect extends React.Component<any> {
   }
 
   render() {
-    const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, ...rest } = this
+    const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, menuPositionFixed, ...rest } = this
       .props as any;
 
     const myLabel = this.props.label
@@ -249,9 +249,7 @@ class IntegrationReactSelect extends React.Component<any> {
     return (
       <DimeFormControl label={''} margin={margin} fullWidth={fullWidth} errorMessage={errorMessage}>
         <Select
-          menuPortalTarget={this.props.portal ? document.body : undefined}
-          menuPlacement={this.props.portal ? 'auto' : undefined}
-          menuPosition={this.props.portal ? 'absolute' : 'fixed'}
+          menuPosition={menuPositionFixed ? 'fixed' : undefined}
           classes={classes}
           styles={selectStyles}
           components={components}
@@ -279,6 +277,7 @@ type Multi = number[] | [];
 type ValueType<T> = T extends number[] ? Multi : T extends Single ? Single : never;
 
 export interface DimeSelectFieldProps<T> extends DimeCustomFieldProps<ValueType<T>> {
+  menuPositionFixed?: boolean;
   isMulti?: boolean;
   fullWidth?: boolean;
 }

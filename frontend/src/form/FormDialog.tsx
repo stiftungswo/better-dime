@@ -1,6 +1,5 @@
 import { withMobileDialog } from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import { WithMobileDialog } from '@material-ui/core/withMobileDialog';
@@ -8,6 +7,7 @@ import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
+import DimeDialog from '../layout/DimeDialog';
 import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../types';
 import { FormikSubmitDetector } from './FormikSubmitDetector';
@@ -45,9 +45,9 @@ export class InnerFormDialog<Values = object, ExtraProps = {}> extends React.Com
     const { fullScreen, ...rest } = this.props as any;
 
     return this.props.loading ? (
-      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>
+      <DimeDialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>
         <LoadingSpinner />
-      </Dialog>
+      </DimeDialog>
     ) : (
       <Formik
         {...rest}
@@ -56,7 +56,7 @@ export class InnerFormDialog<Values = object, ExtraProps = {}> extends React.Com
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+            <DimeDialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
               <DialogContent>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
@@ -64,7 +64,7 @@ export class InnerFormDialog<Values = object, ExtraProps = {}> extends React.Com
                   Speichern
                 </Button>
               </DialogActions>
-            </Dialog>
+            </DimeDialog>
           </FormikSubmitDetector>
         )}
       />

@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import DimeDialog from '../layout/DimeDialog';
 import { ServiceStore } from '../stores/serviceStore';
 import { Service } from '../types';
 import compose from '../utilities/compose';
@@ -36,17 +36,22 @@ export class ServiceSelectDialog extends React.Component<Props> {
 
   render() {
     return (
-      <Dialog open={this.props.open} onClose={this.props.onClose}>
+      <DimeDialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          <ServiceSelect<number> label={'Service'} value={this.state.serviceId} onChange={serviceId => this.setState({ serviceId })} />
+          <ServiceSelect<number>
+            menuPositionFixed
+            label={'Service'}
+            value={this.state.serviceId}
+            onChange={serviceId => this.setState({ serviceId })}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleSubmit} disabled={!this.state.serviceId}>
             Hinzufügen
           </Button>
         </DialogActions>
-      </Dialog>
+      </DimeDialog>
     );
   }
 }

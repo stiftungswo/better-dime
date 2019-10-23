@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import Grid from '@material-ui/core/Grid/Grid';
@@ -11,6 +10,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
+import DimeDialog from '../../layout/DimeDialog';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DailyReportEffort, DailyReportStore } from '../../stores/dailyReportStore';
@@ -85,7 +85,7 @@ export default class DailyReport extends React.Component<Props> {
           </Grid>
         </DimeContent>
         {detail !== undefined && (
-          <Dialog open onClose={this.handleCloseDetail}>
+          <DimeDialog open onClose={this.handleCloseDetail}>
             <DialogContent>
               <Table>
                 {detail.map((e: DailyReportEffort, index: number) => (
@@ -101,7 +101,7 @@ export default class DailyReport extends React.Component<Props> {
                 Schliessen
               </Button>
             </DialogActions>
-          </Dialog>
+          </DimeDialog>
         )}
       </>
     );
