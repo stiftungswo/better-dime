@@ -46,7 +46,7 @@ export default class InvoicePositionSubformInline extends React.Component<Props>
       render={arrayHelpers => (
         <>
           <TableToolbar title={'Rechnungsposten'} addAction={() => arrayHelpers.push(template())} />
-          <div style={{ overflowX: 'auto' }}>
+          <div>
             <Table size={'small'} style={{ minWidth: '1200px' }}>
               <TableHead>
                 <TableRow>

@@ -71,16 +71,12 @@ export const styles = (theme: Theme) =>
       }),
       marginLeft: 0,
     },
-    overflowX: {
-      overflowX: 'auto',
-    },
     title: {
       flexGrow: 1,
     },
     contentPaper: {
       padding: theme.spacing(3),
       display: 'flex',
-      overflow: 'auto',
       flexDirection: 'column',
     },
   });

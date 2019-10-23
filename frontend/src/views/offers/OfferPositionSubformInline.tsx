@@ -74,7 +74,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                   addAction={
                     disabled || !this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
                 />
-                <div style={{ overflowX: 'auto' }}>
+                <div>
                   {!this.props.formikProps.values.rate_group_id && (
                     <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
                       <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden

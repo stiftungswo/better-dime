@@ -66,7 +66,7 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
               </Grid>
             </Grid>
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden' }}>{this.props.children}</ExpansionPanelDetails>
+          <ExpansionPanelDetails>{this.props.children}</ExpansionPanelDetails>
         </ExpansionPanel>
       </Grid>
     );

@@ -68,7 +68,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
               numSelected={0}
               addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
             />
-            <div style={{ overflowX: 'auto' }}>
+            <div>
               {!this.props.formikProps.values.rate_group_id && (
                 <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
                   <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden
