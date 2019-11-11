@@ -4,10 +4,12 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Table from '@material-ui/core/Table/Table';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableHead from '@material-ui/core/TableHead/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { PaginationInfo } from '../types';
 import compose from '../utilities/compose';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { DimeTableCell } from './DimeTableCell';
@@ -69,9 +71,13 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   renderActions?: (e: T) => React.ReactNode;
   data: T[];
   onClickRow?: (e: T, index: number) => void;
+  onClickChangePage?: (page: number) => void;
+  onClickChangePageSize?: (pageSize: number) => void;
   noSort?: boolean;
   selected?: number[];
   setSelected?: (e: T, state: boolean) => void;
+  paginated?: boolean;
+  paginationInfo?: PaginationInfo;
 }
 
 interface TableState {
@@ -148,59 +154,99 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     return <Checkbox checked={checked} onClick={() => this.props.setSelected!(row, !checked)} />;
   }
 
+  handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+    if (this.props.onClickChangePage) {
+      if (!isNaN(page)) {
+        this.props.onClickChangePage(page);
+      }
+    }
+  }
+
+  handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    // tslint:disable-next-line:no-console
+    if (this.props.onClickChangePageSize) {
+      const pageSize = parseInt(event.target.value, 10);
+
+      if (!isNaN(pageSize)) {
+        this.props.onClickChangePageSize(pageSize);
+      }
+    }
+  }
+
   render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
     const sortedData = noSort ? data : stableSort(data, getSorting(order, orderBy));
     const RowCheckbox = this.RowCheckbox;
+    const handleChangePage = this.handleChangePage;
+    const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
 
     return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            {this.props.selected && (
-              <DimeTableCell padding={'checkbox'}>
-                <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
-              </DimeTableCell>
-            )}
-            {columns.map(col => (
-              <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
-                <TableSortLabel active={orderBy === col.id} direction={order} onClick={this.createSortHandler(col.id)}>
-                  {col.label}
-                </TableSortLabel>
-              </DimeTableCell>
-            ))}
-            {this.props.renderActions && <DimeTableCell numeric />}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sortedData.map((row, index) => (
-            <TableRow
-              className={classes.hideActions}
-              hover
-              key={index}
-              onClick={this.handleRowClick(row, index)}
-              component={SafeClickableTableRow}
-            >
+      <div>
+        <Table>
+          <TableHead>
+            <TableRow>
               {this.props.selected && (
                 <DimeTableCell padding={'checkbox'}>
-                  <RowCheckbox row={row} />
+                  <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
                 </DimeTableCell>
               )}
               {columns.map(col => (
-                <DimeTableCell key={col.id} numeric={col.numeric}>
-                  {format(col, row)}
+                <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
+                  <TableSortLabel active={orderBy === col.id} direction={order} onClick={this.createSortHandler(col.id)}>
+                    {col.label}
+                  </TableSortLabel>
                 </DimeTableCell>
               ))}
-              {this.props.renderActions && (
-                <DimeTableCell numeric>
-                  <span className={'actions'}>{this.props.renderActions(row)}</span>
-                </DimeTableCell>
-              )}
+              {this.props.renderActions && <DimeTableCell numeric />}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {sortedData.map((row, index) => (
+              <TableRow
+                className={classes.hideActions}
+                hover
+                key={index}
+                onClick={this.handleRowClick(row, index)}
+                component={SafeClickableTableRow}
+              >
+                {this.props.selected && (
+                  <DimeTableCell padding={'checkbox'}>
+                    <RowCheckbox row={row} />
+                  </DimeTableCell>
+                )}
+                {columns.map(col => (
+                  <DimeTableCell key={col.id} numeric={col.numeric}>
+                    {format(col, row)}
+                  </DimeTableCell>
+                ))}
+                {this.props.renderActions && (
+                  <DimeTableCell numeric>
+                    <span className={'actions'}>{this.props.renderActions(row)}</span>
+                  </DimeTableCell>
+                )}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {this.props.paginated && this.props.paginationInfo && (
+          <TablePagination
+            rowsPerPageOptions={[3, 10, 20]}
+            component="div"
+            count={this.props.paginationInfo.total}
+            rowsPerPage={this.props.paginationInfo.per_page}
+            page={this.props.paginationInfo.current_page - 1}
+            backIconButtonProps={{
+              'aria-label': 'previous page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'next page',
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        )}
+      </div>
     );
   }
 }

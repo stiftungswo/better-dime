@@ -12,8 +12,10 @@ use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\Paginator;
 use Parsedown;
 
 class ProjectController extends BaseController
@@ -42,9 +44,22 @@ class ProjectController extends BaseController
         return self::get($this->duplicateObject($project, ['costgroup_distributions', 'positions'], ['offer_id']));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Project::all()->each->append('deletable');
+        $pageNum = $request->query('page', null);
+        $pageSize = $request->query('pageSize', null);
+
+        if($pageNum == null || $pageSize == null){
+            return Project::all()->each->append('deletable');
+        }else{
+            if(!ctype_digit($pageNum))
+                $pageNum = 1;
+            if(!ctype_digit($pageSize))
+                $pageSize = 10;
+
+            $projectData = Project::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get()->each->append('deletable');
+            return new LengthAwarePaginator($projectData, Project::count(), $pageSize, $pageNum);
+        }
     }
 
     public function post(Request $request)

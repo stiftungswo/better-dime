@@ -1,8 +1,9 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
-import { Listing } from '../types';
+import {Listing, PaginationInfo} from '../types';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
@@ -32,6 +33,7 @@ interface Props<ListingType> {
   mainStore?: MainStore;
   archivable?: boolean;
   searchable?: boolean;
+  paginated?: boolean;
   adapter?: {
     getEntities: () => ListingType[];
     fetch: () => Promise<void>;
@@ -61,11 +63,6 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
   }
 
-  reload = () => {
-    this.setState({ loading: true });
-    this.fetch().then(() => this.setState({ loading: false }));
-  }
-
   handleClick = (e: ListingType) => {
     const onClickRow = this.props.onClickRow;
     if (typeof onClickRow === 'string') {
@@ -73,6 +70,30 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     } else if (typeof onClickRow === 'function') {
       onClickRow(e);
     }
+  }
+
+  get paginationInfo() {
+    const paginatedStore = this.props.store! as AbstractPaginatedStore<any, ListingType>;
+    return paginatedStore!.paginationInfo;
+  }
+
+  setPaginationPage = (page: number) => {
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+    if (paginatedStore) {
+      paginatedStore!.paginationPage = page + 1;
+    }
+  }
+
+  setPaginationPageSize = (pageSize: number) => {
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+    if (paginatedStore) {
+      paginatedStore!.paginationSize = pageSize;
+    }
+  }
+
+  reload = () => {
+    this.setState({ loading: true });
+    this.fetch().then(() => this.setState({ loading: false }));
   }
 
   updateQueryState = (query: string) => {
@@ -106,6 +127,10 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               renderActions={this.props.renderActions}
               data={this.entities}
               onClickRow={this.handleClick}
+              onClickChangePage={this.setPaginationPage}
+              onClickChangePageSize={this.setPaginationPageSize}
+              paginated={this.props.paginated}
+              paginationInfo={this.paginationInfo}
             />
           )}
           {this.props.children}

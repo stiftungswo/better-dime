@@ -421,6 +421,24 @@ export interface ProjectListing {
   deletable: boolean;
 }
 
+export interface PaginationInfo {
+  current_page: number;
+  last_page: number;
+  from: number;
+  to: number;
+  total: number;
+  first_page_url: string;
+  last_page_url: string;
+  next_page_url: null | string;
+  prev_page_url: null | string;
+  path: string;
+  per_page: number;
+}
+
+export interface PaginatedProjectListing extends PaginationInfo {
+  data: ProjectListing[];
+}
+
 export interface InvoiceListing {
   id: number;
   accountant_id: number;
