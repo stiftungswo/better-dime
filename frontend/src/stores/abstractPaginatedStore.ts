@@ -26,12 +26,27 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractStore<T
   set paginationPage(page: number) {
     this.requestedPage = page;
     // refresh the data to force a re-render with the new page
-    this.fetchAll();
+    this.fetchAllPaginated();
   }
 
   set paginationSize(pageSize: number) {
     this.requestedPageSize = pageSize;
     // refresh the data to force a re-render with the new page
-    this.fetchAll();
+    this.fetchAllPaginated();
+  }
+
+  @action
+  async fetchAllPaginated() {
+    try {
+      await this.doFetchAllPaginated();
+    } catch (e) {
+      this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
+      console.error(e);
+      throw e;
+    }
+  }
+
+  protected async doFetchAllPaginated() {
+    throw new Error('Not implemented');
   }
 }

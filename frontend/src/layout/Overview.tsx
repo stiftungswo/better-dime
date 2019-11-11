@@ -56,7 +56,13 @@ export default class Overview<ListingType extends Listing> extends React.Compone
   }
 
   fetch = async () => {
-    return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+
+    if (this.props.paginated && paginatedStore) {
+      return this.props.adapter ? this.props.adapter.fetch() : paginatedStore!.fetchAllPaginated();
+    } else {
+      return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+    }
   }
 
   get entities() {

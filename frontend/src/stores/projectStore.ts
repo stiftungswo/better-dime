@@ -86,6 +86,11 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
+    const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
+    this.projects = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
     const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
     const res = await this.mainStore.api.get<PaginatedProjectListing>('/projects' + paginationQuery);
     const page = res.data;

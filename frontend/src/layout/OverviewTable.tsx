@@ -231,7 +231,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
         </Table>
         {this.props.paginated && this.props.paginationInfo && (
           <TablePagination
-            rowsPerPageOptions={[3, 10, 20]}
+            rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
             count={this.props.paginationInfo.total}
             rowsPerPage={this.props.paginationInfo.per_page}

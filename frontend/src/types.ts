@@ -458,6 +458,10 @@ export interface OfferListing {
   short_description: string;
 }
 
+export interface PaginatedOfferListing extends PaginationInfo {
+  data: OfferListing[];
+}
+
 export interface RateGroup {
   id: number;
   name: string;

@@ -13,6 +13,7 @@ use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Application;
@@ -32,9 +33,22 @@ class OfferController extends BaseController
         return self::get($this->duplicateObject($offer, ['discounts', 'positions']));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Offer::all();
+        $pageNum = $request->query('page', null);
+        $pageSize = $request->query('pageSize', null);
+
+        if($pageNum == null || $pageSize == null){
+            return Offer::all();
+        }else{
+            if(!ctype_digit($pageNum))
+                $pageNum = 1;
+            if(!ctype_digit($pageSize))
+                $pageSize = 10;
+
+            $projectData = Offer::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get();
+            return new LengthAwarePaginator($projectData, Offer::count(), $pageSize, $pageNum);
+        }
     }
 
     public function get($id)

@@ -1,9 +1,11 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Offer, OfferListing, Project } from '../types';
+import {Offer, OfferListing, PaginatedOfferListing, PaginatedProjectListing, Project} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export class OfferStore extends AbstractStore<Offer, OfferListing> {
+export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
       singular: 'die Offerte',
@@ -62,6 +64,14 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   protected async doFetchAll(): Promise<void> {
     const res = await this.mainStore.api.get<OfferListing[]>('/offers');
     this.offers = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + paginationQuery);
+    const page = res.data;
+    this.offers = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {
