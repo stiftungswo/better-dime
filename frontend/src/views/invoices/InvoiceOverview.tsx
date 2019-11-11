@@ -56,6 +56,7 @@ export default class InvoiceOverview extends React.Component<Props> {
     return (
       <Overview
         searchable
+        paginated
         title={'Rechnungen'}
         store={invoiceStore}
         renderActions={e => (

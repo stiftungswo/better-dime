@@ -57,6 +57,7 @@ export default class EmployeeOverview extends React.Component<Props> {
     return (
       <Overview
         archivable
+        paginated
         title={'Mitarbeiter'}
         store={employeeStore!}
         addAction={'/employees/new'}

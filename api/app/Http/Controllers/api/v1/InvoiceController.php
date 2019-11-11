@@ -16,6 +16,7 @@ use App\Services\ProjectEffortReportFetcher;
 use App\Services\TwigFilters;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Parsedown;
@@ -39,9 +40,22 @@ class InvoiceController extends BaseController
         return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'offer_id', 'sibling_invoice_ids']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Invoice::all();
+        $pageNum = $request->query('page', null);
+        $pageSize = $request->query('pageSize', null);
+
+        if($pageNum == null || $pageSize == null){
+            return Invoice::all();
+        }else{
+            if(!ctype_digit($pageNum))
+                $pageNum = 1;
+            if(!ctype_digit($pageSize))
+                $pageSize = 10;
+
+            $projectData = Invoice::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get();
+            return new LengthAwarePaginator($projectData, Invoice::count(), $pageSize, $pageNum);
+        }
     }
 
     public function post(Request $request)

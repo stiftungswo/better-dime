@@ -1,9 +1,11 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Employee, EmployeeListing } from '../types';
+import {Employee, EmployeeListing, PaginatedEmployeeListing, PaginatedInvoiceListing} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
+export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeListing> {
   @observable
   employees: Employee[] = [];
   @observable
@@ -55,6 +57,14 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Employee[]>('/employees');
     this.employees = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + paginationQuery);
+    const page = res.data;
+    this.employees = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {
