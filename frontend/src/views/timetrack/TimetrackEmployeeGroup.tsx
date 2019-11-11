@@ -12,6 +12,7 @@ import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import { EntityGroup, WithEfforts } from './types';
 
 interface Props extends EntityGroup {
+  loading: boolean;
   entity: EmployeeListing & WithEfforts;
   timetrackFilterStore?: TimetrackFilterStore;
 }

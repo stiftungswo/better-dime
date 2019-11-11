@@ -9,6 +9,7 @@ import { TimetrackProjectSoloTable } from './TimetrackProjectSoloTable';
 import { EntityGroup, WithEfforts } from './types';
 
 interface Props extends EntityGroup {
+  loading: boolean;
   entity: ProjectListing & WithEfforts;
   showProjectComments: boolean;
   timetrackFilterStore?: TimetrackFilterStore;
