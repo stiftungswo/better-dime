@@ -35,7 +35,8 @@ class OfferController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->getPaginatedQuery(Offer::query(), $request);
+        $query = $this->getFilteredQuery(Offer::query(), $request, ['id', 'name', 'short_description']);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

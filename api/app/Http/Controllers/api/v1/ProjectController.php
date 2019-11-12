@@ -46,7 +46,8 @@ class ProjectController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->getPaginatedQuery(Project::query(), $request, function($q){return $q->each->append('deletable');});
+        $query = $this->getFilteredQuery(Project::query(), $request, ['id', 'name', 'description']);
+        return $this->getPaginatedQuery($query, $request, function($q){return $q->each->append('deletable');});
     }
 
     public function post(Request $request)

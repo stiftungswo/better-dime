@@ -29,7 +29,10 @@ class PersonController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->getPaginatedQuery(Person::with(['company']), $request);
+        $searchAttributes = ['first_name', 'last_name', 'name'];
+        $searchAttributesAssociate = ['company' => ['name']];
+        $query = $this->getFilteredQuery(Person::with(['company']), $request, $searchAttributes, $searchAttributesAssociate);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

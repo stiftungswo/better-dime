@@ -34,6 +34,10 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     return this.projects;
   }
 
+  get archivable() {
+    return true;
+  }
+
   @observable
   projects: ProjectListing[] = [];
   @observable

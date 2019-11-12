@@ -42,6 +42,7 @@ interface Props<ListingType> {
 
 interface State {
   loading: boolean;
+  previousSearchQuery: string;
 }
 
 @inject('mainStore')
@@ -52,6 +53,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     this.fetch().then(() => this.setState({ loading: false }));
     this.state = {
       loading: true,
+      previousSearchQuery: '',
     };
   }
 
@@ -104,11 +106,16 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   updateQueryState = (query: string) => {
     this.props.store.searchQuery = query;
-    this.reload();
+
+    if (this.state.previousSearchQuery !== query) {
+      this.setState({ previousSearchQuery: query });
+      this.reload();
+    }
   }
 
   render() {
     const mainStore = this.props.mainStore!;
+    const reload = this.reload;
 
     return (
       <React.Fragment>
@@ -121,7 +128,11 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               icon={ArchiveIcon}
               secondaryIcon={mainStore.showArchived ? InvisibleIcon : VisibleIcon}
               title={`Archivierte Objekte ${mainStore.showArchived ? 'ausblenden' : 'einblenden'}`}
-              action={() => (mainStore.showArchived = !mainStore.showArchived)}
+              action={() => {
+                  mainStore.showArchived = !mainStore.showArchived;
+                  reload();
+                }
+              }
             />
           )}
           <DimeAppBarButton icon={RefreshIcon} title={'Aktualisieren'} action={this.reload} />

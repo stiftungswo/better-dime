@@ -3,7 +3,8 @@ import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 
-export interface QuerySettings {
+export interface QueryParam {
+  query: string;
   questionMarkAppended: boolean;
 }
 
@@ -35,6 +36,10 @@ export class AbstractStore<T, OverviewType = T> {
 
   set searchQuery(query) {
     this._searchQuery = query.toLowerCase();
+  }
+
+  get archivable() {
+    return false;
   }
 
   @observable
@@ -194,35 +199,44 @@ export class AbstractStore<T, OverviewType = T> {
     const filter = this.filterSearch(this._searchQuery);
 
     if (filter.length > 0) {
-      return 'filterArchived=' + this.filterArchived() + '&filterSearch=' + filter;
+      return 'filterSearch=' + filter;
     } else {
-      return 'filterArchived=' + this.filterArchived();
+      return '';
+    }
+  }
+
+  protected getArchiveQuery() {
+    if (this.archivable) {
+      return 'showArchived=' + this.showArchived();
+    } else {
+      return '';
     }
   }
 
   protected getQueryParams() {
+    const archiveQuery = this.getArchiveQuery();
     const filterQuery = this.getFilterQuery();
 
-    let queryParams = '';
-    const querySettings = {questionMarkAppended: false};
+    const queryParam = {query: '', questionMarkAppended: false};
 
-    if (filterQuery.length > 0) {
-      queryParams = queryParams + this.appendQuery(filterQuery, querySettings);
-    }
+    this.appendQuery(archiveQuery, queryParam);
+    this.appendQuery(filterQuery, queryParam);
 
-    return queryParams;
+    return queryParam.query;
   }
 
-  protected appendQuery(query: string, querySettings: QuerySettings) {
-    if (querySettings.questionMarkAppended) {
-      return '&' + query;
-    } else {
-      querySettings.questionMarkAppended = true;
-      return '?' + query;
+  protected appendQuery(query: string, queryParam: QueryParam) {
+    if (query.length > 0) {
+      if (queryParam.questionMarkAppended) {
+        queryParam.query += '&' + query;
+      } else {
+        queryParam.questionMarkAppended = true;
+        queryParam.query += '?' + query;
+      }
     }
   }
 
-  private filterArchived() {
+  private showArchived() {
     // tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
     return this.mainStore.showArchived;
   }

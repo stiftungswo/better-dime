@@ -32,6 +32,10 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
     return this.employees;
   }
 
+  get archivable() {
+    return true;
+  }
+
   constructor(mainStore: MainStore) {
     super(mainStore);
   }

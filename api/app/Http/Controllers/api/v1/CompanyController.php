@@ -29,7 +29,10 @@ class CompanyController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->getPaginatedQuery(Company::with(['addresses']), $request);
+        $searchAttributes = ['name', 'email'];
+        $searchAttributesAssociate = ['addresses' => ['street', 'postcode', 'city']];
+        $query = $this->getFilteredQuery(Company::with(['addresses']), $request, $searchAttributes, $searchAttributesAssociate);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

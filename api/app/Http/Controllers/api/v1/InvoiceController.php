@@ -42,7 +42,8 @@ class InvoiceController extends BaseController
 
     public function index(Request $request)
     {
-        return $this->getPaginatedQuery(Invoice::query(), $request);
+        $query = $this->getFilteredQuery(Invoice::query(), $request, ['id', 'name', 'description']);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function post(Request $request)

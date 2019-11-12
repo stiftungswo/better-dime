@@ -55,19 +55,16 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractStore<T
   }
 
   protected getQueryParams() {
+    const archiveQuery = this.getArchiveQuery();
     const filterQuery = this.getFilterQuery();
     const pageQuery = this.getPaginationQuery();
 
-    let queryParams = '';
-    const querySettings = {questionMarkAppended: false};
+    const queryParam = {query: '', questionMarkAppended: false};
 
-    if (filterQuery.length > 0) {
-      queryParams = queryParams + this.appendQuery(filterQuery, querySettings);
-    }
-    if (pageQuery.length > 0) {
-      queryParams = queryParams + this.appendQuery(pageQuery, querySettings);
-    }
+    this.appendQuery(archiveQuery, queryParam);
+    this.appendQuery(filterQuery, queryParam);
+    this.appendQuery(pageQuery, queryParam);
 
-    return queryParams;
+    return queryParam.query;
   }
 }
