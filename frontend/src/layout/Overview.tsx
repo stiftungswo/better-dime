@@ -109,7 +109,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
     if (this.state.previousSearchQuery !== query) {
       this.setState({ previousSearchQuery: query });
-      this.reload();
+      this.setPaginationPage(0);
     }
   }
 
