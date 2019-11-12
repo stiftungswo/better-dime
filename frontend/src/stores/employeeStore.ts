@@ -36,8 +36,8 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
     super(mainStore);
   }
 
-  filter = (p: EmployeeListing) => {
-    return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   protected async doArchive(id: number, archived: boolean) {
@@ -60,7 +60,7 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + this.getPaginationQuery());
+    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + this.getQueryParams());
     const page = res.data;
     this.employees = page.data;
     this.pageInfo = _.omit(page, 'data');

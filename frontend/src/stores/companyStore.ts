@@ -35,14 +35,8 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     super(mainStore);
   }
 
-  filter = (c: Company) => {
-    let search = [c.name, c.email || ''];
-
-    if (c.addresses && c.addresses.length > 0) {
-      search = search.concat([c.addresses[0].street, String(c.addresses[0].postcode), c.addresses[0].city]);
-    }
-
-    return search.some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   @action
@@ -79,7 +73,7 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedCompanyListing>('/companies' + this.getPaginationQuery());
+    const res = await this.mainStore.api.get<PaginatedCompanyListing>('/companies' + this.getQueryParams());
     const page = res.data;
     this.companies = page.data;
     this.pageInfo = _.omit(page, 'data');

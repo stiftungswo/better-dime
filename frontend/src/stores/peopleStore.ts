@@ -35,8 +35,8 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     super(mainStore);
   }
 
-  filter = (p: Person) => {
-    return [p.first_name, p.last_name, p.company ? p.company.name : ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   @action
@@ -64,7 +64,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedPersonListing>('/people' + this.getPaginationQuery());
+    const res = await this.mainStore.api.get<PaginatedPersonListing>('/people' + this.getQueryParams());
     const page = res.data;
     this.people = page.data;
     this.pageInfo = _.omit(page, 'data');

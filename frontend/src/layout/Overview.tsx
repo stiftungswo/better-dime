@@ -66,7 +66,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
   }
 
   get entities() {
-    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
+    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.entities;
   }
 
   handleClick = (e: ListingType) => {
@@ -104,6 +104,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   updateQueryState = (query: string) => {
     this.props.store.searchQuery = query;
+    this.reload();
   }
 
   render() {

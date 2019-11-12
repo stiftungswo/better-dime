@@ -3,6 +3,10 @@ import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 
+export interface QuerySettings {
+  questionMarkAppended: boolean;
+}
+
 /**
  * This class wraps all common store functions with success/error popups.
  * The desired methods that start with "do" should be overriden in the specific stores.
@@ -31,11 +35,6 @@ export class AbstractStore<T, OverviewType = T> {
 
   set searchQuery(query) {
     this._searchQuery = query.toLowerCase();
-  }
-
-  @computed
-  get filteredEntities(): OverviewType[] {
-    return this.entities.filter(this.mergeFilter);
   }
 
   @observable
@@ -151,11 +150,6 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected filter(e: OverviewType) {
-    // override this
-    return true;
-  }
-
   protected displayInProgress() {
     this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: null });
   }
@@ -192,12 +186,44 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  private mergeFilter = (e: OverviewType) => {
-    return this.filterArchived(e) && this.filter(e);
+  protected filterSearch(query: string) {
+    return '';
   }
 
-  private filterArchived(e: OverviewType) {
+  protected getFilterQuery() {
+    const filter = this.filterSearch(this._searchQuery);
+
+    if (filter.length > 0) {
+      return 'filterArchived=' + this.filterArchived() + '&filterSearch=' + filter;
+    } else {
+      return 'filterArchived=' + this.filterArchived();
+    }
+  }
+
+  protected getQueryParams() {
+    const filterQuery = this.getFilterQuery();
+
+    let queryParams = '';
+    const querySettings = {questionMarkAppended: false};
+
+    if (filterQuery.length > 0) {
+      queryParams = queryParams + this.appendQuery(filterQuery, querySettings);
+    }
+
+    return queryParams;
+  }
+
+  protected appendQuery(query: string, querySettings: QuerySettings) {
+    if (querySettings.questionMarkAppended) {
+      return '&' + query;
+    } else {
+      querySettings.questionMarkAppended = true;
+      return '?' + query;
+    }
+  }
+
+  private filterArchived() {
     // tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
-    return this.mainStore.showArchived || !(e as any).archived;
+    return this.mainStore.showArchived;
   }
 }

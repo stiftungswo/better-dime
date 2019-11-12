@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
-import { PaginationInfo } from '../types';
+import {Address, Company, PaginationInfo, PhoneNumber} from '../types';
 import {AbstractStore} from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -51,6 +51,23 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractStore<T
   }
 
   protected getPaginationQuery() {
-    return '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+    return 'page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+  }
+
+  protected getQueryParams() {
+    const filterQuery = this.getFilterQuery();
+    const pageQuery = this.getPaginationQuery();
+
+    let queryParams = '';
+    const querySettings = {questionMarkAppended: false};
+
+    if (filterQuery.length > 0) {
+      queryParams = queryParams + this.appendQuery(filterQuery, querySettings);
+    }
+    if (pageQuery.length > 0) {
+      queryParams = queryParams + this.appendQuery(pageQuery, querySettings);
+    }
+
+    return queryParams;
   }
 }

@@ -35,8 +35,8 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
     super(mainStore);
   }
 
-  filter = (p: InvoiceListing) => {
-    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   protected async doDelete(id: number) {
@@ -50,7 +50,7 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedInvoiceListing>('/invoices' + this.getPaginationQuery());
+    const res = await this.mainStore.api.get<PaginatedInvoiceListing>('/invoices' + this.getQueryParams());
     const page = res.data;
     this.invoices = page.data;
     this.pageInfo = _.omit(page, 'data');

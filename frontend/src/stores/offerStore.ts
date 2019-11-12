@@ -36,8 +36,8 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     super(mainStore);
   }
 
-  filter = (p: OfferListing) => {
-    return [String(p.id), p.name, p.short_description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   async createProject(id: number): Promise<Project> {
@@ -67,7 +67,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + this.getPaginationQuery());
+    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + this.getQueryParams());
     const page = res.data;
     this.offers = page.data;
     this.pageInfo = _.omit(page, 'data');
