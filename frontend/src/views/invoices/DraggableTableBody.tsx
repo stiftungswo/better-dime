@@ -29,14 +29,14 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number; 
     if (!result.destination) {
       return;
     }
+
     const srcIndex = result.source.index;
     const dstIndex = result.destination.index;
-    const positions = arrayHelpers.form.values[name];
-
-    const newOrder = dstIndex > srcIndex ? positions[dstIndex][orderField] + 1 : positions[dstIndex][orderField] - 1;
-
-    arrayHelpers.form.setFieldValue(`${name}.${srcIndex}.${orderField}`, newOrder);
     arrayHelpers.move(srcIndex, dstIndex);
+
+    arrayHelpers.form.values[name].forEach((position: T, index: number) => {
+      arrayHelpers.form.setFieldValue(`${name}.${index}.${orderField}`, index);
+    });
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>

@@ -8,7 +8,9 @@ use App\Models\Employee\WorkPeriod;
 use App\Models\Project\ProjectEffort;
 use App\Services\PDF\PDF;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -20,9 +22,10 @@ class EmployeeController extends BaseController
         return self::doArchive($employee, $request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Employee::all();
+        $query = $this->getFilteredQuery(Employee::query(), $request, ['id', 'first_name', 'last_name', 'email']);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

@@ -1,8 +1,9 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
-import { Listing } from '../types';
+import {Listing, PaginationInfo} from '../types';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
@@ -32,6 +33,7 @@ interface Props<ListingType> {
   mainStore?: MainStore;
   archivable?: boolean;
   searchable?: boolean;
+  paginated?: boolean;
   adapter?: {
     getEntities: () => ListingType[];
     fetch: () => Promise<void>;
@@ -40,6 +42,7 @@ interface Props<ListingType> {
 
 interface State {
   loading: boolean;
+  previousSearchQuery: string;
 }
 
 @inject('mainStore')
@@ -50,20 +53,22 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     this.fetch().then(() => this.setState({ loading: false }));
     this.state = {
       loading: true,
+      previousSearchQuery: '',
     };
   }
 
   fetch = async () => {
-    return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+
+    if (this.props.paginated && paginatedStore) {
+      return this.props.adapter ? this.props.adapter.fetch() : paginatedStore!.fetchAllPaginated();
+    } else {
+      return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+    }
   }
 
   get entities() {
-    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.filteredEntities;
-  }
-
-  reload = () => {
-    this.setState({ loading: true });
-    this.fetch().then(() => this.setState({ loading: false }));
+    return this.props.adapter ? this.props.adapter.getEntities() : this.props.store!.entities;
   }
 
   handleClick = (e: ListingType) => {
@@ -75,12 +80,42 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     }
   }
 
+  get paginationInfo() {
+    const paginatedStore = this.props.store! as AbstractPaginatedStore<any, ListingType>;
+    return paginatedStore!.paginationInfo;
+  }
+
+  setPaginationPage = (page: number) => {
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+    if (paginatedStore) {
+      paginatedStore!.paginationPage = page + 1;
+    }
+  }
+
+  setPaginationPageSize = (pageSize: number) => {
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+    if (paginatedStore) {
+      paginatedStore!.paginationSize = pageSize;
+    }
+  }
+
+  reload = () => {
+    this.setState({ loading: true });
+    this.fetch().then(() => this.setState({ loading: false }));
+  }
+
   updateQueryState = (query: string) => {
     this.props.store.searchQuery = query;
+
+    if (this.state.previousSearchQuery !== query) {
+      this.setState({ previousSearchQuery: query });
+      this.setPaginationPage(0);
+    }
   }
 
   render() {
     const mainStore = this.props.mainStore!;
+    const reload = this.reload;
 
     return (
       <React.Fragment>
@@ -93,7 +128,11 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               icon={ArchiveIcon}
               secondaryIcon={mainStore.showArchived ? InvisibleIcon : VisibleIcon}
               title={`Archivierte Objekte ${mainStore.showArchived ? 'ausblenden' : 'einblenden'}`}
-              action={() => (mainStore.showArchived = !mainStore.showArchived)}
+              action={() => {
+                  mainStore.showArchived = !mainStore.showArchived;
+                  reload();
+                }
+              }
             />
           )}
           <DimeAppBarButton icon={RefreshIcon} title={'Aktualisieren'} action={this.reload} />
@@ -106,6 +145,10 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               renderActions={this.props.renderActions}
               data={this.entities}
               onClickRow={this.handleClick}
+              onClickChangePage={this.setPaginationPage}
+              onClickChangePageSize={this.setPaginationPageSize}
+              paginated={this.props.paginated}
+              paginationInfo={this.paginationInfo}
             />
           )}
           {this.props.children}

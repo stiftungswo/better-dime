@@ -28,6 +28,7 @@ export class DelayedInput extends React.Component<InputProps, { value?: string }
 const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType<DimeFormControlProps & DimeInputFieldProps>) => ({
   form,
   field,
+  // tslint:disable-next-line:trailing-comma
   ...rest
 }: DimeFormControlProps & FieldProps) => {
   const touched = getIn(form.touched, field.name);

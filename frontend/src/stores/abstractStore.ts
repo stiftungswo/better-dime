@@ -3,6 +3,11 @@ import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
 import { MainStore } from './mainStore';
 
+export interface QueryParam {
+  query: string;
+  questionMarkAppended: boolean;
+}
+
 /**
  * This class wraps all common store functions with success/error popups.
  * The desired methods that start with "do" should be overriden in the specific stores.
@@ -33,9 +38,8 @@ export class AbstractStore<T, OverviewType = T> {
     this._searchQuery = query.toLowerCase();
   }
 
-  @computed
-  get filteredEntities(): OverviewType[] {
-    return this.entities.filter(this.mergeFilter);
+  get archivable() {
+    return false;
   }
 
   @observable
@@ -151,11 +155,6 @@ export class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  protected filter(e: OverviewType) {
-    // override this
-    return true;
-  }
-
   protected displayInProgress() {
     this.mainStore.displayInfo('In Arbeit...', { autoHideDuration: null });
   }
@@ -192,12 +191,53 @@ export class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  private mergeFilter = (e: OverviewType) => {
-    return this.filterArchived(e) && this.filter(e);
+  protected filterSearch(query: string) {
+    return '';
   }
 
-  private filterArchived(e: OverviewType) {
+  protected getFilterQuery() {
+    const filter = this.filterSearch(this._searchQuery);
+
+    if (filter.length > 0) {
+      return 'filterSearch=' + filter;
+    } else {
+      return '';
+    }
+  }
+
+  protected getArchiveQuery() {
+    if (this.archivable) {
+      return 'showArchived=' + this.showArchived();
+    } else {
+      return '';
+    }
+  }
+
+  protected getQueryParams() {
+    const archiveQuery = this.getArchiveQuery();
+    const filterQuery = this.getFilterQuery();
+
+    const queryParam = {query: '', questionMarkAppended: false};
+
+    this.appendQuery(archiveQuery, queryParam);
+    this.appendQuery(filterQuery, queryParam);
+
+    return queryParam.query;
+  }
+
+  protected appendQuery(query: string, queryParam: QueryParam) {
+    if (query.length > 0) {
+      if (queryParam.questionMarkAppended) {
+        queryParam.query += '&' + query;
+      } else {
+        queryParam.questionMarkAppended = true;
+        queryParam.query += '?' + query;
+      }
+    }
+  }
+
+  private showArchived() {
     // tslint:disable-next-line:no-any ; it's okay, it also works if archived is undefined
-    return this.mainStore.showArchived || !(e as any).archived;
+    return this.mainStore.showArchived;
   }
 }

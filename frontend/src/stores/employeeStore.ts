@@ -1,9 +1,11 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Employee, EmployeeListing } from '../types';
+import {Employee, EmployeeListing, PaginatedEmployeeListing, PaginatedInvoiceListing} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
+export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeListing> {
   @observable
   employees: Employee[] = [];
   @observable
@@ -30,12 +32,16 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
     return this.employees;
   }
 
+  get archivable() {
+    return true;
+  }
+
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
 
-  filter = (p: EmployeeListing) => {
-    return [String(p.id), p.first_name, p.last_name, p.email].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   protected async doArchive(id: number, archived: boolean) {
@@ -55,6 +61,13 @@ export class EmployeeStore extends AbstractStore<Employee, EmployeeListing> {
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Employee[]>('/employees');
     this.employees = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + this.getQueryParams());
+    const page = res.data;
+    this.employees = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {

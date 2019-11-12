@@ -8,6 +8,7 @@ use App\Models\Customer\CustomerTag;
 use App\Models\Customer\Person;
 use App\Models\Customer\Phone;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
@@ -26,9 +27,12 @@ class PersonController extends BaseController
         return self::get($this->duplicateObject($person, ['addresses' => 'customer', 'phone_numbers' => 'customer']));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Person::with(['company'])->get();
+        $searchAttributes = ['first_name', 'last_name', 'name'];
+        $searchAttributesAssociate = ['company' => ['name']];
+        $query = $this->getFilteredQuery(Person::with(['company']), $request, $searchAttributes, $searchAttributesAssociate);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

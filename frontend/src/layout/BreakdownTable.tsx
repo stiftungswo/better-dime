@@ -30,7 +30,7 @@ export class BreakdownTable extends React.Component<BTProps> {
             <DimeTableCell numeric>{format(subtotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <DimeTableCell>Davon MwSt.</DimeTableCell>
+            <DimeTableCell>MwSt.</DimeTableCell>
             <DimeTableCell numeric>{format(vatTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>

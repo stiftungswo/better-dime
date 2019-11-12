@@ -13,7 +13,18 @@ interface DimeContentProps extends WithStyles<typeof styles> {
 
 export const DimeContent = withStyles(styles)(({ classes, children, loading, paper = true }: DimeContentProps) => {
   // sooner or later, this should be replaced by Suspense for Data Fetching (scheduled to release mid 2019)
-  const content = loading ? <LoadingSpinner /> : children;
+  const content = loading ? (
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <LoadingSpinner />
+      </div>
+    ) : children;
   return (
     <main className={classes.content}>
       <div className={classes.toolbar} />

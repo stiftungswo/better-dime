@@ -1,9 +1,11 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Offer, OfferListing, Project } from '../types';
+import {Offer, OfferListing, PaginatedOfferListing, PaginatedProjectListing, Project} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export class OfferStore extends AbstractStore<Offer, OfferListing> {
+export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
       singular: 'die Offerte',
@@ -34,8 +36,8 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
     super(mainStore);
   }
 
-  filter = (p: OfferListing) => {
-    return [String(p.id), p.name, p.short_description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   async createProject(id: number): Promise<Project> {
@@ -62,6 +64,13 @@ export class OfferStore extends AbstractStore<Offer, OfferListing> {
   protected async doFetchAll(): Promise<void> {
     const res = await this.mainStore.api.get<OfferListing[]>('/offers');
     this.offers = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + this.getQueryParams());
+    const page = res.data;
+    this.offers = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {

@@ -12,8 +12,10 @@ use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\Paginator;
 use Parsedown;
 
 class ProjectController extends BaseController
@@ -42,9 +44,12 @@ class ProjectController extends BaseController
         return self::get($this->duplicateObject($project, ['costgroup_distributions', 'positions'], ['offer_id']));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Project::all()->each->append('deletable');
+        $query = $this->getFilteredQuery(Project::query(), $request, ['id', 'name', 'description']);
+        return $this->getPaginatedQuery($query, $request, function ($q) {
+            return $q->each->append('deletable');
+        });
     }
 
     public function post(Request $request)

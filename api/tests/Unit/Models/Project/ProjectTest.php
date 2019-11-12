@@ -87,23 +87,25 @@ class ProjectTest extends \TestCase
             'price_per_rate' => 50,
             'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
                 'factor' => 1,
-                'is_time' => true
+                'is_time' => true,
             ])->id,
+            'vat' => '0.077'
         ]));
         $offer->positions()->saveMany(factory(\App\Models\Offer\OfferPosition::class, 2)->make([
             'amount' => 1337,
             'price_per_rate' => 50,
             'rate_unit_id' => factory(\App\Models\Service\RateUnit::class)->create([
                 'factor' => 1,
-                'is_time' => false
+                'is_time' => false,
             ])->id,
+            'vat' => '0.077'
         ]));
 
         $project = factory(Project::class)->create([
             'offer_id' => $offer->id
         ]);
 
-        $this->assertEquals(50 * 1337 * 4, $project->budget_price);
+        $this->assertEquals(intval(50 * 1337 * 4 * 1.077), $project->budget_price);
     }
 
     public function testBudgetTimeWithoutOffer()

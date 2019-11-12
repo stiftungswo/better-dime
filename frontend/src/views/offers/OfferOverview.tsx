@@ -43,6 +43,7 @@ export default class OfferOverview extends React.Component<Props> {
     return (
       <Overview
         searchable
+        paginated
         title={'Offerten'}
         store={offerStore}
         addAction={'/offers/new'}

@@ -16,6 +16,7 @@ use App\Services\ProjectEffortReportFetcher;
 use App\Services\TwigFilters;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Parsedown;
@@ -39,9 +40,10 @@ class InvoiceController extends BaseController
         return Invoice::with(['costgroup_distributions', 'discounts', 'positions'])->findOrFail($id)->append(['breakdown', 'offer_id', 'sibling_invoice_ids']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Invoice::all();
+        $query = $this->getFilteredQuery(Invoice::query(), $request, ['id', 'name', 'description']);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function post(Request $request)

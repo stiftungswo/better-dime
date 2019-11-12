@@ -2,6 +2,7 @@ import { Grid, TextField } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { LoadingSpinner } from '../../../layout/LoadingSpinner';
+import { MainStore } from '../../../stores/mainStore';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
 import { RateUnit } from '../../../types';
 import compose from '../../../utilities/compose';
@@ -9,6 +10,7 @@ import { DimeCustomFieldProps } from '../common';
 import Select from '../Select';
 
 interface Props extends DimeCustomFieldProps<number> {
+  mainStore?: MainStore;
   rateUnitId: number;
   rateUnitStore?: RateUnitStore;
 }
@@ -21,7 +23,7 @@ interface State {
 }
 
 @compose(
-  inject('rateUnitStore'),
+  inject('mainStore', 'rateUnitStore'),
   observer,
 )
 export class TimeEffortValueField extends React.Component<Props> {
@@ -103,7 +105,17 @@ export class TimeEffortValueField extends React.Component<Props> {
   }
 
   protected updateValue = (value: string) => {
-    this.setState({ value });
-    this.props.onChange(this.state.selectedFactor * Number(value));
+    const parsedValue: number = Number(value);
+
+    if (isNaN(parsedValue)) {
+      this.props.mainStore!.displayInfo('Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt ' +
+        'getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, ' +
+        'kann der Eintrag nicht gespeichert werden!', {
+        autoHideDuration: 6000,
+      });
+    } else {
+      this.props.onChange(this.state.selectedFactor * parsedValue);
+      this.setState({ value });
+    }
   }
 }

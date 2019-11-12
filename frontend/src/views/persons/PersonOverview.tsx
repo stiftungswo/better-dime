@@ -48,6 +48,7 @@ export default class PersonOverview extends React.Component<Props> {
     return (
       <Overview
         searchable
+        paginated
         title={'Person'}
         store={peopleStore!}
         addAction={'/persons/new'}

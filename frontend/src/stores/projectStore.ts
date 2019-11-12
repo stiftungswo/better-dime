@@ -1,6 +1,7 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Invoice, Project, ProjectListing } from '../types';
-import { AbstractStore } from './abstractStore';
+import { Invoice, PaginatedProjectListing, Project, ProjectListing } from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
 export interface ProjectWithPotentialInvoices {
@@ -11,7 +12,7 @@ export interface ProjectWithPotentialInvoices {
   days_since_last_invoice: number | null;
 }
 
-export class ProjectStore extends AbstractStore<Project, ProjectListing> {
+export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
       singular: 'Das Projekt',
@@ -33,6 +34,10 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     return this.projects;
   }
 
+  get archivable() {
+    return true;
+  }
+
   @observable
   projects: ProjectListing[] = [];
   @observable
@@ -44,8 +49,8 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
     super(mainStore);
   }
 
-  filter = (p: ProjectListing) => {
-    return [String(p.id), p.name, p.description || ''].some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   async createInvoice(id: number): Promise<Invoice> {
@@ -87,6 +92,13 @@ export class ProjectStore extends AbstractStore<Project, ProjectListing> {
   protected async doFetchAll(): Promise<void> {
     const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
     this.projects = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.api.get<PaginatedProjectListing>('/projects' + this.getQueryParams());
+    const page = res.data;
+    this.projects = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {

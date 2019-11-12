@@ -54,6 +54,7 @@ export default class CompanyOverview extends React.Component<Props> {
     return (
       <Overview
         searchable
+        paginated
         title={'Firmen'}
         store={companyStore!}
         addAction={'/companies/new'}

@@ -43,14 +43,13 @@ export default class Timetrack extends React.Component<Props> {
 
   componentWillMount() {
     const filter = this.props.timetrackFilterStore!.filter;
-
     Promise.all([
       this.props.effortStore!.fetchFiltered(filter),
-      this.props.employeeStore!.fetchAll(),
-      this.props.projectStore!.fetchAll(),
       this.props.projectCommentStore!.fetchFiltered(filter),
       this.props.rateUnitStore!.fetchAll(),
       this.props.serviceStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+      this.props.projectStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
   }
 
@@ -93,7 +92,14 @@ export default class Timetrack extends React.Component<Props> {
       case 'employee': {
         const entities = filterStore.employees;
         effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
-        groups = () => entities.map(e => <TimetrackEmployeeGroup key={e.id} entity={e} onClickRow={this.onClickRow} />);
+        groups = () => entities.map(e => (
+          <TimetrackEmployeeGroup
+            loading={this.state.loading}
+            key={e.id}
+            entity={e}
+            onClickRow={this.onClickRow}
+          />
+        ));
         break;
       }
       case 'project': {
@@ -102,6 +108,7 @@ export default class Timetrack extends React.Component<Props> {
         groups = () =>
           entities.map(e => (
             <TimetrackProjectGroup
+              loading={this.state.loading}
               key={e.id}
               entity={e}
               onClickRow={this.onClickRow}
@@ -113,7 +120,14 @@ export default class Timetrack extends React.Component<Props> {
       case 'service': {
         const entities = filterStore.services;
         effortCount = entities.reduce((sum, e) => sum + e.efforts.length, 0);
-        groups = () => entities.map(e => <TimetrackServiceGroup key={e.id} entity={e} onClickRow={this.onClickRow} />);
+        groups = () => entities.map(e => (
+          <TimetrackServiceGroup
+            loading={this.state.loading}
+            key={e.id}
+            entity={e}
+            onClickRow={this.onClickRow}
+          />
+        ));
         break;
       }
       default:
@@ -122,7 +136,23 @@ export default class Timetrack extends React.Component<Props> {
     if (effortCount > 0 || filterStore.filter!.showEmptyGroups) {
       return groups();
     } else {
-      return <NoResults />;
+      if (this.state.loading) {
+        return (
+            <div
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  height: '150px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+            >
+              <LoadingSpinner />
+            </div>
+        );
+      } else {
+        return <NoResults />;
+      }
     }
   }
 
@@ -134,12 +164,12 @@ export default class Timetrack extends React.Component<Props> {
           <DimeAppBarButton icon={AddEffortIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />
         </DimeAppBar>
 
-        <DimeContent loading={this.state.loading} paper={this.state.loading}>
+        <DimeContent loading={false} paper={false}>
           <Grid container={true} spacing={8}>
             <TimetrackFilterForm />
 
-            {this.props.effortStore!.loading && <LoadingSpinner />}
-            {!this.props.effortStore!.loading && this.renderGroups()}
+            {/*{this.props.effortStore!.loading && <LoadingSpinner />}*/}
+            {this.renderGroups()}
           </Grid>
 
           {this.props.effortStore!.editing && <TimetrackFormDialog onClose={this.handleClose} />}

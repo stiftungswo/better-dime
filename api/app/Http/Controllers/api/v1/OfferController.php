@@ -13,6 +13,7 @@ use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Laravel\Lumen\Application;
@@ -32,9 +33,10 @@ class OfferController extends BaseController
         return self::get($this->duplicateObject($offer, ['discounts', 'positions']));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Offer::all();
+        $query = $this->getFilteredQuery(Offer::query(), $request, ['id', 'name', 'short_description']);
+        return $this->getPaginatedQuery($query, $request);
     }
 
     public function get($id)

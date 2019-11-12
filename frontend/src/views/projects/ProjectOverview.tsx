@@ -35,6 +35,17 @@ export default class ProjectOverview extends React.Component<Props> {
         label: 'Beschreibung',
       },
     ];
+
+    const search = new URLSearchParams(this.props.location.search);
+    const paginationPage = search.get('page');
+
+    if (paginationPage != null) {
+      const pageNumber = parseInt(paginationPage, 10);
+
+      if (!isNaN(pageNumber)) {
+        this.props.projectStore!.paginationPage = pageNumber;
+      }
+    }
   }
 
   render() {
@@ -44,6 +55,7 @@ export default class ProjectOverview extends React.Component<Props> {
       <Overview
         archivable
         searchable
+        paginated
         title={'Projekte'}
         store={projectStore!}
         addAction={'/projects/new'}

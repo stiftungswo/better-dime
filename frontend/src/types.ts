@@ -335,6 +335,10 @@ export interface Company {
   phone_numbers?: PhoneNumber[];
 }
 
+export interface PaginatedCompanyListing extends PaginationInfo {
+  data: Company[];
+}
+
 export interface Person {
   type: 'person';
   id: number;
@@ -351,6 +355,10 @@ export interface Person {
   tags: number[];
   addresses?: Address[];
   phone_numbers?: PhoneNumber[];
+}
+
+export interface PaginatedPersonListing extends PaginationInfo {
+  data: Person[];
 }
 
 export type Customer = Person | Company;
@@ -401,6 +409,10 @@ export interface EmployeeListing {
   can_login: boolean;
 }
 
+export interface PaginatedEmployeeListing extends PaginationInfo {
+  data: Employee[];
+}
+
 export interface ProjectListing {
   id: number;
   accountant_id: number;
@@ -421,6 +433,24 @@ export interface ProjectListing {
   deletable: boolean;
 }
 
+export interface PaginationInfo {
+  current_page: number;
+  last_page: number;
+  from: number;
+  to: number;
+  total: number;
+  first_page_url: string;
+  last_page_url: string;
+  next_page_url: null | string;
+  prev_page_url: null | string;
+  path: string;
+  per_page: number;
+}
+
+export interface PaginatedProjectListing extends PaginationInfo {
+  data: ProjectListing[];
+}
+
 export interface InvoiceListing {
   id: number;
   accountant_id: number;
@@ -434,10 +464,18 @@ export interface InvoiceListing {
   start: string;
 }
 
+export interface PaginatedInvoiceListing extends PaginationInfo {
+  data: InvoiceListing[];
+}
+
 export interface OfferListing {
   id: number;
   name: string;
   short_description: string;
+}
+
+export interface PaginatedOfferListing extends PaginationInfo {
+  data: OfferListing[];
 }
 
 export interface RateGroup {

@@ -1,9 +1,10 @@
+import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import { Company } from '../types';
-import { AbstractStore } from './abstractStore';
+import {Company, PaginatedCompanyListing} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
-export class CompanyStore extends AbstractStore<Company> {
+export class CompanyStore extends AbstractPaginatedStore<Company> {
 
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -34,14 +35,8 @@ export class CompanyStore extends AbstractStore<Company> {
     super(mainStore);
   }
 
-  filter = (c: Company) => {
-    let search = [c.name, c.email || ''];
-
-    if (c.addresses && c.addresses.length > 0) {
-      search = search.concat([c.addresses[0].street, String(c.addresses[0].postcode), c.addresses[0].city]);
-    }
-
-    return search.some(s => s.toLowerCase().includes(this.searchQuery));
+  filterSearch = (query: string) => {
+    return query.toLowerCase();
   }
 
   @action
@@ -75,5 +70,12 @@ export class CompanyStore extends AbstractStore<Company> {
   protected async doFetchAll() {
     const res = await this.mainStore.api.get<Company[]>('/companies');
     this.companies = res.data;
+  }
+
+  protected async doFetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.api.get<PaginatedCompanyListing>('/companies' + this.getQueryParams());
+    const page = res.data;
+    this.companies = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 }

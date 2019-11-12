@@ -68,7 +68,7 @@ class WorkPeriodTest extends \TestCase
         $this->assertEquals(9 * 504, $workPeriod->effective_time);
 
         // lets move the start back, so it returns 0, because the period did not start yet
-        $workPeriod->update(['start' => '2019-06-01']);
+        $workPeriod->update(['start' => '2050-06-01']);
         $this->assertEquals(0, $workPeriod->effective_time);
     }
 
