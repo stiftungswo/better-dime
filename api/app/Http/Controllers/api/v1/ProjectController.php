@@ -46,20 +46,7 @@ class ProjectController extends BaseController
 
     public function index(Request $request)
     {
-        $pageNum = $request->query('page', null);
-        $pageSize = $request->query('pageSize', null);
-
-        if($pageNum == null || $pageSize == null){
-            return Project::all()->each->append('deletable');
-        }else{
-            if(!ctype_digit($pageNum))
-                $pageNum = 1;
-            if(!ctype_digit($pageSize))
-                $pageSize = 10;
-
-            $projectData = Project::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get()->each->append('deletable');
-            return new LengthAwarePaginator($projectData, Project::count(), $pageSize, $pageNum);
-        }
+        return $this->getPaginatedQuery(Project::query(), $request, function($q){return $q->each->append('deletable');});
     }
 
     public function post(Request $request)

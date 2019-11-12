@@ -49,4 +49,8 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractStore<T
   protected async doFetchAllPaginated() {
     throw new Error('Not implemented');
   }
+
+  protected getPaginationQuery() {
+    return '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+  }
 }

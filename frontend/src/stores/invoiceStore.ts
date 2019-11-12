@@ -50,8 +50,7 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
-    const res = await this.mainStore.api.get<PaginatedInvoiceListing>('/invoices' + paginationQuery);
+    const res = await this.mainStore.api.get<PaginatedInvoiceListing>('/invoices' + this.getPaginationQuery());
     const page = res.data;
     this.invoices = page.data;
     this.pageInfo = _.omit(page, 'data');

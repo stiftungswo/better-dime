@@ -35,20 +35,7 @@ class OfferController extends BaseController
 
     public function index(Request $request)
     {
-        $pageNum = $request->query('page', null);
-        $pageSize = $request->query('pageSize', null);
-
-        if($pageNum == null || $pageSize == null){
-            return Offer::all();
-        }else{
-            if(!ctype_digit($pageNum))
-                $pageNum = 1;
-            if(!ctype_digit($pageSize))
-                $pageSize = 10;
-
-            $projectData = Offer::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get();
-            return new LengthAwarePaginator($projectData, Offer::count(), $pageSize, $pageNum);
-        }
+        return $this->getPaginatedQuery(Offer::query(), $request);
     }
 
     public function get($id)

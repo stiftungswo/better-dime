@@ -42,20 +42,7 @@ class InvoiceController extends BaseController
 
     public function index(Request $request)
     {
-        $pageNum = $request->query('page', null);
-        $pageSize = $request->query('pageSize', null);
-
-        if($pageNum == null || $pageSize == null){
-            return Invoice::all();
-        }else{
-            if(!ctype_digit($pageNum))
-                $pageNum = 1;
-            if(!ctype_digit($pageSize))
-                $pageSize = 10;
-
-            $projectData = Invoice::skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get();
-            return new LengthAwarePaginator($projectData, Invoice::count(), $pageSize, $pageNum);
-        }
+        return $this->getPaginatedQuery(Invoice::query(), $request);
     }
 
     public function post(Request $request)

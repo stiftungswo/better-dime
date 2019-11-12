@@ -60,8 +60,7 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
-    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + paginationQuery);
+    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + this.getPaginationQuery());
     const page = res.data;
     this.employees = page.data;
     this.pageInfo = _.omit(page, 'data');

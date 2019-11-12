@@ -67,8 +67,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const paginationQuery = '?page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
-    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + paginationQuery);
+    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + this.getPaginationQuery());
     const page = res.data;
     this.offers = page.data;
     this.pageInfo = _.omit(page, 'data');
