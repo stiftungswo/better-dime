@@ -335,6 +335,10 @@ export interface Company {
   phone_numbers?: PhoneNumber[];
 }
 
+export interface PaginatedCompanyListing extends PaginationInfo {
+  data: Company[];
+}
+
 export interface Person {
   type: 'person';
   id: number;
@@ -351,6 +355,10 @@ export interface Person {
   tags: number[];
   addresses?: Address[];
   phone_numbers?: PhoneNumber[];
+}
+
+export interface PaginatedPersonListing extends PaginationInfo {
+  data: Person[];
 }
 
 export type Customer = Person | Company;
