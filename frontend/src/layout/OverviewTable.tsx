@@ -182,7 +182,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
 
     return (
-      <div>
+      <div className="dev-fw-div">
         <Table>
           <TableHead>
             <TableRow>

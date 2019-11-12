@@ -119,16 +119,19 @@ class BaseController extends Controller
      * @param $pageNum stores the current page number in this variable (passed by reference)
      * @param $pageSize stores the page size in this variable (passed by reference)
      */
-    private function extractPaginationParameters(Request $request, &$pageNum, &$pageSize){
+    private function extractPaginationParameters(Request $request, &$pageNum, &$pageSize)
+    {
         $pageNum = $request->query('page', null);
         $pageSize = $request->query('pageSize', null);
 
-        if($pageNum != null && $pageSize != null){
-            if(!ctype_digit($pageNum))
+        if ($pageNum != null && $pageSize != null) {
+            if (!ctype_digit($pageNum)) {
                 $pageNum = 1;
-            if(!ctype_digit($pageSize))
+            }
+            if (!ctype_digit($pageSize)) {
                 $pageSize = 10;
-        }else{
+            }
+        } else {
             $pageNum = null;
             $pageSize = null;
         }
@@ -141,11 +144,12 @@ class BaseController extends Controller
      * @param $showArchived stores the boolean which tells us whether we want to filter out archived entries
      * @param $filterSearch stores the string which we will use to filter the content by search
      */
-    private function extractFilterParameters(Request $request, &$showArchived, &$filterSearch){
+    private function extractFilterParameters(Request $request, &$showArchived, &$filterSearch)
+    {
         $showArchived = $request->query('showArchived', null);
         $filterSearch = $request->query('filterSearch', null);
 
-        if($showArchived != null){
+        if ($showArchived != null) {
             $showArchived = $showArchived == 'true' ? true : false;
         }
     }
@@ -159,11 +163,12 @@ class BaseController extends Controller
      * @param array $searchAttributesAssociate the attributes which will be searched and belong to a different model
      * @return Builder returns the query with the filters applied
      */
-    protected function getFilteredQuery(Builder $query, Request $request, array $searchAttributes = [], array $searchAttributesAssociate = []){
+    protected function getFilteredQuery(Builder $query, Request $request, array $searchAttributes = [], array $searchAttributesAssociate = [])
+    {
         $this->extractFilterParameters($request, $showArchived, $filterSearch);
 
-        if(!is_null($showArchived)){
-            $query = $query->where(function (Builder $q) use ($showArchived){
+        if (!is_null($showArchived)) {
+            $query = $query->where(function (Builder $q) use ($showArchived) {
                 $q = $q->where('archived', false);
                 $q = $q->orWhere('archived', $showArchived);
             });
@@ -171,15 +176,15 @@ class BaseController extends Controller
 
         // filter out entries which do not contain the search term in at least one of the
         // attributes specified in $$searchAttributes or $searchAttributesAssociate
-        if($filterSearch != null && count($searchAttributes) > 0){
+        if ($filterSearch != null && count($searchAttributes) > 0) {
             $query = $query->where(function (Builder $q) use ($searchAttributes, $searchAttributesAssociate, $filterSearch) {
                 BaseController::anyAttributeContains($q, $searchAttributes, $filterSearch);
-                foreach ($searchAttributesAssociate as $relation => $attributes){
-                    if(count($searchAttributes) > 0){
+                foreach ($searchAttributesAssociate as $relation => $attributes) {
+                    if (count($searchAttributes) > 0) {
                         $q->orWhereHas($relation, function (Builder $qA) use ($attributes, $filterSearch) {
                             BaseController::anyAttributeContains($qA, $attributes, $filterSearch);
                         });
-                    }else{
+                    } else {
                         $q->whereHas($relation, function (Builder $qA) use ($attributes, $filterSearch) {
                             BaseController::anyAttributeContains($qA, $attributes, $filterSearch);
                         });
@@ -200,18 +205,21 @@ class BaseController extends Controller
      * @param null $postProcess optional post processing function which modifies the collection before paginating
      * @return array|LengthAwarePaginator the return result
      */
-    protected function getPaginatedQuery(Builder $query, Request $request, $postProcess = null){
+    protected function getPaginatedQuery(Builder $query, Request $request, $postProcess = null)
+    {
         $this->extractPaginationParameters($request, $pageNum, $pageSize);
 
         $totalCount = $query->count();
 
-        if($postProcess == null){
-            $postProcess = function (\Illuminate\Database\Eloquent\Collection $q){return $q->all();};
+        if ($postProcess == null) {
+            $postProcess = function (\Illuminate\Database\Eloquent\Collection $q) {
+                return $q->all();
+            };
         }
 
-        if($pageNum == null || $pageSize == null){
+        if ($pageNum == null || $pageSize == null) {
             return $postProcess($query->get());
-        }else{
+        } else {
             $projectData = $query->skip(($pageNum-1)*$pageSize)->take($pageSize)->orderBy('updated_at', 'desc')->get();
             return new LengthAwarePaginator($postProcess($projectData), $totalCount, $pageSize, $pageNum);
         }
@@ -225,12 +233,13 @@ class BaseController extends Controller
      * @param $attributes the columns in which we search for the keyword
      * @param $searchTerm the keyword we are searching for
      */
-    static function anyAttributeContains(&$query, $attributes, $searchTerm){
+    static function anyAttributeContains(&$query, $attributes, $searchTerm)
+    {
         $isFirst = true;
-        foreach ($attributes as $attribute){
-            if($isFirst){
+        foreach ($attributes as $attribute) {
+            if ($isFirst) {
                 $query->where($attribute, 'LIKE', '%'.$searchTerm.'%');
-            }else{
+            } else {
                 $query->orWhere($attribute, 'LIKE', '%'.$searchTerm.'%');
             }
             $isFirst = false;
