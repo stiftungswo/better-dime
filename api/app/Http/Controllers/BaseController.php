@@ -211,7 +211,7 @@ class BaseController extends Controller
 
         $totalCount = $query->count();
 
-        if ($postProcess == null) {
+        if (is_null($postProcess)) {
             $postProcess = function (\Illuminate\Database\Eloquent\Collection $q) {
                 return $q->all();
             };

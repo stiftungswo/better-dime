@@ -11,6 +11,7 @@ use App\Services\PDF\GroupMarkdownToDiv;
 use App\Services\PDF\PDF;
 use App\Services\ProjectEffortReportFetcher;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class ProjectController extends BaseController
     public function index(Request $request)
     {
         $query = $this->getFilteredQuery(Project::query(), $request, ['id', 'name', 'description']);
-        return $this->getPaginatedQuery($query, $request, function ($q) {
+        return $this->getPaginatedQuery($query, $request, function (Collection $q) {
             return $q->each->append('deletable');
         });
     }
