@@ -150,6 +150,7 @@ function ValueContainer(props: any) {
 function MultiValue(props: any) {
   return (
     <Chip
+      title={props.children}
       tabIndex={-1}
       label={props.children}
       className={classNames(props.selectProps.classes.chip, {
