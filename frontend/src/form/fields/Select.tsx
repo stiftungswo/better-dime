@@ -34,6 +34,12 @@ const styles = (theme: Theme) =>
     },
     chip: {
       margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+      maxWidth: '170px',
+    },
+    label: {
+      overflow: 'hidden',
+      display: 'block',
+      textOverflow: 'ellipsis',
     },
     chipFocused: {
       backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
@@ -149,6 +155,9 @@ function MultiValue(props: any) {
       className={classNames(props.selectProps.classes.chip, {
         [props.selectProps.classes.chipFocused]: props.isFocused,
       })}
+      classes={{
+        label: props.selectProps.classes.label,
+      }}
       onDelete={props.removeProps.onClick}
       deleteIcon={<CancelIcon {...props.removeProps} />}
     />
