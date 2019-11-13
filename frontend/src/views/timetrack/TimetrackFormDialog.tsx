@@ -131,6 +131,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
+        isInitialValid={true}
         enableReinitialize
         onSubmit={this.handleSubmit}
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}

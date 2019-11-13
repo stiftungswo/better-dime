@@ -90,15 +90,17 @@ export class TimeEffortValueField extends React.Component<Props> {
 
   protected updateSelectedRateUnit = (id: number) => {
     const selectedRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === id);
+    const previousRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === this.state.rateUnitId);
+    const previousValue = this.state.value;
 
-    if (selectedRateUnit) {
+    if (selectedRateUnit && previousRateUnit) {
       this.setState({
         rateUnitId: selectedRateUnit.id,
         selectedFactor: selectedRateUnit.factor,
-        value: (this.state.value * this.state.selectedFactor) / selectedRateUnit.factor,
+        value: previousValue * (previousRateUnit.factor / selectedRateUnit.factor),
       });
 
-      this.props.onChange(selectedRateUnit.factor * this.state.value);
+      this.props.onChange(this.state.selectedFactor * this.state.value);
     } else {
       throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
     }
