@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import {Company, PaginatedCompanyListing} from '../types';
+import {Company, PaginatedCompanyListing, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -33,6 +33,10 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+  }
+
+  setEntities(e: Company[]) {
+    this.companies = e;
   }
 
   filterSearch = (query: string) => {

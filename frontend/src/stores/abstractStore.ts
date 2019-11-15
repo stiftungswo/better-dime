@@ -47,6 +47,10 @@ export class AbstractStore<T, OverviewType = T> {
   private _searchQuery: string = '';
   constructor(protected mainStore: MainStore) {}
 
+  setEntities(e: OverviewType[]) {
+    throw new Error('Not implemented');
+  }
+
   reset() {
     this.searchQuery = '';
   }

@@ -49,6 +49,10 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     super(mainStore);
   }
 
+  setEntities(e: ProjectListing[]) {
+    this.projects = e;
+  }
+
   filterSearch = (query: string) => {
     return query.toLowerCase();
   }

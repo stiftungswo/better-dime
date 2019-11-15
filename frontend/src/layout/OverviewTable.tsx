@@ -234,7 +234,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
             rowsPerPageOptions={[5, 10, 20, 50]}
             component="div"
             count={this.props.paginationInfo.total}
-            rowsPerPage={this.props.paginationInfo.per_page}
+            rowsPerPage={parseInt(this.props.paginationInfo.per_page, 10)}
             page={this.props.paginationInfo.current_page - 1}
             backIconButtonProps={{
               'aria-label': 'previous page',
