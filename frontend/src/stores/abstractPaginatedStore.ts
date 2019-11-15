@@ -2,14 +2,15 @@
 import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
 import {Address, Company, PaginationInfo, PhoneNumber} from '../types';
+import {AbstractCachedStore} from './abstractCachedStore';
 import {AbstractStore} from './abstractStore';
 import { MainStore } from './mainStore';
 
 /**
- * This class extends the AbstractStore to handle paginated data instead of
+ * This class extends the store to handle paginated data instead of
  * processing and displaying the whole data stream at once.
  */
-export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
+export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedStore<T, OverviewType> {
 
   @observable
   protected pageInfo?: PaginationInfo = undefined;

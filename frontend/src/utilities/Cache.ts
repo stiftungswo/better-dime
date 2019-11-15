@@ -1,0 +1,78 @@
+import {action, observable} from 'mobx';
+
+/**
+ * This class implements a cache which can be used to avoid having to fetch data from the DB
+ */
+export class Cache {
+
+  private name: string;
+  private readonly lines: number | null = null;
+  private cache: any[] = []; // a simple cache for for fetchAll results with a single cache line
+
+  constructor(lines: number | null = null, name: string = 'defaultCache') {
+    this.lines = lines;
+    this.name = name;
+  }
+
+  /**
+   * Invalidate all cache lines
+   */
+  invalidate() {
+    this.cache.length = 0;
+  }
+
+  /**
+   * Fetch all cache contents
+   */
+  fetchAll() {
+    if (this.cache.length > 0) {
+      // tslint:disable-next-line:no-console
+      console.log('CacheHit: Retrieving from cache... [', this.name, ']');
+      return this.cache.map((o: any) => o.item);
+    } else {
+      // tslint:disable-next-line:no-console
+      console.log('CacheMiss: Retrieving from other source... [', this.name, ']');
+      return null;
+    }
+  }
+
+  /**
+   * fetch a specific cache item
+   * @param id id of the item which was cached
+   */
+  fetchOne(id: number) {
+    const cacheResult = this.cache.find((o: any) => o.item.id === id);
+
+    if (cacheResult != null) {
+      // update LRU timestamp
+      cacheResult.timestamp = Date.now();
+      // tslint:disable-next-line:no-console
+      console.log('CacheHit: Found item ', cacheResult!.item!.id, ' in cache... [', this.name, ']');
+      return cacheResult.item;
+    } else {
+      // tslint:disable-next-line:no-console
+      console.log('CacheMiss: Fetching item', id, ' from other source... [', this.name, ']');
+      return null;
+    }
+  }
+
+  /**
+   * put an item into the cache
+   * @param item item to put in the cache
+   */
+  put(item: any) {
+    this.cache.push({timestamp: Date.now(), item});
+
+    if (this.lines != null && this.cache.length > this.lines) {
+      const sortedCache = this.cache.sort((a: any, b: any) => b.timestamp - a.timestamp);
+      const evicted = sortedCache.pop();
+
+      // tslint:disable-next-line:no-console
+      console.log('CacheEviction: Evicting ', evicted.item.id, ' with timestamp ', evicted.timestamp, ' [', this.name, ']');
+      // tslint:disable-next-line:no-console
+      console.log('Next ', sortedCache[sortedCache.length - 1].item.id, ' with timestamp ', sortedCache[sortedCache.length - 1].timestamp);
+
+      this.cache = sortedCache;
+    }
+  }
+}

@@ -444,7 +444,7 @@ export interface PaginationInfo {
   next_page_url: null | string;
   prev_page_url: null | string;
   path: string;
-  per_page: number;
+  per_page: string;
 }
 
 export interface PaginatedProjectListing extends PaginationInfo {
