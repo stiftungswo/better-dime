@@ -26,12 +26,8 @@ export class Cache {
    */
   fetchAll() {
     if (this.cache.length > 0) {
-      // tslint:disable-next-line:no-console
-      console.log('CacheHit: Retrieving from cache... [', this.name, ']');
       return this.cache.map((o: any) => o.item);
     } else {
-      // tslint:disable-next-line:no-console
-      console.log('CacheMiss: Retrieving from other source... [', this.name, ']');
       return null;
     }
   }
@@ -46,12 +42,8 @@ export class Cache {
     if (cacheResult != null) {
       // update LRU timestamp
       cacheResult.timestamp = Date.now();
-      // tslint:disable-next-line:no-console
-      console.log('CacheHit: Found item ', cacheResult!.item!.id, ' in cache... [', this.name, ']');
       return cacheResult.item;
     } else {
-      // tslint:disable-next-line:no-console
-      console.log('CacheMiss: Fetching item', id, ' from other source... [', this.name, ']');
       return null;
     }
   }
@@ -66,12 +58,6 @@ export class Cache {
     if (this.lines != null && this.cache.length > this.lines) {
       const sortedCache = this.cache.sort((a: any, b: any) => b.timestamp - a.timestamp);
       const evicted = sortedCache.pop();
-
-      // tslint:disable-next-line:no-console
-      console.log('CacheEviction: Evicting ', evicted.item.id, ' with timestamp ', evicted.timestamp, ' [', this.name, ']');
-      // tslint:disable-next-line:no-console
-      console.log('Next ', sortedCache[sortedCache.length - 1].item.id, ' with timestamp ', sortedCache[sortedCache.length - 1].timestamp);
-
       this.cache = sortedCache;
     }
   }
