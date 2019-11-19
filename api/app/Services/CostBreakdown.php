@@ -37,7 +37,7 @@ class CostBreakdown
         if (!is_null($breakdownable->fixed_price)) {
             $fixedPriceVats = [];
 
-            foreach ($vats as $vat){
+            foreach ($vats as $vat) {
                 $ratio = $vat['value']*(1.0/$vat['vat'])/$subtotal;
                 $fixedPriceVatsVal = round($breakdownable->fixed_price*$ratio - ($breakdownable->fixed_price*$ratio / (1 + $vat['vat'])));
                 $fixedPriceVatsSum += $fixedPriceVatsVal;
