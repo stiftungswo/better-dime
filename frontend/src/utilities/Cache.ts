@@ -7,7 +7,7 @@ export class Cache {
 
   private name: string;
   private readonly lines: number | null = null;
-  private cache: any[] = []; // a simple cache for for fetchAll results with a single cache line
+  private cache: any[] = [];
 
   constructor(lines: number | null = null, name: string = 'defaultCache') {
     this.lines = lines;
