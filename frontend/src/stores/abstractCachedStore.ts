@@ -1,11 +1,20 @@
 import {action, observable} from 'mobx';
 import {Cache} from '../utilities/Cache';
 import {AbstractStore} from './abstractStore';
+import {MainStore} from './mainStore';
 
 /**
  * This class extends the AbstractStore to cache its data
  */
 export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
+
+  private static cacheManagers = [] as Array<AbstractCachedStore<any, any>>;
+
+  private static invalidateGlobalCaches() {
+    for (const cacheManager of AbstractCachedStore.cacheManagers) {
+      cacheManager.invalidateLocalCaches();
+    }
+  }
 
   // a simple cache for for fetchAll results with a single cache line
   @observable
@@ -13,6 +22,11 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
   // a fully associative cache for for fetchOne results with 20 cache lines
   @observable
   private fetchOneCache: Cache = new Cache(3, this.constructor.name + 'fOneCache');
+
+  constructor(protected mainStore: MainStore) {
+    super(mainStore);
+    AbstractCachedStore.cacheManagers.push(this);
+  }
 
   @action
   async fetchAll() {
@@ -44,36 +58,40 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
 
   @action
   async post(entity: T) {
-    this.fetchOneCache.invalidate();
-    this.fetchAllCache.invalidate();
+    // if we create an entry it could affect other caches
+    AbstractCachedStore.invalidateGlobalCaches();
     return super.post(entity);
   }
 
   @action
   async put(entity: T) {
-    this.fetchOneCache.invalidate();
-    this.fetchAllCache.invalidate();
+    // if we update an entry it could affect other caches
+    AbstractCachedStore.invalidateGlobalCaches();
     return super.put(entity);
   }
 
   @action
   async delete(id: number) {
-    this.fetchOneCache.invalidate();
-    this.fetchAllCache.invalidate();
+    // if we delete an entry it could affect other caches
+    AbstractCachedStore.invalidateGlobalCaches();
     return super.delete(id);
   }
 
   @action
   async duplicate(id: number): Promise<T> {
-    this.fetchOneCache.invalidate();
-    this.fetchAllCache.invalidate();
+    // if we duplicate an entry it could affect other caches
+    AbstractCachedStore.invalidateGlobalCaches();
     return super.duplicate(id);
   }
 
   @action
   async archive(id: number, archived: boolean) {
-    this.fetchOneCache.invalidate();
-    this.fetchAllCache.invalidate();
+    this.invalidateLocalCaches();
     return super.archive(id, archived);
+  }
+
+  invalidateLocalCaches() {
+    this.fetchAllCache.invalidate();
+    this.fetchOneCache.invalidate();
   }
 }
