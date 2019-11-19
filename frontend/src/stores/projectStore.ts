@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
 import { Invoice, PaginatedProjectListing, Project, ProjectListing } from '../types';
+import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -58,6 +59,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   async createInvoice(id: number): Promise<Invoice> {
+    // creating a new invoice can affect caches so we invalidate all
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);

@@ -8,14 +8,6 @@ import {MainStore} from './mainStore';
  */
 export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
 
-  private static cacheManagers = [] as Array<AbstractCachedStore<any, any>>;
-
-  private static invalidateGlobalCaches() {
-    for (const cacheManager of AbstractCachedStore.cacheManagers) {
-      cacheManager.invalidateLocalCaches();
-    }
-  }
-
   // a simple cache for for fetchAll results with a single cache line
   @observable
   private fetchAllCache: Cache = new Cache(1, this.constructor.name + 'fAllCache');
@@ -25,7 +17,6 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
-    AbstractCachedStore.cacheManagers.push(this);
   }
 
   @action
@@ -59,28 +50,28 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
   @action
   async post(entity: T) {
     // if we create an entry it could affect other caches
-    AbstractCachedStore.invalidateGlobalCaches();
+    Cache.invalidateAllActiveCaches();
     return super.post(entity);
   }
 
   @action
   async put(entity: T) {
     // if we update an entry it could affect other caches
-    AbstractCachedStore.invalidateGlobalCaches();
+    Cache.invalidateAllActiveCaches();
     return super.put(entity);
   }
 
   @action
   async delete(id: number) {
     // if we delete an entry it could affect other caches
-    AbstractCachedStore.invalidateGlobalCaches();
+    Cache.invalidateAllActiveCaches();
     return super.delete(id);
   }
 
   @action
   async duplicate(id: number): Promise<T> {
     // if we duplicate an entry it could affect other caches
-    AbstractCachedStore.invalidateGlobalCaches();
+    Cache.invalidateAllActiveCaches();
     return super.duplicate(id);
   }
 
