@@ -185,15 +185,6 @@ export default class InvoiceForm extends React.Component<Props> {
                               margin={'normal'}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6}>
-                            <DimeField
-                              fullWidth={false}
-                              delayed
-                              component={PercentageField}
-                              name={'fixed_price_vat'}
-                              label={'Fixpreis MwSt.'}
-                            />
-                          </Grid>
                         </Grid>
                       </DimePaper>
                     </Grid>
