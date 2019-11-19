@@ -1,6 +1,7 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
 import { action, computed, observable } from 'mobx';
+import {Cache} from '../utilities/Cache';
 import { MainStore } from './mainStore';
 
 export interface QueryParam {
@@ -80,6 +81,7 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async post(entity: T) {
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doPost(entity);
@@ -93,6 +95,7 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async put(entity: T) {
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doPut(entity);
@@ -106,6 +109,7 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async delete(id: number) {
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doDelete(id);
@@ -119,6 +123,7 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async duplicate(id: number): Promise<T> {
+    Cache.invalidateAllActiveCaches();
     try {
       const newEntity: AxiosResponse = await this.doDuplicate(id);
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
@@ -132,6 +137,7 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async archive(id: number, archived: boolean) {
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doArchive(id, archived);
