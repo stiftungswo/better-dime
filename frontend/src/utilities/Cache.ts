@@ -5,13 +5,23 @@ import {action, observable} from 'mobx';
  */
 export class Cache {
 
+  static invalidateAllActiveCaches() {
+    for (const cacheManager of Cache.activeCaches) {
+      cacheManager.invalidate();
+    }
+  }
+
+  private static activeCaches = [] as Array<Cache>;
+
   private name: string;
   private readonly lines: number | null = null;
   private cache: any[] = [];
+  private showDebugLogs: boolean = false;
 
   constructor(lines: number | null = null, name: string = 'defaultCache') {
     this.lines = lines;
     this.name = name;
+    Cache.activeCaches.push(this);
   }
 
   /**
@@ -26,8 +36,16 @@ export class Cache {
    */
   fetchAll() {
     if (this.cache.length > 0) {
+      if (this.showDebugLogs) {
+        // tslint:disable-next-line:no-console
+        console.log('CacheHit:', this.name);
+      }
       return this.cache.map((o: any) => o.item);
     } else {
+      if (this.showDebugLogs) {
+        // tslint:disable-next-line:no-console
+        console.log('CacheMiss:', this.name);
+      }
       return null;
     }
   }
@@ -40,10 +58,18 @@ export class Cache {
     const cacheResult = this.cache.find((o: any) => o.item.id === id);
 
     if (cacheResult != null) {
+      if (this.showDebugLogs) {
+        // tslint:disable-next-line:no-console
+        console.log('CacheHit:', this.name);
+      }
       // update LRU timestamp
       cacheResult.timestamp = Date.now();
       return cacheResult.item;
     } else {
+      if (this.showDebugLogs) {
+        // tslint:disable-next-line:no-console
+        console.log('CacheMiss:', this.name);
+      }
       return null;
     }
   }
