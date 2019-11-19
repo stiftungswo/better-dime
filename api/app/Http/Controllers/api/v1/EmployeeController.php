@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends BaseController
 {
@@ -96,8 +97,8 @@ class EmployeeController extends BaseController
 
     public function put($id, Request $request)
     {
-        $this->validateRequest($request);
         $employee = Employee::findOrFail($id);
+        $this->validateRequest($request, $employee);
 
         try {
             DB::beginTransaction();
@@ -125,12 +126,16 @@ class EmployeeController extends BaseController
         ));
     }
 
-    private function validateRequest(Request $request)
+    private function validateRequest(Request $request, Employee $employee = null)
     {
         $this->validate($request, [
             'archived' => 'boolean',
             'can_login' => 'boolean',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('employees')->ignore($employee),
+            ],
             'first_name' => 'required|string',
             'holidays_per_year' => 'integer|nullable',
             'is_admin' => 'boolean',
@@ -142,6 +147,9 @@ class EmployeeController extends BaseController
             'work_periods.*.start' => 'required|date',
             'work_periods.*.vacation_takeover' => 'required|numeric',
             'work_periods.*.yearly_vacation_budget' => 'required|integer',
+        ], [
+            'email.unique' => 'Die gewählte Email Adresse ist bereits vergeben.',
+            'email.email' => 'Die gewählte Email Adresse ist nicht gültig.'
         ]);
     }
 }
