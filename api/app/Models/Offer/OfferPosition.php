@@ -53,7 +53,7 @@ class OfferPosition extends Model
     public function estimatedWorkHours()
     {
         if ($this->rate_unit->is_time) {
-            return $this->amount;
+            return $this->amount*$this->rate_unit->factor;
         } else {
             return 0;
         }
