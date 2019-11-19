@@ -11,7 +11,7 @@ export class Cache {
     }
   }
 
-  private static activeCaches = [] as Array<Cache>;
+  private static activeCaches = [] as Cache[];
 
   private name: string;
   private readonly lines: number | null = null;
