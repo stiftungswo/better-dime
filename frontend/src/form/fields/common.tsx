@@ -7,6 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch/Switch';
 import React, { ReactNode } from 'react';
+import {TransformingField, TransformingFieldProps} from './TransformingField';
 
 interface SharedProps {
   label?: string;
@@ -82,7 +83,11 @@ export const SwitchField = ({ label, value, onChange }: DimeInputFieldProps<bool
 
 export const EmailField = (props: DimeInputFieldProps) => <DimeInputField type={'email'} {...props} />;
 
-export const NumberField = (props: DimeInputFieldProps) => <DimeInputField type={'number'} {...props} />;
+const toString = (n: number) => String(n);
+const toNumber = (s: string) => Math.round(Number(s));
+export const NumberField = (props: TransformingFieldProps<number>) => (
+  <TransformingField {...props} toString={toString} toValue={toNumber} type={'number'} {...props} />
+);
 
 export const PasswordField = (props: DimeInputFieldProps) => <DimeInputField type={'password'} {...props} />;
 

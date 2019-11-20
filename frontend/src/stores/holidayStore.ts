@@ -1,4 +1,5 @@
 import { action, computed, observable } from 'mobx';
+import moment from 'moment';
 import { Holiday } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -35,8 +36,20 @@ export class HolidayStore extends AbstractStore<Holiday> {
     super(mainStore);
   }
 
-  filter = (h: Holiday) => {
-    return [h.name, this.mainStore!.formatDate(h.date)].some(s => s.toLowerCase().includes(this.searchQuery));
+  protected processSearchQuery(query: string) {
+    const dateA = moment(query, 'DD.MM.YYYY', true);
+    const dateB = moment(query, 'DD.MM', true);
+    const dateC = moment(query, 'MM.YYYY', true);
+
+    if (dateA.isValid()) {
+      return dateA.format('YYYY-MM-DD');
+    } else if (dateB.isValid()) {
+      return dateB.format('MM-DD');
+    } else if (dateC.isValid()) {
+      return dateC.format('YYYY-MM');
+    } else {
+      return query.toLocaleLowerCase();
+    }
   }
 
   protected async doDelete(id: number) {
@@ -50,7 +63,7 @@ export class HolidayStore extends AbstractStore<Holiday> {
 
   @action
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Holiday[]>('/holidays');
+    const res = await this.mainStore.api.get<Holiday[]>('/holidays', {params: this.getQueryParams()});
     this.holidays = res.data;
   }
 

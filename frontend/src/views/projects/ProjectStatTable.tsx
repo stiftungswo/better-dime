@@ -18,34 +18,40 @@ interface Props {
   inject('mainStore'),
   observer,
 )
-export class ProjectBudgetTable extends React.Component<Props> {
+export class ProjectStatTable extends React.Component<Props> {
   render() {
     const { mainStore, moneyBudget, moneyUsed, timeBudget, timeUsed } = this.props;
 
     return (
       <DimePaper>
-        <TableToolbar title={'Restbudget'} />
+        <TableToolbar title={moneyBudget || timeBudget ? 'Restbudget' : 'Projekt Statistik'} />
 
         <Table>
           <TableBody>
-            <TableRow>
-              <TableCell>Geldbudget</TableCell>
-              <TableCell>{mainStore!.formatCurrency(moneyBudget)}</TableCell>
-            </TableRow>
+            {moneyBudget && (
+              <TableRow>
+                <TableCell>Geldbudget</TableCell>
+                <TableCell>{mainStore!.formatCurrency(moneyBudget)}</TableCell>
+              </TableRow>
+            )}
 
             <TableRow>
               <TableCell>Geld verwendet</TableCell>
-              <TableCell style={{ color: moneyBudget > moneyUsed ? 'green' : 'red' }}>{mainStore!.formatCurrency(moneyUsed)}</TableCell>
+              <TableCell style={{ color: moneyBudget ? (moneyBudget > moneyUsed ? 'green' : 'red') : 'gray' }}>
+                {mainStore!.formatCurrency(moneyUsed)}
+              </TableCell>
             </TableRow>
 
-            <TableRow>
-              <TableCell>Zeitbudget</TableCell>
-              <TableCell>{mainStore!.formatDuration(timeBudget, 'h', true)}</TableCell>
-            </TableRow>
+            {timeBudget && (
+              <TableRow>
+                <TableCell>Zeitbudget</TableCell>
+                <TableCell>{mainStore!.formatDuration(timeBudget, 'h', true)}</TableCell>
+              </TableRow>
+            )}
 
             <TableRow>
               <TableCell>Zeit verwendet</TableCell>
-              <TableCell style={{ color: timeBudget > timeUsed ? 'green' : 'red' }}>
+              <TableCell style={{ color: timeBudget ? (timeBudget > timeUsed ? 'green' : 'red') : 'gray'}}>
                 {mainStore!.formatDuration(timeUsed, 'h', true)}
               </TableCell>
             </TableRow>

@@ -60,7 +60,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
   fetch = async () => {
     const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
 
-    if (this.props.paginated && paginatedStore) {
+    if (this.props.paginated && (this.props.store) instanceof AbstractPaginatedStore) {
       return this.props.adapter ? this.props.adapter.fetch() : paginatedStore!.fetchAllPaginated();
     } else {
       return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
@@ -87,14 +87,14 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   setPaginationPage = (page: number) => {
     const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
-    if (paginatedStore) {
+    if ((this.props.store) instanceof AbstractPaginatedStore) {
       paginatedStore!.paginationPage = page + 1;
     }
   }
 
   setPaginationPageSize = (pageSize: number) => {
     const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
-    if (paginatedStore) {
+    if ((this.props.store) instanceof AbstractPaginatedStore) {
       paginatedStore!.paginationSize = pageSize;
     }
   }
@@ -109,7 +109,12 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
     if (this.state.previousSearchQuery !== query) {
       this.setState({ previousSearchQuery: query });
-      this.setPaginationPage(0);
+
+      if ((this.props.store) instanceof AbstractPaginatedStore) {
+        this.setPaginationPage(0);
+      } else {
+        this.fetch();
+      }
     }
   }
 

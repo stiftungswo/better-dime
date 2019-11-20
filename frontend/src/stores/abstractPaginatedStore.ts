@@ -51,21 +51,23 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
     throw new Error('Not implemented');
   }
 
-  protected getPaginationQuery() {
-    return 'page=' + this.requestedPage + '&pageSize=' + this.requestedPageSize;
+  protected getPageNumQuery() {
+    return {paramKey: 'page', paramVal: this.requestedPage};
   }
 
-  protected getQueryParams() {
-    const archiveQuery = this.getArchiveQuery();
-    const filterQuery = this.getFilterQuery();
-    const pageQuery = this.getPaginationQuery();
+  protected getPageSizeQuery() {
+    return {paramKey: 'pageSize', paramVal: this.requestedPageSize};
+  }
 
-    const queryParam = {query: '', questionMarkAppended: false};
+  protected getPaginatedQueryParams() {
+    const queryParamBuilder = {query: {}, questionMarkAppended: false};
 
-    this.appendQuery(archiveQuery, queryParam);
-    this.appendQuery(filterQuery, queryParam);
-    this.appendQuery(pageQuery, queryParam);
+    this.appendQuery(this.getArchiveQuery(), queryParamBuilder);
+    this.appendQuery(this.getSearchFilterQuery(), queryParamBuilder);
+    this.appendQuery(this.getPageNumQuery(), queryParamBuilder);
+    this.appendQuery(this.getPageSizeQuery(), queryParamBuilder);
+    this.appendQuery(this.getPageSizeQuery(), queryParamBuilder);
 
-    return queryParam.query;
+    return queryParamBuilder.query;
   }
 }

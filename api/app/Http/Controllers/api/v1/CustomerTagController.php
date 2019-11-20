@@ -15,9 +15,10 @@ class CustomerTagController extends BaseController
         return self::doArchive($customerTag, $request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return CustomerTag::all();
+        $query = $this->getFilteredQuery(CustomerTag::query(), $request, ['name']);
+        return $query->get();
     }
 
     public function post(Request $request)

@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
 import { Invoice, PaginatedProjectListing, Project, ProjectListing } from '../types';
+import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -58,6 +59,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   async createInvoice(id: number): Promise<Invoice> {
+    // creating a new invoice can affect caches so we invalidate all
+    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
@@ -94,12 +97,12 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
+    const res = await this.mainStore.api.get<ProjectListing[]>('/projects', {params: this.getQueryParams()});
     this.projects = res.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedProjectListing>('/projects' + this.getQueryParams());
+    const res = await this.mainStore.api.get<PaginatedProjectListing>('/projects', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.projects = page.data;
     this.pageInfo = _.omit(page, 'data');

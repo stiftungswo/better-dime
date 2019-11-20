@@ -33,11 +33,11 @@ import { Invoice, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
-import { ProjectBudgetTable } from './ProjectBudgetTable';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import Navigator from './ProjectNavigator';
 import ProjectPositionSubformInline from './ProjectPositionSubformInline';
 import { projectSchema } from './projectSchema';
+import { ProjectStatTable } from './ProjectStatTable';
 
 interface InfoFieldProps {
   value: string;
@@ -223,9 +223,9 @@ class ProjectForm extends React.Component<Props> {
                     </DimePaper>
                   </Grid>
 
-                  {project.id && project.offer_id && (
+                  {project.id && (
                     <Grid item xs={12} lg={4}>
-                      <ProjectBudgetTable
+                      <ProjectStatTable
                         moneyBudget={props.values.budget_price}
                         moneyUsed={props.values.current_price}
                         timeBudget={props.values.budget_time}

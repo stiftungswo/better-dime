@@ -33,13 +33,19 @@ class CostBreakdown
 
         // calculate fixed price data if fixed price given
         $fixedPriceVats = array();
-        $fixedPriceVatsSum = 0.00;
-        if (!is_null($breakdownable->fixed_price) && !is_null($breakdownable->fixed_price_vat)) {
-            $fixedPriceVatsSum = strval($breakdownable->fixed_price - ($breakdownable->fixed_price / (1 + $breakdownable->fixed_price_vat)));
-            $fixedPriceVats = [(object) [
-                'vat' => $breakdownable->fixed_price_vat,
-                'value' => $fixedPriceVatsSum
-            ]];
+        $fixedPriceVatsSum = 0.0;
+        if (!is_null($breakdownable->fixed_price)) {
+            $fixedPriceVats = [];
+
+            foreach ($vats as $vat) {
+                $ratio = $vat['value']*(1.0/$vat['vat'])/$subtotal;
+                $fixedPriceVatsVal = round($breakdownable->fixed_price*$ratio - ($breakdownable->fixed_price*$ratio / (1 + $vat['vat'])));
+                $fixedPriceVatsSum += $fixedPriceVatsVal;
+                array_push($fixedPriceVats, (object) [
+                    'vat' => $vat['vat'],
+                    'value' => strval($fixedPriceVatsVal)
+                ]);
+            }
         }
 
         return [

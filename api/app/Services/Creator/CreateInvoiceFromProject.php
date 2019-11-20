@@ -33,6 +33,7 @@ class CreateInvoiceFromProject extends BaseCreator
     {
         $lastInvoice = DB::table('invoices')
             ->where('project_id', '=', $this->project->id)
+            ->where('deleted_by', '=', null)
             ->orderBy('end', 'desc')->first();
 
         // check if the DB query for the last invoice brought up something

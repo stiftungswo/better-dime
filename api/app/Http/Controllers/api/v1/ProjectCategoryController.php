@@ -15,9 +15,10 @@ class ProjectCategoryController extends BaseController
         return self::doArchive($projectCategory, $request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return ProjectCategory::all();
+        $query = $this->getFilteredQuery(ProjectCategory::query(), $request, ['name']);
+        return $query->get();
     }
 
     public function post(Request $request)

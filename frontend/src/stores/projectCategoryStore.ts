@@ -25,6 +25,10 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
     return this.projectCategories;
   }
 
+  get archivable() {
+    return true;
+  }
+
   @observable
   projectCategories: ProjectCategory[] = [];
 
@@ -35,11 +39,9 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
     super(mainStore);
   }
 
-  filter = (r: ProjectCategory) => r.name.toLowerCase().includes(this.searchQuery);
-
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
+    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories', {params: this.getQueryParams()});
     this.projectCategories = res.data;
   }
 

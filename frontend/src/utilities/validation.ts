@@ -26,6 +26,12 @@ export const localizeSchema = <T>(creator: () => yup.Schema<T>) => {
   return creator();
 };
 
+export const titleRegex = () => {
+  const allowedStartChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\-]/gi;
+  const allowedMiddleChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\- *\(\)\.\d]/gi;
+  return new RegExp('^(( *' + allowedStartChars.source + '+' + allowedMiddleChars.source + '*),){2,3} *\\d{4}$', 'i');
+};
+
 export const nullableNumber = () =>
   yup
     .mixed()

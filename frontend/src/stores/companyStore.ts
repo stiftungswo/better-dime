@@ -39,10 +39,6 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     this.companies = e;
   }
 
-  filterSearch = (query: string) => {
-    return query.toLowerCase();
-  }
-
   @action
   async doFetchOne(id: number) {
     const res = await this.mainStore.api.get<Company>('/companies/' + id);
@@ -72,12 +68,12 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Company[]>('/companies');
+    const res = await this.mainStore.api.get<Company[]>('/companies', {params: this.getQueryParams()});
     this.companies = res.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedCompanyListing>('/companies' + this.getQueryParams());
+    const res = await this.mainStore.api.get<PaginatedCompanyListing>('/companies', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.companies = page.data;
     this.pageInfo = _.omit(page, 'data');
