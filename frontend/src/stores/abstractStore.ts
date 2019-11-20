@@ -41,7 +41,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   set searchQuery(query) {
-    this._searchQuery = query.toLowerCase();
+    this._searchQuery = this.processSearchQuery(query);
   }
 
   get archivable() {
@@ -168,6 +168,10 @@ export class AbstractStore<T, OverviewType = T> {
       console.error(e);
       throw e;
     }
+  }
+
+  protected processSearchQuery(query: string) {
+    return query.toLowerCase();
   }
 
   protected displayInProgress() {
