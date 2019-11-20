@@ -11,7 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import React from 'react';
-import Select from 'react-select';
+import Select, {Creatable} from 'react-select';
 import { ActionMeta, ActionTypes } from 'react-select/lib/types';
 import { CancelIcon } from '../../layout/icons';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
@@ -193,6 +193,13 @@ const components = {
  *    The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
  */
 class IntegrationReactSelect extends React.Component<any> {
+  select: any;
+
+  constructor(props: any) {
+    super(props);
+    this.select = React.createRef();
+  }
+
   get value() {
     if (this.props.isMulti) {
       return this.props.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
@@ -204,10 +211,24 @@ class IntegrationReactSelect extends React.Component<any> {
   handleChange = (selected: any, action: ActionMeta) => {
     if (action.action === 'clear') {
       this.props.onChange(null);
+    } else if (action.action === 'create-option') {
+      this.props.onCreate(this.props.isMulti ? selected.filter((e: any) => e.__isNew__) : selected);
+      const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
+      this.props.onChange(selected ? value : null);
     } else {
       const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
       this.props.onChange(selected ? value : null);
     }
+  }
+
+  handleFocus = (element: any) => {
+    if (this.value) {
+      this.select.current.state.inputValue = this.value.label;
+    }
+  }
+
+  handleMenuClose = () => {
+    this.select.current.blur();
   }
 
   render() {
@@ -237,24 +258,49 @@ class IntegrationReactSelect extends React.Component<any> {
 
     return (
       <DimeFormControl label={''} margin={margin} fullWidth={fullWidth} errorMessage={errorMessage}>
-        <Select
-          menuPortalTarget={this.props.portal ? document.body : undefined}
-          menuPlacement={this.props.portal ? 'auto' : undefined}
-          menuPosition={this.props.portal ? 'absolute' : 'fixed'}
-          classes={classes}
-          styles={selectStyles}
-          components={components}
-          textFieldProps={myLabel}
-          isDisabled={disabled}
-          error={Boolean(errorMessage)}
-          margin={margin}
-          placeholder={placeholder}
-          noOptionsMessage={() => 'Keine Optionen verfügbar'}
-          {...rest}
-          value={this.value}
-          onChange={this.handleChange}
-          fullWidth={fullWidth}
-        />
+        {this.props.creatable && !this.props.isMulti && (
+          <Creatable
+            ref={this.select}
+            menuPortalTarget={this.props.portal ? document.body : undefined}
+            menuPlacement={this.props.portal ? 'auto' : undefined}
+            menuPosition={this.props.portal ? 'absolute' : 'fixed'}
+            classes={classes}
+            styles={selectStyles}
+            components={components}
+            textFieldProps={myLabel}
+            isDisabled={disabled}
+            error={Boolean(errorMessage)}
+            margin={margin}
+            placeholder={placeholder}
+            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            {...rest}
+            value={this.value}
+            onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onMenuClose={this.handleMenuClose}
+            fullWidth={fullWidth}
+          />
+        )}
+        {!this.props.creatable && (
+          <Select
+            menuPortalTarget={this.props.portal ? document.body : undefined}
+            menuPlacement={this.props.portal ? 'auto' : undefined}
+            menuPosition={this.props.portal ? 'absolute' : 'fixed'}
+            classes={classes}
+            styles={selectStyles}
+            components={components}
+            textFieldProps={myLabel}
+            isDisabled={disabled}
+            error={Boolean(errorMessage)}
+            margin={margin}
+            placeholder={placeholder}
+            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            {...rest}
+            value={this.value}
+            onChange={this.handleChange}
+            fullWidth={fullWidth}
+          />
+        )}
       </DimeFormControl>
     );
   }
