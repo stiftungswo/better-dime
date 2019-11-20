@@ -1,10 +1,8 @@
 import * as yup from 'yup';
-import { dimeDate, localizeSchema, nullableNumber, requiredNumber, selector } from '../../utilities/validation';
+import { dimeDate, localizeSchema, nullableNumber, requiredNumber, selector, titleRegex } from '../../utilities/validation';
 
 export const projectSchema = localizeSchema(() => {
-  const allowedStartChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\-]/gi;
-  const allowedMiddleChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\- *\(\)\.\d]/gi;
-  const regex = new RegExp('^(( *' + allowedStartChars.source + '+' + allowedMiddleChars.source + '*),){2,3} *\\d{4}$', 'i');
+  const regex = titleRegex();
   const errorMessage = 'Projekttitel muss folgendes Format haben: Gemeinde, Flurname, Arbeiten, Jahreszahl. Beispiel: \n' +
     'Dübendorf, Chriesbach, Initialpflege, 2019';
 
