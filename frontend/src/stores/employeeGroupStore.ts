@@ -34,11 +34,9 @@ export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
     super(mainStore);
   }
 
-  filter = (r: EmployeeGroup) => r.name.includes(this.searchQuery);
-
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<EmployeeGroup[]>('/employee_groups');
+    const res = await this.mainStore.api.get<EmployeeGroup[]>('/employee_groups', {params: this.getQueryParams()});
     this.employeeGroups = res.data;
   }
 

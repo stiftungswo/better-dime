@@ -15,9 +15,10 @@ class EmployeeGroupController extends BaseController
         return 'Entity deleted';
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return EmployeeGroup::all();
+        $query = $this->getFilteredQuery(EmployeeGroup::query(), $request, ['name']);
+        return $query->get();
     }
 
     public function post(Request $request)

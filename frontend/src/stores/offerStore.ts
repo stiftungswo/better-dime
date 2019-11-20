@@ -40,10 +40,6 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     this.offers = e;
   }
 
-  filterSearch = (query: string) => {
-    return query.toLowerCase();
-  }
-
   async createProject(id: number): Promise<Project> {
     try {
       this.displayInProgress();
@@ -66,12 +62,12 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.api.get<OfferListing[]>('/offers');
+    const res = await this.mainStore.api.get<OfferListing[]>('/offers', {params: this.getQueryParams()});
     this.offers = res.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers' + this.getQueryParams());
+    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.offers = page.data;
     this.pageInfo = _.omit(page, 'data');

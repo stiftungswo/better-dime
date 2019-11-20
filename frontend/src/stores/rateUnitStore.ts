@@ -25,6 +25,10 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
     return this.rateUnits;
   }
 
+  get archivable() {
+    return true;
+  }
+
   @observable
   rateUnits: RateUnit[] = [];
 
@@ -35,16 +39,9 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
     super(mainStore);
   }
 
-  filter = (r: RateUnit) => {
-    const query = this.searchQuery;
-    return (
-      r.name.toLowerCase().includes(query) || r.billing_unit.toLowerCase().includes(query) || r.effort_unit.toLowerCase().includes(query)
-    );
-  }
-
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<RateUnit[]>('/rate_units');
+    const res = await this.mainStore.api.get<RateUnit[]>('/rate_units', {params: this.getQueryParams()});
     this.rateUnits = res.data;
   }
 

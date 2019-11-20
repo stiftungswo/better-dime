@@ -18,9 +18,10 @@ class ServiceController extends BaseController
         return self::doArchive($service, $request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Service::all();
+        $query = $this->getFilteredQuery(Service::query(), $request, ['name', 'description']);
+        return $query->get();
     }
 
     public function get($id)

@@ -39,13 +39,9 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     this.people = e;
   }
 
-  filterSearch = (query: string) => {
-    return query.toLowerCase();
-  }
-
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<Person[]>('/people');
+    const res = await this.mainStore.api.get<Person[]>('/people', {params: this.getQueryParams()});
     this.people = res.data;
   }
 
@@ -68,7 +64,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedPersonListing>('/people' + this.getQueryParams());
+    const res = await this.mainStore.api.get<PaginatedPersonListing>('/people', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.people = page.data;
     this.pageInfo = _.omit(page, 'data');

@@ -15,9 +15,10 @@ class RateUnitController extends BaseController
         return self::doArchive($rateUnit, $request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return RateUnit::all();
+        $query = $this->getFilteredQuery(RateUnit::query(), $request, ['name', 'billing_unit', 'effort_unit']);
+        return $query->get();
     }
 
     public function get($id)

@@ -44,10 +44,6 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
     this.employees = e;
   }
 
-  filterSearch = (query: string) => {
-    return query.toLowerCase();
-  }
-
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/employees/' + id + '/archive', { archived });
     this.doFetchAll();
@@ -63,12 +59,12 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Employee[]>('/employees');
+    const res = await this.mainStore.api.get<Employee[]>('/employees', {params: this.getQueryParams()});
     this.employees = res.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees' + this.getQueryParams());
+    const res = await this.mainStore.api.get<PaginatedEmployeeListing>('/employees', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.employees = page.data;
     this.pageInfo = _.omit(page, 'data');

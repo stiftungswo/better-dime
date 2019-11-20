@@ -4,9 +4,14 @@ import { action, computed, observable } from 'mobx';
 import {Cache} from '../utilities/Cache';
 import { MainStore } from './mainStore';
 
-export interface QueryParam {
-  query: string;
+export interface QueryParamBuilder {
+  query: any;
   questionMarkAppended: boolean;
+}
+
+export interface QueryParam {
+  paramKey: string;
+  paramVal: any;
 }
 
 /**
@@ -205,43 +210,37 @@ export class AbstractStore<T, OverviewType = T> {
     return '';
   }
 
-  protected getFilterQuery() {
-    const filter = this.filterSearch(this._searchQuery);
+  protected getSearchFilterQuery() {
+    const filter = this._searchQuery;
 
     if (filter.length > 0) {
-      return 'filterSearch=' + filter;
+      return {paramKey: 'filterSearch', paramVal: filter};
     } else {
-      return '';
+      return null;
     }
   }
 
   protected getArchiveQuery() {
     if (this.archivable) {
-      return 'showArchived=' + this.showArchived();
+      return {paramKey: 'showArchived', paramVal: this.showArchived()};
     } else {
-      return '';
+      return null;
     }
   }
 
   protected getQueryParams() {
-    const archiveQuery = this.getArchiveQuery();
-    const filterQuery = this.getFilterQuery();
+    const queryParamBuilder = {query: {}, questionMarkAppended: false};
 
-    const queryParam = {query: '', questionMarkAppended: false};
+    this.appendQuery(this.getArchiveQuery(), queryParamBuilder);
+    this.appendQuery(this.getSearchFilterQuery(), queryParamBuilder);
 
-    this.appendQuery(archiveQuery, queryParam);
-    this.appendQuery(filterQuery, queryParam);
-
-    return queryParam.query;
+    return queryParamBuilder.query;
   }
 
-  protected appendQuery(query: string, queryParam: QueryParam) {
-    if (query.length > 0) {
-      if (queryParam.questionMarkAppended) {
-        queryParam.query += '&' + query;
-      } else {
-        queryParam.questionMarkAppended = true;
-        queryParam.query += '?' + query;
+  protected appendQuery(query: QueryParam | null, queryParamBuilder: QueryParamBuilder) {
+    if (query !== null) {
+      if (!(query.paramKey in queryParamBuilder.query)) {
+        queryParamBuilder.query[query.paramKey] = query.paramVal;
       }
     }
   }

@@ -25,6 +25,11 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
   get entities(): CustomerTag[] {
     return this.customerTags;
   }
+
+  get archivable() {
+    return true;
+  }
+
   @observable
   customerTags: CustomerTag[] = [];
   @observable
@@ -34,11 +39,9 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
     super(mainStore);
   }
 
-  filter = (r: CustomerTag) => r.name.includes(this.searchQuery);
-
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags');
+    const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()});
     this.customerTags = res.data;
   }
 

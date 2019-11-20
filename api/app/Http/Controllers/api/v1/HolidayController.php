@@ -21,9 +21,10 @@ class HolidayController extends BaseController
         return self::get($this->duplicateObject($holiday));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return Holiday::all();
+        $query = $this->getFilteredQuery(Holiday::query(), $request, ['name', 'date']);
+        return $query->get();
     }
 
     public function post(Request $request)
