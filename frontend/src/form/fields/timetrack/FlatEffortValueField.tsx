@@ -37,9 +37,9 @@ export class FlatEffortValueField extends React.Component<Props> {
       <NumberField
         type={'number'}
         label={this.props.label}
-        value={String(this.props.value)}
+        value={this.props.value}
         onChange={e => {
-          this.props.onChange(Number(e.target.value));
+          this.props.onChange(Number(e));
         }}
         unit={this.state.name}
       />

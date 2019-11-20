@@ -46,8 +46,9 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
     }
 
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), service.order, (a, b) => a - b);
+
     arrayHelpers.insert(insertIndex, {
-      amount: '',
+      amount: 0,
       order: service.order,
       vat: service.vat,
       service_id: service.id,
