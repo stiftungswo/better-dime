@@ -35,7 +35,7 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
   const error = getIn(form.errors, field.name);
   // tslint:disable-next-line:no-any
   const handleChange = (x: any) => {
-    if (x === null) {
+    if (x == null) {
       form.setFieldValue(field.name, null);
     } else if (x.target && x.target.type === 'checkbox') {
       form.setFieldValue(field.name, x.target.checked);
