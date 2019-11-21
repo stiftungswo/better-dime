@@ -182,6 +182,28 @@ class Project extends Model
     }
 
     /**
+     * Returns the position groupings associated with this project
+     */
+    public function getPositionGroupingsAttribute()
+    {
+        $groups = [];
+
+        foreach ($this->positions as $position) {
+            if(!is_null($position->position_group)){
+                $filtered = array_first($groups, function($e) use ($position) {
+                    return $e->id === $position->position_group->id;
+                });
+
+                if(is_null($filtered)){
+                    array_push($groups, $position->position_group);
+                }
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
      * Returns the distribution of the costgroups of this project
      */
     public function getDistributionOfCostgroupsAttribute()

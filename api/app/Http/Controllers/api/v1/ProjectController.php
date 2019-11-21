@@ -141,7 +141,7 @@ class ProjectController extends BaseController
     public function get($id)
     {
         return Project::with(['costgroup_distributions', 'positions', 'positions.service'])->findOrFail($id)
-            ->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids']);
+            ->append(['budget_price', 'budget_time', 'current_price', 'current_time', 'invoice_ids', 'position_groupings']);
     }
 
     public function put($id, Request $request)
