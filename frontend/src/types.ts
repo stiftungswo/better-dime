@@ -132,8 +132,14 @@ export interface Project {
   current_price: number;
   current_time: number;
   positions: ProjectPosition[];
+  position_groupings: PositionGroup[];
   offer: Offer;
   invoice_ids: number[];
+}
+
+export interface PositionGroup {
+  id: number;
+  name: string;
 }
 
 export interface ProjectCostgroup {
@@ -189,6 +195,7 @@ export interface ProjectPosition {
   is_time: boolean;
   service: Service;
   order: number;
+  position_group_id: number;
 }
 
 export interface Status {

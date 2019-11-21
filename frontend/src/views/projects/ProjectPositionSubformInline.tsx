@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import {Divider, Typography} from '@material-ui/core';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
@@ -17,7 +17,7 @@ import { DragHandle } from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Project, ProjectPosition, Service } from '../../types';
+import {PositionGroup, Project, ProjectPosition, Service} from '../../types';
 import compose from '../../utilities/compose';
 import { getInsertionIndex } from '../../utilities/getInsertionIndex';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
@@ -56,79 +56,103 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     });
   }
 
+  renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
+    return (
+      <>
+        {!isFirst && (
+          <div style={{ paddingTop: '20px' }}/>
+        )}
+        <TableToolbar
+          title={'Services - ' + group.name}
+          numSelected={0}
+          addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
+        />
+        <div style={{ overflowX: 'auto' }}>
+          {!this.props.formikProps.values.rate_group_id && (
+            <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
+              <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden
+              können.
+            </Typography>
+          )}
+          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+            <TableHead>
+              <TableRow>
+                <DimeTableCell style={{ width: '5%' }} />
+                <DimeTableCell style={{ width: '20%' }}>Service</DimeTableCell>
+                <DimeTableCell style={{ width: '20%' }}>Beschreibung</DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}>Einheit</DimeTableCell>
+                <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
+                <DimeTableCell style={{ width: '10%' }}>Anzahl</DimeTableCell>
+                <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
+                <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
+              </TableRow>
+            </TableHead>
+            <DraggableTableBody
+              arrayHelpers={arrayHelpers}
+              name={this.props.name}
+              filterKey={'position_group_id'}
+              filterValue={group.id}
+              renderRow={({ row, index, provided }) => {
+                const p = row as ProjectPosition;
+                const pIdx = values.positions.indexOf(p);
+                const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
+                return (
+                  <>
+                    <DimeTableCell {...provided.dragHandleProps}>
+                      <DragHandle />
+                    </DimeTableCell>
+                    <DimeTableCell>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</DimeTableCell>
+                    <DimeTableCell>
+                      <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
+                    </DimeTableCell>
+                    <DimeTableCell>
+                      <DimeField delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
+                    </DimeTableCell>
+                    <DimeTableCell>
+                      <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                    </DimeTableCell>
+                    <DimeTableCell>
+                      <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />
+                    </DimeTableCell>
+                    <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
+                    <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
+                    <DimeTableCell>
+                      <DeleteButton onConfirm={() => arrayHelpers.remove(pIdx)} />
+                    </DimeTableCell>
+                  </>
+                );
+              }}
+            />
+          </Table>
+        </div>
+      </>
+    );
+  }
+
   render() {
     const { values } = this.props.formikProps;
+    const groups = [{id: null, name: 'Generell'}, ...values.position_groupings];
+    const renderTable = this.renderTable;
+
     return (
       <FieldArray
         name={this.props.name}
-        render={arrayHelpers => (
-          <>
-            <TableToolbar
-              title={'Services'}
-              numSelected={0}
-              addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
-            />
-            <div style={{ overflowX: 'auto' }}>
-              {!this.props.formikProps.values.rate_group_id && (
-                <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
-                  <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden
-                  können.
-                </Typography>
+        render={arrayHelpers => {
+          const tables = groups.map((e: any, index: number) => {
+            return renderTable(arrayHelpers, values, e, index === 0);
+          });
+
+          return (
+            <>
+              {tables}
+              {this.state.dialogOpen && (
+                <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
               )}
-              <Table padding={'dense'} style={{ minWidth: '1200px' }}>
-                <TableHead>
-                  <TableRow>
-                    <DimeTableCell style={{ width: '5%' }} />
-                    <DimeTableCell style={{ width: '20%' }}>Service</DimeTableCell>
-                    <DimeTableCell style={{ width: '20%' }}>Beschreibung</DimeTableCell>
-                    <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                    <DimeTableCell style={{ width: '15%' }}>Einheit</DimeTableCell>
-                    <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
-                    <DimeTableCell style={{ width: '10%' }}>Anzahl</DimeTableCell>
-                    <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                    <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
-                  </TableRow>
-                </TableHead>
-                <DraggableTableBody
-                  arrayHelpers={arrayHelpers}
-                  name={this.props.name}
-                  renderRow={({ row, index, provided }) => {
-                    const p = row as ProjectPosition;
-                    const name = (fieldName: string) => `${this.props.name}.${index}.${fieldName}`;
-                    return (
-                      <>
-                        <DimeTableCell {...provided.dragHandleProps}>
-                          <DragHandle />
-                        </DimeTableCell>
-                        <DimeTableCell>{this.props.serviceStore!.getName(values.positions[index].service_id)}</DimeTableCell>
-                        <DimeTableCell>
-                          <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
-                        </DimeTableCell>
-                        <DimeTableCell>
-                          <DimeField delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
-                        </DimeTableCell>
-                        <DimeTableCell>
-                          <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
-                        </DimeTableCell>
-                        <DimeTableCell>
-                          <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />
-                        </DimeTableCell>
-                        <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
-                        <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
-                        <DimeTableCell>
-                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
-                        </DimeTableCell>
-                      </>
-                    );
-                  }}
-                />
-              </Table>
-            </div>
-            {this.state.dialogOpen && (
-              <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
-            )}
-          </>
-        )}
+            </>
+          );
+          }
+        }
       />
     );
   }
