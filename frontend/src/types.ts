@@ -328,6 +328,14 @@ export interface ProjectComment {
   updated_at?: string;
 }
 
+export interface ProjectCommentPreset {
+  id?: number;
+  comment_preset: string;
+  deleted_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface Company {
   type: 'company';
   id: number;

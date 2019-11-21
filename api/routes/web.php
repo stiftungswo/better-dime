@@ -144,6 +144,14 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->put('/{id}', ['uses' => 'ProjectCommentController@put']);
             });
 
+            $router->group(['prefix' => 'project_comment_presets'], function () use ($router) {
+                $router->delete('/{id}', ['uses' => 'ProjectCommentPresetController@delete']);
+                $router->get('/', ['uses' => 'ProjectCommentPresetController@index']);
+                $router->get('/{id}', ['uses' => 'ProjectCommentPresetController@get']);
+                $router->post('/', ['uses' => 'ProjectCommentPresetController@post']);
+                $router->put('/{id}', ['uses' => 'ProjectCommentPresetController@put']);
+            });
+
             $router->group(['prefix' => 'project_efforts'], function () use ($router) {
                 $router->put('/move', ['uses' => 'ProjectEffortController@moveEfforts']);
                 $router->delete('/{id}', ['uses' => 'ProjectEffortController@delete']);
