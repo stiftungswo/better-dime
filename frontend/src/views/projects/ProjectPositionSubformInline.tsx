@@ -50,6 +50,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
       order: service.order,
       vat: service.vat,
       service_id: service.id,
+      position_group_id: null,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
       formikKey: Math.random(),
@@ -133,19 +134,16 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
   render() {
     const { values } = this.props.formikProps;
     const groups = [{id: null, name: 'Generell'}, ...values.position_groupings];
-    const renderTable = this.renderTable;
 
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => {
-          const tables = groups.map((e: any, index: number) => {
-            return renderTable(arrayHelpers, values, e, index === 0);
-          });
-
           return (
             <>
-              {tables}
+              {groups.map((e: any, index: number) => {
+                return this.renderTable(arrayHelpers, values, e, index === 0);
+              })}
               {this.state.dialogOpen && (
                 <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
               )}
