@@ -62,6 +62,10 @@ class CreateProjectFromOffer extends BaseCreator
                 $projectPosition->description = $offerPosition->description;
             }
 
+            if($offerPosition->position_group_id) {
+                $projectPosition->position_group_id = $offerPosition->position_group_id;
+            }
+
             $this->project->positions()->save($projectPosition);
         }
 

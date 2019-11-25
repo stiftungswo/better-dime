@@ -166,9 +166,9 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
         render={arrayHelpers => {
           return (
             <>
-              {groups.filter(e => e != null && values.positions.filter(p => {
+              {groups.filter(e => e != null && (e.name === 'Generell' || values.positions.filter(p => {
                 return p.position_group_id === e.id;
-              }).length > 0).map((e: any, index: number) => {
+              }).length > 0)).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
               {this.state.dialogOpen && (

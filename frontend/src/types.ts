@@ -25,6 +25,7 @@ export interface Offer {
   project_id?: number;
   discounts: OfferDiscount[];
   positions: OfferPosition[];
+  position_groupings: PositionGroup[];
 }
 
 export interface Breakdown {
@@ -72,6 +73,7 @@ export interface OfferPosition {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  position_group_id: number;
 }
 
 export interface Employee {
