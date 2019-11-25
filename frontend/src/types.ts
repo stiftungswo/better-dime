@@ -138,7 +138,7 @@ export interface Project {
 }
 
 export interface PositionGroup {
-  id: number;
+  id?: number;
   name: string;
 }
 

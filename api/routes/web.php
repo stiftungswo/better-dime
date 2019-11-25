@@ -136,6 +136,12 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'ProjectCategoryController@delete']);
             });
 
+            $router->group(['prefix' => 'position_groups'], function () use ($router) {
+                $router->get('/', ['uses' => 'PositionGroupController@index']);
+                $router->post('/', ['uses' => 'PositionGroupController@post']);
+                $router->put('/{id}', ['uses' => 'PositionGroupController@put']);
+            });
+
             $router->group(['prefix' => 'project_comments'], function () use ($router) {
                 $router->delete('/{id}', ['uses' => 'ProjectCommentController@delete']);
                 $router->get('/', ['uses' => 'ProjectCommentController@index']);

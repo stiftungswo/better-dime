@@ -19,8 +19,7 @@ class OfferPosition extends Model
 
     protected $fillable = [
         'amount', 'description', 'offer_id', 'order', 'price_per_rate',
-        'rate_unit_id', 'service_id', 'position_group_id', 'vat'
-    ];
+        'rate_unit_id', 'service_id', 'position_group_id', 'vat'];
 
     public function offer()
     {
@@ -37,6 +36,9 @@ class OfferPosition extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function position_group()
+    {
+        return $this->belongsTo(PositionGroup::class);
     }
 
     /**

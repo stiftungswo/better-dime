@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import React from 'react';
 import Select, {Creatable} from 'react-select';
-import { ActionMeta, ActionTypes } from 'react-select/lib/types';
+import {ActionMeta} from 'react-select/lib/types';
 import { CancelIcon } from '../../layout/icons';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
 

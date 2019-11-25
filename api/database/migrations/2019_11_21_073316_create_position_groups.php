@@ -19,6 +19,10 @@ class CreatePositionGroups extends Migration
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
 
         Schema::table('offer_positions', function (Blueprint $table) {

@@ -16,8 +16,10 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
+import {PositionGroupStore} from '../../stores/positionGroupStore';
+import {ProjectStore} from '../../stores/projectStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import {PositionGroup, Project, ProjectPosition, Service} from '../../types';
+import {PositionGroup, Project, ProjectPosition, Service, ServiceRate} from '../../types';
 import compose from '../../utilities/compose';
 import { getInsertionIndex } from '../../utilities/getInsertionIndex';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
@@ -25,36 +27,57 @@ import { DraggableTableBody } from '../invoices/DraggableTableBody';
 export interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
+  projectStore?: ProjectStore;
+  positionGroupStore?: PositionGroupStore;
   formikProps: FormikProps<Project>;
   name: string;
 }
 
 @compose(
-  inject('mainStore', 'serviceStore'),
+  inject('mainStore', 'serviceStore', 'positionGroupStore', 'projectStore'),
   observer,
 )
 export default class ProjectPositionSubformInline extends React.Component<Props> {
   state = {
     dialogOpen: false,
+    selected_group: undefined,
   };
 
-  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service) => {
-    const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
-    if (!rate) {
-      throw new Error('no rate was found');
-    }
-
+  insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), service.order, (a, b) => a - b);
     arrayHelpers.insert(insertIndex, {
       description: '',
       order: service.order,
       vat: service.vat,
       service_id: service.id,
-      position_group_id: null,
+      position_group_id: groupId,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
       formikKey: Math.random(),
     });
+  }
+
+  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
+    const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
+    if (!rate) {
+      throw new Error('no rate was found');
+    }
+
+    const group = this.props.formikProps.values.position_groupings.find((e: PositionGroup) => e.name === groupName);
+
+    if (group == null && groupName != null) {
+      this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
+        this.props.formikProps.values.position_groupings.push({
+          id: this.props.positionGroupStore!.positionGroup!.id,
+          name: groupName,
+        });
+        this.insertService(arrayHelpers, service, rate, this.props.positionGroupStore!.positionGroup!.id!);
+      });
+    } else if (group != null && group.id != null) {
+      this.insertService(arrayHelpers, service, rate, group.id);
+    } else {
+      this.insertService(arrayHelpers, service, rate, null);
+    }
   }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
@@ -66,7 +89,9 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
         <TableToolbar
           title={'Services - ' + group.name}
           numSelected={0}
-          addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => this.setState({ dialogOpen: true })}
+          addAction={!this.props.formikProps.values.rate_group_id ? undefined : () => {
+            this.setState({ selected_group: group.name, dialogOpen: true });
+          }}
         />
         <div style={{ overflowX: 'auto' }}>
           {!this.props.formikProps.values.rate_group_id && (
@@ -141,11 +166,20 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
         render={arrayHelpers => {
           return (
             <>
-              {groups.map((e: any, index: number) => {
+              {groups.filter(e => e != null && values.positions.filter(p => {
+                return p.position_group_id === e.id;
+              }).length > 0).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
               {this.state.dialogOpen && (
-                <ServiceSelectDialog open onClose={() => this.setState({ dialogOpen: false })} onSubmit={this.handleAdd(arrayHelpers)} />
+                <ServiceSelectDialog
+                  open
+                  onClose={() => this.setState({ dialogOpen: false })}
+                  onSubmit={this.handleAdd(arrayHelpers)}
+                  groupName={this.state.selected_group}
+                  entityId={this.props.formikProps.values.id}
+                  entityStore={this.props.projectStore}
+                />
               )}
             </>
           );

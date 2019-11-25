@@ -18,6 +18,7 @@ import { HolidayStore } from '../stores/holidayStore';
 import { InvoiceStore } from '../stores/invoiceStore';
 import { MainStore } from '../stores/mainStore';
 import { OfferStore } from '../stores/offerStore';
+import {PositionGroupStore} from '../stores/positionGroupStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
 import {ProjectCommentPresetStore} from '../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../stores/projectCommentStore';
@@ -54,6 +55,7 @@ export class StoreProvider extends React.Component<Props> {
     effortStore: EffortStore;
     projectCommentStore: ProjectCommentStore;
     projectCommentPresetStore: ProjectCommentPresetStore;
+    positionGroupStore: PositionGroupStore;
     timetrackFilterStore: TimetrackFilterStore;
     peopleStore: PeopleStore;
     companyStore: CompanyStore;
@@ -128,6 +130,7 @@ export class StoreProvider extends React.Component<Props> {
       effortStore,
       projectCommentStore,
       projectCommentPresetStore: new ProjectCommentPresetStore(mainStore),
+      positionGroupStore: new PositionGroupStore(mainStore),
       peopleStore: new PeopleStore(mainStore),
       companyStore: new CompanyStore(mainStore),
       customerImportStore: new CustomerImportStore(mainStore),
