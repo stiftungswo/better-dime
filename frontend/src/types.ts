@@ -5,7 +5,7 @@ import { Moment } from 'moment';
 // Domain Types
 // --
 
-export interface Offer {
+export interface Offer extends PositionGroupings<OfferPosition> {
   id?: number;
   accountant_id: number;
   address_id: number;
@@ -24,8 +24,6 @@ export interface Offer {
   invoice_ids: number[];
   project_id?: number;
   discounts: OfferDiscount[];
-  positions: OfferPosition[];
-  position_groupings: PositionGroup[];
 }
 
 export interface Breakdown {
@@ -109,7 +107,12 @@ export interface PhoneNumber {
   updated_at: string;
 }
 
-export interface Project {
+export interface PositionGroupings<T> {
+  positions: T[];
+  position_groupings: PositionGroup[];
+}
+
+export interface Project extends PositionGroupings<ProjectPosition> {
   id?: number;
   accountant_id: number;
   customer_id: number;
@@ -133,8 +136,6 @@ export interface Project {
   budget_time: number;
   current_price: number;
   current_time: number;
-  positions: ProjectPosition[];
-  position_groupings: PositionGroup[];
   offer: Offer;
   invoice_ids: number[];
 }

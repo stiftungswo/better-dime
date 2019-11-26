@@ -1,4 +1,4 @@
-import {FormikProps} from 'formik';
+import {ArrayHelpers, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import * as yup from 'yup';
@@ -6,7 +6,7 @@ import { FormDialog } from '../form/FormDialog';
 import {AbstractStore} from '../stores/abstractStore';
 import {MainStore} from '../stores/mainStore';
 import {PositionGroupStore} from '../stores/positionGroupStore';
-import {PositionGroup} from '../types';
+import {PositionGroup, PositionGroupings, Project} from '../types';
 import {defaultPositionGroup} from '../utilities/helpers';
 import { localizeSchema, nullableNumber, selector } from '../utilities/validation';
 import {PositionGroupSelect} from './entitySelect/PositionGroupSelect';
@@ -14,7 +14,7 @@ import {DimeField} from './fields/formik';
 
 const schema = localizeSchema(() =>
   yup.object({
-    positionGroupName: yup.string().lowercase(),
+    positionGroupName: yup.string(),
   }),
 );
 
@@ -27,9 +27,8 @@ type Values = typeof template;
 interface Props {
   mainStore?: MainStore;
   positionIndex: number;
-  entityId: number;
-  entityStore: AbstractStore<any, any>;
   positionGroupStore?: PositionGroupStore;
+  groupingEntity: PositionGroupings<any>;
   onClose: () => void;
   onUpdate: (positionIndex: number, newGroupId: number | null) => void;
 }
@@ -40,30 +39,22 @@ export default class PositionMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
 
-    if (this.props.entityStore!.entity == null || this.props.entityStore!.entity.id !== this.props.entityId) {
-      await this.props.entityStore!.fetchOne(this.props.entityId);
-    }
+    const group = [defaultPositionGroup(), ...this.props.groupingEntity.position_groupings].find((e: PositionGroup) => {
+      return e.name.toLowerCase() === values.positionGroupName.toLowerCase();
+    });
 
-    if (this.props.entityStore!.entity != null) {
-      const group = [defaultPositionGroup(), ...this.props.entityStore!.entity.position_groupings].find((e: PositionGroup) => {
-        return e.name === values.positionGroupName;
-      });
-
-      if (group == null && values.positionGroupName != null && values.positionGroupName.length > 0) {
-        this.props.positionGroupStore!.post({name: values.positionGroupName}).then(nothing => {
-          this.props.entityStore!.entity.position_groupings.push({
-            id: this.props.positionGroupStore!.positionGroup!.id,
-            name: values.positionGroupName,
-          });
-          this.props.onUpdate(this.props.positionIndex, this.props.positionGroupStore!.positionGroup!.id!);
+    if (group == null && values.positionGroupName != null && values.positionGroupName.length > 0) {
+      this.props.positionGroupStore!.post({name: values.positionGroupName}).then(nothing => {
+        this.props.groupingEntity.position_groupings.push({
+          id: this.props.positionGroupStore!.positionGroup!.id,
+          name: values.positionGroupName,
         });
-      } else if (group != null && group.id != null) {
-        this.props.onUpdate(this.props.positionIndex, group.id);
-      } else {
-        this.props.onUpdate(this.props.positionIndex, null);
-      }
+        this.props.onUpdate(this.props.positionIndex, this.props.positionGroupStore!.positionGroup!.id!);
+      });
+    } else if (group != null && group.id != null) {
+      this.props.onUpdate(this.props.positionIndex, group.id);
     } else {
-      this.props.mainStore!.displayError('Service kann nicht verschoben werden. Zugehöriges Subjekt nicht gefunden!');
+      this.props.onUpdate(this.props.positionIndex, null);
     }
 
     this.props.onClose();
@@ -82,10 +73,9 @@ export default class PositionMoveDialog extends React.Component<Props> {
           <>
             <DimeField
               component={PositionGroupSelect}
+              groupingEntity={this.props.groupingEntity}
               name={'positionGroupName'}
               label={'Position Group Select'}
-              entityId={this.props.entityId}
-              store={this.props.entityStore}
             />
           </>
         )}

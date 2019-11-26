@@ -71,14 +71,14 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     arrayHelpers.insert(insertIndex, item);
   }
 
-  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
+  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
       throw new Error('no rate was found');
     }
 
     const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
-      return e.name === groupName;
+      return e.name.toLowerCase() === groupName.toLowerCase();
     });
 
     if (group == null && groupName != null && groupName.length > 0) {
@@ -120,14 +120,14 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '17.5%' }}>Service</DimeTableCell>
+                <DimeTableCell style={{ width: '17%' }}>Service</DimeTableCell>
                 <DimeTableCell style={{ width: '17.5%' }}>Beschreibung</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Einheit</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell style={{ width: '5%' }}>Anzahl</DimeTableCell>
+                <DimeTableCell style={{ width: '12.5%' }}>Tarif</DimeTableCell>
+                <DimeTableCell style={{ width: '17.5%' }}>Einheit</DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
+                <DimeTableCell style={{ width: '7%' }}>Anzahl</DimeTableCell>
                 <DimeTableCell style={{ width: '5%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '10%', textAlign: 'center' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '15.5%', paddingLeft: '40px' }}>Aktionen</DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -183,7 +183,7 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
 
   render() {
     const { values } = this.props.formikProps;
-    const groups = [{id: null, name: 'Generell'}, ...values.position_groupings];
+    const groups = [defaultPositionGroup(), ...values.position_groupings];
 
     return (
       <FieldArray
@@ -191,9 +191,11 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
         render={arrayHelpers => {
           return (
             <>
-              {groups.filter(e => e != null && (e.name === 'Generell' || values.positions.filter(p => {
+              {groups.filter(e => e != null && (e.name === defaultPositionGroup().name || values.positions.filter(p => {
                 return p.position_group_id === e.id;
-              }).length > 0)).map((e: any, index: number) => {
+              }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
+                return a.name.localeCompare(b.name);
+              }).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
               {this.state.dialogOpen && (
@@ -202,15 +204,13 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                   onClose={() => this.setState({ dialogOpen: false })}
                   onSubmit={this.handleAdd(arrayHelpers)}
                   groupName={this.state.selected_group}
-                  entityId={this.props.formikProps.values.id}
-                  entityStore={this.props.projectStore}
+                  groupingEntity={this.props.formikProps.values}
                 />
               )}
               {this.state.moving && (
                 <PositionMoveDialog
                   positionIndex={this.state.moving_index!}
-                  entityId={this.props.formikProps.values.id!}
-                  entityStore={this.props.projectStore!}
+                  groupingEntity={this.props.formikProps.values}
                   onUpdate={this.handleUpdate(arrayHelpers)}
                   onClose={() => {
                     this.setState({moving: false, moving_index: null});

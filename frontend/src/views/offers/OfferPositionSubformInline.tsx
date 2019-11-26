@@ -200,8 +200,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     onClose={() => this.setState({ dialogOpen: false })}
                     onSubmit={this.handleAdd(arrayHelpers)}
                     groupName={this.state.selected_group}
-                    entityId={this.props.formikProps.values.id}
-                    entityStore={this.props.offerStore}
+                    groupingEntity={this.props.formikProps.values}
                   />
                 )}
               </>

@@ -7,8 +7,9 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import {AbstractStore} from '../stores/abstractStore';
 import { ServiceStore } from '../stores/serviceStore';
-import { Service } from '../types';
+import {PositionGroupings, Service} from '../types';
 import compose from '../utilities/compose';
+import {defaultPositionGroup} from '../utilities/helpers';
 import {PositionGroupSelect} from './entitySelect/PositionGroupSelect';
 import { ServiceSelect } from './entitySelect/ServiceSelect';
 
@@ -17,8 +18,7 @@ interface Props {
   onClose: () => void;
   serviceStore?: ServiceStore;
   onSubmit: (service: Service, groupName: string | null) => void;
-  entityId?: number;
-  entityStore?: AbstractStore<any, any>;
+  groupingEntity?: PositionGroupings<any>;
   groupName?: string;
 }
 
@@ -29,7 +29,7 @@ interface Props {
 export class ServiceSelectDialog extends React.Component<Props> {
   state = {
     serviceId: null,
-    positionGroupName: null as (string | null),
+    positionGroupName: defaultPositionGroup().name,
   };
 
   componentDidMount(): void {
@@ -40,7 +40,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
     this.props.serviceStore!.notifyProgress(async () => {
       const service = (await this.props.serviceStore!.fetchOne(this.state.serviceId!)) as Service;
       if (this.state.positionGroupName != null) {
-        this.props.onSubmit(service, this.state.positionGroupName!.toLowerCase());
+        this.props.onSubmit(service, this.state.positionGroupName);
       } else {
         this.props.onSubmit(service, null);
       }
@@ -53,11 +53,10 @@ export class ServiceSelectDialog extends React.Component<Props> {
       <Dialog open={this.props.open} onClose={this.props.onClose}>
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
-          {this.props.entityId && (
+          {this.props.groupingEntity && (
             <PositionGroupSelect
               label={'Service Gruppe'}
-              entityId={this.props.entityId!}
-              store={this.props.entityStore}
+              groupingEntity={this.props.groupingEntity!}
               value={this.state.positionGroupName}
               onChange={positionGroupName => this.setState({ positionGroupName })}
             />
