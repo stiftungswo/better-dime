@@ -1,4 +1,4 @@
-import { withMobileDialog } from '@material-ui/core';
+import {DialogTitle, withMobileDialog} from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
@@ -59,7 +59,8 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
-              <DialogContent>{this.props.render(formikProps)}</DialogContent>
+              <DialogTitle>{this.props.title}</DialogTitle>
+              <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
                 <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>

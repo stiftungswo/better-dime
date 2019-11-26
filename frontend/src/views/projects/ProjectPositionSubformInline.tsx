@@ -10,10 +10,12 @@ import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
+import PositionMoveDialog from '../../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
+import {ActionButton} from '../../layout/ActionButton';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import { DragHandle } from '../../layout/icons';
+import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import {PositionGroupStore} from '../../stores/positionGroupStore';
@@ -22,6 +24,7 @@ import { ServiceStore } from '../../stores/serviceStore';
 import {PositionGroup, Project, ProjectPosition, Service, ServiceRate} from '../../types';
 import compose from '../../utilities/compose';
 import { getInsertionIndex } from '../../utilities/getInsertionIndex';
+import {defaultPositionGroup} from '../../utilities/helpers';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 export interface Props {
@@ -41,6 +44,8 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
   state = {
     dialogOpen: false,
     selected_group: undefined,
+    moving: false,
+    moving_index: null,
   };
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
@@ -57,15 +62,26 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
     });
   }
 
+  handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
+    const item = arrayHelpers.remove(positionIndex) as ProjectPosition;
+    // tslint:disable-next-line:no-console
+    console.log('Update index:', item, ' to the new id ', newGroupId);
+    item.position_group_id = newGroupId;
+    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), item.order, (a, b) => a - b);
+    arrayHelpers.insert(insertIndex, item);
+  }
+
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
       throw new Error('no rate was found');
     }
 
-    const group = this.props.formikProps.values.position_groupings.find((e: PositionGroup) => e.name === groupName);
+    const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
+      return e.name === groupName;
+    });
 
-    if (group == null && groupName != null) {
+    if (group == null && groupName != null && groupName.length > 0) {
       this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
         this.props.formikProps.values.position_groupings.push({
           id: this.props.positionGroupStore!.positionGroup!.id,
@@ -104,14 +120,14 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '20%' }}>Service</DimeTableCell>
-                <DimeTableCell style={{ width: '20%' }}>Beschreibung</DimeTableCell>
+                <DimeTableCell style={{ width: '17.5%' }}>Service</DimeTableCell>
+                <DimeTableCell style={{ width: '17.5%' }}>Beschreibung</DimeTableCell>
                 <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
                 <DimeTableCell style={{ width: '15%' }}>Einheit</DimeTableCell>
                 <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>Anzahl</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '5%' }}>Anzahl</DimeTableCell>
+                <DimeTableCell style={{ width: '5%' }}>Total CHF (mit MWSt.)</DimeTableCell>
+                <DimeTableCell style={{ width: '10%', textAlign: 'center' }}>Aktionen</DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -143,8 +159,17 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                     </DimeTableCell>
                     <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
-                    <DimeTableCell>
-                      <DeleteButton onConfirm={() => arrayHelpers.remove(pIdx)} />
+                    <DimeTableCell style={{paddingRight: '0px'}}>
+                      <ActionButton
+                        icon={MoveIcon}
+                        action={() => {
+                          this.setState({moving: true, moving_index: pIdx});
+                        }}
+                        title={'Verschieben'}
+                      />
+                      <DeleteButton
+                        onConfirm={() => arrayHelpers.remove(pIdx)}
+                      />
                     </DimeTableCell>
                   </>
                 );
@@ -179,6 +204,17 @@ export default class ProjectPositionSubformInline extends React.Component<Props>
                   groupName={this.state.selected_group}
                   entityId={this.props.formikProps.values.id}
                   entityStore={this.props.projectStore}
+                />
+              )}
+              {this.state.moving && (
+                <PositionMoveDialog
+                  positionIndex={this.state.moving_index!}
+                  entityId={this.props.formikProps.values.id!}
+                  entityStore={this.props.projectStore!}
+                  onUpdate={this.handleUpdate(arrayHelpers)}
+                  onClose={() => {
+                    this.setState({moving: false, moving_index: null});
+                  }}
                 />
               )}
             </>

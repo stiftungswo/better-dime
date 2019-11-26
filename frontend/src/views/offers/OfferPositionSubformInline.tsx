@@ -66,7 +66,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
 
     const group = this.props.formikProps.values.position_groupings.find((e: PositionGroup) => e.name === groupName);
 
-    if (group == null && groupName != null) {
+    if (group == null && groupName != null && groupName.length > 0) {
       this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
         this.props.formikProps.values.position_groupings.push({
           id: this.props.positionGroupStore!.positionGroup!.id,

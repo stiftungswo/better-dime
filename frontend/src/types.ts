@@ -73,7 +73,7 @@ export interface OfferPosition {
   deleted_at: null;
   created_at: string;
   updated_at: string;
-  position_group_id: number;
+  position_group_id: number | null;
 }
 
 export interface Employee {
@@ -197,7 +197,7 @@ export interface ProjectPosition {
   is_time: boolean;
   service: Service;
   order: number;
-  position_group_id: number;
+  position_group_id: number | null;
 }
 
 export interface Status {

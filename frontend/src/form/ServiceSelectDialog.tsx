@@ -29,7 +29,7 @@ interface Props {
 export class ServiceSelectDialog extends React.Component<Props> {
   state = {
     serviceId: null,
-    positionGroupName: null,
+    positionGroupName: null as (string | null),
   };
 
   componentDidMount(): void {
@@ -39,7 +39,11 @@ export class ServiceSelectDialog extends React.Component<Props> {
   handleSubmit = () => {
     this.props.serviceStore!.notifyProgress(async () => {
       const service = (await this.props.serviceStore!.fetchOne(this.state.serviceId!)) as Service;
-      this.props.onSubmit(service, this.state.positionGroupName);
+      if (this.state.positionGroupName != null) {
+        this.props.onSubmit(service, this.state.positionGroupName!.toLowerCase());
+      } else {
+        this.props.onSubmit(service, null);
+      }
       this.props.onClose();
     });
   }

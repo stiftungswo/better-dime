@@ -3,10 +3,11 @@ import React from 'react';
 import {AbstractStore} from '../../stores/abstractStore';
 import {PositionGroup} from '../../types';
 import compose from '../../utilities/compose';
+import {defaultPositionGroup} from '../../utilities/helpers';
 import { DimeCustomFieldProps } from '../fields/common';
 import Select from '../fields/Select';
 
-interface Props extends DimeCustomFieldProps<number | null> {
+interface Props extends DimeCustomFieldProps<string | null> {
   entityId: number;
   store?: AbstractStore<any, any>;
 }
@@ -40,13 +41,11 @@ export class PositionGroupSelect extends React.Component<Props> {
 
   get options() {
     if (this.props.store!.entity) {
-      const loadedOptions = [
-        {value: 'null', label: 'Generell'},
-        ...this.props.store!.entity!.position_groupings.map((e: PositionGroup) => ({
+      const loadedOptions = [defaultPositionGroup(), ...this.props.store!.entity!.position_groupings].map((e: PositionGroup) => ({
           value: `${e.name}`,
           label: `${e.name}`,
-        })),
-      ];
+      }));
+
       const filteredCreated = this.state.createdOptions.filter((e: any) => {
         return loadedOptions.findIndex((l: any) => l.value === e.value) < 0;
       });
@@ -56,7 +55,9 @@ export class PositionGroupSelect extends React.Component<Props> {
     }
   }
   componentDidMount() {
-    this.updateEntityInStore();
+    if (this.props.store!.entity == null || this.props.store!.entity.id !== this.props.entityId) {
+      this.updateEntityInStore();
+    }
   }
 
   componentDidUpdate(prevProps: Props) {

@@ -54,7 +54,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <div className={classes.title}>
+      <div className={classes.title} style={{textTransform: 'capitalize'}}>
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subtitle1">
             {numSelected} ausgewählt
