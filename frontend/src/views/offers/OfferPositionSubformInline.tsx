@@ -10,18 +10,21 @@ import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
+import PositionMoveDialog from '../../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../../form/ServiceSelectDialog';
+import {ActionButton} from '../../layout/ActionButton';
 import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import { DragHandle } from '../../layout/icons';
+import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import {OfferStore} from '../../stores/offerStore';
 import {PositionGroupStore} from '../../stores/positionGroupStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import {Offer, OfferPosition, PositionGroup, Service, ServiceRate} from '../../types';
+import {Offer, OfferPosition, PositionGroup, ProjectPosition, Service, ServiceRate} from '../../types';
 import compose from '../../utilities/compose';
 import { getInsertionIndex } from '../../utilities/getInsertionIndex';
+import {defaultPositionGroup} from '../../utilities/helpers';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 export interface Props {
@@ -42,6 +45,8 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
   state = {
     dialogOpen: false,
     selected_group: undefined,
+    moving: false,
+    moving_index: null,
   };
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
@@ -58,13 +63,24 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
     });
   }
 
+  handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
+    const item = arrayHelpers.remove(positionIndex) as ProjectPosition;
+    // tslint:disable-next-line:no-console
+    console.log('Update index:', item, ' to the new id ', newGroupId);
+    item.position_group_id = newGroupId;
+    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), item.order, (a, b) => a - b);
+    arrayHelpers.insert(insertIndex, item);
+  }
+
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
       throw new Error('no rate was found');
     }
 
-    const group = this.props.formikProps.values.position_groupings.find((e: PositionGroup) => e.name === groupName);
+    const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
+      return e.name === groupName;
+    });
 
     if (group == null && groupName != null && groupName.length > 0) {
       this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
@@ -114,9 +130,9 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                 <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
                 <DimeTableCell style={{ width: '15%' }}>Tariftyp</DimeTableCell>
                 <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>MwSt.</DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
                 <DimeTableCell>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}>Aktionen</DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -165,7 +181,14 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                       <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
                     </DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
-                    <DimeTableCell>
+                    <DimeTableCell style={{paddingRight: '0px'}}>
+                      <ActionButton
+                        icon={MoveIcon}
+                        action={() => {
+                          this.setState({moving: true, moving_index: pIdx});
+                        }}
+                        title={'Verschieben'}
+                      />
                       <DeleteButton onConfirm={() => arrayHelpers.remove(pIdx)} disabled={disabled} />
                     </DimeTableCell>
                   </>
@@ -180,7 +203,7 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
 
   render() {
     const { values } = this.props.formikProps;
-    const groups = [{id: null, name: 'Generell'}, ...values.position_groupings];
+    const groups = [defaultPositionGroup(), ...values.position_groupings];
 
     return (
       <FieldArray
@@ -189,9 +212,11 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
           <Observer>
             {() => (
               <>
-                {groups.filter(e => e != null && (e.name === 'Generell' || values.positions.filter(p => {
+                {groups.filter(e => e != null && (e.name === defaultPositionGroup.name || values.positions.filter(p => {
                     return p.position_group_id === e.id;
-                  }).length > 0)).map((e: any, index: number) => {
+                  }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
+                    return a.name.localeCompare(b.name);
+                  }).map((e: any, index: number) => {
                     return this.renderTable(arrayHelpers, values, e, index === 0);
                   })}
                 {this.state.dialogOpen && (
@@ -201,6 +226,16 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     onSubmit={this.handleAdd(arrayHelpers)}
                     groupName={this.state.selected_group}
                     groupingEntity={this.props.formikProps.values}
+                  />
+                )}
+                {this.state.moving && (
+                  <PositionMoveDialog
+                    positionIndex={this.state.moving_index!}
+                    groupingEntity={this.props.formikProps.values}
+                    onUpdate={this.handleUpdate(arrayHelpers)}
+                    onClose={() => {
+                      this.setState({moving: false, moving_index: null});
+                    }}
                   />
                 )}
               </>
