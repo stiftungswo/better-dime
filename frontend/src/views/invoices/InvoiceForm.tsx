@@ -25,10 +25,11 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Invoice } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import PositionSubformInline from '../PositionSubformInline';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import InvoiceDiscountSubform from './InvoiceDiscountSubform';
 import Navigator from './InvoiceNavigator';
-import InvoicePositionSubformInline from './InvoicePositionSubformInline';
+import InvoicePositionRenderer from './InvoicePositionRenderer';
 import { invoiceSchema } from './invoiceSchema';
 
 export interface Props extends FormViewProps<Invoice> {
@@ -150,7 +151,7 @@ export default class InvoiceForm extends React.Component<Props> {
 
                   <Grid item xs={12}>
                     <DimePaper>
-                      <InvoicePositionSubformInline formikProps={props} name={'positions'} />
+                      <PositionSubformInline tag={InvoicePositionRenderer} formikProps={props} name={'positions'} />
                     </DimePaper>
                   </Grid>
 

@@ -20,7 +20,7 @@ class CreateCustomersFromImportTest extends \TestCase
         CreateCustomersFromImport::create($template['rate_group_id'], $template['hidden'], $template['customers_to_import'], $template['customer_tags']);
 
         // first, check the company
-        $company = Company::with('addresses', 'phone_numbers')->where('name', '=', $template['customers_to_import'][0]['name'])->first();
+        $company = Company::with(   'addresses', 'phone_numbers')->where('name', '=', $template['customers_to_import'][0]['name'])->first();
         $this->assertEquals($template['customers_to_import'][0]['city'], $company->addresses->first()->city);
         $this->assertEquals($template['customers_to_import'][0]['comment'], $company->comment);
         $this->assertEquals($template['customers_to_import'][0]['country'], $company->addresses->first()->country);
@@ -84,7 +84,7 @@ class CreateCustomersFromImportTest extends \TestCase
                 'fax' => '044 888 33 23',
                 'first_name' => null,
                 'main_number' => '044 888 33 22',
-                'name' => 'Stiftung Wirtschaft und Ökologie',
+                'name' => 'TEST_Stiftung Wirtschaft und Ökologie',
                 'last_name' => null,
                 'postcode' => 8603,
                 'street' => 'Bahnstrasse 18b',
@@ -100,7 +100,7 @@ class CreateCustomersFromImportTest extends \TestCase
                 'first_name' => 'Hans',
                 'main_number' => '099 888 22 33',
                 'mobile_number' => '079 666 77 22',
-                'name' => 'Stiftung Wirtschaft und Ökologie',
+                'name' => 'TEST_Stiftung Wirtschaft und Ökologie',
                 'last_name' => 'Heinrich',
                 'postcode' => 8092,
                 'street' => 'Bahnhofstrasse 534c',

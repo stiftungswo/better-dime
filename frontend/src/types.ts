@@ -209,7 +209,7 @@ export interface Status {
   active: boolean;
 }
 
-export interface Invoice {
+export interface Invoice extends PositionGroupings<InvoicePosition> {
   id?: number;
   accountant_id: number;
   customer_id: number;
@@ -228,7 +228,6 @@ export interface Invoice {
   updated_at: string;
   costgroup_distributions: InvoiceCostgroup[];
   discounts: InvoiceDiscount[];
-  positions: InvoicePosition[];
   sibling_invoice_ids: number[];
 }
 

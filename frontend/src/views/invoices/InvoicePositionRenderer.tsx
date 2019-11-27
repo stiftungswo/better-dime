@@ -1,9 +1,8 @@
-import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import {FieldArrayRenderProps} from 'formik';
-import { inject } from 'mobx-react';
+import {FieldArray, FieldArrayRenderProps, FormikProps} from 'formik';
+import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, TextField } from '../../form/fields/common';
@@ -16,10 +15,20 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { ServiceStore } from '../../stores/serviceStore';
-import {OfferPosition, PositionGroup} from '../../types';
+import {ServiceStore} from '../../stores/serviceStore';
+import {Invoice, InvoicePosition, PositionGroup} from '../../types';
 import compose from '../../utilities/compose';
-import { DraggableTableBody } from '../invoices/DraggableTableBody';
+import { DraggableTableBody } from './DraggableTableBody';
+
+const template = () => ({
+  amount: 0,
+  description: '',
+  formikKey: Math.random(),
+  order: 100,
+  price_per_rate: 0,
+  rate_unit_id: 0,
+  vat: 0.077,
+});
 
 interface Props {
   mainStore?: MainStore;
@@ -36,9 +45,10 @@ interface Props {
 }
 
 @compose(
-  inject('mainStore', 'serviceStore'),
+  inject('mainStore'),
+  observer,
 )
-export default class OfferPositionRenderer extends React.Component<Props> {
+export default class InvoicePositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd } = this.props;
 
@@ -47,30 +57,19 @@ export default class OfferPositionRenderer extends React.Component<Props> {
         {!isFirst && (
           <div style={{ paddingTop: '20px' }}/>
         )}
-        <TableToolbar
-          title={'Services - ' + group.name}
-          numSelected={0}
-          addAction={disabled ? undefined : onAdd}
-        />
+        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template())} />
         <div style={{ overflowX: 'auto' }}>
-          {!values.rate_group_id && (
-            <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
-              <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden
-              können.
-            </Typography>
-          )}
           <Table padding={'dense'} style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '15%' }}>Service</DimeTableCell>
-                <DimeTableCell style={{ width: '17%' }}>Beschreibung</DimeTableCell>
+                <DimeTableCell style={{ width: '28%' }}>Beschreibung</DimeTableCell>
                 <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Tariftyp</DimeTableCell>
+                <DimeTableCell style={{ width: '17%' }}>Tariftyp</DimeTableCell>
                 <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
                 <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '7%' }}>Total CHF</DimeTableCell>
+                <DimeTableCell style={{ width: '10%', paddingLeft: '40px'  }}>Aktionen</DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -79,44 +78,29 @@ export default class OfferPositionRenderer extends React.Component<Props> {
               filterKey={'position_group_id'}
               filterValue={group.id}
               renderRow={({ row, index, provided }) => {
-                const p = row as OfferPosition;
+                const p = row as InvoicePosition;
                 const pIdx = values.positions.indexOf(p);
-                const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
-                const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
+                const name = <T extends keyof InvoicePosition>(fieldName: T) => `${this.props.name}.${pIdx}.${fieldName}`;
+                const total = p.amount * p.price_per_rate * (1 + p.vat);
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
                       <DragHandle />
                     </DimeTableCell>
-                    <DimeTableCell>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</DimeTableCell>
                     <DimeTableCell>
-                      <DimeField
-                        delayed
-                        component={TextField}
-                        name={name('description')}
-                        margin={'none'}
-                        disabled={disabled}
-                        multiline
-                        rowsMax={6}
-                      />
+                      <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField
-                        delayed
-                        component={CurrencyField}
-                        name={name('price_per_rate')}
-                        margin={'none'}
-                        disabled={disabled}
-                      />
+                      <DimeField delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      <DimeField component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
+                      <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
+                      <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
                     <DimeTableCell style={{paddingRight: '0px'}}>
@@ -126,7 +110,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                         title={'Verschieben'}
                         disabled={disabled}
                       />
-                      <DeleteButton onConfirm={() => onDelete(pIdx)} disabled={disabled} />
+                      <DeleteButton onConfirm={() => onDelete(pIdx)} />
                     </DimeTableCell>
                   </>
                 );
