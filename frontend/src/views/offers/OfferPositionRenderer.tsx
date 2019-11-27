@@ -2,7 +2,7 @@ import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
-import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
+import {ArrayHelpers, FieldArray, FieldArrayRenderProps, FormikProps} from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
@@ -27,78 +27,26 @@ import { getInsertionIndex } from '../../utilities/getInsertionIndex';
 import {defaultPositionGroup} from '../../utilities/helpers';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
-export interface Props {
+interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
-  positionGroupStore?: PositionGroupStore;
-  offerStore?: OfferStore;
-  formikProps: FormikProps<Offer>;
-  name: string;
+  arrayHelpers: FieldArrayRenderProps;
+  onDelete: (idx: number) => void;
+  onMove: (idx: number) => void;
+  onAdd: (() => void) | undefined;
+  group: PositionGroup;
+  values: any;
+  isFirst?: boolean;
   disabled?: boolean;
+  name: string;
 }
 
 @compose(
-  inject('mainStore', 'serviceStore', 'offerStore', 'positionGroupStore'),
-  observer,
+  inject('mainStore', 'serviceStore'),
 )
-export default class OfferPositionSubformInline extends React.Component<Props> {
-  state = {
-    dialogOpen: false,
-    selected_group: undefined,
-    moving: false,
-    moving_index: null,
-  };
-
-  insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), service.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, {
-      description: '',
-      order: service.order,
-      vat: service.vat,
-      service_id: service.id,
-      position_group_id: groupId,
-      rate_unit_id: rate.rate_unit_id,
-      price_per_rate: rate.value,
-      formikKey: Math.random(),
-    });
-  }
-
-  handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
-    const item = arrayHelpers.remove(positionIndex) as ProjectPosition;
-    // tslint:disable-next-line:no-console
-    console.log('Update index:', item, ' to the new id ', newGroupId);
-    item.position_group_id = newGroupId;
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map(p => p.order), item.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, item);
-  }
-
-  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
-    const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
-    if (!rate) {
-      throw new Error('no rate was found');
-    }
-
-    const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
-      return e.name === groupName;
-    });
-
-    if (group == null && groupName != null && groupName.length > 0) {
-      this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
-        this.props.formikProps.values.position_groupings.push({
-          id: this.props.positionGroupStore!.positionGroup!.id,
-          name: groupName,
-        });
-        this.insertService(arrayHelpers, service, rate, this.props.positionGroupStore!.positionGroup!.id!);
-      });
-    } else if (group != null && group.id != null) {
-      this.insertService(arrayHelpers, service, rate, group.id);
-    } else {
-      this.insertService(arrayHelpers, service, rate, null);
-    }
-  }
-
-  renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
-    const { disabled } = this.props;
+export default class OfferPositionRenderer extends React.Component<Props> {
+  render() {
+    const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd } = this.props;
 
     return (
       <>
@@ -108,14 +56,10 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
         <TableToolbar
           title={'Services - ' + group.name}
           numSelected={0}
-          addAction={
-            disabled || !this.props.formikProps.values.rate_group_id ? undefined : () => {
-              this.setState({ selected_group: group.name, dialogOpen: true });
-            }
-          }
+          addAction={disabled ? undefined : onAdd}
         />
         <div style={{ overflowX: 'auto' }}>
-          {!this.props.formikProps.values.rate_group_id && (
+          {!values.rate_group_id && (
             <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
               <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden
               können.
@@ -184,12 +128,11 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
                     <DimeTableCell style={{paddingRight: '0px'}}>
                       <ActionButton
                         icon={MoveIcon}
-                        action={() => {
-                          this.setState({moving: true, moving_index: pIdx});
-                        }}
+                        action={() => onMove(pIdx)}
                         title={'Verschieben'}
+                        disabled={disabled}
                       />
-                      <DeleteButton onConfirm={() => arrayHelpers.remove(pIdx)} disabled={disabled} />
+                      <DeleteButton onConfirm={() => onDelete(pIdx)} disabled={disabled} />
                     </DimeTableCell>
                   </>
                 );
@@ -198,51 +141,6 @@ export default class OfferPositionSubformInline extends React.Component<Props> {
           </Table>
         </div>
       </>
-    );
-  }
-
-  render() {
-    const { values } = this.props.formikProps;
-    const groups = [defaultPositionGroup(), ...values.position_groupings];
-
-    return (
-      <FieldArray
-        name={this.props.name}
-        render={arrayHelpers => (
-          <Observer>
-            {() => (
-              <>
-                {groups.filter(e => e != null && (e.name === defaultPositionGroup.name || values.positions.filter(p => {
-                    return p.position_group_id === e.id;
-                  }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
-                    return a.name.localeCompare(b.name);
-                  }).map((e: any, index: number) => {
-                    return this.renderTable(arrayHelpers, values, e, index === 0);
-                  })}
-                {this.state.dialogOpen && (
-                  <ServiceSelectDialog
-                    open
-                    onClose={() => this.setState({ dialogOpen: false })}
-                    onSubmit={this.handleAdd(arrayHelpers)}
-                    groupName={this.state.selected_group}
-                    groupingEntity={this.props.formikProps.values}
-                  />
-                )}
-                {this.state.moving && (
-                  <PositionMoveDialog
-                    positionIndex={this.state.moving_index!}
-                    groupingEntity={this.props.formikProps.values}
-                    onUpdate={this.handleUpdate(arrayHelpers)}
-                    onClose={() => {
-                      this.setState({moving: false, moving_index: null});
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </Observer>
-        )}
-      />
     );
   }
 }

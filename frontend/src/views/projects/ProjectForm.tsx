@@ -33,9 +33,10 @@ import { Invoice, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
+import PositionSubformInline from '../PositionSubformInline';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import Navigator from './ProjectNavigator';
-import ProjectPositionSubformInline from './ProjectPositionSubformInline';
+import ProjectPositionRenderer from './ProjectPositionRenderer';
 import { projectSchema } from './projectSchema';
 import { ProjectStatTable } from './ProjectStatTable';
 
@@ -238,7 +239,7 @@ class ProjectForm extends React.Component<Props> {
 
               <Grid item xs={12}>
                 <DimePaper>
-                  <ProjectPositionSubformInline formikProps={props} name={'positions'} />
+                  <PositionSubformInline tag={ProjectPositionRenderer} formikProps={props} name={'positions'} />
                 </DimePaper>
               </Grid>
             </Grid>
