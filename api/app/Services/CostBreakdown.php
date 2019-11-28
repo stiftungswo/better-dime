@@ -95,8 +95,8 @@ class CostBreakdown
                 'positions' => $filteredPositions,
                 'subsubtotal' => self::calculateSubtotal($filteredPositions),
             ];
-        })->concat([$defaultGroup])->sortBy(function ($groupA, $groupB) {
-            return strcmp($groupA['groupName'], $groupB['groupName']);
+        })->concat([$defaultGroup])->sortBy(function($value, $key){
+            return $value['groupName'];
         })->filter(function ($group){
             return $group['positions']->count() > 0;
         });

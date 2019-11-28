@@ -20,7 +20,7 @@ import {Invoice, InvoicePosition, PositionGroup} from '../../types';
 import compose from '../../utilities/compose';
 import { DraggableTableBody } from './DraggableTableBody';
 
-const template = () => ({
+const template = (groupId?: number) => ({
   amount: 0,
   description: '',
   formikKey: Math.random(),
@@ -28,6 +28,7 @@ const template = () => ({
   price_per_rate: 0,
   rate_unit_id: 0,
   vat: 0.077,
+  position_group_id: groupId ? groupId : null,
 });
 
 interface Props {
@@ -57,7 +58,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
         {!isFirst && (
           <div style={{ paddingTop: '20px' }}/>
         )}
-        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template())} />
+        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))} />
         <div style={{ overflowX: 'auto' }}>
           <Table padding={'dense'} style={{ minWidth: '1200px' }}>
             <TableHead>
