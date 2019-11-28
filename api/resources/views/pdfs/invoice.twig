@@ -56,39 +56,76 @@
         {% endif %}
     </div>
 
-    {{ tableGen(
-        {
-            "table": {
-            "class": "table"
-        },
-            "tfoot-tr": {
-            "class": "bold-cells"
-        }
-        },
-        {
-            "Bezeichnung": {"attr": { "class": "first-row" }},
-            "Ansatz CHF": {"attr": { "class": "second-row text-align-right" }},
-            "Einheit": {"attr": { "class": "third-row" }},
-            "Anzahl": {"attr": { "class": "fourth-row" }},
-            "MwSt. Satz": {"attr": { "class": "fifth-row text-align-right" }},
-            "Teilbetrag CHF exkl. MwSt.": {"attr": { "class": "sixth-row text-align-right" }}
-        },
-        breakdown.positions,
-        {
-            "description": {},
-            "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "money"},
-            "rate_unit.billing_unit": {},
-            "amount": {},
-            "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
-            "calculated_total": {"attr": {"class": "text-align-right" }, "format": "money"}
-        },
-        [
+    {% set tableBaseStyle = 'margin-top: 0px;padding-top: 0px;' %}
+    {% set tableIndent = (breakdown.groupedPositions.count() > 1 ? 'padding-left: 10px;' : '') %}
+
+    {% for group in breakdown.groupedPositions %}
+        {% if (breakdown.groupedPositions.count() > 1) %}
+        <div class="service-group-name">
+            Services - {{ group.groupName | raw }}
+        </div>
+        {% endif %}
+
+        {{ tableGen(
             {
-                "Subtotal": {"attr": {"colspan": "5" }},
-                (breakdown.subtotal): {"format": "money", "attr": {"class": "text-align-right"}}
+                "table": {
+                "class": "table",
+                "style": tableBaseStyle ~ tableIndent
+            },
+                "tfoot-tr": {
+                "class": "bold-cells"
             }
-        ]
-    ) }}
+            },
+            {
+                "Bezeichnung": {"attr": { "class": "first-row" }},
+                "Ansatz CHF": {"attr": { "class": "second-row text-align-right" }},
+                "Einheit": {"attr": { "class": "third-row" }},
+                "Anzahl": {"attr": { "class": "fourth-row" }},
+                "MwSt. Satz": {"attr": { "class": "fifth-row text-align-right" }},
+                "Teilbetrag CHF exkl. MwSt.": {"attr": { "class": "sixth-row text-align-right" }}
+            },
+            group.positions,
+            {
+                "description": {},
+                "price_per_rate": {"attr": {"class": "text-align-right"}, "format": "money"},
+                "rate_unit.billing_unit": {},
+                "amount": {},
+                "vat": {"attr": {"class": "text-align-right"}, "format": "percent"},
+                "calculated_total": {"attr": {"class": "text-align-right" }, "format": "money"}
+            },
+            [
+                {
+                    "Subtotal": {"attr": {"colspan": "5" }},
+                    (group.subsubtotal): {"format": "money", "attr": {"class": "text-align-right"}}
+                }
+            ]
+        ) }}
+    {% endfor %}
+
+    {% if (breakdown.groupedPositions.count() > 1) %}
+        {{ tableGen(
+            {
+                "table": {
+                "class": "table",
+                "style": "margin-top: 10px;"
+            },
+                "tfoot-tr-0": {
+                "class": "bold-cells"
+            }
+            },
+            {
+            },
+            undefined,
+            {
+            },
+            [
+                {
+                    'Subtotal': {"attr": {"colspan": "5" }},
+                    (breakdown.subtotal): {"format": "chf", "attr": {"class": "text-align-right"}}
+                }
+            ]
+        ) }}
+    {% endif %}
 
     {% if breakdown.discounts is not empty %}
         <div class="avoid-page-break">
