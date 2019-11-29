@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import DimeLayout from './layout/DimeLayout';
 import { ProtectedRoute } from './utilities/ProtectedRoute';
+import CommentPresetOverview from './views/comment_presets/CommentPresetOverview';
 import CompanyCreate from './views/companies/CompanyCreate';
 import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
@@ -66,6 +67,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/employees/new" component={EmployeeCreateView} />
             <ProtectedRoute exact path="/employees/:id" component={EmployeeUpdateView} />
             <ProtectedRoute exact path="/holidays" component={HolidayOverview} />
+            <ProtectedRoute exact path="/comment_presets/" component={CommentPresetOverview} />
             <ProtectedRoute exact requiresAdmin path="/rate_units" component={RateUnitOverview} />
             <ProtectedRoute exact requiresAdmin path="/employee_groups" component={EmployeeGroupOverview} />
             <ProtectedRoute exact path="/rate_groups" component={RateGroupOverview} />

@@ -40,16 +40,17 @@ export const invoiceSchema = localizeSchema(() =>
   }),
 );
 
-export const invoiceTemplate = {
+export const invoiceTemplate = () => ({
   id: undefined,
   name: '',
   description: '',
   address_id: '',
   accountant_id: '',
   customer_id: undefined,
+  position_groupings: [],
   positions: [],
   discounts: [],
   costgroup_distributions: [],
   start: '',
   end: '',
-};
+});

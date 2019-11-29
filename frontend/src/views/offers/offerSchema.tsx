@@ -40,15 +40,16 @@ export const offerSchema = localizeSchema(() => {
   },
 );
 
-export const offerTemplate = {
+export const offerTemplate = () => ({
   id: undefined,
   name: '',
   status: 1,
   short_description: '',
   description: '',
   positions: [],
+  position_groupings: [],
   discounts: [],
   customer_id: undefined,
   address_id: undefined,
   rate_group_id: undefined,
-};
+});

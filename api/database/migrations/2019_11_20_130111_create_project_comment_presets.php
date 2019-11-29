@@ -15,7 +15,7 @@ class CreateProjectCommentPresets extends Migration
     {
         Schema::create('project_comment_presets', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('comment_preset');
+            $table->char('comment_preset', 200);
 
             $table->softDeletes();
             $table->timestamps();

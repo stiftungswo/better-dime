@@ -43,7 +43,7 @@ export default class ProjectCreate extends React.Component<Props> {
         onSubmit={this.handleSubmit}
         project={
           {
-            ...projectTemplate,
+            ...projectTemplate(),
             accountant_id: this.props.mainStore!.userId!,
           } as FormValues
         }
