@@ -68,6 +68,11 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   }
 
   protected async doFetchAll() {
+    const res = await this.mainStore.api.get<Company[]>('/companies');
+    this.companies = res.data;
+  }
+
+  protected async doFetchFiltered() {
     const res = await this.mainStore.api.get<Company[]>('/companies', {params: this.getQueryParams()});
     this.companies = res.data;
   }

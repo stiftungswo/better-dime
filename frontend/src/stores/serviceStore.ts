@@ -56,6 +56,11 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   }
 
   protected async doFetchAll() {
+    const res = await this.mainStore.api.get<ServiceListing[]>('/services');
+    this.services = res.data;
+  }
+
+  protected async doFetchFiltered() {
     const res = await this.mainStore.api.get<ServiceListing[]>('/services', {params: this.getQueryParams()});
     this.services = res.data;
   }

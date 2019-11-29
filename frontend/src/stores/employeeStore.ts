@@ -59,6 +59,11 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAll() {
+    const res = await this.mainStore.api.get<Employee[]>('/employees');
+    this.employees = res.data;
+  }
+
+  protected async doFetchFiltered() {
     const res = await this.mainStore.api.get<Employee[]>('/employees', {params: this.getQueryParams()});
     this.employees = res.data;
   }

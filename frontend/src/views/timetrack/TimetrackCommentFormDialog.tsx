@@ -44,7 +44,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
       await projectCommentStore.post(schema.cast(entity));
       await this.widenFilterSettings(entity);
     }
-    await projectCommentStore.fetchFiltered(this.props.timetrackFilterStore!.filter);
+    await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
     projectCommentStore.editing = false;
   }
 

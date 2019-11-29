@@ -13,7 +13,7 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
   private fetchAllCache: Cache = new Cache(1, this.constructor.name + 'fAllCache');
   // a fully associative cache for for fetchOne results with 20 cache lines
   @observable
-  private fetchOneCache: Cache = new Cache(3, this.constructor.name + 'fOneCache');
+  private fetchOneCache: Cache = new Cache(20, this.constructor.name + 'fOneCache');
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
