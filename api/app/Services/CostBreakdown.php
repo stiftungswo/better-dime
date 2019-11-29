@@ -80,7 +80,7 @@ class CostBreakdown
         $defaultGroup = [
             'groupName' => 'Generell',
             'positions' => $defaultPositions,
-            'subsubtotal' => self::calculateSubtotal($defaultPositions),
+            'subtotal' => self::calculateSubtotal($defaultPositions),
         ];
 
         /** @var Collection $groups */
@@ -93,7 +93,7 @@ class CostBreakdown
             return [
                 'groupName' => $group->name,
                 'positions' => $filteredPositions,
-                'subsubtotal' => self::calculateSubtotal($filteredPositions),
+                'subtotal' => self::calculateSubtotal($filteredPositions),
             ];
         })->concat([$defaultGroup])->sortBy(function($value, $key){
             return $value['groupName'];
