@@ -78,12 +78,12 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
 
   handleEffortDelete = async (id: number) => {
     await this.props.effortStore!.delete(id);
-    await this.props.effortStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
+    await this.props.effortStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
   }
 
   handleCommentDelete = async (id: number) => {
     await this.props.projectCommentStore!.delete(id);
-    await this.props.projectCommentStore!.fetchFiltered(this.props.timetrackFilterStore!.filter);
+    await this.props.projectCommentStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
   }
 
   render() {

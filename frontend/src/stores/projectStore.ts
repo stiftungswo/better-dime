@@ -97,6 +97,11 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
+    const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
+    this.projects = res.data;
+  }
+
+  protected async doFetchFiltered(): Promise<void> {
     const res = await this.mainStore.api.get<ProjectListing[]>('/projects', {params: this.getQueryParams()});
     this.projects = res.data;
   }

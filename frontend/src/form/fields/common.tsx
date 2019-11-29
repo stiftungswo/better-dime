@@ -84,7 +84,7 @@ export const SwitchField = ({ label, value, onChange }: DimeInputFieldProps<bool
 export const EmailField = (props: DimeInputFieldProps) => <DimeInputField type={'email'} {...props} />;
 
 const toString = (n: number) => String(n);
-const toNumber = (s: string) => Math.round(Number(s));
+const toNumber = (s: string) => Number(s);
 export const NumberField = (props: TransformingFieldProps<number>) => (
   <TransformingField {...props} toString={toString} toValue={toNumber} type={'number'} {...props} />
 );

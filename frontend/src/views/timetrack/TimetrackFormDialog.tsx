@@ -104,10 +104,10 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         date: entity.date.format(apiDateFormat),
       } as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
-      await this.props.projectCommentStore!.fetchFiltered(filter);
+      await this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter);
     }
 
-    await effortStore.fetchFiltered(filter);
+    await effortStore.fetchWithProjectEffortFilter(filter);
     formikProps.setSubmitting(false);
     this.setState({ lastEntry: entity });
     if (this.state.closeAfterSubmit) {

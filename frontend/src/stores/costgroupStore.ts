@@ -27,4 +27,9 @@ export class CostgroupStore extends AbstractStore<Costgroup> {
     const res = await this.mainStore.api.get<Costgroup[]>('/costgroups');
     this.costgroups = res.data;
   }
+
+  protected async doFetchFiltered() {
+    const res = await this.mainStore.api.get<Costgroup[]>('/costgroups', {params: this.getQueryParams()});
+    this.costgroups = res.data;
+  }
 }

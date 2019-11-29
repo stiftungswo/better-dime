@@ -62,6 +62,11 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAll(): Promise<void> {
+    const res = await this.mainStore.api.get<OfferListing[]>('/offers');
+    this.offers = res.data;
+  }
+
+  protected async doFetchFiltered(): Promise<void> {
     const res = await this.mainStore.api.get<OfferListing[]>('/offers', {params: this.getQueryParams()});
     this.offers = res.data;
   }

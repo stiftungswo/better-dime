@@ -31,8 +31,8 @@ interface Props {
 export class TimetrackFilterForm extends React.Component<Props> {
   handleSubmit = () => {
     const filter = this.props.timetrackFilterStore!.filter;
-    this.props.effortStore!.fetchFiltered(filter);
-    this.props.projectCommentStore!.fetchFiltered(filter);
+    this.props.effortStore!.fetchWithProjectEffortFilter(filter);
+    this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter);
   }
 
   changeGroupBy = (event: ChangeEvent, value: Grouping) => {

@@ -52,7 +52,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   }
 
   @action
-  async fetchFiltered(filter: ProjectEffortFilter) {
+  async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     this.loading = true;
     try {
       const res = await this.mainStore.api.get<ProjectEffortListing[]>('/project_efforts', {

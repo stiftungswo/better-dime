@@ -41,6 +41,12 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
 
   @action
   async doFetchAll() {
+    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
+    this.projectCategories = res.data;
+  }
+
+  @action
+  async doFetchFiltered() {
     const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories', {params: this.getQueryParams()});
     this.projectCategories = res.data;
   }

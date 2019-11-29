@@ -73,6 +73,17 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @action
+  async fetchFiltered() {
+    try {
+      await this.doFetchFiltered();
+    } catch (e) {
+      this.mainStore.displayError(`${this.entityName.plural} konnten nicht geladen werden.`);
+      console.error(e);
+      throw e;
+    }
+  }
+
+  @action
   async fetchOne(id: number) {
     try {
       this.entity = undefined;
@@ -179,6 +190,10 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   protected async doFetchAll() {
+    throw new Error('Not implemented');
+  }
+
+  protected async doFetchFiltered() {
     throw new Error('Not implemented');
   }
 
