@@ -48,7 +48,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   }
 
   @action
-  async fetchFiltered(filter: ProjectEffortFilter) {
+  async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     try {
       const res = await this.mainStore.api.get<ProjectComment[]>('/project_comments', {
         params: {

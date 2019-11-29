@@ -35,6 +35,11 @@ export class CustomerStore extends AbstractStore<Customer> {
     this.customers = res.data;
   }
 
+  protected async doFetchFiltered() {
+    const res = await this.mainStore.api.get<Customer[]>('/customers', {params: this.getQueryParams()});
+    this.customers = res.data;
+  }
+
   protected async doFetchOne(id: number): Promise<Customer> {
     const res = await this.mainStore.api.get<Customer>('/customers/' + id);
     this.customer = res.data;

@@ -41,6 +41,12 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   @action
   async doFetchAll() {
+    const res = await this.mainStore.api.get<Person[]>('/people');
+    this.people = res.data;
+  }
+
+  @action
+  async doFetchFiltered() {
     const res = await this.mainStore.api.get<Person[]>('/people', {params: this.getQueryParams()});
     this.people = res.data;
   }

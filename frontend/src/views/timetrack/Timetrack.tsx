@@ -44,8 +44,8 @@ export default class Timetrack extends React.Component<Props> {
   componentWillMount() {
     const filter = this.props.timetrackFilterStore!.filter;
     Promise.all([
-      this.props.effortStore!.fetchFiltered(filter),
-      this.props.projectCommentStore!.fetchFiltered(filter),
+      this.props.effortStore!.fetchWithProjectEffortFilter(filter),
+      this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter),
       this.props.rateUnitStore!.fetchAll(),
       this.props.serviceStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),

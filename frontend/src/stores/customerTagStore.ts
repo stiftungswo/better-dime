@@ -41,6 +41,12 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
 
   @action
   async doFetchAll() {
+    const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags');
+    this.customerTags = res.data;
+  }
+
+  @action
+  async doFetchFiltered() {
     const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()});
     this.customerTags = res.data;
   }

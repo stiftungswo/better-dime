@@ -29,7 +29,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
     const effortStore = this.props.effortStore!;
     const filterStore = this.props.timetrackFilterStore!;
     await Promise.all(this.selectedIds.map(id => effortStore.delete(id)));
-    await effortStore.fetchFiltered(filterStore.filter);
+    await effortStore.fetchWithProjectEffortFilter(filterStore.filter);
     this.selectedIds.forEach(id => filterStore.selectedEffortIds.set(id, false));
   }
 

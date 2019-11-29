@@ -45,6 +45,11 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
   }
 
   protected async doFetchAll(): Promise<void> {
+    const res = await this.mainStore.api.get<InvoiceListing[]>('/invoices');
+    this.invoices = res.data;
+  }
+
+  protected async doFetchFiltered(): Promise<void> {
     const res = await this.mainStore.api.get<InvoiceListing[]>('/invoices', {params: this.getQueryParams()});
     this.invoices = res.data;
   }

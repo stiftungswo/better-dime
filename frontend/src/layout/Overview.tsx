@@ -63,7 +63,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     if (this.props.paginated && (this.props.store) instanceof AbstractPaginatedStore) {
       return this.props.adapter ? this.props.adapter.fetch() : paginatedStore!.fetchAllPaginated();
     } else {
-      return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchAll();
+      return this.props.adapter ? this.props.adapter.fetch() : this.props.store!.fetchFiltered();
     }
   }
 

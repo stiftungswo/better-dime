@@ -62,7 +62,13 @@ export class HolidayStore extends AbstractStore<Holiday> {
   }
 
   @action
-  protected async doFetchAll() {
+  protected async doFetch() {
+    const res = await this.mainStore.api.get<Holiday[]>('/holidays');
+    this.holidays = res.data;
+  }
+
+  @action
+  protected async doFetchFiltered() {
     const res = await this.mainStore.api.get<Holiday[]>('/holidays', {params: this.getQueryParams()});
     this.holidays = res.data;
   }
