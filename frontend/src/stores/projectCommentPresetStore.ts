@@ -46,6 +46,16 @@ export class ProjectCommentPresetStore extends AbstractStore<ProjectCommentPrese
   @action
   protected async doFetchAll() {
     try {
+      const res = await this.mainStore.api.get<ProjectCommentPreset[]>('/project_comment_presets');
+      this.projectCommentPresets = res.data;
+    } catch (e) {
+      this.mainStore.displayError('Fehler beim laden der Kommentarevorschläge');
+    }
+  }
+
+  @action
+  protected async doFetchFiltered() {
+    try {
       const res = await this.mainStore.api.get<ProjectCommentPreset[]>('/project_comment_presets', {
         params: this.getQueryParams(),
       });

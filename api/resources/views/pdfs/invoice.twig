@@ -62,7 +62,7 @@
     {% for group in breakdown.groupedPositions %}
         {% if (breakdown.groupedPositions.count() > 1) %}
         <div class="service-group-name">
-            Services - {{ group.groupName | raw }}
+            {{ group.groupName | raw }}
         </div>
         {% endif %}
 
