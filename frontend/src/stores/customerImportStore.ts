@@ -1,6 +1,7 @@
 // tslint:disable:no-console
 import { action, observable } from 'mobx';
 import { ProjectEffort } from '../types';
+import {Cache} from '../utilities/Cache';
 import { AbstractStore } from './abstractStore';
 
 export interface CustomerImportSettings {
@@ -73,6 +74,7 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
       this.displayInProgress();
       this.importIsLoading = true;
       await this.mainStore.api.post('/customers/import', { customers_to_import: this.customersToImport, ...importSettings });
+      Cache.invalidateAllActiveCaches();
       this.customersToImport = [];
       this.importIsLoading = false;
       this.mainStore.displaySuccess('Der Import wurde erfolgreich durchgeführt!');
