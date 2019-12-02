@@ -60,10 +60,10 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
 
   async createInvoice(id: number): Promise<Invoice> {
     // creating a new invoice can affect caches so we invalidate all
-    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
       return res.data;
     } catch (e) {

@@ -7,6 +7,7 @@ interface Props {
   children: React.ReactNode;
   isSubmitting: boolean;
   isValid: boolean;
+  errors?: any;
   mainStore?: MainStore;
 }
 
@@ -17,8 +18,13 @@ interface Props {
 export class FormikSubmitDetector extends React.Component<Props> {
   //  SOURCE: https://github.com/jaredpalmer/formik/issues/1019
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.isSubmitting && !this.props.isSubmitting && !this.props.isValid) {
-      this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
+    const hasErrors = this.props.errors.constructor === Object && Object.keys(this.props.errors).length > 0;
+    if (prevProps.isSubmitting && !this.props.isSubmitting && (!this.props.isValid || hasErrors)) {
+      if (!this.props.isValid) {
+        this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
+      }
+      // tslint:disable-next-line:no-console
+      console.log('We got submit errors: ', this.props.errors);
     }
   }
 

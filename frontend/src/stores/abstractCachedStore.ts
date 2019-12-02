@@ -49,40 +49,26 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
 
   @action
   async post(entity: T) {
-    // if we create an entry it could affect other caches
-    Cache.invalidateAllActiveCaches();
     return super.post(entity);
   }
 
   @action
   async put(entity: T) {
-    // if we update an entry it could affect other caches
-    Cache.invalidateAllActiveCaches();
     return super.put(entity);
   }
 
   @action
   async delete(id: number) {
-    // if we delete an entry it could affect other caches
-    Cache.invalidateAllActiveCaches();
     return super.delete(id);
   }
 
   @action
   async duplicate(id: number): Promise<T> {
-    // if we duplicate an entry it could affect other caches
-    Cache.invalidateAllActiveCaches();
     return super.duplicate(id);
   }
 
   @action
   async archive(id: number, archived: boolean) {
-    this.invalidateLocalCaches();
     return super.archive(id, archived);
-  }
-
-  invalidateLocalCaches() {
-    this.fetchAllCache.invalidate();
-    this.fetchOneCache.invalidate();
   }
 }

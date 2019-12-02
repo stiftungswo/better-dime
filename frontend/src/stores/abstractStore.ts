@@ -97,10 +97,10 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async post(entity: T) {
-    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doPost(entity);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gespeichert.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gespeichert werden.`);
@@ -111,10 +111,10 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async put(entity: T) {
-    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doPut(entity);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gespeichert.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gespeichert werden.`);
@@ -125,10 +125,10 @@ export class AbstractStore<T, OverviewType = T> {
 
   @action
   async delete(id: number) {
-    Cache.invalidateAllActiveCaches();
     try {
       this.displayInProgress();
       await this.doDelete(id);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde gelöscht.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht gelöscht werden.`);
@@ -142,6 +142,7 @@ export class AbstractStore<T, OverviewType = T> {
     Cache.invalidateAllActiveCaches();
     try {
       const newEntity: AxiosResponse = await this.doDuplicate(id);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
       return newEntity.data;
     } catch (e) {
@@ -157,6 +158,7 @@ export class AbstractStore<T, OverviewType = T> {
     try {
       this.displayInProgress();
       await this.doArchive(id, archived);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich ${archived ? 'archiviert' : 'wiederhergestellt'}.`);
     } catch (e) {
       this.mainStore.displayError(`${this.entityName.singular} konnte nicht ${archived ? 'archiviert' : 'wiederhergestellt'} werden.`);
