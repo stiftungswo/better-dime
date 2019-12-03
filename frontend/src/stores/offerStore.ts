@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
 import {Offer, OfferListing, PaginatedOfferListing, PaginatedProjectListing, Project, ProjectListing} from '../types';
+import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -44,6 +45,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     try {
       this.displayInProgress();
       const res = await this.mainStore.api.post<Project>(`/offers/${id}/create_project`);
+      Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess('Das Projekt wurde erstellt');
       return res.data;
     } catch (e) {

@@ -16,7 +16,7 @@ export class Cache {
   private name: string;
   private readonly lines: number | null = null;
   private cache: any[] = [];
-  private showDebugLogs: boolean = true;
+  private showDebugLogs: boolean = false;
 
   constructor(lines: number | null = null, name: string = 'defaultCache') {
     this.lines = lines;

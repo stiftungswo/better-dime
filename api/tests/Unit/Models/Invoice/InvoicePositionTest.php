@@ -4,11 +4,15 @@ namespace Tests\Unit\Models\Invoice;
 
 use App\Models\Invoice\Invoice;
 use App\Models\Invoice\InvoicePosition;
+use App\Models\PositionGroup\PositionGroup;
 use App\Models\Project\ProjectPosition;
 use App\Models\Service\RateUnit;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class InvoicePositionTest extends \TestCase
 {
+    use DatabaseTransactions;
+
     public function testInvoiceAssignment()
     {
         $invoicePosition = factory(InvoicePosition::class)->make();
@@ -31,6 +35,14 @@ class InvoicePositionTest extends \TestCase
         $projectPosition = factory(ProjectPosition::class)->make();
         $invoicePosition->project_position()->associate($projectPosition);
         $this->assertEquals($projectPosition, $invoicePosition->project_position);
+    }
+
+    public function testPositionGroupAssignment()
+    {
+        $positionGroup = factory(PositionGroup::class)->make();
+        $invoicePosition = factory(InvoicePosition::class)->make();
+        $invoicePosition->position_group()->associate($positionGroup);
+        $this->assertEquals($positionGroup, $invoicePosition->position_group);
     }
 
     public function testValidCalculatedTotal()
