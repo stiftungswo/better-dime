@@ -25,6 +25,12 @@ interface Props {
 @inject('timetrackFilterStore', 'effortStore')
 @observer
 export class TimetrackEntityGroup extends React.Component<Props> {
+  state = {
+    moving: false,
+  };
+
+  isComponentMounted = false;
+
   handleDelete = async () => {
     const effortStore = this.props.effortStore!;
     const filterStore = this.props.timetrackFilterStore!;
@@ -34,8 +40,18 @@ export class TimetrackEntityGroup extends React.Component<Props> {
   }
 
   handleMove = async () => {
-    this.selectedIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
-    this.props.effortStore!.moving = false;
+    if (this.isComponentMounted) {
+      this.selectedIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
+      this.setState({moving: false});
+    }
+  }
+
+  componentDidMount() {
+    this.isComponentMounted = true;
+  }
+
+  componentWillUnmount() {
+    this.isComponentMounted = false;
   }
 
   get selectedIds() {
@@ -49,7 +65,6 @@ export class TimetrackEntityGroup extends React.Component<Props> {
   render() {
     const { actions, columns, efforts, onClickRow, title, displayTotal } = this.props;
     const filterStore = this.props.timetrackFilterStore!;
-    const effortStore = this.props.effortStore!;
     const selectedIds = this.selectedIds;
 
     const setSelected = (effort: ProjectEffortListing, state: boolean) => {
@@ -65,7 +80,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
           selectedCount={selectedIds.length}
           selectedActions={
             <>
-              <ActionButton icon={MoveIcon} action={() => (effortStore.moving = true)} title={'Verschieben'} />
+              <ActionButton icon={MoveIcon} action={() => (this.setState({moving: true}))} title={'Verschieben'} />
               <DeleteButton onConfirm={this.handleDelete} />
             </>
           }
@@ -78,7 +93,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
             'Keine Leistungen erfasst mit den gewählten Filtern.'
           )}
         </TimetrackExpansionPanel>
-        {effortStore.moving && <EffortMoveDialog effortIds={selectedIds} onClose={this.handleMove} />}
+        {this.state.moving && <EffortMoveDialog effortIds={selectedIds} onClose={this.handleMove} />}
       </>
     );
   }
