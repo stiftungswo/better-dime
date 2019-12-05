@@ -53,7 +53,7 @@
         {% endif %}
         <table class="table" style="{{ tableIndent }}">
             <thead>
-            <tr>
+            <tr class="{{ (breakdown.groupedPositions.count() > 1 ? 'light-font' : '') }}">
                 <th class="first-row">Position</th>
                 <th class="second-row text-align-right">Ansatz CHF</th>
                 <th class="third-row">Einheit</th>
@@ -80,7 +80,7 @@
             {% endfor %}
             </tbody>
             <tfoot>
-            <tr>
+            <tr class="{{ (breakdown.groupedPositions.count() > 1 ? '' : 'bold-cells') }}">
                 <td colspan="5" class="text-align-left">Subtotal</td>
                 <td class="text-align-right">{{ ((group.subtotal) / 100) | number_format(2, '.', "'") }}</td>
             </tr>
