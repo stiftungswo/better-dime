@@ -14,7 +14,7 @@ import {DimeField} from './fields/formik';
 
 const schema = localizeSchema(() =>
   yup.object({
-    positionGroupName: yup.string(),
+    positionGroupName: yup.string().nullable(true),
   }),
 );
 
@@ -31,6 +31,7 @@ interface Props {
   groupingEntity: PositionGroupings<any>;
   onClose: () => void;
   onUpdate: (positionIndex: number, newGroupId: number | null) => void;
+  placeholder?: string;
 }
 
 @inject('positionGroupStore', 'mainStore')
@@ -38,16 +39,17 @@ interface Props {
 export default class PositionMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
+    const positionGroupName = values.positionGroupName != null ? values.positionGroupName : '';
 
     const group = [defaultPositionGroup(), ...this.props.groupingEntity.position_groupings].find((e: PositionGroup) => {
-      return e.name.toLowerCase() === values.positionGroupName.toLowerCase();
+      return e.name.toLowerCase() === positionGroupName.toLowerCase();
     });
 
-    if (group == null && values.positionGroupName != null && values.positionGroupName.length > 0) {
-      this.props.positionGroupStore!.post({name: values.positionGroupName}).then(nothing => {
+    if (group == null && positionGroupName != null && positionGroupName.length > 0) {
+      this.props.positionGroupStore!.post({name: positionGroupName}).then(nothing => {
         this.props.groupingEntity.position_groupings.push({
           id: this.props.positionGroupStore!.positionGroup!.id,
-          name: values.positionGroupName,
+          name: positionGroupName,
         });
         this.props.onUpdate(this.props.positionIndex, this.props.positionGroupStore!.positionGroup!.id!);
       });
@@ -61,6 +63,8 @@ export default class PositionMoveDialog extends React.Component<Props> {
   }
 
   render() {
+    const placeholder = this.props.placeholder;
+
     return (
       <FormDialog
         open
@@ -74,6 +78,7 @@ export default class PositionMoveDialog extends React.Component<Props> {
             <DimeField
               component={PositionGroupSelect}
               groupingEntity={this.props.groupingEntity}
+              placeholder={placeholder}
               name={'positionGroupName'}
               label={'Position Group Select'}
             />

@@ -20,6 +20,7 @@ interface Props {
   onSubmit: (service: Service, groupName: string | null) => void;
   groupingEntity?: PositionGroupings<any>;
   groupName?: string;
+  placeholder?: string;
 }
 
 @compose(
@@ -57,6 +58,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
             <PositionGroupSelect
               label={'Service Gruppe'}
               groupingEntity={this.props.groupingEntity!}
+              placeholder={this.props.placeholder}
               value={this.state.positionGroupName}
               onChange={positionGroupName => this.setState({ positionGroupName })}
             />

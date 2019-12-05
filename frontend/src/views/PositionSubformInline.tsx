@@ -29,7 +29,7 @@ export interface Props {
 export default class PositionSubformInline extends React.Component<Props> {
   state = {
     dialogOpen: false,
-    selected_group: undefined,
+    selected_group: defaultPositionGroup().name,
     moving: false,
     moving_index: null,
   };
@@ -55,21 +55,22 @@ export default class PositionSubformInline extends React.Component<Props> {
     arrayHelpers.insert(insertIndex, item);
   }
 
-  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string) => {
+  handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
     const rate = service.service_rates.find(r => r.rate_group_id === this.props.formikProps.values.rate_group_id);
     if (!rate) {
       throw new Error('no rate was found');
     }
+    const positionGroupName = groupName != null ? groupName : '';
 
     const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
-      return e.name.toLowerCase() === groupName.toLowerCase();
+      return e.name.toLowerCase() === positionGroupName.toLowerCase();
     });
 
-    if (group == null && groupName != null && groupName.length > 0) {
-      this.props.positionGroupStore!.post({name: groupName}).then(nothing => {
+    if (group == null && positionGroupName != null && positionGroupName.length > 0) {
+      this.props.positionGroupStore!.post({name: positionGroupName}).then(nothing => {
         this.props.formikProps.values.position_groupings.push({
           id: this.props.positionGroupStore!.positionGroup!.id,
-          name: groupName,
+          name: positionGroupName,
         });
         this.insertService(arrayHelpers, service, rate, this.props.positionGroupStore!.positionGroup!.id!);
       });
@@ -123,7 +124,8 @@ export default class PositionSubformInline extends React.Component<Props> {
                   open
                   onClose={() => this.setState({ dialogOpen: false })}
                   onSubmit={this.handleAdd(arrayHelpers)}
-                  groupName={this.state.selected_group}
+                  placeholder={defaultPositionGroup().name}
+                  groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
                   groupingEntity={this.props.formikProps.values}
                 />
               )}
@@ -131,6 +133,7 @@ export default class PositionSubformInline extends React.Component<Props> {
                 <PositionMoveDialog
                   positionIndex={this.state.moving_index!}
                   groupingEntity={this.props.formikProps.values}
+                  placeholder={defaultPositionGroup().name}
                   onUpdate={this.handleUpdate(arrayHelpers)}
                   onClose={() => {
                     this.setState({moving: false, moving_index: null});

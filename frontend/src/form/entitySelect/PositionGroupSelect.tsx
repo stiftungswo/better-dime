@@ -9,6 +9,7 @@ import Select from '../fields/Select';
 
 interface Props extends DimeCustomFieldProps<string | null> {
   groupingEntity: PositionGroupings<any>;
+  placeholder?: string;
 }
 
 @compose(
@@ -56,7 +57,16 @@ export class PositionGroupSelect extends React.Component<Props> {
 
   render() {
     if (this.props.groupingEntity) {
-      return <Select creatable onCreate={this.onCreate} options={this.options} {...this.props} />;
+      return (
+        <Select
+          creatable
+          isClearable
+          formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
+          onCreate={this.onCreate}
+          options={this.options}
+          {...this.props}
+        />
+      );
     } else {
       return <Select options={[]} isDisabled placeholder={'Kein Subjekt wurde übergeben'} {...this.props} />;
     }
