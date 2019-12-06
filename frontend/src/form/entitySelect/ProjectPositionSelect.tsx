@@ -25,12 +25,15 @@ export class ProjectPositionSelect extends React.Component<Props> {
       const groups = [defaultPositionGroup(), ...this.props.effortStore!.selectedProject!.position_groupings];
       return this.props.effortStore!.selectedProject!.positions.map(e => {
         const group = groups.find((g: PositionGroup) => g.id === e.position_group_id);
-        const groupName = group != null && groups.length > 1 ? ' [' + group.name + ']' : '';
+        const existsSameService = this.props.effortStore!.selectedProject!.positions.filter((p: any) => {
+          return p.service_id != null && p.service_id === e.service_id;
+        }).length > 1;
+        const groupName = group != null && existsSameService ? ' [' + group.name + ']' : '';
         return {
           value: e.id,
           label: e.service.name + groupName,
         };
-      });
+      }).sort((a, b) => a.label.localeCompare(b.label));
     } else {
       return [];
     }
