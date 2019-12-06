@@ -40,7 +40,7 @@ export default class CommentPresetOverview extends React.Component<Props> {
     return (
       <EditableOverview
         searchable
-        title={'Kommentarvorschläge'}
+        title={'Kommentarvorlagen'}
         store={projectCommentPresetStore!}
         columns={this.columns}
         schema={commentPresetSchema}
@@ -60,13 +60,13 @@ export default class CommentPresetOverview extends React.Component<Props> {
               await projectCommentPresetStore!.fetchAll();
             }}
             deleteMessage={
-              'Möchtest du diesen Kommentarvorschlag wirklich löschen?'
+              'Möchtest du diese Kommentarvorlage wirklich löschen?'
             }
           />
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'comment_preset'} label={'Kommentarvorschlag'} />
+            <DimeField component={TextField} name={'comment_preset'} label={'Kommentarvorlage'} />
           </>
         )}
       />

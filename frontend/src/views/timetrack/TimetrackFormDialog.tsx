@@ -44,7 +44,7 @@ interface State {
 }
 
 const baseEffortFields = {
-  comment: yup.string(),
+  comment: yup.string().nullable(true),
   project_id: selector(),
   position_id: selector(),
   date: dimeDate().required(),
@@ -107,7 +107,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
       ]);
     }
 
-    if ('comment' in entity && entity.comment !== '') {
+    if ('comment' in entity && entity.comment != null && entity.comment !== '') {
       const newProjectComment: ProjectComment = {
         ...entity,
         date: entity.date.format(apiDateFormat),
@@ -146,7 +146,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
               <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>

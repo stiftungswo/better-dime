@@ -58,7 +58,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
               <DialogTitle>{this.props.title}</DialogTitle>
               <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>

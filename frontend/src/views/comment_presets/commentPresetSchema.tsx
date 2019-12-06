@@ -8,5 +8,5 @@ export const commentPresetSchema = localizeSchema(() =>
 );
 
 export const commentPresetTemplate = {
-  comment_preset: 'Kommentarvorschlag',
+  comment_preset: 'Kommentarvorlage',
 };

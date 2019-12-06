@@ -25,7 +25,7 @@ interface Props {
 
 const schema = localizeSchema(() =>
   yup.object({
-    comment: yup.string().required(),
+    comment: yup.string().required().nullable(true),
     date: dimeDate(),
     project_id: selector(),
   }),
@@ -41,8 +41,10 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
     if (projectCommentStore.entity) {
       await projectCommentStore.put(schema.cast(entity));
     } else {
-      await projectCommentStore.post(schema.cast(entity));
-      await this.widenFilterSettings(entity);
+      if (schema.cast(entity).comment != null) {
+        await projectCommentStore.post(schema.cast(entity));
+        await this.widenFilterSettings(entity);
+      }
     }
     await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
     projectCommentStore.editing = false;
@@ -67,7 +69,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
           <>
             <DimeField component={DatePicker} name={'date'} label={'Datum'} />
             <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
-            <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} multiline rowsMax={6} />
+            <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
           </>
         )}
       />

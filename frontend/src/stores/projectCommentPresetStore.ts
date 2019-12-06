@@ -6,8 +6,8 @@ import { MainStore } from './mainStore';
 export class ProjectCommentPresetStore extends AbstractStore<ProjectCommentPreset> {
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'der Kommentarvorschlag',
-      plural: 'die Kommentarvorschläge',
+      singular: 'die Kommentarvorlage',
+      plural: 'die Kommentarvorlagen',
     };
   }
 

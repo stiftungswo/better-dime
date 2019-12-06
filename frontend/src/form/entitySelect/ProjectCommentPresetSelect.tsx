@@ -60,6 +60,15 @@ export class ProjectCommentPresetSelect<T> extends React.Component<Props<T>> {
   }
 
   render() {
-    return <Select creatable options={this.options} onCreate={this.onCreate} {...this.props} />;
+    return (
+      <Select
+        creatable
+        isClearable
+        formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
+        options={this.options}
+        onCreate={this.onCreate}
+        {...this.props}
+      />
+    );
   }
 }

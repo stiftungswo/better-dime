@@ -51,7 +51,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
 
   render() {
     return (
-      <Dialog open={this.props.open} onClose={this.props.onClose}>
+      <Dialog open={this.props.open} onClose={this.props.onClose} maxWidth="lg">
         <DialogTitle>Service hinzufügen</DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
           {this.props.groupingEntity && (
