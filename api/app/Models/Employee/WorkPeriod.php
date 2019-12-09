@@ -102,7 +102,9 @@ class WorkPeriod extends Model
 
         if ($this->end < Carbon::now()->startOfDay()) {
             $end = Carbon::parse($this->end);
-        } else {
+        } else if(Carbon::now()->startOfDay() < $this->start){
+            $end = Carbon::parse($this->start)->subDay();
+        }else {
             $end = Carbon::now()->startOfDay();
         }
 
