@@ -50,6 +50,11 @@ class ProjectEffort extends Model
         return $this->position->service;
     }
 
+    public function getPositionGroupAttribute()
+    {
+        return $this->position->position_group;
+    }
+
     public function project_position()
     {
         return $this->belongsTo(ProjectPosition::class);

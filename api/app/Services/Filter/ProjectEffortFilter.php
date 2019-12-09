@@ -8,13 +8,14 @@ class ProjectEffortFilter
 {
     public static function fetchSummary($params = [])
     {
-        return self::fetch($params)
+        $efforts = self::fetch($params)
             ->groupBy('efforts_date')
             ->groupBy('position_description')
             ->groupBy('service_name')
             ->groupBy('effort_unit_is_time')
             ->groupBy('effort_unit_factor')
             ->groupBy('effort_unit_name')
+            ->groupBy('group_name')
             ->select([
                 DB::raw('SUM(project_efforts.value) as efforts_sum'),
                 DB::raw('project_efforts.date as efforts_date'),
@@ -23,12 +24,21 @@ class ProjectEffortFilter
                 DB::raw('rate_units.factor as effort_unit_factor'),
                 DB::raw('rate_units.name as effort_unit_name'),
                 DB::raw('services.name as service_name'),
-            ])->get();
+                DB::raw('position_groups.name as group_name'),
+        ])->get();
+
+        return $efforts->each(function ($e) use (&$efforts) {
+            // whether there is another effort with the same service type but a different position group
+            // if there is, then we need to display which group this effort belongs to so it is clear which one we mean
+            $e->is_ambiguous = $efforts->filter(function($f) use (&$e) {
+                    return $f != $e && $f->service_name == $e->service_name && $f->group_name != $e->group_name;
+                })->count() > 0;
+        });
     }
 
     public static function fetchList($params = [])
     {
-        return self::fetch($params)->select([
+        $efforts = self::fetch($params)->select([
             DB::raw('project_efforts.id as id'),
             DB::raw('project_efforts.date as date'),
             DB::raw('project_efforts.value as effort_value'),
@@ -42,7 +52,16 @@ class ProjectEffortFilter
             DB::raw('rate_units.effort_unit as effort_unit'),
             DB::raw('rate_units.factor as rate_unit_factor'),
             DB::raw('rate_units.is_time as rate_unit_is_time'),
+            DB::raw('position_groups.name as group_name'),
         ])->get();
+
+        return $efforts->each(function ($e) use (&$efforts) {
+            // whether there is another effort with the same service type but a different position group
+            // if there is, then we need to display which group this effort belongs to so it is clear which one we mean
+            $e->is_ambiguous = $efforts->filter(function($f) use (&$e) {
+                    return $f != $e && $f->service_name == $e->service_name && $f->group_name != $e->group_name;
+                })->count() > 0;
+        });
     }
 
     /**
@@ -56,6 +75,7 @@ class ProjectEffortFilter
             ->leftJoin('project_positions', 'project_efforts.position_id', '=', 'project_positions.id')
             ->leftJoin('projects', 'project_positions.project_id', '=', 'projects.id')
             ->leftJoin('services', 'project_positions.service_id', '=', 'services.id')
+            ->leftJoin('position_groups', 'project_positions.position_group_id', '=', 'position_groups.id')
             ->leftJoin('employees', 'project_efforts.employee_id', '=', 'employees.id')
             ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
             ->whereNull('project_efforts.deleted_at');
@@ -70,6 +90,10 @@ class ProjectEffortFilter
 
         if (!empty($params['service_ids'])) {
             $queryBuilder = $queryBuilder->whereIn('project_positions.service_id', explode(',', $params['service_ids']));
+        }
+
+        if (!empty($params['position_group_ids'])) {
+            $queryBuilder = $queryBuilder->whereIn('project_positions.position_group_id', explode(',', $params['position_group_ids']));
         }
 
         if (!empty($params['start'])) {

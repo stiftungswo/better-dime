@@ -309,6 +309,8 @@ export interface ProjectEffortListing {
   effort_unit: string;
   rate_unit_factor?: number;
   rate_unit_is_time: boolean;
+  group_name?: string;
+  is_ambiguous?: boolean;
 }
 
 export interface ProjectEffortTemplate {

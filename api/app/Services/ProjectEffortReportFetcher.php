@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Services\Filter\ProjectCommentFilter;
 use App\Services\Filter\ProjectEffortFilter;
+use App\Models\Service\Service;
+use PHPUnit\Framework\Constraint\Count;
 
 class ProjectEffortReportFetcher
 {
@@ -31,7 +33,7 @@ class ProjectEffortReportFetcher
 
         // sort in stuff
         $commentsAndEffortsPerDate = [];
-        $efforts->each(function ($e) use (&$commentsAndEffortsPerDate) {
+        $efforts->each(function ($e) use (&$efforts, &$commentsAndEffortsPerDate) {
             if (!array_key_exists($e->efforts_date, $commentsAndEffortsPerDate)) {
                 $commentsAndEffortsPerDate[$e->efforts_date] = [];
             }

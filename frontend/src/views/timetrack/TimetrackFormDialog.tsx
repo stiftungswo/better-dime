@@ -156,7 +156,6 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 {formikProps.values.id && <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
                 <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField
-                  portal
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
