@@ -51,7 +51,7 @@ const styles = (theme: Theme) =>
       position: 'absolute',
       whiteSpace: 'nowrap',
       fontSize: 16,
-      maxWidth: 'calc(100% - 40px)',
+      maxWidth: 'calc(100% - 60px)',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
     },
@@ -214,7 +214,7 @@ class IntegrationReactSelect extends React.Component<any> {
 
   handleChange = (selected: any, action: ActionMeta) => {
     if (action.action === 'clear') {
-      if (this.select != null) {
+      if (this.select != null && this.select.current != null) {
         this.select.current.blur();
       }
       this.props.onChange(null);
