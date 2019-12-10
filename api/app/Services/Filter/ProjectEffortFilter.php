@@ -25,14 +25,14 @@ class ProjectEffortFilter
                 DB::raw('rate_units.name as effort_unit_name'),
                 DB::raw('services.name as service_name'),
                 DB::raw('position_groups.name as group_name'),
-        ])->get();
+            ])->get();
 
         return $efforts->each(function ($e) use (&$efforts) {
             // whether there is another effort with the same service type but a different position group
             // if there is, then we need to display which group this effort belongs to so it is clear which one we mean
-            $e->is_ambiguous = $efforts->filter(function($f) use (&$e) {
+            $e->is_ambiguous = $efforts->filter(function ($f) use (&$e) {
                     return $f != $e && $f->service_name == $e->service_name && $f->group_name != $e->group_name;
-                })->count() > 0;
+            })->count() > 0;
         });
     }
 
@@ -58,9 +58,9 @@ class ProjectEffortFilter
         return $efforts->each(function ($e) use (&$efforts) {
             // whether there is another effort with the same service type but a different position group
             // if there is, then we need to display which group this effort belongs to so it is clear which one we mean
-            $e->is_ambiguous = $efforts->filter(function($f) use (&$e) {
+            $e->is_ambiguous = $efforts->filter(function ($f) use (&$e) {
                     return $f != $e && $f->service_name == $e->service_name && $f->group_name != $e->group_name;
-                })->count() > 0;
+            })->count() > 0;
         });
     }
 

@@ -72,12 +72,12 @@ class Invoice extends Model
         $groups = [];
 
         foreach ($this->positions as $position) {
-            if(!is_null($position->position_group)){
-                $filtered = array_first($groups, function($e) use ($position) {
+            if (!is_null($position->position_group)) {
+                $filtered = array_first($groups, function ($e) use ($position) {
                     return $e->id === $position->position_group->id;
                 });
 
-                if(is_null($filtered)){
+                if (is_null($filtered)) {
                     array_push($groups, $position->position_group);
                 }
             }

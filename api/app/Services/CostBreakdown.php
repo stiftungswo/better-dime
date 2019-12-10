@@ -72,7 +72,8 @@ class CostBreakdown
      * @param $groups
      * @return Collection
      */
-    private static function getGroupedPositions($positions, $groups){
+    private static function getGroupedPositions($positions, $groups)
+    {
         $defaultPositions = $positions->filter(function ($position) {
             return is_null($position->position_group_id);
         });
@@ -95,9 +96,9 @@ class CostBreakdown
                 'positions' => $filteredPositions,
                 'subtotal' => self::calculateSubtotal($filteredPositions),
             ];
-        })->concat([$defaultGroup])->sortBy(function($value, $key){
+        })->concat([$defaultGroup])->sortBy(function ($value, $key) {
             return $value['groupName'];
-        })->filter(function ($group){
+        })->filter(function ($group) {
             return $group['positions']->count() > 0;
         });
 
@@ -109,7 +110,8 @@ class CostBreakdown
      * @param $positions
      * @return int
      */
-    private static function calculateSubtotal($positions){
+    private static function calculateSubtotal($positions)
+    {
         /** @var Collection $positions */
         return intval($positions->map(function ($position) {
             return $position->calculated_total;

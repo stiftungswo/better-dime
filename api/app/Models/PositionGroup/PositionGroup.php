@@ -13,5 +13,4 @@ class PositionGroup extends Model
     use SoftDeletes, BlameableTrait;
 
     protected $fillable = ['name'];
-
 }

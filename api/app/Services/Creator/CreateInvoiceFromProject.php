@@ -78,7 +78,7 @@ class CreateInvoiceFromProject extends BaseCreator
                 $ip = $this->assignOrThrowExceptionIfNull($pp, $ip, $attribute);
             }
 
-            if($pp->position_group_id) {
+            if ($pp->position_group_id) {
                 $ip->position_group_id = $pp->position_group_id;
             }
 
