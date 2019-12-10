@@ -6,10 +6,6 @@ import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
 export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeListing> {
-  @observable
-  employees: Employee[] = [];
-  @observable
-  employee?: Employee = undefined;
 
   protected get entityName(): { singular: string; plural: string } {
     return {
@@ -35,6 +31,10 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   get archivable() {
     return true;
   }
+  @observable
+  employees: Employee[] = [];
+  @observable
+  employee?: Employee = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
@@ -46,12 +46,10 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/employees/' + id + '/archive', { archived });
-    this.doFetchAll();
   }
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/employees/' + id);
-    await this.doFetchAll();
   }
 
   protected async doDuplicate(id: number) {
@@ -81,12 +79,14 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doPost(employee: Employee) {
-    const res = await this.mainStore.api.post('/employees', employee);
-    this.employee = res.data;
+    this.mainStore.api.post('/employees', employee).then(res => {
+      this.employee = res.data;
+    }).catch(this.handleError);
   }
 
   protected async doPut(employee: Employee) {
-    const res = await this.mainStore.api.put('/employees/' + employee.id, employee);
-    this.employee = res.data;
+    this.mainStore.api.put('/employees/' + employee.id, employee).then(res => {
+      this.employee = res.data;
+    }).catch(this.handleError);
   }
 }

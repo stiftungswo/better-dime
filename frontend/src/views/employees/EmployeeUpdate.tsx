@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { EmployeeStore } from '../../stores/employeeStore';
+import {MainStore} from '../../stores/mainStore';
 import { Employee } from '../../types';
 import compose from '../../utilities/compose';
 import EmployeeForm from './EmployeeForm';
@@ -13,11 +14,12 @@ interface EmployeeDetailRouterProps {
 }
 
 export interface Props extends RouteComponentProps<EmployeeDetailRouterProps> {
+  mainStore?: MainStore;
   employeeStore?: EmployeeStore;
 }
 
 @compose(
-  inject('employeeStore'),
+  inject('mainStore', 'employeeStore'),
   observer,
 )
 export default class EmployeeUpdate extends React.Component<Props> {

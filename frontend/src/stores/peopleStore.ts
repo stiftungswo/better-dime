@@ -59,14 +59,16 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   @action
   async doPost(person: Person) {
-    const res = await this.mainStore.api.post('/people', person);
-    this.person = res.data;
+    this.mainStore.api.post('/people', person).then(res => {
+      this.person = res.data;
+    }).catch(this.handleError);
   }
 
   @action
   async doPut(person: Person) {
-    const res = await this.mainStore.api.put('/people/' + person.id, person);
-    this.person = res.data;
+    this.mainStore.api.put('/people/' + person.id, person).then(res => {
+      this.person = res.data;
+    }).catch(this.handleError);
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
@@ -78,7 +80,6 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/people/' + id);
-    await this.doFetchAll();
   }
 
   protected async doDuplicate(id: number) {

@@ -67,8 +67,8 @@ export default class EmployeeOverview extends React.Component<Props> {
               const newEntity: Employee = await employeeStore!.duplicate(e.id);
               this.props.history.push(`/employees/${newEntity.id}`);
             }}
-            archiveAction={!e.archived ? () => employeeStore!.archive(e.id, true) : undefined}
-            restoreAction={e.archived ? () => employeeStore!.archive(e.id, false) : undefined}
+            archiveAction={!e.archived ? () => employeeStore!.archive(e.id, true).then(r => employeeStore!.fetchAllPaginated()) : undefined}
+            restoreAction={e.archived ? () => employeeStore!.archive(e.id, false).then(r => employeeStore!.fetchAllPaginated()) : undefined}
           />
         )}
         onClickRow={'/employees/:id'}

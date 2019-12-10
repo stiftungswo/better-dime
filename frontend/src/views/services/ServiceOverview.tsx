@@ -66,8 +66,8 @@ export default class ServiceOverview extends React.Component<Props> {
               const newEntity: Service = await serviceStore!.duplicate(e.id);
               this.props.history.push(`/services/${newEntity.id}`);
             }}
-            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true) : undefined}
-            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false) : undefined}
+            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true).then(r => serviceStore!.fetchFiltered()) : undefined}
+            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false).then(r => serviceStore!.fetchFiltered()) : undefined}
           />
         )}
         onClickRow={'/services/:id'}

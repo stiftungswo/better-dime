@@ -65,10 +65,10 @@ export default class ProjectOverview extends React.Component<Props> {
               const newEntity: Project = await projectStore!.duplicate(e.id);
               this.props.history.push(`/projects/${newEntity.id}`);
             }}
-            archiveAction={!e.archived ? () => projectStore!.archive(e.id, true) : undefined}
-            deleteAction={e.deletable ? () => projectStore!.delete(e.id) : undefined}
+            archiveAction={!e.archived ? () => projectStore!.archive(e.id, true).then(r => projectStore!.fetchAllPaginated()) : undefined}
+            deleteAction={e.deletable ? () => projectStore!.delete(e.id).then(r => projectStore!.fetchAllPaginated()) : undefined}
             deleteMessage={'Möchtest du dieses Projekt wirklich löschen?'}
-            restoreAction={e.archived ? () => projectStore!.archive(e.id, false) : undefined}
+            restoreAction={e.archived ? () => projectStore!.archive(e.id, false).then(r => projectStore!.fetchAllPaginated()) : undefined}
           />
         )}
         onClickRow={'/projects/:id'}

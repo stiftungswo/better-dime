@@ -65,7 +65,7 @@ export default class InvoiceOverview extends React.Component<Props> {
               const newEntity = await invoiceStore!.duplicate(e.id);
               this.props.history.push(`/invoices/${newEntity.id}`);
             }}
-            deleteAction={() => invoiceStore!.delete(e.id)}
+            deleteAction={() => invoiceStore!.delete(e.id).then(r => invoiceStore!.fetchAllPaginated())}
           />
         )}
         onClickRow={'/invoices/:id'}

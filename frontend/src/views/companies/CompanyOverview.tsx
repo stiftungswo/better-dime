@@ -67,7 +67,7 @@ export default class CompanyOverview extends React.Component<Props> {
             deleteMessage={
               'Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.'
             }
-            deleteAction={() => companyStore!.delete(e.id)}
+            deleteAction={() => companyStore!.delete(e.id).then(r => companyStore!.fetchAllPaginated())}
           />
         )}
         onClickRow={'/companies/:id'}
