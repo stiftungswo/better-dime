@@ -87,17 +87,19 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                 const pIdx = values.positions.indexOf(p);
                 const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
                 const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
-                const archivedEntities = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id) || p.rate_unit_archived;
+                const archivedService = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id);
+                const archivedRate = p.rate_unit_archived;
+                const archivedEntities = archivedRate || archivedService;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
                       <DragHandle />
                     </DimeTableCell>
                     <DimeTableCell>
-                      {(!archivedEntities || !afterUnitInvalidation) && (
+                      {(!archivedService || !afterUnitInvalidation) && (
                         <>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</>
                       )}
-                      {archivedEntities && afterUnitInvalidation && (
+                      {archivedService && afterUnitInvalidation && (
                         <Grid container direction="row" alignItems="center">
                           <Grid item>
                             <Warning color={'error'}/>
@@ -129,7 +131,19 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                       />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      {(!archivedRate || !afterUnitInvalidation) && (
+                        <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      )}
+                      {archivedRate && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
+                            <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
