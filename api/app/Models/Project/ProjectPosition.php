@@ -3,6 +3,7 @@
 namespace App\Models\Project;
 
 use App\Models\Invoice\InvoicePosition;
+use App\Models\PositionGroup\PositionGroup;
 use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,10 @@ class ProjectPosition extends Model
         'vat' => 'float'
     ];
 
-    protected $fillable = ['description', 'price_per_rate', 'project_id', 'rate_unit_id', 'service_id', 'vat', 'order'];
+    protected $fillable = [
+        'description', 'price_per_rate', 'project_id',
+        'rate_unit_id', 'service_id', 'vat', 'order', 'position_group_id'
+    ];
 
     protected $hidden = ['efforts', 'rate_unit'];
 
@@ -46,6 +50,11 @@ class ProjectPosition extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function position_group()
+    {
+        return $this->belongsTo(PositionGroup::class);
     }
 
     /**

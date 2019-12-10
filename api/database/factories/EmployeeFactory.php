@@ -2,6 +2,7 @@
 
 use App\Models\Employee\Employee;
 use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Support\Str;
 
 /** @var Factory $factory */
 $factory->define(Employee::class, function () {
@@ -9,7 +10,9 @@ $factory->define(Employee::class, function () {
 
     $firstName = $faker->firstName;
     $lastName = $faker->lastName;
-    $email = str_slug(strtolower($firstName) . strtolower($lastName) . rand(100, 999)) . '@example.org';
+    $asciiFirstName = Str::ascii($firstName, 'de_CH');
+    $asciiLastName = Str::ascii($lastName, 'de_CH');
+    $email = str_slug(strtolower($asciiFirstName) . strtolower($asciiLastName) . rand(100, 999)) . '@example.org';
 
     return [
         'can_login' => $faker->boolean,

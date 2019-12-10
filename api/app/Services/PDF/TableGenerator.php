@@ -62,7 +62,7 @@ class TableGenerator
             $tableConf['thead'] ?? [],
             'thead',
             self::buildTag(
-                [],
+                $tableConf['thead-tr'] ?? [],
                 'tr',
                 function () use ($headers) {
                     $trString = "";

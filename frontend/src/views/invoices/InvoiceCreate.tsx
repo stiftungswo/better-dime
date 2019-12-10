@@ -39,7 +39,7 @@ export default class InvoiceCreate extends React.Component<Props> {
         onSubmit={this.handleSubmit}
         invoice={
           {
-            ...invoiceTemplate,
+            ...invoiceTemplate(),
             accountant_id: this.props.mainStore!.userId,
           } as FormValues
         }

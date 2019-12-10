@@ -39,7 +39,7 @@ export default class OfferCreate extends React.Component<Props> {
         onSubmit={this.handleSubmit}
         offer={
           {
-            ...offerTemplate,
+            ...offerTemplate(),
             accountant_id: this.props.mainStore!.userId!,
           } as FormValues
         }

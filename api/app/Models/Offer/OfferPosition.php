@@ -2,6 +2,7 @@
 
 namespace App\Models\Offer;
 
+use App\Models\PositionGroup\PositionGroup;
 use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,9 @@ class OfferPosition extends Model
         'amount' => 'float',
     ];
 
-    protected $fillable = ['amount', 'description', 'offer_id', 'order', 'price_per_rate', 'rate_unit_id', 'service_id', 'vat'];
+    protected $fillable = [
+        'amount', 'description', 'offer_id', 'order', 'price_per_rate',
+        'rate_unit_id', 'service_id', 'position_group_id', 'vat'];
 
     public function offer()
     {
@@ -31,6 +34,11 @@ class OfferPosition extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function position_group()
+    {
+        return $this->belongsTo(PositionGroup::class);
     }
 
     /**

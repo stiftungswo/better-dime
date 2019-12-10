@@ -30,9 +30,10 @@ import { Offer, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
+import PositionSubformInline from '../PositionSubformInline';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import Navigator from './OfferNavigator';
-import OfferPositionSubformInline from './OfferPositionSubformInline';
+import OfferPositionRenderer from './OfferPositionRenderer';
 import { offerSchema } from './offerSchema';
 
 export type Props = {
@@ -104,9 +105,7 @@ class OfferForm extends React.Component<Props> {
                 />
               )}
             </>
-          ) : (
-            undefined
-          )
+          ) : undefined
         }
         render={(props: FormikProps<Offer>) => {
           const locked = props.values.status === 2;
@@ -190,7 +189,7 @@ class OfferForm extends React.Component<Props> {
 
                   <Grid item xs={12}>
                     <DimePaper>
-                      <OfferPositionSubformInline formikProps={props} name={'positions'} disabled={locked} />
+                      <PositionSubformInline tag={OfferPositionRenderer} formikProps={props} name={'positions'} disabled={locked} />
                     </DimePaper>
                   </Grid>
 

@@ -40,16 +40,17 @@ export const projectSchema = localizeSchema(() => {
   },
 );
 
-export const projectTemplate = {
+export const projectTemplate = () => ({
   id: undefined,
   name: '',
   description: '',
   deadline: '',
   fixed_price: '',
+  position_groupings: [],
   positions: [],
   category_id: undefined,
   customer_id: undefined,
   address_id: undefined,
   rate_group_id: undefined,
   costgroup_distributions: [],
-};
+});

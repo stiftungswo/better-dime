@@ -136,12 +136,26 @@ $router->group(['namespace' => 'api', 'prefix' => 'api'], function () use ($rout
                 $router->delete('/{id}', ['uses' => 'ProjectCategoryController@delete']);
             });
 
+            $router->group(['prefix' => 'position_groups'], function () use ($router) {
+                $router->get('/', ['uses' => 'PositionGroupController@index']);
+                $router->post('/', ['uses' => 'PositionGroupController@post']);
+                $router->put('/{id}', ['uses' => 'PositionGroupController@put']);
+            });
+
             $router->group(['prefix' => 'project_comments'], function () use ($router) {
                 $router->delete('/{id}', ['uses' => 'ProjectCommentController@delete']);
                 $router->get('/', ['uses' => 'ProjectCommentController@index']);
                 $router->get('/{id}', ['uses' => 'ProjectCommentController@get']);
                 $router->post('/', ['uses' => 'ProjectCommentController@post']);
                 $router->put('/{id}', ['uses' => 'ProjectCommentController@put']);
+            });
+
+            $router->group(['prefix' => 'project_comment_presets'], function () use ($router) {
+                $router->delete('/{id}', ['uses' => 'ProjectCommentPresetController@delete']);
+                $router->get('/', ['uses' => 'ProjectCommentPresetController@index']);
+                $router->get('/{id}', ['uses' => 'ProjectCommentPresetController@get']);
+                $router->post('/', ['uses' => 'ProjectCommentPresetController@post']);
+                $router->put('/{id}', ['uses' => 'ProjectCommentPresetController@put']);
             });
 
             $router->group(['prefix' => 'project_efforts'], function () use ($router) {

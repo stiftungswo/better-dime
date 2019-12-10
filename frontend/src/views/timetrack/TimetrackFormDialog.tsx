@@ -9,9 +9,9 @@ import moment from 'moment';
 import React from 'react';
 import * as yup from 'yup';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
@@ -19,6 +19,7 @@ import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 import { apiDateFormat } from '../../stores/apiStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
+import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { ProjectStore } from '../../stores/projectStore';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
@@ -32,6 +33,7 @@ interface Props extends InjectedProps {
   effortStore?: EffortStore;
   mainStore?: MainStore;
   projectCommentStore?: ProjectCommentStore;
+  projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
   projectStore?: ProjectStore;
 }
@@ -42,7 +44,7 @@ interface State {
 }
 
 const baseEffortFields = {
-  comment: yup.string(),
+  comment: yup.string().nullable(true),
   project_id: selector(),
   position_id: selector(),
   date: dimeDate().required(),
@@ -69,7 +71,7 @@ const multiSchema = localizeSchema(() =>
 );
 
 @compose(
-  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'timetrackFilterStore'),
+  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
   withMobileDialog(),
 )
@@ -82,6 +84,13 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     lastEntry: undefined,
     closeAfterSubmit: false,
   };
+
+  componentDidMount(): void {
+    Promise.all([
+      this.props.projectCommentPresetStore!.fetchAll(),
+    ]);
+  }
+
   handleSubmit = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
     const filter = this.props.timetrackFilterStore!.filter;
     const effortStore = this.props.effortStore!;
@@ -98,7 +107,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
       ]);
     }
 
-    if ('comment' in entity && entity.comment !== '') {
+    if ('comment' in entity && entity.comment != null && entity.comment !== '') {
       const newProjectComment: ProjectComment = {
         ...entity,
         date: entity.date.format(apiDateFormat),
@@ -137,7 +146,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen}>
+            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
               <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>
@@ -147,7 +156,6 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 {formikProps.values.id && <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
                 <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField
-                  portal
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
@@ -158,14 +166,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />
                     {!formikProps.values.id && (
-                      <DimeField
-                        delayed
-                        multiline
-                        component={TextField}
-                        name={'comment'}
-                        label={'Kommentar zu Projekt und Tag'}
-                        margin={'none'}
-                      />
+                      <DimeField portal component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar zu Projekt und Tag'} />
                     )}
                   </>
                 )}

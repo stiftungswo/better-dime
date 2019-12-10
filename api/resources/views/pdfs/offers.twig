@@ -45,41 +45,59 @@
     <div class="force-page-break"></div>
     <b style="font-size: 16px;">Kostenübersicht</b>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <td class="first-row">Position</td>
-            <td class="second-row text-align-right">Ansatz CHF</td>
-            <td class="third-row">Einheit</td>
-            <td class="fourth-row">Anzahl</td>
-            <td class="fifth row text-align-right">MwSt. Satz</td>
-            <td class="sixth-row text-align-right">Teilbetrag CHF exkl. MwSt.</td>
-        </tr>
-        </thead>
-        <tbody>
-        {% for position in breakdown.positions %}
-            <tr>
-                <td>
-                    {{ position.service.name }}
-                    {% if position.description is defined %}
-                        <br/><span style="font-size: 12px;">{{ position.description }}</span>
-                    {% endif %}
-                </td>
-                <td class="text-align-right">{{ (position.price_per_rate / 100) | number_format(2, '.', "'") }}</td>
-                <td>{{ position.rate_unit.billing_unit }}</td>
-                <td>{{ position.amount }}</td>
-                <td class="text-align-right">{{ position.vat * 100 }} %</td>
-                <td class="text-align-right">{{ (position.calculated_total / 100) | number_format(2, '.', "'") }}</td>
+    {% set tableIndent = (breakdown.groupedPositions.count() > 1 ? 'padding-left: 20px;' : '') %}
+
+    {% for group in breakdown.groupedPositions %}
+        {% if breakdown.groupedPositions.count() > 1 %}
+        <div style="padding-top:10px;"><b style="font-size: 14px;">{{ group.groupName | raw }}</b></div>
+        {% endif %}
+        <table class="table" style="{{ tableIndent }}">
+            <thead>
+            <tr class="{{ (breakdown.groupedPositions.count() > 1 ? 'light-font' : '') }}">
+                <th class="first-row">Position</th>
+                <th class="second-row text-align-right">Ansatz CHF</th>
+                <th class="third-row">Einheit</th>
+                <th class="fourth-row">Anzahl</th>
+                <th class="fifth row text-align-right">MwSt. Satz</th>
+                <th class="sixth-row text-align-right">Teilbetrag CHF exkl. MwSt.</th>
             </tr>
-        {% endfor %}
-        </tbody>
-        <tfoot>
-        <tr>
-            <td colspan="5" class="text-align-right">Subtotal</td>
-            <td class="text-align-right">{{ ((breakdown.subtotal) / 100) | number_format(2, '.', "'") }}</td>
-        </tr>
-        </tfoot>
-    </table>
+            </thead>
+            <tbody>
+            {% for position in group.positions %}
+                <tr>
+                    <td>
+                        {{ position.service.name }}
+                        {% if position.description is defined %}
+                            <br/><span style="font-size: 12px;">{{ position.description }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-align-right">{{ (position.price_per_rate / 100) | number_format(2, '.', "'") }}</td>
+                    <td>{{ position.rate_unit.billing_unit }}</td>
+                    <td>{{ position.amount }}</td>
+                    <td class="text-align-right">{{ position.vat * 100 }} %</td>
+                    <td class="text-align-right">{{ (position.calculated_total / 100) | number_format(2, '.', "'") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr class="{{ (breakdown.groupedPositions.count() > 1 ? '' : 'bold-cells') }}">
+                <td colspan="5" class="text-align-left">Subtotal</td>
+                <td class="text-align-right">{{ ((group.subtotal) / 100) | number_format(2, '.', "'") }}</td>
+            </tr>
+            </tfoot>
+        </table>
+    {% endfor %}
+
+    {% if (breakdown.groupedPositions.count() > 1) %}
+        <table class="table" style="padding-top: 10px;">
+            <tfoot>
+            <tr class="bold-cells">
+                <td colspan="5" class="text-align-left">Subtotal</td>
+                <td class="text-align-right">{{ ((breakdown.subtotal) / 100) | number_format(2, '.', "'") }}</td>
+            </tr>
+            </tfoot>
+        </table>
+    {% endif %}
 
     {% if breakdown.discounts is not empty %}
         <div class="avoid-page-break">

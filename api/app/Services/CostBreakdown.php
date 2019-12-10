@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Collection;
+use function Sodium\compare;
 
 class CostBreakdown
 {
@@ -11,7 +12,6 @@ class CostBreakdown
         /** @var Collection $positions */
         $positions = $breakdownable->positions->sortBy('order');
 
-        // calculate subtotal without VAT
         $subtotal = intval($positions->map(function ($position) {
             return $position->calculated_total;
         })->sum());
@@ -48,12 +48,14 @@ class CostBreakdown
             }
         }
 
+        $groupedPositions = self::getGroupedPositions($positions, collect($breakdownable->position_groupings));
+
         return [
             'discounts' => $discounts,
             'discountTotal' => $discountsTotal,
-            'positions' => $positions,
-            'rawTotal' => $totalWithDiscounts,
+            'groupedPositions' => $groupedPositions,
             'subtotal' => $subtotal,
+            'rawTotal' => $totalWithDiscounts,
             'total' => $total,
             'vats' => $vats,
             'vatTotal' => $vatTotal,
@@ -61,6 +63,59 @@ class CostBreakdown
             'fixedPriceVats' => $fixedPriceVats,
             'fixedPriceVatsSum' => $fixedPriceVatsSum
         ];
+    }
+
+    /**
+     * Returns a list of groups and their corresponding positions and subtotals
+     *
+     * @param $positions
+     * @param $groups
+     * @return Collection
+     */
+    private static function getGroupedPositions($positions, $groups)
+    {
+        $defaultPositions = $positions->filter(function ($position) {
+            return is_null($position->position_group_id);
+        });
+
+        $defaultGroup = [
+            'groupName' => 'Generell',
+            'positions' => $defaultPositions,
+            'subtotal' => self::calculateSubtotal($defaultPositions),
+        ];
+
+        /** @var Collection $groups */
+        $groupedPositions = $groups->map(function ($group) use ($positions) {
+            /** @var Collection $positions */
+            $filteredPositions = $positions->filter(function ($position) use ($group) {
+                return $position->position_group_id == $group->id;
+            });
+
+            return [
+                'groupName' => $group->name,
+                'positions' => $filteredPositions,
+                'subtotal' => self::calculateSubtotal($filteredPositions),
+            ];
+        })->concat([$defaultGroup])->sortBy(function ($value, $key) {
+            return $value['groupName'];
+        })->filter(function ($group) {
+            return $group['positions']->count() > 0;
+        });
+
+        return $groupedPositions;
+    }
+
+    /**
+     * Return the subtotal of the given collection of positions
+     * @param $positions
+     * @return int
+     */
+    private static function calculateSubtotal($positions)
+    {
+        /** @var Collection $positions */
+        return intval($positions->map(function ($position) {
+            return $position->calculated_total;
+        })->sum());
     }
 
     /**

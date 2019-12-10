@@ -7,7 +7,7 @@ import PrintButton from '../../layout/PrintButton';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { EmployeeListing, ProjectEffortListing } from '../../types';
 import compose from '../../utilities/compose';
-import { sum } from '../../utilities/helpers';
+import {defaultPositionGroup, sum} from '../../utilities/helpers';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 import { EntityGroup, WithEfforts } from './types';
 
@@ -44,10 +44,13 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         id: '',
         numeric: false,
         label: 'Aktivität',
-        format: projectEffortListing =>
-          projectEffortListing.position_description
+        format: projectEffortListing => {
+          const group = ' [' + (projectEffortListing.group_name ? projectEffortListing.group_name : defaultPositionGroup().name) + ']';
+
+          return (projectEffortListing.position_description
             ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
-            : projectEffortListing.service_name,
+            : projectEffortListing.service_name) + (projectEffortListing.is_ambiguous ? group : '');
+        },
       },
       {
         id: 'effort_value',

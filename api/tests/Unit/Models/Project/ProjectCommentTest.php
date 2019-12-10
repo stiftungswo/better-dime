@@ -4,9 +4,11 @@ namespace Tests\Unit\Models\Project;
 
 use App\Models\Project\Project;
 use App\Models\Project\ProjectComment;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ProjectCommentTest extends \TestCase
 {
+    use DatabaseTransactions;
 
     public function testProjectAssignment()
     {

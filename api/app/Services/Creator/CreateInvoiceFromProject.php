@@ -78,6 +78,10 @@ class CreateInvoiceFromProject extends BaseCreator
                 $ip = $this->assignOrThrowExceptionIfNull($pp, $ip, $attribute);
             }
 
+            if ($pp->position_group_id) {
+                $ip->position_group_id = $pp->position_group_id;
+            }
+
             $ip->project_position()->associate($pp);
             $ip->rate_unit()->associate($pp->rate_unit);
             $ip->invoice()->associate($this->invoice);

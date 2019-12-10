@@ -6,9 +6,12 @@ use App\Models\Service\RateGroup;
 use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
 use App\Models\Service\ServiceRate;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class ServiceRatesTest extends \TestCase
 {
+    use DatabaseTransactions;
+
     public function testRateGroupAssignment()
     {
         $rateGroup = factory(RateGroup::class)->make();

@@ -5,7 +5,7 @@ import { Moment } from 'moment';
 // Domain Types
 // --
 
-export interface Offer {
+export interface Offer extends PositionGroupings<OfferPosition> {
   id?: number;
   accountant_id: number;
   address_id: number;
@@ -24,7 +24,6 @@ export interface Offer {
   invoice_ids: number[];
   project_id?: number;
   discounts: OfferDiscount[];
-  positions: OfferPosition[];
 }
 
 export interface Breakdown {
@@ -72,6 +71,7 @@ export interface OfferPosition {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  position_group_id: number | null;
 }
 
 export interface Employee {
@@ -107,7 +107,12 @@ export interface PhoneNumber {
   updated_at: string;
 }
 
-export interface Project {
+export interface PositionGroupings<T> {
+  positions: T[];
+  position_groupings: PositionGroup[];
+}
+
+export interface Project extends PositionGroupings<ProjectPosition> {
   id?: number;
   accountant_id: number;
   customer_id: number;
@@ -131,9 +136,13 @@ export interface Project {
   budget_time: number;
   current_price: number;
   current_time: number;
-  positions: ProjectPosition[];
   offer: Offer;
   invoice_ids: number[];
+}
+
+export interface PositionGroup {
+  id?: number;
+  name: string;
 }
 
 export interface ProjectCostgroup {
@@ -189,6 +198,7 @@ export interface ProjectPosition {
   is_time: boolean;
   service: Service;
   order: number;
+  position_group_id: number | null;
 }
 
 export interface Status {
@@ -199,7 +209,7 @@ export interface Status {
   active: boolean;
 }
 
-export interface Invoice {
+export interface Invoice extends PositionGroupings<InvoicePosition> {
   id?: number;
   accountant_id: number;
   customer_id: number;
@@ -218,7 +228,6 @@ export interface Invoice {
   updated_at: string;
   costgroup_distributions: InvoiceCostgroup[];
   discounts: InvoiceDiscount[];
-  positions: InvoicePosition[];
   sibling_invoice_ids: number[];
 }
 
@@ -300,6 +309,8 @@ export interface ProjectEffortListing {
   effort_unit: string;
   rate_unit_factor?: number;
   rate_unit_is_time: boolean;
+  group_name?: string;
+  is_ambiguous?: boolean;
 }
 
 export interface ProjectEffortTemplate {
@@ -316,6 +327,14 @@ export interface ProjectComment {
   comment: string;
   date: Moment | string;
   project_id?: number;
+  deleted_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProjectCommentPreset {
+  id?: number;
+  comment_preset: string;
   deleted_at?: string;
   created_at?: string;
   updated_at?: string;

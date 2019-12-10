@@ -5,9 +5,12 @@ namespace Tests\Unit\Models\Invoice;
 use App\Models\Costgroup\Costgroup;
 use App\Models\Invoice\InvoiceCostgroupDistribution;
 use App\Models\Invoice\Invoice;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class CostgroupDistributionTest extends \TestCase
 {
+    use DatabaseTransactions;
+
     public function testInvoiceAssignment()
     {
         $invoice = factory(Invoice::class)->make();

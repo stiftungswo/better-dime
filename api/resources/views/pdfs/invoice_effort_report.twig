@@ -42,6 +42,13 @@
                         <div class="float-left first-column padding-right">
                             {% if effort.position_description is empty %}
                                 {{ effort.service_name }}
+                                {% if effort.is_ambiguous %}
+                                    {% if effort.group_name is not null %}
+                                        [{{ effort.group_name }}]
+                                    {% else %}
+                                        [Generell]
+                                    {% endif %}
+                                {% endif %}
                             {% else %}
                                 {{ effort.position_description }}
                             {% endif %}

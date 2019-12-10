@@ -11,8 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import React from 'react';
-import Select from 'react-select';
-import { ActionMeta, ActionTypes } from 'react-select/lib/types';
+import Select, {Creatable} from 'react-select';
+import {ActionMeta} from 'react-select/lib/types';
 import { CancelIcon } from '../../layout/icons';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
 
@@ -51,7 +51,7 @@ const styles = (theme: Theme) =>
       position: 'absolute',
       whiteSpace: 'nowrap',
       fontSize: 16,
-      maxWidth: 'calc(100% - 40px)',
+      maxWidth: 'calc(100% - 60px)',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
     },
@@ -193,24 +193,74 @@ const components = {
  *    The overflow solution does lock the width of X, but the subform tables should be scrollable horizontally
  */
 class IntegrationReactSelect extends React.Component<any> {
+  select: any;
+
+  state = {
+    createdOptions: [],
+  };
+
+  constructor(props: any) {
+    super(props);
+    this.select = React.createRef();
+  }
+
   get value() {
     if (this.props.isMulti) {
-      return this.props.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
+      return this.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
     } else {
-      return this.props.options.find((e: any) => e.value === this.props.value) || '';
+      return this.options.find((e: any) => e.value === this.props.value) || '';
     }
   }
 
   handleChange = (selected: any, action: ActionMeta) => {
     if (action.action === 'clear') {
+      if (this.select != null && this.select.current != null) {
+        this.select.current.blur();
+      }
       this.props.onChange(null);
+    } else if (action.action === 'create-option') {
+      this.props.onCreate(this.props.isMulti ? selected.filter((e: any) => e.__isNew__) : selected);
+      const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
+      this.props.onChange(selected ? value : null);
     } else {
       const value = this.props.isMulti ? selected.map((item: any) => item.value) : selected.value;
       this.props.onChange(selected ? value : null);
     }
   }
 
+  handleFocus = (element: any) => {
+    if (this.value) {
+      this.select.current.state.inputValue = this.value.label;
+    }
+  }
+
+  handleBlur = () => {
+    const { inputValue } = this.select.current.state;
+
+    if (inputValue !== '' && this.state.createdOptions.findIndex((l: any) => l.value === inputValue) < 0) {
+      this.setState({createdOptions: [...this.state.createdOptions, {label: inputValue, value: inputValue}]});
+    }
+    this.props.onChange(inputValue);
+  }
+
+  get options() {
+    if (this.state.createdOptions.length > 0) {
+      const loadedOptions = this.props.options;
+      const filteredCreated = this.state.createdOptions.filter((e: any) => {
+        return loadedOptions.findIndex((l: any) => l.value === e.value) < 0;
+      });
+      return loadedOptions.concat(filteredCreated);
+    } else {
+      return this.props.options;
+    }
+  }
+
+  handleMenuClose = () => {
+    this.select.current.blur();
+  }
+
   render() {
+    // tslint:disable-next-line:max-line-length
     const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, ...rest } = this
       .props as any;
 
@@ -237,24 +287,51 @@ class IntegrationReactSelect extends React.Component<any> {
 
     return (
       <DimeFormControl label={''} margin={margin} fullWidth={fullWidth} errorMessage={errorMessage}>
-        <Select
-          menuPortalTarget={this.props.portal ? document.body : undefined}
-          menuPlacement={this.props.portal ? 'auto' : undefined}
-          menuPosition={this.props.portal ? 'absolute' : 'fixed'}
-          classes={classes}
-          styles={selectStyles}
-          components={components}
-          textFieldProps={myLabel}
-          isDisabled={disabled}
-          error={Boolean(errorMessage)}
-          margin={margin}
-          placeholder={placeholder}
-          noOptionsMessage={() => 'Keine Optionen verfügbar'}
-          {...rest}
-          value={this.value}
-          onChange={this.handleChange}
-          fullWidth={fullWidth}
-        />
+        {this.props.creatable && !this.props.isMulti && (
+          <Creatable
+            ref={this.select}
+            menuPortalTarget={this.props.portal ? document.body : undefined}
+            menuPlacement={this.props.portal ? 'auto' : undefined}
+            menuPosition={this.props.portal ? 'absolute' : 'fixed'}
+            classes={classes}
+            styles={selectStyles}
+            components={components}
+            textFieldProps={myLabel}
+            isDisabled={disabled}
+            error={Boolean(errorMessage)}
+            margin={margin}
+            placeholder={placeholder}
+            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            {...rest}
+            options={this.options}
+            value={this.value}
+            onChange={this.handleChange}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+            onMenuClose={this.handleMenuClose}
+            fullWidth={fullWidth}
+          />
+        )}
+        {!this.props.creatable && (
+          <Select
+            menuPortalTarget={this.props.portal ? document.body : undefined}
+            menuPlacement={this.props.portal ? 'auto' : undefined}
+            menuPosition={this.props.portal ? 'absolute' : 'fixed'}
+            classes={classes}
+            styles={selectStyles}
+            components={components}
+            textFieldProps={myLabel}
+            isDisabled={disabled}
+            error={Boolean(errorMessage)}
+            margin={margin}
+            placeholder={placeholder}
+            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            {...rest}
+            value={this.value}
+            onChange={this.handleChange}
+            fullWidth={fullWidth}
+          />
+        )}
       </DimeFormControl>
     );
   }

@@ -1,6 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
+import {Cache} from '../utilities/Cache';
 import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
@@ -81,6 +82,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
         position_id: targetPosition || null,
       }),
     );
+    Cache.invalidateAllActiveCaches();
   }
 
   @action

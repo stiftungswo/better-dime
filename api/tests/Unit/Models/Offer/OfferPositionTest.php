@@ -4,11 +4,15 @@ namespace Tests\Unit\Models\Offer;
 
 use App\Models\Offer\Offer;
 use App\Models\Offer\OfferPosition;
+use App\Models\PositionGroup\PositionGroup;
 use App\Models\Service\RateUnit;
 use App\Models\Service\Service;
+use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class OfferPositionTest extends \TestCase
 {
+    use DatabaseTransactions;
+
     public function testOfferAssignment()
     {
         $offerPosition = factory(OfferPosition::class)->make();
@@ -31,6 +35,14 @@ class OfferPositionTest extends \TestCase
         $service = factory(Service::class)->make();
         $offerPosition->service()->associate($service);
         $this->assertEquals($service, $offerPosition->service);
+    }
+
+    public function testPositionGroupAssignment()
+    {
+        $positionGroup = factory(PositionGroup::class)->make();
+        $offerPosition = factory(OfferPosition::class)->make();
+        $offerPosition->position_group()->associate($positionGroup);
+        $this->assertEquals($positionGroup, $offerPosition->position_group);
     }
 
     public function testValidCalculatedTotal()

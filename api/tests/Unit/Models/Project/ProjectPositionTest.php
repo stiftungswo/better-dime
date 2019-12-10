@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Project;
 
+use App\Models\PositionGroup\PositionGroup;
 use App\Models\Project\Project;
 use App\Models\Project\ProjectEffort;
 use App\Models\Project\ProjectPosition;
@@ -34,6 +35,14 @@ class ProjectPositionTest extends \TestCase
         $position = factory(ProjectPosition::class)->make();
         $position->service()->associate($service);
         $this->assertEquals($service, $position->service);
+    }
+
+    public function testPositionGroupAssignment()
+    {
+        $positionGroup = factory(PositionGroup::class)->make();
+        $position = factory(ProjectPosition::class)->make();
+        $position->position_group()->associate($positionGroup);
+        $this->assertEquals($positionGroup, $position->position_group);
     }
 
     public function testGetChargeAttribute()

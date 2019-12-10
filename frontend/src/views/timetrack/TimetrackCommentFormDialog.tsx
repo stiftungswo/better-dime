@@ -2,12 +2,13 @@ import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
 import * as yup from 'yup';
+import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { TextField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeField } from '../../form/fields/formik';
 import { FormDialog } from '../../form/FormDialog';
 import { MainStore } from '../../stores/mainStore';
+import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { ProjectComment } from '../../types';
@@ -17,20 +18,21 @@ import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 interface Props {
   onClose: () => void;
   projectCommentStore?: ProjectCommentStore;
+  projectCommentPresetStore?: ProjectCommentPresetStore;
   mainStore?: MainStore;
   timetrackFilterStore?: TimetrackFilterStore;
 }
 
 const schema = localizeSchema(() =>
   yup.object({
-    comment: yup.string().required(),
+    comment: yup.string().required().nullable(true),
     date: dimeDate(),
     project_id: selector(),
   }),
 );
 
 @compose(
-  inject('projectCommentStore', 'timetrackFilterStore', 'mainStore'),
+  inject('projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore', 'mainStore'),
   observer,
 )
 export class TimetrackCommentFormDialog extends React.Component<Props> {
@@ -39,11 +41,19 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
     if (projectCommentStore.entity) {
       await projectCommentStore.put(schema.cast(entity));
     } else {
-      await projectCommentStore.post(schema.cast(entity));
-      await this.widenFilterSettings(entity);
+      if (schema.cast(entity).comment != null) {
+        await projectCommentStore.post(schema.cast(entity));
+        await this.widenFilterSettings(entity);
+      }
     }
     await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
     projectCommentStore.editing = false;
+  }
+
+  componentDidMount(): void {
+    Promise.all([
+      this.props.projectCommentPresetStore!.fetchAll(),
+    ]);
   }
 
   render() {
@@ -59,7 +69,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
           <>
             <DimeField component={DatePicker} name={'date'} label={'Datum'} />
             <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
-            <DimeField component={TextField} name={'comment'} label={'Kommentar'} multiline rowsMax={6} />
+            <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
           </>
         )}
       />

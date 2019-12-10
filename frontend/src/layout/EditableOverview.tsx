@@ -19,6 +19,7 @@ interface Props<T> {
   // tslint:disable-next-line:no-any ;
   schema: Schema<any>;
   renderActions?: (e: T) => React.ReactNode;
+  onSubmit?: (entity: T) => Promise<void>;
 }
 
 export class EditableOverview<T extends Listing> extends React.Component<Props<T>> {
@@ -36,12 +37,16 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
   }
 
   handleSubmit = (entity: T) => {
-    if (this.props.store.entity) {
-      this.props.store!.put(entity).then(() => this.setState({ editing: false }));
+    if (this.props.onSubmit) {
+      return this.props.onSubmit(entity).then(this.handleClose).catch(this.handleClose);
     } else {
-      this.props.store!.post(entity).then(() => this.setState({ editing: false }));
+      if (this.props.store.entity) {
+        this.props.store!.put(entity).then(this.handleClose).catch(this.handleClose);
+      } else {
+        this.props.store!.post(entity).then(this.handleClose).catch(this.handleClose);
+      }
+      return Promise.resolve();
     }
-    return Promise.resolve();
   }
 
   handleAdd = () => {
