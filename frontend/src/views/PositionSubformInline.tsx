@@ -53,11 +53,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     }
   }
 
-  componentDidMount() {
-    this.updateArchivedRateUnitStatus();
-  }
-
-  componentDidUpdate() {
+  componentDidMount(): void {
     this.updateArchivedRateUnitStatus();
   }
 
@@ -73,6 +69,7 @@ export default class PositionSubformInline extends React.Component<Props> {
       price_per_rate: rate.value,
       formikKey: Math.random(),
     });
+    this.updateArchivedRateUnitStatus();
   }
 
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
@@ -80,6 +77,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     item.position_group_id = newGroupId;
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), item.order, (a, b) => a - b);
     arrayHelpers.insert(insertIndex, item);
+    this.updateArchivedRateUnitStatus();
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
@@ -106,6 +104,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     } else {
       this.insertService(arrayHelpers, service, rate, null);
     }
+    this.updateArchivedRateUnitStatus();
   }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
