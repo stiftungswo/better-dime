@@ -66,6 +66,7 @@ export interface OfferPosition {
   order: number;
   price_per_rate: number;
   rate_unit_id: number;
+  rate_unit_archived: boolean;
   service_id: number;
   vat: number;
   deleted_at: null;
@@ -188,6 +189,7 @@ export interface ProjectPosition {
   project_id: number;
   rate_unit_id: number;
   rate_unit_archived: boolean;
+  service_archived: boolean;
   service_id: number;
   vat: number;
   deleted_at: null;

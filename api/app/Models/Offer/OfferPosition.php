@@ -21,6 +21,8 @@ class OfferPosition extends Model
         'amount', 'description', 'offer_id', 'order', 'price_per_rate',
         'rate_unit_id', 'service_id', 'position_group_id', 'vat'];
 
+    protected $appends = ['rate_unit_archived'];
+
     public function offer()
     {
         return $this->belongsTo(Offer::class);
@@ -52,6 +54,15 @@ class OfferPosition extends Model
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Returns the whether or not the rate unit that is used for this position is archived
+     * @return string
+     */
+    public function getRateUnitArchivedAttribute()
+    {
+        return $this->rate_unit->archived;
     }
 
     /**

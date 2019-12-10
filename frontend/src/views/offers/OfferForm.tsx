@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid/Grid';
+import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -30,6 +31,7 @@ import { Offer, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import Navigator from './OfferNavigator';
@@ -81,6 +83,11 @@ class OfferForm extends React.Component<Props> {
 
   render() {
     const { offer, offerStore } = this.props;
+    let afterUnitInvalidation = false;
+
+    if (!(empty(offer) || this.props.loading || this.state.loading)) {
+      afterUnitInvalidation = isAfterArchivedUnitsCutoff(offer.created_at);
+    }
 
     return (
       <FormView
@@ -188,6 +195,18 @@ class OfferForm extends React.Component<Props> {
                   </Grid>
 
                   <Grid item xs={12}>
+                    {props.status! && props.status!.archived_units && afterUnitInvalidation && (
+                      <>
+                        <Grid container direction="row" alignItems="center" style={{marginLeft: '10px', paddingBottom: '5px'}}>
+                          <Grid item>
+                            <Warning color={'error'}/>
+                          </Grid>
+                          <Grid item style={{color: 'red', marginLeft: '5px'}}>
+                            Services mit archivierten Einheiten vorhanden!
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
                     <DimePaper>
                       <PositionSubformInline tag={OfferPositionRenderer} formikProps={props} name={'positions'} disabled={locked} />
                     </DimePaper>

@@ -90,7 +90,21 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                     <DimeTableCell {...provided.dragHandleProps}>
                       <DragHandle />
                     </DimeTableCell>
-                    <DimeTableCell>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</DimeTableCell>
+                    <DimeTableCell>
+                      {(!this.props.serviceStore!.getArchived(values.positions[pIdx].service_id) || !afterUnitInvalidation) && (
+                        <>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</>
+                      )}
+                      {this.props.serviceStore!.getArchived(values.positions[pIdx].service_id) && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red'}}>
+                            {this.props.serviceStore!.getName(values.positions[pIdx].service_id)}
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
+                    </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
                     </DimeTableCell>

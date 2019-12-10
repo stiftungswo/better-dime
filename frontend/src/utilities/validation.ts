@@ -54,4 +54,4 @@ export const selector = requiredNumber;
 
 // starting from Dezember 9th we show a warning on projects which contain services with archived rate units
 // and ask the user to update the service to a new rate unit
-export const isAfterArchivedUnitsCutoff = (createdAt: string) => new Date(createdAt) > new Date('2019-12-09 08:00:00');
+export const isAfterArchivedUnitsCutoff = (createdAt: string) => new Date(createdAt) > new Date('2012-12-09 08:00:00');

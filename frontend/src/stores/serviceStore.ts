@@ -46,6 +46,11 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
     return service ? service.name : id;
   }
 
+  getArchived(id: number) {
+    const service = this.services.find(s => s.id === id);
+    return service ? service.archived : false;
+  }
+
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/services/' + id + '/archive', { archived });
   }
