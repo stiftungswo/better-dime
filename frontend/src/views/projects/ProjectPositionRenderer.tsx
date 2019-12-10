@@ -1,7 +1,9 @@
 import {Divider, Typography} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
@@ -19,6 +21,7 @@ import {MainStore} from '../../stores/mainStore';
 import {ServiceStore} from '../../stores/serviceStore';
 import {PositionGroup, ProjectPosition} from '../../types';
 import compose from '../../utilities/compose';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 interface Props {
@@ -40,6 +43,7 @@ interface Props {
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd } = this.props;
+    const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
       <>
@@ -99,7 +103,21 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                     <DimeTableCell>
                       <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />
                     </DimeTableCell>
-                    <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
+                    <DimeTableCell>
+                      {(!p.rate_unit_archived || !afterUnitInvalidation) && (
+                        <>{p.efforts_value_with_unit}</>
+                      )}
+                      {p.rate_unit_archived && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red'}}>
+                            {p.efforts_value_with_unit}
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
+                    </DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
                     <DimeTableCell style={{paddingRight: '0px'}}>
                       <ActionButton

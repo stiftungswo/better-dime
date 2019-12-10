@@ -187,6 +187,7 @@ export interface ProjectPosition {
   price_per_rate: number;
   project_id: number;
   rate_unit_id: number;
+  rate_unit_archived: boolean;
   service_id: number;
   vat: number;
   deleted_at: null;

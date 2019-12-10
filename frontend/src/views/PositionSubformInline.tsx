@@ -1,3 +1,5 @@
+import {Grid} from '@material-ui/core';
+import {Warning} from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -10,7 +12,6 @@ import {PositionGroup, Service, ServiceRate} from '../types';
 import compose from '../utilities/compose';
 import { getInsertionIndex } from '../utilities/getInsertionIndex';
 import {defaultPositionGroup} from '../utilities/helpers';
-import ProjectPositionRenderer from './projects/ProjectPositionRenderer';
 
 export interface Props {
   mainStore?: MainStore;
@@ -33,6 +34,32 @@ export default class PositionSubformInline extends React.Component<Props> {
     moving: false,
     moving_index: null,
   };
+
+  updateArchivedRateUnitStatus = () => {
+    let archivedUnits = false;
+
+    for (const position of this.props.formikProps.values.positions) {
+      archivedUnits = archivedUnits || position.rate_unit_archived;
+    }
+
+    if ((this.props.formikProps.status == null || this.props.formikProps.status.archived_units == null)) {
+      this.props.formikProps.setStatus({archived_units: archivedUnits});
+      // tslint:disable-next-line:no-console
+      console.log('We have set status to', archivedUnits);
+    } else if (this.props.formikProps.status.archived_units !== archivedUnits) {
+      this.props.formikProps.setStatus({archived_units: archivedUnits});
+      // tslint:disable-next-line:no-console
+      console.log('We have set status to', archivedUnits);
+    }
+  }
+
+  componentDidMount() {
+    this.updateArchivedRateUnitStatus();
+  }
+
+  componentDidUpdate() {
+    this.updateArchivedRateUnitStatus();
+  }
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), service.order, (a, b) => a - b);
