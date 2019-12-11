@@ -23,6 +23,8 @@ class InvoicePosition extends Model
         'price_per_rate', 'rate_unit_id', 'position_group_id', 'vat'
     ];
 
+    protected $appends = ['rate_unit_archived'];
+
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
@@ -41,6 +43,15 @@ class InvoicePosition extends Model
     public function position_group()
     {
         return $this->belongsTo(PositionGroup::class);
+    }
+
+    /**
+     * Returns the whether or not the rate unit that is used for this position is archived
+     * @return string
+     */
+    public function getRateUnitArchivedAttribute()
+    {
+        return $this->rate_unit->archived;
     }
 
     /**

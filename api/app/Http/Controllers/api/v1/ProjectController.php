@@ -60,6 +60,8 @@ class ProjectController extends BaseController
                 $projectPosition->position_group_id = $position->position_group_id;
             }
 
+            // update the service rate to a valid service rate just in case the one we are duplicating
+            // uses an archived rate unit
             $service_rate = $projectPosition->service->service_rates
                 ->where('rate_group_id', $project->rate_group->id)
                 ->filter(function ($service_rate, $key){
@@ -67,6 +69,7 @@ class ProjectController extends BaseController
                 })
                 ->first();
 
+            // only update the service rate if we found a valid one
             if(!is_null($service_rate)){
                 $projectPosition->rate_unit_id = $service_rate->rate_unit->id;
             }else{

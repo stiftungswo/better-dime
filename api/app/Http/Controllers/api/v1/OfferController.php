@@ -33,7 +33,7 @@ class OfferController extends BaseController
         $newOffer  =$this->duplicateObject($offer, ['discounts']);
 
         foreach ($offer->positions as $position) {
-            $attributes = ['service_id', 'price_per_rate', 'vat', 'order'];
+            $attributes = ['service_id', 'price_per_rate', 'vat', 'order', 'amount'];
             $offerPosition = new OfferPosition();
 
             foreach ($attributes as $attribute) {
@@ -48,10 +48,8 @@ class OfferController extends BaseController
                 $offerPosition->position_group_id = $position->position_group_id;
             }
 
-            if ($position->amount) {
-                $offerPosition->amount = $position->amount;
-            }
-
+            // update the service rate to a valid service rate just in case the one we are duplicating
+            // uses an archived rate unit
             $service_rate = $offerPosition->service->service_rates
                 ->where('rate_group_id', $offer->rate_group->id)
                 ->filter(function ($service_rate, $key){
@@ -59,6 +57,7 @@ class OfferController extends BaseController
                 })
                 ->first();
 
+            // only update the service rate if we found a valid one
             if(!is_null($service_rate)){
                 $offerPosition->rate_unit_id = $service_rate->rate_unit->id;
             }else{

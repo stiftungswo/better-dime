@@ -253,6 +253,7 @@ export interface InvoicePosition {
   price_per_rate: number;
   project_position_id: number;
   rate_unit_id: number;
+  rate_unit_archived: boolean;
   vat: number;
   deleted_at: null;
   created_at: string;

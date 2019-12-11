@@ -1,6 +1,8 @@
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import {Warning} from '@material-ui/icons';
 import {FieldArray, FieldArrayRenderProps, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -15,9 +17,11 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
+import {RateUnitStore} from '../../stores/rateUnitStore';
 import {ServiceStore} from '../../stores/serviceStore';
-import {Invoice, InvoicePosition, PositionGroup} from '../../types';
+import {Invoice, InvoicePosition, PositionGroup, RateUnit} from '../../types';
 import compose from '../../utilities/compose';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import { DraggableTableBody } from './DraggableTableBody';
 
 const template = (groupId?: number) => ({
@@ -33,6 +37,7 @@ const template = (groupId?: number) => ({
 
 interface Props {
   mainStore?: MainStore;
+  rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
   arrayHelpers: FieldArrayRenderProps;
   onDelete: (idx: number) => void;
@@ -46,12 +51,13 @@ interface Props {
 }
 
 @compose(
-  inject('mainStore'),
+  inject('mainStore', 'rateUnitStore'),
   observer,
 )
 export default class InvoicePositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd } = this.props;
+    const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
       <>
@@ -83,6 +89,10 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
                 const pIdx = values.positions.indexOf(p);
                 const name = <T extends keyof InvoicePosition>(fieldName: T) => `${this.props.name}.${pIdx}.${fieldName}`;
                 const total = p.amount * p.price_per_rate * (1 + p.vat);
+                const rateUnit = this.props.rateUnitStore!.rateUnits.find((r: RateUnit) => {
+                  return r.id === p.rate_unit_id;
+                });
+                const archivedRate = rateUnit != null && rateUnit.archived;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
@@ -95,7 +105,19 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
                       <DimeField delayed component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      {(!archivedRate || !afterUnitInvalidation) && (
+                        <DimeField component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      )}
+                      {archivedRate && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
+                            <DimeField component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} />

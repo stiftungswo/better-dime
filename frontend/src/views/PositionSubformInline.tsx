@@ -7,8 +7,9 @@ import PositionMoveDialog from '../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/ServiceSelectDialog';
 import { MainStore } from '../stores/mainStore';
 import {PositionGroupStore} from '../stores/positionGroupStore';
+import {RateUnitStore} from '../stores/rateUnitStore';
 import { ServiceStore } from '../stores/serviceStore';
-import {PositionGroup, Service, ServiceRate} from '../types';
+import {PositionGroup, RateUnit, Service, ServiceListing, ServiceRate} from '../types';
 import compose from '../utilities/compose';
 import { getInsertionIndex } from '../utilities/getInsertionIndex';
 import {defaultPositionGroup} from '../utilities/helpers';
@@ -16,6 +17,7 @@ import {defaultPositionGroup} from '../utilities/helpers';
 export interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
+  rateUnitStore?: RateUnitStore;
   positionGroupStore?: PositionGroupStore;
   formikProps: FormikProps<any>;
   name: string;
@@ -24,7 +26,7 @@ export interface Props {
 }
 
 @compose(
-  inject('mainStore', 'serviceStore', 'positionGroupStore'),
+  inject('mainStore', 'serviceStore', 'positionGroupStore', 'rateUnitStore'),
   observer,
 )
 export default class PositionSubformInline extends React.Component<Props> {
@@ -36,24 +38,34 @@ export default class PositionSubformInline extends React.Component<Props> {
   };
 
   updateArchivedRateUnitStatus = () => {
-    let archivedUnits = false;
+    let archivedRates = false;
+    let archivedServices = false;
 
     for (const position of this.props.formikProps.values.positions) {
-      archivedUnits = archivedUnits || position.rate_unit_archived;
+      const rateUnit = this.props.rateUnitStore!.rateUnits.find((r: RateUnit) => {
+        return r.id === position.rate_unit_id;
+      });
+      const service = position.service_id != null ? this.props.serviceStore!.services.find((s: ServiceListing) => {
+        return s.id === position.service_id;
+      }) : null;
+      archivedRates = archivedRates || (rateUnit != null && rateUnit.archived);
+      archivedServices = archivedServices || (service != null && service.archived);
     }
 
-    if ((this.props.formikProps.status == null || this.props.formikProps.status.archived_units == null)) {
+    const archivedUnits = archivedServices || archivedRates;
+
+    if ((this.props.formikProps.status == null || this.props.formikProps.status.archived_units == null && archivedUnits)) {
       this.props.formikProps.setStatus({archived_units: archivedUnits});
-      // tslint:disable-next-line:no-console
-      console.log('We have set status to', archivedUnits);
     } else if (this.props.formikProps.status.archived_units !== archivedUnits) {
       this.props.formikProps.setStatus({archived_units: archivedUnits});
-      // tslint:disable-next-line:no-console
-      console.log('We have set status to', archivedUnits);
     }
   }
 
   componentDidMount(): void {
+    this.updateArchivedRateUnitStatus();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any) {
     this.updateArchivedRateUnitStatus();
   }
 

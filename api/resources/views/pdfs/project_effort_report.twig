@@ -1,7 +1,8 @@
 {% extends 'pdfs/static/effort_reports' %}
 
 {% block title %}
-    <title>Aufwandsrapport: {{ project.name }}</title>
+    <title>Aufwandsrapport_{{ project.id }}_{{ project.name | split(',') | first | split(';') | first |
+        replace({'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue', ' ': '_', ':': '', ';': '', '.': ''})}}_{{ "now"|date("Y_m_d") }}</title>
 {% endblock %}
 
 {% block content %}

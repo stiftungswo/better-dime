@@ -1,8 +1,8 @@
 {% extends 'pdfs/static/base' %}
 
 {% block title %}
-    <title>Offerte {{ offer.id }} {% if offer.project %}zum Projekt {{ offer.project.id }} {% endif %}
-        vom {{ "now"|date("d.m.Y") }}</title>
+    <title>Offerte_{{ offer.id }}_{{ offer.name | split(',') | first | split(';') | first |
+        replace({'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue', ' ': '_', ':': '', ';': '', '.': ''})}}_{{ "now"|date("Y_m_d") }}</title>
 {% endblock %}
 
 {% block customer %}
