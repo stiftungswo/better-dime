@@ -76,7 +76,7 @@ class WorkPeriod extends Model
         for ($i = $startYear; $i <= $endYear; $i++) {
             $start = Carbon::create($i)->startOfYear();
             $end = Carbon::create($i)->endOfYear()->startOfDay();
-            $daysOfYear = ($start->diffInDays($end) + 1) * 8.4 * 60;
+            $daysOfYear = ($start->diffInWeekdays($end) + 1) * 8.4 * 60;
 
             if ($this->start > $start) {
                 $start = $workPeriodStart;
@@ -86,7 +86,7 @@ class WorkPeriod extends Model
                 $end = $workPeriodEnd;
             }
 
-            $daysInYearPeriod = ($start->diffInDays($end) + 1) * 8.4 * 60;
+            $daysInYearPeriod = ($start->diffInWeekdays($end) + 1) * 8.4 * 60;
             $holidayMinutes += ($vacationEntitlement / $daysOfYear) * $daysInYearPeriod;
         }
 
