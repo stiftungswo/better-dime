@@ -84,12 +84,10 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
 
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.api.put('/projects/' + id + '/archive', { archived });
-    this.doFetchAll();
   }
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/projects/' + id);
-    await this.doFetchAll();
   }
 
   protected async doDuplicate(id: number) {

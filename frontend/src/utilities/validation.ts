@@ -29,8 +29,9 @@ export const localizeSchema = <T>(creator: () => yup.Schema<T>) => {
 export const titleRegex = () => {
   // allow A-z (with umlaut etc.) and allow - . [ ] ( ) / \
   const allowedStartChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\- *\(\)\.\\/\[\]\:]/gi;
-  // allow A-z (with umlaut etc.) and allow - . [ ] ( ) / \
+  // allow A-z (with umlaut etc.) and allow - . [ ] ( ) / \, also allow digits
   const allowedMiddleChars = /[a-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\- *\(\)\.\\/\[\]\:\d]/gi;
+  // require pattern Gemeinde, Flurname, Arbeiten, Jahr or Gemeinde, Arbeiten, Jahr
   return new RegExp('^(( *' + allowedStartChars.source + '+' + allowedMiddleChars.source + '*),){2,3} *\\d{4} *$', 'i');
 };
 
@@ -51,3 +52,7 @@ export const requiredNumber = () =>
     .required()
     .typeError(requiredMessage);
 export const selector = requiredNumber;
+
+// starting from Dezember 14th we show a warning on projects which contain services with archived rate units
+// and ask the user to update the service to a new rate unit
+export const isAfterArchivedUnitsCutoff = (createdAt: string) => new Date(createdAt) > new Date('2019-12-14 08:00:00');

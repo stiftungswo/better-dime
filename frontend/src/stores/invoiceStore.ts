@@ -41,7 +41,6 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/invoices/' + id);
-    await this.doFetchAll();
   }
 
   protected async doFetchAll(): Promise<void> {

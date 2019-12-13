@@ -2,6 +2,7 @@ import MuiFormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
 import MuiTextField from '@material-ui/core/TextField';
+import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -33,6 +34,7 @@ import { Invoice, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import Navigator from './ProjectNavigator';
@@ -125,6 +127,11 @@ class ProjectForm extends React.Component<Props> {
 
   render() {
     const { project, mainStore, projectStore } = this.props;
+    let afterUnitInvalidation = false;
+
+    if (!(empty(project) || this.props.loading || this.state.loading)) {
+      afterUnitInvalidation = isAfterArchivedUnitsCutoff(project.created_at);
+    }
 
     return (
       <FormView
@@ -156,95 +163,110 @@ class ProjectForm extends React.Component<Props> {
             undefined
           )
         }
-        render={(props: FormikProps<Project>) => (
-          <form onSubmit={props.handleSubmit}>
-            <Grid container spacing={24}>
-              <Grid item xs={12} lg={8}>
-                {project.id && <Navigator project={project} />}
-                <DimePaper>
-                  <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                      <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
-                    </Grid>
-                    <Grid item xs={12} lg={4}>
-                      <Effect onChange={this.handleCustomerChange} />
-                      <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
-                    </Grid>
-                    <Grid item xs={12} lg={4}>
-                      <DimeField
-                        required
-                        component={AddressSelect}
-                        customerId={props.values.customer_id}
-                        name={'address_id'}
-                        label={'Adresse'}
-                      />
-                    </Grid>
-                    <Grid item xs={12} lg={4}>
-                      <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
-                    </Grid>
-
-                    <Grid item xs={12} lg={8}>
-                      <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
-                    </Grid>
-                    <Grid item xs={12} lg={4}>
-                      <DimeField required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <DimeField
-                        delayed
-                        required
-                        component={TextField}
-                        multiline
-                        rowsMax={14}
-                        name={'description'}
-                        label={'Beschreibung'}
-                      />
-                    </Grid>
-                    <Grid item xs={12} lg={8}>
-                      <DimeField component={DatePicker} name={'deadline'} label={'Deadline'} />
-                    </Grid>
-                    <Grid item xs={12} lg={8}>
-                      <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} />
-                    </Grid>
-                  </Grid>
-                </DimePaper>
-              </Grid>
-
-              <Grid item xs={12}>
+        render={(props: FormikProps<Project>) => {
+            return (
+              <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
                   <Grid item xs={12} lg={8}>
+                    {project.id && <Navigator project={project} />}
                     <DimePaper>
-                      <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                      <Grid container spacing={24}>
+                        <Grid item xs={12}>
+                          <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <Effect onChange={this.handleCustomerChange} />
+                          <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <DimeField
+                            required
+                            component={AddressSelect}
+                            customerId={props.values.customer_id}
+                            name={'address_id'}
+                            label={'Adresse'}
+                          />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                        </Grid>
+
+                        <Grid item xs={12} lg={8}>
+                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <DimeField required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <DimeField
+                            delayed
+                            required
+                            component={TextField}
+                            multiline
+                            rowsMax={14}
+                            name={'description'}
+                            label={'Beschreibung'}
+                          />
+                        </Grid>
+                        <Grid item xs={12} lg={8}>
+                          <DimeField component={DatePicker} name={'deadline'} label={'Deadline'} />
+                        </Grid>
+                        <Grid item xs={12} lg={8}>
+                          <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} />
+                        </Grid>
+                      </Grid>
                     </DimePaper>
                   </Grid>
 
-                  {project.id && (
-                    <Grid item xs={12} lg={4}>
-                      <ProjectStatTable
-                        moneyBudget={props.values.budget_price}
-                        moneyUsed={props.values.current_price}
-                        timeBudget={props.values.budget_time}
-                        timeUsed={props.values.current_time}
-                      />
-                    </Grid>
-                  )}
-                </Grid>
-              </Grid>
+                  <Grid item xs={12}>
+                    <Grid container spacing={24}>
+                      <Grid item xs={12} lg={8}>
+                        <DimePaper>
+                          <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                        </DimePaper>
+                      </Grid>
 
-              <Grid item xs={12}>
-                <DimePaper>
-                  <PositionSubformInline tag={ProjectPositionRenderer} formikProps={props} name={'positions'} />
-                </DimePaper>
-              </Grid>
-            </Grid>
-          </form>
-        )}
+                      {project.id && (
+                        <Grid item xs={12} lg={4}>
+                          <ProjectStatTable
+                            moneyBudget={props.values.budget_price}
+                            moneyUsed={props.values.current_price}
+                            timeBudget={props.values.budget_time}
+                            timeUsed={props.values.current_time}
+                          />
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    {props.status! && props.status!.archived_units && afterUnitInvalidation && (
+                      <>
+                        <Grid container direction="row" alignItems="center" style={{marginLeft: '10px', paddingBottom: '5px'}}>
+                          <Grid item>
+                            <Warning color={'error'}/>
+                          </Grid>
+                          <Grid item style={{color: 'red', marginLeft: '5px'}}>
+                            Services mit archivierten Einheiten vorhanden!
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
+                    <DimePaper>
+                      <PositionSubformInline tag={ProjectPositionRenderer} formikProps={props} name={'positions'} />
+                    </DimePaper>
+                  </Grid>
+                </Grid>
+              </form>
+            );
+          }
+        }
       />
     );
   }

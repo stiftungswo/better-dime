@@ -14,7 +14,7 @@ class ProjectPosition extends Model
 {
     use SoftDeletes, BlameableTrait;
 
-    protected $appends = ['charge', 'calculated_vat', 'efforts_value_with_unit', 'is_time'];
+    protected $appends = ['charge', 'calculated_vat', 'efforts_value_with_unit', 'rate_unit_archived', 'is_time'];
 
     protected $casts = [
         'vat' => 'float'
@@ -93,6 +93,15 @@ class ProjectPosition extends Model
     public function getEffortsValueWithUnitAttribute()
     {
         return $this->efforts_value . " " . $this->rate_unit->effort_unit;
+    }
+
+    /**
+     * Returns the whether or not the rate unit that is used for this position is archived
+     * @return string
+     */
+    public function getRateUnitArchivedAttribute()
+    {
+        return $this->rate_unit->archived;
     }
 
     /**

@@ -21,10 +21,16 @@ export class RateUnitSelect extends React.Component<Props> {
       .map(e => ({
         value: e.id,
         label: e.name,
+        archived: e.archived,
       }));
   }
 
+  isOptionDisabled = (option: any, value: string) => {
+    const containsSearch = (!value || value.length === 0 || option.data.label.toLowerCase().includes(value.toLowerCase()));
+    return option.data.archived != null && !option.data.archived && containsSearch;
+  }
+
   render() {
-    return <Select options={this.options} {...this.props} />;
+    return <Select options={this.options} {...this.props} filterOption={this.isOptionDisabled}/>;
   }
 }

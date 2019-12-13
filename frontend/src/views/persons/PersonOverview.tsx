@@ -59,7 +59,7 @@ export default class PersonOverview extends React.Component<Props> {
               this.props.history.push(`/persons/${newEntity.id}`);
             }}
             deleteMessage={'Möchtest du diese Person wirklich löschen?'}
-            deleteAction={() => peopleStore!.delete(e.id)}
+            deleteAction={() => peopleStore!.delete(e.id).then(r => peopleStore!.fetchAllPaginated())}
           />
         )}
         onClickRow={'/persons/:id'}

@@ -113,6 +113,8 @@ class PersonController extends BaseController
             'rate_group_id' => 'required|integer',
             'salutation' => 'string|nullable|max:20',
             'tags' => 'present|array'
+        ], [
+            'email.email' => 'Die gewählte Email Adresse ist nicht gültig.'
         ]);
     }
 }

@@ -30,7 +30,44 @@ class OfferController extends BaseController
     public function duplicate($id)
     {
         $offer = Offer::findOrFail($id);
-        return self::get($this->duplicateObject($offer, ['discounts', 'positions']));
+        $newOffer  =$this->duplicateObject($offer, ['discounts']);
+
+        foreach ($offer->positions as $position) {
+            $attributes = ['service_id', 'price_per_rate', 'vat', 'order', 'amount'];
+            $offerPosition = new OfferPosition();
+
+            foreach ($attributes as $attribute) {
+                $offerPosition = $this->assignOrThrowExceptionIfNull($position, $offerPosition, $attribute);
+            }
+
+            if ($position->description) {
+                $offerPosition->description = $position->description;
+            }
+
+            if ($position->position_group_id) {
+                $offerPosition->position_group_id = $position->position_group_id;
+            }
+
+            // update the service rate to a valid service rate just in case the one we are duplicating
+            // uses an archived rate unit
+            $service_rate = $offerPosition->service->service_rates
+                ->where('rate_group_id', $offer->rate_group->id)
+                ->filter(function ($service_rate, $key) {
+                    return $service_rate->rate_unit->archived == false;
+                })
+                ->first();
+
+            // only update the service rate if we found a valid one
+            if (!is_null($service_rate)) {
+                $offerPosition->rate_unit_id = $service_rate->rate_unit->id;
+            } else {
+                $offerPosition->rate_unit_id = $position->rate_unit_id;
+            }
+
+            self::get($newOffer)->positions()->save($offerPosition);
+        }
+
+        return self::get($newOffer);
     }
 
     public function index(Request $request)
@@ -149,6 +186,20 @@ class OfferController extends BaseController
         } else {
             return $offer->project;
         }
+    }
+
+    protected function assignOrThrowExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
+    {
+        if (is_null($oldPropertyName)) {
+            $oldPropertyName = $property;
+        }
+
+        if (is_null($object1->$oldPropertyName)) {
+            throw new \InvalidArgumentException('Cant create new entity because property ' . $oldPropertyName . ' is null.');
+        } else {
+            $object2->$property = $object1->$oldPropertyName;
+        }
+        return $object2;
     }
 
     private function validateRequest(Request $request)

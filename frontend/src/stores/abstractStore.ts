@@ -61,6 +61,19 @@ export class AbstractStore<T, OverviewType = T> {
     this.searchQuery = '';
   }
 
+  handleError = (error: any) => {
+    if (error.response!.data != null) {
+      // tslint:disable-next-line:forin
+      for (const key in error.response!.data!) {
+        this.mainStore.displayError(error.response!.data![key]);
+        break;
+      }
+    } else {
+      this.mainStore.displayError(`${this.entityName.singular} konnte nicht gespeichert werden.`);
+    }
+    console.log(error);
+  }
+
   @action
   async fetchAll() {
     try {

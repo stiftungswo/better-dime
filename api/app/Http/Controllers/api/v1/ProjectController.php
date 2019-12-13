@@ -42,7 +42,44 @@ class ProjectController extends BaseController
     public function duplicate($id)
     {
         $project = Project::findOrFail($id);
-        return self::get($this->duplicateObject($project, ['costgroup_distributions', 'positions'], ['offer_id']));
+        $newProject  =$this->duplicateObject($project, ['costgroup_distributions'], ['offer_id']);
+
+        foreach ($project->positions as $position) {
+            $attributes = ['service_id', 'price_per_rate', 'vat', 'order'];
+            $projectPosition = new ProjectPosition();
+
+            foreach ($attributes as $attribute) {
+                $projectPosition = $this->assignOrThrowExceptionIfNull($position, $projectPosition, $attribute);
+            }
+
+            if ($position->description) {
+                $projectPosition->description = $position->description;
+            }
+
+            if ($position->position_group_id) {
+                $projectPosition->position_group_id = $position->position_group_id;
+            }
+
+            // update the service rate to a valid service rate just in case the one we are duplicating
+            // uses an archived rate unit
+            $service_rate = $projectPosition->service->service_rates
+                ->where('rate_group_id', $project->rate_group->id)
+                ->filter(function ($service_rate, $key) {
+                    return $service_rate->rate_unit->archived == false;
+                })
+                ->first();
+
+            // only update the service rate if we found a valid one
+            if (!is_null($service_rate)) {
+                $projectPosition->rate_unit_id = $service_rate->rate_unit->id;
+            } else {
+                $projectPosition->rate_unit_id = $position->rate_unit_id;
+            }
+
+            self::get($newProject)->positions()->save($projectPosition);
+        }
+
+        return self::get($newProject);
     }
 
     public function index(Request $request)
@@ -172,6 +209,20 @@ class ProjectController extends BaseController
 
         $creator = new CreateInvoiceFromProject($project);
         return $creator->create();
+    }
+
+    protected function assignOrThrowExceptionIfNull($object1, $object2, string $property, $oldPropertyName = null)
+    {
+        if (is_null($oldPropertyName)) {
+            $oldPropertyName = $property;
+        }
+
+        if (is_null($object1->$oldPropertyName)) {
+            throw new \InvalidArgumentException('Cant create new entity because property ' . $oldPropertyName . ' is null.');
+        } else {
+            $object2->$property = $object1->$oldPropertyName;
+        }
+        return $object2;
     }
 
     public function projectsWithPotentialInvoices()

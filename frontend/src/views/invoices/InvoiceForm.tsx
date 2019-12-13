@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid/Grid';
+import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -25,6 +26,7 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Invoice } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import InvoiceDiscountSubform from './InvoiceDiscountSubform';
@@ -61,6 +63,11 @@ export default class InvoiceForm extends React.Component<Props> {
 
   render() {
     const { invoice } = this.props;
+    let afterUnitInvalidation = false;
+
+    if (!(empty(invoice) || this.props.loading || this.state.loading)) {
+      afterUnitInvalidation = isAfterArchivedUnitsCutoff(invoice.created_at);
+    }
 
     return (
       <FormView
@@ -150,6 +157,18 @@ export default class InvoiceForm extends React.Component<Props> {
                   </Grid>
 
                   <Grid item xs={12}>
+                    {props.status! && props.status!.archived_units && afterUnitInvalidation && (
+                      <>
+                        <Grid container direction="row" alignItems="center" style={{marginLeft: '10px', paddingBottom: '5px'}}>
+                          <Grid item>
+                            <Warning color={'error'}/>
+                          </Grid>
+                          <Grid item style={{color: 'red', marginLeft: '5px'}}>
+                            Services mit archivierten Einheiten vorhanden!
+                          </Grid>
+                        </Grid>
+                      </>
+                    )}
                     <DimePaper>
                       <PositionSubformInline tag={InvoicePositionRenderer} formikProps={props} name={'positions'} />
                     </DimePaper>

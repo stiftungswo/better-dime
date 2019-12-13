@@ -1,7 +1,9 @@
 import {Divider, Typography} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
@@ -19,6 +21,7 @@ import {MainStore} from '../../stores/mainStore';
 import {ServiceStore} from '../../stores/serviceStore';
 import {PositionGroup, ProjectPosition} from '../../types';
 import compose from '../../utilities/compose';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 interface Props {
@@ -40,6 +43,7 @@ interface Props {
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd } = this.props;
+    const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
       <>
@@ -81,12 +85,29 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                 const p = row as ProjectPosition;
                 const pIdx = values.positions.indexOf(p);
                 const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
+                const archivedService = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id);
+                const archivedRate = p.rate_unit_archived;
+                const archivedEntities = archivedRate || archivedService;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
                       <DragHandle />
                     </DimeTableCell>
-                    <DimeTableCell>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</DimeTableCell>
+                    <DimeTableCell>
+                      {(!archivedService || !afterUnitInvalidation) && (
+                        <>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</>
+                      )}
+                      {archivedService && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item>
+                            <Warning color={'error'}/>
+                          </Grid>
+                          <Grid item style={{color: 'red', marginLeft: '5px', width: 'calc(100% - 32px)'}}>
+                            {this.props.serviceStore!.getName(values.positions[pIdx].service_id)}
+                          </Grid>
+                        </Grid>
+                      )}
+                    </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={TextField} name={name('description')} margin={'none'} />
                     </DimeTableCell>
@@ -94,12 +115,26 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                       <DimeField delayed required component={CurrencyField} name={name('price_per_rate')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      {(!archivedRate || !afterUnitInvalidation) && (
+                        <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      )}
+                      {archivedRate && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
+                            <DimeField disabled required component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />
                     </DimeTableCell>
-                    <DimeTableCell>{p.efforts_value_with_unit}</DimeTableCell>
+                    <DimeTableCell>
+                      {p.efforts_value_with_unit}
+                    </DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(p.charge, false)}</DimeTableCell>
                     <DimeTableCell style={{paddingRight: '0px'}}>
                       <ActionButton

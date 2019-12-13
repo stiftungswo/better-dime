@@ -59,7 +59,6 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
 
   protected async doDelete(id: number) {
     await this.mainStore.api.delete('/companies/' + id);
-    await this.doFetchAll();
   }
 
   @action

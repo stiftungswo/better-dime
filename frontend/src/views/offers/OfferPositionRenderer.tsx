@@ -1,7 +1,9 @@
 import { Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
 import TableRow from '@material-ui/core/TableRow/TableRow';
+import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
@@ -19,6 +21,7 @@ import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import {OfferPosition, PositionGroup} from '../../types';
 import compose from '../../utilities/compose';
+import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 interface Props {
@@ -41,6 +44,7 @@ interface Props {
 export default class OfferPositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd } = this.props;
+    const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
       <>
@@ -83,12 +87,29 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                 const pIdx = values.positions.indexOf(p);
                 const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
                 const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
+                const archivedService = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id);
+                const archivedRate = p.rate_unit_archived;
+                const archivedEntities = archivedRate || archivedService;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
                       <DragHandle />
                     </DimeTableCell>
-                    <DimeTableCell>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</DimeTableCell>
+                    <DimeTableCell>
+                      {(!archivedService || !afterUnitInvalidation) && (
+                        <>{this.props.serviceStore!.getName(values.positions[pIdx].service_id)}</>
+                      )}
+                      {archivedService && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item>
+                            <Warning color={'error'}/>
+                          </Grid>
+                          <Grid item style={{color: 'red', marginLeft: '5px', width: 'calc(100% - 32px)'}}>
+                            {this.props.serviceStore!.getName(values.positions[pIdx].service_id)}
+                          </Grid>
+                        </Grid>
+                      )}
+                    </DimeTableCell>
                     <DimeTableCell>
                       <DimeField
                         delayed
@@ -110,7 +131,19 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                       />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      {(!archivedRate || !afterUnitInvalidation) && (
+                        <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                      )}
+                      {archivedRate && afterUnitInvalidation && (
+                        <Grid container direction="row" alignItems="center">
+                          <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
+                            <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                          </Grid>
+                          <Grid item style={{marginLeft: '5px'}}>
+                            <Warning color={'error'}/>
+                          </Grid>
+                        </Grid>
+                      )}
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />

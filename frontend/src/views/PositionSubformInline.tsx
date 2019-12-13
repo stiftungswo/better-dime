@@ -1,3 +1,5 @@
+import {Grid} from '@material-ui/core';
+import {Warning} from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -5,16 +7,17 @@ import PositionMoveDialog from '../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/ServiceSelectDialog';
 import { MainStore } from '../stores/mainStore';
 import {PositionGroupStore} from '../stores/positionGroupStore';
+import {RateUnitStore} from '../stores/rateUnitStore';
 import { ServiceStore } from '../stores/serviceStore';
-import {PositionGroup, Service, ServiceRate} from '../types';
+import {PositionGroup, RateUnit, Service, ServiceListing, ServiceRate} from '../types';
 import compose from '../utilities/compose';
 import { getInsertionIndex } from '../utilities/getInsertionIndex';
 import {defaultPositionGroup} from '../utilities/helpers';
-import ProjectPositionRenderer from './projects/ProjectPositionRenderer';
 
 export interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
+  rateUnitStore?: RateUnitStore;
   positionGroupStore?: PositionGroupStore;
   formikProps: FormikProps<any>;
   name: string;
@@ -23,7 +26,7 @@ export interface Props {
 }
 
 @compose(
-  inject('mainStore', 'serviceStore', 'positionGroupStore'),
+  inject('mainStore', 'serviceStore', 'positionGroupStore', 'rateUnitStore'),
   observer,
 )
 export default class PositionSubformInline extends React.Component<Props> {
@@ -33,6 +36,38 @@ export default class PositionSubformInline extends React.Component<Props> {
     moving: false,
     moving_index: null,
   };
+
+  updateArchivedRateUnitStatus = () => {
+    let archivedRates = false;
+    let archivedServices = false;
+
+    for (const position of this.props.formikProps.values.positions) {
+      const rateUnit = this.props.rateUnitStore!.rateUnits.find((r: RateUnit) => {
+        return r.id === position.rate_unit_id;
+      });
+      const service = position.service_id != null ? this.props.serviceStore!.services.find((s: ServiceListing) => {
+        return s.id === position.service_id;
+      }) : null;
+      archivedRates = archivedRates || (rateUnit != null && rateUnit.archived);
+      archivedServices = archivedServices || (service != null && service.archived);
+    }
+
+    const archivedUnits = archivedServices || archivedRates;
+
+    if ((this.props.formikProps.status == null || this.props.formikProps.status.archived_units == null && archivedUnits)) {
+      this.props.formikProps.setStatus({archived_units: archivedUnits});
+    } else if (this.props.formikProps.status.archived_units !== archivedUnits) {
+      this.props.formikProps.setStatus({archived_units: archivedUnits});
+    }
+  }
+
+  componentDidMount(): void {
+    this.updateArchivedRateUnitStatus();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any) {
+    this.updateArchivedRateUnitStatus();
+  }
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), service.order, (a, b) => a - b);
@@ -46,6 +81,7 @@ export default class PositionSubformInline extends React.Component<Props> {
       price_per_rate: rate.value,
       formikKey: Math.random(),
     });
+    this.updateArchivedRateUnitStatus();
   }
 
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
@@ -53,6 +89,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     item.position_group_id = newGroupId;
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), item.order, (a, b) => a - b);
     arrayHelpers.insert(insertIndex, item);
+    this.updateArchivedRateUnitStatus();
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
@@ -79,6 +116,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     } else {
       this.insertService(arrayHelpers, service, rate, null);
     }
+    this.updateArchivedRateUnitStatus();
   }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {

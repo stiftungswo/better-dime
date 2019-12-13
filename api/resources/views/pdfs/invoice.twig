@@ -1,7 +1,8 @@
 {% extends 'pdfs/static/base' %}
 
 {% block title %}
-    <title>Rechnung {{ invoice.id }} zum Projekt {{ invoice.project.id }} vom {{ "now"|date("d.m.Y") }}</title>
+    <title>Rechnung_{{ invoice.id }}_{{ invoice.project.name | split(',') | first | split(';') | first |
+        replace({'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue', ' ': '_', ':': '', ';': '', '.': ''})}}_{{ "now"|date("Y_m_d") }}</title>
 {% endblock %}
 
 {% block customer %}
