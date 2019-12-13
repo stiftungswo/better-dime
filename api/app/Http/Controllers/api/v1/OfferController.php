@@ -52,15 +52,15 @@ class OfferController extends BaseController
             // uses an archived rate unit
             $service_rate = $offerPosition->service->service_rates
                 ->where('rate_group_id', $offer->rate_group->id)
-                ->filter(function ($service_rate, $key){
+                ->filter(function ($service_rate, $key) {
                     return $service_rate->rate_unit->archived == false;
                 })
                 ->first();
 
             // only update the service rate if we found a valid one
-            if(!is_null($service_rate)){
+            if (!is_null($service_rate)) {
                 $offerPosition->rate_unit_id = $service_rate->rate_unit->id;
-            }else{
+            } else {
                 $offerPosition->rate_unit_id = $position->rate_unit_id;
             }
 

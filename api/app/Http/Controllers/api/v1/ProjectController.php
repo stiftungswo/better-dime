@@ -64,15 +64,15 @@ class ProjectController extends BaseController
             // uses an archived rate unit
             $service_rate = $projectPosition->service->service_rates
                 ->where('rate_group_id', $project->rate_group->id)
-                ->filter(function ($service_rate, $key){
+                ->filter(function ($service_rate, $key) {
                     return $service_rate->rate_unit->archived == false;
                 })
                 ->first();
 
             // only update the service rate if we found a valid one
-            if(!is_null($service_rate)){
+            if (!is_null($service_rate)) {
                 $projectPosition->rate_unit_id = $service_rate->rate_unit->id;
-            }else{
+            } else {
                 $projectPosition->rate_unit_id = $position->rate_unit_id;
             }
 
