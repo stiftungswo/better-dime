@@ -123,9 +123,11 @@ export class WorkPeriodSubform extends React.Component<Props> {
                     {values.work_periods.map((w: WorkPeriod & { formikKey?: number }, index: number) => {
                       const formattedHours = (value: number): string => (isNaN(value) ? '-' : (value / 60).toFixed(1) + 'h');
                       const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
+                      const rowColor = w.overlapping_periods ? 'rgb(255, 222, 219)' : 'none';
+                      const border = w.overlapping_periods ? 'solid 2px rgb(255, 222, 219)' : 'none';
 
                       return (
-                        <TableRow key={w.id || w.formikKey}>
+                        <TableRow key={w.id || w.formikKey} style={{backgroundColor: rowColor, borderBottom:  border, borderTop:  border}}>
                           <DimeTableCell>
                             <DimeField component={DatePicker} name={fieldName('start')} />
                           </DimeTableCell>
@@ -145,12 +147,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField
-                              delayed
-                              component={DurationField}
-                              timeUnit={'hour'}
-                              name={fieldName('vacation_takeover')}
-                            />
+                            {formattedHours(w.vacation_takeover)}
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField

@@ -50,7 +50,6 @@ class WorkPeriodController extends BaseController
             'end' => 'required|date',
             'pensum' => 'required|integer|min:0',
             'start' => 'required|date',
-            'vacation_takeover' => 'numeric',
             'yearly_vacation_budget' => 'required|integer|min:0'
         ]);
     }
