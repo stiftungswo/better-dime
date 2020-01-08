@@ -73,6 +73,7 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   onClickRow?: (e: T, index: number) => void;
   onClickChangePage?: (page: number) => void;
   onClickChangePageSize?: (pageSize: number) => void;
+  onClickChangeOrder?: (tag: string, dir: string) => void;
   noSort?: boolean;
   selected?: number[];
   setSelected?: (e: T, state: boolean) => void;
@@ -105,7 +106,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     }
   }
 
-  handleRequestSort = (event: React.MouseEvent<HTMLElement>, property: string) => {
+  handleRequestSort = (event: React.MouseEvent<HTMLElement>, property: string, tag: string | undefined) => {
     const orderBy = property;
     let order: Direction = 'desc';
 
@@ -113,11 +114,14 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
       order = 'asc';
     }
 
+    if (!this.props.noSort && this.props.onClickChangePage) {
+      this.props.onClickChangeOrder!(tag != null ? tag : property, order);
+    }
     this.setState({ order, orderBy });
   }
 
-  createSortHandler = (property: string) => (event: React.MouseEvent<HTMLElement>) => {
-    this.handleRequestSort(event, property);
+  createSortHandler = (property: string, tag: string | undefined) => (event: React.MouseEvent<HTMLElement>) => {
+    this.handleRequestSort(event, property, tag);
   }
 
   handleRowClick = (row: T, index: number) => (e: React.MouseEvent<HTMLElement>) => {
@@ -176,7 +180,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
   render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
-    const sortedData = noSort ? data : stableSort(data, getSorting(order, orderBy));
+    const sortedData = (noSort || this.props.onClickChangePage) ? data : stableSort(data, getSorting(order, orderBy));
     const RowCheckbox = this.RowCheckbox;
     const handleChangePage = this.handleChangePage;
     const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
@@ -193,7 +197,11 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
               )}
               {columns.map(col => (
                 <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
-                  <TableSortLabel active={orderBy === col.id} direction={order} onClick={this.createSortHandler(col.id)}>
+                  <TableSortLabel
+                    active={orderBy === col.id}
+                    direction={order}
+                    onClick={this.createSortHandler(col.id, col.orderTag)}
+                  >
                     {col.label}
                   </TableSortLabel>
                 </DimeTableCell>

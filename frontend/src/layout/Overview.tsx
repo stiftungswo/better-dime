@@ -15,6 +15,7 @@ export type SearchFilter<T> = (e: T, qry: string) => boolean;
 
 export interface Column<T> {
   id: string;
+  orderTag?: string;
   numeric?: boolean;
   label: string;
   format?: (t: T) => React.ReactNode;
@@ -99,6 +100,13 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     }
   }
 
+  setPaginationPageOrder = (tag: string, dir: string) => {
+    const paginatedStore = this.props.store as AbstractPaginatedStore<any, ListingType>;
+    if ((this.props.store) instanceof AbstractPaginatedStore) {
+      paginatedStore!.setPaginationOrder(tag, dir);
+    }
+  }
+
   reload = () => {
     this.setState({ loading: true });
     this.fetch().then(() => this.setState({ loading: false }));
@@ -152,6 +160,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               onClickRow={this.handleClick}
               onClickChangePage={this.setPaginationPage}
               onClickChangePageSize={this.setPaginationPageSize}
+              onClickChangeOrder={this.setPaginationPageOrder}
               paginated={this.props.paginated}
               paginationInfo={this.paginationInfo}
             />

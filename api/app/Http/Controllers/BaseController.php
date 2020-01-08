@@ -144,10 +144,12 @@ class BaseController extends Controller
      * @param $showArchived stores the boolean which tells us whether we want to filter out archived entries
      * @param $filterSearch stores the string which we will use to filter the content by search
      */
-    private function extractFilterParameters(Request $request, &$showArchived, &$filterSearch)
+    private function extractFilterParameters(Request $request, &$showArchived, &$filterSearch, &$orderByTag, &$orderByDir)
     {
         $showArchived = $request->query('showArchived', null);
         $filterSearch = $request->query('filterSearch', null);
+        $orderByTag = $request->query('orderByTag', null);
+        $orderByDir = $request->query('orderByDir', null);
 
         if ($showArchived != null) {
             $showArchived = $showArchived == 'true' ? true : false;
@@ -165,7 +167,7 @@ class BaseController extends Controller
      */
     protected function getFilteredQuery(Builder $query, Request $request, array $searchAttributes = [], array $searchAttributesAssociate = [])
     {
-        $this->extractFilterParameters($request, $showArchived, $filterSearch);
+        $this->extractFilterParameters($request, $showArchived, $filterSearch, $orderByTag, $orderByDir);
 
         if (!is_null($showArchived)) {
             $query = $query->where(function (Builder $q) use ($showArchived) {
@@ -191,6 +193,10 @@ class BaseController extends Controller
                     }
                 }
             }, $showArchived);
+        }
+
+        if (!is_null($orderByTag) && !is_null($orderByDir)) {
+            $query = $query->orderBy($orderByTag, $orderByDir);
         }
 
         return $query;
