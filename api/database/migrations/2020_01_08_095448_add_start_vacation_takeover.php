@@ -14,7 +14,7 @@ class AddStartVacationTakeover extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->decimal('first_vacation_takeover');
+            $table->decimal('first_vacation_takeover')->default('0');
         });
     }
 

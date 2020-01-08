@@ -16,7 +16,6 @@ class WorkPeriod extends Model
 
     /* please mind the following things in the database
     1. pensum is in integer, e.g. 100 is a 100% pensum
-    2. vacation_takeover is a float value in minutes
     3. yearly_vacation_budget is an integer value in minutes
 
     please mind the following things for the additional attributes:
