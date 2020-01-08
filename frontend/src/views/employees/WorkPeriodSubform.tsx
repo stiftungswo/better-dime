@@ -124,15 +124,20 @@ export class WorkPeriodSubform extends React.Component<Props> {
                   </TableHead>
                   <TableBody>
                     {values.work_periods.sort((a: WorkPeriod, b: WorkPeriod) => {
-                      const startA = new Date(a.start).getTime();
-                      const startB = new Date(b.start).getTime();
-                      const endA = new Date(a.end).getTime();
-                      const endB = new Date(b.end).getTime();
+                      const datesAreOnSameDay = (first: Date, second: Date) =>
+                        first.getFullYear() === second.getFullYear() &&
+                        first.getMonth() === second.getMonth() &&
+                        first.getDate() === second.getDate();
 
-                      if (startA - startB !== 0.0) {
-                        return startA - startB;
+                      const startA = new Date(a.start);
+                      const startB = new Date(b.start);
+                      const endA = new Date(a.end);
+                      const endB = new Date(b.end);
+
+                      if (!datesAreOnSameDay(startA, startB)) { // if the difference is more than 23.99 hours
+                        return startA.getTime() - startB.getTime();
                       } else {
-                        return endA - endB;
+                        return endA.getTime() - endB.getTime();
                       }
                     }).map((w: WorkPeriod & { formikKey?: number }, index: number) => {
                       const formattedHours = (value: number): string => (isNaN(value) ? '-' : (value / 60).toFixed(1) + 'h');
