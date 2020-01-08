@@ -236,12 +236,14 @@ from (
               inner join project_efforts pe on pp.id = pe.position_id
        where projects.chargeable = 1
        and projects.archived = 0
+       and projects.deleted_at is null
        group by projects.id
      ) last_effort
        left join (
   select projects.id, max(i.end) as last_invoice_date
   from projects
          left join invoices i on projects.id = i.project_id
+  where i.deleted_at is null
   group by projects.id
 ) last_invoice on last_effort.id = last_invoice.id
  where last_invoice_date < last_effort_date or last_invoice_date is null
