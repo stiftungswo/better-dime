@@ -87,7 +87,6 @@ class WorkPeriod extends Model
         }
 
         $vacationForPensum = $holidayMinutes * $pensum;
-        $vacationForPensum += $this->vacation_takeover;
 
         return round($vacationForPensum, 0);
     }
@@ -110,7 +109,7 @@ class WorkPeriod extends Model
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $end);
         $targetTimeUntilToday = round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
 
-        return $this->calculateBookedTime($start, $end) - $targetTimeUntilToday;
+        return $this->effective_time - $targetTimeUntilToday;
     }
 
     public function getEffectiveTimeAttribute()
@@ -118,7 +117,7 @@ class WorkPeriod extends Model
         $start = Carbon::parse($this->start);
         $end = Carbon::parse($this->end);
 
-        return $this->calculateBookedTime($start, $end);
+        return $this->calculateBookedTime($start, $end) + $this->vacation_takeover;
     }
 
     public function getRemainingVacationBudgetAttribute()
