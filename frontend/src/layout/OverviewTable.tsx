@@ -120,8 +120,12 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     this.setState({ order, orderBy });
   }
 
-  createSortHandler = (property: string, tag: string | undefined) => (event: React.MouseEvent<HTMLElement>) => {
-    this.handleRequestSort(event, property, tag);
+  createSortHandler = (property: string, tag: string | undefined, noSort: boolean | undefined) => {
+    return (event: React.MouseEvent<HTMLElement>) => {
+      if (!noSort) {
+        this.handleRequestSort(event, property, tag);
+      }
+    };
   }
 
   handleRowClick = (row: T, index: number) => (e: React.MouseEvent<HTMLElement>) => {
@@ -180,7 +184,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
   render() {
     const { columns, data, noSort, classes } = this.props;
     const { order, orderBy } = this.state;
-    const sortedData = (noSort || this.props.onClickChangePage) ? data : stableSort(data, getSorting(order, orderBy));
+    const sortedData = (noSort || this.props.paginated) ? data : stableSort(data, getSorting(order, orderBy));
     const RowCheckbox = this.RowCheckbox;
     const handleChangePage = this.handleChangePage;
     const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
@@ -200,7 +204,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
                   <TableSortLabel
                     active={orderBy === col.id}
                     direction={order}
-                    onClick={this.createSortHandler(col.id, col.orderTag)}
+                    onClick={this.createSortHandler(col.id, col.orderTag, col.noSort)}
                   >
                     {col.label}
                   </TableSortLabel>

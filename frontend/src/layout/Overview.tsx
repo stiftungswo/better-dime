@@ -17,6 +17,7 @@ export interface Column<T> {
   id: string;
   orderTag?: string;
   numeric?: boolean;
+  noSort?: boolean;
   label: string;
   format?: (t: T) => React.ReactNode;
   defaultSort?: 'asc' | 'desc';
