@@ -131,18 +131,16 @@ class WorkPeriod extends Model
 
     public function getVacationTakeoverAttribute()
     {
-        $start = Carbon::parse($this->start);
-        $end = Carbon::parse($this->end);
-
         $reference_workperiod = $this->getRelevantWorkPeriod();
         $effective_time = 0;
         $remaining_budget = 0;
+        $first_takeover = $this->isFirstPeriod() ? $this->employee->first_vacation_takeover : 0;
 
         if(!is_null($reference_workperiod)){
-            return $reference_workperiod->remaining_vacation_budget + $reference_workperiod->effort_till_today;
+                return $reference_workperiod->remaining_vacation_budget + $reference_workperiod->effort_till_today;
         }
 
-        return $effective_time + $remaining_budget;
+        return $effective_time + $remaining_budget + $first_takeover;
     }
 
     public function getOverlappingPeriodsAttribute()
@@ -245,5 +243,18 @@ class WorkPeriod extends Model
         }
 
         return $furthest_start;
+    }
+
+    private function isFirstPeriod(){
+        $wps = WorkPeriod::where([
+            ['deleted_at', '=', null],
+            ['employee_id', '=', $this->employee->id],
+            ['start', '<', $this->start],
+            ['id', '!=', $this->id],
+        ])->get();
+
+        $isFirst = count($wps) == 0;
+
+        return $isFirst;
     }
 }

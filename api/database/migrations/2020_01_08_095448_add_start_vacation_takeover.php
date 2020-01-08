@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveVacationTakeover extends Migration
+class AddStartVacationTakeover extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class RemoveVacationTakeover extends Migration
      */
     public function up()
     {
-        Schema::table('work_periods', function (Blueprint $table) {
-            $table->dropColumn('vacation_takeover');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->decimal('first_vacation_takeover');
         });
     }
 
@@ -25,8 +25,8 @@ class RemoveVacationTakeover extends Migration
      */
     public function down()
     {
-        Schema::table('work_periods', function (Blueprint $table) {
-            $table->decimal('vacation_takeover');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropColumn('first_vacation_takeover');
         });
     }
 }

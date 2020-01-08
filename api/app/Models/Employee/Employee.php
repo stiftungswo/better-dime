@@ -20,7 +20,9 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
      * @var array
      */
     protected $fillable = [
-        'is_admin', 'email', 'first_name', 'last_name', 'can_login', 'archived', 'holidays_per_year', 'password', 'employee_group_id'
+        'is_admin', 'email', 'first_name', 'last_name', 'can_login',
+        'archived', 'holidays_per_year', 'password', 'employee_group_id',
+        'first_vacation_takeover'
     ];
 
     /**
@@ -39,7 +41,8 @@ class Employee extends Model implements AuthenticatableContract, AuthorizableCon
     protected $casts = [
         'archived' => 'boolean',
         'can_login' => 'boolean',
-        'is_admin' => 'boolean'
+        'is_admin' => 'boolean',
+        'first_vacation_takeover' => 'float'
     ];
 
     protected $appends = ['group_name'];
