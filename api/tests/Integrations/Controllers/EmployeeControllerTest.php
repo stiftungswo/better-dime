@@ -126,6 +126,7 @@ class EmployeeControllerTest extends \TestCase
             'holidays_per_year' => 25,
             'is_admin' => false,
             'last_name' => 'Muster',
+            'first_vacation_takeover' => 0,
             'work_periods' => [
                 [
                     'end' => '2017-12-31',
