@@ -90,6 +90,7 @@ export interface Employee {
   targetTime: number;
   extendTimetrack: boolean;
   password: string;
+  first_vacation_takeover: number;
   work_periods: WorkPeriod[];
   employee_group_id: number | null;
   group_name?: string;
@@ -414,6 +415,7 @@ export interface WorkPeriod {
   start: string;
   updated_at: string;
   vacation_takeover: number;
+  overlapping_periods: boolean;
   yearly_vacation_budget: number;
 }
 

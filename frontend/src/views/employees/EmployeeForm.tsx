@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid/Grid';
+import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -9,7 +10,7 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
-import { Employee } from '../../types';
+import {Employee, WorkPeriod} from '../../types';
 import { empty } from '../../utilities/helpers';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
 
@@ -33,6 +34,17 @@ export default class EmployeeForm extends React.Component<Props> {
 
   render() {
     const { employee, schema } = this.props;
+    let hasOverlaps = false;
+
+    if (employee !== undefined) {
+      const workPeriods = employee.work_periods;
+
+      for (const wp of workPeriods) {
+        if (wp.overlapping_periods) {
+          hasOverlaps = true;
+        }
+      }
+    }
 
     return (
       <FormView
@@ -83,6 +95,18 @@ export default class EmployeeForm extends React.Component<Props> {
                 </Grid>
 
                 <Grid item xs={12}>
+                  {hasOverlaps && (
+                    <>
+                      <Grid container direction="row" alignItems="center" style={{marginLeft: '10px', paddingBottom: '5px'}}>
+                        <Grid item>
+                          <Warning color={'error'}/>
+                        </Grid>
+                        <Grid item style={{color: 'red', marginLeft: '5px'}}>
+                          Arbeitsperioden mit überlappenden Zeiträumen vorhanden! Überträge konnen folglich inkorrekt sein.
+                        </Grid>
+                      </Grid>
+                    </>
+                  )}
                   <DimePaper>
                     <WorkPeriodSubform
                       formikProps={props}

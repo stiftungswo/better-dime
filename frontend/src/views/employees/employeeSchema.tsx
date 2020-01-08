@@ -19,6 +19,7 @@ export const editEmployeeSchema = localizeSchema(() =>
         start: dimeDate().required(),
         vacation_takeover: requiredNumber(),
         yearly_vacation_budget: requiredNumber(),
+        overlapping_periods: yup.boolean().default(false),
       }),
     ),
     employee_group_id: selector(),
@@ -34,6 +35,7 @@ export const newEmployeeSchema = localizeSchema(() =>
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
     last_name: yup.string().required(),
+    first_vacation_takeover: yup.number().required(),
     password: yup.string().required(),
     password_repeat: yup
       .string()
@@ -66,6 +68,7 @@ export const employeeTemplate = {
   realTime: 0,
   targetTime: 0,
   extendTimetrack: false,
+  first_vacation_takeover: 0.0,
   work_periods: [],
   password: '',
   employee_group_id: 0,

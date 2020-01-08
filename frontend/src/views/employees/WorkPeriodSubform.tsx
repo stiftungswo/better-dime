@@ -1,4 +1,6 @@
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import {Warning} from '@material-ui/icons';
 import { FieldArray, FormikProps, getIn } from 'formik';
 import { Observer } from 'mobx-react';
 import moment from 'moment';
@@ -29,6 +31,7 @@ interface Props {
 }
 
 export class WorkPeriodSubform extends React.Component<Props> {
+
   render() {
     const { yearly_vacation_budget } = this.props;
     const { values, errors, touched } = this.props.formikProps;
@@ -56,8 +59,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                 <Table style={{ minWidth: '1300px' }}>
                   <TableHead>
                     <TableRow>
-                      <DimeTableCell style={{ width: '15%' }}>Start</DimeTableCell>
-                      <DimeTableCell style={{ width: '15%' }}>Ende</DimeTableCell>
+                      <DimeTableCell style={{ width: '17%' }}>Start</DimeTableCell>
+                      <DimeTableCell style={{ width: '17%' }}>Ende</DimeTableCell>
                       <DimeTableCell style={{ width: '8%' }}>Pensum</DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
@@ -116,19 +119,56 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <p>Jährliches Ferienbudget</p>
                         </Tooltip>
                       </DimeTableCell>
-                      <DimeTableCell style={{ width: '8%' }}>Aktionen</DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {values.work_periods.map((w: WorkPeriod & { formikKey?: number }, index: number) => {
+                    {values.work_periods.sort((a: WorkPeriod, b: WorkPeriod) => {
+                      const datesAreOnSameDay = (first: Date, second: Date) =>
+                        first.getFullYear() === second.getFullYear() &&
+                        first.getMonth() === second.getMonth() &&
+                        first.getDate() === second.getDate();
+
+                      const startA = new Date(a.start);
+                      const startB = new Date(b.start);
+                      const endA = new Date(a.end);
+                      const endB = new Date(b.end);
+
+                      if (!datesAreOnSameDay(startA, startB)) { // if the difference is more than 23.99 hours
+                        return startA.getTime() - startB.getTime();
+                      } else {
+                        return endA.getTime() - endB.getTime();
+                      }
+                    }).map((w: WorkPeriod & { formikKey?: number }, index: number) => {
                       const formattedHours = (value: number): string => (isNaN(value) ? '-' : (value / 60).toFixed(1) + 'h');
                       const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
+                      const rowColor = w.overlapping_periods ? 'rgb(255, 222, 219)' : 'none';
+                      const border = w.overlapping_periods ? 'solid 2px rgb(255, 222, 219)' : 'none';
 
                       return (
                         <TableRow key={w.id || w.formikKey}>
-                          <DimeTableCell>
-                            <DimeField component={DatePicker} name={fieldName('start')} />
-                          </DimeTableCell>
+                          {w.overlapping_periods && (
+                            <DimeTableCell style={{paddingLeft: '0px'}}>
+                              <Grid
+                                container
+                                direction="row"
+                                alignItems="center"
+                                style={{paddingBottom: '5px', flexWrap: 'nowrap'}}
+                              >
+                                <Grid item>
+                                  <Warning color={'error'}/>
+                                </Grid>
+                                <Grid item style={{color: 'red', marginLeft: '10px'}}>
+                                  <DimeField component={DatePicker} name={fieldName('start')} />
+                                </Grid>
+                              </Grid>
+                            </DimeTableCell>
+                          )}
+                          {!w.overlapping_periods && (
+                            <DimeTableCell>
+                              <DimeField component={DatePicker} name={fieldName('start')} />
+                            </DimeTableCell>
+                          )}
                           <DimeTableCell>
                             <DimeField component={DatePicker} name={fieldName('end')} />
                           </DimeTableCell>
@@ -145,12 +185,17 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DimeField
-                              delayed
-                              component={DurationField}
-                              timeUnit={'hour'}
-                              name={fieldName('vacation_takeover')}
-                            />
+                            {index === 0 && (
+                              <DimeField
+                                delayed
+                                component={DurationField}
+                                timeUnit={'hour'}
+                                name={'first_vacation_takeover'}
+                              />
+                            )}
+                            {index !== 0 && (
+                              formattedHours(w.vacation_takeover)
+                            )}
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField
