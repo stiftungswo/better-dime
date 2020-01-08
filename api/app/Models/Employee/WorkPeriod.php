@@ -136,7 +136,7 @@ class WorkPeriod extends Model
         $remaining_budget = 0;
         $first_takeover = $this->isFirstPeriod() ? $this->employee->first_vacation_takeover : 0;
 
-        if(!is_null($reference_workperiod)){
+        if (!is_null($reference_workperiod)) {
                 return $reference_workperiod->remaining_vacation_budget + $reference_workperiod->effort_till_today;
         }
 
@@ -154,8 +154,7 @@ class WorkPeriod extends Model
             ['id', '!=', $this->id],
         ])->get();
 
-        foreach ($wps as $wp)
-        {
+        foreach ($wps as $wp) {
             $wp_start = Carbon::parse($wp->start)->endOfDay();
             $wp_end = Carbon::parse($wp->end)->endOfDay();
 
@@ -163,7 +162,7 @@ class WorkPeriod extends Model
             $leftOverlap = $wp_start < $start && $wp_end > $start;
             $rightOverlap = $wp_start < $end && $wp_end > $end;
 
-            if($inside || $leftOverlap || $rightOverlap){
+            if ($inside || $leftOverlap || $rightOverlap) {
                 return true;
             }
         }
@@ -206,37 +205,34 @@ class WorkPeriod extends Model
                 ['id', '!=', $this->id],
             ])->get();
 
-        foreach ($wps as $wp)
-        {
+        foreach ($wps as $wp) {
             $wp_end = Carbon::parse($wp->end)->endOfDay();
 
-            if($wp_end > $closest_end){
+            if ($wp_end > $closest_end) {
                 $closest_end = $wp_end;
             }
         }
 
         $candidates = array();
 
-        foreach ($wps as $wp)
-        {
+        foreach ($wps as $wp) {
             $wp_end = Carbon::parse($wp->end)->endOfDay();
 
-            if($wp_end >= $closest_end){
+            if ($wp_end >= $closest_end) {
                 array_push($candidates, $wp);
             }
         }
 
         $furthest_start = null;
 
-        foreach ($candidates as $wp)
-        {
-            if(is_null($furthest_start)){
+        foreach ($candidates as $wp) {
+            if (is_null($furthest_start)) {
                 $furthest_start = $wp;
-            }else{
+            } else {
                 $fs_start = Carbon::parse($furthest_start->start)->endOfDay();
                 $wp_start = Carbon::parse($wp->start)->endOfDay();
 
-                if($wp_start < $fs_start){
+                if ($wp_start < $fs_start) {
                     $furthest_start = $wp;
                 }
             }
@@ -245,7 +241,8 @@ class WorkPeriod extends Model
         return $furthest_start;
     }
 
-    private function isFirstPeriod(){
+    private function isFirstPeriod()
+    {
         $wps = WorkPeriod::where([
             ['deleted_at', '=', null],
             ['employee_id', '=', $this->employee->id],
