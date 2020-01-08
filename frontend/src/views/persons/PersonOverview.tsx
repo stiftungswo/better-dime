@@ -35,7 +35,8 @@ export default class PersonOverview extends React.Component<Props> {
         label: 'E-Mail',
       },
       {
-        id: '',
+        id: 'company_id',
+        noSort: true,
         label: 'Firma',
         format: p => <>{p.company ? p.company.name : ''}</>,
       },

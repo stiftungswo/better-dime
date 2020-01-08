@@ -74,7 +74,6 @@ class WorkPeriodControllerTest extends \TestCase
             'end' => '2019-01-01',
             'pensum' => 100,
             'start' => '2019-12-31',
-            'vacation_takeover' => 16.8,
             'yearly_vacation_budget' => 20
         ];
     }

@@ -41,6 +41,7 @@ export default class EmployeeOverview extends React.Component<Props> {
       },
       {
         id: 'group_name',
+        orderTag: 'employee_group_id',
         label: 'Gruppe',
       },
       {

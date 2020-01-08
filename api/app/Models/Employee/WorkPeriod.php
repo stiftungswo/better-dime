@@ -16,7 +16,6 @@ class WorkPeriod extends Model
 
     /* please mind the following things in the database
     1. pensum is in integer, e.g. 100 is a 100% pensum
-    2. vacation_takeover is a float value in minutes
     3. yearly_vacation_budget is an integer value in minutes
 
     please mind the following things for the additional attributes:
@@ -36,15 +35,11 @@ class WorkPeriod extends Model
         so you get the effective amount of minutes the employee has taken vacations
     */
 
-    protected $appends = ['effective_time', 'effort_till_today', 'period_vacation_budget', 'target_time', 'remaining_vacation_budget'];
-
-    protected $casts = [
-        'vacation_takeover' => 'float'
-    ];
+    protected $appends = ['overlapping_periods', 'vacation_takeover', 'effective_time', 'effort_till_today', 'period_vacation_budget', 'target_time', 'remaining_vacation_budget'];
 
     protected $hidden = ['employee'];
 
-    protected $fillable = ['employee_id', 'end', 'pensum', 'start', 'vacation_takeover', 'yearly_vacation_budget'];
+    protected $fillable = ['employee_id', 'end', 'pensum', 'start', 'yearly_vacation_budget'];
 
     public function employee()
     {
@@ -91,7 +86,6 @@ class WorkPeriod extends Model
         }
 
         $vacationForPensum = $holidayMinutes * $pensum;
-        $vacationForPensum += $this->vacation_takeover;
 
         return round($vacationForPensum, 0);
     }
@@ -114,7 +108,7 @@ class WorkPeriod extends Model
         $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $end);
         $targetTimeUntilToday = round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
 
-        return $this->calculateBookedTime($start, $end) - $targetTimeUntilToday;
+        return $this->effective_time - $targetTimeUntilToday;
     }
 
     public function getEffectiveTimeAttribute()
@@ -122,7 +116,7 @@ class WorkPeriod extends Model
         $start = Carbon::parse($this->start);
         $end = Carbon::parse($this->end);
 
-        return $this->calculateBookedTime($start, $end);
+        return $this->calculateBookedTime($start, $end) + $this->vacation_takeover;
     }
 
     public function getRemainingVacationBudgetAttribute()
@@ -131,6 +125,47 @@ class WorkPeriod extends Model
         $end = Carbon::parse($this->end);
 
         return $this->period_vacation_budget - $this->calculateBookedTime($start, $end, true);
+    }
+
+    public function getVacationTakeoverAttribute()
+    {
+        $reference_workperiod = $this->getRelevantWorkPeriod();
+        $effective_time = 0;
+        $remaining_budget = 0;
+        $first_takeover = $this->isFirstPeriod() ? $this->employee->first_vacation_takeover : 0;
+
+        if (!is_null($reference_workperiod)) {
+                return $reference_workperiod->remaining_vacation_budget + $reference_workperiod->effort_till_today;
+        }
+
+        return $effective_time + $remaining_budget + $first_takeover;
+    }
+
+    public function getOverlappingPeriodsAttribute()
+    {
+        $start = Carbon::parse($this->start);
+        $end = Carbon::parse($this->end);
+
+        $wps = WorkPeriod::where([
+            ['deleted_at', '=', null],
+            ['employee_id', '=', $this->employee->id],
+            ['id', '!=', $this->id],
+        ])->get();
+
+        foreach ($wps as $wp) {
+            $wp_start = Carbon::parse($wp->start)->endOfDay();
+            $wp_end = Carbon::parse($wp->end)->endOfDay();
+
+            $inside = $wp_start < $end && $wp_end > $start;
+            $leftOverlap = $wp_start < $start && $wp_end > $start;
+            $rightOverlap = $wp_start < $end && $wp_end > $end;
+
+            if ($inside || $leftOverlap || $rightOverlap) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function calculateBookedTime(Carbon $start, Carbon $end, $onlyVacations = false)
@@ -155,5 +190,66 @@ class WorkPeriod extends Model
         }
 
         return round($qb->sum('project_efforts.value'), 0);
+    }
+
+    private function getRelevantWorkPeriod()
+    {
+        $closest_end = Carbon::parse($this->start)->subCentury();
+
+        $wps = WorkPeriod::where([
+                ['deleted_at', '=', null],
+                ['employee_id', '=', $this->employee->id],
+                ['end', '<', $this->start],
+                ['id', '!=', $this->id],
+            ])->get();
+
+        foreach ($wps as $wp) {
+            $wp_end = Carbon::parse($wp->end)->endOfDay();
+
+            if ($wp_end > $closest_end) {
+                $closest_end = $wp_end;
+            }
+        }
+
+        $candidates = array();
+
+        foreach ($wps as $wp) {
+            $wp_end = Carbon::parse($wp->end)->endOfDay();
+
+            if ($wp_end >= $closest_end) {
+                array_push($candidates, $wp);
+            }
+        }
+
+        $furthest_start = null;
+
+        foreach ($candidates as $wp) {
+            if (is_null($furthest_start)) {
+                $furthest_start = $wp;
+            } else {
+                $fs_start = Carbon::parse($furthest_start->start)->endOfDay();
+                $wp_start = Carbon::parse($wp->start)->endOfDay();
+
+                if ($wp_start < $fs_start) {
+                    $furthest_start = $wp;
+                }
+            }
+        }
+
+        return $furthest_start;
+    }
+
+    private function isFirstPeriod()
+    {
+        $wps = WorkPeriod::where([
+            ['deleted_at', '=', null],
+            ['employee_id', '=', $this->employee->id],
+            ['start', '<', $this->start],
+            ['id', '!=', $this->id],
+        ])->get();
+
+        $isFirst = count($wps) == 0;
+
+        return $isFirst;
     }
 }

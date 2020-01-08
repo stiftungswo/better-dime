@@ -18,6 +18,10 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
   protected requestedPage: number = 1;
   @observable
   protected requestedPageSize: number = 10;
+  @observable
+  protected requestedPageOrderTag: string = 'id';
+  @observable
+  protected requestedPageOrderDir: string = 'desc';
 
   @computed
   get paginationInfo(): PaginationInfo | undefined {
@@ -32,6 +36,13 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
 
   set paginationSize(pageSize: number) {
     this.requestedPageSize = pageSize;
+    // refresh the data to force a re-render with the new page
+    this.fetchAllPaginated();
+  }
+
+  setPaginationOrder(tag: string, dir: string) {
+    this.requestedPageOrderTag = tag;
+    this.requestedPageOrderDir = dir;
     // refresh the data to force a re-render with the new page
     this.fetchAllPaginated();
   }
@@ -59,6 +70,14 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
     return {paramKey: 'pageSize', paramVal: this.requestedPageSize};
   }
 
+  protected getPageOrderTagQuery() {
+    return {paramKey: 'orderByTag', paramVal: this.requestedPageOrderTag};
+  }
+
+  protected getPageOrderDirQuery() {
+    return {paramKey: 'orderByDir', paramVal: this.requestedPageOrderDir};
+  }
+
   protected getPaginatedQueryParams() {
     const queryParamBuilder = {query: {}, questionMarkAppended: false};
 
@@ -66,7 +85,8 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
     this.appendQuery(this.getSearchFilterQuery(), queryParamBuilder);
     this.appendQuery(this.getPageNumQuery(), queryParamBuilder);
     this.appendQuery(this.getPageSizeQuery(), queryParamBuilder);
-    this.appendQuery(this.getPageSizeQuery(), queryParamBuilder);
+    this.appendQuery(this.getPageOrderTagQuery(), queryParamBuilder);
+    this.appendQuery(this.getPageOrderDirQuery(), queryParamBuilder);
 
     return queryParamBuilder.query;
   }

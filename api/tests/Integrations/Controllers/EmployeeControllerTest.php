@@ -126,19 +126,18 @@ class EmployeeControllerTest extends \TestCase
             'holidays_per_year' => 25,
             'is_admin' => false,
             'last_name' => 'Muster',
+            'first_vacation_takeover' => 0,
             'work_periods' => [
                 [
                     'end' => '2017-12-31',
                     'pensum' => 80,
                     'start' => '2017-01-01',
-                    'vacation_takeover' => 130,
                     'yearly_vacation_budget' => 10080
                 ],
                 [
                     'end' => '2018-12-31',
                     'pensum' => 90,
                     'start' => '2018-01-01',
-                    'vacation_takeover' => 0,
                     'yearly_vacation_budget' => 10080
                 ]
             ]

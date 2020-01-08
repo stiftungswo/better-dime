@@ -22,6 +22,7 @@ $factory->define(Employee::class, function () {
         'last_name' => $lastName,
         'password' => $faker->password,
         'is_admin' => false,
+        'first_vacation_takeover' => 0,
         'employee_group_id' => function () {
             return factory(\App\Models\Employee\EmployeeGroup::class)->create()->id;
         },
@@ -35,6 +36,7 @@ $factory->defineAs(Employee::class, 'admin', function () use ($factory) {
     $user['password'] = 'Welcome01';
     $user['is_admin'] = true;
     $user['first_name'] = 'Ers';
+    $user['first_vacation_takover'] = 0;
     $user['last_name'] = 'Gutermann';
     return $user;
 });

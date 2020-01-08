@@ -86,11 +86,11 @@ class WorkPeriodTest extends \TestCase
 
         // start, end, vacation takeover, pensum, yearly_vacation_budget, expected_result
         $testDataset = [
-            ['2019-01-01', '2019-01-31', 0, 100, 10080, 10584],
-            ['2018-12-01', '2019-03-03', 500, 100, 10080, 31752],
-            ['2018-12-01', '2020-03-02', 1500, 80, 12600, 130186],
-            ['2018-12-01', '2020-03-02', 1500, 100, 12600, 162732],
-            ['2019-01-01', '2019-12-31', 750, 100, 10080, 129972],
+            ['2019-01-01', '2019-01-31', 100, 10080, 10584],
+            ['2018-12-01', '2019-03-03', 100, 10080, 31752],
+            ['2018-12-01', '2020-03-02', 80, 12600, 130186],
+            ['2018-12-01', '2020-03-02', 100, 12600, 162732],
+            ['2019-01-01', '2019-12-31', 100, 10080, 129972],
         ];
 
         foreach ($testDataset as $testData) {
@@ -99,12 +99,11 @@ class WorkPeriodTest extends \TestCase
                 'employee_id' => $employeeId,
                 'start' => $testData[0],
                 'end' => $testData[1],
-                'vacation_takeover' => $testData[2],
-                'pensum' => $testData[3],
-                'yearly_vacation_budget' => $testData[4],
+                'pensum' => $testData[2],
+                'yearly_vacation_budget' => $testData[3],
             ]);
 
-            $this->assertEquals($testData[5], $workPeriod->target_time);
+            $this->assertEquals($testData[4], $workPeriod->target_time);
         }
     }
 
