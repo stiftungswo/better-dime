@@ -27,8 +27,9 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
   render() {
     const { children, title, open } = this.props;
 
+    /**  data-expansion-block={true} is so we don't collapse the TimetrackExpansionPanel when we click somewhere */
     return (
-      <Dialog maxWidth="xs" aria-labelledby="confirmation-dialog-title" open={open} onClose={this.handleClose}>
+      <Dialog data-expansion-block={true} maxWidth="xs" aria-labelledby="confirmation-dialog-title" open={open} onClose={this.handleClose}>
         {title && <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>}
         <DialogContent>{children}</DialogContent>
         <DialogActions>
