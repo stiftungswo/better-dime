@@ -143,7 +143,10 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                         title={'Verschieben'}
                       />
                       <DeleteButton
-                        onConfirm={() => onDelete(pIdx)}
+                        disabled={!p.deletable}
+                        title={p.deletable ? 'Löschen' : 'Leistungen zuerst löschen!'}
+                        /* tslint:disable-next-line:no-empty */
+                        onConfirm={p.deletable ? () => onDelete(pIdx) : () => {}}
                       />
                     </DimeTableCell>
                   </>

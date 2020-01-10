@@ -194,6 +194,7 @@ export interface ProjectPosition {
   service_id: number;
   vat: number;
   deleted_at: null;
+  deletable: boolean;
   created_at: string;
   updated_at: string;
   charge: number;

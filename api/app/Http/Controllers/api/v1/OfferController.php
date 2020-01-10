@@ -150,6 +150,11 @@ class OfferController extends BaseController
 
         $settings = GlobalSettings::all()->first();
 
+        // some projects used to be split with ; instead of ,
+        $legacySplit = explode(";", $offer->name)[0];
+        $splitName = $this->replaceUmlaute(explode(",", $legacySplit)[0]);
+        $downloadName = "Offerte_" . $offer->id . "_" . $splitName . "_" . Carbon::now()->format("Y_m_d");
+
         // initialize PDFController, render view and pass it back
         $pdf = new PDF(
             'offers',
@@ -158,22 +163,19 @@ class OfferController extends BaseController
                 'offer' => $offer,
                 'breakdown' => $offer->breakdown,
                 'basePath' => $app->basepath(),
-                'description' => $description
+                'description' => $description,
+                'title' => $downloadName
             ]
         );
 
-        // return $pdf->debug(
-        //     'offers',
-        //     [
-        //         'offer' => $offer,
-        //         'customer' => $offer->address->customer,
-        //         'breakdown' => CostBreakdown::calculate($offer),
-        //         'basePath' => $app->basepath(),
-        //         'description' => $description
-        //     ]
-        // );
+        return $pdf->print($downloadName, Carbon::now());
+    }
 
-        return $pdf->print("Offerte $offer->name", Carbon::now());
+    private function replaceUmlaute($string)
+    {
+        $search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
+        $replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
+        return str_replace($search, $replace, $string);
     }
 
     public function createProject($id)
