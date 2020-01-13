@@ -27,8 +27,9 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
   render() {
     const { children, title, open } = this.props;
 
+    /**  data-expansion-block={true} is so we don't collapse the TimetrackExpansionPanel when we click somewhere */
     return (
-      <Dialog maxWidth="xs" aria-labelledby="confirmation-dialog-title" open={open} onClose={this.handleClose}>
+      <Dialog data-expansion-block={true} maxWidth="xs" aria-labelledby="confirmation-dialog-title" open={open} onClose={this.handleClose}>
         {title && <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>}
         <DialogContent>{children}</DialogContent>
         <DialogActions>
@@ -47,6 +48,7 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
 interface DeleteButtonProps {
   onConfirm: () => void;
   message?: string;
+  title?: string;
   disabled?: boolean;
 }
 
@@ -79,7 +81,7 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
           {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
-        <ActionButton disabled={this.props.disabled} icon={DeleteIcon} title={'Löschen'} action={this.handleOpen} />
+        <ActionButton disabled={this.props.disabled} icon={DeleteIcon} title={this.props.title || "Löschen"} action={this.handleOpen} />
       </>
     );
   }

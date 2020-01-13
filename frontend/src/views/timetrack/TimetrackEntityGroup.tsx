@@ -41,7 +41,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
 
   handleMove = async () => {
     if (this.isComponentMounted) {
-      this.selectedIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
+      // this.selectedIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
       this.setState({moving: false});
     }
   }

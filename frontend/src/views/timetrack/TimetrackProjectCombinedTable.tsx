@@ -53,17 +53,6 @@ interface Props extends WithStyles<typeof styles> {
 )
 class TimetrackProjectCombinedTableInner extends React.Component<Props> {
 
-  projectGroupActions = (
-    <>
-      <PrintButton
-        path={'projects/' + this.props.entity.id + '/print_effort_report'}
-        title={'Aufwandsrapport drucken'}
-        urlParams={this.props.effortReportUrlParams()}
-      />
-      <ActionButton icon={AddCommentIcon} action={this.handleProjectCommentAdd} title={'Kommentar hinzufügen'} />
-      <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
-    </>
-  );
   handleClickCommentRow = async (entity: ProjectComment | undefined) => {
     if (entity && entity.id) {
       await this.props.projectCommentStore!.fetchOne(entity.id);
@@ -99,9 +88,21 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
       return dateB.valueOf() - dateA.valueOf();
     });
 
+    const projectGroupActions = (
+      <>
+        <PrintButton
+          path={'projects/' + this.props.entity.id + '/print_effort_report'}
+          title={'Aufwandsrapport drucken'}
+          urlParams={this.props.effortReportUrlParams()}
+        />
+        <ActionButton icon={AddCommentIcon} action={this.handleProjectCommentAdd} title={'Kommentar hinzufügen'} />
+        <ActionButton icon={AddEffortIcon} action={this.props.onEffortAdd} title={'Aufwand hinzufügen'} />
+      </>
+    );
+
     if (efforts.length > 0 || comments.length > 0) {
       return (
-        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name} displayTotal={displayTotal}>
+        <TimetrackExpansionPanel actions={projectGroupActions} title={entity.name} displayTotal={displayTotal}>
           <Table>
             <TableHead>
               <TableRow>
@@ -164,7 +165,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
       );
     } else {
       return (
-        <TimetrackExpansionPanel actions={this.projectGroupActions} title={entity.name}>
+        <TimetrackExpansionPanel actions={projectGroupActions} title={entity.name}>
           Keine Leistungen erfasst mit den gewählten Filtern.
         </TimetrackExpansionPanel>
       );

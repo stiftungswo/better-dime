@@ -51,7 +51,7 @@ class PDF
         if ($toDate) {
             $renderedDate .= " " . $toDate->format("d.m.Y");
         }
-        return $this->pdf->stream($filename . $renderedDate . ".pdf");
+        return $this->pdf->stream($filename . ".pdf");
     }
 
     public function debug(string $template, array $data)

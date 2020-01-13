@@ -133,6 +133,11 @@ class ProjectController extends BaseController
         $parsedown = new Parsedown();
         $description = GroupMarkdownToDiv::group($parsedown->text($project->description));
 
+        // some projects used to be split with ; instead of ,
+        $legacySplit = explode(";", $project->name)[0];
+        $splitName = $this->replaceUmlaute(explode(",", $legacySplit)[0]);
+        $downloadName = "Aufwandsreport_Projekt_" . $project->id . "_" . $splitName . "_" . Carbon::now()->format("Y_m_d");
+
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
             'project_effort_report',
@@ -141,11 +146,19 @@ class ProjectController extends BaseController
                 'end' => $validatedData['end'],
                 'description' => $description,
                 'project' => $project,
-                'start' => $validatedData['start']
+                'start' => $validatedData['start'],
+                'title' => $downloadName
             ]
         );
 
-        return $pdf->print("Aufwandrapport Projekt $project->id $project->name", Carbon::now());
+        return $pdf->print($downloadName, Carbon::now());
+    }
+
+    private function replaceUmlaute($string)
+    {
+        $search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
+        $replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
+        return str_replace($search, $replace, $string);
     }
 
     private function validateRequest(Request $request)

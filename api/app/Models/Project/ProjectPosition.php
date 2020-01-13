@@ -14,7 +14,7 @@ class ProjectPosition extends Model
 {
     use SoftDeletes, BlameableTrait;
 
-    protected $appends = ['charge', 'calculated_vat', 'efforts_value_with_unit', 'rate_unit_archived', 'is_time'];
+    protected $appends = ['charge', 'deletable', 'calculated_vat', 'efforts_value_with_unit', 'rate_unit_archived', 'is_time'];
 
     protected $casts = [
         'vat' => 'float'
@@ -124,5 +124,13 @@ class ProjectPosition extends Model
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns whether or not the position is deletable (i.e if it has efforts associated with it)
+     */
+    public function getDeletableAttribute()
+    {
+        return $this->efforts->count() == 0;
     }
 }

@@ -31,8 +31,19 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
     open: true,
   };
 
-  changeExpansion = () => {
-    this.setState({ open: !this.state.open });
+  changeExpansion = (event: React.ChangeEvent<HTMLElement>, expanded: boolean) => {
+    let currentNode = event.target as HTMLElement | null;
+    let blockCollapse = false;
+    while (currentNode != null) {
+      if (currentNode.getAttribute('data-expansion-block') === 'true') {
+        blockCollapse = true;
+      }
+      currentNode = currentNode.parentElement;
+    }
+
+    if (!blockCollapse) {
+      this.setState({ open: !this.state.open });
+    }
   }
 
   render() {
@@ -52,7 +63,7 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
                   {selected && ` - ${this.props.selectedCount} ausgewählt`}
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid item data-expansion-block={true}>
                 <Grid container alignItems={'center'} spacing={8}>
                   {this.props.displayTotal && !selected && (
                     <Grid item>
