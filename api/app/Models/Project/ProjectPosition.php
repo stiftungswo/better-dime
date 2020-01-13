@@ -129,7 +129,8 @@ class ProjectPosition extends Model
     /**
      * Returns whether or not the position is deletable (i.e if it has efforts associated with it)
      */
-    public function getDeletableAttribute(){
+    public function getDeletableAttribute()
+    {
         return $this->efforts->count() == 0;
     }
 }
