@@ -25,7 +25,7 @@ class CreateCustomersFromImportTest extends \TestCase
         $this->assertEquals($template['customers_to_import'][0]['comment'], $company->comment);
         $this->assertEquals($template['customers_to_import'][0]['country'], $company->addresses->first()->country);
         $this->assertEquals($template['customers_to_import'][0]['email'], $company->email);
-        $this->assertEquals($template['customers_to_import'][0]['postcode'], $company->addresses->first()->postcode);
+        $this->assertEquals($template['customers_to_import'][0]['zip'], $company->addresses->first()->zip);
         $this->assertEquals($template['customers_to_import'][0]['street'], $company->addresses->first()->street);
         $this->assertEquals($template['customer_tags'], $company->tags);
         $this->assertEquals($template['hidden'], $company->hidden);
@@ -50,7 +50,7 @@ class CreateCustomersFromImportTest extends \TestCase
         $this->assertEquals($template['customers_to_import'][1]['first_name'], $person->first_name);
         $this->assertEquals($template['customers_to_import'][1]['last_name'], $person->last_name);
         $this->assertEquals($company->id, $person->company_id);
-        $this->assertEquals($template['customers_to_import'][1]['postcode'], $person->addresses->first()->postcode);
+        $this->assertEquals($template['customers_to_import'][1]['zip'], $person->addresses->first()->zip);
         $this->assertEquals($template['customers_to_import'][1]['street'], $person->addresses->first()->street);
         $this->assertEquals($template['customer_tags'], $person->tags);
         $this->assertEquals($template['hidden'], $person->hidden);
@@ -86,7 +86,7 @@ class CreateCustomersFromImportTest extends \TestCase
                 'main_number' => '044 888 33 22',
                 'name' => 'TEST_Stiftung Wirtschaft und Ökologie',
                 'last_name' => null,
-                'postcode' => 8603,
+                'zip' => 8603,
                 'street' => 'Bahnstrasse 18b',
                 'supplement' => null
             ], [
@@ -102,7 +102,7 @@ class CreateCustomersFromImportTest extends \TestCase
                 'mobile_number' => '079 666 77 22',
                 'name' => 'TEST_Stiftung Wirtschaft und Ökologie',
                 'last_name' => 'Heinrich',
-                'postcode' => 8092,
+                'zip' => 8092,
                 'street' => 'Bahnhofstrasse 534c',
                 'supplement' => null
             ],

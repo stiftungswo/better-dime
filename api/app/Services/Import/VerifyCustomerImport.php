@@ -37,7 +37,7 @@ class VerifyCustomerImport
                 }
             }
 
-            // check that street, postcode and city are present for a new address
+            // check that street, zip and city are present for a new address
             if (!empty($unsortedCustomer[10]) || !empty($unsortedCustomer[12]) || !empty($unsortedCustomer[13])) {
                 $isInvalid = $isInvalid ?: empty($unsortedCustomer[10]) || empty($unsortedCustomer[12]) || empty($unsortedCustomer[13]);
             }
@@ -56,7 +56,7 @@ class VerifyCustomerImport
                 'main_number' => $unsortedCustomer[7],
                 'mobile_number' => $unsortedCustomer[9],
                 'last_name' => $unsortedCustomer[3],
-                'postcode' => $unsortedCustomer[12],
+                'zip' => $unsortedCustomer[12],
                 'type' => $unsortedCustomer[0] == 'Firma' ? 'company' : 'person',
                 'salutation' => $unsortedCustomer[1],
                 'street' => $unsortedCustomer[10],

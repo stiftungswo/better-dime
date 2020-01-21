@@ -115,7 +115,7 @@ class CompanyControllerTest extends \TestCase
                     'description' => 'Hauptstandort',
                     'street' => 'Im Schatzacker 5',
                     'supplement' => 'Kein Postfach',
-                    'postcode' => 8600,
+                    'zip' => 8600,
                     'city' => 'Dübendorf-Gfenn',
                     'country' => 'Schweiz'
                 ],
@@ -123,7 +123,7 @@ class CompanyControllerTest extends \TestCase
                     'description' => 'Alter Standort',
                     'street' => 'Bahnstrasse 18b',
                     'supplement' => 'Kein Postfach',
-                    'postcode' => 8603,
+                    'zip' => 8603,
                     'city' => 'Schwerzenbach',
                     'country' => 'Schweiz'
                 ]

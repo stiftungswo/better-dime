@@ -30,11 +30,11 @@ TABLES = %i[
   work_periods
 ].freeze
 
-class AddDiscardedAtToAllModels < ActiveRecord::Migration[5.2]
+class AddDeletedAtToAllModels < ActiveRecord::Migration[5.2]
   def change
     TABLES.each do |table|
-      add_column table, :discarded_at, :datetime
-      add_index table, :discarded_at
+      add_column table, :deleted_at, :datetime
+      add_index table, :deleted_at
     end
   end
 end
