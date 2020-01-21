@@ -1,4 +1,4 @@
-FROM ruby:2.5.1-alpine
+FROM ruby:2.6.5-alpine
 
 LABEL maintainer="SWO"
 LABEL version="0.1"
@@ -6,8 +6,8 @@ LABEL description="Dime backend"
 
 RUN apk update && apk add mysql-client build-base mariadb-dev
 
-ENV BUNDLER_VERSION=2.0.1
-RUN gem install bundler -v "2.0.1" --no-document
+ENV BUNDLER_VERSION=2.1.4
+RUN gem install bundler -v "2.1.4" --no-document
 WORKDIR /api
 COPY Gemfile* ./
 RUN bundle install
