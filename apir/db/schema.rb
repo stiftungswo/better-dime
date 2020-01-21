@@ -175,8 +175,8 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
     t.bigint "customer_id"
     t.bigint "address_id"
     t.text "description", null: false
-    t.date "ending", null: false
-    t.date "beginning", null: false
+    t.date "start", null: false
+    t.date "end", null: false
     t.integer "fixed_price"
     t.string "name", null: false
     t.decimal "fixed_price_vat", precision: 10
