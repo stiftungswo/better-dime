@@ -55,14 +55,14 @@ class EmployeeControllerTest extends \TestCase
     public function testPasswordIsHashed()
     {
         $template = $template = $this->employeeTemplate();
-        $template['password'] = 'gurken';
+        $template['encrypted_password'] = 'gurken'; // this is not encrypted yet, since we haven't posted it yet
         $this->asAdmin()->json('POST', 'api/v1/employees/', $template);
         $this->assertResponseOk();
 
         $e = Employee::orderBy('id', 'desc')->first();
 
         $this->assertEquals('test@stiftungswo.ch', $e->email);
-        $this->assertStringStartsWith('$', $e->password);
+        $this->assertStringStartsWith('$', $e->encrypted_password);
     }
 
     public function testInvalidObjectPut()

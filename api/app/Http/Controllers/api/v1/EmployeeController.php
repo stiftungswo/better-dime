@@ -140,7 +140,7 @@ class EmployeeController extends BaseController
             'holidays_per_year' => 'integer|nullable',
             'is_admin' => 'boolean',
             'last_name' => 'required|string',
-            'password' => 'string',
+            'encrypted_password' => 'string',
             'first_vacation_takeover' => 'required|numeric',
             'work_periods' => 'present|array',
             'work_periods.*.end' => 'required|date',

@@ -15,7 +15,7 @@ class AuthControllerTest extends \TestCase
         // should raise if user with the email wasn't found
         $this->json('POST', 'api/v1/employees/login', [
             'email' => 'invalid@notsovalid.com',
-            'password' => 'goodpassword!!'
+            'encrypted_password' => 'goodpassword!!'
         ])->assertResponseStatus(400);
     }
 
@@ -25,7 +25,7 @@ class AuthControllerTest extends \TestCase
 
         $this->json('POST', 'api/v1/employees/login', [
             'email' => $user->email,
-            'password' => 'thisissecorrectpassword'
+            'encrypted_password' => 'thisissecorrectpassword'
         ])->assertResponseStatus(400);
     }
 
@@ -33,12 +33,12 @@ class AuthControllerTest extends \TestCase
     {
         $employee = factory(Employee::class)->create([
             'can_login' => false,
-            'password' => 'VeryGudPassword'
+            'encrypted_password' => 'VeryGudPassword'
         ]);
 
         $this->json('POST', 'api/v1/employees/login', [
             'email' =>  $employee->email,
-            'password' => 'VeryGudPassword'
+            'encrypted_password' => 'VeryGudPassword'
         ])->assertResponseStatus(400);
     }
 
@@ -47,11 +47,11 @@ class AuthControllerTest extends \TestCase
         // should work
         $user = factory(Employee::class)->create([
             'can_login' => true,
-            'password' => 'VeryGudPassword'
+            'encrypted_password' => 'VeryGudPassword'
         ]);
         $this->json('POST', 'api/v1/employees/login', [
             'email' =>  $user->email,
-            'password' => 'VeryGudPassword'
+            'encrypted_password' => 'VeryGudPassword'
         ]);
         $this->assertResponseOk();
     }
