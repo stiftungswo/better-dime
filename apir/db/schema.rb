@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_114935) do
+ActiveRecord::Schema.define(version: 2020_01_21_134534) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -37,6 +37,11 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.index ["number"], name: "index_cost_groups_on_number", unique: true
   end
 
+  create_table "customer_taggable", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "customer_tag_id", null: false
+    t.bigint "customer_id", null: false
+  end
+
   create_table "customer_tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.boolean "archived", null: false
     t.string "name", null: false
@@ -46,16 +51,10 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.index ["deleted_at"], name: "index_customer_tags_on_deleted_at"
   end
 
-  create_table "customer_tags_customers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "customer_tag_id", null: false
-    t.bigint "customer_id", null: false
-  end
-
   create_table "customers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "type", null: false
     t.text "comment"
     t.string "department"
-    t.bigint "customers_id"
     t.string "email"
     t.string "first_name"
     t.string "last_name"
@@ -66,7 +65,8 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.index ["customers_id"], name: "index_customers_on_customers_id"
+    t.bigint "company_id"
+    t.index ["company_id"], name: "index_customers_on_company_id"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
   end
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
     t.datetime "deleted_at"
+    t.decimal "first_vacation_takeover", precision: 10, null: false
     t.index ["deleted_at"], name: "index_employees_on_deleted_at"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
@@ -425,7 +426,7 @@ ActiveRecord::Schema.define(version: 2019_05_16_114935) do
   end
 
   add_foreign_key "addresses", "customers"
-  add_foreign_key "customers", "customers", column: "customers_id"
+  add_foreign_key "customers", "customers", column: "company_id"
   add_foreign_key "customers", "rate_groups"
   add_foreign_key "employees", "employee_groups"
   add_foreign_key "invoice_cost_group_distributions", "cost_groups", primary_key: "number"
