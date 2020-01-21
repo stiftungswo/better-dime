@@ -8,11 +8,11 @@ default: &default
 
 development:
   <<: *default
-  database: better_dime_development
+  database: dime_development
 
 test:
   <<: *default
-  database: better_dime_test
+  database: dime_test
 
 production:
   <<: *default
