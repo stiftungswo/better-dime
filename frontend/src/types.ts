@@ -394,7 +394,7 @@ export interface Address {
   country: string;
   customer_id: number;
   description: string;
-  postcode: number;
+  zip: number;
   street: string;
   supplement: null | string;
   created_at: string;

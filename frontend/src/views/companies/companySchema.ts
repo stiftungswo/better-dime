@@ -13,7 +13,7 @@ export const companySchema = localizeSchema(() =>
         city: yup.string().required(),
         country: yup.string().nullable(true),
         description: yup.string().nullable(true),
-        postcode: yup
+        zip: yup
           .number()
           .required()
           .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),

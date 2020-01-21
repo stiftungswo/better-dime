@@ -14,7 +14,7 @@ export const personSchema = localizeSchema(() =>
         city: yup.string().required(),
         country: yup.string().required(),
         description: yup.string(),
-        postcode: yup
+        zip: yup
           .number()
           .required()
           .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),

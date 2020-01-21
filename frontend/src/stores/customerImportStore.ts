@@ -24,7 +24,7 @@ export interface NonPersistedImportCustomer {
   mobile_number: string | null;
   name: string | null;
   last_name: string | null;
-  postcode: number | null;
+  zip: number | null;
   type: string;
   salutation: string | null;
   street: string;
