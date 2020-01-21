@@ -173,7 +173,9 @@ class ReportController extends BaseController
             ];
         });
 
-        $chargedDays = $efforts->map(function ($effort) {
+        $chargedDays = $efforts->filter(function ($effort) {
+            return $effort['value'] > 0;
+        })->map(function ($effort) {
             return $effort['date'];
         })->unique()->values()->count();
 
