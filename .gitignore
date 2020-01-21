@@ -4,3 +4,5 @@
 .vscode/
 /api/tmp/*
 /api/log/*
+/apir/tmp/*
+/apir/log/*
