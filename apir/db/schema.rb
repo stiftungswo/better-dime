@@ -130,13 +130,13 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
   end
 
   create_table "invoice_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "cost_group_id"
+    t.bigint "cost_group_number"
     t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "invoice_id"
     t.datetime "deleted_at"
-    t.index ["cost_group_id"], name: "fk_rails_ca9de3cea7"
+    t.index ["cost_group_number"], name: "fk_rails_bae2acfe5a"
     t.index ["deleted_at"], name: "index_invoice_cost_group_distributions_on_deleted_at"
     t.index ["invoice_id"], name: "index_invoice_cost_group_distributions_on_invoice_id"
   end
@@ -429,7 +429,7 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
   add_foreign_key "customers", "customers", column: "company_id"
   add_foreign_key "customers", "rate_groups"
   add_foreign_key "employees", "employee_groups"
-  add_foreign_key "invoice_cost_group_distributions", "cost_groups", primary_key: "number"
+  add_foreign_key "invoice_cost_group_distributions", "cost_groups", column: "cost_group_number", primary_key: "number"
   add_foreign_key "invoice_cost_group_distributions", "invoices"
   add_foreign_key "invoice_discounts", "invoices"
   add_foreign_key "invoice_positions", "invoices"
