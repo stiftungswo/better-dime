@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_21_134534) do
+ActiveRecord::Schema.define(version: 2020_01_22_075144) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -163,11 +163,13 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
     t.decimal "vat", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "project_positions_id"
+    t.bigint "project_position_id"
     t.datetime "deleted_at"
+    t.bigint "position_group_id"
     t.index ["deleted_at"], name: "index_invoice_positions_on_deleted_at"
     t.index ["invoice_id"], name: "index_invoice_positions_on_invoice_id"
-    t.index ["project_positions_id"], name: "index_invoice_positions_on_project_positions_id"
+    t.index ["position_group_id"], name: "index_invoice_positions_on_position_group_id"
+    t.index ["project_position_id"], name: "index_invoice_positions_on_project_position_id"
     t.index ["rate_unit_id"], name: "index_invoice_positions_on_rate_unit_id"
   end
 
@@ -216,8 +218,10 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.bigint "position_group_id"
     t.index ["deleted_at"], name: "index_offer_positions_on_deleted_at"
     t.index ["offer_id"], name: "index_offer_positions_on_offer_id"
+    t.index ["position_group_id"], name: "index_offer_positions_on_position_group_id"
     t.index ["rate_unit_id"], name: "index_offer_positions_on_rate_unit_id"
     t.index ["service_id"], name: "index_offer_positions_on_service_id"
   end
@@ -252,6 +256,12 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
     t.datetime "deleted_at"
     t.index ["customer_id"], name: "index_phones_on_customer_id"
     t.index ["deleted_at"], name: "index_phones_on_deleted_at"
+  end
+
+  create_table "position_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -310,7 +320,9 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
     t.datetime "updated_at", null: false
     t.bigint "project_id"
     t.datetime "deleted_at"
+    t.bigint "position_group_id"
     t.index ["deleted_at"], name: "index_project_positions_on_deleted_at"
+    t.index ["position_group_id"], name: "index_project_positions_on_position_group_id"
     t.index ["project_id"], name: "index_project_positions_on_project_id"
     t.index ["rate_unit_id"], name: "index_project_positions_on_rate_unit_id"
     t.index ["service_id"], name: "index_project_positions_on_service_id"
@@ -433,7 +445,8 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
   add_foreign_key "invoice_cost_group_distributions", "invoices"
   add_foreign_key "invoice_discounts", "invoices"
   add_foreign_key "invoice_positions", "invoices"
-  add_foreign_key "invoice_positions", "project_positions", column: "project_positions_id"
+  add_foreign_key "invoice_positions", "position_groups"
+  add_foreign_key "invoice_positions", "project_positions"
   add_foreign_key "invoice_positions", "rate_units"
   add_foreign_key "invoices", "addresses"
   add_foreign_key "invoices", "customers"
@@ -441,6 +454,7 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
   add_foreign_key "invoices", "projects"
   add_foreign_key "offer_discounts", "offers"
   add_foreign_key "offer_positions", "offers"
+  add_foreign_key "offer_positions", "position_groups"
   add_foreign_key "offer_positions", "rate_units"
   add_foreign_key "offer_positions", "services"
   add_foreign_key "offers", "addresses"
@@ -453,6 +467,7 @@ ActiveRecord::Schema.define(version: 2020_01_21_134534) do
   add_foreign_key "project_cost_group_distributions", "projects"
   add_foreign_key "project_efforts", "employees"
   add_foreign_key "project_efforts", "project_positions"
+  add_foreign_key "project_positions", "position_groups"
   add_foreign_key "project_positions", "projects"
   add_foreign_key "project_positions", "rate_units"
   add_foreign_key "project_positions", "services"
