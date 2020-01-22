@@ -17,6 +17,7 @@ TABLES = %i[
   offer_positions
   offers
   phones
+  position_groups
   project_categories
   project_comments
   project_cost_group_distributions

@@ -5,7 +5,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.references :customer, foreign_key: true
       t.references :address, foreign_key: true
       t.boolean :archived, null: false, default: false
-      t.references :project_category, foreign_key: true
+      t.references :category, foreign_key: { to_table: :project_categories }
       t.boolean :chargeable, null: false, default: true
       t.date :deadline
       t.text :description

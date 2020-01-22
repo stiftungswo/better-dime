@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_22_075144) do
+ActiveRecord::Schema.define(version: 2020_01_22_093135) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.string "salutation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.bigint "company_id"
+    t.datetime "deleted_at"
     t.index ["company_id"], name: "index_customers_on_company_id"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
-    t.datetime "deleted_at"
     t.decimal "first_vacation_takeover", precision: 10, null: false
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_employees_on_deleted_at"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
@@ -164,8 +164,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_position_id"
-    t.datetime "deleted_at"
     t.bigint "position_group_id"
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_invoice_positions_on_deleted_at"
     t.index ["invoice_id"], name: "index_invoice_positions_on_invoice_id"
     t.index ["position_group_id"], name: "index_invoice_positions_on_position_group_id"
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.decimal "vat", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
     t.bigint "position_group_id"
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_offer_positions_on_deleted_at"
     t.index ["offer_id"], name: "index_offer_positions_on_offer_id"
     t.index ["position_group_id"], name: "index_offer_positions_on_position_group_id"
@@ -262,6 +262,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_position_groups_on_deleted_at"
   end
 
   create_table "project_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -319,8 +321,8 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
-    t.datetime "deleted_at"
     t.bigint "position_group_id"
+    t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_project_positions_on_deleted_at"
     t.index ["position_group_id"], name: "index_project_positions_on_position_group_id"
     t.index ["project_id"], name: "index_project_positions_on_project_id"
@@ -333,7 +335,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.bigint "customer_id"
     t.bigint "address_id"
     t.boolean "archived", default: false, null: false
-    t.bigint "project_category_id"
+    t.bigint "category_id"
     t.boolean "chargeable", default: true, null: false
     t.date "deadline"
     t.text "description"
@@ -347,10 +349,10 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
     t.datetime "deleted_at"
     t.index ["accountant_id"], name: "fk_rails_a7331964e9"
     t.index ["address_id"], name: "index_projects_on_address_id"
+    t.index ["category_id"], name: "index_projects_on_category_id"
     t.index ["customer_id"], name: "index_projects_on_customer_id"
     t.index ["deleted_at"], name: "index_projects_on_deleted_at"
     t.index ["offer_id"], name: "index_projects_on_offer_id"
-    t.index ["project_category_id"], name: "index_projects_on_project_category_id"
     t.index ["rate_group_id"], name: "index_projects_on_rate_group_id"
   end
 
@@ -475,7 +477,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_075144) do
   add_foreign_key "projects", "customers"
   add_foreign_key "projects", "employees", column: "accountant_id"
   add_foreign_key "projects", "offers"
-  add_foreign_key "projects", "project_categories"
+  add_foreign_key "projects", "project_categories", column: "category_id"
   add_foreign_key "projects", "rate_groups"
   add_foreign_key "service_rates", "rate_groups"
   add_foreign_key "service_rates", "rate_units"

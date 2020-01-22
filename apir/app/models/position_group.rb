@@ -1,0 +1,2 @@
+class PositionGroup < ApplicationRecord
+end
