@@ -309,14 +309,14 @@ ActiveRecord::Schema.define(version: 2020_01_22_163135) do
   create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "date", null: false
     t.bigint "employee_id"
-    t.bigint "project_position_id"
+    t.bigint "position_id"
     t.decimal "value", precision: 10, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_project_efforts_on_deleted_at"
     t.index ["employee_id"], name: "index_project_efforts_on_employee_id"
-    t.index ["project_position_id"], name: "index_project_efforts_on_project_position_id"
+    t.index ["position_id"], name: "index_project_efforts_on_position_id"
   end
 
   create_table "project_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -367,10 +367,6 @@ ActiveRecord::Schema.define(version: 2020_01_22_163135) do
   create_table "rate_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_rate_groups_on_deleted_at"
   end
 
   create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -476,7 +472,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_163135) do
   add_foreign_key "project_cost_group_distributions", "cost_groups", column: "cost_group_number", primary_key: "number"
   add_foreign_key "project_cost_group_distributions", "projects"
   add_foreign_key "project_efforts", "employees"
-  add_foreign_key "project_efforts", "project_positions"
+  add_foreign_key "project_efforts", "project_positions", column: "position_id"
   add_foreign_key "project_positions", "position_groups"
   add_foreign_key "project_positions", "projects"
   add_foreign_key "project_positions", "rate_units"

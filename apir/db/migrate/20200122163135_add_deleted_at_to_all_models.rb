@@ -25,7 +25,6 @@ TABLES = %i[
   project_efforts
   project_positions
   projects
-  rate_groups
   rate_units
   service_rates
   services
