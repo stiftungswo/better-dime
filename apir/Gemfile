@@ -16,6 +16,8 @@ gem 'puma', '~> 3.11'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails', '~> 5.2.3'
 gem 'validates_timeliness'
+gem 'kaminari'
+gem 'ransack'
 
 group :production do
   gem 'lograge'
