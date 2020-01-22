@@ -25,6 +25,8 @@ class AddressCompatibility extends Migration
      */
     public function down()
     {
-        $table->renameColumn('zip', 'postcode');
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->renameColumn('zip', 'postcode');
+        });
     }
 }

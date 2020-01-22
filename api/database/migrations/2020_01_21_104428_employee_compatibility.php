@@ -15,7 +15,6 @@ class EmployeeCompatibility extends Migration
     {
         Schema::table('employees', function (Blueprint $table) {
             $table->renameColumn('password', 'encrypted_password');
-            $table->renameColumn('is_admin', 'admin');
         });
     }
 
@@ -28,7 +27,6 @@ class EmployeeCompatibility extends Migration
     {
         Schema::table('employees', function (Blueprint $table) {
             $table->renameColumn('encrypted_password', 'password');
-            $table->renameColumn('admin', 'is_admin');
         });
     }
 }
