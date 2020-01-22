@@ -1,0 +1,2 @@
+class ProjectCommentPreset < ApplicationRecord
+end

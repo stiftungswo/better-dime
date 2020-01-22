@@ -20,6 +20,7 @@ TABLES = %i[
   position_groups
   project_categories
   project_comments
+  project_comment_presets
   project_cost_group_distributions
   project_efforts
   project_positions

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_22_093135) do
+ActiveRecord::Schema.define(version: 2020_01_22_163135) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -275,6 +275,14 @@ ActiveRecord::Schema.define(version: 2020_01_22_093135) do
     t.index ["deleted_at"], name: "index_project_categories_on_deleted_at"
   end
 
+  create_table "project_comment_presets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "comment_preset"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_project_comment_presets_on_deleted_at"
+  end
+
   create_table "project_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "comment", null: false
     t.date "date", null: false
@@ -287,13 +295,13 @@ ActiveRecord::Schema.define(version: 2020_01_22_093135) do
   end
 
   create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "cost_group_id"
+    t.bigint "cost_group_number"
     t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
     t.datetime "deleted_at"
-    t.index ["cost_group_id"], name: "fk_rails_47731351c6"
+    t.index ["cost_group_number"], name: "fk_rails_40b877c896"
     t.index ["deleted_at"], name: "index_project_cost_group_distributions_on_deleted_at"
     t.index ["project_id"], name: "index_project_cost_group_distributions_on_project_id"
   end
@@ -465,7 +473,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_093135) do
   add_foreign_key "offers", "rate_groups"
   add_foreign_key "phones", "customers"
   add_foreign_key "project_comments", "projects"
-  add_foreign_key "project_cost_group_distributions", "cost_groups", primary_key: "number"
+  add_foreign_key "project_cost_group_distributions", "cost_groups", column: "cost_group_number", primary_key: "number"
   add_foreign_key "project_cost_group_distributions", "projects"
   add_foreign_key "project_efforts", "employees"
   add_foreign_key "project_efforts", "project_positions"
