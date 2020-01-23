@@ -221,13 +221,13 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   address_id: number;
   breakdown: Breakdown;
   description: string;
-  end: string;
+  ending: string;
   fixed_price: null | number;
   fixed_price_vat: null | number;
   project_id?: number;
   offer_id?: number;
   name: string;
-  start: string;
+  beginning: string;
   deleted_at: null;
   created_at: string;
   updated_at: string;
@@ -408,12 +408,12 @@ export interface WorkPeriod {
   effective_time: number;
   effort_till_today: number;
   employee_id: number;
-  end: string;
+  ending: string;
   pensum: number;
   period_vacation_budget: number;
   remaining_vacation_budget: number;
   target_time: number;
-  start: string;
+  beginning: string;
   updated_at: string;
   vacation_takeover: number;
   overlapping_periods: boolean;
@@ -482,12 +482,12 @@ export interface InvoiceListing {
   accountant_id: number;
   address_id: number;
   description: string;
-  end: string;
+  ending: string;
   fixed_price: null;
   fixed_price_vat: null;
   project_id: number;
   name: string;
-  start: string;
+  beginning: string;
 }
 
 export interface PaginatedInvoiceListing extends PaginationInfo {
