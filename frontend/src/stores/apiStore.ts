@@ -8,7 +8,7 @@ import moment from 'moment';
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
 export const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
-export const baseUrlV2 = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38001/v1';
+export const baseUrlV2 = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38001/v2';
 
 export const apiDateFormat = 'YYYY-MM-DD';
 
