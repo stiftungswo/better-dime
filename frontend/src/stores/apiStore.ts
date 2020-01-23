@@ -38,6 +38,11 @@ export class ApiStore {
     return this._token;
   }
 
+  @computed
+  get tokenV2() {
+    return this._tokenV2;
+  }
+
   get api() {
     return this._api;
   }
@@ -48,7 +53,7 @@ export class ApiStore {
 
   @computed
   get isLoggedIn() {
-    return Boolean(this._token) && moment.unix(this.userInfo!.exp).isAfter();
+    return Boolean(this._token) && Boolean(this._tokenV2) && moment.unix(this.userInfo!.exp).isAfter();
   }
 
   @computed
@@ -70,6 +75,7 @@ export class ApiStore {
   get userInfo(): JwtTokenDecoded | null {
     return this.token ? jwt_decode(this._token) : null;
   }
+
   private _api: AxiosInstance; // tslint:disable-line:variable-name
   private _apiV2: AxiosInstance; // tslint:disable-line:variable-name
 
@@ -122,15 +128,14 @@ export class ApiStore {
     if (token) {
       this._token = token;
     }
-
     if (tokenV2) {
       this._tokenV2 = tokenV2;
     }
   }
 
   private initializeApiClient(token: string | null, tokenV2: string | null) {
-    this._api = axios.create({ baseURL: baseUrl });
-    this._apiV2 = axios.create({ baseURL: baseUrlV2 });
+    this._api = axios.create({ baseURL: baseUrl, headers: { Authorization: '' } });
+    this._apiV2 = axios.create({ baseURL: baseUrlV2, headers: { Authorization: '' } });
 
     this.setAuthHeader(token);
     this.setAuthHeaderV2(tokenV2);
@@ -143,6 +148,7 @@ export class ApiStore {
           return response;
         },
         (error: AxiosError) => {
+          // tslint:disable-next-line:no-console
           if (error.response && error.response.status === 401) {
             console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
             this.logout();
@@ -154,6 +160,7 @@ export class ApiStore {
   }
 
   private setAuthHeader(token: string | null) {
+    this._api.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
     this._api.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
   }
 

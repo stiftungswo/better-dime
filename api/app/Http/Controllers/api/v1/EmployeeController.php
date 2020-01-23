@@ -143,9 +143,9 @@ class EmployeeController extends BaseController
             'encrypted_password' => 'string',
             'first_vacation_takeover' => 'required|numeric',
             'work_periods' => 'present|array',
-            'work_periods.*.end' => 'required|date',
+            'work_periods.*.ending' => 'required|date',
             'work_periods.*.pensum' => 'required|integer',
-            'work_periods.*.start' => 'required|date',
+            'work_periods.*.beginning' => 'required|date',
             'work_periods.*.yearly_vacation_budget' => 'required|integer',
         ], [
             'email.unique' => 'Die gewählte Email Adresse ist bereits vergeben.',

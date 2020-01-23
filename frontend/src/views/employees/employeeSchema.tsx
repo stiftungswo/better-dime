@@ -14,9 +14,9 @@ export const editEmployeeSchema = localizeSchema(() =>
     password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
     work_periods: yup.array(
       yup.object({
-        end: dimeDate().required(),
+        ending: dimeDate().required(),
         pensum: requiredNumber(),
-        start: dimeDate().required(),
+        beginning: dimeDate().required(),
         vacation_takeover: requiredNumber(),
         yearly_vacation_budget: requiredNumber(),
         overlapping_periods: yup.boolean().default(false),
@@ -43,9 +43,9 @@ export const newEmployeeSchema = localizeSchema(() =>
       .required(),
     work_periods: yup.array(
       yup.object({
-        end: dimeDate().required(),
+        ending: dimeDate().required(),
         pensum: requiredNumber(),
-        start: dimeDate().required(),
+        beginning: dimeDate().required(),
         vacation_takeover: requiredNumber(),
         yearly_vacation_budget: requiredNumber(),
       }),
