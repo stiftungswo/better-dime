@@ -24,7 +24,7 @@ services:
     depends_on:
         - mysql
     ports:
-        - "39000:8000"
+        - "38001:8000"
     environment:
         - DATABASE_HOST=mysql
         - DATABASE_USERNAME=root
