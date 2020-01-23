@@ -26,7 +26,7 @@ class MakeCommentPresetsUnique extends Migration
     public function down()
     {
         Schema::table('project_comment_presets', function (Blueprint $table) {
-            $table->dropUnique('comment_preset');
+            $table->dropUnique('project_comment_presets_comment_preset_unique');
         });
     }
 }
