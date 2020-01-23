@@ -14,4 +14,8 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 RUN docker-php-ext-install gd zip
 
+COPY composer* ./
+RUN composer install --ignore-platform-reqs
+RUN composer dump-autoload
+
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
