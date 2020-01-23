@@ -13,6 +13,7 @@ export const baseUrlV2 = baseUrlOverride.startsWith('http') ? baseUrlOverride : 
 export const apiDateFormat = 'YYYY-MM-DD';
 
 const KEY_TOKEN = 'dime_token';
+const KEY_TOKEN_V2 = 'dime_token_V2';
 
 interface JwtToken {
   token: string;
@@ -79,7 +80,7 @@ export class ApiStore {
   constructor(private history: History) {
     this.restoreApiToken();
     this.updateSentryContext();
-    this.initializeApiClient(this._token);
+    this.initializeApiClient(this._token, this._tokenV2);
   }
 
   @action
@@ -97,26 +98,20 @@ export class ApiStore {
   @action
   async postLogin(values: { email: string; password: string }) {
     const { email, password } = values;
+    const data = { email, password };
 
-    this.setAuthHeaderV2(null);
+    const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', { employee: data });
+    const res = await this._api.post<JwtToken>('employees/login', data);
+
     // tslint:disable-next-line:no-console
-    console.log('We had the header: ', this._apiV2.defaults.headers.Authorization);
-    const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', {
-      employee: {
-        email,
-        password,
-      },
-    });
-    const res = await this._api.post<JwtToken>('employees/login', {
-      email,
-      password,
-    });
+    console.log('Response:', res);
+    // tslint:disable-next-line:no-console
+    console.log('ResponseV2:', resV2);
+
     runInAction(() => {
-      this.setToken(res.data.token);
+      this.setToken(res.data.token, resV2.headers.authorization);
       this.updateSentryContext();
     });
-    // tslint:disable-next-line:no-console
-    console.log('We have got the rails response: ', resV2);
   }
 
   private restoreApiToken() {
@@ -126,40 +121,29 @@ export class ApiStore {
     }
   }
 
-  private initializeApiClient(token: string | null) {
-    this._api = axios.create({
-      baseURL: baseUrl,
-    });
-    this._apiV2 = axios.create({
-      baseURL: baseUrlV2,
-    });
+  private initializeApiClient(token: string | null, tokenV2: string | null) {
+    this._api = axios.create({ baseURL: baseUrl });
+    this._apiV2 = axios.create({ baseURL: baseUrlV2 });
+
     this.setAuthHeader(token);
+    this.setAuthHeaderV2(tokenV2);
 
-    this._api.interceptors.response.use(
-      response => {
-        return response;
-      },
-      (error: AxiosError) => {
-        if (error.response && error.response.status === 401) {
-          console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
-          this.logout();
-        }
-        return Promise.reject(error);
-      },
-    );
+    const apis = [this._api, this._apiV2];
 
-    this._apiV2.interceptors.response.use(
-      response => {
-        return response;
-      },
-      (error: AxiosError) => {
-        if (error.response && error.response.status === 401) {
-          console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
-          this.logout();
-        }
-        return Promise.reject(error);
-      },
-    );
+    for (const api of apis) {
+      api.interceptors.response.use(
+        response => {
+          return response;
+        },
+        (error: AxiosError) => {
+          if (error.response && error.response.status === 401) {
+            console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
+            this.logout();
+          }
+          return Promise.reject(error);
+        },
+      );
+    }
   }
 
   private setAuthHeader(token: string | null) {
@@ -167,13 +151,16 @@ export class ApiStore {
   }
 
   private setAuthHeaderV2(token: string | null) {
-    this._apiV2.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
+    this._apiV2.defaults.headers.Authorization = token ? token : '';
   }
 
-  private setToken(token: string) {
+  private setToken(token: string, tokenV2: string) {
     this._token = token;
+    this._tokenV2 = tokenV2;
     localStorage.setItem(KEY_TOKEN, token);
+    localStorage.setItem(KEY_TOKEN_V2, tokenV2);
     this.setAuthHeader(token);
+    this.setAuthHeaderV2(tokenV2);
   }
 
   private updateSentryContext() {

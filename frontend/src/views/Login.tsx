@@ -87,11 +87,15 @@ class Login extends React.Component<Props> {
     try {
       await this.props.apiStore!.postLogin({ ...values });
       this.props.history.replace('/');
-    } catch (e) {
-      if (e.toString().includes('400')) {
+    } catch (error) {
+      if (error.messages != null && error.messages.error != null) {
+        this.props.mainStore!.displayError(error.messages.error); // display errors messages from the server
+      } else if (error.error != null && error.error.message != null) {
+        this.props.mainStore!.displayError(error.error.message); // display error messages from the connection request
+      } else if (error.error != null && error.error.toString().includes('400')) {
         this.props.mainStore!.displayError('Ungültiger Benutzername/Passwort');
       } else {
-        this.props.mainStore!.displayError('Bei der Anmeldung ist ein interner Fehler aufgetreten. Bitte versuchen Sie es später erneut.');
+        this.props.mainStore!.displayError('Ein interner Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
       }
     }
     formikBag.setSubmitting(false);
