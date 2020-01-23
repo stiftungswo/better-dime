@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 2020_01_22_163135) do
   create_table "employees", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", limit: 60, null: false
-    t.boolean "admin", default: false, null: false
+    t.boolean "is_admin", default: false, null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.string "first_name", null: false

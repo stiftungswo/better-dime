@@ -16,7 +16,7 @@ class AddWhitelistAndVersion extends Migration
         Schema::create('whitelisted_jwts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('jti');
-            $table->string('aud')->nullable;
+            $table->string('aud')->nullable();
             $table->dateTime('exp');
             $table->unsignedInteger('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('set null');

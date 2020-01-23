@@ -8,6 +8,7 @@ import moment from 'moment';
 // this will be replaced by a build script, if necessary
 const baseUrlOverride = 'BASE_URL';
 export const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
+export const baseUrlV2 = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38001/v1';
 
 export const apiDateFormat = 'YYYY-MM-DD';
 
@@ -40,6 +41,10 @@ export class ApiStore {
     return this._api;
   }
 
+  get apiV2() {
+    return this._apiV2;
+  }
+
   @computed
   get isLoggedIn() {
     return Boolean(this._token) && moment.unix(this.userInfo!.exp).isAfter();
@@ -65,9 +70,11 @@ export class ApiStore {
     return this.token ? jwt_decode(this._token) : null;
   }
   private _api: AxiosInstance; // tslint:disable-line:variable-name
+  private _apiV2: AxiosInstance; // tslint:disable-line:variable-name
 
   @observable
   private _token: string = ''; // tslint:disable-line:variable-name
+  private _tokenV2: string = ''; // tslint:disable-line:variable-name
 
   constructor(private history: History) {
     this.restoreApiToken();
@@ -80,6 +87,7 @@ export class ApiStore {
     localStorage.removeItem(KEY_TOKEN);
     this._token = '';
     this.setAuthHeader(null);
+    this.setAuthHeaderV2(null);
     if (redirect) {
       this.history.push('/');
     }
@@ -89,6 +97,16 @@ export class ApiStore {
   @action
   async postLogin(values: { email: string; password: string }) {
     const { email, password } = values;
+
+    this.setAuthHeaderV2(null);
+    // tslint:disable-next-line:no-console
+    console.log('We had the header: ', this._apiV2.defaults.headers.Authorization);
+    const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', {
+      employee: {
+        email,
+        password,
+      },
+    });
     const res = await this._api.post<JwtToken>('employees/login', {
       email,
       password,
@@ -97,6 +115,8 @@ export class ApiStore {
       this.setToken(res.data.token);
       this.updateSentryContext();
     });
+    // tslint:disable-next-line:no-console
+    console.log('We have got the rails response: ', resV2);
   }
 
   private restoreApiToken() {
@@ -109,6 +129,9 @@ export class ApiStore {
   private initializeApiClient(token: string | null) {
     this._api = axios.create({
       baseURL: baseUrl,
+    });
+    this._apiV2 = axios.create({
+      baseURL: baseUrlV2,
     });
     this.setAuthHeader(token);
 
@@ -124,10 +147,27 @@ export class ApiStore {
         return Promise.reject(error);
       },
     );
+
+    this._apiV2.interceptors.response.use(
+      response => {
+        return response;
+      },
+      (error: AxiosError) => {
+        if (error.response && error.response.status === 401) {
+          console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
+          this.logout();
+        }
+        return Promise.reject(error);
+      },
+    );
   }
 
   private setAuthHeader(token: string | null) {
     this._api.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
+  }
+
+  private setAuthHeaderV2(token: string | null) {
+    this._apiV2.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
   }
 
   private setToken(token: string) {
