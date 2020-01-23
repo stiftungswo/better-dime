@@ -87,6 +87,7 @@ export class ApiStore {
   logout(redirect = true): void {
     localStorage.removeItem(KEY_TOKEN);
     this._token = '';
+    this._tokenV2 = '';
     this.setAuthHeader(null);
     this.setAuthHeaderV2(null);
     if (redirect) {
@@ -116,8 +117,14 @@ export class ApiStore {
 
   private restoreApiToken() {
     const token = localStorage.getItem(KEY_TOKEN);
+    const tokenV2 = localStorage.getItem(KEY_TOKEN_V2);
+
     if (token) {
       this._token = token;
+    }
+
+    if (tokenV2) {
+      this._tokenV2 = tokenV2;
     }
   }
 
