@@ -14,6 +14,10 @@ export class MainStore {
     return this.apiStore.api;
   }
 
+  get apiV2() {
+    return this.apiStore.apiV2;
+  }
+
   @computed
   get isAdmin(): boolean {
     return this.apiStore.isAdmin;
