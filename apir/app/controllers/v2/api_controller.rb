@@ -2,6 +2,8 @@
 
 module V2
   class APIController < ApplicationController
-    # before_action :authenticate_user!
+    helper ApplicationHelper
+    helper Ransack::Helpers::FormHelper
+    helper Kaminari::Helpers
   end
 end
