@@ -15,6 +15,7 @@ class CostBreakdown
     vats = calculate_vats positions, total_with_discounts
     vats_total = vats.inject(0){ |sum, v| sum + v[:value] }
     total = total_with_discounts + vats_total
+    grouped_positions = get_grouped_positions @positions, @position_groupings
 
     fixed_price_vats = []
     fixed_price_vats_sum = 0.0;
@@ -32,13 +33,11 @@ class CostBreakdown
       end
     end
 
-    grouped_positions = get_grouped_positions @positions, @position_groupings
-
     {
       :discounts => discounts,
       :discount_total => discounts_total,
       :grouped_positions => grouped_positions,
-      :sub_total => subtotal,
+      :subtotal => subtotal,
       :raw_total => total_with_discounts,
       :total => total,
       :vats => vats,
@@ -49,11 +48,9 @@ class CostBreakdown
     }
   end
 
+  # return the list of groups with their respective positions
   def get_grouped_positions(positions, groups)
-    default_positions = positions.select do |p|
-      p.position_group_id.nil?
-    end
-
+    default_positions = positions.select {|p| p.position_group_id.nil? }
     default_group = [{
       :group_name => 'Generell',
       :positions => default_positions,
@@ -61,9 +58,7 @@ class CostBreakdown
     }]
 
     grouped_positions = groups.map do |group|
-      filtered_positions = positions.select do |p|
-        p.position_group_id == group.id
-      end
+      filtered_positions = positions.select { |p| p.position_group_id == group.id }
 
       {
         :group_name => group.name,
@@ -71,66 +66,37 @@ class CostBreakdown
         :subtotal => calculate_subtotal(filtered_positions)
       }
     end
-    grouped_positions = grouped_positions.concat default_group
-    grouped_positions = grouped_positions.sort_by do |group|
-      group[:group_name]
-    end
-    grouped_positions = grouped_positions.select do |group|
+
+    grouped_positions.concat(default_group).sort_by { |group| group[:group_name] }.select do |group|
       group[:positions].length > 0
     end
   end
 
   def calculate_subtotal(positions)
-    positions.inject(0) do |sum, p|
-      sum + p.calculated_total
-    end
+    positions.inject(0) { |sum, p| sum + p.calculated_total }
   end
 
   def calculate_vats(positions, total_with_discounts)
-    vat_values = []
     vat_distribution = calculate_vat_distribution positions
-
-    vat_distribution.each do |vat, factor|
-      vat_values.push({
+    vat_distribution.map do |vat, factor|
+      {
         :factor => factor,
         :vat => vat,
         :value => (total_with_discounts.to_i * vat.to_f * factor).to_i
-      })
+      }
     end
-
-    vat_values
   end
 
   def calculate_vat_distribution(positions)
-    sums = {}
-    total = 0
     vat_groups = group_by_vat positions
-
-    vat_groups.each do |vat, vat_positions|
-      sum = calculate_subtotal vat_positions
-      sums[vat] = sum
-      total += sum
-    end
-
-    distributions = {}
-    sums.each do |vat, sum|
-      distributions[vat] = total == 0 ? 0 : sum / total
-    end
-
-    distributions
+    vat_subtotals = vat_groups.map { |vat, vat_positions| [vat, calculate_subtotal(vat_positions)] }.to_h
+    vat_total = vat_subtotals.inject(0) { |sum, (vat, vat_subtotal)| sum + vat_subtotal }
+    # calculate the vat distribution by dividing each subtotal by the total
+    vat_subtotals.map { |vat, subtotal| [vat, vat_total == 0 ? 0 : subtotal / vat_total] }.to_h
   end
 
   def group_by_vat(positions)
-    vat_groups = {}
-
-    positions.each do |position|
-      vat = "#{position.vat}"
-
-      vat_groups[vat] = [] unless vat_groups.key? vat
-      vat_groups[vat].push position
-    end
-
-    vat_groups
+    positions.map { |p| "#{p.vat}"}.uniq.map {|vat_key| [vat_key, positions.select { |p| "#{p.vat}" == vat_key}]}.to_h
   end
 
   def apply_discount(subtotal, discount)

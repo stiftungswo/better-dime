@@ -19,7 +19,16 @@ json.discounts offer.offer_discounts do |discount|
   json.extract! discount, :id, :name, :offer_id, :percentage, :value
 end
 
-json.breakdown offer.breakdown
+json.breakdown do
+  json.discounts offer.breakdown[:discounts]
+  json.discountTotal offer.breakdown[:discount_total]
+  json.positions offer.breakdown[:positions]
+  json.rawTotal offer.breakdown[:raw_total]
+  json.subtotal offer.breakdown[:subtotal]
+  json.total offer.breakdown[:total]
+  json.vats offer.breakdown[:vats]
+  json.vatTotal offer.breakdown[:vat_total]
+end
 json.invoice_ids offer.invoice_ids
 json.project_id offer.project&.id
 json.discounts offer.offer_discounts

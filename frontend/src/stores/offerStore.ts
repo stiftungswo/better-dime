@@ -63,7 +63,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.api.get<OfferListing[]>('/offers');
+    const res = await this.mainStore.apiV2.get<OfferListing[]>('/offers');
     this.offers = res.data;
   }
 
@@ -73,7 +73,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedOfferListing>('/offers', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedOfferListing>('/offers', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.offers = page.data;
     this.pageInfo = _.omit(page, 'data');
