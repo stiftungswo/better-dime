@@ -8,4 +8,3 @@ json.set! :data do
     end
   end
 end
-json.set! :linki, sort_url(@q, :id, :desc) 
