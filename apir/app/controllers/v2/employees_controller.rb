@@ -15,11 +15,12 @@ module V2
     end
 
     def search_params
-      search = params.fetch(:q, {}).permit!
-      search[:s] ||= "#{params[:orderByTag]} #{params[:orderByDir]}"
-      search[:archived_true] ||= params[:showArchived]
-      search[:first_name_or_last_name_or_email_or_employee_group_name_cont] ||= params[:filterSearch]
-      search
+      legacy = params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch)
+      search = params.fetch(:q, {})
+      search[:s] ||= "#{legacy[:orderByTag]} #{legacy[:orderByDir]}"
+      search[:archived_true] ||= legacy[:showArchived]
+      search[:first_name_or_last_name_or_email_or_employee_group_name_cont] ||= legacy[:filterSearch]
+      search.permit(:s, :archived_true, :first_name_or_last_name_or_email_or_employee_group_name_cont)
     end
   end
 end
