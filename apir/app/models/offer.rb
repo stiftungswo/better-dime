@@ -15,4 +15,16 @@ class Offer < ApplicationRecord
             :short_description, :status, presence: true
 
   validates :name, length: { maximum: 255 }
+
+  def breakdown
+    CostBreakdown.new(offer_positions, offer_discounts, position_groupings, fixed_price).calculate
+  end
+
+  def position_groupings
+    offer_positions.uniq {|p| p.position_group&.id }.map { |p| p.position_group }.select{ |g| not g.nil? }
+  end
+
+  def invoice_ids
+    project&.invoices&.map { |i| i.id } || []
+  end
 end

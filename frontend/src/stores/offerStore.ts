@@ -81,7 +81,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
 
   protected async doFetchOne(id: number) {
     this.offer = undefined;
-    const res = await this.mainStore.api.get<Offer>('/offers/' + id);
+    const res = await this.mainStore.apiV2.get<Offer>('/offers/' + id);
     this.offer = res.data;
   }
 

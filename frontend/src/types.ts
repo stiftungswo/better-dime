@@ -17,9 +17,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   rate_group_id: number;
   short_description: string;
   status: number;
-  deleted_at: null;
   created_at: string;
-  updated_at: string;
   breakdown: Breakdown;
   invoice_ids: number[];
   project_id?: number;
@@ -54,9 +52,6 @@ export interface OfferDiscount {
   offer_id: number;
   percentage: boolean;
   value: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface OfferPosition {
