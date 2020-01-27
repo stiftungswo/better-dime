@@ -2,7 +2,7 @@ module V2
   class EmployeesController < APIController
     def index
       @q = Employee.includes(:employee_group).order(created_at: :desc).ransack(search_params)
-      @employees = @q.result.page(params[:page]).per(params[:pageSize]).decorate
+      @employees = @q.result.page(params[:page]).per(params[:pageSize])
     end
 
     def show
