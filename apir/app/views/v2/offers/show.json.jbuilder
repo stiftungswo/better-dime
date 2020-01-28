@@ -1,1 +1,1 @@
-json.partial! 'v2/offers/offer', offer: @offer
+json.partial! 'v2/offers/offer', offer: @offer.decorate
