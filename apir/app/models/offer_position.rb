@@ -12,4 +12,8 @@ class OfferPosition < ApplicationRecord
   def calculated_total
     price_per_rate * amount
   end
+
+  def estimated_work_hours
+    rate_unit.is_time ? amount * rate_unit.factor : 0
+  end
 end

@@ -30,7 +30,7 @@ module V2
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch, :page, :pageSize)
+      params.permit(:orderByTag, :orderByDir, :filterSearch, :page, :pageSize)
     end
 
     def search_params
