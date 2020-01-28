@@ -86,12 +86,12 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doPost(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.post<Offer>('/offers', entity);
+    const res = await this.mainStore.apiV2.post<Offer>('/offers', entity);
     this.offer = res.data;
   }
 
   protected async doPut(entity: Offer): Promise<void> {
-    const res = await this.mainStore.api.put<Offer>('/offers/' + entity.id, entity);
+    const res = await this.mainStore.apiV2.put<Offer>('/offers/' + entity.id, entity);
     this.offer = res.data;
   }
 }
