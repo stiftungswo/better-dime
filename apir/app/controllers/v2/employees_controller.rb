@@ -2,7 +2,7 @@ module V2
   class EmployeesController < APIController
     def index
       @q = Employee.includes(:employee_group).order(created_at: :desc).ransack(search_params)
-      @employees = @q.result.page(params[:page]).per(params[:pageSize])
+      @employees = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])
     end
 
     def show
@@ -14,13 +14,16 @@ module V2
     def employee_params
     end
 
+    def legacy_params
+      params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch, :page, :pageSize)
+    end
+
     def search_params
-      legacy = params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch)
       search = params.fetch(:q, {})
-      search[:s] ||= "#{legacy[:orderByTag]} #{legacy[:orderByDir]}"
-      search[:archived_true] ||= legacy[:showArchived]
-      search[:first_name_or_last_name_or_email_or_employee_group_name_cont] ||= legacy[:filterSearch]
-      search.permit(:s, :archived_true, :first_name_or_last_name_or_email_or_employee_group_name_cont)
+      search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
+      search[:archived_true] ||= legacy_params[:showArchived]
+      search[:id_or_first_name_or_last_name_or_email_or_employee_group_name_cont] ||= legacy_params[:filterSearch]
+      search.permit(:s, :archived_true, :id_or_first_name_or_last_name_or_email_or_employee_group_name_cont)
     end
   end
 end
