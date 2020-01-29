@@ -10,6 +10,8 @@ class Offer < ApplicationRecord
   has_many :offer_positions, dependent: :destroy
   has_one :project, dependent: :restrict_with_exception
 
+  accepts_nested_attributes_for :offer_positions, :offer_discounts, allow_destroy: true
+
   validates :accountant, :customer, :address,
             :description, :name, :rate_group,
             :short_description, :status, presence: true

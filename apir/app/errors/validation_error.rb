@@ -7,6 +7,7 @@ class ValidationError < StandardError
     @validation_errors = validation_errors.try(:messages)&.to_h || validation_errors.to_h
     @human_readable_descriptions = human_readable_descriptions
     @human_readable_descriptions ||= validation_errors.full_messages
+    super(@human_readable_descriptions)
   end
 
   def to_h

@@ -2,7 +2,7 @@
 
 class OfferPosition < ApplicationRecord
   belongs_to :offer
-  belongs_to :position_group
+  belongs_to :position_group, optional: true
   belongs_to :rate_unit
   belongs_to :service
 
