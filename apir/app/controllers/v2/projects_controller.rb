@@ -3,8 +3,7 @@ module V2
     before_action :set_project, only: %i[show update destroy]
 
     def index
-      @q = Project.includes(:invoices, project_positions: [:rate_unit, :project_efforts],
-                            offer: [:offer_discounts, {offer_positions: :rate_unit}]).order(id: :desc).ransack(search_params)
+      @q = Project.order(id: :desc).ransack(search_params)
       @projects = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])
     end
 

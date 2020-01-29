@@ -6,10 +6,9 @@ json.extract! project, :id, :accountant_id, :address_id, :customer_id, :archived
 json.category_id project.project_category.id unless project.project_category.nil?
 json.offer_id project.offer.id unless project.offer.nil?
 # add invoice ids
-json.invoice_ids project.invoices do |invoice|
-  json.extract! invoice, :id
-end
+json.invoice_ids project.invoice_ids
 
+json.costgroup_distributions project.project_costgroup_distributions
 json.positions project.project_positions
 json.position_groupings project.position_groupings do |group|
   json.extract! group, :id, :name

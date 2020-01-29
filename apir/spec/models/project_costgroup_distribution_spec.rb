@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ProjectCostGroupDistribution, type: :model do
+RSpec.describe ProjectCostgroupDistribution, type: :model do
   it { is_expected.to validate_presence_of :weight }
   it { is_expected.to belong_to :cost_group }
   it { is_expected.to belong_to :project }

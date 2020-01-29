@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectCostGroupDistribution < ApplicationRecord
+class ProjectCostgroupDistribution < ApplicationRecord
   belongs_to :cost_group
   belongs_to :project
 

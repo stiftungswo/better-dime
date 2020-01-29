@@ -95,13 +95,13 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
-    this.projects = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects');
+    this.projects = res.data.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<ProjectListing[]>('/projects', {params: this.getQueryParams()});
-    this.projects = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects', {params: this.getQueryParams()});
+    this.projects = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
@@ -112,7 +112,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Project>('/projects/' + id);
+    const res = await this.mainStore.apiV2.get<Project>('/projects/' + id);
     this.project = res.data;
   }
 

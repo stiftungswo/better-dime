@@ -10,7 +10,7 @@ class Project < ApplicationRecord
 
   has_many :invoices, dependent: :restrict_with_exception
   has_many :project_comments, dependent: :destroy
-  has_many :project_cost_group_distributions, dependent: :destroy
+  has_many :project_costgroup_distributions, dependent: :destroy
   has_many :project_positions, dependent: :destroy
 
   validates :fixed_price, numericality: { only_integer: true }
@@ -23,7 +23,7 @@ class Project < ApplicationRecord
   end
 
   def invoice_ids
-    invoices&.map { |i| i.id } || []
+    invoices&.select{ |i| i.deleted_at.nil? } .map { |i| i.id } || []
   end
 
   def budget_price
