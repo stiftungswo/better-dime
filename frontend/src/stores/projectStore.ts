@@ -87,7 +87,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/projects/' + id);
+    await this.mainStore.apiV2.delete('/projects/' + id);
   }
 
   protected async doDuplicate(id: number) {

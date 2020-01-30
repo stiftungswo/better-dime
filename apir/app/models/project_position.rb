@@ -13,8 +13,6 @@ class ProjectPosition < ApplicationRecord
   validates :vat, numericality: { greater_than_or_equal_to: 0 }
   validates :order, numericality: { only_integer: true }
 
-  before_destroy :validate_delete
-
   def calculated_vat
     price_per_rate * efforts_value * vat
   end

@@ -30,6 +30,10 @@ module V2
       render :show
     end
 
+    def destroy
+      raise ValidationError, @offer.errors unless @offer.destroy
+    end
+
     private
 
     def set_offer

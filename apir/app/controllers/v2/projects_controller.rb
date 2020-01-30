@@ -5,6 +5,8 @@ module V2
     def index
       @q = Project.order(id: :desc).ransack(search_params)
       @projects = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])
+      @invoices_counts = ProjectCalculator.invoices_counts @projects
+      @positions_counts = ProjectCalculator.positions_counts @projects
     end
 
     def show
@@ -20,6 +22,18 @@ module V2
       raise ValidationError, @project.errors unless @project.update(update_params)
 
       render :show
+    end
+
+    def create
+      @project = Project.new(update_params)
+
+      raise ValidationError, @project.errors unless @project.save
+
+      render :show
+    end
+
+    def destroy
+      raise ValidationError, @project.errors unless @project.destroy
     end
 
     private

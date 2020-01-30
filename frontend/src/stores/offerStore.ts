@@ -55,7 +55,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/offers/' + id);
+    await this.mainStore.apiV2.delete('/offers/' + id);
   }
 
   protected async doDuplicate(id: number) {
