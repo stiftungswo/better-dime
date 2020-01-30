@@ -3,7 +3,11 @@
 Rails.application.routes.draw do
   namespace :v2, defaults: { format: :json } do
     resources :employees
-    resources :offers
+    resources :offers do
+      member do
+        post 'duplicate'
+      end
+    end
     resources :projects
   end
   scope :v2 do

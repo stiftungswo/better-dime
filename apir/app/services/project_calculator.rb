@@ -7,32 +7,41 @@ class ProjectCalculator
     projects.left_joins(project_positions: :project_efforts).group(:id).sum(:value)
   end
 
+  def initialize(project)
+    @project = project
+  end
+
   def budget_price
-    if offer.nil?
+    if @project.offer.nil?
       nil
     else
-      if offer.fixed_price.nil?
-        CostBreakdown.new(offer.offer_positions, offer.offer_discounts, offer.position_groupings, offer.fixed_price).calculate[:total]
+      if @project.offer.fixed_price.nil?
+        CostBreakdown.new(
+          @project.offer.offer_positions,
+          @project.offer.offer_discounts,
+          @project.offer.position_groupings,
+          @project.offer.fixed_price
+        ).calculate[:total]
       else
-        offer.fixed_price
+        @project.offer.fixed_price
       end
     end
   end
 
   def budget_time
-    if offer.nil?
+    if @project.offer.nil?
       nil
     else
-      offer.offer_positions.inject(0) { |sum, p| sum + p.estimated_work_hours }
+      @project.offer.offer_positions.inject(0) { |sum, p| sum + p.estimated_work_hours }
     end
   end
 
   def current_price
-    project_positions.inject(0) { |sum, p| sum + p.charge }
+    @project.project_positions.inject(0) { |sum, p| sum + p.charge }
   end
 
   def current_time
-    project_positions.inject(0) do |sum, p|
+    @project.project_positions.inject(0) do |sum, p|
       if p.rate_unit.nil? or not p.rate_unit.is_time
         sum
       else

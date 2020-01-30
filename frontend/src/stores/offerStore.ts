@@ -59,7 +59,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Offer>('/offers/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Offer>('/offers/' + id + '/duplicate');
   }
 
   protected async doFetchAll(): Promise<void> {

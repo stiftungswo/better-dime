@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Project < ApplicationRecord
+  include Discard::Model
+  # don't show discarded records when calling .all
+  default_scope -> { kept }
+  # due compatibility issues with the previous PHP backend we use deleted_at for soft deletes
+  self.discard_column = :deleted_at
+
   belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :projects
   belongs_to :customer
   belongs_to :address
@@ -18,7 +24,11 @@ class Project < ApplicationRecord
   validates :fixed_price, numericality: { only_integer: true }, allow_nil: true
   validates :accountant, :address, :name, :project_category, :rate_group, presence: true
 
-  delegate :budget_price, :budget_time, :current_price, :current_time, to: ProjectCalculator
+  delegate :budget_price, :budget_time, :current_price, :current_time, to: :project_calculator
+
+  def project_calculator
+    @project_calculator ||= ProjectCalculator.new self
+  end
 
   def position_groupings
     project_positions.uniq {|p| p.position_group&.id }.map { |p| p.position_group }.select{ |g| not g.nil? }

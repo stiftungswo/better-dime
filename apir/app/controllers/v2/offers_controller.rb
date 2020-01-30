@@ -13,9 +13,9 @@ module V2
 
     def update
       # destroy offer positions which were not passed along to the params
-      destroy_missing(:positions, @offer.offer_positions)
+      ParamsModifier.destroy_missing(params, @offer.offer_positions,:positions)
       # destroy discounts which were not passed along to the params
-      destroy_missing(:discounts, @offer.offer_discounts)
+      ParamsModifier.destroy_missing(params, @offer.offer_discounts,:discounts)
 
       raise ValidationError, @offer.errors unless @offer.update(update_params)
 
@@ -31,24 +31,21 @@ module V2
     end
 
     def destroy
-      raise ValidationError, @offer.errors unless @offer.destroy
+      raise ValidationError, @offer.errors unless @offer.discard
+    end
+
+    def duplicate
+      @offer = Offer.find(params[:id]).deep_clone include: [:offer_positions, :offer_discounts]
+
+      raise ValidationError, @offer.errors unless @offer.save
+
+      render :show
     end
 
     private
 
     def set_offer
       @offer = Offer.find(params[:id])
-    end
-
-    def destroy_missing(key, collection)
-      unless params[key].blank?
-        # destroy items which were not passed along in the params
-        collection.each do |item|
-          unless params[key].any? {|search_item| search_item[:id] == item.id }
-            params[key].push({ id: item.id, _destroy: 1 })
-          end
-        end
-      end
     end
 
     def legacy_params
@@ -63,13 +60,15 @@ module V2
     end
 
     def update_params
-      params[:offer_positions_attributes] = params[:positions]
-      params[:offer_discounts_attributes] = params[:discounts]
+      ParamsModifier.copy_attributes params,:positions, :offer_positions_attributes
+      ParamsModifier.copy_attributes params,:discounts, :offer_discounts_attributes
+
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :fixed_price,
         :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
         offer_positions_attributes: [
-          :id, :amount, :vat, :price_per_rate, :description, :order, :position_group_id, :service_id, :rate_unit_id, :_destroy
+          :id, :amount, :vat, :price_per_rate, :description, :order,
+          :position_group_id, :service_id, :rate_unit_id, :_destroy
         ],
         offer_discounts_attributes: [
           :id, :name, :percentage, :value, :_destroy

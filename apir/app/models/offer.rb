@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Offer < ApplicationRecord
+  include Discard::Model
+  # don't show discarded records when calling .all
+  default_scope -> { kept }
+  # due compatibility issues with the previous PHP backend we use deleted_at for soft deletes
+  self.discard_column = :deleted_at
+
   belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :offers
   belongs_to :customer
   belongs_to :address
