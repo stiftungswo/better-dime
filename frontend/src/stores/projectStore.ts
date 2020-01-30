@@ -83,7 +83,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/projects/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/projects/' + id, { id, archived });
   }
 
   protected async doDelete(id: number) {
@@ -91,7 +91,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Project>('/projects/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Project>('/projects/' + id + '/duplicate');
   }
 
   protected async doFetchAll(): Promise<void> {

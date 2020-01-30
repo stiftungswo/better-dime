@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Offer < ApplicationRecord
-  include Discard::Model
   # don't show discarded records when calling .all
   default_scope -> { kept }
   # due compatibility issues with the previous PHP backend we use deleted_at for soft deletes

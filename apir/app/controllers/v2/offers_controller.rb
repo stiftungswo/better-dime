@@ -36,6 +36,9 @@ module V2
 
     def duplicate
       @offer = Offer.find(params[:id]).deep_clone include: [:offer_positions, :offer_discounts]
+      # update any rate units which might be archived (if possible) when
+      # duplicating (since we are possibly duplicating old offers)
+      RateUnitUpdater.update_rate_units @offer.offer_positions, @offer.rate_group
 
       raise ValidationError, @offer.errors unless @offer.save
 

@@ -36,6 +36,17 @@ module V2
       raise ValidationError, @project.errors unless @project.discard
     end
 
+    def duplicate
+      @project = Project.find(params[:id]).deep_clone include: [:project_positions, :project_costgroup_distributions]
+      # update any rate units which might be archived (if possible) when
+      # duplicating (since we are possibly duplicating old projects)
+      RateUnitUpdater.update_rate_units @project.project_positions, @project.rate_group
+
+      raise ValidationError, @project.errors unless @project.save
+
+      render :show
+    end
+
     private
 
     def set_project
