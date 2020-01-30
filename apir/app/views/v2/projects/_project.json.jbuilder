@@ -9,7 +9,11 @@ json.offer_id project.offer.id unless project.offer.nil?
 json.invoice_ids project.invoice_ids
 
 json.costgroup_distributions project.project_costgroup_distributions
-json.positions project.project_positions
+json.positions project.project_positions.sort_by { |p| p.order } do |position|
+  json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
+                          :vat, :order, :position_group_id, :efforts_value_with_unit, :charge,
+                          :rate_unit_archived, :deletable
+end
 json.position_groupings project.position_groupings do |group|
   json.extract! group, :id, :name
 end

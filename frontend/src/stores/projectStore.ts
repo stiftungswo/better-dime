@@ -117,12 +117,12 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doPost(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.post<Project>('/projects', entity);
+    const res = await this.mainStore.apiV2.post<Project>('/projects', entity);
     this.project = res.data;
   }
 
   protected async doPut(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.put<Project>('/projects/' + entity.id, entity);
+    const res = await this.mainStore.apiV2.put<Project>('/projects/' + entity.id, entity);
     this.project = res.data;
   }
 }

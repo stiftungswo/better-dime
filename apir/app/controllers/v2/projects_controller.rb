@@ -12,7 +12,12 @@ module V2
     end
 
     def update
-      raise ValidationError, @project.errors unless @project.update(params)
+      # destroy project positions which were not passed along to the params
+      destroy_missing(:positions, @project.project_positions)
+      # destroy costgroup distributions which were not passed along to the params
+      destroy_missing(:costgroup_distributions, @project.project_costgroup_distributions)
+
+      raise ValidationError, @project.errors unless @project.update(update_params)
 
       render :show
     end
@@ -21,6 +26,17 @@ module V2
 
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def destroy_missing(key, collection)
+      unless params[key].blank?
+        # destroy items which were not passed along in the params
+        collection.each do |item|
+          unless params[key].any? {|search_item| search_item[:id] == item.id }
+            params[key].push({ id: item.id, _destroy: 1 })
+          end
+        end
+      end
     end
 
     def legacy_params
@@ -33,6 +49,21 @@ module V2
       search[:archived_true] ||= legacy_params[:showArchived]
       search[:id_or_name_or_description_cont] ||= legacy_params[:filterSearch]
       search.permit(:s, :id_or_name_or_description_cont)
+    end
+
+    def update_params
+      params[:project_positions_attributes] = params[:positions]
+      params[:project_costgroup_distributions_attributes] = params[:costgroup_distributions]
+      params.permit(
+        :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id,
+        :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
+        project_positions_attributes: [
+          :id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy
+        ],
+        project_costgroup_distributions_attributes: [
+          :id, :weight, :costgroup_number, :_destroy
+        ]
+      )
     end
 
   end
