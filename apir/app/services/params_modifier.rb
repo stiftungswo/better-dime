@@ -4,7 +4,7 @@ class ParamsModifier
   end
 
   def self.destroy_missing(params, expected_collection, param_key)
-    unless params[param_key].blank?
+    if params.key? param_key
       # destroy items which were not passed along in the params
       expected_collection.each do |item|
         unless params[param_key].any? {|search_item| search_item[:id] == item.id }

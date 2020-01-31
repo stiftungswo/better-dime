@@ -468,6 +468,10 @@ export interface PaginationInfo {
   per_page: string;
 }
 
+export interface PaginatedData<T> {
+  data: T[];
+}
+
 export interface PaginatedProjectListing extends PaginationInfo {
   data: ProjectListing[];
 }

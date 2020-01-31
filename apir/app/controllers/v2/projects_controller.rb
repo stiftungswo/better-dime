@@ -47,6 +47,16 @@ module V2
       render :show
     end
 
+    def potential_invoices
+      @projects = Project.left_joins(:invoices, project_positions: :project_efforts).select(
+        'projects.id, projects.name, MAX(date) as last_effort_date, MAX(ending) as last_invoice_date'
+      ).group(:id)
+      @candidate_projects = @projects.page(legacy_params[:page]).per(legacy_params[:pageSize])
+      @projects_wp_invoices = @candidate_projects.select do |p|
+        p.last_invoice_date.nil? or (!p.last_effort_date.nil? and p.last_effort_date > p.last_invoice_date)
+      end
+    end
+
     private
 
     def set_project

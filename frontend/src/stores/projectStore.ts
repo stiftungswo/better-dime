@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Invoice, PaginatedProjectListing, Project, ProjectListing } from '../types';
+import {Invoice, PaginatedData, PaginatedProjectListing, Project, ProjectListing} from '../types';
 import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -74,8 +74,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
 
   async fetchProjectsWithOpenInvoices(): Promise<void> {
     try {
-      const res = await this.mainStore.api.get<ProjectWithPotentialInvoices[]>('/projects/potential_invoices');
-      this.projectsWithPotentialInvoices = res.data;
+      const res = await this.mainStore.apiV2.get<PaginatedData<ProjectWithPotentialInvoices>>('/projects/potential_invoices');
+      this.projectsWithPotentialInvoices = res.data.data;
     } catch (e) {
       this.mainStore.displayError('Die Projekte konnten nicht geladen werden.');
       throw e;

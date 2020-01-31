@@ -5,16 +5,21 @@ Rails.application.routes.draw do
     resources :employees
 
     resources :offers do
-      member do
-        post 'duplicate'
-      end
+      post 'duplicate', on: :member
     end
 
-    resources :projects do
-      member do
-        post 'duplicate'
-      end
+    get 'projects', to: 'projects#index'
+    get 'projects/:id', to: 'projects#show', constraints: { id: /[0-9]+/ }
+    get 'projects/potential_invoices', action: :potential_invoices, controller: 'projects'
+    put 'projects/:id', to: 'projects#update', constraints: { id: /[0-9]+/ }
+    post 'projects/', to: 'projects#create'
+    post 'projects/:id/duplicate', to: 'projects#duplicate', constraints: { id: /[0-9]+/ }
+    delete 'projects/:id', to: 'projects#destroy', constraints: { id: /[0-9]+/ }
+
+    resources :invoices do
+      post 'duplicate', on: :member
     end
+
   end
   scope :v2 do
     devise_for :employees, defaults: { format: :json }

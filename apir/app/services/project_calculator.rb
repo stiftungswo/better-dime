@@ -7,6 +7,12 @@ class ProjectCalculator
     projects.left_joins(project_positions: :project_efforts).group(:id).sum(:value)
   end
 
+  def self.days_since_last_invoice(project)
+    unless project.last_effort_date.nil? or project.last_invoice_date.nil?
+      (project.last_effort_date-project.last_invoice_date).days / 86400
+    end
+  end
+
   def initialize(project)
     @project = project
   end

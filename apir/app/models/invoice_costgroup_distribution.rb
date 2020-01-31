@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class InvoiceCostGroupDistribution < ApplicationRecord
-  belongs_to :costgroup
+class InvoiceCostgroupDistribution < ApplicationRecord
+  belongs_to :costgroup,foreign_key: :costgroup_number
   belongs_to :invoice
 
   validates :costgroup, :invoice, :weight, presence: true
