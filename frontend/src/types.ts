@@ -248,6 +248,7 @@ export interface InvoicePosition {
   invoice_id: number;
   order: null | number;
   price_per_rate: number;
+  calculated_total: number;
   project_position_id: number;
   rate_unit_id: number;
   rate_unit_archived: boolean;

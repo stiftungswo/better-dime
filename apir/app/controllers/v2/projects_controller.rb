@@ -1,6 +1,6 @@
 module V2
   class ProjectsController < ApplicationController
-    before_action :set_project, only: %i[show update destroy]
+    before_action :set_project, only: %i[show update destroy create_invoice]
 
     def index
       @q = Project.order(id: :desc).ransack(search_params)
@@ -45,6 +45,14 @@ module V2
       raise ValidationError, @project.errors unless @project.save
 
       render :show
+    end
+
+    def create_invoice
+      @invoice = InvoiceCreator.create_invoice_from_project @project
+
+      raise ValidationError, @invoice.errors unless @invoice.save
+
+      redirect_to :controller => 'invoices', :action => 'show', :id => @invoice.id
     end
 
     def potential_invoices

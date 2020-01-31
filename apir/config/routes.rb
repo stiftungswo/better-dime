@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
     resources :projects, constraints: { id: /[0-9]+/ } do
       post 'duplicate', on: :member
+      post 'create_invoice', on: :member
       get 'potential_invoices', on: :collection
     end
 

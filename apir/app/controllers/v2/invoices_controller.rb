@@ -69,10 +69,9 @@ module V2
       ParamsModifier.copy_attributes params,:costgroup_distributions, :invoice_costgroup_distributions_attributes
 
       params.permit(
-        :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id,
-        :deadline, :chargeable, :vacation_project, :fixed_price, :category_id,
+        :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price, :beginning, :ending,
         invoice_positions_attributes: [
-          :id, :vat, :price_per_rate, :rate_unit_id, :service_id,
+          :id, :vat, :price_per_rate, :rate_unit_id, :amount,
           :description, :order, :position_group_id, :_destroy
         ],
         invoice_costgroup_distributions_attributes: [

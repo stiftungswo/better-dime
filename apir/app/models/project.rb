@@ -17,6 +17,7 @@ class Project < ApplicationRecord
   has_many :project_comments, dependent: :destroy
   has_many :project_costgroup_distributions, dependent: :destroy
   has_many :project_positions, dependent: :destroy
+  has_many :project_efforts, through: :project_positions, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :project_positions, :project_costgroup_distributions, allow_destroy: true
 
