@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectEffort < ApplicationRecord
+  include SoftDeletable
   belongs_to :employee
   belongs_to :project_position
 

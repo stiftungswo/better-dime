@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Offer < ApplicationRecord
+  include SoftDeletable
   belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :offers
   belongs_to :customer
   belongs_to :address

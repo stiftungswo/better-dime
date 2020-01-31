@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InvoicePosition < ApplicationRecord
+  include SoftDeletable
   belongs_to :invoice
   belongs_to :rate_unit
   belongs_to :project_position, optional: true

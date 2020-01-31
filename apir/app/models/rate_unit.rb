@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RateUnit < ApplicationRecord
+  include SoftDeletable
   has_many :service_rates, dependent: :restrict_with_exception
   has_many :offer_positions, dependent: :restrict_with_exception
   has_many :invoice_positions, dependent: :restrict_with_exception

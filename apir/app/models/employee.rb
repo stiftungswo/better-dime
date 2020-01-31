@@ -2,6 +2,7 @@
 
 class Employee < ApplicationRecord
   include Devise::JWT::RevocationStrategies::Whitelist
+  include SoftDeletable
 
   ransacker :id, type: :string do
     Arel.sql("`employees`.`id`")

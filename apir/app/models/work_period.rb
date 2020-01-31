@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class WorkPeriod < ApplicationRecord
+  include SoftDeletable
   belongs_to :employee
 
   validates :start, :end, :pensum, :vacation_takeover, :yearly_vacation_budget, presence: true

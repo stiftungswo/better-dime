@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InvoiceCostGroupDistribution < ApplicationRecord
+  include SoftDeletable
   belongs_to :cost_group
   belongs_to :invoice
 
