@@ -2,14 +2,14 @@
 
 TABLES = %i[
   addresses
-  cost_groups
+  costgroups
   customer_tags
   customers
   employee_groups
   employees
   global_settings
   holidays
-  invoice_cost_group_distributions
+  invoice_costgroup_distributions
   invoice_discounts
   invoice_positions
   invoices
@@ -21,7 +21,7 @@ TABLES = %i[
   project_categories
   project_comments
   project_comment_presets
-  project_cost_group_distributions
+  project_costgroup_distributions
   project_efforts
   project_positions
   projects

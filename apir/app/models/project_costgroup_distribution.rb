@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-class ProjectCostGroupDistribution < ApplicationRecord
+class ProjectCostgroupDistribution < ApplicationRecord
   include SoftDeletable
-  belongs_to :cost_group
+
+  belongs_to :costgroup, foreign_key: :costgroup_number
   belongs_to :project
 
   validates :weight, presence: true

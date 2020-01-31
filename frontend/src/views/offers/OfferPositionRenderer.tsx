@@ -89,7 +89,6 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                 const total = p.amount * p.price_per_rate + p.amount * p.price_per_rate * p.vat;
                 const archivedService = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id);
                 const archivedRate = p.rate_unit_archived;
-                const archivedEntities = archivedRate || archivedService;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>
