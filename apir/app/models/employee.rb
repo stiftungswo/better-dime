@@ -2,6 +2,7 @@
 
 class Employee < ApplicationRecord
   include Devise::JWT::RevocationStrategies::Whitelist
+  include SoftDeletable
 
   belongs_to :employee_group
 

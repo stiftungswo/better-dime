@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Customer < ApplicationRecord
+  include SoftDeletable
   belongs_to :rate_group
 
   # rubocop:disable Rails/HasAndBelongsToMany

@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class Invoice < ApplicationRecord
-  # don't show discarded records when calling .all
-  default_scope -> { kept }
-  # due compatibility issues with the previous PHP backend we use deleted_at for soft deletes
-  self.discard_column = :deleted_at
+  include SoftDeletable
 
   belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :invoices
   belongs_to :customer

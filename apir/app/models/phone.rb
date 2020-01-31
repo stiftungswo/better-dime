@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Phone < ApplicationRecord
+  include SoftDeletable
   belongs_to :customer
 
   validates :category, :number, presence: true

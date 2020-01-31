@@ -6,7 +6,7 @@ module V2
     end
 
     def show
-      @employee = Employee.find(params[:id]).decorate
+      @employee = Employee.includes(work_periods: [:employee]).find(params[:id]).decorate
     end
 
     private

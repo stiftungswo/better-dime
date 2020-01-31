@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GlobalSetting < ApplicationRecord
+  include SoftDeletable
   validates :sender_name, :sender_street, :sender_zip,
             :sender_phone, :sender_city, :sender_mail,
             :sender_vat, :sender_bank, :sender_web,

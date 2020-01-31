@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OfferPosition < ApplicationRecord
+  include SoftDeletable
   belongs_to :offer
   belongs_to :position_group, optional: true
   belongs_to :rate_unit
