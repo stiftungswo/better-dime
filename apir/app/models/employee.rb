@@ -4,10 +4,6 @@ class Employee < ApplicationRecord
   include Devise::JWT::RevocationStrategies::Whitelist
   include SoftDeletable
 
-  ransacker :id, type: :string do
-    Arel.sql("`employees`.`id`")
-  end
-
   belongs_to :employee_group
 
   has_many :work_periods, dependent: :restrict_with_exception, inverse_of: :employee

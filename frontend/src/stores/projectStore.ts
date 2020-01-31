@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import { Invoice, PaginatedProjectListing, Project, ProjectListing } from '../types';
+import {Invoice, PaginatedData, PaginatedProjectListing, Project, ProjectListing} from '../types';
 import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -62,7 +62,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     // creating a new invoice can affect caches so we invalidate all
     try {
       this.displayInProgress();
-      const res = await this.mainStore.api.post<Invoice>(`/projects/${id}/create_invoice`);
+      const res = await this.mainStore.apiV2.post<Invoice>(`/projects/${id}/create_invoice`);
       Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
       return res.data;
@@ -74,8 +74,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
 
   async fetchProjectsWithOpenInvoices(): Promise<void> {
     try {
-      const res = await this.mainStore.api.get<ProjectWithPotentialInvoices[]>('/projects/potential_invoices');
-      this.projectsWithPotentialInvoices = res.data;
+      const res = await this.mainStore.apiV2.get<PaginatedData<ProjectWithPotentialInvoices>>('/projects/potential_invoices');
+      this.projectsWithPotentialInvoices = res.data.data;
     } catch (e) {
       this.mainStore.displayError('Die Projekte konnten nicht geladen werden.');
       throw e;
@@ -83,46 +83,46 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/projects/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/projects/' + id, { id, archived });
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/projects/' + id);
+    await this.mainStore.apiV2.delete('/projects/' + id);
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Project>('/projects/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Project>('/projects/' + id + '/duplicate');
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.api.get<ProjectListing[]>('/projects');
-    this.projects = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects');
+    this.projects = res.data.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    const res = await this.mainStore.api.get<ProjectListing[]>('/projects', {params: this.getQueryParams()});
-    this.projects = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects', {params: this.getQueryParams()});
+    this.projects = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedProjectListing>('/projects', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.projects = page.data;
     this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Project>('/projects/' + id);
+    const res = await this.mainStore.apiV2.get<Project>('/projects/' + id);
     this.project = res.data;
   }
 
   protected async doPost(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.post<Project>('/projects', entity);
+    const res = await this.mainStore.apiV2.post<Project>('/projects', entity);
     this.project = res.data;
   }
 
   protected async doPut(entity: Project): Promise<void> {
-    const res = await this.mainStore.api.put<Project>('/projects/' + entity.id, entity);
+    const res = await this.mainStore.apiV2.put<Project>('/projects/' + entity.id, entity);
     this.project = res.data;
   }
 }

@@ -19,6 +19,7 @@ gem 'validates_timeliness'
 gem 'kaminari'
 gem 'ransack'
 gem 'draper'
+gem 'deep_cloneable', '~> 3.0.0'
 
 group :production do
   gem 'lograge'

@@ -21,7 +21,7 @@ class AddWhitelistAndVersion extends Migration
             $table->unsignedInteger('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('set null');
             $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamp('updated_at')->nullable();
         });
 
         Schema::create('versions', function (Blueprint $table) {

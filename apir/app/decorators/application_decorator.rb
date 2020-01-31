@@ -14,4 +14,8 @@ class ApplicationDecorator < Draper::Decorator
   def updated_at
     model.updated_at&.to_formatted_s(:db)
   end
+
+  def deleted_at
+    model.deleted_at&.to_formatted_s(:db)
+  end
 end

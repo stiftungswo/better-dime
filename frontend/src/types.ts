@@ -17,9 +17,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   rate_group_id: number;
   short_description: string;
   status: number;
-  deleted_at: null;
   created_at: string;
-  updated_at: string;
   breakdown: Breakdown;
   invoice_ids: number[];
   project_id?: number;
@@ -54,9 +52,6 @@ export interface OfferDiscount {
   offer_id: number;
   percentage: boolean;
   value: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface OfferPosition {
@@ -253,6 +248,7 @@ export interface InvoicePosition {
   invoice_id: number;
   order: null | number;
   price_per_rate: number;
+  calculated_total: number;
   project_position_id: number;
   rate_unit_id: number;
   rate_unit_archived: boolean;
@@ -471,6 +467,10 @@ export interface PaginationInfo {
   prev_page_url: null | string;
   path: string;
   per_page: string;
+}
+
+export interface PaginatedData<T> {
+  data: T[];
 }
 
 export interface PaginatedProjectListing extends PaginationInfo {
