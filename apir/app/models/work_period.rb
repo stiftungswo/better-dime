@@ -41,7 +41,7 @@ class WorkPeriod < ApplicationRecord
   end
 
   def effective_time
-    (booked_work_minutes + vacation_takeover).to_i
+    (booked_work_minutes + booked_holiday_minutes + vacation_takeover)
   end
 
   def booked_work_minutes
@@ -62,7 +62,7 @@ class WorkPeriod < ApplicationRecord
     else
       Date.today
     end
-    public_holiday_minutes_till_today = public_holidays.where("date < ?", Date.today).sum(:duration)
+    public_holiday_minutes_till_today = public_holidays.where("date < ?", current_end).sum(:duration)
     current_effort = effective_time - (pensum_in_percent * (work_minutes_in_duration(beginning..current_end) - public_holiday_minutes_till_today)).round
     current_effort.to_i
   end
@@ -125,7 +125,6 @@ class WorkPeriod < ApplicationRecord
 
   def booked_minutes
     employee.project_efforts.joins(project_position: [:project, :rate_unit]).
-      where(date: duration).where("rate_units.is_time" => true).
-      where("project_efforts.deleted_at" =>  nil)
+      where(date: duration).where("rate_units.is_time" => true)
   end
 end
