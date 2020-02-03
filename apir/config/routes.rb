@@ -2,7 +2,12 @@
 
 Rails.application.routes.draw do
   namespace :v2, defaults: { format: :json } do
-    resources :employees
+    resources :employees do
+      post 'duplicate', on: :member
+      post 'archive', on: :member
+      put 'archive', on: :member
+    end
+
     resources :holidays, only: %w(index create update destroy) do
       post 'duplicate', on: :member
     end

@@ -20,20 +20,20 @@ class WorkPeriod < ApplicationRecord
 
   # It means we go back across all WorkPeriods... 
   def vacation_takeover
-    return (employee.first_vacation_takeover || 0).round unless previous_work_period
-    (previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today).round
+    return employee.first_vacation_takeover unless previous_work_period
+    previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today
   end
 
   def previous_work_period
-    employee.work_periods.where("ending < ?", ending).where.not(id: id).order(ending: :desc, beginning: :desc).first
+    employee.work_periods.where("ending < ?", ending).where.not(id: id).order(ending: :desc, beginning: :asc).first
   end
 
   def effective_time
-    (booked_minutes + vacation_takeover).round
+    booked_minutes + vacation_takeover
   end
 
   def booked_minutes
-    booked_effort.sum(:value).round
+    booked_effort.sum(:value)
   end
 
   def booked_holiday_minutes
@@ -41,20 +41,14 @@ class WorkPeriod < ApplicationRecord
   end
 
   def effort_till_today
-    current_end = if ending.before?(Date.today) then ending
-    elsif beginning.before?(Date.today) then beginning
-    else
-      Date.today
-    end
-    public_holiday_minutes_till_today = public_holidays.where("date < ?", current_end).sum(:duration)
-    current_effort = effective_time - (pensum_in_percent * (work_minutes_in_duration(beginning..current_end) - public_holiday_minutes_till_today))
-    current_effort.round
+    effective_time - target_minutes_till_today
   end
 
   def period_vacation_budget
-    period_work_minutes_of_year = work_minutes_in_duration
-    total_work_minutes_of_year = work_minutes_in_duration(beginning.beginning_of_year..ending.end_of_year)
-    (yearly_vacation_budget / total_work_minutes_of_year) * period_work_minutes_of_year * pensum_in_percent
+    yearly_vacation_budget / target_work_minutes_in_full_year * target_work_minutes_in_duration * pensum_in_percent
+  end
+
+  def actual_yearly_vacation_budget 
   end
 
   def pensum_in_percent
@@ -62,14 +56,12 @@ class WorkPeriod < ApplicationRecord
   end
 
   # returns the target work time in minutes
-  def minutes_to_work
-    (pensum_in_percent * (work_minutes_in_duration - public_holiday_minutes)).round
+  def target_time
+    pensum_in_percent * (target_work_minutes_in_duration - public_holiday_minutes)
   end
-  # Legacy naming
-  alias target_time minutes_to_work
 
   def remaining_vacation_budget
-    (period_vacation_budget - booked_holiday_minutes).round
+    period_vacation_budget - booked_holiday_minutes
   end
 
   def overlapping_periods
@@ -89,18 +81,30 @@ class WorkPeriod < ApplicationRecord
     beginning.beginning_of_year..ending.end_of_year
   end
 
-  def work_minutes_in_duration(range = duration)
-    range.select(&:on_weekday?).count * work_minutes_per_day
+  def target_work_minutes_in_duration
+    duration.select(&:on_weekday?).count * work_minutes_per_day
+  end
+
+  def target_work_minutes_in_full_year
+    (beginning.beginning_of_year..ending.end_of_year).select(&:on_weekday?).count * work_minutes_per_day
+  end
+
+  def target_work_minutes_till_today
+    duration.select {|day| day <= Date.today}.select(&:on_weekday?).count * work_minutes_per_day
+  end
+
+  def target_minutes_till_today
+    (target_work_minutes_till_today - public_holiday_minutes_till_today) * pensum_in_percent 
   end
 
   private
 
-  def public_holiday_minutes
-    public_holidays.sum(:duration)
+  def public_holiday_minutes_till_today
+    Holiday.where(date: duration).where("date <= ?", Date.today).sum(:duration)
   end
 
-  def public_holidays
-    Holiday.where(date: duration)
+  def public_holiday_minutes
+    Holiday.where(date: duration).sum(:duration)
   end
 
   def booked_effort

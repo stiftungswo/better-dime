@@ -45,24 +45,24 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/employees/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/employees/' + id + '/archive', { archived });
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/employees/' + id);
+    await this.mainStore.apiV2.delete('/employees/' + id);
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Employee>('/employees/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Employee>('/employees/' + id + '/duplicate');
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Employee[]>('/employees');
+    const res = await this.mainStore.apiV2.get<Employee[]>('/employees');
     this.employees = res.data;
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.api.get<Employee[]>('/employees', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<Employee[]>('/employees', {params: this.getQueryParams()});
     this.employees = res.data;
   }
 
@@ -79,13 +79,13 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doPost(employee: Employee) {
-    this.mainStore.api.post('/employees', employee).then(res => {
+    this.mainStore.apiV2.post('/employees', employee).then(res => {
       this.employee = res.data;
     }).catch(this.handleError);
   }
 
   protected async doPut(employee: Employee) {
-    this.mainStore.api.put('/employees/' + employee.id, employee).then(res => {
+    this.mainStore.apiV2.put('/employees/' + employee.id, employee).then(res => {
       this.employee = res.data;
     }).catch(this.handleError);
   }
