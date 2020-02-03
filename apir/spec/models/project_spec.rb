@@ -3,9 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
-  it { is_expected.to validate_presence_of :archived }
   it { is_expected.to validate_presence_of :accountant }
-  it { is_expected.to validate_presence_of :chargeable }
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :address }
   it { is_expected.to validate_presence_of :project_category }
