@@ -10,7 +10,7 @@ module V2
     end
 
     def create
-      @employee = Employee.new(employee_params)
+      @employee = Employee.new(employee_params.except(:id))
 
       respond_to do |format|
         if @employee.save
@@ -77,7 +77,8 @@ module V2
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:employee_group_id] = params[:employee_group_id]
-      params.require(:employee).permit(:id, :email, :is_admin, :first_name, :last_name, :can_login, :archived,
+      params[:employee][:password] = params[:password]
+      params.require(:employee).permit(:id, :password, :email, :is_admin, :first_name, :last_name, :can_login, :archived,
         :holidays_per_year, :employee_group_id, :first_vacation_takeover, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
     end
 
