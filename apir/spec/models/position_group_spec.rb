@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe PositionGroup, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { is_expected.to have_many :offer_positions}
+  it { is_expected.to have_many :project_positions}
+  it { is_expected.to have_many :invoice_positions}
 end

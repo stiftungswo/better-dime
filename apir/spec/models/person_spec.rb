@@ -6,7 +6,7 @@ RSpec.describe Person, type: :model do
   it 'belongs to company' do
     expect(described_class.new).to belong_to(:company)
       .class_name('Company')
-      .with_foreign_key(:customers_id)
+      .with_foreign_key(:company_id)
       .optional
       .inverse_of(:people)
   end
