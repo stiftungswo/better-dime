@@ -13,7 +13,6 @@ RSpec.describe Project, type: :model do
   it { is_expected.to belong_to(:customer) }
   it { is_expected.to belong_to(:address) }
   it { is_expected.to belong_to(:project_category) }
-  it { is_expected.to belong_to(:offer) }
   it { is_expected.to belong_to(:rate_group) }
 
   it 'belongs to an accountant' do
