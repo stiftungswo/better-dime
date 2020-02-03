@@ -2,7 +2,7 @@ class CustomerCompatibility < ActiveRecord::Migration[5.2]
   def self.up
     change_table :customers do |t|
       t.remove :customers_id
-      t.references :company, foreign_key: { to_table: :customers }, null: false
+      t.references :company, foreign_key: { to_table: :customers }, null: true
     end
 
     rename_table :customer_tags_customers, :customer_taggable

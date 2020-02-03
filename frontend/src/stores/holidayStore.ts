@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
-import { Holiday } from '../types';
+import {Holiday, PaginatedData} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -53,41 +53,41 @@ export class HolidayStore extends AbstractStore<Holiday> {
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/holidays/' + id);
+    await this.mainStore.apiV2.delete('/holidays/' + id);
     await this.doFetchAll();
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Holiday>('/holidays/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Holiday>('/holidays/' + id + '/duplicate');
   }
 
   @action
   protected async doFetch() {
-    const res = await this.mainStore.api.get<Holiday[]>('/holidays');
-    this.holidays = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
+    this.holidays = res.data.data;
   }
 
   @action
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Holiday[]>('/holidays');
-    this.holidays = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
+    this.holidays = res.data.data;
   }
 
   @action
   protected async doFetchFiltered() {
-    const res = await this.mainStore.api.get<Holiday[]>('/holidays', {params: this.getQueryParams()});
-    this.holidays = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays', {params: this.getQueryParams()});
+    this.holidays = res.data.data;
   }
 
   @action
   protected async doPost(holiday: Holiday) {
-    await this.mainStore.api.post('/holidays', holiday);
+    await this.mainStore.apiV2.post('/holidays', holiday);
     await this.doFetchAll();
   }
 
   @action
   protected async doPut(holiday: Holiday) {
-    await this.mainStore.api.put('/holidays/' + holiday.id, holiday);
+    await this.mainStore.apiV2.put('/holidays/' + holiday.id, holiday);
     await this.doFetchAll();
   }
 }
