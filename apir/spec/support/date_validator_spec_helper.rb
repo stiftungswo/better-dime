@@ -8,7 +8,7 @@ RSpec.shared_examples_for 'ending is after beginning' do
 
     let(:beginning) { Time.zone.today }
     let(:formatted_beginning) { beginning.strftime(ERROR_FORMAT) }
-    let(:added_error) { subject.errors.added?(:ending, :after, restriction: formatted_beginning) }
+    let(:added_error) { subject.errors.added?(:ending, :on_or_after, restriction: formatted_beginning) }
 
     context 'when ending is before beginning' do
       let(:ending) { beginning - 1.day }
@@ -29,8 +29,8 @@ RSpec.shared_examples_for 'ending is after beginning' do
     context 'when ending is equal beginning' do
       let(:ending) { beginning }
 
-      it 'is invalid' do
-        expect(added_error).to eq true
+      it 'is valid' do
+        expect(added_error).to eq false
       end
     end
   end

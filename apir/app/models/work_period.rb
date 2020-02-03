@@ -7,7 +7,7 @@ class WorkPeriod < ApplicationRecord
   validates :beginning, :ending, :pensum, :yearly_vacation_budget, presence: true
   validates :pensum, numericality: { only_integer: true, greater_than: 0 }
   validates :beginning, :ending, timeliness: { type: :date }
-  validates :ending, timeliness: { after: :beginning }
+  validates :ending, timeliness: { on_or_after: :beginning }
 
   # Harcoded today but probably shouldn't be
   def work_hours_per_day
@@ -18,7 +18,7 @@ class WorkPeriod < ApplicationRecord
     work_hours_per_day * 60
   end
 
-  # It means we go back across all WorkPeriods... 
+  # It means we go back across all WorkPeriods...
   def vacation_takeover
     return employee.first_vacation_takeover unless previous_work_period
     previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today

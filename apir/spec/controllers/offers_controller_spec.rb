@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe OffersController, type: :controller do
+RSpec.describe V2::OffersController, type: :controller do
 
 end
