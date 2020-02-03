@@ -18,22 +18,10 @@ class WorkPeriod < ApplicationRecord
     work_hours_per_day * 60
   end
 
-  # $reference_workperiod = $this->getRelevantWorkPeriod();
-  # $effective_time = 0;
-  # $remaining_budget = 0;
-  # $first_takeover = $this->isFirstPeriod() ? $this->employee->first_vacation_takeover : 0;
-  # if (!is_null($reference_workperiod)) {
-  #         return $reference_workperiod->remaining_vacation_budget + $reference_workperiod->effort_till_today;
-  # }
-  # return $effective_time + $remaining_budget + $first_takeover;
-  # TODO FIRST
   # It means we go back across all WorkPeriods... 
   def vacation_takeover
-    if previous_work_period
-      takeover = previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today
-    else
-      employee.first_vacation_takeover || 0
-    end.to_i
+    return (employee.first_vacation_takeover || 0).round unless previous_work_period
+    (previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today).round
   end
 
   def previous_work_period
@@ -41,38 +29,32 @@ class WorkPeriod < ApplicationRecord
   end
 
   def effective_time
-    (booked_work_minutes + booked_holiday_minutes + vacation_takeover)
+    (booked_minutes + vacation_takeover).round
   end
 
-  def booked_work_minutes
-    booked_minutes.where("projects.vacation_project" => false).sum(:value).to_i
+  def booked_minutes
+    booked_effort.sum(:value).round
   end
 
   def booked_holiday_minutes
-    booked_minutes.where("projects.vacation_project" => true).sum(:value).to_i
+    booked_effort.where("projects.vacation_project" => true).sum(:value)
   end
 
-  # TODO
-  # SOMETHING WRONG
   def effort_till_today
-    current_end = if ending.before?(Date.today)
-      ending
-    elsif beginning.before?(Date.today)
-      beginning
+    current_end = if ending.before?(Date.today) then ending
+    elsif beginning.before?(Date.today) then beginning
     else
       Date.today
     end
     public_holiday_minutes_till_today = public_holidays.where("date < ?", current_end).sum(:duration)
-    current_effort = effective_time - (pensum_in_percent * (work_minutes_in_duration(beginning..current_end) - public_holiday_minutes_till_today)).round
-    current_effort.to_i
+    current_effort = effective_time - (pensum_in_percent * (work_minutes_in_duration(beginning..current_end) - public_holiday_minutes_till_today))
+    current_effort.round
   end
 
-  # DONE
   def period_vacation_budget
     period_work_minutes_of_year = work_minutes_in_duration
     total_work_minutes_of_year = work_minutes_in_duration(beginning.beginning_of_year..ending.end_of_year)
-    minutes = (yearly_vacation_budget / total_work_minutes_of_year) * period_work_minutes_of_year
-    (minutes * pensum_in_percent).round.to_i
+    (yearly_vacation_budget / total_work_minutes_of_year) * period_work_minutes_of_year * pensum_in_percent
   end
 
   def pensum_in_percent
@@ -81,15 +63,13 @@ class WorkPeriod < ApplicationRecord
 
   # returns the target work time in minutes
   def minutes_to_work
-    work_minutes = duration.select(&:on_weekday?).count * work_minutes_per_day
-    (pensum_in_percent * (work_minutes - public_holiday_minutes)).round
+    (pensum_in_percent * (work_minutes_in_duration - public_holiday_minutes)).round
   end
   # Legacy naming
   alias target_time minutes_to_work
 
-  # TODO
   def remaining_vacation_budget
-    period_vacation_budget - booked_holiday_minutes
+    (period_vacation_budget - booked_holiday_minutes).round
   end
 
   def overlapping_periods
@@ -123,7 +103,7 @@ class WorkPeriod < ApplicationRecord
     Holiday.where(date: duration)
   end
 
-  def booked_minutes
+  def booked_effort
     employee.project_efforts.joins(project_position: [:project, :rate_unit]).
       where(date: duration).where("rate_units.is_time" => true)
   end
