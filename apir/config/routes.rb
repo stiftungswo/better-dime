@@ -31,6 +31,10 @@ Rails.application.routes.draw do
       get "potential_invoices", on: :collection
     end
 
+    resources :project_categories do
+      put "archive", on: :member
+    end
+
     resources :invoices do
       post "duplicate", on: :member
     end
