@@ -4,5 +4,5 @@ class ProjectCategory < ApplicationRecord
   include SoftDeletable
   has_many :projects, foreign_key: :category_id, dependent: :restrict_with_exception
 
-  validates :name, :archived, presence: true
+  validates :name, presence: true
 end
