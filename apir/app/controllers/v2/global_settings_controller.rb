@@ -1,11 +1,11 @@
 module V2
   class GlobalSettingsController < APIController
     def index
-      @global_setting = GlobalSetting.first_or_initialize
+      @global_setting = GlobalSetting.order(id: :asc).first_or_create
     end
 
     def update
-      @global_setting = GlobalSetting.first_or_initialize
+      @global_setting = GlobalSetting.order(id: :asc).first_or_create
 
       respond_to do |format|
         if @global_setting.update(global_setting_params)
