@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :project_category do
     archived { false }
-    name { 'MyString' }
+    name { "MyString" }
   end
 end

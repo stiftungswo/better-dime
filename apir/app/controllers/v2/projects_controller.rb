@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module V2
   class ProjectsController < ApplicationController
-    before_action :set_project, only: %i[show update destroy create_invoice]
+    before_action :set_project, only: [:show, :update, :destroy, :create_invoice]
 
     def index
       @q = Project.order(id: :desc).ransack(search_params)
@@ -52,16 +54,16 @@ module V2
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
-      redirect_to :controller => 'invoices', :action => 'show', :id => @invoice.id
+      redirect_to controller: "invoices", action: "show", id: @invoice.id
     end
 
     def potential_invoices
       @projects = Project.left_joins(:invoices, project_positions: :project_efforts).select(
-        'projects.id, projects.name, MAX(date) as last_effort_date, MAX(ending) as last_invoice_date'
+        "projects.id, projects.name, MAX(date) as last_effort_date, MAX(ending) as last_invoice_date"
       ).group(:id)
       @candidate_projects = @projects.page(legacy_params[:page]).per(legacy_params[:pageSize])
       @projects_wp_invoices = @candidate_projects.select do |p|
-        p.last_invoice_date.nil? or (!p.last_effort_date.nil? and p.last_effort_date > p.last_invoice_date)
+        p.last_invoice_date.nil? || (p.last_effort_date && (p.last_effort_date > p.last_invoice_date))
       end
     end
 
@@ -72,33 +74,27 @@ module V2
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch, :page, :pageSize)
+      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize)
     end
 
     def search_params
       search = params.fetch(:q, {}).permit!
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
-      search[:archived_false] = true  if legacy_params[:showArchived] == "false"
+      search[:archived_false] = true if legacy_params[:showArchived] == "false"
       search[:id_or_name_or_description_cont] ||= legacy_params[:filterSearch]
       search.permit(:s, :archived_false, :id_or_name_or_description_cont)
     end
 
     def update_params
-      ParamsModifier.copy_attributes params,:positions, :project_positions_attributes
-      ParamsModifier.copy_attributes params,:costgroup_distributions, :project_costgroup_distributions_attributes
+      ParamsModifier.copy_attributes params, :positions, :project_positions_attributes
+      ParamsModifier.copy_attributes params, :costgroup_distributions, :project_costgroup_distributions_attributes
 
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id,
         :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
-        project_positions_attributes: [
-          :id, :vat, :price_per_rate, :rate_unit_id, :service_id,
-          :description, :order, :position_group_id, :_destroy
-        ],
-        project_costgroup_distributions_attributes: [
-          :id, :weight, :costgroup_number, :_destroy
-        ]
+        project_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy],
+        project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
       )
     end
-
   end
 end

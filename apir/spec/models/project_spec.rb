@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Project, type: :model do
   it { is_expected.to validate_presence_of :accountant }
@@ -15,10 +15,10 @@ RSpec.describe Project, type: :model do
   it { is_expected.to belong_to(:project_category) }
   it { is_expected.to belong_to(:rate_group) }
 
-  it 'belongs to an accountant' do
+  it "belongs to an accountant" do
     expect(described_class.new).to belong_to(:accountant)
       .class_name(Employee.to_s)
-      .with_foreign_key('accountant_id')
+      .with_foreign_key("accountant_id")
       .inverse_of(:projects)
   end
 end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Person, type: :model do
-  it 'belongs to company' do
+  it "belongs to company" do
     expect(described_class.new).to belong_to(:company)
-      .class_name('Company')
+      .class_name("Company")
       .with_foreign_key(:company_id)
       .optional
       .inverse_of(:people)

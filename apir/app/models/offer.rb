@@ -3,7 +3,7 @@
 class Offer < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :offers
+  belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", inverse_of: :offers
   belongs_to :customer
   belongs_to :address
   belongs_to :rate_group
@@ -25,7 +25,7 @@ class Offer < ApplicationRecord
   end
 
   def position_groupings
-    offer_positions.uniq {|p| p.position_group&.id }.map { |p| p.position_group }.select{ |g| not g.nil? }
+    offer_positions.uniq { |p| p.position_group&.id }.map(&:position_group).select { |g| g }
   end
 
   def invoice_ids

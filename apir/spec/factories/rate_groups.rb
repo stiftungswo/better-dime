@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :rate_group do
     sequence(:name) { |i| "My rate group #{i}" }
-    description { 'My rate group description' }
+    description { "My rate group description" }
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectCalculator
   def self.invoices_counts(projects)
     projects.joins(:invoices).group(:id).count
@@ -8,9 +10,7 @@ class ProjectCalculator
   end
 
   def self.days_since_last_invoice(project)
-    unless project.last_effort_date.nil? or project.last_invoice_date.nil?
-      (project.last_effort_date-project.last_invoice_date).days / 86400
-    end
+    (project.last_effort_date - project.last_invoice_date).days / 86_400 unless project.last_effort_date.nil? || project.last_invoice_date.nil?
   end
 
   def initialize(project)
@@ -48,7 +48,7 @@ class ProjectCalculator
 
   def current_time
     @project.project_positions.inject(0) do |sum, p|
-      if p.rate_unit.nil? or not p.rate_unit.is_time
+      if p.rate_unit.nil? || !p.rate_unit.is_time
         sum
       else
         sum + p.efforts_value * p.rate_unit.factor

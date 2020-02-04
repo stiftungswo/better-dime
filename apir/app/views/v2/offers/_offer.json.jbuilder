@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 json.extract! offer, :id, :accountant_id, :address_id, :customer_id, :description,
               :fixed_price, :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
               :created_at
 
-json.project_id offer.project.id unless offer.project.nil?
+json.project_id offer.project.id if offer.project
 
 json.breakdown do
   json.discounts offer.breakdown[:discounts]
@@ -17,7 +19,7 @@ end
 json.invoice_ids offer.invoice_ids
 json.project_id offer.project&.id
 json.discounts offer.offer_discounts
-json.positions offer.offer_positions.sort_by { |p| p.order } do |position|
+json.positions offer.offer_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :amount, :description, :price_per_rate, :rate_unit_id, :service_id,
                 :vat, :order, :position_group_id, :rate_unit_archived
 end

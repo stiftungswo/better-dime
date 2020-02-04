@@ -5,12 +5,12 @@ FactoryBot.define do
     association :accountant, factory: :employee
     association :customer, factory: :person
     address
-    description { 'MyDescription' }
-    ending { '2019-05-14' }
-    beginning { '2019-05-13' }
+    description { "MyDescription" }
+    ending { "2019-05-14" }
+    beginning { "2019-05-13" }
     fixed_price { nil }
     project
-    name { 'MyName' }
+    name { "MyName" }
     fixed_price_vat { nil }
 
     trait :with_fixed_price do

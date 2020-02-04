@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module V2
   class OffersController < APIController
-    before_action :set_offer, only: %i[show update destroy]
+    before_action :set_offer, only: [:show, :update, :destroy]
 
     def index
       @q = Offer.order(id: :desc).ransack(search_params)
@@ -13,9 +15,9 @@ module V2
 
     def update
       # destroy offer positions which were not passed along to the params
-      ParamsModifier.destroy_missing(params, @offer.offer_positions,:positions)
+      ParamsModifier.destroy_missing(params, @offer.offer_positions, :positions)
       # destroy discounts which were not passed along to the params
-      ParamsModifier.destroy_missing(params, @offer.offer_discounts,:discounts)
+      ParamsModifier.destroy_missing(params, @offer.offer_discounts, :discounts)
 
       raise ValidationError, @offer.errors unless @offer.update(update_params)
 
@@ -63,19 +65,14 @@ module V2
     end
 
     def update_params
-      ParamsModifier.copy_attributes params,:positions, :offer_positions_attributes
-      ParamsModifier.copy_attributes params,:discounts, :offer_discounts_attributes
+      ParamsModifier.copy_attributes params, :positions, :offer_positions_attributes
+      ParamsModifier.copy_attributes params, :discounts, :offer_discounts_attributes
 
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :fixed_price,
         :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
-        offer_positions_attributes: [
-          :id, :amount, :vat, :price_per_rate, :description, :order,
-          :position_group_id, :service_id, :rate_unit_id, :_destroy
-        ],
-        offer_discounts_attributes: [
-          :id, :name, :percentage, :value, :_destroy
-        ]
+        offer_positions_attributes: [:id, :amount, :vat, :price_per_rate, :description, :order, :position_group_id, :service_id, :rate_unit_id, :_destroy],
+        offer_discounts_attributes: [:id, :name, :percentage, :value, :_destroy]
       )
     end
   end

@@ -10,9 +10,7 @@ class OfferPosition < ApplicationRecord
   validates :amount, :order, :price_per_rate, :rate_unit, :service, :vat, presence: true
   validates :amount, :order, numericality: { greater_than_or_equal_to: 0 }
 
-  def rate_unit_archived
-    rate_unit.archived
-  end
+  delegate :archived, to: :rate_unit, prefix: true
 
   def calculated_total
     price_per_rate * amount

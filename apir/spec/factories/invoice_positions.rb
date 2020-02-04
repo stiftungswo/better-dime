@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :invoice_position do
     amount { 9.99 }
-    description { 'MyInvoicePosition' }
+    description { "MyInvoicePosition" }
     invoice
     order { 1 }
     price_per_rate { 1.5 }

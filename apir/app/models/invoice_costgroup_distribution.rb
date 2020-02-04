@@ -3,7 +3,7 @@
 class InvoiceCostgroupDistribution < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :costgroup,foreign_key: :costgroup_number
+  belongs_to :costgroup, foreign_key: :costgroup_number
   belongs_to :invoice
 
   validates :costgroup, :invoice, :weight, presence: true
