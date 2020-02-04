@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import {Invoice, PaginatedData, PaginatedProjectListing, Project, ProjectListing} from '../types';
+import {Invoice, PaginatedData, Project, ProjectListing} from '../types';
 import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -95,17 +95,17 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects');
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects');
     this.projects = res.data.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getQueryParams()});
     this.projects = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedProjectListing>('/projects', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.projects = page.data;
     this.pageInfo = _.omit(page, 'data');

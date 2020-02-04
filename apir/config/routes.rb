@@ -8,6 +8,10 @@ Rails.application.routes.draw do
       put "archive", on: :member
     end
 
+    resources :project_efforts, constraints: { id: /[0-9]+/ } do
+      put 'move', on: :collection
+    end
+
     resources :employee_groups
 
     get "global_settings", to: "global_settings#index"
@@ -39,5 +43,10 @@ Rails.application.routes.draw do
     devise_for :employees, defaults: { format: :json }
     devise_for :offers, defaults: { format: :json }
     devise_for :projects, defaults: { format: :json }
+    devise_for :invoices, defaults: { format: :json }
+    devise_for :holidays, defaults: { format: :json }
+    devise_for :project_efforts, defaults: { format: :json }
+    devise_for :employee_groups, defaults: { format: :json }
+    devise_for :global_settings, defaults: { format: :json }
   end
 end
