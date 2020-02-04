@@ -52,7 +52,7 @@ class InvoiceCreator
       invoice_position.rate_unit = position.rate_unit
       invoice_position.position_group = position.position_group
       invoice_position.amount = position.efforts_value
-      invoice_position.description = position.description.blank? ? position.service.name : position.description
+      invoice_position.description = position.description.presence || position.service.name
       invoice_position.vat = position.vat
       invoice_position.price_per_rate = position.price_per_rate
       invoice_position.order = position.order
