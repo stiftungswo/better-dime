@@ -36,35 +36,7 @@ module V2
     end
 
     def move
-      ProjectEffort.transaction do
-        efforts = ProjectEffort.left_joins(project_position: [:service]).where({
-          id: params[:effort_ids].split(",")
-        })
-        target_project = Project.find(params[:project_id])
-        to_position = params[:position_id]
-
-        efforts.each do |effort|
-          if to_position.blank?
-            raise StandardError.new "Position " + effort.project_position.id + " has no service assigned" if (effort.service.nil?)
-
-            target_position = target_project.positions.find {|p| p.service == effort.service}
-
-            if target_position.nil?
-              target_position = ProjectPosition.new()
-              target_position.project = target_project
-              target_position.service = effort.service
-              raise ValidationError, target_position.errors unless target_position.save
-            end
-
-            effort.position = target_position
-            raise ValidationError, effort.errors unless effort.save
-          else
-            effort.position_id = to_position
-            raise ValidationError, effort.errors unless effort.save
-          end
-        end
-
-      end
+      EffortMover.move params
 
       render plain: 'Successfully moved timeslices!'
     end

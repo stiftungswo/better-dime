@@ -61,8 +61,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
           employee_ids: filter.employeeIds ? filter.employeeIds.join(',') : '',
-          project_ids: filter.projectIds.join(','),
-          service_ids: filter.serviceIds.join(','),
+          project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
+          service_ids: filter.serviceIds ? filter.serviceIds.join(',') : '',
           combine_times: filter.combineTimes,
         },
       });

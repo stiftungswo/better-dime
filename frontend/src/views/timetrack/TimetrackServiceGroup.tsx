@@ -42,7 +42,7 @@ export default class TimetrackServiceGroup extends React.Component<Props> {
       {
         id: 'position_description',
         numeric: false,
-        label: 'Aktivität',
+        label: 'Beschreibung',
       },
       {
         id: 'effort_value',
