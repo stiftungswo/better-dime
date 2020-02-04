@@ -3,6 +3,11 @@
 Rails.application.routes.draw do
   namespace :v2, defaults: { format: :json } do
     resources :employees
+
+    resources :project_efforts, constraints: { id: /[0-9]+/ } do
+      put 'move', on: :collection
+    end
+
     resources :holidays, only: %w(index create update destroy) do
       post 'duplicate', on: :member
     end
