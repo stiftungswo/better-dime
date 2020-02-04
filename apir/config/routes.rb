@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
     resources :employee_groups
 
+    get "global_settings", to: "global_settings#index"
+    put "global_settings", to: "global_settings#update"
+
     resources :holidays, only: %w(index create update destroy) do
       post 'duplicate', on: :member
     end
