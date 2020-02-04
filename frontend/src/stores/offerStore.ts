@@ -1,6 +1,11 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import {Offer, OfferListing, PaginatedOfferListing, PaginatedProjectListing, Project, ProjectListing} from '../types';
+import {
+  Offer,
+  OfferListing,
+  PaginatedData,
+  Project,
+} from '../types';
 import {Cache} from '../utilities/Cache';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
@@ -73,7 +78,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedOfferListing>('/offers', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<OfferListing>>('/offers', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.offers = page.data;
     this.pageInfo = _.omit(page, 'data');

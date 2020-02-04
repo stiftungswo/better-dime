@@ -431,10 +431,6 @@ export interface EmployeeListing {
   can_login: boolean;
 }
 
-export interface PaginatedEmployeeListing extends PaginationInfo {
-  data: Employee[];
-}
-
 export interface ProjectListing {
   id: number;
   accountant_id: number;
@@ -469,12 +465,8 @@ export interface PaginationInfo {
   per_page: string;
 }
 
-export interface PaginatedData<T> {
+export interface PaginatedData<T> extends PaginationInfo {
   data: T[];
-}
-
-export interface PaginatedProjectListing extends PaginationInfo {
-  data: ProjectListing[];
 }
 
 export interface InvoiceListing {
@@ -490,18 +482,10 @@ export interface InvoiceListing {
   beginning: string;
 }
 
-export interface PaginatedInvoiceListing extends PaginationInfo {
-  data: InvoiceListing[];
-}
-
 export interface OfferListing {
   id: number;
   name: string;
   short_description: string;
-}
-
-export interface PaginatedOfferListing extends PaginationInfo {
-  data: OfferListing[];
 }
 
 export interface RateGroup {

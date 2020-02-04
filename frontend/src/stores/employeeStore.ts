@@ -1,6 +1,10 @@
 import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
-import {Employee, EmployeeListing, PaginatedEmployeeListing, PaginatedInvoiceListing, ProjectListing} from '../types';
+import {
+  Employee,
+  EmployeeListing,
+  PaginatedData,
+} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -57,17 +61,17 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<Employee[]>('/employees');
-    this.employees = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees');
+    this.employees = res.data.data;
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<Employee[]>('/employees', {params: this.getQueryParams()});
-    this.employees = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getQueryParams()});
+    this.employees = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedEmployeeListing>('/employees', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.employees = page.data;
     this.pageInfo = _.omit(page, 'data');
