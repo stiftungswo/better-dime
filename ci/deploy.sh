@@ -36,7 +36,8 @@ ssh $TARGET mkdir -p ${PROJECT_DIR} ${PROJECT_DIR}.bak && \
 rsync -ra --exclude '.git' --exclude 'node_modules' . $TARGET:$TMP && \
 ssh $TARGET sed -i'' "s/COMMIT_ID/$TRAVIS_COMMIT/g" $TMP/frontend/build/static/js/main.*.js && \
 ssh $TARGET sed -i'' "s/ENVIRONMENT/$ENVIRONMENT/g" $TMP/frontend/build/static/js/main.*.js && \
-ssh $TARGET sed -i'' "s,BASE_URL,$API_URL,g" $TMP/frontend/build/static/js/main.*.js && \
+ssh $TARGET sed -i'' "s,BASE_API_URL,$API_URL,g" $TMP/frontend/build/static/js/main.*.js && \
+ssh $TARGET sed -i'' "s,BASE_APIR_URL,$APIR_URL,g" $TMP/frontend/build/static/js/main.*.js && \
 ssh $TARGET sed -i'' "s,SENTRY_DSN,$SENTRY_DSN_PUBLIC,g" $TMP/frontend/build/static/js/main.*.js && \
 ssh $TARGET cp $CONFIG_FILE $TMP/api/.env && \
 ssh $TARGET rm -r ${PROJECT_DIR}.bak && \
