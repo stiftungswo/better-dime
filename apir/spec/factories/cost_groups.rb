@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :costgroup do
     number { 100 }
-    name { 'MyString' }
+    name { "MyString" }
   end
 end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Company, type: :model do
-  describe 'validations' do
+  describe "validations" do
     subject { FactoryBot.create(:company) }
 
     it { is_expected.to validate_presence_of :name }
@@ -11,12 +11,11 @@ RSpec.describe Company, type: :model do
     it { is_expected.to validate_uniqueness_of :name }
     it { is_expected.to validate_length_of(:email).is_at_most(255) }
 
-    it 'has many people relation' do
+    it "has many people relation" do
       expect(described_class.new).to have_many(:people)
-                                       .class_name('Person')
-                                       .inverse_of(:company)
-                                       .dependent(:restrict_with_exception)
+        .class_name("Person")
+        .inverse_of(:company)
+        .dependent(:restrict_with_exception)
     end
   end
-
 end

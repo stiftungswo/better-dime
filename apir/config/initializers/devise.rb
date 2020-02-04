@@ -8,10 +8,10 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  config.secret_key = ENV['DEVISE_SECRET_KEY']
+  config.secret_key = ENV["DEVISE_SECRET_KEY"]
 
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.secret = ENV["DEVISE_JWT_SECRET_KEY"]
     jwt.expiration_time = 1.day.to_i
   end
 
@@ -25,7 +25,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = ENV['MAIL_SENDER']
+  config.mailer_sender = ENV["MAIL_SENDER"]
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -37,7 +37,7 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require 'devise/orm/active_record'
+  require "devise/orm/active_record"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -121,7 +121,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Set up a pepper to generate the hashed password.
-  config.pepper = ENV['DEVISE_PEPPER']
+  config.pepper = ENV["DEVISE_PEPPER"]
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false

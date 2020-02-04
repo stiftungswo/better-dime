@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoiceCreator
   def self.create_invoice_from_project(project)
     invoice = Invoice.new
@@ -30,7 +32,7 @@ class InvoiceCreator
   end
 
   def self.create_discounts_from_project(invoice, project)
-    unless project.offer.nil? or project.offer.offer_discounts.nil?
+    unless project.offer.nil? || project.offer.offer_discounts.nil?
       project.offer.offer_discounts.map do |discount|
         invoice_discount = InvoiceDiscount.new
         invoice_discount.invoice = invoice
@@ -59,10 +61,10 @@ class InvoiceCreator
   end
 
   def self.get_invoice_beginning_date(project)
-    project.invoices.max_by {|invoice| invoice.ending}&.ending || project.project_efforts.min_by {|effort| effort.date}&.date || DateTime.now
+    project.invoices.max_by(&:ending)&.ending || project.project_efforts.min_by(&:date)&.date || DateTime.now
   end
 
   def self.get_invoice_ending_date(project)
-    project.project_efforts.max_by {|effort| effort.date}&.date || DateTime.now
+    project.project_efforts.max_by(&:date)&.date || DateTime.now
   end
 end

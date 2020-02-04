@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module V2
   class HolidaysController < ApplicationController
-    before_action :set_holiday, only: %i[update destroy]
+    before_action :set_holiday, only: [:update, :destroy]
 
     def index
       @q = Holiday.order(id: :desc).ransack(search_params)

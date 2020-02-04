@@ -2,7 +2,7 @@
 
 class Company < Customer
   has_many :people,
-           class_name: 'Person',
+           class_name: "Person",
            inverse_of: :company,
            dependent: :restrict_with_exception
 

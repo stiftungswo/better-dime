@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails'
+require "rails"
 # Pick the frameworks you want:
-require 'active_model/railtie'
-require 'active_job/railtie'
-require 'active_record/railtie'
-require 'active_storage/engine'
-require 'action_controller/railtie'
-require 'action_mailer/railtie'
-require 'action_view/railtie'
-require 'action_cable/engine'
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+require "active_storage/engine"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "action_cable/engine"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -33,8 +33,8 @@ module Api
     config.api_only = true
 
     config.action_mailer.default_url_options = {
-      host: ENV.fetch('APP_HOST') { 'localhost' },
-      port: ENV.fetch('APP_POST') { 3000 }
+      host: ENV.fetch("APP_HOST") { "localhost" },
+      port: ENV.fetch("APP_POST") { 3000 }
     }
 
     config.use_plugin_parser = true

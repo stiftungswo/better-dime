@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class EmployeesController < APIController
     def index
@@ -23,7 +25,7 @@ module V2
 
     def update
       @employee = Employee.find(params[:id])
-      @employee.work_periods.where.not(id: employee_params[:work_periods_attributes].map {|work_period| work_period[:id]}).discard_all
+      @employee.work_periods.where.not(id: employee_params[:work_periods_attributes].map { |work_period| work_period[:id] }).discard_all
 
       respond_to do |format|
         if @employee.update(employee_params)
@@ -72,25 +74,25 @@ module V2
     end
 
     private
-    
+
     def employee_params
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:employee_group_id] = params[:employee_group_id]
       params[:employee][:password] = params[:password]
       params.require(:employee).permit(:id, :password, :email, :is_admin, :first_name, :last_name, :can_login, :archived,
-        :holidays_per_year, :employee_group_id, :first_vacation_takeover, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
+                                       :holidays_per_year, :employee_group_id, :first_vacation_takeover, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir,:showArchived,:filterSearch, :page, :pageSize)
+      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize)
     end
 
     # Also map the old params to new ransack params till the frontend is adapted
     def search_params
       search = params.fetch(:q, {})
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
-      search[:archived_false] = true if ["false",false, nil].include?(params[:showArchived])
+      search[:archived_false] = true if ["false", false, nil].include?(params[:showArchived])
       search[:id_or_first_name_or_last_name_or_email_or_employee_group_name_cont] ||= legacy_params[:filterSearch]
       search.permit(:s, :archived_false, :id_or_first_name_or_last_name_or_email_or_employee_group_name_cont)
     end

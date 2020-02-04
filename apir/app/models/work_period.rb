@@ -21,6 +21,7 @@ class WorkPeriod < ApplicationRecord
   # It means we go back across all WorkPeriods...
   def vacation_takeover
     return employee.first_vacation_takeover unless previous_work_period
+
     previous_work_period.remaining_vacation_budget + previous_work_period.effort_till_today
   end
 
@@ -48,8 +49,7 @@ class WorkPeriod < ApplicationRecord
     yearly_vacation_budget / target_work_minutes_in_full_year * target_work_minutes_in_duration * pensum_in_percent
   end
 
-  def actual_yearly_vacation_budget 
-  end
+  def actual_yearly_vacation_budget; end
 
   def pensum_in_percent
     pensum / 100.0
@@ -66,7 +66,8 @@ class WorkPeriod < ApplicationRecord
 
   def overlapping_periods
     employee.work_periods.where(beginning: duration).where.not(id: id).or(
-      employee.work_periods.where(ending: duration).where.not(id: id))
+      employee.work_periods.where(ending: duration).where.not(id: id)
+    )
   end
 
   def overlapping_periods?
@@ -90,11 +91,11 @@ class WorkPeriod < ApplicationRecord
   end
 
   def target_work_minutes_till_today
-    duration.select {|day| day <= Date.today}.select(&:on_weekday?).count * work_minutes_per_day
+    duration.select { |day| day <= Date.today }.select(&:on_weekday?).count * work_minutes_per_day
   end
 
   def target_minutes_till_today
-    (target_work_minutes_till_today - public_holiday_minutes_till_today) * pensum_in_percent 
+    (target_work_minutes_till_today - public_holiday_minutes_till_today) * pensum_in_percent
   end
 
   private
@@ -108,7 +109,7 @@ class WorkPeriod < ApplicationRecord
   end
 
   def booked_effort
-    employee.project_efforts.joins(project_position: [:project, :rate_unit]).
-      where(date: duration).where("rate_units.is_time" => true)
+    employee.project_efforts.joins(project_position: [:project, :rate_unit])
+            .where(date: duration).where("rate_units.is_time" => true)
   end
 end

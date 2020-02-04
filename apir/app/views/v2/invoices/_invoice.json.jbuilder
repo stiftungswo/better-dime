@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 json.extract! invoice, :id, :accountant_id, :address_id, :customer_id, :description,
               :fixed_price, :fixed_price_vat, :name, :beginning, :ending, :sibling_invoice_ids, :created_at
 
-json.project_id invoice.project.id unless invoice.project.nil?
-json.offer_id invoice.project.offer.id unless invoice.project.nil? or invoice.project.offer.nil?
+json.project_id invoice.project.id if invoice.project
+json.offer_id invoice.project.offer.id unless invoice.project.nil? || invoice.project.offer.nil?
 
 json.breakdown do
   json.discounts invoice.breakdown[:discounts]
@@ -18,7 +20,7 @@ end
 json.costgroup_distributions invoice.invoice_costgroup_distributions
 json.project_id invoice.project&.id
 json.discounts invoice.invoice_discounts
-json.positions invoice.invoice_positions.sort_by { |p| p.order } do |position|
+json.positions invoice.invoice_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :amount, :description, :price_per_rate, :rate_unit_id,
                 :order, :position_group_id, :rate_unit_archived, :calculated_total
   json.vat position.vat.to_f

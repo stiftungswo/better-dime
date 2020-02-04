@@ -2,23 +2,23 @@
 
 FactoryBot.define do
   factory :person do
-    type { 'Person' }
+    type { "Person" }
     comment { '9ü|_ 4 3\/3.-' }
-    department { 'MyDepartment' }
+    department { "MyDepartment" }
     company { nil }
-    email { 'mail@example.com' }
-    first_name { 'Philipp' }
-    last_name { 'Saurer' }
+    email { "mail@example.com" }
+    first_name { "Philipp" }
+    last_name { "Saurer" }
     hidden { false }
-    salutation { 'LGBTQQIP2SAA+' }
+    salutation { "LGBTQQIP2SAA+" }
     rate_group
   end
 
   factory :company do
-    type { 'Company' }
-    comment { 'Gül GmbH' }
+    type { "Company" }
+    comment { "G\u00FCl GmbH" }
     hidden { false }
-    name { 'Gül GmbH' }
+    name { "G\u00FCl GmbH" }
     rate_group
   end
 end

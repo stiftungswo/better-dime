@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Employee, type: :model do
   it { is_expected.to belong_to :employee_group }
@@ -16,8 +16,8 @@ RSpec.describe Employee, type: :model do
   it { is_expected.to validate_presence_of :last_name }
   it { is_expected.to validate_numericality_of(:holidays_per_year).only_integer.is_greater_than_or_equal_to(0) }
 
-  describe '#email' do
-    it { is_expected.to allow_value('user@example.com').for(:email) }
-    it { is_expected.not_to allow_value('user.example.com').for(:email) }
+  describe "#email" do
+    it { is_expected.to allow_value("user@example.com").for(:email) }
+    it { is_expected.not_to allow_value("user.example.com").for(:email) }
   end
 end

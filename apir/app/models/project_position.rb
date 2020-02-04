@@ -28,9 +28,7 @@ class ProjectPosition < ApplicationRecord
     efforts_value.to_s + " " + rate_unit.effort_unit.to_s
   end
 
-  def rate_unit_archived
-    rate_unit.archived
-  end
+  delegate :archived, to: :rate_unit, prefix: true
 
   def deletable
     project_efforts.blank?

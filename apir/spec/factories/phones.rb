@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :phone do
-    number { '0433555844' }
+    number { "0433555844" }
     category { :main }
     customer
   end

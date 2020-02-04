@@ -9,7 +9,7 @@ Rails/SkipsModelValidations:
     - 'spec/**/*.rb'
 
 Metrics/LineLength:
-  Max: 120
+  Max: 240
   Exclude:
     - 'db/seeds.rb'
 
@@ -25,6 +25,7 @@ Style/NonNilCheck:
   IncludeSemanticChanges: true
 
 Metrics/BlockLength:
+  Max: 160
   Exclude:
     - 'spec/**/*.rb'
     - 'config/environments/**/*.rb'
@@ -46,6 +47,24 @@ RSpec/ExampleLength:
 
 RSpec/NestedGroups:
   Max: 5
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
 
 AllCops:
   Exclude:

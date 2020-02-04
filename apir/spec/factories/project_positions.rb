@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :project_position do
-    description { 'MyDescription' }
+    description { "MyDescription" }
     price_per_rate { 9200 }
     vat { 0.077 }
     order { 1 }

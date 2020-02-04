@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RateUnitUpdater
   def self.update_rate_units(positions, rate_group)
     positions.each do |position|

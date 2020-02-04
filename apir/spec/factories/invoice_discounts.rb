@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :invoice_discount do
     invoice
-    name { 'My InvoiceDiscount' }
+    name { "My InvoiceDiscount" }
     percentage { false }
     value { 150.0 }
 

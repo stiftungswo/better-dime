@@ -3,7 +3,7 @@
 class Project < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :accountant, class_name: 'Employee', foreign_key: 'accountant_id', inverse_of: :projects
+  belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", inverse_of: :projects
   belongs_to :customer
   belongs_to :address
   belongs_to :project_category, foreign_key: :category_id
@@ -28,10 +28,10 @@ class Project < ApplicationRecord
   end
 
   def position_groupings
-    project_positions.uniq {|p| p.position_group&.id }.map { |p| p.position_group }.select{ |g| not g.nil? }
+    project_positions.uniq { |p| p.position_group&.id }.map(&:position_group).select { |g| g }
   end
 
   def invoice_ids
-    invoices&.select{ |i| i.deleted_at.nil? } .map { |i| i.id } || []
+    invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
   end
 end
