@@ -1,7 +1,7 @@
 module V2
   class GlobalSettingsController < APIController
     def index
-      @global_setting = GlobalSetting.order(id: :asc).first_or_create
+      @global_setting = GlobalSetting.order(id: :asc).first_or_initialize
     end
 
     def update
