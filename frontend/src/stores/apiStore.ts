@@ -6,9 +6,10 @@ import { action, computed, observable, runInAction } from 'mobx';
 import moment from 'moment';
 
 // this will be replaced by a build script, if necessary
-const baseUrlOverride = 'BASE_URL';
-export const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
-export const baseUrlV2 = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38001/v2';
+const baseApiUrlOverride = 'BASE_API_URL';
+const baseApirUrlOverride = 'BASE_APIR_URL';
+export const baseUrl = baseApiUrlOverride.startsWith('http') ? baseApiUrlOverride : 'http://localhost:38000/api/v1';
+export const baseUrlV2 = baseApirUrlOverride.startsWith('http') ? baseApirUrlOverride : 'http://localhost:38001/v2';
 
 export const apiDateFormat = 'YYYY-MM-DD';
 
