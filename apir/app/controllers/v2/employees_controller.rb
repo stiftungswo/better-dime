@@ -34,7 +34,7 @@ module V2
       end
     end
 
-    def delete
+    def destroy
       @employee = Employee.find(params[:id])
 
       respond_to do |format|
