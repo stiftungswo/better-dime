@@ -25,6 +25,10 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
     end
 
+    resources :services do
+      post "duplicate", on: :member
+    end
+
     resources :projects, constraints: { id: /\d+/ } do
       post "duplicate", on: :member
       post "create_invoice", on: :member
@@ -45,6 +49,7 @@ Rails.application.routes.draw do
     devise_for :projects, defaults: { format: :json }
     devise_for :invoices, defaults: { format: :json }
     devise_for :holidays, defaults: { format: :json }
+    devise_for :services, defaults: { format: :json }
     devise_for :project_efforts, defaults: { format: :json }
     devise_for :employee_groups, defaults: { format: :json }
     devise_for :global_settings, defaults: { format: :json }
