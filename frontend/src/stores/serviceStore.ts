@@ -1,5 +1,5 @@
 import { computed, observable } from 'mobx';
-import { Service, ServiceListing } from '../types';
+import {PaginatedData, Service, ServiceListing} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -52,36 +52,36 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/services/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/services/' + id, { archived });
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Service>('/services/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Service>('/services/' + id + '/duplicate');
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<ServiceListing[]>('/services');
-    this.services = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services');
+    this.services = res.data.data;
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.api.get<ServiceListing[]>('/services', {params: this.getQueryParams()});
-    this.services = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getQueryParams()});
+    this.services = res.data.data;
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Service>('/services/' + id);
+    const res = await this.mainStore.apiV2.get<Service>('/services/' + id);
     this.service = res.data;
     return res.data;
   }
 
   protected async doPost(entity: Service): Promise<void> {
-    const res = await this.mainStore.api.post('/services', entity);
+    const res = await this.mainStore.apiV2.post('/services', entity);
     this.service = res.data;
   }
 
   protected async doPut(entity: Service): Promise<void> {
-    const res = await this.mainStore.api.put(`/services/${entity.id}`, entity);
+    const res = await this.mainStore.apiV2.put(`/services/${entity.id}`, entity);
     this.service = res.data;
   }
 }
