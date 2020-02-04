@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       put 'archive', on: :member
     end
 
+    resources :employee_groups
+
     resources :holidays, only: %w(index create update destroy) do
       post 'duplicate', on: :member
     end
