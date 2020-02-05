@@ -1,9 +1,10 @@
+import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import { RateUnit } from '../types';
-import { AbstractStore } from './abstractStore';
+import {PaginatedData, RateUnit, RateUnitListing, ServiceListing} from '../types';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
-export class RateUnitStore extends AbstractStore<RateUnit> {
+export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitListing> {
   protected get entityName() {
     return {
       singular: 'Der Tarif-Typ',
@@ -21,7 +22,7 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   }
 
   @computed
-  get entities(): RateUnit[] {
+  get entities(): RateUnitListing[] {
     return this.rateUnits;
   }
 
@@ -30,7 +31,7 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
   }
 
   @observable
-  rateUnits: RateUnit[] = [];
+  rateUnits: RateUnitListing[] = [];
 
   @observable
   rateUnit?: RateUnit;
@@ -39,38 +40,49 @@ export class RateUnitStore extends AbstractStore<RateUnit> {
     super(mainStore);
   }
 
-  @action
-  async doFetchAll() {
-    const res = await this.mainStore.api.get<RateUnit[]>('/rate_units');
-    this.rateUnits = res.data;
+  setEntities(e: RateUnitListing[]) {
+    this.rateUnits = e;
+  }
+
+  async fetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.rateUnits = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   @action
   async doFetchFiltered() {
-    const res = await this.mainStore.api.get<RateUnit[]>('/rate_units', {params: this.getQueryParams()});
-    this.rateUnits = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getQueryParams()});
+    this.rateUnits = res.data.data;
+  }
+
+  @action
+  async doFetchAll() {
+    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units');
+    this.rateUnits = res.data.data;
   }
 
   @action
   async doPost(rateUnit: RateUnit) {
-    await this.mainStore.api.post('/rate_units', rateUnit);
+    await this.mainStore.apiV2.post('/rate_units', rateUnit);
     await this.doFetchAll();
   }
 
   @action
   async doPut(rateUnit: RateUnit) {
-    await this.mainStore.api.put('/rate_units/' + rateUnit.id, rateUnit);
+    await this.mainStore.apiV2.put('/rate_units/' + rateUnit.id, rateUnit);
     await this.doFetchAll();
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/rate_units/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/rate_units/' + id, { archived });
     this.doFetchAll();
   }
 
   @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<RateUnit>('/rate_units/' + id);
+    const res = await this.mainStore.apiV2.get<RateUnit>('/rate_units/' + id);
     this.rateUnit = res.data;
   }
 }

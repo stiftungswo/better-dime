@@ -21,14 +21,6 @@ module V2
       render :show
     end
 
-    def duplicate
-      @preset = ProjectCommentPreset.find(params[:id]).deep_clone
-
-      raise ValidationError, @preset.errors unless @preset.save
-
-      render :show
-    end
-
     def destroy
       raise ValidationError, @preset.errors unless @preset.discard
     end

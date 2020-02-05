@@ -39,6 +39,10 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
     super(mainStore);
   }
 
+  setEntities(e: ServiceListing[]) {
+    this.services = e;
+  }
+
   filter = (s: ServiceListing) =>
     [`${s.id}`, s.name, s.description || ''].some(field => field.toLowerCase().includes(this.searchQuery))
 

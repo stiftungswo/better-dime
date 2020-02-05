@@ -23,6 +23,10 @@ class Project < ApplicationRecord
 
   delegate :budget_price, :budget_time, :current_price, :current_time, to: :project_calculator
 
+  def listing_name
+    name + (archived ? " [A]" : "")
+  end
+
   def project_calculator
     @project_calculator ||= ProjectCalculator.new self
   end

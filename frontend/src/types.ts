@@ -443,6 +443,7 @@ export interface ProjectListing {
   description: string;
   fixed_price: number | null;
   name: string;
+  listing_name: string;
   offer_id: number | null;
   rate_group_id: number;
   vacation_project: boolean;
@@ -521,6 +522,10 @@ export interface RateUnit {
   is_time: boolean;
   name: string;
   archived: boolean;
+}
+
+export interface RateUnitListing extends RateUnit {
+  listing_name: string;
 }
 
 export interface EmployeeGroup {
