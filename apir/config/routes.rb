@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :project_comment_presets
     resources :project_comments
     resources :rate_units
+    resources :rate_groups, only: :index
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
