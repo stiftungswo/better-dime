@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :project_comment_presets
     resources :project_comments
     resources :rate_units
+    resources :rate_groups, only: :index
+    resources :costgroups, only: :index
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
@@ -83,5 +85,7 @@ Rails.application.routes.draw do
     devise_for :project_efforts, defaults: { format: :json }
     devise_for :employee_groups, defaults: { format: :json }
     devise_for :global_settings, defaults: { format: :json }
+    devise_for :rate_groups, defaults: { format: :json }
+    devise_for :costgroups, defaults: { format: :json }
   end
 end
