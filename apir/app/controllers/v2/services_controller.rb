@@ -47,8 +47,8 @@ module V2
       search = params.fetch(:q, {}).permit!
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
       search[:archived_false] = true if legacy_params[:showArchived] == "false"
-      search[:name_or_description_cont] ||= legacy_params[:filterSearch]
-      search.permit(:s, :archived_false, :name_or_description_cont)
+      search[:id_or_name_or_description_cont] ||= legacy_params[:filterSearch]
+      search.permit(:s, :archived_false, :id_or_name_or_description_cont)
     end
 
     def update_params
