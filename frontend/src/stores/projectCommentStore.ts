@@ -54,6 +54,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
         params: {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
+          project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
         },
       });
       this.projectComments = res.data;
