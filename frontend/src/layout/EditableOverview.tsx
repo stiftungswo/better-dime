@@ -8,6 +8,7 @@ import { HandleFormikSubmit, Listing } from '../types';
 import Overview, { Column, SearchFilter } from './Overview';
 
 interface Props<T> {
+  paginated?: boolean;
   archivable?: boolean;
   searchable?: boolean;
   // tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
@@ -60,6 +61,7 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
     return (
       <>
         <Overview
+          paginated={this.props.paginated}
           archivable={this.props.archivable}
           title={this.props.title}
           store={this.props.store}
