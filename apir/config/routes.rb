@@ -43,6 +43,24 @@ Rails.application.routes.draw do
       put "archive", on: :member
     end
 
+    resources :customers do
+      post "duplicate", on: :member
+      post "archive", on: :member
+      put "archive", on: :member
+    end
+
+    resources :people do
+      post "duplicate", on: :member
+      post "archive", on: :member
+      put "archive", on: :member
+    end
+
+    resources :companies do
+      post "duplicate", on: :member
+      post "archive", on: :member
+      put "archive", on: :member
+    end
+
     resources :customer_tags do
       put "archive", on: :member
     end
