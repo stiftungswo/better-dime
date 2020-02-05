@@ -9,6 +9,7 @@ class Customer < ApplicationRecord
   # rubocop:enable Rails/HasAndBelongsToMany
 
   has_many :phones, dependent: :destroy
+  has_many :addresses, dependent: :destroy
   has_many :offers, dependent: :restrict_with_exception
   has_many :projects, dependent: :restrict_with_exception
 
