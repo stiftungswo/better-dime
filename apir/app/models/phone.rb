@@ -6,11 +6,12 @@ class Phone < ApplicationRecord
 
   validates :category, :number, presence: true
 
-  enum category: {
-    main: 1,
-    direct: 2,
-    private: 3,
-    mobile: 4,
-    fax: 5
-  }, _suffix: :number
+  # NO
+  #enum category: {
+  #  main: 1,
+  #  direct: 2,
+  #  private: 3,
+  #  mobile: 4,
+  #  fax: 5
+  #}, _suffix: :number
 end
