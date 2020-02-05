@@ -55,6 +55,7 @@ export default class ServiceOverview extends React.Component<Props> {
     return (
       <Overview
         archivable
+        paginated
         searchable
         title={'Services'}
         store={this.props.serviceStore!}

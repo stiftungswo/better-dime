@@ -1,9 +1,10 @@
+import * as _ from 'lodash';
 import { computed, observable } from 'mobx';
 import {PaginatedData, Service, ServiceListing} from '../types';
-import { AbstractStore } from './abstractStore';
+import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
-export class ServiceStore extends AbstractStore<Service, ServiceListing> {
+export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing> {
   protected get entityName() {
     return {
       singular: 'Der Service',
@@ -51,12 +52,16 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
     return service ? service.archived : false;
   }
 
-  protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.apiV2.put('/services/' + id, { archived });
+  async fetchAllPaginated(): Promise<void> {
+    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.services = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
-  protected async doDuplicate(id: number) {
-    return this.mainStore.apiV2.post<Service>('/services/' + id + '/duplicate');
+  protected async doFetchFiltered() {
+    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getQueryParams()});
+    this.services = res.data.data;
   }
 
   protected async doFetchAll() {
@@ -64,9 +69,12 @@ export class ServiceStore extends AbstractStore<Service, ServiceListing> {
     this.services = res.data.data;
   }
 
-  protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getQueryParams()});
-    this.services = res.data.data;
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.apiV2.put('/services/' + id, { archived });
+  }
+
+  protected async doDuplicate(id: number) {
+    return this.mainStore.apiV2.post<Service>('/services/' + id + '/duplicate');
   }
 
   protected async doFetchOne(id: number) {
