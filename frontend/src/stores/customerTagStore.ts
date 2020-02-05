@@ -41,36 +41,36 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
 
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags');
+    const res = await this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags');
     this.customerTags = res.data;
   }
 
   @action
   async doFetchFiltered() {
-    const res = await this.mainStore.api.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()});
     this.customerTags = res.data;
   }
 
   @action
   async doFetchOne(id: number) {
-    await this.mainStore.api.get<CustomerTag>('/customer_tags/' + id);
+    await this.mainStore.apiV2.get<CustomerTag>('/customer_tags/' + id);
     await this.doFetchAll();
   }
 
   @action
   async doPost(customerTag: CustomerTag) {
-    await this.mainStore.api.post('/customer_tags', customerTag);
+    await this.mainStore.apiV2.post('/customer_tags', customerTag);
     await this.doFetchAll();
   }
 
   @action
   async doPut(customerTag: CustomerTag) {
-    await this.mainStore.api.put('/customer_tags/' + customerTag.id, customerTag);
+    await this.mainStore.apiV2.put('/customer_tags/' + customerTag.id, customerTag);
     await this.doFetchAll();
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/customer_tags/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/customer_tags/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 }
