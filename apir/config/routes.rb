@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
     resources :employee_groups
     resources :position_groups, only: :create
+    resources :project_comment_presets
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
