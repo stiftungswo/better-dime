@@ -37,25 +37,22 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
 
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<PositionGroup[]>('/position_groups', {params: this.getQueryParams()});
-    this.positionGroups = res.data;
+    throw new Error('Not implemented, position group are never accessed directly');
   }
 
   @action
   async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Company>('/position_groups/' + id);
-    this.positionGroup = res.data;
+    throw new Error('Not implemented, position group are never accessed directly');
   }
 
   @action
   async doPost(positionGroup: PositionGroup) {
-    const res = await this.mainStore.api.post('/position_groups', positionGroup);
+    const res = await this.mainStore.apiV2.post('/position_groups', positionGroup);
     this.positionGroup = res.data;
   }
 
   @action
   async doPut(positionGroup: PositionGroup) {
-    const res = await this.mainStore.api.put('/position_groups/' + positionGroup.id, positionGroup);
-    this.positionGroup = res.data;
+    throw new Error('Not implemented, position group are never edited');
   }
 }

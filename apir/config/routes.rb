@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     end
 
     resources :employee_groups
+    resources :position_groups, only: :create
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     devise_for :invoices, defaults: { format: :json }
     devise_for :holidays, defaults: { format: :json }
     devise_for :services, defaults: { format: :json }
+    devise_for :position_groups, defaults: { format: :json }
     devise_for :project_efforts, defaults: { format: :json }
     devise_for :employee_groups, defaults: { format: :json }
     devise_for :global_settings, defaults: { format: :json }
