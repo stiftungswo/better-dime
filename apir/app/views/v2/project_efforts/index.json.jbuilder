@@ -12,5 +12,5 @@ json.array! @efforts do |effort|
   json.rate_unit_factor effort.rate_unit_factor unless effort.rate_unit_factor.blank?
   json.rate_unit_is_time effort.rate_unit_is_time
   json.group_name effort.group_name unless effort.group_name.blank?
-  json.is_ambiguous @ambiguous.find{|a| a.project_id == effort.p_id && a.service_id == effort.s_id}.ambi_count > 1
+  json.is_ambiguous @ambiguity_count[[effort.p_id, effort.s_id]] > 1
 end
