@@ -13,9 +13,27 @@ class Customer < ApplicationRecord
   has_many :offers, dependent: :restrict_with_exception
   has_many :projects, dependent: :restrict_with_exception
 
+  belongs_to :company, class_name: "Company", foreign_key: :company_id, optional: true, inverse_of: :people
+  has_many :people,
+           class_name: "Person",
+           inverse_of: :company,
+           dependent: :restrict_with_exception,
+           foreign_key: :company_id
+
+  accepts_nested_attributes_for :phones, :addresses, allow_destroy: true
+
   validates :type, inclusion: %w[Person Company person company]
 
+  scope :people, -> {where(type: "person")}
+  scope :companies, -> {where(type: "company")}
+
   alias phone_numbers phones
+
+  def duplicated
+    self.name = name + " copy #{rand(3).to_i}" if name
+    self.first_name = first_name + " copy #{rand(3).to_i}" if first_name
+    self
+  end
 
   private
 

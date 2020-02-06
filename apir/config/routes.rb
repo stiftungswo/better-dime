@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
       post "archive", on: :member
       put "archive", on: :member
+      get "export", to: "customers#export"
+      post "import", to: "customers#import"
+      post "import/verify", to: "customers#import_verify"
     end
 
     resources :people do

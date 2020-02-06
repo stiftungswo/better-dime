@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import {PaginatedPersonListing, Person, ProjectListing} from 'src/types';
+import { PaginatedData, Person, ProjectListing } from 'src/types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -41,48 +41,48 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<Person[]>('/people');
-    this.people = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
+    this.people = res.data.data;
   }
 
   @action
   async doFetchFiltered() {
-    const res = await this.mainStore.api.get<Person[]>('/people', {params: this.getQueryParams()});
-    this.people = res.data;
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getQueryParams()});
+    this.people = res.data.data;
   }
 
   @action
   async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Person>('/people/' + id);
+    const res = await this.mainStore.apiV2.get<Person>('/people/' + id);
     this.person = res.data;
   }
 
   @action
   async doPost(person: Person) {
-    this.mainStore.api.post('/people', person).then(res => {
+    this.mainStore.apiV2.post('/people', person).then(res => {
       this.person = res.data;
     }).catch(this.handleError);
   }
 
   @action
   async doPut(person: Person) {
-    this.mainStore.api.put('/people/' + person.id, person).then(res => {
+    this.mainStore.apiV2.put('/people/' + person.id, person).then(res => {
       this.person = res.data;
     }).catch(this.handleError);
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.api.get<PaginatedPersonListing>('/people', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.people = page.data;
     this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doDelete(id: number) {
-    await this.mainStore.api.delete('/people/' + id);
+    await this.mainStore.apiV2.delete('/people/' + id);
   }
 
   protected async doDuplicate(id: number) {
-    return this.mainStore.api.post<Person>('/people/' + id + '/duplicate');
+    return this.mainStore.apiV2.post<Person>('/people/' + id + '/duplicate');
   }
 }

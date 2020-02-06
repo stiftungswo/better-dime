@@ -6,12 +6,14 @@ class Phone < ApplicationRecord
 
   validates :category, :number, presence: true
 
-  # NO
-  #enum category: {
-  #  main: 1,
-  #  direct: 2,
-  #  private: 3,
-  #  mobile: 4,
-  #  fax: 5
-  #}, _suffix: :number
+  before_save :format_number
+
+  def format_number
+    case number&.gsub(" ","")
+    when /\A0\d{9}\z/
+      self.number = number.gsub(" ","").scan(/(\d{3})(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
+    when /\A(00|\+)\d{11}\z/
+      self.number = number.gsub(" ","").scan(/(00|\+\d\d)(\d\d)(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
+    end
+  end
 end

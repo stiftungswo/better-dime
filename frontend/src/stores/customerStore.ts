@@ -1,5 +1,5 @@
 import { computed, observable } from 'mobx';
-import { Customer } from '../types';
+import { Customer, PaginatedData } from '../types';
 import { AbstractStore } from './abstractStore';
 
 export class CustomerStore extends AbstractStore<Customer> {
@@ -31,17 +31,17 @@ export class CustomerStore extends AbstractStore<Customer> {
   customer?: Customer = undefined;
 
   protected async doFetchAll() {
-    const res = await this.mainStore.api.get<Customer[]>('/customers');
+    const res = await this.mainStore.apiV2.get<Customer[]>('/customers');
     this.customers = res.data;
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.api.get<Customer[]>('/customers', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<Customer[]>('/customers', {params: this.getQueryParams()});
     this.customers = res.data;
   }
 
   protected async doFetchOne(id: number): Promise<Customer> {
-    const res = await this.mainStore.api.get<Customer>('/customers/' + id);
+    const res = await this.mainStore.apiV2.get<Customer>('/customers/' + id);
     this.customer = res.data;
     return res.data;
   }
