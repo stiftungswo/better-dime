@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
     resources :offers do
       post "duplicate", on: :member
+      post "create_project", on: :member
     end
 
     resources :services do
