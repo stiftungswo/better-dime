@@ -185,17 +185,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            {index === 0 && (
-                              <DimeField
-                                delayed
-                                component={DurationField}
-                                timeUnit={'hour'}
-                                name={'first_vacation_takeover'}
-                              />
-                            )}
-                            {index !== 0 && (
-                              formattedHours(w.vacation_takeover)
-                            )}
+                            {formattedHours(w.vacation_takeover)}
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField

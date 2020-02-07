@@ -9,6 +9,7 @@ module V2
 
     def show
       @employee = Employee.includes(work_periods: [:employee]).find(params[:id]).decorate
+      @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
     end
 
     def create
@@ -81,7 +82,7 @@ module V2
       params[:employee][:employee_group_id] = params[:employee_group_id]
       params[:employee][:password] = params[:password]
       params.require(:employee).permit(:id, :password, :email, :is_admin, :first_name, :last_name, :can_login, :archived,
-                                       :holidays_per_year, :employee_group_id, :first_vacation_takeover, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
+                                       :holidays_per_year, :employee_group_id, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
     end
 
     def legacy_params

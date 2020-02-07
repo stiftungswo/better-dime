@@ -2,7 +2,7 @@
 # This code is a hot mess
 # Many values are calculated dynamically but should be peristed.
 # This means any change in logic might change the current balances, even if the change only affects the past.
-# The naming is still matching the php naming and should be changed in the future. 
+# The naming is still matching the php naming and should be changed in the future.
 
 class WorkPeriod < ApplicationRecord
   include SoftDeletable
@@ -38,7 +38,7 @@ class WorkPeriod < ApplicationRecord
 
   # This method goes back across all WorkPeriods (and this on each WorkPeriod again...) to
   # get the current vacation takeover balance for the current WorkPeriod.
-  # Correctly the vacation_takeover should be persistet per WorkPeriod and should 
+  # Correctly the vacation_takeover should be persistet per WorkPeriod and should
   # be calculated either on demand and on creation of a new WorkPeriod.
   # Once a WorkPeriod is considered "done" there should be no more changes possible.
   def vacation_takeover
@@ -119,7 +119,7 @@ class WorkPeriod < ApplicationRecord
   end
 
   def previous_work_period
-    @previous_work_period ||= employee.work_periods.where("ending < ?", ending).where.not(id: id).order(ending: :desc, beginning: :asc).first
+    @previous_work_period ||= employee.work_periods.where("ending < ?", beginning).where.not(id: id).order(ending: :desc, beginning: :asc).first
   end
 
 end
