@@ -78,7 +78,7 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<Employee>('/employees/' + id);
+    const res = await this.mainStore.apiV2.get<Employee>('/employees/' + id);
     this.employee = res.data;
   }
 

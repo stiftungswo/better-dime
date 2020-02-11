@@ -2,7 +2,7 @@
 
 module V2
   class OffersController < APIController
-    before_action :set_offer, only: [:show, :update, :destroy]
+    before_action :set_offer, only: [:show, :update, :destroy, :create_project]
 
     def index
       @q = Offer.order(id: :desc).ransack(search_params)
@@ -45,6 +45,14 @@ module V2
       raise ValidationError, @offer.errors unless @offer.save
 
       render :show
+    end
+
+    def create_project
+      @project = ProjectCreator.create_project_from_offer @offer
+
+      raise ValidationError, @project.errors unless @project.save
+
+      redirect_to controller: "projects", action: "show", id: @project.id
     end
 
     private

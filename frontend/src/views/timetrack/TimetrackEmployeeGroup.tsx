@@ -41,7 +41,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         label: 'Projekt',
       },
       {
-        id: '',
+        id: 'service_name',
         numeric: false,
         label: 'Aktivität',
         format: projectEffortListing => {
