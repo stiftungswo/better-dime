@@ -2,18 +2,34 @@
 
 class WorkPeriodCalculator
   def initialize(work_periods)
-    @work_periods = work_periods.sort_by {|a| [a.beginning, a.ending]}.reverse!
+    @work_periods = work_periods.sort_by {|a| [a.beginning, a.ending]}
+    @holidays = Holiday.all
   end
 
   def calculate
-    placeholders = @work_periods.map {|period| create_placeholder period}
+    if @work_periods.empty?
+      []
+    else
+      placeholders = @work_periods.map { |period| create_placeholder period }
+      efforts = ProjectEffort.joins(project_position: [:rate_unit, :project]).where(
+        employee_id: @work_periods.first[:employee_id],
+        :project_positions => {:rate_units => {is_time: true}}
+      ).select("project_efforts.*, projects.vacation_project as vacation_project")
 
-    calculate_booked_minutes placeholders
-    calculate_effective_time placeholders
-    calculate_target_minutes_till_today placeholders
-    calculate_effort_till_today placeholders
+      placeholders.each do |period|
+        calculate_vacation_takeover placeholders, period
+        calculate_booked_minutes period, efforts
+        calculate_effective_time period
+        calculate_target_time period
+        calculate_target_time_till_today period
+        calculate_period_vacation_budget period
+        calculate_remaining_vacation_budget period, efforts
+        calculate_effort_till_today period
+      end
 
-    # placeholders.map {|w| w.except(:booked_minutes)}
+      # placeholders.map {|w| w.except(:booked_minutes)}.reverse
+      placeholders.reverse
+    end
   end
 
   private
@@ -26,42 +42,92 @@ class WorkPeriodCalculator
       ending: work_period.ending,
       pensum: work_period.pensum,
       yearly_vacation_budget: work_period.yearly_vacation_budget,
-      overlapping_periods: work_period.overlapping_periods?,
-      vacation_takeover: 0,
-      booked_minutes: 0,
-      effective_time: 0,
-      effort_till_today: 0,
-      period_vacation_budget: 0,
-      target_time: 0,
-      remaining_vacation_budget: 0,
+      overlapping_periods: false,
+      vacation_takeover: 0.0,
+      booked_minutes: 0.0,
+      effective_time: 0.0,
+      effort_till_today: 0.0,
+      period_vacation_budget: 0.0,
+      target_time: 0.0,
+      remaining_vacation_budget: 0.0,
     }
   end
 
-  def calculate_booked_minutes(periods)
-    periods.each do |period|
-      period[:booked_minutes] = ProjectEffort.joins(project_position: :rate_unit).where(
-        employee_id: period[:employee_id],
-        date: [period[:beginning]..period[:ending]],
-        :project_positions => {:rate_units => {is_time: true}}
-      ).sum(:value)
+  # Harcoded today but probably shouldn't be
+  def work_hours_per_day
+    8.4
+  end
+
+  def work_minutes_per_day
+    work_hours_per_day * 60
+  end
+
+  def duration(period)
+    period[:beginning]..period[:ending]
+  end
+
+  def duration_till_today(period)
+    today = Date.today
+    (period[:beginning]..period[:ending]).select { |day| day <= today }
+  end
+
+  def get_previous_work_period(periods, period)
+    last = periods.select {|p| p[:ending] <= period[:beginning] }.sort_by {|a| a[:ending]}.reverse.first
+    # get the longest period which hast the same ending as the last period before the current one
+    periods.select{|p| p[:ending] == last[:ending]}.sort_by {|a| a[:beginning]}.first if last
+  end
+
+  def calculate_booked_minutes(period, efforts)
+    period[:booked_minutes] = efforts.select {|e| (period[:beginning]..period[:ending]) === e.date}.inject(0) do |sum, e|
+      sum + e.value
+    end.to_f
+  end
+
+  def calculate_vacation_takeover(periods, period)
+    previous_work_period = get_previous_work_period periods, period
+
+    if previous_work_period
+      period[:vacation_takeover] = previous_work_period[:effort_till_today].to_f + previous_work_period[:remaining_vacation_budget].to_f
+    else
+      period[:vacation_takeover] = Employee.find(period[:employee_id]).first_vacation_takeover.to_f
     end
   end
 
-  def calculate_effective_time(periods)
-    periods.each do |period|
-      period[:effective_time] = period[:booked_minutes] + period[:vacation_takeover]
-    end
+  def calculate_effective_time(period)
+    period[:effective_time] = period[:booked_minutes].to_f + period[:vacation_takeover].to_f
   end
 
-  def calculate_target_minutes_till_today(periods)
-    periods.each do |period|
-      period[:target_minutes_till_today] = 100
-    end
+  def calculate_target_time_till_today(period)
+    target_work_minutes_till_today = duration_till_today(period).select(&:on_weekday?).count * work_minutes_per_day
+    public_holiday_minutes_till_today = @holidays.select{|h| duration(period) === h.date}.inject(0) do |sum, h|
+      sum + h.duration.to_f
+    end.to_f
+    period[:target_time_till_today] = (target_work_minutes_till_today - public_holiday_minutes_till_today) * period[:pensum]/100.0
   end
 
-  def calculate_effort_till_today(periods)
-    periods.each do |period|
-      period[:effort_till_today] = period[:effective_time] - period[:target_minutes_till_today]
-    end
+  def calculate_target_time(period)
+    target_work_minutes = duration(period).select(&:on_weekday?).count * work_minutes_per_day
+    public_holiday_minutes = @holidays.select{|h| duration(period) === h.date}.inject(0) do |sum, h|
+      sum + h.duration.to_f
+    end.to_f
+    period[:target_time] = (target_work_minutes - public_holiday_minutes) * period[:pensum]/100.0
+  end
+
+  def calculate_period_vacation_budget(period)
+    worked_time_p_year = (period[:beginning]..period[:ending]).select(&:on_weekday?).count * work_minutes_per_day
+    target_time_p_year = (period[:beginning].beginning_of_year..period[:ending].end_of_year).select(&:on_weekday?).count * work_minutes_per_day
+    period[:period_vacation_budget] = (worked_time_p_year / target_time_p_year) * period[:yearly_vacation_budget] * period[:pensum] / 100.0
+  end
+
+  def calculate_remaining_vacation_budget(period, efforts)
+    holiday_efforts = efforts.select {|e| (period[:beginning]..period[:ending]) === e.date && e.vacation_project == 1}
+    booked_holiday = holiday_efforts.inject(0) do |sum, e|
+      sum + e.value
+    end.to_f
+    period[:remaining_vacation_budget] = period[:period_vacation_budget] - booked_holiday
+  end
+
+  def calculate_effort_till_today(period)
+    period[:effort_till_today] = period[:effective_time] - period[:target_time_till_today]
   end
 end
