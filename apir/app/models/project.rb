@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", inverse_of: :projects
   belongs_to :customer
   belongs_to :address
-  belongs_to :project_category, foreign_key: :category_id
+  belongs_to :project_category, foreign_key: :category_id, optional: true
   belongs_to :offer, optional: true
   belongs_to :rate_group
 
@@ -19,7 +19,8 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :project_positions, :project_costgroup_distributions, allow_destroy: true
 
   validates :fixed_price, numericality: { only_integer: true }, allow_nil: true
-  validates :accountant, :address, :name, :project_category, :rate_group, presence: true
+  validates :accountant, :address, :name, :rate_group, presence: true
+  validates :project_category, presence: true, if: :should_validate_category?
 
   delegate :budget_price, :budget_time, :current_price, :current_time, to: :project_calculator
 
@@ -37,5 +38,9 @@ class Project < ApplicationRecord
 
   def invoice_ids
     invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
+  end
+
+  def should_validate_category?
+    !offer.present? || !new_record?
   end
 end

@@ -49,7 +49,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   async createProject(id: number): Promise<Project> {
     try {
       this.displayInProgress();
-      const res = await this.mainStore.api.post<Project>(`/offers/${id}/create_project`);
+      const res = await this.mainStore.apiV2.post<Project>(`/offers/${id}/create_project`);
       Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess('Das Projekt wurde erstellt');
       return res.data;

@@ -17,7 +17,7 @@ export const projectSchema = localizeSchema(() => {
       chargeable: yup.boolean(),
       archived: yup.boolean(),
       deadline: dimeDate().nullable(true),
-      category_id: selector(),
+      category_id: yup.number().nullable(true).required('Es muss eine Kategorie angegeben werden'),
       rate_group_id: selector(),
       fixed_price: nullableNumber(),
       positions: yup.array(

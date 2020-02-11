@@ -115,7 +115,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   customer_id: number;
   address_id: number;
   archived: boolean;
-  category_id: number;
+  category_id: number | null;
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
   deadline: null;
