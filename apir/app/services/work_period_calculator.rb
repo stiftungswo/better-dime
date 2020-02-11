@@ -25,9 +25,9 @@ class WorkPeriodCalculator
         calculate_period_vacation_budget period
         calculate_remaining_vacation_budget period, efforts
         calculate_effort_till_today period
+        calculate_overlapping_periods placeholders, period
       end
 
-      # placeholders.map {|w| w.except(:booked_minutes)}.reverse
       placeholders.reverse
     end
   end
@@ -129,5 +129,12 @@ class WorkPeriodCalculator
 
   def calculate_effort_till_today(period)
     period[:effort_till_today] = period[:effective_time] - period[:target_time_till_today]
+  end
+
+  def calculate_overlapping_periods(periods, period)
+    period[:overlapping_periods] = periods.any? do |p|
+      overlap = (period[:beginning]..period[:ending]) === p[:beginning] || (period[:beginning]..period[:ending]) === p[:ending]
+      overlap && p != period
+    end
   end
 end

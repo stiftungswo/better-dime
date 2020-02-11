@@ -17,6 +17,7 @@ module V2
 
       respond_to do |format|
         if @employee.save
+          @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
           format.json { render json: @employee.errors, status: :unprocessable_entity }
@@ -30,6 +31,7 @@ module V2
 
       respond_to do |format|
         if @employee.update(employee_params)
+          @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
           format.json { render json: @employee.errors, status: :unprocessable_entity }
@@ -55,6 +57,7 @@ module V2
 
       respond_to do |format|
         if @employee.update(archived: params[:archived])
+          @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
           format.json { render json: @employee.errors, status: :unprocessable_entity }
@@ -67,6 +70,7 @@ module V2
 
       respond_to do |format|
         if @employee.save
+          @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
           format.json { render json: @employee.errors, status: :unprocessable_entity }
@@ -80,9 +84,14 @@ module V2
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:employee_group_id] = params[:employee_group_id]
-      params[:employee][:password] = params[:password]
-      params.require(:employee).permit(:id, :password, :email, :is_admin, :first_name, :last_name, :can_login, :archived,
-                                       :holidays_per_year, :employee_group_id, work_periods_attributes: [:id, :ending, :pensum, :beginning, :yearly_vacation_budget])
+      params[:employee][:password] = params[:password] unless params[:password].blank?
+      params.require(:employee).permit(
+        :id, :password, :email, :is_admin, :first_name, :last_name,
+        :can_login, :archived, :holidays_per_year, :employee_group_id,
+        work_periods_attributes: [
+          :id, :ending, :pensum, :beginning, :yearly_vacation_budget
+        ]
+      )
     end
 
     def legacy_params
