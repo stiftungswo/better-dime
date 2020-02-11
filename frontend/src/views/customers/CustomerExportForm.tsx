@@ -15,7 +15,7 @@ import compose from '../../utilities/compose';
 const initialValues: CustomerFilter = {
   customer_tags: [],
   export_format: 1,
-  include_hidden: true,
+  showArchived: true,
 };
 
 interface Props {
@@ -45,7 +45,7 @@ export class CustomerExportForm extends React.Component<Props> {
                 </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <DimeField delayed component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'include_hidden'} />
+                  <DimeField delayed component={SwitchField} label={'Verstecke Kunden miteinbeziehen?'} name={'showArchived'} />
                 </Grid>
 
                 <Grid item xs={12} md={4}>
@@ -54,10 +54,9 @@ export class CustomerExportForm extends React.Component<Props> {
 
                 <Grid item xs={12} md={4}>
                   <a
-                    href={this.props.mainStore!.apiURL('customers/export', {
+                    href={this.props.mainStore!.apiV2URL('customers/export' + (formikProps.values.export_format === 1 ? '.txt' : '.xlsx'), {
                       customer_tags: formikProps.values.customer_tags.join(','),
-                      include_hidden: formikProps.values.include_hidden ? '1' : '0',
-                      export_format: formikProps.values.export_format,
+                      showArchived: formikProps.values.showArchived ? '1' : '0',
                     })}
                     target={'_blank'}
                     style={{ textDecoration: 'none', color: 'white' }}

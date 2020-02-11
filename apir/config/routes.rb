@@ -49,9 +49,7 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
       post "archive", on: :member
       put "archive", on: :member
-      get "export", to: "customers#export"
-      post "import", to: "customers#import"
-      post "import/verify", to: "customers#import_verify"
+      get "export", to: "customers#index", on: :collection
     end
 
     resources :people do
@@ -74,21 +72,8 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
     end
   end
+
   scope :v2 do
     devise_for :employees, defaults: { format: :json }
-    devise_for :offers, defaults: { format: :json }
-    devise_for :projects, defaults: { format: :json }
-    devise_for :invoices, defaults: { format: :json }
-    devise_for :holidays, defaults: { format: :json }
-    devise_for :services, defaults: { format: :json }
-    devise_for :position_groups, defaults: { format: :json }
-    devise_for :project_comment_presets, defaults: { format: :json }
-    devise_for :project_comments, defaults: { format: :json }
-    devise_for :rate_units, defaults: { format: :json }
-    devise_for :project_efforts, defaults: { format: :json }
-    devise_for :employee_groups, defaults: { format: :json }
-    devise_for :global_settings, defaults: { format: :json }
-    devise_for :rate_groups, defaults: { format: :json }
-    devise_for :costgroups, defaults: { format: :json }
   end
 end

@@ -416,7 +416,7 @@ export interface WorkPeriod {
 export interface CustomerFilter {
   customer_tags: number[];
   export_format: number;
-  include_hidden: boolean;
+  showArchived: boolean;
 }
 
 export interface EmployeeListing {

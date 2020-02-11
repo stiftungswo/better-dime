@@ -35,6 +35,12 @@ class Customer < ApplicationRecord
     self
   end
 
+  before_save :down_case_type
+
+  def down_case_type
+    self.type = type.downcase
+  end
+
   private
 
   # PHP single table inheritance is inherently incomaptible with rails single table inheritance

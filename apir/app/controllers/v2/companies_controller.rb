@@ -25,7 +25,9 @@ module V2
 
     def update
       @company = Company.find(params[:id])
-      # @company.work_periods.where.not(id: company_params[:work_periods_attributes].map { |work_period| work_period[:id] }).discard_all
+      @company.phones.where.not(id: company_params[:phones_attributes].map { |phone| phone[:id] }).discard_all
+      @company.addresses.where.not(id: company_params[:addresses_attributes].map { |address| address[:id] }).discard_all
+      @company.customer_tag_ids = company_params[:customer_tag_ids]
 
       respond_to do |format|
         if @company.update(company_params)
@@ -79,7 +81,8 @@ module V2
       params.require(:company)
       params[:company][:phones_attributes] = params[:phone_numbers]
       params[:company][:addresses_attributes] = params[:addresses]
-      params.require(:company).permit(:id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name, :rate_group_id, :salutation,
+      params[:company][:customer_tag_ids] = params[:tags]
+      params.require(:company).permit(:id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name, :rate_group_id, :salutation, customer_tag_ids: [],
         phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
     end
 
@@ -92,8 +95,9 @@ module V2
       search = params.fetch(:q, {})
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
       search[:archived_false] = true if ["false", false, nil].include?(params[:showArchived])
+      search[:companies_tags_id_in] = params[:customer_tags] if legacy_params[:customer_tags]
       search[:id_or_name_or_email_cont] ||= legacy_params[:filterSearch]
-      search.permit(:s, :archived_false, :id_or_name_or_email_cont)
+      search.permit(:s, :archived_false, :id_or_name_or_email_cont, :companies_tags_id_in)
     end
   end
 end
