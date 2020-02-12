@@ -98,7 +98,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         target={'_blank'}
                         style={{ textDecoration: 'none', color: 'white' }}
                       >
-                        <Button fullWidth color={'primary'} variant="contained">
+                        <Button fullWidth color={'primary'} variant="contained" disabled={true}>
                           Import-Vorlage herunterladen
                         </Button>
                       </a>
@@ -119,7 +119,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         id={'contained-button-file'}
                       />
                       <label htmlFor="contained-button-file">
-                        <Button fullWidth variant="contained" component="span">
+                        <Button fullWidth variant="contained" component="span" disabled={true}>
                           Import überprüfen
                         </Button>
                       </label>
@@ -130,10 +130,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         fullWidth
                         color={'secondary'}
                         variant={'contained'}
-                        disabled={
-                          customerImportStore!.customersToImport!.length <= 0 ||
-                          customerImportStore!.customersToImport!.filter((e: NonPersistedImportCustomer) => e.invalid).length > 0
-                        }
+                        disabled={true}
                         type={'submit'}
                       >
                         Import starten

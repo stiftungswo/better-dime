@@ -1,0 +1,1 @@
+<%= @customers.map(&:email).reject(&:blank?).join(";") %>

@@ -1,0 +1,17 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Kunden") do |sheet|
+  sheet.add_row ["Typ", "Anrede", "Name", "Firma", "Addressen", "Abteilung", "Email", "Telefonnummern", "Kommentar"]
+  CustomerXlsxDecorator.decorate_collection(@customers).each do |customer|
+    sheet.add_row [
+      customer.type,
+      customer.salutation,
+      customer.full_name,
+      customer.company_name,
+      customer.addresses,
+      customer.department,
+      customer.email,
+      customer.phones,
+      customer.comment
+    ]
+  end
+end

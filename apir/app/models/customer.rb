@@ -27,6 +27,8 @@ class Customer < ApplicationRecord
   scope :people, -> {where(type: "person")}
   scope :companies, -> {where(type: "company")}
 
+  before_save :down_case_type
+
   alias phone_numbers phones
 
   def duplicated
@@ -37,6 +39,10 @@ class Customer < ApplicationRecord
 
   def full_name
     first_name + " " + last_name
+  end
+
+  def down_case_type
+    self.type = type.downcase
   end
 
   private
