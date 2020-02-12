@@ -68,7 +68,7 @@ class CustomerController extends BaseController
             'customers_to_import.*.name' => 'string|nullable',
             'customers_to_import.*.country' => 'string|nullable',
             'customers_to_import.*.department' => 'string|nullable',
-            'customers_to_import.*.email' => 'string',
+            'customers_to_import.*.email' => 'string|nullable',
             'customers_to_import.*.fax' => 'string|nullable',
             'customers_to_import.*.first_name' => 'string|nullable',
             'customers_to_import.*.main_number' => 'string|nullable',
