@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resources :rate_groups, only: :index
     resources :costgroups, only: :index
 
+    get "reports", to: "reports#show", defaults: { format: 'pdf' }
+
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
 

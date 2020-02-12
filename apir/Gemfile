@@ -16,6 +16,8 @@ gem "kaminari"
 gem "mysql2", ">= 0.4.4", "< 0.6.0"
 gem "paper_trail"
 gem "puma", "~> 4.0"
+gem 'prawn'
+gem 'prawn-table'
 gem "rack-cors", require: "rack/cors"
 gem "rails", "~> 6.0.1"
 gem "ransack"

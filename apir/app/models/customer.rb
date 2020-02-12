@@ -35,6 +35,10 @@ class Customer < ApplicationRecord
     self
   end
 
+  def full_name
+    first_name + " " + last_name
+  end
+
   private
 
   # PHP single table inheritance is inherently incomaptible with rails single table inheritance
