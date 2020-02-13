@@ -11,6 +11,7 @@ module Pdfs
       @spacing = 0.25
       @leading = 3
       @logo_offset = 100
+      @logo_width = 180
       @page_width = 480
       @page_height = 700
 
@@ -26,6 +27,7 @@ module Pdfs
       ) do
         # stroke_axis
 
+        draw_logo
         draw_sender_address
         draw_recipient_address
         draw_description
@@ -37,6 +39,14 @@ module Pdfs
     def document
       @document ||= Prawn::Document.new(page_size: 'A4', page_layout: :portrait)
       @document
+    end
+
+    def draw_logo
+      bounding_box([bounds.width-@logo_width, bounds.height], :width => @logo_width, :height => @logo_offset) do
+        image_path = Rails.root.join('app', 'assets', 'logo', 'logo.png')
+
+        image image_path, :width => @logo_width
+      end
     end
 
     def draw_sender_address
