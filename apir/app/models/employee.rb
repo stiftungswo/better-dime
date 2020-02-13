@@ -31,6 +31,10 @@ class Employee < ApplicationRecord
     super && can_login?
   end
 
+  def full_name
+    first_name + " " + last_name
+  end
+
   def duplicate
     duped = dup
     duped.email = duped.email.sub "@", rand(10_000).to_s + "@"

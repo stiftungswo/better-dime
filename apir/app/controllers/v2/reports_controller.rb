@@ -1,7 +1,7 @@
 module V2
   class ReportsController < ApplicationController
     def show
-      pdf = Pdfs::HelloWorldPdf.new GlobalSetting.first, Offer.find(329)
+      pdf = Pdfs::OfferPdf.new GlobalSetting.first, Offer.find(params[:id])
 
       respond_to do |format|
         format.pdf do

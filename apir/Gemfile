@@ -21,6 +21,7 @@ gem 'prawn-table'
 gem "rack-cors", require: "rack/cors"
 gem "rails", "~> 6.0.1"
 gem "ransack"
+gem "redcarpet"
 gem "validates_timeliness"
 gem 'caxlsx_rails'
 gem 'axlsx_styler'
