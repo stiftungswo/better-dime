@@ -2,7 +2,7 @@
 
 module V2
   class InvoicesController < ApplicationController
-    before_action :set_invoice, only: [:show, :update, :destroy]
+    before_action :set_invoice, only: [:show, :update, :destroy, :print]
 
     def index
       @q = Invoice.order(id: :desc).ransack(search_params)
@@ -46,6 +46,16 @@ module V2
       raise ValidationError, @invoice.errors unless @invoice.save
 
       render :show
+    end
+
+    def print
+      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice
+
+      respond_to do |format|
+        format.pdf do
+          send_data pdf.render, type: "application/pdf", disposition: "inline"
+        end
+      end
     end
 
     private

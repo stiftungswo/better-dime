@@ -32,16 +32,22 @@ Rails.application.routes.draw do
     resources :offers do
       post "duplicate", on: :member
       post "create_project", on: :member
-    end
-
-    resources :services do
-      post "duplicate", on: :member
+      get "print", on: :member, defaults: { format: 'pdf' }
     end
 
     resources :projects, constraints: { id: /\d+/ } do
       post "duplicate", on: :member
       post "create_invoice", on: :member
       get "potential_invoices", on: :collection
+    end
+
+    resources :invoices do
+      post "duplicate", on: :member
+      get "print", on: :member, defaults: { format: 'pdf' }
+    end
+
+    resources :services do
+      post "duplicate", on: :member
     end
 
     resources :project_categories do
@@ -69,10 +75,6 @@ Rails.application.routes.draw do
 
     resources :customer_tags do
       put "archive", on: :member
-    end
-
-    resources :invoices do
-      post "duplicate", on: :member
     end
   end
 

@@ -2,7 +2,7 @@
 
 module V2
   class OffersController < APIController
-    before_action :set_offer, only: [:show, :update, :destroy, :create_project]
+    before_action :set_offer, only: [:show, :update, :destroy, :create_project, :print]
 
     def index
       @q = Offer.order(id: :desc).ransack(search_params)
@@ -53,6 +53,16 @@ module V2
       raise ValidationError, @project.errors unless @project.save
 
       redirect_to controller: "projects", action: "show", id: @project.id
+    end
+
+    def print
+      pdf = Pdfs::OfferPdf.new GlobalSetting.first, @offer
+
+      respond_to do |format|
+        format.pdf do
+          send_data pdf.render, type: "application/pdf", disposition: "inline"
+        end
+      end
     end
 
     private
