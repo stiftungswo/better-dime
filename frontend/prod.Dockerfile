@@ -10,6 +10,7 @@ RUN yarn run build
 
 ARG ENVIRONMENT
 ARG API_URL
+ARG APIR_URL
 ARG SENTRY_DSN_PUBLIC
 
 RUN sed -i'' "s/ENVIRONMENT/${ENVIRONMENT}/g" build/static/js/main.*.js
