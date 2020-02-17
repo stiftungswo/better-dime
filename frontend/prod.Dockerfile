@@ -14,6 +14,7 @@ ARG SENTRY_DSN_PUBLIC
 
 RUN sed -i'' "s/ENVIRONMENT/${ENVIRONMENT}/g" build/static/js/main.*.js
 RUN sed -i'' "s,BASE_URL,${API_URL},g" build/static/js/main.*.js
+RUN sed -i'' "s,BASE_APIR_URL,${APIR_URL},g" build/static/js/main.*.js
 RUN sed -i'' "s,SENTRY_DSN,${SENTRY_DSN_PUBLIC},g" build/static/js/main.*.js
 
 # Serving
