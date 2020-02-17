@@ -56,3 +56,5 @@ Damit insbesondere auf Macs die Kompilierzeiten beim Hot Reload nicht beeinträc
 
 #### Docker
 1. `docker-compose up web-client`
+
+17.02.2020 13:44
