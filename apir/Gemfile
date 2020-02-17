@@ -22,6 +22,7 @@ gem "ransack"
 gem "validates_timeliness"
 gem 'caxlsx_rails'
 gem 'axlsx_styler'
+gem 'creek'
 
 group :production do
   gem "lograge"

@@ -89,6 +89,9 @@ GEM
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.6)
+    creek (2.5.0)
+      nokogiri (>= 1.10.0)
+      rubyzip (>= 1.0.0)
     debase (0.2.2)
       debase-ruby_core_source (>= 0.10.2)
     debase-ruby_core_source (0.10.4)
@@ -339,6 +342,7 @@ DEPENDENCIES
   brakeman
   byebug
   caxlsx_rails
+  creek
   debase
   deep_cloneable (~> 3.0.0)
   devise-jwt (~> 0.5.9)
