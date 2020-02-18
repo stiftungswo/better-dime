@@ -8,86 +8,86 @@ module V2
       @customers = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize]).distinct
     end
 
-    def show
-      @customer = Customer.includes(:company, :addresses, :phones, :customer_tags).find(params[:id]).decorate
-    end
+    # def show
+    #   @customer = Customer.includes(:company, :addresses, :phones, :customer_tags).find(params[:id]).decorate
+    # end
 
-    def create
-      @customer = Customer.new(customer_params.except(:id))
+    # def create
+    #   @customer = Customer.new(customer_params.except(:id))
 
-      respond_to do |format|
-        if @customer.save
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+    #   respond_to do |format|
+    #     if @customer.save
+    #       format.json { render :show, status: :ok }
+    #     else
+    #       format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #     end
+    #   end
+    # end
 
-    def update
-      @customer = Customer.find(params[:id])
-      @customer.phones.where.not(id: customer_params[:phones_attributes].map { |phone| phone[:id] }).discard_all
-      @customer.addresses.where.not(id: customer_params[:addresses_attributes].map { |address| address[:id] }).discard_all
-      @customer.customer_tag_ids = customer_params[:customer_tag_ids]
+    # def update
+    #   @customer = Customer.find(params[:id])
+    #   @customer.phones.where.not(id: customer_params[:phones_attributes].map { |phone| phone[:id] }).discard_all
+    #   @customer.addresses.where.not(id: customer_params[:addresses_attributes].map { |address| address[:id] }).discard_all
+    #   @customer.customer_tag_ids = customer_params[:customer_tag_ids]
 
-      respond_to do |format|
-        if @customer.update(customer_params)
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+    #   respond_to do |format|
+    #     if @customer.update(customer_params)
+    #       format.json { render :show, status: :ok }
+    #     else
+    #       format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #     end
+    #   end
+    # end
 
-    def destroy
-      @customer = Customer.find(params[:id])
+    # def destroy
+    #   @customer = Customer.find(params[:id])
 
-      respond_to do |format|
-        if @customer.destroy
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+    #   respond_to do |format|
+    #     if @customer.destroy
+    #       format.json { render :show, status: :ok }
+    #     else
+    #       format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #     end
+    #   end
+    # end
 
-    # this api could easily be done in #update
-    def archive
-      @customer = Customer.find(params[:id])
+    # # this api could easily be done in #update
+    # def archive
+    #   @customer = Customer.find(params[:id])
 
-      respond_to do |format|
-        if @customer.update(archived: params[:archived])
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+    #   respond_to do |format|
+    #     if @customer.update(archived: params[:archived])
+    #       format.json { render :show, status: :ok }
+    #     else
+    #       format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #     end
+    #   end
+    # end
 
-    def duplicate
-      @customer = Customer.find(params[:id]).dup.duplicated
+    # def duplicate
+    #   @customer = Customer.find(params[:id]).dup.duplicated
 
-      respond_to do |format|
-        if @customer.save
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
+    #   respond_to do |format|
+    #     if @customer.save
+    #       format.json { render :show, status: :ok }
+    #     else
+    #       format.json { render json: @customer.errors, status: :unprocessable_entity }
+    #     end
+    #   end
+    # end
 
     private
 
-    def customer_params
-      params[:customer] ||= params[:person]
-      params[:customer] ||= params[:company]
-      params.require(:customer)
-      params[:customer][:phones_attributes] = params[:phone_numbers]
-      params[:customer][:addresses_attributes] = params[:addresses]
-      params[:customer][:customer_tag_ids] = params[:tags]
-      params.require(:customer).permit(Customer.params, customer_tag_ids: [],
-        phones_attributes: Phone.params, addresses_attributes: Address.attributes)
-    end
+    # def customer_params
+    #   params[:customer] ||= params[:person]
+    #   params[:customer] ||= params[:company]
+    #   params.require(:customer)
+    #   params[:customer][:phones_attributes] = params[:phone_numbers]
+    #   params[:customer][:addresses_attributes] = params[:addresses]
+    #   params[:customer][:customer_tag_ids] = params[:tags]
+    #   params.require(:customer).permit(Customer.params, customer_tag_ids: [],
+    #     phones_attributes: Phone.params, addresses_attributes: Address.attributes)
+    # end
 
     def legacy_params
       params[:showArchived] = params[:include_hidden] if params[:include_hidden]
