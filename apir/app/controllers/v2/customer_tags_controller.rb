@@ -63,12 +63,11 @@ module V2
     private
 
     def customer_tag_params
-      params.require(:customer_tag)
       params.require(:customer_tag).permit(:id, :name)
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize)
+      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize, :format)
     end
 
     # Also map the old params to new ransack params till the frontend is adapted
