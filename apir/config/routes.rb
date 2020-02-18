@@ -51,9 +51,9 @@ Rails.application.routes.draw do
       post "archive", on: :member
       put "archive", on: :member
       get "export", to: "customers#index", on: :collection
-      post "import/verify", to: "customers#import_verify", on: :collection
-      post "import", to: "customers#import", on: :collection
-      get "import/template", to: "customers#import_template", on: :collection
+      get "import/template", to: "customers_import#template", on: :collection
+      post "import/verify", to: "customers_import#verify", on: :collection
+      post "import", to: "customers_import#create", on: :collection
     end
 
     resources :people do
