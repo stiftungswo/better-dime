@@ -8,5 +8,6 @@ json.array! @customers do |customer|
   json.set! :mobile_number, customer.phones.find(&:mobile?)&.number
   json.set! :fax, customer.phones.find(&:mobile?)&.number
   json.set! :rate_group_name, customer.rate_group&.name
+  json.set! :customer_tag_name, customer.customer_tags&.first&.name
   json.extract! customer.addresses.first, :street, :supplement, :city, :supplement, :zip, :country, :description
 end

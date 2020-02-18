@@ -27,6 +27,10 @@ class Customer < ApplicationRecord
   scope :people, -> {where(type: "person")}
   scope :companies, -> {where(type: "company")}
 
+  def self.params
+    self.attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+  end
+
   alias phone_numbers phones
 
   def duplicated

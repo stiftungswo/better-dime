@@ -29,8 +29,8 @@ export interface NonPersistedImportCustomer {
   salutation: string | null;
   street: string;
   supplement: string | null;
-  rate_group_id: number | null;
   rate_group_name: string | null;
+  customer_tag_name: string | null;
   error_message: string | null;
 }
 

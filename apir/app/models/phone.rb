@@ -8,6 +8,10 @@ class Phone < ApplicationRecord
 
   before_save :format_number
 
+  def self.params
+    self.attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+  end
+
   def format_number
     case number&.gsub(" ","")
     when /\A0\d{9}\z/

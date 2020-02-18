@@ -14,14 +14,10 @@ module V2
       render plain: "ok"
     end
 
-
     private
 
     def import_params
-      params.permit(customers_to_import: [:type, :comment, :company_id, :department, :email, :first_name,
-        :last_name, :hidden, :name, :rate_group_id, :salutation,
-        :main_number, :mobile_number, :fax, :city, :country, :description, :zip, :street, :supplement
-        ])[:customers_to_import] || []
+      params.permit(customers_to_import: Customer.params + Address.params + [:main_number, :mobile_number, :fax])[:customers_to_import] || []
     end
 
     def import_verify_params
