@@ -6,21 +6,28 @@ module Pdfs
         @global_setting = global_setting
         @data = data
         @logo_offset = 100
+        @address_offset = @logo_offset
         @logo_width = 180
       end
 
-      def draw(text_settings)
+      def draw(text_settings, draw_recipient = true)
         @default_text_settings = text_settings
+
+        unless draw_recipient
+          @address_offset = 0
+        end
 
         draw_logo
         draw_sender_address
-        draw_recipient_address
+        draw_recipient_address if draw_recipient
       end
 
       private
 
       def draw_logo
         @document.bounding_box([@document.bounds.width-@logo_width, @document.bounds.height], :width => @logo_width, :height => @logo_offset) do
+          # @document.stroke_bounds
+
           image_path = Rails.root.join('app', 'assets', 'logo', 'logo.png')
 
           @document.image image_path, :width => @logo_width
@@ -28,8 +35,8 @@ module Pdfs
       end
 
       def draw_sender_address
-        @document.bounding_box([0, @document.bounds.height - @logo_offset], :width => 200, :height => 100) do
-          #stroke_bounds
+        @document.bounding_box([0, @document.bounds.height - @address_offset], :width => 200, :height => 100) do
+          # @document.stroke_bounds
 
           @document.text @global_setting.sender_name, @default_text_settings
           @document.text @global_setting.sender_street, @default_text_settings

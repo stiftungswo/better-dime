@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
       post "create_invoice", on: :member
       get "potential_invoices", on: :collection
+      get "effort_report", on: :member, defaults: { format: 'pdf' }
     end
 
     resources :invoices do

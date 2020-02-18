@@ -2,7 +2,7 @@
 
 module V2
   class ProjectsController < ApplicationController
-    before_action :set_project, only: [:show, :update, :destroy, :create_invoice]
+    before_action :set_project, only: [:show, :update, :destroy, :create_invoice, :effort_report]
 
     def index
       @q = Project.order(id: :desc).ransack(search_params)
@@ -64,6 +64,16 @@ module V2
       @candidate_projects = @projects.page(legacy_params[:page]).per(legacy_params[:pageSize])
       @projects_wp_invoices = @candidate_projects.select do |p|
         p.last_invoice_date.nil? || (p.last_effort_date && (p.last_effort_date > p.last_invoice_date))
+      end
+    end
+
+    def effort_report
+      pdf = Pdfs::EffortReportPdf.new GlobalSetting.first, @project
+
+      respond_to do |format|
+        format.pdf do
+          send_data pdf.render, type: "application/pdf", disposition: "inline"
+        end
       end
     end
 

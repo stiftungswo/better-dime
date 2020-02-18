@@ -1,0 +1,109 @@
+require 'prawn'
+
+module Pdfs
+  class EffortReportPdf < BasePdf
+    def initialize(global_setting, project)
+      @global_setting = global_setting
+      @project = project
+      super()
+    end
+
+    def draw
+      Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @project).draw(
+        @default_text_settings,
+        false
+      )
+      draw_description
+      draw_efforts
+    end
+
+    def draw_description
+      move_down 40
+      text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
+
+      dates = @project.project_efforts.map {|e| e.date} + @project.project_comments.map {|c| c.date}
+
+      earliest_effort = dates.min
+      latest_effort = dates.max
+
+      move_down 5
+      text "Aufwandsreport: ".upcase + @project.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
+      text "Projekt Nr. " + @project.id.to_s, @default_text_settings.merge(style: :bold)
+      text "Leistungen vom " + earliest_effort.strftime("%d.%m.%Y") + " bis " + latest_effort.strftime("%d.%m.%Y"), @default_text_settings
+
+      move_down 15
+      text "Zusammenfassung:", @default_text_settings.merge(style: :bold)
+      text @project.description, @default_text_settings
+    end
+
+    def draw_efforts
+      move_down 20
+
+      effort_dates = @project.project_efforts.map {|e| e.date}.uniq
+      comment_dates = @project.project_comments.map {|e| e.date}.uniq
+      uniq_dates = (effort_dates + comment_dates).uniq.sort
+
+      data = [
+        ["Datum", "Bezeichnung", "Anzahl", "Einheit"]
+      ]
+
+      content_widhts = [bounds.width-190, 50, 65]
+      widths = [75]  + content_widhts
+
+      uniq_dates.each do |date|
+        date_data = []
+        num_comments = @project.project_comments.select {|e| e.date == date}.length
+
+        @project.project_comments.select {|e| e.date == date}.each do |comment|
+          date_data.push [
+            comment.comment,
+            "",
+            ""
+          ]
+        end
+
+        @project.project_efforts.select {|e| e.date == date}.uniq {|e| e.position_id}.each do |effort|
+          same_positions = @project.project_efforts.select {|e| e.date == date && e.position_id == effort.position_id}
+          date_data.push [
+            effort.project_position.service.name,
+            (same_positions.inject(0) {|sum,e| sum + e.value} / effort.project_position.rate_unit.factor).round(2),
+            effort.project_position.rate_unit.name
+          ]
+        end
+
+        subtable = make_table(date_data, column_widths: content_widhts) do
+          cells.borders = []
+          # pad the cells on top, right and bottom
+          columns(0..date_data[0].length-2).padding = [3, 10, 3, 0]
+          # only have a very small right padding on the right most cell
+          columns(date_data[0].length-1).padding = [3, 1, 3, 0]
+          columns(1).align = :right
+
+          rows(0..num_comments-1).font_style = :italic if num_comments > 0
+        end
+
+        data.push [date.strftime("%d.%m.%Y"), {:content => subtable, :colspan => 3}]
+      end
+
+      table(data, header: true, column_widths: widths) do
+        cells.borders = [:bottom]
+        cells.border_width = 0.5
+        cells.valign = :center
+
+        # pad the cells on top, right and bottom
+        cells.padding = [5, 1, 5, 0]
+        columns(0).padding = [0, 0, 5, 0]
+        columns(2).align = :right
+
+        row(0).columns(0..data[0].length-2).padding = [5, 10, 5, 0]
+        row(0).columns(data[0].length-1).padding = [5, 1, 5, 0]
+
+        row(0).borders = [:bottom]
+        row(0).border_width = 1
+        # row(0).font_style = :bold
+        row(0).valign = :center
+        row(0).font_style = :bold
+      end
+    end
+  end
+end
