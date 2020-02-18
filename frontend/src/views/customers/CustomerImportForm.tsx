@@ -94,7 +94,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                   <Grid container alignItems={'center'} spacing={24}>
                     <Grid item xs={12} md={4}>
                       <a
-                        href={this.props.mainStore!.apiURL('customers/import/template')}
+                        href={this.props.mainStore!.apiV2URL('customers/import/template.xlsx')}
                         target={'_blank'}
                         style={{ textDecoration: 'none', color: 'white' }}
                       >

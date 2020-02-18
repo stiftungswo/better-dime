@@ -35,6 +35,10 @@ class Customer < ApplicationRecord
     self
   end
 
+  def is_duplicated?
+    Customer.where(name: name, first_name: first_name, last_name: last_name).any?
+  end
+
   before_save :down_case_type
 
   def down_case_type
@@ -51,7 +55,7 @@ class Customer < ApplicationRecord
   # customer.type: company -> capitalize -> Company -> rails find the class Company
   # This source code might change on every Rails release. This is a private undocumented rails method.
   # https://github.com/rails/rails/blob/b305f0e206b0d15ea81f9571669d9e831c9193e0/activerecord/lib/active_record/inheritance.rb#L251
-  warn "Customer.find_sti_class <private> might has change since rails '6.0.2.1', please ensure it still works" unless Gem.loaded_specs["rails"].version == "6.0.2.1"
+  warn "MONKEYPATCH: Customer.find_sti_class <private> might has change since rails '6.0.2.1', please ensure it still works" unless Gem.loaded_specs["rails"].version == "6.0.2.1"
   def self.find_sti_class(type_name)
     type_name = type_name.capitalize
     super

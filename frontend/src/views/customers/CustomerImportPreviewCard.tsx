@@ -63,6 +63,10 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
         <hr />
 
         <Typography variant={'body2'}>Kommentar: {customerPreview.comment}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>Error: {customerPreview.error_message}</Typography>
       </CardContent>
     </Card>
   );

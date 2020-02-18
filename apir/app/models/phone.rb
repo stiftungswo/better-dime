@@ -16,4 +16,13 @@ class Phone < ApplicationRecord
       self.number = number.gsub(" ","").scan(/(00|\+\d\d)(\d\d)(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
     end
   end
+
+  [[:main, 1], [:mobile, 2], [:fax, 4]].each do |(name, id)|
+    define_method "#{name}!" do
+      self.category = id
+    end
+    define_method "#{name}?" do
+      self.category == id
+    end
+  end
 end

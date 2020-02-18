@@ -29,6 +29,9 @@ export interface NonPersistedImportCustomer {
   salutation: string | null;
   street: string;
   supplement: string | null;
+  rate_group_id: number | null;
+  rate_group_name: string | null;
+  error_message: string | null;
 }
 
 export class CustomerImportStore extends AbstractStore<NonPersistedImportCustomer> {
@@ -56,7 +59,7 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
       const formData = new FormData();
       formData.append('importFile', fileAsBlob, name);
 
-      const res = await this.mainStore!.api.post<NonPersistedImportCustomer[]>('customers/import/verify', formData);
+      const res = await this.mainStore!.apiV2.post<NonPersistedImportCustomer[]>('customers/import/verify', formData);
       this.customersToImport = res.data;
       this.mainStore.displaySuccess('Kundenimport wurde erfolgreich überprüft.');
       this.importIsLoading = false;
@@ -73,7 +76,7 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
     try {
       this.displayInProgress();
       this.importIsLoading = true;
-      await this.mainStore.api.post('/customers/import', { customers_to_import: this.customersToImport, ...importSettings });
+      await this.mainStore.apiV2.post('/customers/import', { customers_to_import: this.customersToImport, ...importSettings });
       Cache.invalidateAllActiveCaches();
       this.customersToImport = [];
       this.importIsLoading = false;
