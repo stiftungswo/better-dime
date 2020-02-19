@@ -23,6 +23,7 @@ gem "validates_timeliness"
 gem 'caxlsx_rails'
 gem 'axlsx_styler'
 gem 'creek'
+gem 'health-monitor-rails'
 
 group :production do
   gem "lograge"

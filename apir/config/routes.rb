@@ -80,4 +80,8 @@ Rails.application.routes.draw do
   scope :v2 do
     devise_for :employees, defaults: { format: :json }
   end
+
+  mount HealthMonitor::Engine, at: '/'
+  get '/health', to: redirect('/check')
+  get '/', to: redirect('/health')
 end
