@@ -43,6 +43,7 @@ module Pdfs
       Pdfs::Generators::BreakdownTableGenerator.new(document, @invoice.breakdown).render(
         ["Bezeichnung", "Ansatz CHF", "Einheit", "Anzahl", "MwSt.", "Teilbetrag CHF exkl. MwSt."]
       )
+      text "Zahlbar 30 Tage netto", @default_text_settings
     end
   end
 end

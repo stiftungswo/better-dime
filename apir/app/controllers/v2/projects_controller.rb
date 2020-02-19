@@ -68,7 +68,7 @@ module V2
     end
 
     def effort_report
-      pdf = Pdfs::EffortReportPdf.new GlobalSetting.first, @project
+      pdf = Pdfs::ProjectEffortReportPdf.new GlobalSetting.first, @project
 
       respond_to do |format|
         format.pdf do

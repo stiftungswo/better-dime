@@ -2,14 +2,22 @@ require 'prawn'
 
 module Pdfs
   class EffortReportPdf < BasePdf
-    def initialize(global_setting, project)
+    def initialize(global_setting, data_holder)
       @global_setting = global_setting
-      @project = project
+      @data_holder = data_holder
       super()
     end
 
+    def efforts_holder
+      @data_holder
+    end
+
+    def subtitle
+      "Projekt Nr. " + efforts_holder.id.to_s
+    end
+
     def draw
-      Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @project).draw(
+      Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder).draw(
         @default_text_settings,
         false
       )
@@ -21,29 +29,29 @@ module Pdfs
       move_down 40
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
 
-      dates = @project.project_efforts.map {|e| e.date} + @project.project_comments.map {|c| c.date}
+      dates = efforts_holder.project_efforts.map {|e| e.date} + efforts_holder.project_comments.map {|c| c.date}
 
       earliest_effort = dates.min
       latest_effort = dates.max
 
       move_down 5
-      text "Aufwandsreport: ".upcase + @project.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
-      text "Projekt Nr. " + @project.id.to_s, @default_text_settings.merge(style: :bold)
+      text "Aufwandsreport: ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
+      text subtitle, @default_text_settings.merge(style: :bold)
       text "Leistungen vom " + earliest_effort.strftime("%d.%m.%Y") + " bis " + latest_effort.strftime("%d.%m.%Y"), @default_text_settings
 
       move_down 15
       text "Zusammenfassung:", @default_text_settings.merge(style: :bold)
-      text @project.description, @default_text_settings
+      text efforts_holder.description, @default_text_settings
     end
 
     def draw_efforts
       move_down 20
 
-      effort_dates = @project.project_efforts.map {|e| e.date}.uniq
-      comment_dates = @project.project_comments.map {|e| e.date}.uniq
+      effort_dates = efforts_holder.project_efforts.map {|e| e.date}.uniq
+      comment_dates = efforts_holder.project_comments.map {|e| e.date}.uniq
       uniq_dates = (effort_dates + comment_dates).uniq.sort
 
-      data = [
+      table_data = [
         ["Datum", "Bezeichnung", "Anzahl", "Einheit"]
       ]
 
@@ -52,9 +60,9 @@ module Pdfs
 
       uniq_dates.each do |date|
         date_data = []
-        num_comments = @project.project_comments.select {|e| e.date == date}.length
+        num_comments = efforts_holder.project_comments.select {|e| e.date == date}.length
 
-        @project.project_comments.select {|e| e.date == date}.each do |comment|
+        efforts_holder.project_comments.select {|e| e.date == date}.each do |comment|
           date_data.push [
             comment.comment,
             "",
@@ -62,8 +70,8 @@ module Pdfs
           ]
         end
 
-        @project.project_efforts.select {|e| e.date == date}.uniq {|e| e.position_id}.each do |effort|
-          same_positions = @project.project_efforts.select {|e| e.date == date && e.position_id == effort.position_id}
+        efforts_holder.project_efforts.select {|e| e.date == date}.uniq {|e| e.position_id}.each do |effort|
+          same_positions = efforts_holder.project_efforts.select {|e| e.date == date && e.position_id == effort.position_id}
           date_data.push [
             effort.project_position.service.name,
             (same_positions.inject(0) {|sum,e| sum + e.value} / effort.project_position.rate_unit.factor).round(2),
@@ -82,10 +90,10 @@ module Pdfs
           rows(0..num_comments-1).font_style = :italic if num_comments > 0
         end
 
-        data.push [date.strftime("%d.%m.%Y"), {:content => subtable, :colspan => 3}]
+        table_data.push [date.strftime("%d.%m.%Y"), {:content => subtable, :colspan => 3}]
       end
 
-      table(data, header: true, column_widths: widths) do
+      table(table_data, header: true, column_widths: widths) do
         cells.borders = [:bottom]
         cells.border_width = 0.5
         cells.valign = :center
@@ -95,8 +103,8 @@ module Pdfs
         columns(0).padding = [0, 0, 5, 0]
         columns(2).align = :right
 
-        row(0).columns(0..data[0].length-2).padding = [5, 10, 5, 0]
-        row(0).columns(data[0].length-1).padding = [5, 1, 5, 0]
+        row(0).columns(0..table_data[0].length-2).padding = [5, 10, 5, 0]
+        row(0).columns(table_data[0].length-1).padding = [5, 1, 5, 0]
 
         row(0).borders = [:bottom]
         row(0).border_width = 1

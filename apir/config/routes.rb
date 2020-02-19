@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :invoices do
       post "duplicate", on: :member
       get "print", on: :member, defaults: { format: 'pdf' }
+      get "effort_report", on: :member, defaults: { format: 'pdf' }
     end
 
     resources :services do
