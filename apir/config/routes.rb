@@ -46,7 +46,7 @@ Rails.application.routes.draw do
       put "archive", on: :member
     end
 
-    resources :customers, only: [:index] do
+    resources :customers do
       # post "duplicate", on: :member
       # post "archive", on: :member
       # put "archive", on: :member
