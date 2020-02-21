@@ -58,9 +58,9 @@ Rails.application.routes.draw do
     end
 
     resources :customers do
-      # post "duplicate", on: :member
-      # post "archive", on: :member
-      # put "archive", on: :member
+      post "duplicate", on: :member
+      post "archive", on: :member
+      put "archive", on: :member
       get "export", to: "customers#index", on: :collection
       get "import/template", to: "customers_import#template", on: :collection
       post "import/verify", to: "customers_import#verify", on: :collection
