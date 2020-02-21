@@ -24,12 +24,6 @@ const TitleWithBody = ({ children, title }: TitleWithBodyProps) => (
 
 export const CustomerImportFAQ = ({ open }: CustomerImportFAQProps) => (
   <Collapse in={open}>
-    <TitleWithBody title={'Der Daten Import ist aktuell deaktiviert'}>
-      Der Datenimport scheint nicht verwendet zu werden. Daher wurde diese Funktionalität bis jetzt nicht migriert.
-      Bitte kontaktieren Sie einen Zivi um diese Feature wieder einzuschalten.
-      Als Workaround können die Kunden manuell erfasst werden.
-    </TitleWithBody>
-
     <TitleWithBody title={'Wie funktioniert der Datenimport?'}>
       Unter dem Button "Import-Vorlage herunterladen" kann eine Vorlage im Excel-Format heruntergeladen werden, welche alle nötigen Felder
       enthält, um einen neuen Kunden im Dime zu erstellen. Anschliessend kann über "Import überprüfen" die ausgefüllte Tabelle wieder

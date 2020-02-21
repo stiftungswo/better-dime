@@ -58,10 +58,13 @@ Rails.application.routes.draw do
     end
 
     resources :customers do
-      post "duplicate", on: :member
-      post "archive", on: :member
-      put "archive", on: :member
+      # post "duplicate", on: :member
+      # post "archive", on: :member
+      # put "archive", on: :member
       get "export", to: "customers#index", on: :collection
+      get "import/template", to: "customers_import#template", on: :collection
+      post "import/verify", to: "customers_import#verify", on: :collection
+      post "import", to: "customers_import#create", on: :collection
     end
 
     resources :people do
@@ -84,4 +87,8 @@ Rails.application.routes.draw do
   scope :v2 do
     devise_for :employees, defaults: { format: :json }
   end
+
+  mount HealthMonitor::Engine, at: '/'
+  get '/health', to: redirect('/check')
+  get '/', to: redirect('/health')
 end

@@ -77,28 +77,14 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
               onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
-                  <Grid container spacing={24} alignItems={'center'}>
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={RateGroupSelect} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
-                    </Grid>
-                  </Grid>
-
                   <Grid container alignItems={'center'} spacing={24}>
                     <Grid item xs={12} md={4}>
                       <a
-                        href={this.props.mainStore!.apiURL('customers/import/template')}
+                        href={this.props.mainStore!.apiV2URL('customers/import/template.xlsx')}
                         target={'_blank'}
                         style={{ textDecoration: 'none', color: 'white' }}
                       >
-                        <Button fullWidth color={'primary'} variant="contained" disabled={true}>
+                        <Button fullWidth color={'primary'} variant="contained">
                           Import-Vorlage herunterladen
                         </Button>
                       </a>
@@ -119,7 +105,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         id={'contained-button-file'}
                       />
                       <label htmlFor="contained-button-file">
-                        <Button fullWidth variant="contained" component="span" disabled={true}>
+                        <Button fullWidth variant="contained" component="span">
                           Import überprüfen
                         </Button>
                       </label>
@@ -130,7 +116,10 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         fullWidth
                         color={'secondary'}
                         variant={'contained'}
-                        disabled={true}
+                        disabled={
+                          customerImportStore!.customersToImport!.length <= 0 ||
+                          customerImportStore!.customersToImport!.filter((e: NonPersistedImportCustomer) => e.invalid).length > 0
+                        }
                         type={'submit'}
                       >
                         Import starten

@@ -62,7 +62,16 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
 
         <hr />
 
+        <Typography variant={'body2'}>Tarifgruppe: {customerPreview.rate_group_name}</Typography>
+        <Typography variant={'body2'}>Tag: {customerPreview.customer_tag_name}</Typography>
+
+        <hr />
+
         <Typography variant={'body2'}>Kommentar: {customerPreview.comment}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>Error: {customerPreview.error_message}</Typography>
       </CardContent>
     </Card>
   );
