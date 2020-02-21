@@ -13,10 +13,17 @@ module Pdfs
           normal: font_file_path('RobotoCondensed-Regular.ttf'),
           bold: font_file_path('RobotoCondensed-Bold.ttf'),
           italic: font_file_path('RobotoCondensed-RegularItalic.ttf'),
+        }
+      )
+      font_families.update(
+        'Roboto' => {
+          normal: font_file_path('Roboto-Regular.ttf'),
+          bold: font_file_path('Roboto-Bold.ttf'),
+          italic: font_file_path('Roboto-Italic.ttf'),
           light: font_file_path('Roboto-Light.ttf')
         }
       )
-      font "RobotoCondensed"
+      font "Roboto"
     end
 
     private
