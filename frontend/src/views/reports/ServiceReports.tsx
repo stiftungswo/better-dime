@@ -65,7 +65,7 @@ export class ServiceReports extends React.Component<Props> {
   }
 
   private getHref() {
-    return this.props.mainStore!.apiURL('reports/service_hours', {
+    return this.props.mainStore!.apiV2URL('reports/service_hours', {
       start: this.state.start.format(apiDateFormat),
       end: this.state.end.format(apiDateFormat),
       group_by: this.state.grouping,
