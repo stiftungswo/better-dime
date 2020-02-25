@@ -173,7 +173,9 @@ class ReportController extends BaseController
             ];
         });
 
-        $chargedDays = $efforts->map(function ($effort) {
+        $chargedDays = $efforts->filter(function ($effort) {
+            return $effort['value'] > 0;
+        })->map(function ($effort) {
             return $effort['date'];
         })->unique()->values()->count();
 
@@ -186,7 +188,7 @@ class ReportController extends BaseController
                 "from" => $from,
                 "to" => $to,
                 "efforts" => $efforts->sortBy(function ($effort) {
-                    return [$effort['employee'], $effort['date']];
+                    return [$effort['date'], $effort['employee']];
                 }),
                 "sums" => $sums,
                 "chargedDays" => $chargedDays,

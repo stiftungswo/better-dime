@@ -23,7 +23,13 @@ module Pdfs
     end
 
     def efforts_in_range
-      @project.project_efforts.select { |e| (@from_date..@to_date) === e.date}
+      @efforts ||= @project.project_efforts.includes(
+        :employee,
+        project_position: [
+          :rate_unit,
+          :service
+        ]
+      ).select { |e| (@from_date..@to_date) === e.date}
     end
 
     def draw
@@ -65,8 +71,10 @@ module Pdfs
       ]
 
       effort_dates.each do |date|
-        efforts_in_range.select {|e| e.date == date}.uniq {|e| e.position_id}.each do |effort|
-          same_positions = efforts_in_range.select {|e| e.date == date && e.position_id == effort.position_id && e.employee == effort.employee}
+        efforts_in_range.select {|e| e.date == date}.each do |effort|
+          same_positions = efforts_in_range.select do |e|
+            e.date == date && e.position_id == effort.position_id && e.employee == effort.employee
+          end
 
           table_data.push({
             data: [
@@ -146,7 +154,6 @@ module Pdfs
         }
       ]
 
-      effort_employees = efforts_in_range.map {|e| e.employee}.uniq.sort
       days_with_efforts = efforts_in_range.select {|e| e.value > 0}.map {|e| e.date}.uniq
 
       table_data.push({
