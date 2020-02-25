@@ -35,7 +35,7 @@ module Pdfs
       latest_effort = dates.max
 
       move_down 5
-      text "Aufwandsreport: ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
+      text "Aufwandsrapport: ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
       text "Leistungen vom " + earliest_effort.strftime("%d.%m.%Y") + " bis " + latest_effort.strftime("%d.%m.%Y"), @default_text_settings
 
@@ -55,8 +55,8 @@ module Pdfs
         ["Datum", "Bezeichnung", "Anzahl", "Einheit"]
       ]
 
-      content_widhts = [bounds.width-190, 50, 65]
-      widths = [75]  + content_widhts
+      content_widths = [bounds.width-190, 50, 65]
+      widths = [75]  + content_widths
 
       uniq_dates.each do |date|
         date_data = []
@@ -79,7 +79,7 @@ module Pdfs
           ]
         end
 
-        subtable = make_table(date_data, column_widths: content_widhts) do
+        subtable = make_table(date_data, column_widths: content_widths) do
           cells.borders = []
           # pad the cells on top, right and bottom
           columns(0..date_data[0].length-2).padding = [3, 10, 3, 0]

@@ -28,11 +28,20 @@ module Pdfs
         # stroke_axis
 
         draw
+        draw_page_numbers
       end
     end
 
     def draw
       # your drawing logic here
+    end
+
+    def draw_page_numbers
+      number_pages "Seite <page>/<total>",
+                   {:start_count_at => 1,
+                    :at => [bounds.right - 50, -20],
+                    :align => :right,
+                    :size => 10}
     end
 
     def document
