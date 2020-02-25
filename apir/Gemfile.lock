@@ -131,6 +131,7 @@ GEM
       dry-configurable (~> 0.1, >= 0.1.3)
     dry-core (0.4.7)
       concurrent-ruby (~> 1.0)
+    equatable (0.6.1)
     erubi (1.9.0)
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
@@ -194,6 +195,7 @@ GEM
     msgpack (1.2.10)
     multipart-post (2.1.0)
     mysql2 (0.5.2)
+    necromancer (0.5.1)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -204,6 +206,9 @@ GEM
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
+    pastel (0.7.3)
+      equatable (~> 0.6)
+      tty-color (~> 0.5)
     pdf-core (0.7.0)
     polyamorous (2.3.2)
       activerecord (>= 5.2.1)
@@ -319,14 +324,28 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    strings (0.1.8)
+      strings-ansi (~> 0.1)
+      unicode-display_width (~> 1.5)
+      unicode_utils (~> 1.4)
+    strings-ansi (0.2.0)
     test-prof (0.8.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     timeliness (0.3.10)
     ttfunk (1.6.1)
+    tty-color (0.5.1)
+    tty-screen (0.7.1)
+    tty-table (0.11.0)
+      equatable (~> 0.6)
+      necromancer (~> 0.5)
+      pastel (~> 0.7.2)
+      strings (~> 0.1.5)
+      tty-screen (~> 0.7)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
     unicode-display_width (1.5.0)
+    unicode_utils (1.4.0)
     validates_timeliness (4.0.2)
       timeliness (~> 0.3.7)
     warden (1.2.8)
@@ -387,6 +406,7 @@ DEPENDENCIES
   shoulda-matchers
   simplecov
   test-prof
+  tty-table
   tzinfo-data
   validates_timeliness
 
