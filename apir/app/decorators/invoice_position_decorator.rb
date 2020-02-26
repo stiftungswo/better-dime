@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvoicePositionDecorator < ApplicationDecorator
   delegate_all
 
@@ -13,5 +15,4 @@ class InvoicePositionDecorator < ApplicationDecorator
   def vat
     object.vat.to_f
   end
-
 end

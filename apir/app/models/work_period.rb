@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This code is a hot mess
 # Many values are calculated dynamically but should be peristed.
 # This means any change in logic might change the current balances, even if the change only affects the past.
@@ -28,5 +29,4 @@ class WorkPeriod < ApplicationRecord
   def remaining_vacation_budget
     period_vacation_budget - booked_holiday_minutes
   end
-
 end

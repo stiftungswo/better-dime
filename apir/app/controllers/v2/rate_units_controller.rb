@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class RateUnitsController < ApplicationController
     before_action :set_rate_unit, only: [:show, :update, :destroy]

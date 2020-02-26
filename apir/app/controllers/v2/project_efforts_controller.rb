@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module V2
   class ProjectEffortsController < ApplicationController
-    before_action :set_effort, only: %i[show update destroy]
+    before_action :set_effort, only: [:show, :update, :destroy]
 
     def index
       @filtered = ProjectEffortFilter.new(params).filter ProjectEffort.left_joins(:employee, project_position: [:service, :project, :rate_unit, :position_group])
@@ -10,8 +12,8 @@ module V2
               rate_units.is_time as rate_unit_is_time, rate_units.effort_unit as effort_unit,
               position_groups.name as group_name, project_positions.description as p_desc")
       @ambiguity_count = @filtered.group(:service_id, :project_id)
-                .select("project_positions.project_id, project_positions.service_id, COUNT(DISTINCT(IFNULL(project_positions.position_group_id, -1))) as ambi_count")
-                .map {|item| [[item.project_id, item.service_id], item.ambi_count]}.to_h
+                                  .select("project_positions.project_id, project_positions.service_id, COUNT(DISTINCT(IFNULL(project_positions.position_group_id, -1))) as ambi_count")
+                                  .map { |item| [[item.project_id, item.service_id], item.ambi_count] }.to_h
     end
 
     def show
@@ -39,7 +41,7 @@ module V2
     def move
       EffortMover.move params
 
-      render plain: 'Successfully moved timeslices!'
+      render plain: "Successfully moved timeslices!"
     end
 
     private

@@ -5,28 +5,28 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "2.6.5"
 
+gem "axlsx_styler"
 gem "bootsnap", ">= 1.1.0", require: false
+gem "caxlsx_rails"
+gem "creek"
 gem "deep_cloneable", "~> 3.0.0"
 gem "devise-jwt", "~> 0.5.9"
 gem "discard"
 gem "dotenv-rails"
 gem "draper"
+gem "health-monitor-rails"
 gem "jbuilder"
 gem "kaminari"
 gem "mysql2", ">= 0.4.4", "< 0.6.0"
 gem "paper_trail"
+gem "prawn"
+gem "prawn-table"
 gem "puma", "~> 4.0"
-gem 'prawn'
-gem 'prawn-table'
 gem "rack-cors", require: "rack/cors"
 gem "rails", "~> 6.0.1"
 gem "ransack"
 gem "redcarpet"
 gem "validates_timeliness"
-gem 'caxlsx_rails'
-gem 'axlsx_styler'
-gem 'creek'
-gem 'health-monitor-rails'
 
 group :production do
   gem "lograge"
@@ -63,5 +63,5 @@ group :test do
   gem "test-prof", require: false
 end
 
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "tty-table"
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

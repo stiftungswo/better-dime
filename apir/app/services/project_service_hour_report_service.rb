@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectServiceHourReportService
   attr_accessor :range
   attr_accessor :projects, :project_efforts, :project_positions, :services, :effort_minutes, :effort_minutes_by_service
@@ -14,15 +16,15 @@ class ProjectServiceHourReportService
   def effort
     @effort = {}
     effort_minutes.each do |(project_id, service_id), minutes|
-      @effort[project_id] ||= {}  
+      @effort[project_id] ||= {}
       @effort[project_id][service_id] = minutes
     end
     @effort.transform_keys! do |project_id|
-      projects.find {|project| project.id == project_id} || Project.new(name: "Projekte ohne Tätigkeitsbereich")
+      projects.find { |project| project.id == project_id } || Project.new(name: "Projekte ohne Tätigkeitsbereich")
     end
     @effort.transform_values! do |service_efforts|
       service_efforts.transform_keys! do |service_id|
-        services.find {|service| service.id == service_id} || Service.new
+        services.find { |service| service.id == service_id } || Service.new
       end
       service_efforts.transform_values! do |minutes|
         (minutes / 60.0).round(2)
@@ -35,17 +37,17 @@ class ProjectServiceHourReportService
   def rows
     effort.map do |project, service_effort|
       row = [project.id || 0, project.name, project.project_category&.id, project.project_category&.name]
-      row += services.map {|service| service_effort[service] || 0.0}
+      row += services.map { |service| service_effort[service] || 0.0 }
       row
     end
   end
 
   def header
-    ["Projekt ID", "Projekt", "Tätigkeitsbereich ID", "Tätigkeitsbereich"] + services.map(&:name) 
+    ["Projekt ID", "Projekt", "Tätigkeitsbereich ID", "Tätigkeitsbereich"] + services.map(&:name)
   end
 
   def footer
-    ["", "", "","Total"] + services.map do |service|
+    ["", "", "", "Total"] + services.map do |service|
       ((effort_minutes_by_service[service.id] || 0.0) / 60.0).round 2
     end
   end

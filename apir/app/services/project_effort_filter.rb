@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectEffortFilter
   def initialize(params)
     @params = params
@@ -10,17 +12,17 @@ class ProjectEffortFilter
   private
 
   def filter_by_date(query)
-    start_date = DateTime.parse @params[:start] unless @params[:start].blank?
-    end_date = DateTime.parse @params[:end] unless @params[:end].blank?
+    start_date = DateTime.parse @params[:start] if @params[:start].present?
+    end_date = DateTime.parse @params[:end] if @params[:end].present?
 
-    if @params[:start].blank? and @params[:end].blank?
+    if @params[:start].blank? && @params[:end].blank?
       query
     elsif @params[:start].blank?
-      query.where({date: ProjectEffort.all.minimum(:date)..end_date})
+      query.where(date: ProjectEffort.all.minimum(:date)..end_date)
     elsif @params[:end].blank?
-      query.where({date: start_date..ProjectEffort.maximum(:date)})
+      query.where(date: start_date..ProjectEffort.maximum(:date))
     else
-      query.where({date: start_date..end_date})
+      query.where(date: start_date..end_date)
     end
   end
 
@@ -28,9 +30,9 @@ class ProjectEffortFilter
     if @params[:employee_ids].blank?
       query
     else
-      query.where({
-        employee_id: @params[:employee_ids].split(',')
-      })
+      query.where(
+        employee_id: @params[:employee_ids].split(",")
+      )
     end
   end
 
@@ -38,9 +40,9 @@ class ProjectEffortFilter
     if @params[:project_ids].blank?
       query
     else
-      query.where({project_positions: {
-        project_id: @params[:project_ids].split(',')
-      }})
+      query.where(project_positions: {
+                    project_id: @params[:project_ids].split(",")
+                  })
     end
   end
 
@@ -48,9 +50,9 @@ class ProjectEffortFilter
     if @params[:service_ids].blank?
       query
     else
-      query.where({project_positions: {
-        service_id: @params[:service_ids].split(',')
-      }})
+      query.where(project_positions: {
+                    service_id: @params[:service_ids].split(",")
+                  })
     end
   end
 end

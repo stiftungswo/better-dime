@@ -84,7 +84,7 @@ module V2
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:employee_group_id] = params[:employee_group_id]
-      params[:employee][:password] = params[:password] unless params[:password].blank?
+      params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
         :id, :password, :email, :is_admin, :first_name, :last_name,
         :can_login, :archived, :holidays_per_year, :employee_group_id,

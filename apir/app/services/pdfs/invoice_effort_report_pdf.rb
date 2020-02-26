@@ -1,4 +1,6 @@
-require 'prawn'
+# frozen_string_literal: true
+
+require "prawn"
 
 module Pdfs
   class InvoiceEffortReportPdf < EffortReportPdf

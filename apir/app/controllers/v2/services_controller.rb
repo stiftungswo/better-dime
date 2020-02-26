@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class ServicesController < ApplicationController
     before_action :set_service, only: [:show, :update, :destroy]

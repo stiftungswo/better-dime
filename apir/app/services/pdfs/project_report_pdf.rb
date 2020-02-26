@@ -1,4 +1,6 @@
-require 'prawn'
+# frozen_string_literal: true
+
+require "prawn"
 
 module Pdfs
   class ProjectReportPdf < BasePdf
@@ -19,7 +21,7 @@ module Pdfs
     end
 
     def format_money(amount)
-      number_to_currency(amount, unit: "", separator: ".", delimiter: ",").gsub(',',"'")
+      number_to_currency(amount, unit: "", separator: ".", delimiter: ",").tr(",", "'")
     end
 
     def efforts_in_range
@@ -29,7 +31,7 @@ module Pdfs
           :rate_unit,
           :service
         ]
-      ).select { |e| (@from_date..@to_date) === e.date}
+      ).select { |e| (@from_date..@to_date) === e.date }
     end
 
     def draw
@@ -49,7 +51,7 @@ module Pdfs
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
 
       move_down 5
-      text "Projektrapport: ".upcase + @project.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
+      text "Projektrapport: ".upcase + @project.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
       text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
@@ -57,7 +59,7 @@ module Pdfs
     def draw_efforts
       move_down 20
 
-      effort_dates = efforts_in_range.map {|e| e.date}.uniq.sort
+      effort_dates = efforts_in_range.map(&:date).uniq.sort
 
       table_data = [
         {
@@ -71,15 +73,15 @@ module Pdfs
       ]
 
       effort_dates.each do |date|
-        efforts_in_range.select {|e| e.date == date}.each do |effort|
+        efforts_in_range.select { |e| e.date == date }.each do |effort|
           same_positions = efforts_in_range.select do |e|
             e.date == date && e.position_id == effort.position_id && e.employee == effort.employee
           end
 
-          table_data.push({
+          table_data.push(
             data: [
               date.strftime("%d.%m.%Y"),
-              (same_positions.inject(0) {|sum,e| sum + e.value} / effort.project_position.rate_unit.factor).round(1),
+              (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
               effort.project_position.service.name,
               effort.employee.full_name
             ],
@@ -87,19 +89,16 @@ module Pdfs
               borders: [],
               padding: [4, 10, 4, 0]
             }
-          })
+          )
         end
       end
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width-400, 400-175-125, 175, 125],
-        {
-          [1] => :right,
-        },
+        [bounds.width - 400, 400 - 175 - 125, 175, 125],
+        [1] => :right
       )
     end
-
 
     def draw_employee_summary
       move_down 20
@@ -115,28 +114,26 @@ module Pdfs
         }
       ]
 
-      effort_employees = efforts_in_range.map {|e| e.employee}.uniq.sort
+      effort_employees = efforts_in_range.map(&:employee).uniq.sort
       effort_employees.each do |employee|
-        employee_efforts = efforts_in_range.select {|e| e.employee == employee}
+        employee_efforts = efforts_in_range.select { |e| e.employee == employee }
 
-        table_data.push({
+        table_data.push(
           data: [
             employee.full_name,
-            (employee_efforts.inject(0) {|sum,e| sum + e.value/e.project_position.rate_unit.factor}).round(1)
+            (employee_efforts.inject(0) { |sum, e| sum + e.value / e.project_position.rate_unit.factor }).round(1)
           ],
           style: {
             borders: [],
             padding: [4, 0, 4, 0]
           }
-        })
+        )
       end
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width-200, 200],
-        {
-          [1] => :right,
-        },
+        [bounds.width - 200, 200],
+        [1] => :right
       )
     end
 
@@ -154,51 +151,49 @@ module Pdfs
         }
       ]
 
-      days_with_efforts = efforts_in_range.select {|e| e.value > 0}.map {|e| e.date}.uniq
+      days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
 
-      table_data.push({
+      table_data.push(
         data: [
           "Total Einsatztage",
           days_with_efforts.length.to_s + " * " + format_money(@daily_rate),
-          format_money(days_with_efforts.length*@daily_rate)
+          format_money(days_with_efforts.length * @daily_rate)
         ],
         style: {
           borders: [],
           padding: [4, 0, 4, 0]
         }
-      })
+      )
 
-      table_data.push({
+      table_data.push(
         data: [
           "MwSt.",
-          (@vat*100).to_s + "% * " + format_money(days_with_efforts.length*@daily_rate),
-          format_money(@vat * days_with_efforts.length*@daily_rate)
+          (@vat * 100).to_s + "% * " + format_money(days_with_efforts.length * @daily_rate),
+          format_money(@vat * days_with_efforts.length * @daily_rate)
         ],
         style: {
           borders: [],
           padding: [4, 0, 4, 0]
         }
-      })
+      )
 
-      table_data.push({
+      table_data.push(
         data: [
           "Total",
           "",
-          format_money((1+@vat) * days_with_efforts.length*@daily_rate)
+          format_money((1 + @vat) * days_with_efforts.length * @daily_rate)
         ],
         style: {
           font_style: :bold,
           borders: [],
           padding: [4, 0, 4, 0]
         }
-      })
+      )
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width-275,200,75],
-        {
-          [2] => :right,
-        },
+        [bounds.width - 275, 200, 75],
+        [2] => :right
       )
     end
   end

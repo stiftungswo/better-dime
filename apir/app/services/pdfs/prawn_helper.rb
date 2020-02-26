@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pdfs
   module PrawnHelper
     def cursor_save
@@ -9,18 +11,18 @@ module Pdfs
 
     def update_font_families
       font_families.update(
-        'RobotoCondensed' => {
-          normal: font_file_path('RobotoCondensed-Regular.ttf'),
-          bold: font_file_path('RobotoCondensed-Bold.ttf'),
-          italic: font_file_path('RobotoCondensed-RegularItalic.ttf'),
+        "RobotoCondensed" => {
+          normal: font_file_path("RobotoCondensed-Regular.ttf"),
+          bold: font_file_path("RobotoCondensed-Bold.ttf"),
+          italic: font_file_path("RobotoCondensed-RegularItalic.ttf")
         }
       )
       font_families.update(
-        'Roboto' => {
-          normal: font_file_path('Roboto-Regular.ttf'),
-          bold: font_file_path('Roboto-Bold.ttf'),
-          italic: font_file_path('Roboto-Italic.ttf'),
-          light: font_file_path('Roboto-Light.ttf')
+        "Roboto" => {
+          normal: font_file_path("Roboto-Regular.ttf"),
+          bold: font_file_path("Roboto-Bold.ttf"),
+          italic: font_file_path("Roboto-Italic.ttf"),
+          light: font_file_path("Roboto-Light.ttf")
         }
       )
       font "Roboto"
@@ -29,7 +31,7 @@ module Pdfs
     private
 
     def font_file_path(filename)
-      Rails.root.join('app', 'assets', 'fonts', filename)
+      Rails.root.join("app", "assets", "fonts", filename)
     end
   end
 end

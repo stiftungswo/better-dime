@@ -42,6 +42,6 @@ class Project < ApplicationRecord
   end
 
   def should_validate_category?
-    !offer.present? || !new_record?
+    offer.blank? || !new_record?
   end
 end

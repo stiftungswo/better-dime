@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     end
 
     resources :project_efforts, constraints: { id: /[0-9]+/ } do
-      put 'move', on: :collection
+      put "move", on: :collection
     end
 
     resources :employee_groups
@@ -20,14 +20,14 @@ Rails.application.routes.draw do
     resources :rate_groups, only: :index
     resources :costgroups, only: :index
 
-    get "reports/project_report(/:id)", to: "reports#project_report", defaults: { format: 'pdf' }
+    get "reports/project_report(/:id)", to: "reports#project_report", defaults: { format: "pdf" }
     get "reports/service_hours", to: "service_hour_reports#index"
     get "reports/service_hours/project", to: "service_hour_reports#project"
     get "reports/service_hours/project_category", to: "service_hour_reports#project_category"
     get "reports/costgroup", to: "cost_group_reports#index"
     get "reports/revenue", to: "revenue_reports#index"
     get "reports/daily", to: "daily_reports#index"
-    get "reports(/:id)", to: "reports#show", defaults: { format: 'pdf' }
+    get "reports(/:id)", to: "reports#show", defaults: { format: "pdf" }
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
@@ -39,21 +39,21 @@ Rails.application.routes.draw do
     resources :offers do
       post "duplicate", on: :member
       post "create_project", on: :member
-      get "print", on: :member, defaults: { format: 'pdf' }
+      get "print", on: :member, defaults: { format: "pdf" }
     end
 
     resources :projects, constraints: { id: /\d+/ } do
       post "duplicate", on: :member
       post "create_invoice", on: :member
       get "potential_invoices", on: :collection
-      get "effort_report", on: :member, defaults: { format: 'pdf' }
+      get "effort_report", on: :member, defaults: { format: "pdf" }
     end
 
     resources :invoices do
       post "duplicate", on: :member
-      get "print", on: :member, defaults: { format: 'pdf' }
-      get "print_esr", on: :member, defaults: { format: 'pdf' }
-      get "effort_report", on: :member, defaults: { format: 'pdf' }
+      get "print", on: :member, defaults: { format: "pdf" }
+      get "print_esr", on: :member, defaults: { format: "pdf" }
+      get "effort_report", on: :member, defaults: { format: "pdf" }
     end
 
     resources :services do
@@ -95,7 +95,7 @@ Rails.application.routes.draw do
     devise_for :employees, defaults: { format: :json }
   end
 
-  mount HealthMonitor::Engine, at: '/'
-  get '/health', to: redirect('/check')
-  get '/', to: redirect('/health')
+  mount HealthMonitor::Engine, at: "/"
+  get "/health", to: redirect("/check")
+  get "/", to: redirect("/health")
 end

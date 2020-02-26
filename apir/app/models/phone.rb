@@ -9,15 +9,15 @@ class Phone < ApplicationRecord
   before_save :format_number
 
   def self.params
-    self.attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+    attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
   end
 
   def format_number
-    case number&.gsub(" ","")
+    case number&.gsub(" ", "")
     when /\A0\d{9}\z/
-      self.number = number.gsub(" ","").scan(/(\d{3})(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
+      self.number = number.delete(" ").scan(/(\d{3})(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
     when /\A(00|\+)\d{11}\z/
-      self.number = number.gsub(" ","").scan(/(00|\+\d\d)(\d\d)(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
+      self.number = number.delete(" ").scan(/(00|\+\d\d)(\d\d)(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
     end
   end
 
@@ -26,7 +26,7 @@ class Phone < ApplicationRecord
       self.category = id
     end
     define_method "#{name}?" do
-      self.category == id
+      category == id
     end
   end
 end

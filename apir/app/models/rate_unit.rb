@@ -13,5 +13,4 @@ class RateUnit < ApplicationRecord
   def listing_name
     name + (archived ? " [A]" : "")
   end
-
 end

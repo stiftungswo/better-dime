@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class RateGroupsController < ApplicationController
     def index

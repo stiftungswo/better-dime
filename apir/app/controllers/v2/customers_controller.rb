@@ -3,8 +3,8 @@
 module V2
   class CustomersController < APIController
     def index
-      @q = Customer.left_outer_joins(:customer_tags, :addresses, :phones, people: [:addresses, :phones], company: [{people: [:addresses, :phones]}]).
-        includes(:addresses, :phones, :company).order(created_at: :desc).ransack(search_params)
+      @q = Customer.left_outer_joins(:customer_tags, :addresses, :phones, people: [:addresses, :phones], company: [{ people: [:addresses, :phones] }])
+                   .includes(:addresses, :phones, :company).order(created_at: :desc).ransack(search_params)
       @customers = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize]).distinct
     end
 
@@ -86,7 +86,7 @@ module V2
       params[:customer][:addresses_attributes] = params[:addresses]
       params[:customer][:customer_tag_ids] = params[:tags]
       params.require(:customer).permit(Customer.params, customer_tag_ids: [],
-        phones_attributes: Phone.params, addresses_attributes: Address.attributes)
+                                                        phones_attributes: Phone.params, addresses_attributes: Address.attributes)
     end
 
     def legacy_params

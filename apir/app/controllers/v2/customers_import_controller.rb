@@ -2,8 +2,7 @@
 
 module V2
   class CustomersImportController < APIController
-    def template
-    end
+    def template; end
 
     def verify
       @customers = CustomersXlsxImportService.new(path: import_verify_params.path).customers

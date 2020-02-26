@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class RevenueReportsController < APIController
     def index
@@ -12,6 +14,6 @@ module V2
 
     def report_params
       params.permit(:from, :to)
-    end 
+    end
   end
 end

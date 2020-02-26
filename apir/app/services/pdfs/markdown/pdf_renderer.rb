@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pdfs
   module Markdown
     class PdfRenderer < Redcarpet::Render::Base
@@ -43,28 +45,28 @@ module Pdfs
       end
 
       # Other methods where we don't return only a specific argument
-      def link(link, title, content)
+      def link(link, _title, content)
         "#{content} (#{link})"
       end
 
       def list(content, list_type)
         case list_type
         when :ordered
-          ordered_list = content.split("[step]").select {|l|!l.blank?}
+          ordered_list = content.split("[step]").select(&:present?)
           label_width = ordered_list.length > 9 ? 17 : 12
           ordered_list.each_with_index do |text, index|
-            list_item_render text, (index+1).to_s + ".", label_width unless text.blank?
+            list_item_render text, (index + 1).to_s + ".", label_width if text.present?
           end
         when :unordered
           content.split("[step]").each do |text|
-            list_item_render text, "-" unless text.blank?
+            list_item_render text, "-" if text.present?
           end
         end
         @next_pad = 20
         ""
       end
 
-      def list_item(text, flags)
+      def list_item(text, _flags)
         "[step]#{text.strip}"
       end
 
@@ -102,9 +104,9 @@ module Pdfs
         ""
       end
 
-      def header(text, header_level)
+      def header(text, _header_level)
         # only pad the header if there is an item above it (otherwise we have a huge gap at the beginning)
-        @document.pad_top(@next_pad) {
+        @document.pad_top(@next_pad) do
           settings = {
             style: :bold,
             character_spacing: @spacing,
@@ -112,7 +114,7 @@ module Pdfs
             inline_format: TRUE
           }
           @document.text text.upcase, settings
-        }
+        end
         @next_pad = 20
         ""
       end

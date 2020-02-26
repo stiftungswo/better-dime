@@ -1,8 +1,9 @@
-require 'prawn'
+# frozen_string_literal: true
+
+require "prawn"
 
 module Pdfs
   class InvoicePdf < BasePdf
-
     def initialize(global_setting, invoice)
       @global_setting = global_setting
       @invoice = invoice
@@ -25,16 +26,16 @@ module Pdfs
       end.join(", ")
 
       move_down 20
-      text "Rechnung: ".upcase + @invoice.name.upcase, @default_text_settings.merge(:size => 13, :style => :bold)
+      text "Rechnung: ".upcase + @invoice.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
       move_down 5
-      text_box "Offerte Nr. " + @invoice.project.offer.id.to_s, @default_text_settings.merge(:at => [150, cursor]) unless @invoice.project.offer.nil?
-      text_box "MwSt.-ID " + @global_setting.sender_vat, @default_text_settings.merge(:at => [@invoice.project.offer.nil? ? 150 : 300, cursor])
+      text_box "Offerte Nr. " + @invoice.project.offer.id.to_s, @default_text_settings.merge(at: [150, cursor]) if @invoice.project.offer
+      text_box "MwSt.-ID " + @global_setting.sender_vat, @default_text_settings.merge(at: [@invoice.project.offer.nil? ? 150 : 300, cursor])
       text "Rechnung Nr. " + @invoice.id.to_s, @default_text_settings
-      text_box "Kostenstellen " + costgroups, @default_text_settings.merge(:at => [150, cursor])
+      text_box "Kostenstellen " + costgroups, @default_text_settings.merge(at: [150, cursor])
       text "Projekt Nr. " + @invoice.project.id.to_s, @default_text_settings
 
       move_down 25
-      Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new document, @spacing, @leading).render(@invoice.description)
+      Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading)).render(@invoice.description)
     end
 
     def draw_breakdown

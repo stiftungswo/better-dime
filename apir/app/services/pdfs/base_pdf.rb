@@ -1,4 +1,6 @@
-require 'prawn'
+# frozen_string_literal: true
+
+require "prawn"
 
 module Pdfs
   class BasePdf
@@ -11,8 +13,8 @@ module Pdfs
       @page_width = 480
       @page_height = 700
       @default_text_settings = {
-        :character_spacing => @spacing,
-        :leading => @leading
+        character_spacing: @spacing,
+        leading: @leading
       }
 
       update_font_families
@@ -21,9 +23,9 @@ module Pdfs
       # stroke_axis
 
       bounding_box(
-        [(bounds.width-@page_width)/2.0, bounds.height-(bounds.height-@page_height)/2.0],
-        :width => @page_width,
-        :height => @page_height
+        [(bounds.width - @page_width) / 2.0, bounds.height - (bounds.height - @page_height) / 2.0],
+        width: @page_width,
+        height: @page_height
       ) do
         # stroke_axis
 
@@ -38,14 +40,14 @@ module Pdfs
 
     def draw_page_numbers
       number_pages "Seite <page>/<total>",
-                   {:start_count_at => 1,
-                    :at => [bounds.right - 50, -20],
-                    :align => :right,
-                    :size => 10}
+                   start_count_at: 1,
+                   at: [bounds.right - 50, -20],
+                   align: :right,
+                   size: 10
     end
 
     def document
-      @document ||= Prawn::Document.new(page_size: 'A4', page_layout: :portrait)
+      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait)
     end
   end
 end

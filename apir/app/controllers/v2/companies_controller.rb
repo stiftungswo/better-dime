@@ -83,7 +83,7 @@ module V2
       params[:company][:addresses_attributes] = params[:addresses]
       params[:company][:customer_tag_ids] = params[:tags]
       params.require(:company).permit(:id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name, :rate_group_id, :salutation, customer_tag_ids: [],
-        phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
+                                                                                                                                                                    phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
     end
 
     def legacy_params

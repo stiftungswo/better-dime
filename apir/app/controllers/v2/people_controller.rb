@@ -83,7 +83,7 @@ module V2
       params[:person][:addresses_attributes] = params[:addresses]
       params[:person][:customer_tag_ids] = params[:tags]
       params.require(:person).permit(:id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name, :rate_group_id, :salutation, customer_tag_ids: [],
-        phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
+                                                                                                                                                                   phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
     end
 
     def legacy_params
@@ -97,7 +97,7 @@ module V2
       search[:archived_false] = true if ["false", false, nil].include?(params[:showArchived])
       search[:people_tags_id_in] = params[:customer_tags] if legacy_params[:customer_tags]
       search[:id_or_first_name_or_last_name_or_email_or_company_name_cont] ||= legacy_params[:filterSearch]
-      search.permit(:s, :archived_false, :id_or_first_name_or_last_name_or_email_or_company_name_cont,:people_tags_id_in)
+      search.permit(:s, :archived_false, :id_or_first_name_or_last_name_or_email_or_company_name_cont, :people_tags_id_in)
     end
   end
 end

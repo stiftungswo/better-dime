@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module V2
   class ServiceHourReportsController < APIController
     def index
@@ -25,6 +27,6 @@ module V2
 
     def report_params
       params.permit(:start, :end, :group_by, :auth)
-    end 
+    end
   end
 end

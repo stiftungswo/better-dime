@@ -11,6 +11,6 @@ class Address < ApplicationRecord
   validates :zip, numericality: { greater_than_or_equal_to: 1000, only_integer: true }
 
   def self.params
-    self.attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+    attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
   end
 end

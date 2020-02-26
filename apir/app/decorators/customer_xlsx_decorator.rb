@@ -4,7 +4,7 @@ class CustomerXlsxDecorator < ApplicationDecorator
   delegate_all
 
   def company_name
-    object.name || object.company&.name 
+    object.name || object.company&.name
   end
 
   def full_name
@@ -25,11 +25,10 @@ class CustomerXlsxDecorator < ApplicationDecorator
   end
 
   def comment
-    object.comment || object.company&.comment 
+    object.comment || object.company&.comment
   end
 
   def type
     object.type&.titleize
   end
 end
-

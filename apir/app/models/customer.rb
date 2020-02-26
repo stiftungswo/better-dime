@@ -24,13 +24,13 @@ class Customer < ApplicationRecord
 
   validates :type, inclusion: %w[Person Company person company]
 
-  scope :people, -> {where(type: "person")}
-  scope :companies, -> {where(type: "company")}
+  scope :people, -> { where(type: "person") }
+  scope :companies, -> { where(type: "company") }
 
   before_save :down_case_type
 
   def self.params
-    self.attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+    attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
   end
 
   alias phone_numbers phones

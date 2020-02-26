@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RevenueReportService
   attr_accessor :daterange
   attr_accessor :employees, :projects, :project_efforts, :project_positions, :effort_minutes, :effort_minutes_by_cost_group, :cost_groups
@@ -19,14 +21,14 @@ class RevenueReportService
     end
   end
 
-  HEADER = ["Typ", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"]
-  HEADER = [""]
+  HEADER = ["Typ", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
+  HEADER = [""].freeze
   def header
     HEADER
   end
 
   def footer
-    HEADER.map {""}
+    HEADER.map { "" }
   end
 
   def table
