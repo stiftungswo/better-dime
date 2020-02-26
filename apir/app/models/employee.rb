@@ -32,8 +32,9 @@ class Employee < ApplicationRecord
   end
 
   def full_name
-    first_name + " " + last_name
+    [first_name, last_name].select(&:present?).join(" ")
   end
+  alias name full_name 
 
   def duplicate
     duped = dup
