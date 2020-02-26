@@ -41,6 +41,10 @@ class Customer < ApplicationRecord
     self
   end
 
+  def all_addresses
+    company ? addresses + company.addresses : addresses
+  end
+
   def full_name
     first_name + " " + last_name
   end
