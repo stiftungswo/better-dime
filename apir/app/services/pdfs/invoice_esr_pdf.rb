@@ -131,7 +131,7 @@ module Pdfs
 
       row = 0
       col = 0
-      ("Rechnung Nr. " + @invoice.id.to_s).each_char do |c|
+      ("Rechnung  Nr. " + @invoice.id.to_s).each_char do |c|
         float do
           draw_text c, size: 11, character_spacing: 8.1, leading: 6, :at => [12.65.cm - width_of(c)/2 + col*0.51.cm, 9.4.cm - row*0.6.cm]
         end
