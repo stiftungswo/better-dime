@@ -55,7 +55,7 @@ export class PercentageReport extends React.Component<Props> {
   }
 
   private getHref() {
-    return this.props.mainStore!.apiURL('reports/costgroup', {
+    return this.props.mainStore!.apiV2URL('reports/costgroup.xlsx', {
       from: this.state.start.format(apiDateFormat),
       to: this.state.end.format(apiDateFormat),
     });
