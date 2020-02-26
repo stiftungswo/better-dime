@@ -5,7 +5,7 @@ module V2
       to_date = DateTime.parse(params[:to]) || DateTime.now()
 
       @dates = (from_date..to_date)
-      @employee_efforts = calculate_efforts ProjectEffort.where(date: @dates), @dates
+      @employee_efforts = calculate_efforts ProjectEffort.includes(:employee, project_position: [:service]).where(date: @dates), @dates
     end
 
     def calculate_efforts(efforts, dates)
