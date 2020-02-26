@@ -88,7 +88,7 @@ export class ProjectReport extends React.Component<Props, State> {
                 </Grid>
                 <Grid item xs={12}>
                   <DownloadButton
-                    href={() => this.props.mainStore!.apiURL('reports/project', schema.cast(formikProps.values))}
+                    href={() => this.props.mainStore!.apiV2URL('reports/project_report/' + formikProps.values.project_id, schema.cast(formikProps.values))}
                     disabled={!formikProps.isValid}
                   >
                     PDF Herunterladen

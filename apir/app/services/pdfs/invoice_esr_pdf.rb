@@ -5,6 +5,7 @@ module Pdfs
   class InvoiceEsrPdf
     include Prawn::View
     include Pdfs::PrawnHelper
+    include ActionView::Helpers::NumberHelper
 
     def initialize(global_setting, invoice)
       @global_setting = global_setting
@@ -16,6 +17,14 @@ module Pdfs
 
     def document
       @document ||= Prawn::Document.new(page_size: 'A4', page_layout: :portrait, margin: [0,0,0,0])
+    end
+
+    def format_money_esr(amount)
+      number_to_currency(amount, unit: "", separator: " ", delimiter: "")
+    end
+
+    def format_money(amount)
+      number_to_currency(amount, unit: "", separator: ".", delimiter: ",").gsub(',',"'")
     end
 
     def draw
@@ -48,13 +57,14 @@ module Pdfs
       bounding_box([0.5.cm, 4.4.cm], :width => 5.3.cm, :height => 3.9.cm) do
         # stroke_bounds
 
-        leading = 6.5
+        font_size = 9
+        leading = 16.5 - font_size
 
         move_down 5
-        text @invoice.customer.company.name, size: 10, character_spacing: @spacing, leading: leading if @invoice.customer.company
-        text @invoice.customer.full_name, size: 10, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + ", " + @invoice.address.supplement, size: 10, character_spacing: @spacing, leading: leading
-        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: 10, character_spacing: @spacing, leading: leading
+        text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
+        text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.street + ", " + @invoice.address.supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
       end
     end
 
@@ -73,7 +83,7 @@ module Pdfs
       end
 
       total = (@invoice.breakdown[:total] / 5.0).round * 5 / 100.0
-      price_text = total.to_s.gsub('.', ' ')
+      price_text = format_money_esr(total)
       col = 11 - price_text.length
       price_text.each_char do |c|
         float do
@@ -138,13 +148,14 @@ module Pdfs
       bounding_box([12.5.cm, 5.7.cm], :width => 8.1.cm, :height => 3.5.cm) do
         # stroke_bounds
 
-        leading = 6.5
+        font_size = 9
+        leading = 16.5 - font_size
 
         move_down 5
-        text @invoice.customer.company.name, size: 10, character_spacing: @spacing, leading: leading if @invoice.customer.company
-        text @invoice.customer.full_name, size: 10, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + ", " + @invoice.address.supplement, size: 10, character_spacing: @spacing, leading: leading
-        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: 10, character_spacing: @spacing, leading: leading
+        text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
+        text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.street + ", " + @invoice.address.supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
       end
     end
 
@@ -176,7 +187,7 @@ module Pdfs
           # stroke_bounds
 
           total = (@invoice.breakdown[:total] / 5.0).round * 5 / 100.0
-          total_formated = total.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1\'').reverse
+          total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_name + ", " + @global_setting.sender_street +

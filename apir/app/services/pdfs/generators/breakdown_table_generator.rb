@@ -32,7 +32,7 @@ module Pdfs
             {
               [1] => :right,
             },
-            )
+          )
         else
           render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal], true
         end
