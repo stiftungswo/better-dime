@@ -21,7 +21,7 @@ class DailyEfforts
                 ['project_efforts.deleted_at', '=', null]
             ])
             ->whereBetween('project_efforts.date', [$from->startOfDay(), $to->endOfDay()])
-            ->orderBy('date')
+            ->orderBy('employees.first_name')
             ->get();
 
         $dates = [];

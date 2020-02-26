@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get "reports/service_hours", to: "service_hour_reports#index"
     get "reports/service_hours/project", to: "service_hour_reports#project"
     get "reports/service_hours/project_category", to: "service_hour_reports#project_category"
+    get "reports/daily", to: "daily_reports#index"
 
     get "global_settings", to: "global_settings#index"
     put "global_settings", to: "global_settings#update"
