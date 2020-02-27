@@ -62,7 +62,7 @@ module Pdfs
 
       uniq_dates.each do |date|
         date_data = []
-        num_comments = efforts_holder.project_comments.select { |e| e.date == date }.length
+        num_comments = efforts_holder.project_comments.count { |e| e.date == date }
 
         efforts_holder.project_comments.select { |e| e.date == date }.each do |comment|
           date_data.push [
