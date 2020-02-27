@@ -10,7 +10,8 @@ gem "bootsnap", ">= 1.1.0", require: false
 gem "caxlsx_rails"
 gem "creek"
 gem "deep_cloneable", "~> 3.0.0"
-gem "devise-jwt", "~> 0.5.9"
+gem "devise-jwt", "~> 0.6"
+gem "dry-configurable", "~> 0.9.0" # Regression issue of the latest devise-jwt and it's dependencies, could be removed
 gem "discard"
 gem "dotenv-rails"
 gem "draper"
