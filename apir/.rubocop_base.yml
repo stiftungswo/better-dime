@@ -4,7 +4,7 @@ require:
 Rails:
   Enabled: true
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 240
   Exclude:
     - 'db/seeds.rb'
@@ -62,6 +62,13 @@ Style/WordArray:
 Style/RegexpLiteral:
   Enabled: false
 
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+
 AllCops:
   Exclude:
     - 'bin/**/*'
@@ -71,3 +78,4 @@ AllCops:
     - 'db/migrate/*'
     - 'db/schema.rb'
     - 'vendor/**/*'
+
