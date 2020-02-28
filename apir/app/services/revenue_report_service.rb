@@ -50,7 +50,7 @@ class RevenueReportService
   end
 
   def footer
-    HEADER.map { "" }
+    HEADER.map { "" } + cost_groups.map {nil}
   end
 
   def table
