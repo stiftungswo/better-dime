@@ -23,14 +23,14 @@ class RevenueReportService
   end
 
   def rows
-    offers.map do |offer|
+    all_rows = offers.map do |offer|
       offer_price = (offer.breakdown[:fixed_price] || offer.breakdown[:total]).round # TODO: Decorator
       row = ["Offerte", offer.name, nil, offer.customer&.name, offer.created_at.strftime("%d.%m.%Y"), offer.accountant&.name, nil, nil, offer_price]
       row += cost_groups.map { nil }
-      row = row.map { |column| column.is_a?(Numeric) ? (column / 100).round : column }
-      row
-    end + projects.map do |project|
+    end
+    all_rows += projects.map do |project|
       offer_price = project.offer ? (project.offer.breakdown[:fixed_price] || project.offer.breakdown[:total]) : nil # TODO: Decorator
+
       invoice_price = project.invoices.sum { |invoice| (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) } # TODO: Decorator
       invoice_price = nil if invoice_price.zero?
       invoice_price_by_costgroup = {}
@@ -41,11 +41,12 @@ class RevenueReportService
         end
       end
       current_price = nil # (project.current_price  / 100).round # TODO maybe the right value? # TODO THIS IS SLOW AS FUCK N+X
+
       row = ["Projekt", project.name, project.project_category&.name, project.customer&.name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
-      row = row.map { |column| column.is_a?(Numeric) ? (column / 100).round : column }
       row
     end
+    all_rows.map { |column| column.is_a?(Numeric) ? (column / 100).round : column }
   end
 
   HEADER = ["Typ", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
