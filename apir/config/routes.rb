@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :costgroups, only: :index
 
     get "reports/project_report(/:id)", to: "reports#project_report", defaults: { format: "pdf" }
+    get "reports/employees_report", to: "reports#employees_project_report", defaults: { format: "pdf" }
     get "reports/service_hours", to: "service_hour_reports#index"
     get "reports/service_hours/project", to: "service_hour_reports#project"
     get "reports/service_hours/project_category", to: "service_hour_reports#project_category"
