@@ -43,9 +43,8 @@ class Customer < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].reject(&:blank?).join(" ")
+    [first_name, last_name, name].reject(&:blank?).join(" ")
   end
-  alias name full_name
 
   def is_duplicated?
     Customer.where(name: name, first_name: first_name, last_name: last_name).any?

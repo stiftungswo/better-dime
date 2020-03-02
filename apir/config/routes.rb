@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post "duplicate", on: :member
       post "archive", on: :member
       put "archive", on: :member
+      get "effort_report", on: :member, defaults: { format: "pdf" }
     end
 
     resources :project_efforts, constraints: { id: /[0-9]+/ } do
