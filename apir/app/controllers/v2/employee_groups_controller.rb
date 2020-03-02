@@ -9,7 +9,6 @@ module V2
       @employee_groups = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])
     end
 
-    # unused yet
     def show
       @employee_group = EmployeeGroup.find(params[:id]).decorate
     end
