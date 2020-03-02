@@ -9,4 +9,8 @@ class Company < Customer
   validates :name, :rate_group, presence: true
   validates :name, uniqueness: true
   validates :email, length: { maximum: 255 }
+
+  def full_name
+    name
+  end
 end

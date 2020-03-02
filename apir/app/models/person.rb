@@ -5,4 +5,8 @@ class Person < Customer
 
   validates :first_name, :last_name, :rate_group, presence: true
   validates :email, length: { maximum: 255 }
+
+  def full_name
+    first_name + " " + last_name
+  end
 end
