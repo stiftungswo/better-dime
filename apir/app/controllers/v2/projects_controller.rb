@@ -2,8 +2,11 @@
 
 module V2
   class ProjectsController < ApplicationController
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
     before_action :set_project, only: [:show, :update, :destroy, :create_invoice, :effort_report]
-    before_action :authenticate_employee!
 
     def index
       @q = Project.order(id: :desc).ransack(search_params)

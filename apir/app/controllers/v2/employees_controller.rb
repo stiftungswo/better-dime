@@ -2,7 +2,10 @@
 
 module V2
   class EmployeesController < APIController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
     def index
       @q = Employee.includes(:employee_group).order(created_at: :desc).ransack(search_params)

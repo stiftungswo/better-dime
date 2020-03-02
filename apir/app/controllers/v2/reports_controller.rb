@@ -2,7 +2,10 @@
 
 module V2
   class ReportsController < ApplicationController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
     def project_report
       from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])

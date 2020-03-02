@@ -2,8 +2,11 @@
 
 module V2
   class OffersController < APIController
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
     before_action :set_offer, only: [:show, :update, :destroy, :create_project, :print]
-    before_action :authenticate_employee!
 
     def index
       @q = Offer.order(id: :desc).ransack(search_params)

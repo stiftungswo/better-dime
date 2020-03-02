@@ -73,7 +73,7 @@ export class MainStore {
   apiV2URL(path: string, params: object = {}, includeAuth: boolean = true): string {
     return buildURL(baseUrlV2 + '/' + path, {
       ...params,
-      auth: includeAuth ? this.apiStore.token : undefined,
+      token: includeAuth ? this.apiStore.tokenV2.toString().replace('Bearer ', '') : undefined,
     });
   }
 }
