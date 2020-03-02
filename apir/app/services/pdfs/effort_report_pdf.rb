@@ -33,8 +33,8 @@ module Pdfs
 
       dates = efforts_holder.project_efforts.map(&:date) + efforts_holder.project_comments.map(&:date)
 
-      earliest_effort = dates.min
-      latest_effort = dates.max
+      earliest_effort = dates.min || DateTime.now()
+      latest_effort = dates.max || DateTime.now()
 
       move_down 5
       text "Aufwandsrapport: ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
