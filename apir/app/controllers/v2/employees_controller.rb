@@ -84,9 +84,9 @@ module V2
     end
 
     def effort_report
-      @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service]]).find(params[:id])
-      @from = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
-      @to = params[:to].blank? ?  DateTime.now() : DateTime.parse(params[:to])
+      @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
+      @from = params[:start].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:start])
+      @to = params[:end].blank? ?  DateTime.now() : DateTime.parse(params[:end])
       pdf = Pdfs::EmployeeEffortReportPdf.new GlobalSetting.first, @employee, @from, @to
 
       respond_to do |format|

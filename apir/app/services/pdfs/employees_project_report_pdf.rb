@@ -8,7 +8,7 @@ module Pdfs
 
     def initialize(global_setting, employees, from_date, to_date)
       @global_setting = global_setting
-      @employees = employees
+      @employees = employees.sort_by(&:full_name)
       @from_date = from_date
       @to_date = to_date
       super()
@@ -35,6 +35,13 @@ module Pdfs
       ).select { |e| (@from_date..@to_date) === e.date }
     end
 
+    def trim_text_if_needed(text, max_length)
+      text_length = text.length
+      trimming = text_length > max_length+3
+      ending_index = trimming ? max_length : max_length + 3
+      text[0...ending_index] + (trimming ? "..." : "")
+    end
+
     def draw_description
       move_down 40
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
@@ -46,7 +53,7 @@ module Pdfs
 
     def draw_employee_efforts
       @employees.each do |employee|
-        efforts = efforts_in_range(employee)
+        efforts = efforts_in_range(employee).sort_by {|e| [e.date, e.project_position.project.id]}
         effort_dates = efforts.map(&:date).uniq.sort
 
         if efforts.length > 0
@@ -68,15 +75,12 @@ module Pdfs
                 e.date == date && e.position_id == effort.position_id && e.employee == effort.employee
               end
 
-              project_name = effort.project_position.project.name
-              project_name_length = project_name.length
-
               table_data.push(
                 data: [
                   date.strftime("%d.%m.%Y"),
                   (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
-                  effort.project_position.service.name,
-                  effort.project_position.project.id.to_s + " - " + project_name[0...27] + (project_name_length > 27 ? "..." : "")
+                  trim_text_if_needed(effort.project_position.service.name, 25),
+                  effort.project_position.project.id.to_s + " - " + trim_text_if_needed(effort.project_position.project.name, 27)
                 ],
                 style: {
                   borders: [],
