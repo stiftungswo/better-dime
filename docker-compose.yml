@@ -29,6 +29,20 @@ services:
         - DATABASE_HOST=mysql
         - DATABASE_USERNAME=root
         - DATABASE_PASSWORD=
+  guard:
+    build:
+        context: ./apir
+        dockerfile: dev.Dockerfile
+    volumes:
+        - ./apir:/apir
+    working_dir: /apir
+    command: "bundle update guard guard-rspec guard-rubocop guard-brakeman && bundle exec guard --no-interactions"
+    depends_on:
+        - mysql
+    environment:
+        - DATABASE_HOST=mysql
+        - DATABASE_USERNAME=root
+        - DATABASE_PASSWORD=
   mysql:
     image: mysql:5.7
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
