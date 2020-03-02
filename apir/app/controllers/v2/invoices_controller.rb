@@ -2,8 +2,11 @@
 
 module V2
   class InvoicesController < ApplicationController
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
     before_action :set_invoice, only: [:show, :update, :destroy, :print, :print_esr, :effort_report]
-    before_action :authenticate_employee!
 
     def index
       @q = Invoice.order(id: :desc).ransack(search_params)

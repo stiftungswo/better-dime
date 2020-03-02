@@ -146,7 +146,7 @@ class ProjectForm extends React.Component<Props> {
           project && project.id ? (
             <>
               <PrintButton
-                path={`projects/${project.id}/print_effort_report`}
+                path={`projects/${project.id}/effort_report`}
                 color={'inherit'}
                 title={'Aufwandsrapport drucken'}
                 icon={StatisticsIcon}

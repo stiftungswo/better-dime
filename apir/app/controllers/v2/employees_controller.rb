@@ -2,7 +2,10 @@
 
 module V2
   class EmployeesController < APIController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
     def index
       @q = Employee.includes(:employee_group).order(created_at: :desc).ransack(search_params)
@@ -81,9 +84,9 @@ module V2
     end
 
     def effort_report
-      @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service]]).find(params[:id])
-      @from = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
-      @to = params[:to].blank? ?  DateTime.now() : DateTime.parse(params[:to])
+      @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
+      @from = params[:start].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:start])
+      @to = params[:end].blank? ?  DateTime.now() : DateTime.parse(params[:end])
       pdf = Pdfs::EmployeeEffortReportPdf.new GlobalSetting.first, @employee, @from, @to
 
       respond_to do |format|

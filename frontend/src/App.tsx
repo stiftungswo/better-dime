@@ -34,6 +34,7 @@ import ProjectWithPotentialInvoicesOverview from './views/projects/ProjectWithPo
 import RateGroupOverview from './views/rate_groups/RateGroupOverview';
 import RateUnitOverview from './views/rate_units/RateUnitOverview';
 import DailyReport from './views/reports/DailyReport';
+import { EmployeesReport } from './views/reports/EmployeesReport';
 import { PercentageReport } from './views/reports/PercentageReport';
 import { ProjectReport } from './views/reports/ProjectReport';
 import { RevenueReport } from './views/reports/RevenueReport';
@@ -87,6 +88,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/reports/daily" component={DailyReport} />
             <ProtectedRoute exact path="/reports/service" component={ServiceReports} />
             <ProtectedRoute exact path="/reports/revenue" component={RevenueReport} />
+            <ProtectedRoute exact path="/reports/employees" component={EmployeesReport} />
             <ProtectedRoute exact path="/reports/project" component={ProjectReport} />
             <ProtectedRoute exact requiresAdmin path="/global_settings" component={GlobalSettingsUpdate} />
             <ProtectedRoute exact path="/reports/costgroup" component={PercentageReport} />

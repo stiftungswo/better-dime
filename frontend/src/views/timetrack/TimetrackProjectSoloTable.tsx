@@ -27,7 +27,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
   projectGroupActions = (
     <>
       <PrintButton
-        path={'projects/' + this.props.entityId + '/print_effort_report'}
+        path={'projects/' + this.props.entityId + '/effort_report'}
         title={'Aufwandsrapport drucken'}
         urlParams={this.props.effortReportUrlParams()}
       />

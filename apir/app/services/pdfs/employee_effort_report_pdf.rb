@@ -21,37 +21,51 @@ module Pdfs
       draw_efforts
     end
 
+    def trim_text_if_needed(text, max_length)
+      text_length = text.length
+      trimming = text_length > max_length+3
+      ending_index = trimming ? max_length : max_length + 3
+      text[0...ending_index] + (trimming ? "..." : "")
+    end
+
     def draw_description
       move_down 40
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
 
+      total_effort_hours = @employee.project_efforts.select do |e|
+        (@from..@to) === e.date && e.project_position.rate_unit.is_time
+      end.inject(0) {|sum, e| sum + e.value}
+
       move_down 5
       text "Aufwandsrapport".upcase, @default_text_settings.merge(size: 13, style: :bold)
       text "Leistungen vom " + @from.strftime("%d.%m.%Y") + " bis " + @to.strftime("%d.%m.%Y"), @default_text_settings
+      text "Gesamtstunden: " + (total_effort_hours/60.0).round(2).to_s, @default_text_settings
     end
 
     def draw_efforts
       move_down 20
 
-      effort_dates = @employee.project_efforts.map(&:date).select {|d| (@from..@to) === d}.uniq
+      efforts = @employee.project_efforts.select {|e| (@from..@to) === e.date}
+      effort_dates = efforts.map(&:date).uniq
 
       table_data = [
-        ["Datum", "Bezeichnung", "Anzahl", "Einheit"]
+        ["Datum", "Projekt", "Bezeichnung",  "Anzahl", "Einheit"]
       ]
 
-      content_widths = [bounds.width - 190, 50, 65]
+      content_widths = [bounds.width - 320, 150, 50, 45]
       widths = [75] + content_widths
 
       effort_dates.each do |date|
         date_data = []
 
-        @employee.project_efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|
-          same_positions = @employee.project_efforts.select { |e| e.date == date && e.position_id == effort.position_id }
+        efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|
+          same_positions = efforts.select { |e| e.date == date && e.position_id == effort.position_id }
           date_data.push [
-                           effort.project_position.service.name,
-                           (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(2),
-                           effort.project_position.rate_unit.name
-                         ]
+             trim_text_if_needed(effort.project_position.project.id.to_s + " - " + effort.project_position.project.name, 25),
+             trim_text_if_needed(effort.project_position.service.name, 30),
+            (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(2),
+            effort.project_position.rate_unit.name
+          ]
         end
 
         subtable = make_table(date_data, column_widths: content_widths) do
@@ -60,10 +74,10 @@ module Pdfs
           columns(0..date_data[0].length - 2).padding = [3, 10, 3, 0]
           # only have a very small right padding on the right most cell
           columns(date_data[0].length - 1).padding = [3, 1, 3, 0]
-          columns(1).align = :right
+          columns(2).align = :right
         end
 
-        table_data.push [date.strftime("%d.%m.%Y"), { content: subtable, colspan: 3 }]
+        table_data.push [date.strftime("%d.%m.%Y"), { content: subtable, colspan: 4 }]
       end
 
       table(table_data, header: true, column_widths: widths) do
@@ -74,7 +88,7 @@ module Pdfs
         # pad the cells on top, right and bottom
         cells.padding = [5, 1, 5, 0]
         columns(0).padding = [0, 0, 5, 0]
-        columns(2).align = :right
+        columns(3).align = :right
 
         row(0).columns(0..table_data[0].length - 2).padding = [5, 10, 5, 0]
         row(0).columns(table_data[0].length - 1).padding = [5, 1, 5, 0]

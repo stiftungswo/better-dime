@@ -2,7 +2,10 @@
 
 module V2
   class ReportsController < ApplicationController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
     def project_report
       from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
@@ -19,11 +22,11 @@ module V2
       end
     end
 
-    def employee_report
+    def employees_project_report
       from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
       to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])
 
-      pdf = Pdfs::EmployeeReport.new GlobalSetting.first, Project.find(params[:id]), from_date, to_date, daily_rate, vat
+      pdf = Pdfs::EmployeesProjectReportPdf.new GlobalSetting.first, Employee.find(params[:employee_ids].split(',')), from_date, to_date
 
       respond_to do |format|
         format.pdf do

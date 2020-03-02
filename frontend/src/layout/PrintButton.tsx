@@ -30,7 +30,7 @@ export default class PrintButton extends React.Component<Props> {
       );
     } else {
       return (
-        <a href={this.props.mainStore!.apiURL(this.props.path, this.props.urlParams)} target={'_blank'} style={{ color: 'white' }}>
+        <a href={this.props.mainStore!.apiV2URL(this.props.path, this.props.urlParams)} target={'_blank'} style={{ color: 'white' }}>
           <ActionButton
             icon={PrintIcon}
             secondaryIcon={BadgeIcon}
