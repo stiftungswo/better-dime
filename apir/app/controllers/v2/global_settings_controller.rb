@@ -2,6 +2,8 @@
 
 module V2
   class GlobalSettingsController < APIController
+    before_action :authenticate_employee!
+
     def index
       @global_setting = GlobalSetting.order(id: :asc).first_or_initialize
     end

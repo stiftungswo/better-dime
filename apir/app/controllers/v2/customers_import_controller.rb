@@ -2,6 +2,8 @@
 
 module V2
   class CustomersImportController < APIController
+    before_action :authenticate_employee!
+
     def template; end
 
     def verify

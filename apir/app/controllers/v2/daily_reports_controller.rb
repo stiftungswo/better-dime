@@ -2,6 +2,8 @@
 
 module V2
   class DailyReportsController < APIController
+    before_action :authenticate_employee!
+
     def index
       from_date = DateTime.parse(params[:from]) || DateTime.new(2019, 1, 1)
       to_date = DateTime.parse(params[:to]) || DateTime.now

@@ -2,6 +2,8 @@
 
 module V2
   class ProjectCategoriesController < APIController
+    before_action :authenticate_employee!
+
     def index
       @q = ProjectCategory.order(created_at: :desc).ransack(search_params)
       @project_categories = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])

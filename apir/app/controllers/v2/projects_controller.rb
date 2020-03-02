@@ -3,6 +3,7 @@
 module V2
   class ProjectsController < ApplicationController
     before_action :set_project, only: [:show, :update, :destroy, :create_invoice, :effort_report]
+    before_action :authenticate_employee!
 
     def index
       @q = Project.order(id: :desc).ransack(search_params)

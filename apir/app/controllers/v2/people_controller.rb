@@ -2,6 +2,8 @@
 
 module V2
   class PeopleController < APIController
+    before_action :authenticate_employee!
+
     def index
       @q = Person.left_outer_joins(:company, :addresses, :phones).includes(:phones, :addresses, :company).order(created_at: :desc).ransack(search_params)
       @people = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize]).distinct

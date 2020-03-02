@@ -3,6 +3,7 @@
 module V2
   class ProjectEffortsController < ApplicationController
     before_action :set_effort, only: [:show, :update, :destroy]
+    before_action :authenticate_employee!
 
     def index
       @filtered = ProjectEffortFilter.new(params).filter ProjectEffort.left_joins(:employee, project_position: [:service, :project, :rate_unit, :position_group])

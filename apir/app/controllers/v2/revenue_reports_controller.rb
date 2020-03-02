@@ -2,6 +2,8 @@
 
 module V2
   class RevenueReportsController < APIController
+    before_action :authenticate_employee!
+
     def index
       @report = RevenueReportService.new(timerange)
     end

@@ -2,6 +2,8 @@
 
 module V2
   class CustomerTagsController < APIController
+    before_action :authenticate_employee!
+
     def index
       @q = CustomerTag.order(created_at: :desc).ransack(search_params)
       @customer_tags = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])

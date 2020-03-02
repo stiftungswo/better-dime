@@ -3,6 +3,7 @@
 module V2
   class ServicesController < ApplicationController
     before_action :set_service, only: [:show, :update, :destroy]
+    before_action :authenticate_employee!
 
     def index
       @q = Service.includes(:service_rates).order(id: :asc).ransack(search_params)

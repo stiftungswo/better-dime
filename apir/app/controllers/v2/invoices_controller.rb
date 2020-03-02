@@ -3,6 +3,7 @@
 module V2
   class InvoicesController < ApplicationController
     before_action :set_invoice, only: [:show, :update, :destroy, :print, :print_esr, :effort_report]
+    before_action :authenticate_employee!
 
     def index
       @q = Invoice.order(id: :desc).ransack(search_params)

@@ -2,6 +2,8 @@
 
 module V2
   class ReportsController < ApplicationController
+    before_action :authenticate_employee!
+
     def project_report
       from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
       to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])

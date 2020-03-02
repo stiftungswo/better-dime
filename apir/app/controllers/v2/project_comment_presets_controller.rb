@@ -3,6 +3,7 @@
 module V2
   class ProjectCommentPresetsController < ApplicationController
     before_action :set_preset, only: [:show, :update, :destroy]
+    before_action :authenticate_employee!
 
     def index
       @q = ProjectCommentPreset.order(id: :desc).ransack(search_params)

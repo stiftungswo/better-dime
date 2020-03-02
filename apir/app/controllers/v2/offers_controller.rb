@@ -3,6 +3,7 @@
 module V2
   class OffersController < APIController
     before_action :set_offer, only: [:show, :update, :destroy, :create_project, :print]
+    before_action :authenticate_employee!
 
     def index
       @q = Offer.order(id: :desc).ransack(search_params)

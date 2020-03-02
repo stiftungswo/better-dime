@@ -2,6 +2,8 @@
 
 module V2
   class CustomersController < APIController
+    before_action :authenticate_employee!
+
     def index
       @q = Customer.left_outer_joins(:customer_tags, :addresses, :phones, people: [:addresses, :phones], company: [{ people: [:addresses, :phones] }])
                    .includes(:addresses, :phones, :company).order(created_at: :desc).ransack(search_params)

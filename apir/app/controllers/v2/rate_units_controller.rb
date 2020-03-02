@@ -3,6 +3,7 @@
 module V2
   class RateUnitsController < ApplicationController
     before_action :set_rate_unit, only: [:show, :update, :destroy]
+    before_action :authenticate_employee!
 
     def index
       @q = RateUnit.order(id: :desc).ransack(search_params)

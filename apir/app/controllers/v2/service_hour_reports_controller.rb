@@ -2,6 +2,8 @@
 
 module V2
   class ServiceHourReportsController < APIController
+    before_action :authenticate_employee!
+
     def index
       case report_params["group_by"]
       when "project"

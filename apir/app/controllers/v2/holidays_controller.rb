@@ -3,6 +3,7 @@
 module V2
   class HolidaysController < ApplicationController
     before_action :set_holiday, only: [:update, :destroy]
+    before_action :authenticate_employee!
 
     def index
       @q = Holiday.order(id: :desc).ransack(search_params)

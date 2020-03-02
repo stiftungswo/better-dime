@@ -2,6 +2,8 @@
 
 module V2
   class EmployeeGroupsController < APIController
+    before_action :authenticate_employee!
+
     def index
       @q = EmployeeGroup.order(created_at: :desc).ransack(search_params)
       @employee_groups = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize])

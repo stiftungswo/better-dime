@@ -2,6 +2,8 @@
 
 module V2
   class PositionGroupsController < ApplicationController
+    before_action :authenticate_employee!
+
     def create
       @position_group = PositionGroup.new(update_params)
 

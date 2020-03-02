@@ -25,6 +25,7 @@ class Customer < ApplicationRecord
   scope :companies, -> { where(type: "company") }
 
   before_save :down_case_type
+  before_action :authenticate_user!
 
   def self.params
     attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
