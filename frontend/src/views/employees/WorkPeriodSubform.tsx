@@ -15,10 +15,10 @@ import TableToolbar from '../../layout/TableToolbar';
 import { Employee, WorkPeriod } from '../../types';
 
 const template = {
-  end: moment().endOf('year'),
+  ending: moment().endOf('year'),
   formikKey: Math.random(),
   pensum: 100,
-  start: moment().startOf('year'),
+  beginning: moment().startOf('year'),
   vacation_takeover: 0,
   yearly_vacation_budget: 10080,
 };
@@ -129,10 +129,10 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         first.getMonth() === second.getMonth() &&
                         first.getDate() === second.getDate();
 
-                      const startA = new Date(a.start);
-                      const startB = new Date(b.start);
-                      const endA = new Date(a.end);
-                      const endB = new Date(b.end);
+                      const startA = new Date(a.beginning);
+                      const startB = new Date(b.beginning);
+                      const endA = new Date(a.ending);
+                      const endB = new Date(b.ending);
 
                       if (!datesAreOnSameDay(startA, startB)) { // if the difference is more than 23.99 hours
                         return startA.getTime() - startB.getTime();
@@ -159,18 +159,18 @@ export class WorkPeriodSubform extends React.Component<Props> {
                                   <Warning color={'error'}/>
                                 </Grid>
                                 <Grid item style={{color: 'red', marginLeft: '10px'}}>
-                                  <DimeField component={DatePicker} name={fieldName('start')} />
+                                  <DimeField component={DatePicker} name={fieldName('beginning')} />
                                 </Grid>
                               </Grid>
                             </DimeTableCell>
                           )}
                           {!w.overlapping_periods && (
                             <DimeTableCell>
-                              <DimeField component={DatePicker} name={fieldName('start')} />
+                              <DimeField component={DatePicker} name={fieldName('beginning')} />
                             </DimeTableCell>
                           )}
                           <DimeTableCell>
-                            <DimeField component={DatePicker} name={fieldName('end')} />
+                            <DimeField component={DatePicker} name={fieldName('ending')} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
@@ -185,17 +185,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             {formattedHours(w.remaining_vacation_budget)}
                           </DimeTableCell>
                           <DimeTableCell>
-                            {index === 0 && (
-                              <DimeField
-                                delayed
-                                component={DurationField}
-                                timeUnit={'hour'}
-                                name={'first_vacation_takeover'}
-                              />
-                            )}
-                            {index !== 0 && (
-                              formattedHours(w.vacation_takeover)
-                            )}
+                            {formattedHours(w.vacation_takeover)}
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField

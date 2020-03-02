@@ -43,12 +43,12 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
   }
 
   protected async doPut(entity: GlobalSettings): Promise<void> {
-    const res = await this.mainStore.api.put('/global_settings', entity);
+    const res = await this.mainStore.apiV2.put('/global_settings', entity);
     this.settings = res.data;
   }
 
   protected async doFetchOne() {
-    const res = await this.mainStore.api.get<GlobalSettings>('/global_settings');
+    const res = await this.mainStore.apiV2.get<GlobalSettings>('/global_settings');
     this.settings = res.data;
   }
 }

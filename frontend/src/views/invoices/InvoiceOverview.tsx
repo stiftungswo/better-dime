@@ -39,14 +39,14 @@ export default class InvoiceOverview extends React.Component<Props> {
         format: i => props.mainStore!.trimString(i.description),
       },
       {
-        id: 'start',
+        id: 'beginning',
         label: 'Start',
-        format: i => props.mainStore!.formatDate(i.start),
+        format: i => props.mainStore!.formatDate(i.beginning),
       },
       {
-        id: 'end',
+        id: 'ending',
         label: 'Ende',
-        format: i => props.mainStore!.formatDate(i.end),
+        format: i => props.mainStore!.formatDate(i.ending),
       },
     ];
   }

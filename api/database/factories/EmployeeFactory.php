@@ -20,7 +20,7 @@ $factory->define(Employee::class, function () {
         'first_name' => $firstName,
         'holidays_per_year' => $faker->numberBetween(20, 25),
         'last_name' => $lastName,
-        'password' => $faker->password,
+        'encrypted_password' => $faker->password,
         'is_admin' => false,
         'first_vacation_takeover' => 0,
         'employee_group_id' => function () {
@@ -33,7 +33,7 @@ $factory->defineAs(Employee::class, 'admin', function () use ($factory) {
     $user = $factory->raw(Employee::class);
     $user['can_login'] = true;
     $user['email'] ='office@stiftungswo.ch';
-    $user['password'] = 'Welcome01';
+    $user['encrypted_password'] = 'Welcome01';
     $user['is_admin'] = true;
     $user['first_name'] = 'Ers';
     $user['first_vacation_takover'] = 0;

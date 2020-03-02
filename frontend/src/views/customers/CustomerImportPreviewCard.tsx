@@ -56,13 +56,22 @@ export const CustomerImportPreviewCard = compose(withStyles(styles))((props: Pro
 
         <Typography variant={'body2'}>Strasse: {customerPreview.street}</Typography>
         <Typography variant={'body2'}>Addresszusatz: {customerPreview.supplement}</Typography>
-        <Typography variant={'body2'}>Postleitzahl: {customerPreview.postcode}</Typography>
+        <Typography variant={'body2'}>Postleitzahl: {customerPreview.zip}</Typography>
         <Typography variant={'body2'}>Ortschaft: {customerPreview.city}</Typography>
         <Typography variant={'body2'}>Land: {customerPreview.country}</Typography>
 
         <hr />
 
+        <Typography variant={'body2'}>Tarifgruppe: {customerPreview.rate_group_name}</Typography>
+        <Typography variant={'body2'}>Tag: {customerPreview.customer_tag_name}</Typography>
+
+        <hr />
+
         <Typography variant={'body2'}>Kommentar: {customerPreview.comment}</Typography>
+
+        <hr />
+
+        <Typography variant={'body2'}>Error: {customerPreview.error_message}</Typography>
       </CardContent>
     </Card>
   );

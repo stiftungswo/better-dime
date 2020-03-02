@@ -28,12 +28,12 @@ export default class ServiceOverview extends React.Component<Props> {
         id: 'id',
         numeric: true,
         label: 'ID',
+        defaultSort: 'desc',
       },
       {
         id: 'order',
         numeric: true,
         label: 'R.',
-        defaultSort: 'asc',
       },
       {
         id: 'name',
@@ -55,6 +55,7 @@ export default class ServiceOverview extends React.Component<Props> {
     return (
       <Overview
         archivable
+        paginated
         searchable
         title={'Services'}
         store={this.props.serviceStore!}
@@ -66,8 +67,8 @@ export default class ServiceOverview extends React.Component<Props> {
               const newEntity: Service = await serviceStore!.duplicate(e.id);
               this.props.history.push(`/services/${newEntity.id}`);
             }}
-            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true).then(r => serviceStore!.fetchFiltered()) : undefined}
-            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false).then(r => serviceStore!.fetchFiltered()) : undefined}
+            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true).then(r => serviceStore!.fetchAllPaginated()) : undefined}
+            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false).then(r => serviceStore!.fetchAllPaginated()) : undefined}
           />
         )}
         onClickRow={'/services/:id'}

@@ -32,7 +32,7 @@ class AddressLabelBuilder
 
         $baseArray[] = $document->address->street;
         !$document->address->supplement ?: array_push($baseArray, $document->address->supplement);
-        $baseArray[] = $document->address->postcode . ' ' . $document->address->city;
+        $baseArray[] = $document->address->zip . ' ' . $document->address->city;
         !$document->address->country || $esr ?: array_push($baseArray, $document->address->country);
 
         return implode('<br>', $baseArray);

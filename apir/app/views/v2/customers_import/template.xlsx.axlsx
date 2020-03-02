@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Person|Firma") do |sheet|
+  sheet.add_row CustomersXlsxImportService::ROW.keys
+  sheet.add_row [
+    "Person", "", "Herr Dr", "Max", "Mustermann", "bevorzugt Tel. Kontakt", "Abteilung für Muster", "max@muster.com", "071 666 66 66", "079 666 66 66", "071 666 66 66", "Musterstrasse 66", "Postfach 66", "6666", "Musterstadt", "Schweiz", "unser beste Kunde", "Gemeinde und Private", CustomerTag.first&.name
+  ]
+  sheet.add_row [
+    "Firma", "Mustermann AG", "", "", "", "bevorzugt Tel. Kontakt", "Abteilung für Muster", "max@muster.com", "071 666 66 66", "079 666 66 66", "071 666 66 66", "Musterstrasse 66", "Postfach 66", "6666", "Musterstadt", "Schweiz", "unser beste Kunde", "Kanton", CustomerTag.last&.name
+  ]
+end

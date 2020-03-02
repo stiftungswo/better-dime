@@ -12,6 +12,37 @@ services:
     - mysql
     ports:
     - "38000:8000"
+  apir:
+    build:
+        context: ./apir
+        dockerfile: dev.Dockerfile
+    container_name: dime_apir
+    volumes:
+        - ./apir:/apir
+    working_dir: /apir
+    command: "bundle exec rails server -p 8000 -b 0.0.0.0"
+    depends_on:
+        - mysql
+    ports:
+        - "38001:8000"
+    environment:
+        - DATABASE_HOST=mysql
+        - DATABASE_USERNAME=root
+        - DATABASE_PASSWORD=
+  guard:
+    build:
+        context: ./apir
+        dockerfile: dev.Dockerfile
+    volumes:
+        - ./apir:/apir
+    working_dir: /apir
+    command: "bundle update guard guard-rspec guard-rubocop guard-brakeman && bundle exec guard --no-interactions"
+    depends_on:
+        - mysql
+    environment:
+        - DATABASE_HOST=mysql
+        - DATABASE_USERNAME=root
+        - DATABASE_PASSWORD=
   mysql:
     image: mysql:5.7
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
@@ -29,9 +60,9 @@ services:
     - PMA_ARBITRARY=1
     ports:
     - 38080:80
-  web-client:
+  frontend:
     image: node:10
-    container_name: dime_web-client
+    container_name: dime_frontend
     volumes:
     - ./frontend:/var/frontend
     working_dir: /var/frontend

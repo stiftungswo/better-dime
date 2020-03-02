@@ -38,10 +38,10 @@ export default class CompanyOverview extends React.Component<Props> {
         format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].street : '') : ''}</>,
       },
       {
-        id: 'postcode',
+        id: 'zip',
         noSort: true,
         label: 'PLZ',
-        format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].postcode : '') : ''}</>,
+        format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].zip : '') : ''}</>,
       },
       {
         id: 'city',

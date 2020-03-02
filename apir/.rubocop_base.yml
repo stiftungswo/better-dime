@@ -1,0 +1,81 @@
+require:
+  - rubocop-rspec
+
+Rails:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 240
+  Exclude:
+    - 'db/seeds.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/MixinUsage:
+  Exclude:
+    - 'bin/setup'
+    - 'bin/update'
+
+Style/NonNilCheck:
+  IncludeSemanticChanges: true
+
+Metrics/BlockLength:
+  Max: 160
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'config/environments/**/*.rb'
+
+Metrics/MethodLength:
+  Max: 12
+  Exclude:
+    - 'db/seeds.rb'
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/DescribedClass:
+  SkipBlocks: true
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/requests/**/*'
+
+RSpec/NestedGroups:
+  Max: 5
+
+Naming/RescuedExceptionsVariableName:
+  PreferredName: error
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'tmp/**/*'
+    - 'db/migrate/*'
+    - 'db/schema.rb'
+    - 'vendor/**/*'
+

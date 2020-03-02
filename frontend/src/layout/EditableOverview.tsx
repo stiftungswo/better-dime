@@ -3,11 +3,13 @@ import { FormikBag, FormikProps } from 'formik';
 import * as React from 'react';
 import { Schema } from 'yup';
 import { FormDialog } from '../form/FormDialog';
+import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { HandleFormikSubmit, Listing } from '../types';
 import Overview, { Column, SearchFilter } from './Overview';
 
 interface Props<T> {
+  paginated?: boolean;
   archivable?: boolean;
   searchable?: boolean;
   // tslint:disable-next-line:no-any ; the first type doesn't matter at all here and makes typing much more verbose
@@ -36,14 +38,21 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
     this.setState({ editing: false });
   }
 
+  handleChange = () => {
+    if (this.props.paginated) {
+      const paginatedStore = this.props.store! as AbstractPaginatedStore<any, T>;
+      paginatedStore.fetchAllPaginated().then(this.handleClose);
+    }
+  }
+
   handleSubmit = (entity: T) => {
     if (this.props.onSubmit) {
-      return this.props.onSubmit(entity).then(this.handleClose).catch(this.handleClose);
+      return this.props.onSubmit(entity).then(this.handleChange).catch(this.handleClose);
     } else {
       if (this.props.store.entity) {
-        this.props.store!.put(entity).then(this.handleClose).catch(this.handleClose);
+        this.props.store!.put(entity).then(this.handleChange).catch(this.handleClose);
       } else {
-        this.props.store!.post(entity).then(this.handleClose).catch(this.handleClose);
+        this.props.store!.post(entity).then(this.handleChange).catch(this.handleClose);
       }
       return Promise.resolve();
     }
@@ -60,6 +69,7 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
     return (
       <>
         <Overview
+          paginated={this.props.paginated}
           archivable={this.props.archivable}
           title={this.props.title}
           store={this.props.store}

@@ -28,7 +28,7 @@ export default class RateUnitOverview extends React.Component<Props> {
     super(props);
     this.columns = [
       {
-        id: 'name',
+        id: 'listing_name',
         numeric: false,
         label: 'Name',
       },
@@ -56,10 +56,15 @@ export default class RateUnitOverview extends React.Component<Props> {
     ];
   }
 
+  archiveRateUnit(e: RateUnit, archive: boolean) {
+    this.props.rateUnitStore!.archive(e.id, archive).then(() => this.props.rateUnitStore!.fetchAllPaginated());
+  }
+
   render() {
     return (
       <EditableOverview
         archivable
+        paginated
         searchable
         title={'Tarif-Typen'}
         store={this.props.rateUnitStore!}
@@ -68,8 +73,8 @@ export default class RateUnitOverview extends React.Component<Props> {
         defaultValues={rateUnitTemplate}
         renderActions={(e: RateUnit) => (
           <ActionButtons
-            archiveAction={!e.archived ? () => this.props.rateUnitStore!.archive(e.id, true) : undefined}
-            restoreAction={e.archived ? () => this.props.rateUnitStore!.archive(e.id, false) : undefined}
+            archiveAction={!e.archived ? () => this.archiveRateUnit(e, true) : undefined}
+            restoreAction={e.archived ? () => this.archiveRateUnit(e, false) : undefined}
           />
         )}
         renderForm={props => (

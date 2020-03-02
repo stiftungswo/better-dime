@@ -41,30 +41,30 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
 
   @action
   async doFetchAll() {
-    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories');
+    const res = await this.mainStore.apiV2.get<ProjectCategory[]>('/project_categories');
     this.projectCategories = res.data;
   }
 
   @action
   async doFetchFiltered() {
-    const res = await this.mainStore.api.get<ProjectCategory[]>('/project_categories', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<ProjectCategory[]>('/project_categories', {params: this.getQueryParams()});
     this.projectCategories = res.data;
   }
 
   @action
   async doPost(projectCategory: ProjectCategory) {
-    await this.mainStore.api.post('/project_categories', projectCategory);
+    await this.mainStore.apiV2.post('/project_categories', projectCategory);
     await this.doFetchAll();
   }
 
   @action
   async doPut(projectCategory: ProjectCategory) {
-    await this.mainStore.api.put('/project_categories/' + projectCategory.id, projectCategory);
+    await this.mainStore.apiV2.put('/project_categories/' + projectCategory.id, projectCategory);
     await this.doFetchAll();
   }
 
   protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.api.put('/project_categories/' + id + '/archive', { archived });
+    await this.mainStore.apiV2.put('/project_categories/' + id + '/archive', { archived });
     this.doFetchAll();
   }
 }

@@ -47,9 +47,9 @@ class WorkPeriodController extends BaseController
     {
         $this->validate($request, [
             'employee_id' => 'required|integer',
-            'end' => 'required|date',
+            'ending' => 'required|date',
             'pensum' => 'required|integer|min:0',
-            'start' => 'required|date',
+            'beginning' => 'required|date',
             'yearly_vacation_budget' => 'required|integer|min:0'
         ]);
     }

@@ -3,7 +3,7 @@ import { action, computed, observable } from 'mobx';
 import { Formatter } from '../utilities/formatter';
 import { buildURL } from '../utilities/helpers';
 import { Notifier } from '../utilities/notifier';
-import { ApiStore, baseUrl } from './apiStore';
+import { ApiStore, baseUrl, baseUrlV2 } from './apiStore';
 
 /*
 This class manages global UI state and provides some facades for often used functionality
@@ -12,6 +12,10 @@ export class MainStore {
 
   get api() {
     return this.apiStore.api;
+  }
+
+  get apiV2() {
+    return this.apiStore.apiV2;
   }
 
   @computed
@@ -61,6 +65,13 @@ export class MainStore {
 
   apiURL(path: string, params: object = {}, includeAuth: boolean = true): string {
     return buildURL(baseUrl + '/' + path, {
+      ...params,
+      auth: includeAuth ? this.apiStore.token : undefined,
+    });
+  }
+
+  apiV2URL(path: string, params: object = {}, includeAuth: boolean = true): string {
+    return buildURL(baseUrlV2 + '/' + path, {
       ...params,
       auth: includeAuth ? this.apiStore.token : undefined,
     });

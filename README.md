@@ -1,5 +1,5 @@
 # Dime
-[![Build Status](https://semaphoreci.com/api/v1/stiftungswo/betterdime/branches/develop/badge.svg)](https://semaphoreci.com/stiftungswo/betterdime)
+[![Build Status](https://semaphoreci.com/api/v1/stiftungswo/better-dime/branches/dev/badge.svg)](https://semaphoreci.com/stiftungswo/better-dime)
 [![codecov](https://codecov.io/gh/stiftungswo/betterDime/branch/master/graph/badge.svg)](https://codecov.io/gh/stiftungswo/betterDime)
 
 A complete rewrite of [Dime](https://github.com/stiftungswo/dime) using Laravel & React.
@@ -56,3 +56,5 @@ Damit insbesondere auf Macs die Kompilierzeiten beim Hot Reload nicht beeinträc
 
 #### Docker
 1. `docker-compose up web-client`
+
+17.02.2020 14:05

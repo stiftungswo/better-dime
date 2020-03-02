@@ -14,7 +14,7 @@ $factory->define(\App\Models\Customer\Address::class, function () {
         'city' => $faker->city,
         'country' => $faker->country,
         'description' => $faker->sentence,
-        'postcode' => $faker->postcode,
+        'zip' => $faker->zip,
         'street' => $faker->streetName,
         'supplement' => rand(1, 10) == '5' ? $faker->streetSuffix : null
     ];

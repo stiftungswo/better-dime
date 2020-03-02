@@ -56,13 +56,13 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     this.loading = true;
     try {
-      const res = await this.mainStore.api.get<ProjectEffortListing[]>('/project_efforts', {
+      const res = await this.mainStore.apiV2.get<ProjectEffortListing[]>('/project_efforts', {
         params: {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
           employee_ids: filter.employeeIds ? filter.employeeIds.join(',') : '',
-          project_ids: filter.projectIds.join(','),
-          service_ids: filter.serviceIds.join(','),
+          project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
+          service_ids: filter.serviceIds ? filter.serviceIds.join(',') : '',
           combine_times: filter.combineTimes,
         },
       });
@@ -76,7 +76,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @action
   async move(effortIds: number[], targetProject: number, targetPosition: number | null) {
     await this.notifyProgress(() =>
-      this.mainStore.api.put('project_efforts/move', {
+      this.mainStore.apiV2.put('project_efforts/move', {
         effort_ids: effortIds,
         project_id: targetProject,
         position_id: targetPosition || null,
@@ -88,26 +88,26 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @action
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.loading = true;
-    await this.mainStore.api.post<ProjectEffort>('/project_efforts', entity);
+    await this.mainStore.apiV2.post<ProjectEffort>('/project_efforts', entity);
     this.loading = false;
   }
 
   @action
   protected async doPut(entity: ProjectEffort): Promise<void> {
     this.loading = true;
-    const res = await this.mainStore.api.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
+    const res = await this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
     this.effort = res.data;
     this.loading = false;
   }
 
   @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<ProjectEffort>('/project_efforts/' + id);
+    const res = await this.mainStore.apiV2.get<ProjectEffort>('/project_efforts/' + id);
     this.effort = res.data;
   }
 
   @action
   protected async doDelete(id: number): Promise<void> {
-    await this.mainStore.api.delete('/project_efforts/' + id);
+    await this.mainStore.apiV2.delete('/project_efforts/' + id);
   }
 }

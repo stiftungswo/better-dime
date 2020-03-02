@@ -34,26 +34,26 @@ class CreateInvoiceFromProject extends BaseCreator
         $lastInvoice = DB::table('invoices')
             ->where('project_id', '=', $this->project->id)
             ->where('deleted_by', '=', null)
-            ->orderBy('end', 'desc')->first();
+            ->orderBy('ending', 'desc')->first();
 
         // check if the DB query for the last invoice brought up something
-        // if lastInvoice is null and project has no efforts booked, take yesterday's date as start date
-        // else if lastInvoice is null and project has efforts booked, take the date of the first effort as start date
-        // else if LastInvoice isn't null, take the last invoice's end and add one day to it as start date for the new invoice
+        // if lastInvoice is null and project has no efforts booked, take yesterday's date as beginning date
+        // else if lastInvoice is null and project has efforts booked, take the date of the first effort as beginning date
+        // else if LastInvoice isn't null, take the last invoice's ending and add one day to it as beginning date for the new invoice
         if (is_null($lastInvoice)) {
             if ($this->project->efforts->isEmpty()) {
-                $this->invoice->start = Carbon::yesterday()->format('Y-m-d');
+                $this->invoice->beginning = Carbon::yesterday()->format('Y-m-d');
             } else {
-                $this->invoice->start = $this->project->efforts->sortBy('date')->first()->date;
+                $this->invoice->beginning = $this->project->efforts->sortBy('date')->first()->date;
             }
         } else {
-            $this->invoice->start = Carbon::parse($lastInvoice->end)->addDay()->format('Y-m-d');
+            $this->invoice->beginning = Carbon::parse($lastInvoice->end)->addDay()->format('Y-m-d');
         }
 
         if ($this->project->efforts->isEmpty()) {
-            $this->invoice->end = Carbon::today();
+            $this->invoice->ending = Carbon::today();
         } else {
-            $this->invoice->end = $this->project->efforts->sortByDesc('date')->first()->date;
+            $this->invoice->ending = $this->project->efforts->sortByDesc('date')->first()->date;
         }
 
         $this->checkAndAssignInvoiceProperty('name');

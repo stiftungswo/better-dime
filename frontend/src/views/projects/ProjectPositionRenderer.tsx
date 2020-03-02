@@ -87,7 +87,6 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                 const name = (fieldName: string) => `${this.props.name}.${pIdx}.${fieldName}`;
                 const archivedService = this.props.serviceStore!.getArchived(values.positions[pIdx].service_id);
                 const archivedRate = p.rate_unit_archived;
-                const archivedEntities = archivedRate || archivedService;
                 return (
                   <>
                     <DimeTableCell {...provided.dragHandleProps}>

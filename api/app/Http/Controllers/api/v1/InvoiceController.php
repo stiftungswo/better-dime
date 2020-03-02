@@ -92,7 +92,7 @@ class InvoiceController extends BaseController
         // some projects used to be split with ; instead of ,
         $legacySplit = explode(";", $invoice->name)[0];
         $splitName = $this->replaceUmlaute(explode(",", $legacySplit)[0]);
-        $downloadName = "Rechnung_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->end)->format("Y_m_d");
+        $downloadName = "Rechnung_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->ending)->format("Y_m_d");
 
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
@@ -106,7 +106,7 @@ class InvoiceController extends BaseController
             ]
         );
 
-        return $pdf->print($downloadName, Carbon::parse($invoice->end));
+        return $pdf->print($downloadName, Carbon::parse($invoice->ending));
     }
 
     public function print_esr($id)
@@ -133,7 +133,7 @@ class InvoiceController extends BaseController
         // some projects used to be split with ; instead of ,
         $legacySplit = explode(";", $invoice->name)[0];
         $splitName = $this->replaceUmlaute(explode(",", $legacySplit)[0]);
-        $downloadName = "Einzahlungsschein_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->end)->format("Y_m_d");
+        $downloadName = "Einzahlungsschein_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->ending)->format("Y_m_d");
 
         // initialize PDF, render view and pass it back
         $pdf = new PDF(
@@ -148,7 +148,7 @@ class InvoiceController extends BaseController
             false
         );
 
-        return $pdf->print($downloadName, Carbon::parse($invoice->end));
+        return $pdf->print($downloadName, Carbon::parse($invoice->ending));
     }
 
     public function printEffortReport($id)
@@ -156,14 +156,14 @@ class InvoiceController extends BaseController
         $invoice = Invoice::findOrFail($id);
 
         if ($invoice->project) {
-            $commentsAndEffortsPerDate = ProjectEffortReportFetcher::fetch($invoice->project->id, $invoice->start, $invoice->end);
+            $commentsAndEffortsPerDate = ProjectEffortReportFetcher::fetch($invoice->project->id, $invoice->beginning, $invoice->ending);
             $parsedown = new Parsedown();
             $description = GroupMarkdownToDiv::group($parsedown->text($invoice->description));
 
             // some projects used to be split with ; instead of ,
             $legacySplit = explode(";", $invoice->name)[0];
             $splitName = $this->replaceUmlaute(explode(",", $legacySplit)[0]);
-            $downloadName = "Aufwandrapport_Rechnung_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->end)->format("Y_m_d");
+            $downloadName = "Aufwandrapport_Rechnung_" . $invoice->id . "_" . $splitName . "_" . Carbon::parse($invoice->ending)->format("Y_m_d");
 
             // initialize PDF, render view and pass it back
             $pdf = new PDF(
@@ -224,7 +224,7 @@ class InvoiceController extends BaseController
             'discounts.*.name' => 'required|string|max:255',
             'discounts.*.percentage' => 'required|boolean',
             'discounts.*.value' => 'required|numeric',
-            'end' => 'required|date',
+            'ending' => 'required|date',
             'fixed_price' => 'integer|nullable',
             'fixed_price_vat' => 'numeric|nullable',
             'positions' => 'present|array',
@@ -237,7 +237,7 @@ class InvoiceController extends BaseController
             'positions.*.vat' => 'required|numeric',
             'project_id' => 'nullable|integer',
             'name' => 'required|string',
-            'start' => 'required|date'
+            'beginning' => 'required|date'
         ]);
     }
 }

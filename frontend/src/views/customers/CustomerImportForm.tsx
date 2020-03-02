@@ -77,24 +77,10 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
               onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
-                  <Grid container spacing={24} alignItems={'center'}>
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={SwitchField} name={'hidden'} label={'Kunden verstecken?'} />
-                    </Grid>
-
-                    <Grid item xs={12} md={4}>
-                      <DimeField delayed component={RateGroupSelect} label={'Tarifgruppe auswählen'} name={'rate_group_id'} />
-                    </Grid>
-                  </Grid>
-
                   <Grid container alignItems={'center'} spacing={24}>
                     <Grid item xs={12} md={4}>
                       <a
-                        href={this.props.mainStore!.apiURL('customers/import/template')}
+                        href={this.props.mainStore!.apiV2URL('customers/import/template.xlsx')}
                         target={'_blank'}
                         style={{ textDecoration: 'none', color: 'white' }}
                       >

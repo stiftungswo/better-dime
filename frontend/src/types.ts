@@ -17,9 +17,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   rate_group_id: number;
   short_description: string;
   status: number;
-  deleted_at: null;
   created_at: string;
-  updated_at: string;
   breakdown: Breakdown;
   invoice_ids: number[];
   project_id?: number;
@@ -54,9 +52,6 @@ export interface OfferDiscount {
   offer_id: number;
   percentage: boolean;
   value: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface OfferPosition {
@@ -120,7 +115,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   customer_id: number;
   address_id: number;
   archived: boolean;
-  category_id: number;
+  category_id: number | null;
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
   deadline: null;
@@ -221,13 +216,13 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   address_id: number;
   breakdown: Breakdown;
   description: string;
-  end: string;
+  ending: string;
   fixed_price: null | number;
   fixed_price_vat: null | number;
   project_id?: number;
   offer_id?: number;
   name: string;
-  start: string;
+  beginning: string;
   deleted_at: null;
   created_at: string;
   updated_at: string;
@@ -253,6 +248,7 @@ export interface InvoicePosition {
   invoice_id: number;
   order: null | number;
   price_per_rate: number;
+  calculated_total: number;
   project_position_id: number;
   rate_unit_id: number;
   rate_unit_archived: boolean;
@@ -333,9 +329,6 @@ export interface ProjectComment {
   comment: string;
   date: Moment | string;
   project_id?: number;
-  deleted_at?: string;
-  created_at?: string;
-  updated_at?: string;
 }
 
 export interface ProjectCommentPreset {
@@ -360,10 +353,6 @@ export interface Company {
   phone_numbers?: PhoneNumber[];
 }
 
-export interface PaginatedCompanyListing extends PaginationInfo {
-  data: Company[];
-}
-
 export interface Person {
   type: 'person';
   id: number;
@@ -382,10 +371,6 @@ export interface Person {
   phone_numbers?: PhoneNumber[];
 }
 
-export interface PaginatedPersonListing extends PaginationInfo {
-  data: Person[];
-}
-
 export type Customer = Person | Company;
 
 export interface Address {
@@ -394,7 +379,7 @@ export interface Address {
   country: string;
   customer_id: number;
   description: string;
-  postcode: number;
+  zip: number;
   street: string;
   supplement: null | string;
   created_at: string;
@@ -408,12 +393,12 @@ export interface WorkPeriod {
   effective_time: number;
   effort_till_today: number;
   employee_id: number;
-  end: string;
+  ending: string;
   pensum: number;
   period_vacation_budget: number;
   remaining_vacation_budget: number;
   target_time: number;
-  start: string;
+  beginning: string;
   updated_at: string;
   vacation_takeover: number;
   overlapping_periods: boolean;
@@ -423,7 +408,7 @@ export interface WorkPeriod {
 export interface CustomerFilter {
   customer_tags: number[];
   export_format: number;
-  include_hidden: boolean;
+  showArchived: boolean;
 }
 
 export interface EmployeeListing {
@@ -433,10 +418,6 @@ export interface EmployeeListing {
   first_name: string;
   last_name: string;
   can_login: boolean;
-}
-
-export interface PaginatedEmployeeListing extends PaginationInfo {
-  data: Employee[];
 }
 
 export interface ProjectListing {
@@ -451,6 +432,7 @@ export interface ProjectListing {
   description: string;
   fixed_price: number | null;
   name: string;
+  listing_name: string;
   offer_id: number | null;
   rate_group_id: number;
   vacation_project: boolean;
@@ -473,8 +455,8 @@ export interface PaginationInfo {
   per_page: string;
 }
 
-export interface PaginatedProjectListing extends PaginationInfo {
-  data: ProjectListing[];
+export interface PaginatedData<T> extends PaginationInfo {
+  data: T[];
 }
 
 export interface InvoiceListing {
@@ -482,26 +464,18 @@ export interface InvoiceListing {
   accountant_id: number;
   address_id: number;
   description: string;
-  end: string;
+  ending: string;
   fixed_price: null;
   fixed_price_vat: null;
   project_id: number;
   name: string;
-  start: string;
-}
-
-export interface PaginatedInvoiceListing extends PaginationInfo {
-  data: InvoiceListing[];
+  beginning: string;
 }
 
 export interface OfferListing {
   id: number;
   name: string;
   short_description: string;
-}
-
-export interface PaginatedOfferListing extends PaginationInfo {
-  data: OfferListing[];
 }
 
 export interface RateGroup {
@@ -537,6 +511,10 @@ export interface RateUnit {
   is_time: boolean;
   name: string;
   archived: boolean;
+}
+
+export interface RateUnitListing extends RateUnit {
+  listing_name: string;
 }
 
 export interface EmployeeGroup {

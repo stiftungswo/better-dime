@@ -253,7 +253,7 @@ from (
        group by projects.id
      ) last_effort
        left join (
-  select projects.id, max(i.end) as last_invoice_date
+  select projects.id, max(i.ending) as last_invoice_date
   from projects
          left join invoices i on projects.id = i.project_id
   where i.deleted_at is null

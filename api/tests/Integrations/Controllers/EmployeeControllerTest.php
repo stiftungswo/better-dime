@@ -52,19 +52,6 @@ class EmployeeControllerTest extends \TestCase
         $this->assertEquals($employeeId, $decodedResponse[count($decodedResponse) - 2]['id']);
     }
 
-    public function testPasswordIsHashed()
-    {
-        $template = $template = $this->employeeTemplate();
-        $template['password'] = 'gurken';
-        $this->asAdmin()->json('POST', 'api/v1/employees/', $template);
-        $this->assertResponseOk();
-
-        $e = Employee::orderBy('id', 'desc')->first();
-
-        $this->assertEquals('test@stiftungswo.ch', $e->email);
-        $this->assertStringStartsWith('$', $e->password);
-    }
-
     public function testInvalidObjectPut()
     {
         // can't update because object does not exist

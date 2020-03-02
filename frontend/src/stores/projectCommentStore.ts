@@ -50,10 +50,11 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   @action
   async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     try {
-      const res = await this.mainStore.api.get<ProjectComment[]>('/project_comments', {
+      const res = await this.mainStore.apiV2.get<ProjectComment[]>('/project_comments', {
         params: {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
+          project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
         },
       });
       this.projectComments = res.data;
@@ -64,24 +65,24 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
   @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.api.get<ProjectComment>('/project_comments/' + id);
+    const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
     this.projectComment = res.data;
   }
 
   @action
   protected async doPost(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.api.post<ProjectComment>('/project_comments', entity);
+    const res = await this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity);
     this.projectComment = res.data;
   }
 
   @action
   protected async doPut(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.api.put<ProjectComment>('/project_comments/' + entity.id, entity);
+    const res = await this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity);
     this.projectComment = res.data;
   }
 
   @action
   protected async doDelete(id: number): Promise<void> {
-    await this.mainStore.api.delete('/project_comments/' + id);
+    await this.mainStore.apiV2.delete('/project_comments/' + id);
   }
 }

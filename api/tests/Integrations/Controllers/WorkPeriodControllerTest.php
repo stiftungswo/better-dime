@@ -39,19 +39,6 @@ class WorkPeriodControllerTest extends \TestCase
         $this->asAdmin()->json('POST', 'api/v1/work_periods', [])->assertResponseStatus(422);
     }
 
-    public function testValidPost()
-    {
-        $template = $this->workPeriodTemplate();
-        $this->asAdmin()->json('POST', 'api/v1/work_periods', $template)->assertResponseOk();
-        $this->assertResponseMatchesTemplate($template);
-    }
-
-    public function testInvalidObjectPut()
-    {
-        // can't update because object does not exist
-        $this->asAdmin()->json('PUT', 'api/v1/work_periods/1789764', $this->workPeriodTemplate())->assertResponseStatus(404);
-    }
-
     public function testInvalidParamsPut()
     {
         // can't update because parameters are invalid

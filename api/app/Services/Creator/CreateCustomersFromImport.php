@@ -45,7 +45,7 @@ class CreateCustomersFromImport
                         'city' => $customerData['city'],
                         'country' => $customerData['country'],
                         'customer_id' => $newCustomer->id,
-                        'postcode' => $customerData['postcode'],
+                        'zip' => $customerData['zip'],
                         'street' => $customerData['street'],
                         'supplement' => $customerData['supplement'],
                     ]);

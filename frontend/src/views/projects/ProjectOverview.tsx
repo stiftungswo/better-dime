@@ -27,7 +27,7 @@ export default class ProjectOverview extends React.Component<Props> {
         label: 'ID',
       },
       {
-        id: 'name',
+        id: 'listing_name',
         label: 'Name',
       },
       {

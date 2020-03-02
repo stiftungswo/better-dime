@@ -104,7 +104,7 @@ class CustomerControllerTest extends \TestCase
                 'main_number' => '044 888 33 22',
                 'name' => 'Stiftung Wirtschaft und Ökologie',
                 'last_name' => null,
-                'postcode' => 8603,
+                'zip' => 8603,
                 'street' => 'Bahnstrasse 18b',
                 'supplement' => null
             ], [
@@ -120,7 +120,7 @@ class CustomerControllerTest extends \TestCase
                 'mobile_number' => '079 666 77 22',
                 'name' => 'Stiftung Wirtschaft und Ökologie',
                 'last_name' => 'Heinrich',
-                'postcode' => 8092,
+                'zip' => 8092,
                 'street' => 'Bahnhofstrasse 534c',
                 'supplement' => null
             ],

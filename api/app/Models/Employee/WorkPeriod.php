@@ -20,7 +20,7 @@ class WorkPeriod extends Model
 
     please mind the following things for the additional attributes:
 
-    effort_till_today: calculates all efforts for this work_period until today or if the end is in the past, until the end
+    effort_till_today: calculates all efforts for this work_period until today or if the ending is in the past, until the ending
         it excludes any efforts which are booked on a position with a rate unit which has "is_time" false
         it also excludes any efforts on projects which have "vacation_project" true
         it also excludes any paid public holidays within this range
@@ -29,7 +29,7 @@ class WorkPeriod extends Model
     period_vacation_budget: period can be shorter than a year, or span over multiple years, but vacation budget is set for a year
         this basically calculates the eligible amount of minutes the employee can take holidays
 
-    target_time: basically effort_till_today, but calculates the amount the employee should work from start of the period until its end
+    target_time: basically effort_till_today, but calculates the amount the employee should work from beginning of the period until its end
 
     vacation_till_today: basically effort_till_today, but it only includes holiday projects
         so you get the effective amount of minutes the employee has taken vacations
@@ -39,7 +39,7 @@ class WorkPeriod extends Model
 
     protected $hidden = ['employee'];
 
-    protected $fillable = ['employee_id', 'end', 'pensum', 'start', 'yearly_vacation_budget'];
+    protected $fillable = ['employee_id', 'ending', 'pensum', 'beginning', 'yearly_vacation_budget'];
 
     public function employee()
     {
@@ -48,17 +48,17 @@ class WorkPeriod extends Model
 
     public function getTargetTimeAttribute()
     {
-        $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($this->end)->addDay());
+        $weekdays = Carbon::parse($this->beginning)->diffInWeekdays(Carbon::parse($this->ending)->addDay());
         $pensum = $this->pensum / 100;
         $targetTimeWithoutHolidays = $weekdays * 8.4 * 60;
-        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $this->end);
+        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->beginning, $this->ending);
         return round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
     }
 
     public function getPeriodVacationBudgetAttribute()
     {
-        $workPeriodStart = Carbon::parse($this->start);
-        $workPeriodEnd = Carbon::parse($this->end);
+        $workPeriodStart = Carbon::parse($this->beginning);
+        $workPeriodEnd = Carbon::parse($this->ending);
 
         $pensum = $this->pensum / 100;
         $vacationEntitlement = $this->yearly_vacation_budget;
@@ -69,19 +69,19 @@ class WorkPeriod extends Model
         $holidayMinutes = 0;
 
         for ($i = $startYear; $i <= $endYear; $i++) {
-            $start = Carbon::create($i)->startOfYear();
-            $end = Carbon::create($i)->endOfYear()->startOfDay();
-            $daysOfYear = ($start->diffInWeekdays($end) + 1) * 8.4 * 60;
+            $beginning = Carbon::create($i)->startOfYear();
+            $ending = Carbon::create($i)->endOfYear()->startOfDay();
+            $daysOfYear = ($beginning->diffInWeekdays($ending) + 1) * 8.4 * 60;
 
-            if ($this->start > $start) {
-                $start = $workPeriodStart;
+            if ($this->beginning > $beginning) {
+                $beginning = $workPeriodStart;
             }
 
-            if ($this->end < $end) {
-                $end = $workPeriodEnd;
+            if ($this->ending < $ending) {
+                $ending = $workPeriodEnd;
             }
 
-            $daysInYearPeriod = ($start->diffInWeekdays($end) + 1) * 8.4 * 60;
+            $daysInYearPeriod = ($beginning->diffInWeekdays($ending) + 1) * 8.4 * 60;
             $holidayMinutes += ($vacationEntitlement / $daysOfYear) * $daysInYearPeriod;
         }
 
@@ -92,20 +92,20 @@ class WorkPeriod extends Model
 
     public function getEffortTillTodayAttribute()
     {
-        $start = Carbon::parse($this->start);
+        $beginning = Carbon::parse($this->beginning);
 
-        if ($this->end < Carbon::now()->startOfDay()) {
-            $end = Carbon::parse($this->end);
-        } elseif (Carbon::now()->startOfDay() < $this->start) {
-            $end = Carbon::parse($this->start)->subDay();
+        if ($this->ending < Carbon::now()->startOfDay()) {
+            $ending = Carbon::parse($this->ending);
+        } elseif (Carbon::now()->startOfDay() < $this->beginning) {
+            $ending = Carbon::parse($this->beginning)->subDay();
         } else {
-            $end = Carbon::now()->startOfDay();
+            $ending = Carbon::now()->startOfDay();
         }
 
-        $weekdays = Carbon::parse($this->start)->diffInWeekdays(Carbon::parse($end)->addDay());
+        $weekdays = Carbon::parse($this->beginning)->diffInWeekdays(Carbon::parse($ending)->addDay());
         $pensum = $this->pensum / 100;
         $targetTimeWithoutHolidays = $weekdays * 8.4 * 60;
-        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->start, $end);
+        $paidTimeInDateRange = Holiday::paidTimeInDateRange($this->beginning, $ending);
         $targetTimeUntilToday = round($pensum * ($targetTimeWithoutHolidays - $paidTimeInDateRange), 0);
 
         return $this->effective_time - $targetTimeUntilToday;
@@ -113,18 +113,18 @@ class WorkPeriod extends Model
 
     public function getEffectiveTimeAttribute()
     {
-        $start = Carbon::parse($this->start);
-        $end = Carbon::parse($this->end);
+        $beginning = Carbon::parse($this->beginning);
+        $ending = Carbon::parse($this->ending);
 
-        return $this->calculateBookedTime($start, $end) + $this->vacation_takeover;
+        return $this->calculateBookedTime($beginning, $ending) + $this->vacation_takeover;
     }
 
     public function getRemainingVacationBudgetAttribute()
     {
-        $start = Carbon::parse($this->start);
-        $end = Carbon::parse($this->end);
+        $beginning = Carbon::parse($this->beginning);
+        $ending = Carbon::parse($this->ending);
 
-        return $this->period_vacation_budget - $this->calculateBookedTime($start, $end, true);
+        return $this->period_vacation_budget - $this->calculateBookedTime($beginning, $ending, true);
     }
 
     public function getVacationTakeoverAttribute()
@@ -143,8 +143,8 @@ class WorkPeriod extends Model
 
     public function getOverlappingPeriodsAttribute()
     {
-        $start = Carbon::parse($this->start);
-        $end = Carbon::parse($this->end);
+        $beginning = Carbon::parse($this->beginning);
+        $ending = Carbon::parse($this->ending);
 
         $wps = WorkPeriod::where([
             ['deleted_at', '=', null],
@@ -153,12 +153,12 @@ class WorkPeriod extends Model
         ])->get();
 
         foreach ($wps as $wp) {
-            $wp_start = Carbon::parse($wp->start)->endOfDay();
-            $wp_end = Carbon::parse($wp->end)->endOfDay();
+            $wp_beginning = Carbon::parse($wp->beginning)->endOfDay();
+            $wp_end = Carbon::parse($wp->ending)->endOfDay();
 
-            $inside = $wp_start < $end && $wp_end > $start;
-            $leftOverlap = $wp_start < $start && $wp_end > $start;
-            $rightOverlap = $wp_start < $end && $wp_end > $end;
+            $inside = $wp_beginning < $ending && $wp_end > $beginning;
+            $leftOverlap = $wp_beginning < $beginning && $wp_end > $beginning;
+            $rightOverlap = $wp_beginning < $ending && $wp_end > $ending;
 
             if ($inside || $leftOverlap || $rightOverlap) {
                 return true;
@@ -168,9 +168,9 @@ class WorkPeriod extends Model
         return false;
     }
 
-    private function calculateBookedTime(Carbon $start, Carbon $end, $onlyVacations = false)
+    private function calculateBookedTime(Carbon $beginning, Carbon $ending, $onlyVacations = false)
     {
-        if ($start > Carbon::now()->startOfDay()) {
+        if ($beginning > Carbon::now()->startOfDay()) {
             return 0;
         }
 
@@ -179,8 +179,8 @@ class WorkPeriod extends Model
             ->leftJoin('rate_units', 'project_positions.rate_unit_id', '=', 'rate_units.id')
             ->where([
                 ['project_efforts.deleted_at', '=', null],
-                ['project_efforts.date', '>', $start->subDay()->endOfDay()],
-                ['project_efforts.date', '<', $end->addDay()->startOfDay()],
+                ['project_efforts.date', '>', $beginning->subDay()->endOfDay()],
+                ['project_efforts.date', '<', $ending->addDay()->startOfDay()],
                 ['project_efforts.employee_id', '=', $this->employee->id],
                 ['rate_units.is_time', '=', true]
             ]);
@@ -194,17 +194,17 @@ class WorkPeriod extends Model
 
     private function getRelevantWorkPeriod()
     {
-        $closest_end = Carbon::parse($this->start)->subCentury();
+        $closest_end = Carbon::parse($this->beginning)->subCentury();
 
         $wps = WorkPeriod::where([
                 ['deleted_at', '=', null],
                 ['employee_id', '=', $this->employee->id],
-                ['end', '<', $this->start],
+                ['ending', '<', $this->beginning],
                 ['id', '!=', $this->id],
             ])->get();
 
         foreach ($wps as $wp) {
-            $wp_end = Carbon::parse($wp->end)->endOfDay();
+            $wp_end = Carbon::parse($wp->ending)->endOfDay();
 
             if ($wp_end > $closest_end) {
                 $closest_end = $wp_end;
@@ -214,29 +214,29 @@ class WorkPeriod extends Model
         $candidates = array();
 
         foreach ($wps as $wp) {
-            $wp_end = Carbon::parse($wp->end)->endOfDay();
+            $wp_end = Carbon::parse($wp->ending)->endOfDay();
 
             if ($wp_end >= $closest_end) {
                 array_push($candidates, $wp);
             }
         }
 
-        $furthest_start = null;
+        $furthest_beginning = null;
 
         foreach ($candidates as $wp) {
-            if (is_null($furthest_start)) {
-                $furthest_start = $wp;
+            if (is_null($furthest_beginning)) {
+                $furthest_beginning = $wp;
             } else {
-                $fs_start = Carbon::parse($furthest_start->start)->endOfDay();
-                $wp_start = Carbon::parse($wp->start)->endOfDay();
+                $fs_beginning = Carbon::parse($furthest_beginning->beginning)->endOfDay();
+                $wp_beginning = Carbon::parse($wp->beginning)->endOfDay();
 
-                if ($wp_start < $fs_start) {
-                    $furthest_start = $wp;
+                if ($wp_beginning < $fs_beginning) {
+                    $furthest_beginning = $wp;
                 }
             }
         }
 
-        return $furthest_start;
+        return $furthest_beginning;
     }
 
     private function isFirstPeriod()
@@ -244,7 +244,7 @@ class WorkPeriod extends Model
         $wps = WorkPeriod::where([
             ['deleted_at', '=', null],
             ['employee_id', '=', $this->employee->id],
-            ['start', '<', $this->start],
+            ['beginning', '<', $this->beginning],
             ['id', '!=', $this->id],
         ])->get();
 

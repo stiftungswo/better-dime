@@ -36,13 +36,13 @@ class ReportController extends BaseController
             $efforts = ProjectEffortFilter::fetchSummary([
                 'end' => $invoice->end,
                 'project_ids' => $invoice->project->id,
-                'start' => $invoice->start,
+                'start' => $invoice->beginning,
             ]);
 
             $comments = ProjectCommentFilter::fetch([
                 'end' => $invoice->end,
                 'project_id' => $invoice->project->id,
-                'start' => $invoice->start,
+                'start' => $invoice->beginning,
             ]);
 
             // sort in stuff
@@ -188,7 +188,7 @@ class ReportController extends BaseController
                 "from" => $from,
                 "to" => $to,
                 "efforts" => $efforts->sortBy(function ($effort) {
-                    return [$effort['employee'], $effort['date']];
+                    return [$effort['date'], $effort['employee']];
                 }),
                 "sums" => $sums,
                 "chargedDays" => $chargedDays,

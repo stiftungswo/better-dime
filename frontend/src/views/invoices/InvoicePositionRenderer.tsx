@@ -88,7 +88,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
                 const p = row as InvoicePosition;
                 const pIdx = values.positions.indexOf(p);
                 const name = <T extends keyof InvoicePosition>(fieldName: T) => `${this.props.name}.${pIdx}.${fieldName}`;
-                const total = p.amount * p.price_per_rate * (1 + p.vat);
+                const total = p.calculated_total * (1 + p.vat);
                 const rateUnit = this.props.rateUnitStore!.rateUnits.find((r: RateUnit) => {
                   return r.id === p.rate_unit_id;
                 });

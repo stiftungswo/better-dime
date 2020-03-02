@@ -6,12 +6,15 @@ import { action, computed, observable, runInAction } from 'mobx';
 import moment from 'moment';
 
 // this will be replaced by a build script, if necessary
-const baseUrlOverride = 'BASE_URL';
-export const baseUrl = baseUrlOverride.startsWith('http') ? baseUrlOverride : 'http://localhost:38000/api/v1';
+const baseApiUrlOverride = 'BASE_API_URL';
+const baseApirUrlOverride = 'BASE_APIR_URL';
+export const baseUrl = baseApiUrlOverride.startsWith('http') ? baseApiUrlOverride : 'http://localhost:38000/api/v1';
+export const baseUrlV2 = baseApirUrlOverride.startsWith('http') ? baseApirUrlOverride : 'http://localhost:38001/v2';
 
 export const apiDateFormat = 'YYYY-MM-DD';
 
 const KEY_TOKEN = 'dime_token';
+const KEY_TOKEN_V2 = 'dime_token_V2';
 
 interface JwtToken {
   token: string;
@@ -36,13 +39,22 @@ export class ApiStore {
     return this._token;
   }
 
+  @computed
+  get tokenV2() {
+    return this._tokenV2;
+  }
+
   get api() {
     return this._api;
   }
 
+  get apiV2() {
+    return this._apiV2;
+  }
+
   @computed
   get isLoggedIn() {
-    return Boolean(this._token) && moment.unix(this.userInfo!.exp).isAfter();
+    return Boolean(this._token) && Boolean(this._tokenV2) && moment.unix(this.userInfo!.exp).isAfter();
   }
 
   @computed
@@ -64,22 +76,27 @@ export class ApiStore {
   get userInfo(): JwtTokenDecoded | null {
     return this.token ? jwt_decode(this._token) : null;
   }
+
   private _api: AxiosInstance; // tslint:disable-line:variable-name
+  private _apiV2: AxiosInstance; // tslint:disable-line:variable-name
 
   @observable
   private _token: string = ''; // tslint:disable-line:variable-name
+  private _tokenV2: string = ''; // tslint:disable-line:variable-name
 
   constructor(private history: History) {
     this.restoreApiToken();
     this.updateSentryContext();
-    this.initializeApiClient(this._token);
+    this.initializeApiClient(this._token, this._tokenV2);
   }
 
   @action
   logout(redirect = true): void {
     localStorage.removeItem(KEY_TOKEN);
     this._token = '';
+    this._tokenV2 = '';
     this.setAuthHeader(null);
+    this.setAuthHeaderV2(null);
     if (redirect) {
       this.history.push('/');
     }
@@ -89,51 +106,76 @@ export class ApiStore {
   @action
   async postLogin(values: { email: string; password: string }) {
     const { email, password } = values;
-    const res = await this._api.post<JwtToken>('employees/login', {
-      email,
-      password,
-    });
+    const data = { email, password };
+
+    const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', { employee: data });
+    const res = await this._api.post<JwtToken>('employees/login', data);
+
+    // tslint:disable-next-line:no-console
+    console.log('Response:', res);
+    // tslint:disable-next-line:no-console
+    console.log('ResponseV2:', resV2);
+
     runInAction(() => {
-      this.setToken(res.data.token);
+      this.setToken(res.data.token, resV2.headers.authorization);
       this.updateSentryContext();
     });
   }
 
   private restoreApiToken() {
     const token = localStorage.getItem(KEY_TOKEN);
+    const tokenV2 = localStorage.getItem(KEY_TOKEN_V2);
+
     if (token) {
       this._token = token;
     }
+    if (tokenV2) {
+      this._tokenV2 = tokenV2;
+    }
   }
 
-  private initializeApiClient(token: string | null) {
-    this._api = axios.create({
-      baseURL: baseUrl,
-    });
-    this.setAuthHeader(token);
+  private initializeApiClient(token: string | null, tokenV2: string | null) {
+    this._api = axios.create({ baseURL: baseUrl, headers: { Authorization: '' } });
+    this._apiV2 = axios.create({ baseURL: baseUrlV2, headers: { Authorization: '' } });
 
-    this._api.interceptors.response.use(
-      response => {
-        return response;
-      },
-      (error: AxiosError) => {
-        if (error.response && error.response.status === 401) {
-          console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
-          this.logout();
-        }
-        return Promise.reject(error);
-      },
-    );
+    this.setAuthHeader(token);
+    this.setAuthHeaderV2(tokenV2);
+
+    const apis = [this._api, this._apiV2];
+
+    for (const api of apis) {
+      api.interceptors.response.use(
+        response => {
+          return response;
+        },
+        (error: AxiosError) => {
+          // tslint:disable-next-line:no-console
+          if (error.response && error.response.status === 401) {
+            console.log('Unathorized API access, redirect to login'); // tslint:disable-line:no-console
+            this.logout();
+          }
+          return Promise.reject(error);
+        },
+      );
+    }
   }
 
   private setAuthHeader(token: string | null) {
     this._api.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
+    this._api.defaults.headers.Authorization = token ? 'Bearer ' + token : '';
   }
 
-  private setToken(token: string) {
+  private setAuthHeaderV2(token: string | null) {
+    this._apiV2.defaults.headers.Authorization = token ? token : '';
+  }
+
+  private setToken(token: string, tokenV2: string) {
     this._token = token;
+    this._tokenV2 = tokenV2;
     localStorage.setItem(KEY_TOKEN, token);
+    localStorage.setItem(KEY_TOKEN_V2, tokenV2);
     this.setAuthHeader(token);
+    this.setAuthHeaderV2(tokenV2);
   }
 
   private updateSentryContext() {

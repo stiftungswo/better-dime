@@ -58,7 +58,7 @@ class CustomerController extends BaseController
 
     public function doImport(Request $request)
     {
-        // Note: Data gets verified during the verifyImport step. So if street is set, it will always have a postcode and a city at least
+        // Note: Data gets verified during the verifyImport step. So if street is set, it will always have a zip and a city at least
         $validatedData = $this->validate($request, [
             'customer_tags' => 'array',
             'customer_tags.*' => 'integer',
@@ -74,7 +74,7 @@ class CustomerController extends BaseController
             'customers_to_import.*.main_number' => 'string|nullable',
             'customers_to_import.*.mobile_number' => 'string|nullable',
             'customers_to_import.*.last_name' => 'string|nullable',
-            'customers_to_import.*.postcode' => 'integer|nullable',
+            'customers_to_import.*.zip' => 'integer|nullable',
             'customers_to_import.*.type' => 'string|required',
             'customers_to_import.*.salutation' => 'string|nullable',
             'customers_to_import.*.street' => 'string|nullable',

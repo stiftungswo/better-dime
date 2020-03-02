@@ -20,7 +20,8 @@
         "richan-fongdasen/eloquent-blameable": "^1.2",
         "sentry/sentry-laravel": "^0.11.0",
         "symfony/var-dumper": "^4.1",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "doctrine/dbal": "~2.3"
     },
     "require-dev": {
         "davidbadura/faker-markdown-generator": "^1.0",

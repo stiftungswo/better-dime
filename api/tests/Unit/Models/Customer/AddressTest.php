@@ -15,6 +15,6 @@ class AddressTest extends \TestCase
             'supplement' => null
         ]);
 
-        $this->assertEquals("{$address->street}, {$address->postcode} {$address->city}, {$address->country}", (string)$address);
+        $this->assertEquals("{$address->street}, {$address->zip} {$address->city}, {$address->country}", (string)$address);
     }
 }

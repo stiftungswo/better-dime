@@ -21,7 +21,7 @@ const template = () => ({
   country: '',
   description: '',
   formikKey: Math.random(),
-  postcode: 0,
+  zip: 0,
   street: '',
   supplement: '',
 });
@@ -70,7 +70,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   <TableRow key={a.id}>
                     <DimeTableCell>{a.street}</DimeTableCell>
                     <DimeTableCell>{a.supplement}</DimeTableCell>
-                    <DimeTableCell>{a.postcode}</DimeTableCell>
+                    <DimeTableCell>{a.zip}</DimeTableCell>
                     <DimeTableCell>{a.city}</DimeTableCell>
                     <DimeTableCell>{a.country}</DimeTableCell>
                     <DimeTableCell>{a.description}</DimeTableCell>
@@ -88,7 +88,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                         <DimeField delayed component={TextField} name={name('supplement')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <DimeField delayed component={NumberField} name={name('postcode')} margin={'none'} />
+                        <DimeField delayed component={NumberField} name={name('zip')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DimeField delayed component={TextField} name={name('city')} margin={'none'} />

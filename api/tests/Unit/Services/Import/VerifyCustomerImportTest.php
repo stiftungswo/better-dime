@@ -131,7 +131,7 @@ class VerifyCustomerImportTest extends \TestCase
         $this->assertEquals($personTemplate[7], $customersArray[1]['main_number']);
         $this->assertEquals($personTemplate[9], $customersArray[1]['mobile_number']);
         $this->assertEquals($personTemplate[3], $customersArray[1]['last_name']);
-        $this->assertEquals($personTemplate[12], $customersArray[1]['postcode']);
+        $this->assertEquals($personTemplate[12], $customersArray[1]['zip']);
         $this->assertEquals('person', $customersArray[1]['type']);
         $this->assertEquals($personTemplate[1], $customersArray[1]['salutation']);
         $this->assertEquals($personTemplate[10], $customersArray[1]['street']);

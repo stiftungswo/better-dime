@@ -24,7 +24,7 @@ export class AddressSelect extends React.Component<Props> {
     return customer
       ? customer.addresses!.map((a: Address) => ({
           value: a.id,
-          label: [a.street, a.supplement, a.postcode, a.city, a.country].filter(x => Boolean(x)).join(', '),
+          label: [a.street, a.supplement, a.zip, a.city, a.country].filter(x => Boolean(x)).join(', '),
         }))
       : [];
   }

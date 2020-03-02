@@ -40,6 +40,7 @@ export default class CommentPresetOverview extends React.Component<Props> {
     return (
       <EditableOverview
         searchable
+        paginated
         title={'Kommentarvorlagen'}
         store={projectCommentPresetStore!}
         columns={this.columns}

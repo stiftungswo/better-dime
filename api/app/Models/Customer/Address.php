@@ -12,7 +12,7 @@ class Address extends Model
 
     protected $hidden = ['customer'];
 
-    protected $fillable = ['city', 'country', 'description', 'postcode', 'street', 'supplement', 'customer_id'];
+    protected $fillable = ['city', 'country', 'description', 'zip', 'street', 'supplement', 'customer_id'];
 
     public function customer()
     {
@@ -25,7 +25,7 @@ class Address extends Model
 
         $baseArray[] = $this->street;
         !$this->supplement ?: array_push($baseArray, $this->supplement);
-        $baseArray[] = $this->postcode . ' ' . $this->city;
+        $baseArray[] = $this->zip . ' ' . $this->city;
         !$this->country ?: array_push($baseArray, $this->country);
 
         return implode(', ', $baseArray);

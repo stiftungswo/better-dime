@@ -39,7 +39,8 @@ export class ServiceSelectDialog extends React.Component<Props> {
 
   handleSubmit = () => {
     this.props.serviceStore!.notifyProgress(async () => {
-      const service = (await this.props.serviceStore!.fetchOne(this.state.serviceId!)) as Service;
+      await this.props.serviceStore!.fetchOne(this.state.serviceId!);
+      const service = this.props.serviceStore!.service as Service;
       if (this.state.positionGroupName != null) {
         this.props.onSubmit(service, this.state.positionGroupName);
       } else {

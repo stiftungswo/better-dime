@@ -55,7 +55,7 @@ export class RevenueReport extends React.Component<Props> {
   }
 
   private getHref() {
-    return this.props.mainStore!.apiURL('reports/revenue', {
+    return this.props.mainStore!.apiV2URL('reports/revenue.xlsx', {
       from: this.state.start.format(apiDateFormat),
       to: this.state.end.format(apiDateFormat),
     });

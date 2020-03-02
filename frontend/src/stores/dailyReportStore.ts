@@ -40,7 +40,7 @@ export class DailyReportStore {
 
   @action.bound
   async fetch() {
-    const res = await this.mainStore.api.get<DailyReportResponse>('/reports/daily', {
+    const res = await this.mainStore.apiV2.get<DailyReportResponse>('/reports/daily', {
       params: {
         from: this.from.format(apiDateFormat),
         to: this.to.format(apiDateFormat),
