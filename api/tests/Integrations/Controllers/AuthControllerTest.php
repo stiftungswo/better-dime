@@ -9,5 +9,4 @@ class AuthControllerTest extends \TestCase
 {
 
     use DatabaseTransactions;
-    
 }
