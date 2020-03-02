@@ -88,7 +88,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         actions={
           <>
             <PrintButton
-              path={'employees/' + this.props.entity.id + '/print_effort_report'}
+              path={'employees/' + this.props.entity.id + '/effort_report'}
               title={'Stundenübersicht drucken'}
               urlParams={this.generateEffortReportUrl()}
             />

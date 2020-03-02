@@ -91,7 +91,7 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
     const projectGroupActions = (
       <>
         <PrintButton
-          path={'projects/' + this.props.entity.id + '/print_effort_report'}
+          path={'projects/' + this.props.entity.id + '/effort_report'}
           title={'Aufwandsrapport drucken'}
           urlParams={this.props.effortReportUrlParams()}
         />
