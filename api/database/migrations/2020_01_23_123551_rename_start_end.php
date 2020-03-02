@@ -42,4 +42,3 @@ class RenameStartEnd extends Migration
         });
     }
 }
-
