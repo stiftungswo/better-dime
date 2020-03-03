@@ -16,7 +16,7 @@ class Employee < ApplicationRecord
 
   validates :email, :first_name, :last_name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :holidays_per_year, numericality: { greater_than_or_equal_to: 0 }
+  validates :holidays_per_year, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
   validates :first_vacation_takeover, numericality: { greater_than_or_equal_to: 0 }
 
   devise :database_authenticatable, :rememberable, :validatable, :jwt_authenticatable, jwt_revocation_strategy: self
