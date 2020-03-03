@@ -116,7 +116,8 @@ class WorkPeriodCalculator
   def calculate_period_vacation_budget(period)
     worked_time_p_year = (period[:beginning]..period[:ending]).count(&:on_weekday?) * work_minutes_per_day
     target_time_p_year = (period[:beginning].beginning_of_year..period[:ending].end_of_year).count(&:on_weekday?) * work_minutes_per_day
-    period[:period_vacation_budget] = (worked_time_p_year / target_time_p_year) * period[:yearly_vacation_budget] * period[:pensum] / 100.0
+    budgets_in_years = (period[:ending].year-period[:beginning].year + 1)*period[:yearly_vacation_budget]
+    period[:period_vacation_budget] = (worked_time_p_year / target_time_p_year) * budgets_in_years * period[:pensum] / 100.0
   end
 
   def calculate_remaining_vacation_budget(period, efforts)
