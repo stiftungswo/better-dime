@@ -30,6 +30,6 @@ class Invoice < ApplicationRecord
   end
 
   def sibling_invoice_ids
-    project&.invoice_ids.select { |i| i != id } || []
+    project&.invoice_ids&.select { |i| i != id } || []
   end
 end
