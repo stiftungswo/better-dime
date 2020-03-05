@@ -55,6 +55,12 @@ module V2
     def print
       pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice
 
+      if @invoice.invoice_costgroup_distributions.blank?
+        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print invoice without assigning cost groups")
+
+        raise ValidationError, @invoice.errors
+      end
+
       respond_to do |format|
         format.pdf do
           send_data pdf.render, type: "application/pdf", disposition: "inline"
@@ -64,6 +70,12 @@ module V2
 
     def print_esr
       pdf = Pdfs::InvoiceEsrPdf.new GlobalSetting.first, @invoice
+
+      if @invoice.invoice_costgroup_distributions.blank?
+        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print ESR's for invoices without cost groups")
+
+        raise ValidationError, @invoice.errors
+      end
 
       respond_to do |format|
         format.pdf do
