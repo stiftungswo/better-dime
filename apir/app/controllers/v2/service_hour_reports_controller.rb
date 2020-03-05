@@ -2,7 +2,10 @@
 
 module V2
   class ServiceHourReportsController < APIController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, except: [:index, :project, :project_category]
+    before_action :authenticate_from_params!, only: [:index, :project, :project_category]
 
     def index
       case report_params["group_by"]
@@ -28,7 +31,7 @@ module V2
     end
 
     def report_params
-      params.permit(:start, :end, :group_by, :auth)
+      params.permit(:start, :end, :group_by, :token)
     end
   end
 end
