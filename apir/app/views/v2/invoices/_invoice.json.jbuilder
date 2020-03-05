@@ -20,7 +20,7 @@ end
 json.costgroup_distributions invoice.invoice_costgroup_distributions
 json.project_id invoice.project&.id
 json.discounts invoice.invoice_discounts
-json.positions invoice.invoice_positions.sort_by(&:order) do |position|
+json.positions invoice.invoice_positions.sort_by {|p| p.order.to_i} do |position|
   json.extract! position.decorate, :id, :amount, :description, :price_per_rate, :rate_unit_id,
                 :vat, :order, :position_group_id, :rate_unit_archived, :calculated_total
 end

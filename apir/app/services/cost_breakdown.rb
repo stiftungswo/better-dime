@@ -9,7 +9,7 @@ class CostBreakdown
   end
 
   def calculate
-    positions = @positions.sort_by(&:order)
+    positions = @positions.sort_by {|p| p.order.to_i}
     subtotal = calculate_subtotal positions
     discounts = @discounts.map { |discount| apply_discount subtotal, discount }
     discounts_total = discounts.inject(0) { |sum, d| sum + d[:value] }

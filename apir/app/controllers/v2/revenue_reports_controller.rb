@@ -2,7 +2,10 @@
 
 module V2
   class RevenueReportsController < APIController
-    before_action :authenticate_employee!
+    include V2::Concerns::ParamsAuthenticatable
+
+    before_action :authenticate_employee!, except: [:index]
+    before_action :authenticate_from_params!, only: [:index]
 
     def index
       @report = RevenueReportService.new(timerange)
