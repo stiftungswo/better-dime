@@ -69,6 +69,8 @@ export default class InvoiceForm extends React.Component<Props> {
       afterUnitInvalidation = isAfterArchivedUnitsCutoff(invoice.created_at);
     }
 
+    const costGroupsExist = !empty(invoice) && invoice.costgroup_distributions && invoice.costgroup_distributions.length > 0;
+
     return (
       <FormView
         paper={false}
@@ -92,8 +94,27 @@ export default class InvoiceForm extends React.Component<Props> {
                 icon={StatisticsIcon}
                 disabled={!invoice.project_id}
               />
-              <PrintButton path={`invoices/${invoice.id}/print_esr`} color={'inherit'} title={'Einzahlungsschein drucken'} icon={ESRIcon} />
-              <PrintButton path={`invoices/${invoice.id}/print`} color={'inherit'} title={'Rechnung drucken'} icon={InvoiceIcon} />
+              <PrintButton
+                path={`invoices/${invoice.id}/print_esr`}
+                color={'inherit'}
+                title={
+                  costGroupsExist
+                    ? 'Einzahlungsschein drucken'
+                    : 'Es muss eine Kostenstelle zugewiesen werden bevor der Einzahlungsschein gedruckt werden kann.'}
+                icon={ESRIcon}
+                disabled={!costGroupsExist}
+              />
+              <PrintButton
+                path={`invoices/${invoice.id}/print`}
+                color={'inherit'}
+                title={
+                  costGroupsExist
+                    ? 'Rechnung drucken'
+                    : 'Es muss eine Kostenstelle zugewiesen werden bevor die Rechnung gedruckt werden kann.'
+                }
+                icon={InvoiceIcon}
+                disabled={!costGroupsExist}
+              />
             </>
           ) : (
             undefined
