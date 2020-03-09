@@ -12,8 +12,19 @@ module V2
       to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])
       daily_rate = params[:daily_rate].to_f / 100.0 || 1200
       vat = params[:vat].to_f || 0.077
+      additional_cost_names = params[:additional_costs_names]&.split(',') || []
+      additional_cost_prices = params[:additional_costs_prices]&.split(',') || []
 
-      pdf = Pdfs::ProjectReportPdf.new GlobalSetting.first, Project.find(params[:id]), from_date, to_date, daily_rate, vat
+      pdf = Pdfs::ProjectReportPdf.new(
+        GlobalSetting.first,
+        Project.find(params[:id]),
+        from_date,
+        to_date,
+        daily_rate,
+        vat,
+        additional_cost_names,
+        additional_cost_prices
+      )
 
       respond_to do |format|
         format.pdf do

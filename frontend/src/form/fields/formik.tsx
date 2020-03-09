@@ -8,20 +8,38 @@ import { DimeFormControlProps, DimeInputFieldProps } from './common';
  * Formik's <FastField> is supposed to do this already, but it seemed to be syncing onChange anyway. This _might_ introduce some issues
  * like the value of the last input of the form not being synced back into formik on hitting enter to submit the form.
  */
-export class DelayedInput extends React.Component<InputProps, { value?: string }> {
+export class DelayedInput extends React.Component<InputProps, { focused: boolean, value?: string }> {
 
-  handleBlur: any = this.props.onChange; // tslint:disable-line:no-any
   constructor(props: InputProps) {
     super(props);
     this.state = {
+      focused: Boolean(false),
       value: String(props.value),
     };
   }
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ value: e.target.value });
+  handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
+
+    this.setState({focused: false});
+  }
+
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ focused: true, value: e.target.value });
+  }
+
+  get value() {
+    if (this.state.focused) {
+      return this.state.value;
+    } else {
+      return this.props.value;
+    }
+  }
 
   render = () => {
-    return <Input {...this.props} value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} />;
+    return <Input {...this.props} value={this.value} onChange={this.handleChange} onBlur={this.handleBlur} />;
   }
 }
 

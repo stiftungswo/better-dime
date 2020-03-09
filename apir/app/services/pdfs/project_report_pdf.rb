@@ -6,13 +6,15 @@ module Pdfs
   class ProjectReportPdf < BasePdf
     include ActionView::Helpers::NumberHelper
 
-    def initialize(global_setting, project, from_date, to_date, daily_rate, vat)
+    def initialize(global_setting, project, from_date, to_date, daily_rate, vat, additional_cost_names, additional_cost_prices)
       @global_setting = global_setting
       @project = project
       @from_date = from_date
       @to_date = to_date
       @daily_rate = daily_rate
       @vat = vat
+      @additional_cost_names = additional_cost_names
+      @additional_cost_prices = additional_cost_prices
       super()
     end
 
@@ -44,6 +46,8 @@ module Pdfs
       draw_efforts
       draw_employee_summary
       draw_cost
+      draw_additional_cost if @additional_cost_names.length > 0
+      draw_total
     end
 
     def draw_description
@@ -138,11 +142,9 @@ module Pdfs
     end
 
     def draw_cost
-      move_down 20
-
       table_data = [
         {
-          data: ["Kostenstelle", "Berechnung", "Total CHF"],
+          data: ["Tag", "Anzahl Mitarbeiter", "Berechnung", "Total CHF"],
           style: {
             padding: [5, 0, 5, 0],
             font_style: :bold,
@@ -152,28 +154,143 @@ module Pdfs
       ]
 
       days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
+      # map every day to the amount of employees which worked on that day
+      days_to_employees = days_with_efforts.map do |day|
+        [day, efforts_in_range.select { |e| e.date == day && e.value > 0}.map(&:employee).uniq.length]
+      end.to_h.sort_by { |item| item[0] }
+
+      total = days_to_employees.inject(0) do |sum, (day, employees)|
+        sum + employees * @daily_rate
+      end
+
+      padding = [4,2,4,2]
+
+      days_to_employees.each do |day, employees|
+        table_data.push(
+          data: [
+            day.strftime("%d.%m.%Y"),
+            employees.to_s,
+            employees.to_s + " * " + format_money(@daily_rate),
+            format_money(format_money(employees * @daily_rate))
+          ],
+          style: {
+            borders: [],
+            padding: padding
+          }
+        )
+      end
 
       table_data.push(
         data: [
-          "Total Einsatztage",
-          days_with_efforts.length.to_s + " * " + format_money(@daily_rate),
-          format_money(days_with_efforts.length * @daily_rate)
+          "Subtotal",
+          "",
+          "",
+          format_money(total)
         ],
         style: {
-          borders: [],
-          padding: [4, 0, 4, 0]
+          borders: [:top],
+          border_width: 0.5,
+          padding: padding
         }
       )
+
+      @document.move_down 15
+      @document.text "Mitarbeiter Kosten".upcase, size: 10, style: :bold
+
+      @document.indent(20, 0) do
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          table_data,
+          [bounds.width-325,150,100,75],
+          [3] => :right,
+          [1] => :center
+        )
+      end
+    end
+
+    def draw_additional_cost
+      padding = [4,2,4,2]
+
+      table_data = [
+        {
+          data: ["Beschreibung", "Total CHF"],
+          style: {
+            padding: [5, 0, 5, 0],
+            font_style: :bold,
+            border_width: 1
+          }
+        }
+      ]
+      additional_costs = @additional_cost_names.zip(@additional_cost_prices)
+      total = @additional_cost_prices.inject(0) {|sum, p| sum + (p.to_f)/100.0}
+
+      additional_costs.each do |cost|
+        table_data.push(
+          data: [
+            cost[0],
+            format_money((cost[1].to_f)/100.0)
+          ],
+          style: {
+            borders: [],
+            padding: padding
+          }
+        )
+      end
+
+      table_data.push(
+        data: [
+          "Subtotal",
+          format_money(total)
+        ],
+        style: {
+          borders: [:top],
+          border_width: 0.5,
+          padding: padding
+        }
+      )
+
+      @document.move_down 15
+      @document.text "Zusätzliche Kosten".upcase, size: 10, style: :bold
+
+      @document.indent(20, 0) do
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          table_data,
+          [bounds.width/4*3,bounds.width/4],
+          [1] => :right
+        )
+      end
+    end
+
+    def draw_total
+      padding = [4,2,4,2]
+      days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
+      # map every day to the amount of employees which worked on that day
+      days_to_employees = days_with_efforts.map do |day|
+        [day, efforts_in_range.select { |e| e.date == day && e.value > 0}.map(&:employee).uniq.length]
+      end.to_h.sort_by { |item| item[0] }
+      employee_total = days_to_employees.inject(0) do |sum, (day, employees)|
+        sum + employees * @daily_rate
+      end
+
+      total = @additional_cost_prices.inject(0) {|sum, p| sum + (p.to_f)/100.0} + employee_total
+      table_data = [{
+        data: ["", "Berechnung", "Total CHF"],
+        style: {
+          padding: [5, 0, 5, 0],
+          font_style: :bold,
+          border_width: 1
+        }
+      }]
 
       table_data.push(
         data: [
           "MwSt.",
-          (@vat * 100).to_s + "% * " + format_money(days_with_efforts.length * @daily_rate),
-          format_money(@vat * days_with_efforts.length * @daily_rate)
+          (@vat * 100).to_s + "% * " + format_money(total),
+          format_money(@vat * total)
         ],
         style: {
           borders: [],
-          padding: [4, 0, 4, 0]
+          border_width: 0.5,
+          padding: padding
         }
       )
 
@@ -181,18 +298,19 @@ module Pdfs
         data: [
           "Total",
           "",
-          format_money((1 + @vat) * days_with_efforts.length * @daily_rate)
+          format_money((1+@vat) * total)
         ],
         style: {
+          borders: [:top],
+          border_width: 0.5,
+          padding: padding,
           font_style: :bold,
-          borders: [],
-          padding: [4, 0, 4, 0]
         }
       )
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width - 275, 200, 75],
+        [bounds.width-175, 100, 75],
         [2] => :right
       )
     end
