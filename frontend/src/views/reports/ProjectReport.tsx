@@ -80,7 +80,7 @@ export class ProjectReport extends React.Component<Props, State> {
   }
 
   handleAdd(arrayHelpers: ArrayHelpers) {
-    arrayHelpers.insert(0, costTemplate());
+    arrayHelpers.push(costTemplate());
   }
 
   handleRemove(arrayHelpers: ArrayHelpers, index: number, formikProps: FormikProps<any>) {
