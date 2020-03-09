@@ -166,10 +166,20 @@ module Pdfs
         data.push(
           data: ["Total", (@breakdown[:total] / 100.0).round(2)],
           style: {
-            font_style: :bold,
+            font_style: @breakdown[:fixed_price] ? :normal : :bold,
             padding: padding
           }
         )
+
+        if @breakdown[:fixed_price]
+          data.push(
+            data: ["Fix Preis Total", (@breakdown[:fixed_price] / 100.0).round(2)],
+            style: {
+              font_style: :bold,
+              padding: padding
+            }
+          )
+        end
 
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,
