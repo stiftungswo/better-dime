@@ -84,7 +84,7 @@ module Pdfs
         end
       end
 
-      total = (@invoice.breakdown[:total] / 5.0).round * 5 / 100.0
+      total = (@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0
       price_text = format_money_esr(total)
       col = 11 - price_text.length
       price_text.each_char do |c|
@@ -188,7 +188,7 @@ module Pdfs
         bounding_box([info_label_width.cm, 4.4.cm], width: (13.5.cm + (5.cm - info_label_width.cm)), height: 4.cm) do
           # stroke_bounds
 
-          total = (@invoice.breakdown[:total] / 5.0).round * 5 / 100.0
+          total = (@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading

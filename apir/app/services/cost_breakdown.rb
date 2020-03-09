@@ -46,7 +46,8 @@ class CostBreakdown
       vat_total: vats_total,
       fixed_price: @fixed_price,
       fixed_price_vats: fixed_price_vats,
-      fixed_price_vats_sum: fixed_price_vats_sum
+      fixed_price_vats_sum: fixed_price_vats_sum,
+      final_total: @fixed_price || total
     }
   end
 
