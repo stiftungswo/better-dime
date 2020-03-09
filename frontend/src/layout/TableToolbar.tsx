@@ -40,19 +40,21 @@ interface EnhancedTableToolbarProps extends WithStyles<typeof toolbarStyles> {
   numSelected?: number;
   deleteAction?: () => undefined;
   addAction?: ActionButtonAction;
+  style?: React.CSSProperties;
   title: string;
   children?: React.ReactNode;
   error?: boolean;
 }
 
 const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToolbarProps) => {
-  const { numSelected = 0, classes, deleteAction, addAction, title, error } = props;
+  const { numSelected = 0, classes, deleteAction, addAction, style, title, error } = props;
 
   return (
     <Toolbar
       className={classNames(classes.root, {
         [classes.highlight]: numSelected > 0,
       })}
+      style={style}
     >
       <div className={classes.title} style={{textTransform: 'capitalize'}}>
         {numSelected > 0 ? (
