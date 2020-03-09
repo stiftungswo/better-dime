@@ -6,13 +6,14 @@ module Pdfs
   class ProjectReportPdf < BasePdf
     include ActionView::Helpers::NumberHelper
 
-    def initialize(global_setting, project, from_date, to_date, daily_rate, vat, additional_cost_names, additional_cost_prices)
+    def initialize(global_setting, project, from_date, to_date, daily_rate, vat, exclude_employee_ids, additional_cost_names, additional_cost_prices)
       @global_setting = global_setting
       @project = project
       @from_date = from_date
       @to_date = to_date
       @daily_rate = daily_rate
       @vat = vat
+      @exclude_employee_ids = exclude_employee_ids
       @additional_cost_names = additional_cost_names
       @additional_cost_prices = additional_cost_prices
       super()
@@ -33,7 +34,7 @@ module Pdfs
           :rate_unit,
           :service
         ]
-      ).select { |e| (@from_date..@to_date) === e.date }
+      ).select { |e| (@from_date..@to_date) === e.date && !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i)) }
     end
 
     def draw

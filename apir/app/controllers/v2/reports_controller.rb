@@ -12,6 +12,7 @@ module V2
       to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])
       daily_rate = params[:daily_rate].to_f / 100.0 || 1200
       vat = params[:vat].to_f || 0.077
+      exclude_employee_ids = params[:exclude_employee_ids]&.split(',') || []
       additional_cost_names = params[:additional_costs_names]&.split(',') || []
       additional_cost_prices = params[:additional_costs_prices]&.split(',') || []
 
@@ -22,6 +23,7 @@ module V2
         to_date,
         daily_rate,
         vat,
+        exclude_employee_ids,
         additional_cost_names,
         additional_cost_prices
       )
