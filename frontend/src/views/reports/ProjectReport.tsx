@@ -9,6 +9,7 @@ import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
 import * as yup from 'yup';
+import {EmployeeSelect} from '../../form/entitySelect/EmployeeSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import {TextField} from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -20,6 +21,7 @@ import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import {DimeTableCell} from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
+import {EmployeeStore} from '../../stores/employeeStore';
 import { MainStore } from '../../stores/mainStore';
 import { ProjectStore } from '../../stores/projectStore';
 import compose from '../../utilities/compose';
@@ -29,6 +31,7 @@ import { DateSpanPicker } from './DateSpanPicker';
 interface Props {
   mainStore?: MainStore;
   projectStore?: ProjectStore;
+  employeeStore?: EmployeeStore;
 }
 
 interface State {
@@ -45,6 +48,7 @@ const template = () => ({
   from: moment().startOf('month'),
   to: moment().endOf('month'),
   project_id: null,
+  exclude_employee_ids: null,
   daily_rate: 11500,
   vat: 0.077,
   additional_costs: [],
@@ -60,13 +64,14 @@ const schema = yup.object({
   from: dimeDate(),
   to: dimeDate(),
   project_id: selector(),
+  exclude_employee_ids: yup.array().of(selector()).nullable(true),
   daily_rate: requiredNumber(),
   vat: requiredNumber(),
   additional_costs: yup.array().of(additionalCostSchema),
 });
 
 @compose(
-  inject('mainStore', 'projectStore'),
+  inject('mainStore', 'projectStore', 'employeeStore'),
   observer,
 )
 export class ProjectReport extends React.Component<Props, State> {
@@ -76,6 +81,7 @@ export class ProjectReport extends React.Component<Props, State> {
 
   async componentWillMount() {
     await this.props.projectStore!.fetchAll();
+    await this.props.employeeStore!.fetchAll();
     this.setState({ loading: false });
   }
 
@@ -139,13 +145,16 @@ export class ProjectReport extends React.Component<Props, State> {
                         onChangeTo={v => formikProps.setFieldValue('to', v)}
                       />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={3}>
                       <DimeField required component={ProjectSelect} name="project_id" label={'Projekt'} />
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={5}>
+                      <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
+                    </Grid>
+                    <Grid item xs={12} md={2}>
                       <DimeField delayed component={CurrencyField} name={'daily_rate'} label={'Tagessatz'} />
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={2}>
                       <DimeField component={PercentageField} name={'vat'} label={'MwSt.'} />
                     </Grid>
                   </Grid>
@@ -198,6 +207,9 @@ export class ProjectReport extends React.Component<Props, State> {
                           }).join(','),
                           additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
                             return value.cost.toString();
+                          }).join(','),
+                          exclude_employee_ids: yup.array().of(selector()).nullable(true).cast(formikProps.values.exclude_employee_ids).map((value: any) => {
+                            return value.toString();
                           }).join(','),
                           from: dimeDate().cast(formikProps.values.from),
                           to: dimeDate().cast(formikProps.values.to),
