@@ -24,14 +24,22 @@ export default class EmployeeCreate extends React.Component<Props> {
   };
 
   handleFailure = (error: any) => {
-    if (error.response.data.email) {
+    if (error.response && error.response.data.email) {
       this.props.mainStore!.displayError(error.response.data.email);
+    } else {
+      this.props.mainStore!.displayError('Unbekannter Fehler!');
+      // tslint:disable-next-line:no-console
+      console.error(error);
     }
   }
 
   handleSubmit = (employee: Employee) => {
     return this.props.employeeStore!.post(employee).then(() => {
       this.setState({ submitted: true });
+      // tslint:disable-next-line:no-console
+      console.log('EmployeeStore: ', this.props!.employeeStore);
+      // tslint:disable-next-line:no-console
+      console.log('Employee: ', this.props!.employeeStore!.employee);
       const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
       this.props.history.replace('/employees/' + idOfNewEmployee);
     }).catch(this.handleFailure);

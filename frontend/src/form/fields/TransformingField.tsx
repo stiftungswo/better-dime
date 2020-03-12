@@ -38,8 +38,6 @@ export class TransformingField<T> extends React.Component<Props<T>> {
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // tslint:disable-next-line:no-console
-    console.log(e.type);
     const representation = e.target.value;
 
     if (e.type === 'blur') {

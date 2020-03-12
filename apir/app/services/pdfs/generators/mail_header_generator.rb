@@ -7,7 +7,7 @@ module Pdfs
         @document = document
         @global_setting = global_setting
         @data = data
-        @logo_offset = 100
+        @logo_offset = 70
         @address_offset = @logo_offset
         @logo_width = 180
       end
@@ -30,6 +30,7 @@ module Pdfs
 
           image_path = Rails.root.join("app", "assets", "logo", "logo.png")
 
+          @document.move_up 15
           @document.image image_path, width: @logo_width
         end
       end
