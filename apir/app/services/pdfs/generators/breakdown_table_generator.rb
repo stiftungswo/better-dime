@@ -3,9 +3,16 @@
 module Pdfs
   module Generators
     class BreakdownTableGenerator
+      include ActionView::Helpers::NumberHelper
+
       def initialize(document, breakdown)
         @document = document
         @breakdown = breakdown
+      end
+
+      def format_money(amount)
+        rounded = (amount/5.0).ceil * 5 / 100.0
+        number_to_currency(rounded, unit: "", separator: ".", delimiter: ",").tr(",", "'")
       end
 
       def render(header)
@@ -23,7 +30,7 @@ module Pdfs
           @document.move_down 5
           Pdfs::Generators::TableGenerator.new(@document).render(
             [{
-              data: ["Subtotal", (@breakdown[:subtotal] / 100.0).round(2)],
+              data: ["Subtotal", format_money(@breakdown[:subtotal])],
               style: {
                 borders: [:top],
                 padding: [-2, 1, 0, 0],
@@ -55,16 +62,16 @@ module Pdfs
         positions.each do |position|
           data.push(data: [
                       position.try(:service).try(:name) || position.description,
-                      (position.price_per_rate / 100.0).round(2),
+                      format_money(position.price_per_rate),
                       position.rate_unit.billing_unit,
                       position.amount,
                       (position.vat * 100.0).round(2).to_s + "%",
-                      (position.calculated_total_excl_vat / 100.0).round(2)
+                      format_money(position.calculated_total)
                     ])
         end
 
         data.push(
-          data: ["Subtotal", "", "", "", "", (subtotal / 100.0).round(2)],
+          data: ["Subtotal", "", "", "", "", format_money(subtotal)],
           style: {
             font_style: font_style
           }
@@ -94,7 +101,7 @@ module Pdfs
 
           @breakdown[:discounts].each do |discount|
             data.push(
-              data: [discount[:name], discount[:value] / 100.0],
+              data: [discount[:name], format_money(discount[:value])],
               style: {
                 font_style: :normal,
                 padding: padding
@@ -102,7 +109,7 @@ module Pdfs
             )
           end
           data.push(
-            data: ["Abzüge Total", (@breakdown[:discount_total] / 100.0).round(2)],
+            data: ["Abzüge Total", format_money(@breakdown[:discount_total])],
             style: {
               font_style: :normal,
               borders: [:top],
@@ -111,7 +118,7 @@ module Pdfs
             }
           )
           data.push(
-            data: ["Subtotal", (@breakdown[:raw_total] / 100.0).round(2)],
+            data: ["Subtotal", format_money(@breakdown[:raw_total])],
             style: {
               font_style: :bold,
               padding: padding
@@ -147,7 +154,7 @@ module Pdfs
 
         @breakdown[:vats].each do |vat|
           data.push(
-            data: [(vat[:vat].to_f * 100.0).to_s + "%", (vat[:value] / 100.0).round(2)],
+            data: [(vat[:vat].to_f * 100.0).to_s + "%", format_money(vat[:value])],
             style: {
               font_style: :normal,
               padding: padding
@@ -155,7 +162,7 @@ module Pdfs
           )
         end
         data.push(
-          data: ["Mehrwertsteuer Total", (@breakdown[:vat_total] / 100.0).round(2)],
+          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total])],
           style: {
             font_style: :normal,
             borders: [:top],
@@ -164,7 +171,7 @@ module Pdfs
           }
         )
         data.push(
-          data: ["Total", (@breakdown[:total] / 100.0).round(2)],
+          data: ["Total", format_money(@breakdown[:total])],
           style: {
             font_style: @breakdown[:fixed_price] ? :normal : :bold,
             padding: padding
@@ -173,7 +180,7 @@ module Pdfs
 
         if @breakdown[:fixed_price]
           data.push(
-            data: ["Fix Preis Total", (@breakdown[:fixed_price] / 100.0).round(2)],
+            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price])],
             style: {
               font_style: :bold,
               padding: padding

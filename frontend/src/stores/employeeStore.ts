@@ -83,7 +83,7 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doPost(employee: Employee) {
-    this.mainStore.apiV2.post('/employees', employee).then(res => {
+    await this.mainStore.apiV2.post('/employees', employee).then(res => {
       this.employee = res.data;
     }).catch(this.handleError);
   }
