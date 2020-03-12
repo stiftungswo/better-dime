@@ -163,7 +163,7 @@ module Pdfs
           )
         end
         data.push(
-          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total], ceil)],
+          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total], true)],
           style: {
             font_style: :normal,
             borders: [:top],
@@ -172,7 +172,7 @@ module Pdfs
           }
         )
         data.push(
-          data: ["Total", format_money(@breakdown[:total], ceil)],
+          data: ["Total", format_money(@breakdown[:total], true)],
           style: {
             font_style: @breakdown[:fixed_price] ? :normal : :bold,
             padding: padding
@@ -181,7 +181,7 @@ module Pdfs
 
         if @breakdown[:fixed_price]
           data.push(
-            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price], ceil)],
+            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price], true)],
             style: {
               font_style: :bold,
               padding: padding
