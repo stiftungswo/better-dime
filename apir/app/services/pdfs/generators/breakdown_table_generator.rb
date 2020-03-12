@@ -10,8 +10,9 @@ module Pdfs
         @breakdown = breakdown
       end
 
-      def format_money(amount)
-        rounded = (amount/5.0).ceil * 5 / 100.0
+      def format_money(amount, ceil = false)
+        rounded = (amount/5.0).round * 5 / 100.0 unless ceil
+        rounded = (amount/5.0).ceil * 5 / 100.0 if ceil
         number_to_currency(rounded, unit: "", separator: ".", delimiter: ",").tr(",", "'")
       end
 
@@ -30,7 +31,7 @@ module Pdfs
           @document.move_down 5
           Pdfs::Generators::TableGenerator.new(@document).render(
             [{
-              data: ["Subtotal", format_money(@breakdown[:subtotal])],
+              data: ["Subtotal", format_money(@breakdown[:subtotal], true)],
               style: {
                 borders: [:top],
                 padding: [-2, 1, 0, 0],
@@ -71,7 +72,7 @@ module Pdfs
         end
 
         data.push(
-          data: ["Subtotal", "", "", "", "", format_money(subtotal)],
+          data: ["Subtotal", "", "", "", "", format_money(subtotal, true)],
           style: {
             font_style: font_style
           }
@@ -109,7 +110,7 @@ module Pdfs
             )
           end
           data.push(
-            data: ["Abzüge Total", format_money(@breakdown[:discount_total])],
+            data: ["Abzüge Total", format_money(@breakdown[:discount_total], true)],
             style: {
               font_style: :normal,
               borders: [:top],
@@ -118,7 +119,7 @@ module Pdfs
             }
           )
           data.push(
-            data: ["Subtotal", format_money(@breakdown[:raw_total])],
+            data: ["Subtotal", format_money(@breakdown[:raw_total], true)],
             style: {
               font_style: :bold,
               padding: padding
@@ -162,7 +163,7 @@ module Pdfs
           )
         end
         data.push(
-          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total])],
+          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total], ceil)],
           style: {
             font_style: :normal,
             borders: [:top],
@@ -171,7 +172,7 @@ module Pdfs
           }
         )
         data.push(
-          data: ["Total", format_money(@breakdown[:total])],
+          data: ["Total", format_money(@breakdown[:total], ceil)],
           style: {
             font_style: @breakdown[:fixed_price] ? :normal : :bold,
             padding: padding
@@ -180,7 +181,7 @@ module Pdfs
 
         if @breakdown[:fixed_price]
           data.push(
-            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price])],
+            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price], ceil)],
             style: {
               font_style: :bold,
               padding: padding
