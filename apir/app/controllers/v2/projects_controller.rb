@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V2
-  class ProjectsController < ApplicationController
+  class ProjectsController < APIController
     include V2::Concerns::ParamsAuthenticatable
 
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }

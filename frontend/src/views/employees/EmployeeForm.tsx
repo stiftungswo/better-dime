@@ -6,6 +6,7 @@ import * as React from 'react';
 import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
+import Select from '../../form/fields/Select';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
@@ -30,6 +31,13 @@ export default class EmployeeForm extends React.Component<Props> {
   async componentWillMount() {
     await this.props.employeeGroupStore!.fetchAll();
     this.setState({ loading: false });
+  }
+
+  getLocaleOptions() {
+    return [
+      {value: 'de', label: 'Deutsch'},
+      {value: 'fr', label: 'Français'},
+    ];
   }
 
   render() {
@@ -123,6 +131,9 @@ export default class EmployeeForm extends React.Component<Props> {
                     <Grid container={true} spacing={16}>
                       <Grid item={true} xs={12} sm={6}>
                         <DimeField component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
+                      </Grid>
+                      <Grid item={true} xs={12} sm={6}>
+                        <DimeField component={Select} name={'locale'} label={'Sprache'} fullWidth={true} options={this.getLocaleOptions()} />
                       </Grid>
                     </Grid>
 

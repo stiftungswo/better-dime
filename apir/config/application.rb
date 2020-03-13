@@ -37,6 +37,8 @@ module Api
       port: ENV.fetch("APP_POST") { 3000 }
     }
 
+    config.i18n.default_locale = :de
+
     config.use_plugin_parser = true
   end
 end

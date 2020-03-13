@@ -32,7 +32,7 @@ module Pdfs
           @document.move_down 5
           Pdfs::Generators::TableGenerator.new(@document).render(
             [{
-              data: ["Subtotal", format_money(@breakdown[:subtotal], :ceil)],
+              data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:subtotal], :ceil)],
               style: {
                 borders: [:top],
                 padding: [-2, 1, 0, 0],
@@ -73,7 +73,7 @@ module Pdfs
         end
 
         data.push(
-          data: ["Subtotal", "", "", "", "", format_money(subtotal, :ceil)],
+          data: [(I18n.t :subtotal).capitalize, "", "", "", "", format_money(subtotal, :ceil)],
           style: {
             font_style: font_style
           }
@@ -90,7 +90,7 @@ module Pdfs
         if @breakdown[:discounts].length > 0
           data = [
             {
-              data: ["Abzug", "Betrag"],
+              data: [(I18n.t :discount).capitalize, (I18n.t :amount).capitalize],
               style: {
                 font_style: :bold,
                 padding: [2, 1, 7, 0],
@@ -111,7 +111,7 @@ module Pdfs
             )
           end
           data.push(
-            data: ["Abzüge Total", format_money(@breakdown[:discount_total], :floor)],
+            data: [(I18n.t :total_discount).capitalize, format_money(@breakdown[:discount_total], :floor)],
             style: {
               font_style: :normal,
               borders: [:top],
@@ -120,7 +120,7 @@ module Pdfs
             }
           )
           data.push(
-            data: ["Subtotal", format_money(@breakdown[:raw_total], :ceil)],
+            data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:raw_total], :ceil)],
             style: {
               font_style: :bold,
               padding: padding
@@ -143,7 +143,7 @@ module Pdfs
       def render_total
         data = [
           {
-            data: ["MwSt.", "Betrag"],
+            data: [(I18n.t :vat), (I18n.t :amount).capitalize],
             style: {
               font_style: :bold,
               padding: [2, 1, 7, 0],
@@ -156,7 +156,7 @@ module Pdfs
 
         @breakdown[:vats].each do |vat|
           data.push(
-            data: [(vat[:vat].to_f * 100.0).to_s + "%", format_money(vat[:value])],
+            data: [(vat[:vat].to_f * 100.0).round(2).to_s + "%", format_money(vat[:value])],
             style: {
               font_style: :normal,
               padding: padding
@@ -164,7 +164,7 @@ module Pdfs
           )
         end
         data.push(
-          data: ["Mehrwertsteuer Total", format_money(@breakdown[:vat_total], :ceil)],
+          data: [(I18n.t :total_vat), format_money(@breakdown[:vat_total], :ceil)],
           style: {
             font_style: :normal,
             borders: [:top],

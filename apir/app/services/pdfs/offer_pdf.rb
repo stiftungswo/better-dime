@@ -24,11 +24,11 @@ module Pdfs
     def draw_description
       move_down 10
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
-      text "Sachbearbeiter: " + @offer.accountant.full_name, @default_text_settings
+      text I18n.t(:clerk) + ": " + @offer.accountant.full_name, @default_text_settings
 
       move_down 20
-      text "Offerte: ".upcase + @offer.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
-      text "Leistungsangebot Nr. " + @offer.id.to_s, @default_text_settings
+      text I18n.t(:offer).upcase + ": ".upcase + @offer.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text I18n.t(:range_of_services) + " Nr. " + @offer.id.to_s, @default_text_settings
 
       move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading)).render(@offer.description)
@@ -41,32 +41,32 @@ module Pdfs
       undash
       move_down 20
 
-      text "Kostenübersicht".upcase, @default_text_settings.merge(style: :bold, size: 12)
+      text (I18n.t :cost_overview).upcase, @default_text_settings.merge(style: :bold, size: 12)
 
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
-        ["Position", "Ansatz CHF", "Einheit", "Anzahl", "MwSt.", "Teilbetrag CHF exkl. MwSt."]
+        [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
     end
 
     def draw_signature
       move_down 20
-      text "Bitte unterschrieben retournieren bis " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
+      text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
       move_down 20
 
       float do
-        text "Unterschrift des Auftragsnehmers:", @default_text_settings.merge(style: :bold)
+        text I18n.t(:signature_contractor) + ":", @default_text_settings.merge(style: :bold)
       end
       indent(bounds.width / 2.0, 0) do
-        text "Unterschrift des Auftraggebers:", @default_text_settings.merge(style: :bold)
+        text I18n.t(:signature_client) + ":", @default_text_settings.merge(style: :bold)
       end
 
       move_down 35
 
       float do
-        text "Ort / Datum:", @default_text_settings
+        text I18n.t(:place) + " / " + I18n.t(:date_name) + ":", @default_text_settings
       end
       indent(bounds.width / 2.0, 0) do
-        text "Ort / Datum:", @default_text_settings
+        text I18n.t(:place) + " / " + I18n.t(:date_name) + ":", @default_text_settings
       end
 
       move_down 30

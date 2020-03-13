@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V2
-  class InvoicesController < ApplicationController
+  class InvoicesController < APIController
     include V2::Concerns::ParamsAuthenticatable
 
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }
