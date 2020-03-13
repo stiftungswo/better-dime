@@ -105,7 +105,7 @@ module V2
       params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
         :id, :password, :email, :is_admin, :first_name, :last_name,
-        :can_login, :archived, :holidays_per_year, :employee_group_id,
+        :can_login, :archived, :holidays_per_year, :employee_group_id, :locale,
         work_periods_attributes: [
           :id, :ending, :pensum, :beginning, :yearly_vacation_budget
         ]

@@ -12,6 +12,7 @@ export const editEmployeeSchema = localizeSchema(() =>
     last_name: yup.string().required(),
     password: yup.string(),
     password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
+    locale: yup.string(),
     work_periods: yup.array(
       yup.object({
         ending: dimeDate().required(),
@@ -37,6 +38,7 @@ export const newEmployeeSchema = localizeSchema(() =>
     last_name: yup.string().required(),
     first_vacation_takeover: yup.number().required(),
     password: yup.string().required(),
+    locale: yup.string().required(),
     password_repeat: yup
       .string()
       .oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.')
@@ -71,5 +73,6 @@ export const employeeTemplate = {
   first_vacation_takeover: 0.0,
   work_periods: [],
   password: '',
+  locale: 'de',
   employee_group_id: 0,
 };

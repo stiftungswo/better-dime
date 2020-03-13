@@ -55,7 +55,7 @@ class CostBreakdown
   def get_grouped_positions(positions, groups)
     default_positions = positions.select { |p| p.position_group_id.nil? }
     default_group = [{
-      group_name: "Generell",
+      group_name: (I18n.t :general_group_name),
       positions: default_positions,
       subtotal: calculate_subtotal(default_positions)
     }]
@@ -76,7 +76,7 @@ class CostBreakdown
   end
 
   def calculate_subtotal(positions)
-    positions.inject(0) { |sum, p| sum + (p.calculated_total/5.0).round * 5 }
+    positions.inject(0) { |sum, p| sum + (p.calculated_total/5.0).round * 5.0 }
   end
 
   def calculate_vats(positions, total_with_discounts)
@@ -99,7 +99,9 @@ class CostBreakdown
   end
 
   def group_by_vat(positions)
-    positions.map { |p| p.vat.to_s }.uniq.map { |vat_key| [vat_key, positions.select { |p| p.vat.to_s == vat_key }] }.to_h
+    o = positions.map { |p| p.vat.round(4).to_s }.uniq.map { |vat_key| [vat_key, positions.select { |p| p.vat.round(4).to_s == vat_key }] }.to_h
+    puts o
+    o
   end
 
   def apply_discount(subtotal, discount)

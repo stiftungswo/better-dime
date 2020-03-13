@@ -88,6 +88,7 @@ export interface Employee {
   first_vacation_takeover: number;
   work_periods: WorkPeriod[];
   employee_group_id: number | null;
+  locale: string;
   group_name?: string;
   group?: {
     id: number;

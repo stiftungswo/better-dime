@@ -15,7 +15,7 @@ module Pdfs
     end
 
     def subtitle
-      "Projekt Nr. " + efforts_holder.id.to_s
+      I18n.t(:project) + " Nr. " + efforts_holder.id.to_s
     end
 
     def draw
@@ -37,12 +37,12 @@ module Pdfs
       latest_effort = dates.max || DateTime.now()
 
       move_down 5
-      text "Aufwandsrapport: ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text I18n.t(:effort_report).upcase + ": ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
-      text "Leistungen vom " + earliest_effort.strftime("%d.%m.%Y") + " bis " + latest_effort.strftime("%d.%m.%Y"), @default_text_settings
+      text I18n.t(:services_from_to, from: earliest_effort.strftime("%d.%m.%Y"), to: latest_effort.strftime("%d.%m.%Y")), @default_text_settings
 
       move_down 15
-      text "Zusammenfassung:", @default_text_settings.merge(style: :bold)
+      text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)
       text efforts_holder.description, @default_text_settings
     end
 
@@ -54,7 +54,7 @@ module Pdfs
       uniq_dates = (effort_dates + comment_dates).uniq.sort
 
       table_data = [
-        ["Datum", "Bezeichnung", "Anzahl", "Einheit"]
+        [I18n.t(:date_name), I18n.t(:description), I18n.t(:quantity), I18n.t(:unit)]
       ]
 
       content_widths = [bounds.width - 190, 50, 65]
