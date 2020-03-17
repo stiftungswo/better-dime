@@ -37,7 +37,7 @@ module Pdfs
       latest_effort = dates.max || DateTime.now()
 
       move_down 5
-      text I18n.t(:effort_report).upcase + ": ".upcase + efforts_holder.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text I18n.t(:effort_report) + ": " + efforts_holder.name, @default_text_settings.merge(size: 14, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
       text I18n.t(:services_from_to, from: earliest_effort.strftime("%d.%m.%Y"), to: latest_effort.strftime("%d.%m.%Y")), @default_text_settings
 

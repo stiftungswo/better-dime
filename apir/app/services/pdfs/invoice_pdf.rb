@@ -10,6 +10,10 @@ module Pdfs
       super()
     end
 
+    def filename
+      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(',')[0].split(';')[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+    end
+
     def draw
       Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @invoice).draw @default_text_settings
       draw_description
@@ -26,7 +30,7 @@ module Pdfs
       end.join(", ")
 
       move_down 20
-      text I18n.t(:invoice).upcase + ": ".upcase + @invoice.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text I18n.t(:invoice) + ": " + @invoice.name, @default_text_settings.merge(size: 14, style: :bold)
       move_down 5
       text_box I18n.t(:offer) + " Nr. " + @invoice.project.offer.id.to_s, @default_text_settings.merge(at: [150, cursor]) if @invoice.project.offer
       text_box I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings.merge(at: [@invoice.project.offer.nil? ? 150 : 300, cursor])
@@ -40,7 +44,7 @@ module Pdfs
 
     def draw_breakdown
       move_down 10
-
+      start_new_page
       Pdfs::Generators::BreakdownTableGenerator.new(document, @invoice.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )

@@ -67,6 +67,9 @@ module Pdfs
       end
 
       def list_item(text, _flags)
+        puts text
+        puts _flags
+
         "[step]#{text.strip}"
       end
 
@@ -111,9 +114,10 @@ module Pdfs
             style: :bold,
             character_spacing: @spacing,
             leading: 5,
+            size: _header_level == 1 ? 13 : 10,
             inline_format: TRUE
           }
-          @document.text text.upcase, settings
+          @document.text text, settings
         end
         @next_pad = 20
         ""

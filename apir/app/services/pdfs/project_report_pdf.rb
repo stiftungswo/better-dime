@@ -19,6 +19,10 @@ module Pdfs
       super()
     end
 
+    def filename
+      "ProjektRaport_" + @project.id.to_s
+    end
+
     def subtitle
       "Projekt Nr. " + @project.id.to_s
     end
@@ -56,7 +60,7 @@ module Pdfs
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
 
       move_down 5
-      text "Projektrapport: ".upcase + @project.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text "Projektrapport: " + @project.name, @default_text_settings.merge(size: 14, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
       text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
@@ -196,7 +200,7 @@ module Pdfs
       )
 
       @document.move_down 15
-      @document.text "Mitarbeiter Kosten".upcase, size: 10, style: :bold
+      @document.text "Mitarbeiter Kosten", size: 10, style: :bold
 
       @document.indent(20, 0) do
         Pdfs::Generators::TableGenerator.new(@document).render(
@@ -250,7 +254,7 @@ module Pdfs
       )
 
       @document.move_down 15
-      @document.text "Zusätzliche Kosten".upcase, size: 10, style: :bold
+      @document.text "Zusätzliche Kosten", size: 10, style: :bold
 
       @document.indent(20, 0) do
         Pdfs::Generators::TableGenerator.new(@document).render(

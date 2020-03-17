@@ -5,30 +5,39 @@ import { Converter } from 'showdown';
 
 // these styles try to mirror how the rendered markdown in the printed PDF looks. See base.twig in the backend code.
 const dimeDocumentStyles = (theme: Theme) => {
-  const fontSize = theme.typography.body1.fontSize;
+  const baseFontSize = 15;
+  const h1FontSize = baseFontSize + 3;
   return createStyles({
     container: {
       'marginTop': '16px', // this is the 'normal' margin of formControl, but where could this be stored in theme?
       '& *': {
-        fontSize,
+        fontSize: baseFontSize + 'px',
       },
       '& p': {
-        fontSize,
+        fontSize: baseFontSize + 'px',
         width: '100%',
       },
       '& h1, & h2, & h3': {
         paddingTop: '8px',
-        fontSize,
+        fontSize: baseFontSize + 'px',
         fontWeight: 'bold',
       },
       '& h1': {
-        textDecoration: 'underline',
+        fontSize: h1FontSize + 'px',
       },
       '& ul': {
-        listStyleType: 'initial',
+        'listStyleType': 'initial',
+        '& li': {
+          listStyleType: 'none',
+        },
+        '& li::before': {
+          content: '"-"',
+          marginLeft: '-10px',
+          position: 'absolute',
+        },
       },
       '& li': {
-        fontSize,
+        fontSize: baseFontSize + 'px',
       },
     },
   });
@@ -42,6 +51,7 @@ class MarkdownRenderInner extends React.Component<Props> {
   converter = new Converter();
 
   get markup() {
+    this.converter.setOption('simpleLineBreaks', true);
     return { __html: this.converter.makeHtml(this.props.children) };
   }
 

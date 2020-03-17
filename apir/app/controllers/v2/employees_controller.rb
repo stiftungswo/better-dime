@@ -91,7 +91,7 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
         end
       end
     end
