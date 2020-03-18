@@ -21,7 +21,7 @@ module Pdfs
         if @breakdown[:grouped_positions].length > 1
           @breakdown[:grouped_positions].each do |group|
             @document.move_down 15
-            @document.text group[:group_name].upcase, size: 10, style: :bold, character_spacing: @spacing, leading: @leading
+            @document.text group[:group_name], size: 10, style: :bold, character_spacing: @spacing, leading: @leading
             @document.move_up 15
 
             @document.indent(20, 0) do
@@ -61,7 +61,7 @@ module Pdfs
           }
         }]
 
-        positions.each do |position|
+        positions.sort_by(&:order).each do |position|
           data.push(data: [
                       position.try(:service).try(:name) || position.description,
                       format_money(position.price_per_rate),

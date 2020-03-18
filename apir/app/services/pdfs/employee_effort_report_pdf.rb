@@ -12,6 +12,10 @@ module Pdfs
       super()
     end
 
+    def filename
+      "Mitarbeiter_" + @employee.full_name + "_Aufwandsreport"
+    end
+
     def draw
       Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, nil).draw(
         @default_text_settings,
@@ -37,7 +41,7 @@ module Pdfs
       end.inject(0) {|sum, e| sum + e.value}
 
       move_down 5
-      text "Aufwandsrapport".upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text "Aufwandsrapport", @default_text_settings.merge(size: 14, style: :bold)
       text "Leistungen vom " + @from.strftime("%d.%m.%Y") + " bis " + @to.strftime("%d.%m.%Y"), @default_text_settings
       text "Gesamtstunden: " + (total_effort_hours/60.0).round(2).to_s, @default_text_settings
     end

@@ -7,7 +7,12 @@ module Pdfs
     def initialize(global_setting, offer)
       @global_setting = global_setting
       @offer = offer
+      @file_name = "adsd"
       super()
+    end
+
+    def filename
+      "Offerte_" + @offer.id.to_s + "_" + @offer.name.split(',')[0].split(';')[0] + "_" + @offer.created_at.strftime("%Y_%m_%d")
     end
 
     def data
@@ -27,7 +32,7 @@ module Pdfs
       text I18n.t(:clerk) + ": " + @offer.accountant.full_name, @default_text_settings
 
       move_down 20
-      text I18n.t(:offer).upcase + ": ".upcase + @offer.name.upcase, @default_text_settings.merge(size: 13, style: :bold)
+      text I18n.t(:offer) + ": " + @offer.name, @default_text_settings.merge(size: 14, style: :bold)
       text I18n.t(:range_of_services) + " Nr. " + @offer.id.to_s, @default_text_settings
 
       move_down 20
@@ -35,13 +40,8 @@ module Pdfs
     end
 
     def draw_breakdown
-      move_down 10
-      dash(1, space: 2)
-      stroke_horizontal_rule
-      undash
-      move_down 20
-
-      text (I18n.t :cost_overview).upcase, @default_text_settings.merge(style: :bold, size: 12)
+      start_new_page
+      text I18n.t(:cost_overview), @default_text_settings.merge(style: :bold, size: 12)
 
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
@@ -49,6 +49,10 @@ module Pdfs
     end
 
     def draw_signature
+      if cursor < 150
+        start_new_page
+      end
+
       move_down 20
       text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
       move_down 20

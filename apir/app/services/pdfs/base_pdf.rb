@@ -38,6 +38,10 @@ module Pdfs
       # your drawing logic here
     end
 
+    def filename
+      "no_name"
+    end
+
     def draw_page_numbers
       number_pages I18n.t(:page) + " <page>/<total>",
                    start_count_at: 1,

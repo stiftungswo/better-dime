@@ -201,22 +201,25 @@ export class ProjectReport extends React.Component<Props, State> {
                   <Grid>
                     <Grid item xs={12}>
                       <DownloadButton
-                        href={() => this.props.mainStore!.apiV2URL('reports/project_report/' + formikProps.values.project_id, {
-                          additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
-                            return value.name;
-                          }).join(','),
-                          additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
-                            return value.cost.toString();
-                          }).join(','),
-                          exclude_employee_ids: yup.array().of(selector()).nullable(true).cast(formikProps.values.exclude_employee_ids).map((value: any) => {
-                            return value.toString();
-                          }).join(','),
-                          from: dimeDate().cast(formikProps.values.from),
-                          to: dimeDate().cast(formikProps.values.to),
-                          project_id: selector().cast(formikProps.values.project_id),
-                          daily_rate: requiredNumber().cast(formikProps.values.daily_rate),
-                          vat: requiredNumber().cast(formikProps.values.vat),
-                        })}
+                        href={() => {
+                          return this.props.mainStore!.apiV2URL('reports/project_report/' + formikProps.values.project_id, {
+                            additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                              return value.name;
+                            }).join(','),
+                            additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                              return value.cost.toString();
+                            }).join(','),
+                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || []).map((value: any) => {
+                              return value.toString();
+                            }).join(','),
+                            from: dimeDate().cast(formikProps.values.from),
+                            to: dimeDate().cast(formikProps.values.to),
+                            project_id: selector().cast(formikProps.values.project_id),
+                            daily_rate: requiredNumber().cast(formikProps.values.daily_rate),
+                            vat: requiredNumber().cast(formikProps.values.vat),
+                          });
+                        }
+                        }
                         disabled={!formikProps.isValid}
                       >
                         PDF Herunterladen
