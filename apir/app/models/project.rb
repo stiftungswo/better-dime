@@ -42,6 +42,8 @@ class Project < ApplicationRecord
   end
 
   def should_validate_category?
-    offer.blank? || !new_record?
+    # if we only archive or unarchive the project we don't validate the project category
+    # if it is a new record we don't validate either 
+    offer.blank? || (!new_record? && !(changed == ["archived"]))
   end
 end

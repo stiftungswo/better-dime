@@ -49,7 +49,7 @@ de:
   price_per_unit_chf: "Ansatz CHF"
   return_signed_until: "Bitte unterschrieben retournieren bis"
   signature_contractor: "Unterschrift des Auftragsnehmers"
-  signature_client: "Unterschrift des Auftragsnehmers"
+  signature_client: "Unterschrift des Auftragsgebers"
   place: "Ort"
   date_name: "Datum"
   cost_groups: "Kostenstellen"
