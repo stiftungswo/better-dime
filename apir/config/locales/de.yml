@@ -61,6 +61,16 @@ de:
   summary: "Zusammenfassung"
   description: "Beschreibung"
   page: "Seite"
+  bank_payment: "Bankzahlung"
+  esr_description: "Sie können diese Informationen verwenden, um die Zahlung über Online-Bankingoder am Bankschalter zu tätigen. Vergessen Sie nicht, die Referenz anzugeben."
+  finance_institute: "Finanzinstitut"
+  in_favor_of: "Zugunsten von"
+  usage: "Verwendungszweck"
+  iban: "IBAN"
+  bic: "BIC"
+  outstanding_amount: "Betrag offen"
+  invoice_nr: "Rechnung Nr."
+  invoice_nr_esr: "Rechnung  Nr. "
   date:
     formats:
       default: "%Y-%m-%d"

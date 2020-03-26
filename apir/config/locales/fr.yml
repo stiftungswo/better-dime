@@ -61,6 +61,16 @@ fr:
   summary: "Résumé"
   description: "Description"
   page: "Page"
+  bank_payment: "Paiement bancaire"
+  esr_description: "Vous pouvez utiliser ces informations pour effectuer des paiements par le biais des services bancaires en ligne ou au guichet bancaire. Oubliez pas donner la référence."
+  finance_institute: "Institution financière"
+  in_favor_of: "En faveur de"
+  usage: "Utilisation"
+  iban: "IBAN"
+  bic: "BIC"
+  outstanding_amount: "Montant impayé"
+  invoice_nr: "Facture Nr."
+  invoice_nr_esr: "Facture   Nr. "
   date:
     formats:
       default: "%Y-%m-%d"
