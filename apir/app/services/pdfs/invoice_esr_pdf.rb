@@ -176,7 +176,7 @@ module Pdfs
 
           text I18n.t(:finance_institute), size: 9, character_spacing: @spacing, leading: leading
           text I18n.t(:in_favor_of), size: 9, character_spacing: @spacing, leading: leading
-          text I18n.t(:usage), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:usage_esr), size: 9, character_spacing: @spacing, leading: leading
           text I18n.t(:iban), size: 9, character_spacing: @spacing, leading: leading
           text I18n.t(:bic), size: 9, character_spacing: @spacing, leading: leading
           text I18n.t(:outstanding_amount), size: 9, character_spacing: @spacing, leading: leading
