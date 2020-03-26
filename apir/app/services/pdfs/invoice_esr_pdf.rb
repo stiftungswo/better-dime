@@ -133,7 +133,7 @@ module Pdfs
 
       row = 0
       col = 0
-      ("Rechnung  Nr. " + @invoice.id.to_s).each_char do |c|
+      (I18n.t(:invoice_nr_esr) + @invoice.id.to_s).each_char do |c|
         float do
           draw_text c, size: 11, character_spacing: 8.1, leading: 6, at: [12.65.cm - width_of(c) / 2 + col * 0.51.cm, 9.4.cm - row * 0.6.cm]
         end
@@ -166,21 +166,20 @@ module Pdfs
         # stroke_bounds
         leading = 6
 
-        text "Bankzahlung", size: 11, character_spacing: @spacing
-        text "Sie können diese Informationen verwenden, um die Zahlung über Online-Banking" \
-             "oder am Bankschalter zu tätigen. Vergessen Sie nicht, die Referenz anzugeben.", size: 9, character_spacing: @spacing
+        text I18n.t(:bank_payment), size: 11, character_spacing: @spacing
+        text I18n.t(:esr_description), size: 9, character_spacing: @spacing
 
         info_label_width = 4
 
         bounding_box([0.0.cm, 4.4.cm], width: info_label_width.cm, height: 4.cm) do
           # stroke_bounds
 
-          text "Finanzinstitut", size: 9, character_spacing: @spacing, leading: leading
-          text "Zugunsten von", size: 9, character_spacing: @spacing, leading: leading
-          text "Verwendungszweck", size: 9, character_spacing: @spacing, leading: leading
-          text "IBAN", size: 9, character_spacing: @spacing, leading: leading
-          text "BIC", size: 9, character_spacing: @spacing, leading: leading
-          text "Betrag offen", size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:finance_institute), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:in_favor_of), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:usage), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:iban), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:bic), size: 9, character_spacing: @spacing, leading: leading
+          text I18n.t(:outstanding_amount), size: 9, character_spacing: @spacing, leading: leading
         end
 
         info_size = 8.7
@@ -194,7 +193,7 @@ module Pdfs
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_name + ", " + @global_setting.sender_street +
                ", " + @global_setting.sender_zip + " " + @global_setting.sender_city, size: info_size, character_spacing: @spacing, leading: leading
-          text "Rechnung Nr. " + @invoice.id.to_s, size: info_size, character_spacing: @spacing, leading: leading
+          text I18n.t(:invoice_nr) + " " + @invoice.id.to_s, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_iban, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_bic, size: info_size, character_spacing: @spacing, leading: leading
           text "CHF " + total_formated, size: info_size, character_spacing: @spacing, leading: leading
