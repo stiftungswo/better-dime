@@ -65,7 +65,7 @@ de:
   esr_description: "Sie können diese Informationen verwenden, um die Zahlung über Online-Bankingoder am Bankschalter zu tätigen. Vergessen Sie nicht, die Referenz anzugeben."
   finance_institute: "Finanzinstitut"
   in_favor_of: "Zugunsten von"
-  usage: "Verwendungszweck"
+  usage_esr: "Verwendungszweck"
   iban: "IBAN"
   bic: "BIC"
   outstanding_amount: "Betrag offen"
