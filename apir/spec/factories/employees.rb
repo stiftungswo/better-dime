@@ -9,6 +9,7 @@ FactoryBot.define do
     can_login { true }
     archived { false }
     holidays_per_year { 12 }
+    password {"my password"}
     first_vacation_takeover { 0 }
     employee_group
 

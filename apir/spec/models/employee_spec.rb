@@ -14,7 +14,22 @@ RSpec.describe Employee, type: :model do
   it { is_expected.to validate_presence_of :email }
   it { is_expected.to validate_presence_of :first_name }
   it { is_expected.to validate_presence_of :last_name }
-  it { is_expected.to validate_numericality_of(:holidays_per_year).only_integer.is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:holidays_per_year).allow_nil.is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:first_vacation_takeover).is_greater_than_or_equal_to(0) }
+
+  let(:employee_model) {create(:employee)}
+
+  it "encrypts the password" do
+    expect(employee_model.encrypted_password).to start_with("$2a$").or start_with("$2y$")
+  end
+
+  it "can log-in" do
+    expect(employee_model.active_for_authentication?).to eq(true)
+  end
+
+  it "has a correct full name" do
+    expect(employee_model.full_name).to eq("Peter Pan")
+  end
 
   describe "#email" do
     it { is_expected.to allow_value("user@example.com").for(:email) }
