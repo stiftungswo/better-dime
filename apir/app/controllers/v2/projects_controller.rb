@@ -4,8 +4,6 @@ module V2
   class ProjectsController < APIController
     include V2::Concerns::ParamsAuthenticatable
 
-    before_action :authenticate_employee!, unless: -> { request.format.pdf? }
-    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
     before_action :set_project, only: [:show, :update, :destroy, :create_invoice, :effort_report]
 
     def index
@@ -58,7 +56,7 @@ module V2
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
-      redirect_to controller: "invoices", action: "show", id: @invoice.id
+      render 'v2/invoices/show'
     end
 
     def potential_invoices

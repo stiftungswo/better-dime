@@ -56,7 +56,7 @@ module V2
 
       raise ValidationError, @project.errors unless @project.save
 
-      redirect_to controller: "projects", action: "show", id: @project.id
+      render 'v2/projects/show'
     end
 
     def print
