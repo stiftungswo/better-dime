@@ -62,7 +62,7 @@ de:
   description: "Beschreibung"
   page: "Seite"
   bank_payment: "Bankzahlung"
-  esr_description: "Sie können diese Informationen verwenden, um die Zahlung über Online-Bankingoder am Bankschalter zu tätigen. Vergessen Sie nicht, die Referenz anzugeben."
+  esr_description: "Sie können diese Informationen verwenden, um die Zahlung über Online-Banking oder am Bankschalter zu tätigen. Vergessen Sie nicht, die Referenz anzugeben."
   finance_institute: "Finanzinstitut"
   in_favor_of: "Zugunsten von"
   usage_esr: "Verwendungszweck"
