@@ -17,6 +17,10 @@ module Pdfs
       draw
     end
 
+    def filename
+      "Einzahlungsschein_" + @invoice.id.to_s + "_" + @invoice.name.split(',')[0].split(';')[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+    end
+
     def document
       @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, margin: [0, 0, 0, 0])
     end
@@ -62,10 +66,12 @@ module Pdfs
         font_size = 9
         leading = 16.5 - font_size
 
+        supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + ", " + @invoice.address.supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
         text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
       end
     end
@@ -153,10 +159,12 @@ module Pdfs
         font_size = 9
         leading = 16.5 - font_size
 
+        supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + ", " + @invoice.address.supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
         text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
       end
     end
