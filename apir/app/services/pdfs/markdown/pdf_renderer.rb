@@ -67,9 +67,6 @@ module Pdfs
       end
 
       def list_item(text, _flags)
-        puts text
-        puts _flags
-
         "[step]#{text.strip}"
       end
 

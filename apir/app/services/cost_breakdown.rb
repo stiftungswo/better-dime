@@ -99,9 +99,7 @@ class CostBreakdown
   end
 
   def group_by_vat(positions)
-    o = positions.map { |p| p.vat.round(4).to_s }.uniq.map { |vat_key| [vat_key, positions.select { |p| p.vat.round(4).to_s == vat_key }] }.to_h
-    puts o
-    o
+    positions.map { |p| p.vat.round(4).to_s }.uniq.map { |vat_key| [vat_key, positions.select { |p| p.vat.round(4).to_s == vat_key }] }.to_h
   end
 
   def apply_discount(subtotal, discount)
