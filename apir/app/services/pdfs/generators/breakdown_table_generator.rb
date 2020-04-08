@@ -63,13 +63,13 @@ module Pdfs
 
         positions.sort_by(&:order).each do |position|
           data.push(data: [
-                      position.try(:service).try(:name) || position.description,
-                      format_money(position.price_per_rate),
-                      position.rate_unit.billing_unit,
-                      position.amount,
-                      (position.vat * 100.0).round(2).to_s + "%",
-                      format_money(position.calculated_total)
-                    ])
+            position.description || position.try(:service).try(:name),
+            format_money(position.price_per_rate),
+            position.rate_unit.billing_unit,
+            position.amount,
+            (position.vat * 100.0).round(2).to_s + "%",
+            format_money(position.calculated_total)
+          ])
         end
 
         data.push(
@@ -173,7 +173,7 @@ module Pdfs
           }
         )
         data.push(
-          data: ["Total", format_money(@breakdown[:total], :ceil)],
+          data: [I18n.t(:total), format_money(@breakdown[:total], :ceil)],
           style: {
             font_style: @breakdown[:fixed_price] ? :normal : :bold,
             padding: padding
@@ -182,7 +182,7 @@ module Pdfs
 
         if @breakdown[:fixed_price]
           data.push(
-            data: ["Fix Preis Total", format_money(@breakdown[:fixed_price], :ceil)],
+            data: [I18n.t(:fix_price_total), format_money(@breakdown[:fixed_price], :ceil)],
             style: {
               font_style: :bold,
               padding: padding

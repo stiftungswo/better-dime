@@ -71,6 +71,7 @@ fr:
   outstanding_amount: "Montant à régler"
   invoice_nr: "Facture Nr."
   invoice_nr_esr: "Facture   Nr. "
+  fix_price_total: "Prix ​​fixe total"
   date:
     formats:
       default: "%Y-%m-%d"

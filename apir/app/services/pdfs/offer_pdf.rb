@@ -7,7 +7,6 @@ module Pdfs
     def initialize(global_setting, offer)
       @global_setting = global_setting
       @offer = offer
-      @file_name = "adsd"
       super()
     end
 

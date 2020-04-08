@@ -71,6 +71,7 @@ de:
   outstanding_amount: "Betrag offen"
   invoice_nr: "Rechnung Nr."
   invoice_nr_esr: "Rechnung  Nr. "
+  fix_price_total: "Fixpreis Total"
   date:
     formats:
       default: "%Y-%m-%d"
