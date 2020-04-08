@@ -63,7 +63,7 @@ module Pdfs
 
         positions.sort_by(&:order).each do |position|
           data.push(data: [
-            position.description || position.try(:service).try(:name),
+            position.description.blank? ? position.try(:service).try(:name) : position.description,
             format_money(position.price_per_rate),
             position.rate_unit.billing_unit,
             position.amount,
