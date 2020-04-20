@@ -71,9 +71,9 @@ export class StoreProvider extends React.Component<Props> {
     this.initializeStores();
 
     this.disposeAuthChangeReaction = reaction(
-      () => this.stores.apiStore.token,
-      token => {
-        if (token) {
+      () => this.stores.apiStore.tokenV2,
+      tokenV2 => {
+        if (tokenV2) {
           this.resetStores();
         }
       },

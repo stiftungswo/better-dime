@@ -3,16 +3,12 @@ import { action, computed, observable } from 'mobx';
 import { Formatter } from '../utilities/formatter';
 import { buildURL } from '../utilities/helpers';
 import { Notifier } from '../utilities/notifier';
-import { ApiStore, baseUrl, baseUrlV2 } from './apiStore';
+import { ApiStore, baseUrlV2 } from './apiStore';
 
 /*
 This class manages global UI state and provides some facades for often used functionality
  */
 export class MainStore {
-
-  get api() {
-    return this.apiStore.api;
-  }
 
   get apiV2() {
     return this.apiStore.apiV2;
@@ -61,13 +57,6 @@ export class MainStore {
   @action
   navigateTo(path: string): void {
     this.history.push(path);
-  }
-
-  apiURL(path: string, params: object = {}, includeAuth: boolean = true): string {
-    return buildURL(baseUrl + '/' + path, {
-      ...params,
-      auth: includeAuth ? this.apiStore.token : undefined,
-    });
   }
 
   apiV2URL(path: string, params: object = {}, includeAuth: boolean = true): string {
