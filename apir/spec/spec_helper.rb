@@ -7,6 +7,9 @@ SimpleCov.start "rails" do
   add_filter "app/jobs/application_job.rb"
   add_filter "app/mailers/application_mailer.rb"
   add_filter "app/models/application_record.rb"
+  add_filter "app/errors/calculation_error.rb"
+  add_filter "app/errors/authorization_error.rb"
+  add_filter "app/services/pdfs/"
   add_filter ".semaphore-cache"
 end
 SimpleCov.minimum_coverage 80

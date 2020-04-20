@@ -8,5 +8,6 @@ FactoryBot.define do
     order { 1 }
     rate_unit
     service
+    project
   end
 end
