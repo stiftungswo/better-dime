@@ -15,7 +15,11 @@ module Pdfs
     end
 
     def filename
-      "Projekt_" + efforts_holder.id.to_s + "_Aufwandsreport"
+      if @employees.length == 1
+        "Mitarbeiter_" + @employees[0].full_name + "_Aufwandsreport"
+      else
+        "Mitarbeiter_Projekt_Aufwandsreport"
+      end
     end
 
     def draw
@@ -52,6 +56,7 @@ module Pdfs
 
       move_down 5
       text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
+      text "Leistungen von " + @employees.map {|e| e.full_name}.join(", "), @default_text_settings
       text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
 
