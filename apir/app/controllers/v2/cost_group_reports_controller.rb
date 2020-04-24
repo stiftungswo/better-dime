@@ -2,11 +2,6 @@
 
 module V2
   class CostGroupReportsController < APIController
-    include V2::Concerns::ParamsAuthenticatable
-
-    before_action :authenticate_employee!, except: [:index]
-    before_action :authenticate_from_params!, only: [:index]
-
     def index
       @report = CostGroupReportService.new(timerange, employee_group_name: "SWO Angestellte")
     end

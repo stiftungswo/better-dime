@@ -34,6 +34,7 @@ class WorkPeriodCalculator
 
   private
 
+  # :nocov:
   def create_placeholder(work_period)
     {
       id: work_period.id,
@@ -138,4 +139,5 @@ class WorkPeriodCalculator
       overlap && p != period
     end
   end
+  # :nocov:
 end

@@ -3,9 +3,10 @@
 module V2
   class APIController < ApplicationController
     include V2::Concerns::ParamsExtractableEmployeeLocale
+    include V2::Concerns::ParamsAuthenticatable
 
-    before_action :activate, unless: -> { request.format.pdf? }
-    before_action :authenticate_from_params!, if: -> { request.format.pdf? }
+    before_action :activate, unless: -> { request.format.pdf? or request.format.xlsx? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? or request.format.xlsx? }
 
     helper ApplicationHelper
     helper Ransack::Helpers::FormHelper

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe V2::RateUnitUpdater do
+RSpec.describe RateUnitUpdater do
   it "updates rate units" do
     rate_group = create(:rate_group)
 

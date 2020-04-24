@@ -7,9 +7,15 @@ SimpleCov.start "rails" do
   add_filter "app/jobs/application_job.rb"
   add_filter "app/mailers/application_mailer.rb"
   add_filter "app/models/application_record.rb"
-  add_filter "app/errors/calculation_error.rb"
-  add_filter "app/errors/authorization_error.rb"
+  add_filter "app/errors/"
+  # don't test the excel/pdf outputs
   add_filter "app/services/pdfs/"
+  add_filter "app/services/cost_group_report_service.rb"
+  add_filter "app/services/customers_import_service.rb"
+  add_filter "app/services/customers_xlsx_import_service.rb"
+  add_filter "app/services/revenue_report_service.rb"
+  add_filter "app/services/project_service_hour_report_service.rb"
+  add_filter "app/services/project_category_service_hour_report_service.rb"
   add_filter ".semaphore-cache"
 end
 SimpleCov.minimum_coverage 80
@@ -34,3 +40,4 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
 end
+RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 10000
