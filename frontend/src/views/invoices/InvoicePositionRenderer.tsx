@@ -120,7 +120,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
                       )}
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} />
+                      <DimeField component={NumberField} name={name('amount')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} />

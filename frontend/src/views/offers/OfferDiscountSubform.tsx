@@ -67,9 +67,9 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell>
                         {p.percentage ? (
-                          <DimeField delayed component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
+                          <DimeField component={PercentageField} unit={'%'} name={name('value')} disabled={disabled} />
                         ) : (
-                          <DimeField delayed component={CurrencyField} unit={'CHF'} name={name('value')} disabled={disabled} />
+                          <DimeField component={CurrencyField} unit={'CHF'} name={name('value')} disabled={disabled} />
                         )}
                       </DimeTableCell>
                       <DimeTableCell>

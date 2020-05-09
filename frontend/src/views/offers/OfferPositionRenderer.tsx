@@ -145,7 +145,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                       )}
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField delayed component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
+                      <DimeField component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
                     </DimeTableCell>
                     <DimeTableCell>
                       <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
