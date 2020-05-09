@@ -38,7 +38,11 @@ module Pdfs
           :rate_unit,
           :service
         ]
-      ).select { |e| (@from_date..@to_date) === e.date && !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i)) }
+      ).select do |e|
+        (@from_date..@to_date) === e.date &&
+          !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i)) &&
+          e.project_position.rate_unit.is_time
+      end
     end
 
     def draw
@@ -90,7 +94,7 @@ module Pdfs
           table_data.push(
             data: [
               date.strftime("%d.%m.%Y"),
-              (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
+              (same_positions.inject(0) { |sum, e| sum + e.value } / 60).round(1),
               effort.project_position.service.name,
               effort.employee.full_name
             ],
@@ -130,7 +134,7 @@ module Pdfs
         table_data.push(
           data: [
             employee.full_name,
-            (employee_efforts.inject(0) { |sum, e| sum + e.value / e.project_position.rate_unit.factor }).round(1)
+            (employee_efforts.inject(0) { |sum, e| sum + e.value / 60}).round(1)
           ],
           style: {
             borders: [],

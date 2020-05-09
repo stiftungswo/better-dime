@@ -36,6 +36,16 @@ class Employee < ApplicationRecord
   end
   alias name full_name
 
+  def jwt_payload
+    {
+      is_admin: is_admin,
+      details:{
+        first_name: first_name,
+        last_name: last_name
+      }
+    }
+  end
+
   def duplicate
     duped = dup
     duped.email = duped.email.sub "@", rand(10_000).to_s + "@"
