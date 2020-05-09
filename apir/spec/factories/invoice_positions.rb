@@ -4,10 +4,11 @@ FactoryBot.define do
   factory :invoice_position do
     amount { 9.99 }
     description { "MyInvoicePosition" }
+    position_group
     invoice
     order { 1 }
-    price_per_rate { 1.5 }
+    price_per_rate { 15 }
     rate_unit
-    vat { 7.7 }
+    vat { 0.077 }
   end
 end

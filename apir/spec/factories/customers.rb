@@ -16,9 +16,9 @@ FactoryBot.define do
 
   factory :company do
     type { "Company" }
-    comment { "G\u00FCl GmbH" }
+    comment { "test comment" }
     hidden { false }
-    name { "G\u00FCl GmbH" }
+    name { "Test GmbH" }
     rate_group
   end
 end

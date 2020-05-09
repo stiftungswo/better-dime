@@ -9,7 +9,7 @@ class CreateOffers < ActiveRecord::Migration[5.2]
       t.references :rate_group, foreign_key: true
       t.text :short_description, null: false
       t.integer :status, null: false
-      t.decimal :fixed_price_vat
+      t.decimal :fixed_price_vat, precision: 4, scale: 3
       t.bigint :accountant_id, null: false
 
       t.timestamps

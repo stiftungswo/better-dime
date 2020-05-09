@@ -42,7 +42,8 @@ group :development, :test do
   gem "faker"
   gem "pry-byebug"
   gem "pry-rails"
-  gem "rspec-rails"
+  gem 'rspec-rails', '4.0.0.beta3'
+  gem 'rails-controller-testing'
   gem "rubocop", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rspec", require: false

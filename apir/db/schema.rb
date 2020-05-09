@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_23_124403) do
+ActiveRecord::Schema.define(version: 2020_03_10_070944) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -27,14 +27,14 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.index ["deleted_at"], name: "index_addresses_on_deleted_at"
   end
 
-  create_table "cost_groups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "costgroups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "number", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.index ["deleted_at"], name: "index_cost_groups_on_deleted_at"
-    t.index ["number"], name: "index_cost_groups_on_number", unique: true
+    t.index ["deleted_at"], name: "index_costgroups_on_deleted_at"
+    t.index ["number"], name: "index_costgroups_on_number", unique: true
   end
 
   create_table "customer_taggable", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.string "salutation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "company_id", null: false
+    t.bigint "company_id"
     t.datetime "deleted_at"
     t.index ["company_id"], name: "index_customers_on_company_id"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
@@ -92,8 +92,9 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
-    t.decimal "first_vacation_takeover", precision: 10, null: false
+    t.decimal "first_vacation_takeover", precision: 10, scale: 2, null: false
     t.datetime "deleted_at"
+    t.string "locale", default: "de", null: false
     t.index ["deleted_at"], name: "index_employees_on_deleted_at"
     t.index ["email"], name: "index_employees_on_email", unique: true
     t.index ["employee_group_id"], name: "index_employees_on_employee_group_id"
@@ -129,23 +130,23 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.index ["deleted_at"], name: "index_holidays_on_deleted_at"
   end
 
-  create_table "invoice_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "cost_group_number"
+  create_table "invoice_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "costgroup_number"
     t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "invoice_id"
     t.datetime "deleted_at"
-    t.index ["cost_group_number"], name: "fk_rails_bae2acfe5a"
-    t.index ["deleted_at"], name: "index_invoice_cost_group_distributions_on_deleted_at"
-    t.index ["invoice_id"], name: "index_invoice_cost_group_distributions_on_invoice_id"
+    t.index ["costgroup_number"], name: "fk_rails_bd834b4684"
+    t.index ["deleted_at"], name: "index_invoice_costgroup_distributions_on_deleted_at"
+    t.index ["invoice_id"], name: "index_invoice_costgroup_distributions_on_invoice_id"
   end
 
   create_table "invoice_discounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "invoice_id"
     t.string "name", null: false
     t.boolean "percentage", null: false
-    t.decimal "value", precision: 10, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
@@ -154,13 +155,13 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   end
 
   create_table "invoice_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10, null: false
+    t.decimal "amount", precision: 10, scale: 4, null: false
     t.string "description", null: false
     t.bigint "invoice_id"
     t.integer "order"
     t.integer "price_per_rate", null: false
     t.bigint "rate_unit_id"
-    t.decimal "vat", precision: 10, null: false
+    t.decimal "vat", precision: 4, scale: 3, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_position_id"
@@ -177,11 +178,11 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.bigint "customer_id"
     t.bigint "address_id"
     t.text "description", null: false
-    t.date "start", null: false
-    t.date "end", null: false
+    t.date "beginning", null: false
+    t.date "ending", null: false
     t.integer "fixed_price"
     t.string "name", null: false
-    t.decimal "fixed_price_vat", precision: 10
+    t.decimal "fixed_price_vat", precision: 4, scale: 3
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -198,7 +199,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.string "name", null: false
     t.bigint "offer_id"
     t.boolean "percentage", null: false
-    t.decimal "value", precision: 10, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
@@ -207,14 +208,14 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   end
 
   create_table "offer_positions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "amount", precision: 10, null: false
+    t.decimal "amount", precision: 10, scale: 4, null: false
     t.string "description"
     t.bigint "offer_id"
     t.integer "order", null: false
     t.integer "price_per_rate", null: false
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10, null: false
+    t.decimal "vat", precision: 4, scale: 3, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "position_group_id"
@@ -235,7 +236,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.bigint "rate_group_id"
     t.text "short_description", null: false
     t.integer "status", null: false
-    t.decimal "fixed_price_vat", precision: 10
+    t.decimal "fixed_price_vat", precision: 4, scale: 3
     t.bigint "accountant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -294,23 +295,23 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.index ["project_id"], name: "index_project_comments_on_project_id"
   end
 
-  create_table "project_cost_group_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "cost_group_number"
+  create_table "project_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "costgroup_number"
     t.integer "weight", default: 100, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "project_id"
     t.datetime "deleted_at"
-    t.index ["cost_group_number"], name: "fk_rails_40b877c896"
-    t.index ["deleted_at"], name: "index_project_cost_group_distributions_on_deleted_at"
-    t.index ["project_id"], name: "index_project_cost_group_distributions_on_project_id"
+    t.index ["costgroup_number"], name: "fk_rails_9ce13b3edc"
+    t.index ["deleted_at"], name: "index_project_costgroup_distributions_on_deleted_at"
+    t.index ["project_id"], name: "index_project_costgroup_distributions_on_project_id"
   end
 
   create_table "project_efforts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "date", null: false
     t.bigint "employee_id"
     t.bigint "position_id"
-    t.decimal "value", precision: 10, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
@@ -324,7 +325,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.integer "price_per_rate", default: 0, null: false
     t.bigint "rate_unit_id"
     t.bigint "service_id"
-    t.decimal "vat", precision: 10, default: "0", null: false
+    t.decimal "vat", precision: 4, scale: 3, default: "0.077", null: false
     t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -372,7 +373,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   create_table "rate_units", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "billing_unit", null: false
     t.string "effort_unit", null: false
-    t.decimal "factor", precision: 10, default: "1", null: false
+    t.decimal "factor", precision: 10, scale: 4, default: "1.0", null: false
     t.boolean "is_time", default: false, null: false
     t.string "name", null: false
     t.boolean "archived", default: false, null: false
@@ -399,7 +400,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   create_table "services", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.decimal "vat", precision: 10, null: false
+    t.decimal "vat", precision: 4, scale: 3, null: false
     t.boolean "archived", default: false, null: false
     t.integer "order", default: 0, null: false
     t.datetime "created_at", null: false
@@ -413,7 +414,7 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
     t.bigint "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
-    t.text "object", limit: 4294967295
+    t.text "object", size: :long
     t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
@@ -431,8 +432,8 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
 
   create_table "work_periods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "employee_id"
-    t.date "start", null: false
-    t.date "end", null: false
+    t.date "beginning", null: false
+    t.date "ending", null: false
     t.integer "pensum", null: false
     t.integer "yearly_vacation_budget", null: false
     t.datetime "created_at", null: false
@@ -446,8 +447,8 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   add_foreign_key "customers", "customers", column: "company_id"
   add_foreign_key "customers", "rate_groups"
   add_foreign_key "employees", "employee_groups"
-  add_foreign_key "invoice_cost_group_distributions", "cost_groups", column: "cost_group_number", primary_key: "number"
-  add_foreign_key "invoice_cost_group_distributions", "invoices"
+  add_foreign_key "invoice_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number"
+  add_foreign_key "invoice_costgroup_distributions", "invoices"
   add_foreign_key "invoice_discounts", "invoices"
   add_foreign_key "invoice_positions", "invoices"
   add_foreign_key "invoice_positions", "position_groups"
@@ -468,8 +469,8 @@ ActiveRecord::Schema.define(version: 2020_01_23_124403) do
   add_foreign_key "offers", "rate_groups"
   add_foreign_key "phones", "customers"
   add_foreign_key "project_comments", "projects"
-  add_foreign_key "project_cost_group_distributions", "cost_groups", column: "cost_group_number", primary_key: "number"
-  add_foreign_key "project_cost_group_distributions", "projects"
+  add_foreign_key "project_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number"
+  add_foreign_key "project_costgroup_distributions", "projects"
   add_foreign_key "project_efforts", "employees"
   add_foreign_key "project_efforts", "project_positions", column: "position_id"
   add_foreign_key "project_positions", "position_groups"

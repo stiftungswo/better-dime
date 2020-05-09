@@ -10,7 +10,7 @@ module V2
     end
 
     def show
-      @customer_tag = CustomerTag.includes(work_periods: [:customer_tag]).find(params[:id]).decorate
+      @customer_tag = CustomerTag.find(params[:id]).decorate
     end
 
     def create
@@ -65,7 +65,7 @@ module V2
     private
 
     def customer_tag_params
-      params.require(:customer_tag).permit(:id, :name)
+      params.require(:customer_tag).permit(:id, :name, :archived)
     end
 
     def legacy_params

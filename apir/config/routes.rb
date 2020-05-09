@@ -78,14 +78,12 @@ Rails.application.routes.draw do
 
     resources :people do
       post "duplicate", on: :member
-      post "archive", on: :member
-      put "archive", on: :member
+      put "hide", on: :member
     end
 
     resources :companies do
       post "duplicate", on: :member
-      post "archive", on: :member
-      put "archive", on: :member
+      put "hide", on: :member
     end
 
     resources :customer_tags do

@@ -24,8 +24,9 @@ class CostBreakdown
 
     if @fixed_price
       vats.each do |vat|
-        ratio = vat[:value] * (1.0 / vat[:vat].to_f) / subtotal
-        fixed_price_vats_val = (@fixed_price * ratio - (@fixed_price * ratio / (1 + vat[:vat].to_f))).round
+        ratio = vat[:value].to_f * (1.0 / vat[:vat].to_f) / subtotal
+        fixed_price_times_ratio = @fixed_price.to_f * ratio
+        fixed_price_vats_val = (fixed_price_times_ratio - (fixed_price_times_ratio / (1 + vat[:vat].to_f))).round
         fixed_price_vats_sum += fixed_price_vats_val
 
         fixed_price_vats.push(

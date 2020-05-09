@@ -18,7 +18,7 @@ module V2
     end
 
     def create
-      @employee = Employee.new(employee_params.except(:id))
+      @employee = Employee.new(employee_params.except(:id).merge({first_vacation_takeover: 0.0}))
 
       respond_to do |format|
         if @employee.save
@@ -32,7 +32,7 @@ module V2
 
     def update
       @employee = Employee.find(params[:id])
-      @employee.work_periods.where.not(id: employee_params[:work_periods_attributes].map { |work_period| work_period[:id] }).discard_all
+      @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).map { |work_period| work_period[:id] }).discard_all
 
       respond_to do |format|
         if @employee.update(employee_params)
@@ -83,6 +83,7 @@ module V2
       end
     end
 
+    #:nocov:
     def effort_report
       @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
       @from = params[:start].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:start])
@@ -95,6 +96,7 @@ module V2
         end
       end
     end
+    #:nocov:
 
     private
 
@@ -104,8 +106,17 @@ module V2
       params[:employee][:employee_group_id] = params[:employee_group_id]
       params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
-        :id, :password, :email, :is_admin, :first_name, :last_name,
-        :can_login, :archived, :holidays_per_year, :employee_group_id, :locale,
+        :id,
+        :password,
+        :email,
+        :is_admin,
+        :first_name,
+        :last_name,
+        :can_login,
+        :archived,
+        :holidays_per_year,
+        :employee_group_id,
+        :locale,
         work_periods_attributes: [
           :id, :ending, :pensum, :beginning, :yearly_vacation_budget
         ]

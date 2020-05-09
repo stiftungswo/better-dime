@@ -8,7 +8,7 @@ class CreateInvoices < ActiveRecord::Migration[5.2]
       t.date :ending, null: false
       t.integer :fixed_price
       t.string :name, null: false
-      t.decimal :fixed_price_vat
+      t.decimal :fixed_price_vat, precision: 4, scale: 3
       t.bigint :accountant_id, null: false
 
       t.timestamps

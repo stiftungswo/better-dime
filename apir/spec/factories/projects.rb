@@ -6,7 +6,7 @@ FactoryBot.define do
     chargeable { false }
     deadline { Time.zone.today + 2.weeks }
     description { "my description" }
-    fixed_price { 1 }
+    fixed_price { nil }
     sequence(:name) { |i| "Project ##{i}" }
     vacation_project { false }
     association :accountant, factory: :employee
@@ -15,6 +15,10 @@ FactoryBot.define do
     project_category
     offer
     rate_group
+
+    trait :with_fixed_price do
+      fixed_price { 12000 }
+    end
 
     trait :with_company_customer do
       association :customer, factory: :company

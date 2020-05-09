@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProjectCalculator
+  # the following two methods are just helpers to increase the api's response speed, no need to test
+  #:nocov:
   def self.invoices_counts(projects)
     projects.joins(:invoices).group(:id).count
   end
@@ -8,6 +10,7 @@ class ProjectCalculator
   def self.positions_counts(projects)
     projects.left_joins(project_positions: :project_efforts).group(:id).sum(:value)
   end
+  #:nocov:
 
   def self.days_since_last_invoice(project)
     (project.last_effort_date - project.last_invoice_date).days / 86_400 unless project.last_effort_date.nil? || project.last_invoice_date.nil?

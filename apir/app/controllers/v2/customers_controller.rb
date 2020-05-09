@@ -28,8 +28,8 @@ module V2
 
     def update
       @customer = Customer.find(params[:id])
-      @customer.phones.where.not(id: customer_params[:phones_attributes].map { |phone| phone[:id] }).discard_all
-      @customer.addresses.where.not(id: customer_params[:addresses_attributes].map { |address| address[:id] }).discard_all
+      @customer.phones.where.not(id: (customer_params[:phones_attributes] || []).map { |phone| phone[:id] }).discard_all
+      @customer.addresses.where.not(id: (customer_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
       @customer.customer_tag_ids = customer_params[:customer_tag_ids]
 
       respond_to do |format|
@@ -46,19 +46,6 @@ module V2
 
       respond_to do |format|
         if @customer.destroy
-          format.json { render :show, status: :ok }
-        else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-
-    # this api could easily be done in #update
-    def archive
-      @customer = Customer.find(params[:id])
-
-      respond_to do |format|
-        if @customer.update(archived: params[:archived])
           format.json { render :show, status: :ok }
         else
           format.json { render json: @customer.errors, status: :unprocessable_entity }
@@ -88,7 +75,7 @@ module V2
       params[:customer][:addresses_attributes] = params[:addresses]
       params[:customer][:customer_tag_ids] = params[:tags]
       params.require(:customer).permit(Customer.params, customer_tag_ids: [],
-                                                        phones_attributes: Phone.params, addresses_attributes: Address.attributes)
+                                                        phones_attributes: Phone.params, addresses_attributes: Address.params)
     end
 
     def legacy_params

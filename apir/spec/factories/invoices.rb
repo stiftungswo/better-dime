@@ -14,8 +14,8 @@ FactoryBot.define do
     fixed_price_vat { nil }
 
     trait :with_fixed_price do
-      fixed_price { 12_000 }
-      fixed_price_vat { 7.7 }
+      fixed_price { 12000 }
+      fixed_price_vat { 0.077 }
     end
 
     trait :with_company_customer do

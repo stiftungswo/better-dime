@@ -4,7 +4,7 @@ class CreateProjectEfforts < ActiveRecord::Migration[5.2]
       t.date :date, null: false
       t.references :employee, foreign_key: true
       t.references :position, foreign_key: { to_table: :project_positions }
-      t.decimal :value, null: false
+      t.decimal :value, null: false, precision: 10, scale: 4
 
       t.timestamps
     end

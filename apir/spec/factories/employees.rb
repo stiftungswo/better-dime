@@ -10,7 +10,7 @@ FactoryBot.define do
     archived { false }
     holidays_per_year { 12 }
     password {"my password"}
-    first_vacation_takeover { 0 }
+    first_vacation_takeover { 0.0 }
     employee_group
 
     trait :admin do

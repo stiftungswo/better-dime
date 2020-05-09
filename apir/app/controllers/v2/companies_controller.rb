@@ -27,9 +27,9 @@ module V2
 
     def update
       @company = Company.find(params[:id])
-      @company.phones.where.not(id: company_params[:phones_attributes].map { |phone| phone[:id] }).discard_all
-      @company.addresses.where.not(id: company_params[:addresses_attributes].map { |address| address[:id] }).discard_all
-      @company.customer_tag_ids = company_params[:customer_tag_ids]
+      @company.phones.where.not(id: (company_params[:phones_attributes] || []).map { |phone| phone[:id] }).discard_all
+      @company.addresses.where.not(id: (company_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @company.customer_tag_ids = (company_params[:customer_tag_ids] || [])
 
       respond_to do |format|
         if @company.update(company_params)
@@ -53,11 +53,11 @@ module V2
     end
 
     # this api could easily be done in #update
-    def archive
+    def hide
       @company = Company.find(params[:id])
 
       respond_to do |format|
-        if @company.update(archived: params[:archived])
+        if @company.update(hidden: params[:hidden])
           format.json { render :show, status: :ok }
         else
           format.json { render json: @company.errors, status: :unprocessable_entity }
@@ -84,8 +84,23 @@ module V2
       params[:company][:phones_attributes] = params[:phone_numbers]
       params[:company][:addresses_attributes] = params[:addresses]
       params[:company][:customer_tag_ids] = params[:tags]
-      params.require(:company).permit(:id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name, :rate_group_id, :salutation, customer_tag_ids: [],
-                                                                                                                                                                    phones_attributes: [:id, :number, :category, :customer_id], addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement])
+      params.require(:company).permit(
+        :id,
+        :type,
+        :comment,
+        :company_id,
+        :department,
+        :email,
+        :first_name,
+        :last_name,
+        :hidden,
+        :name,
+        :rate_group_id,
+        :salutation,
+        customer_tag_ids: [],
+        phones_attributes: [:id, :number, :category, :customer_id],
+        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement]
+      )
     end
 
     def legacy_params

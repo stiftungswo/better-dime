@@ -4,7 +4,7 @@ class CreateOfferDiscounts < ActiveRecord::Migration[5.2]
       t.string :name, null: false
       t.references :offer, foreign_key: true
       t.boolean :percentage, null: false
-      t.decimal :value, null: false
+      t.decimal :value, null: false, precision: 10, scale: 4
 
       t.timestamps
     end

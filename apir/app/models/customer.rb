@@ -20,6 +20,7 @@ class Customer < ApplicationRecord
   accepts_nested_attributes_for :phones, :addresses, allow_destroy: true
 
   validates :type, inclusion: %w[Person Company person company]
+  validates :hidden, inclusion: [true, false]
 
   scope :people, -> { where(type: "person") }
   scope :companies, -> { where(type: "company") }

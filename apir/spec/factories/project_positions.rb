@@ -6,6 +6,7 @@ FactoryBot.define do
     price_per_rate { 9200 }
     vat { 0.077 }
     order { 1 }
+    position_group
     rate_unit
     service
     project

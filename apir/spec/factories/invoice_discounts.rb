@@ -9,7 +9,7 @@ FactoryBot.define do
 
     trait :with_percentage do
       percentage { true }
-      value { 15.0 }
+      value { 0.0512 }
     end
   end
 end

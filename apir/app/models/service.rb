@@ -9,6 +9,6 @@ class Service < ApplicationRecord
   accepts_nested_attributes_for :service_rates, allow_destroy: true
 
   validates :name, :vat, :order, presence: true
-  validates :vat, numericality: { greater_than_or_equal_to: 0 }
+  validates :vat, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
   validates :order, numericality: { greater_than_or_equal_to: 0, only_integer: true }
 end
