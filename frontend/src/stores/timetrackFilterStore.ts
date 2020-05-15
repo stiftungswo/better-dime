@@ -81,7 +81,7 @@ export class TimetrackFilterStore {
       start: moment().subtract(1, 'weeks'),
       end: moment(),
       combineTimes: false,
-      employeeIds: this.mainStore.userId ? [this.mainStore.userId] : [],
+      employeeIds: this.mainStore.userId ? [Number(this.mainStore.userId)] : [],
       serviceIds: [],
       showEmptyGroups: false,
       projectIds: [],
