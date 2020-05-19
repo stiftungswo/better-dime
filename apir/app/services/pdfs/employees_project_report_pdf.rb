@@ -40,7 +40,7 @@ module Pdfs
           :project,
           :service
         ]
-      ).select { |e| (@from_date..@to_date) === e.date }
+      ).select { |e| (@from_date..@to_date) === e.date and e.project_position.rate_unit.is_time and not e.nil? }
     end
 
     def trim_text_if_needed(text, max_length)
@@ -58,6 +58,18 @@ module Pdfs
       text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
       text "Leistungen von " + @employees.map {|e| e.full_name}.join(", "), @default_text_settings
       text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
+    end
+
+    def get_total_hours(employee)
+      efforts = efforts_in_range(employee)
+
+      sum = 0
+
+      efforts.each do |e|
+        sum = sum + e.value
+      end
+
+      (sum/60.0).round(2)
     end
 
     def draw_employee_efforts
@@ -87,7 +99,7 @@ module Pdfs
               table_data.push(
                 data: [
                   date.strftime("%d.%m.%Y"),
-                  (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
+                  (same_positions.inject(0) { |sum, e| sum + e.value } / 60).round(1),
                   trim_text_if_needed(effort.project_position.service.name, 25),
                   effort.project_position.project.id.to_s + " - " + trim_text_if_needed(effort.project_position.project.name, 27)
                 ],
@@ -101,7 +113,7 @@ module Pdfs
 
 
           move_down 25
-          text employee.full_name, @default_text_settings.merge(size: 11, style: :bold)
+          text "<b>" + employee.full_name + " | </b><font size='9'>Total Stunden: " + get_total_hours(employee).to_s + "</font>", @default_text_settings.merge(inline_format: true, size: 11)
           move_up 5
           indent(10, 0) do
             Pdfs::Generators::TableGenerator.new(@document).render(
