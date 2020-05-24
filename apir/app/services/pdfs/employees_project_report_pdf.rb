@@ -16,9 +16,9 @@ module Pdfs
 
     def filename
       if @employees.length == 1
-        "Mitarbeiter_" + @employees[0].full_name + "_Aufwandsreport"
+        "Mitarbeiter_" + @employees[0].full_name + "_Aufwandsrapport"
       else
-        "Mitarbeiter_Projekt_Aufwandsreport"
+        "Mitarbeiter_Projekt_Aufwandsrapport"
       end
     end
 

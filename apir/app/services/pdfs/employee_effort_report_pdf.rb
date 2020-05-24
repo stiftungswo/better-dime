@@ -13,7 +13,7 @@ module Pdfs
     end
 
     def filename
-      "Mitarbeiter_" + @employee.full_name + "_Aufwandsreport"
+      "Mitarbeiter_" + @employee.full_name + "_Aufwandsrapport"
     end
 
     def draw

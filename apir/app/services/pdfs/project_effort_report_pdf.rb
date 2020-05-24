@@ -9,7 +9,7 @@ module Pdfs
     end
 
     def filename
-      "Projekt_" + efforts_holder.id.to_s + "_Aufwandsreport"
+      "Projekt_" + efforts_holder.id.to_s + "_Aufwandsrapport"
     end
   end
 end
