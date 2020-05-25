@@ -18,6 +18,10 @@ module V2
       authenticate_employee!
     end
 
+    def user_for_paper_trail
+      current_employee.nil? ? nil : current_employee.id\
+    end
+
     def switch_locale(&action)
       locale = current_employee.try(:locale)
 
