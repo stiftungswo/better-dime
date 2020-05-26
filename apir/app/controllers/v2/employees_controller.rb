@@ -13,7 +13,7 @@ module V2
     end
 
     def show
-      @employee = Employee.includes(work_periods: [:employee]).find(params[:id]).decorate
+      @employee = Employee.includes(:addresses, work_periods: [:employee]).find(params[:id]).decorate
       @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
     end
 
@@ -33,6 +33,7 @@ module V2
     def update
       @employee = Employee.find(params[:id])
       @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).map { |work_period| work_period[:id] }).discard_all
+      @employee.addresses.where.not(id: (employee_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
 
       respond_to do |format|
         if @employee.update(employee_params)
@@ -103,6 +104,7 @@ module V2
     def employee_params
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
+      params[:employee][:addresses_attributes] = params[:addresses]
       params[:employee][:employee_group_id] = params[:employee_group_id]
       params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
@@ -119,7 +121,8 @@ module V2
         :locale,
         work_periods_attributes: [
           :id, :ending, :pensum, :beginning, :yearly_vacation_budget
-        ]
+        ],
+        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :hidden]
       )
     end
 

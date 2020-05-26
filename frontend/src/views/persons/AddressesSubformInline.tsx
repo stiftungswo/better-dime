@@ -34,6 +34,7 @@ export interface Props {
   name: string;
   disabled?: boolean;
   inherited?: Address[];
+  hideable?: boolean;
 }
 
 @compose(
@@ -47,7 +48,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
 
   render() {
     const { values } = this.props.formikProps;
-    const { inherited = [] } = this.props;
+    const { inherited = [], hideable = false } = this.props;
     return (
       <FieldArray
         name={this.props.name}
@@ -63,7 +64,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   <DimeTableCell style={{ width: '15%' }}>Stadt</DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}>Land</DimeTableCell>
                   <DimeTableCell style={{ width: '30%' }}>Kommentar</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Versteckt</DimeTableCell>
+                  {hideable && <DimeTableCell style={{ width: '15%' }}>Versteckt</DimeTableCell>}
                   <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
@@ -76,7 +77,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                     <DimeTableCell>{a.city}</DimeTableCell>
                     <DimeTableCell>{a.country}</DimeTableCell>
                     <DimeTableCell>{a.description}</DimeTableCell>
-                    <DimeTableCell>{a.hidden}</DimeTableCell>
+                    {hideable && <DimeTableCell>{a.hidden}</DimeTableCell>}
                     <DimeTableCell>(von Firma)</DimeTableCell>
                   </TableRow>
                 ))}
@@ -102,9 +103,9 @@ export default class AddressesSubformInline extends React.Component<Props> {
                       <DimeTableCell>
                         <DimeField delayed component={TextField} name={name('description')} margin={'none'} multiline={true} />
                       </DimeTableCell>
-                      <DimeTableCell>
+                      {hideable && <DimeTableCell>
                         <DimeField delayed component={SwitchField} name={name('hidden')} margin={'none'} />
-                      </DimeTableCell>
+                      </DimeTableCell>}
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
                       </DimeTableCell>

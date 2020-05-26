@@ -2,7 +2,8 @@
 
 class Address < ApplicationRecord
   include SoftDeletable
-  belongs_to :customer
+  belongs_to :customer, optional: true
+  belongs_to :employee, optional: true
 
   has_many :offers, dependent: :restrict_with_exception
   has_many :projects, dependent: :restrict_with_exception

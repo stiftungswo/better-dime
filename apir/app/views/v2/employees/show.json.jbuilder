@@ -10,3 +10,9 @@ end
 json.set! :work_periods do
   json.array! @work_periods
 end
+
+json.set! :addresses do
+  json.array! @employee.addresses do |address|
+    json.extract! address, :id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :deleted_at, :created_at, :updated_at, :created_by, :updated_by, :deleted_by, :hidden
+  end
+end

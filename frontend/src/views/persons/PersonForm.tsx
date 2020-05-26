@@ -128,7 +128,7 @@ export default class PersonForm extends React.Component<Props> {
                   </DimePaper>
                 </Grid>
                 <Grid item xs={12}>
-                  <AddressesSubformInline formikProps={props} name={'addresses'} inherited={inheritedAddresses} />
+                  <AddressesSubformInline formikProps={props} name={'addresses'} inherited={inheritedAddresses} hideable />
                 </Grid>
                 <Grid item xs={12}>
                   <PhoneNumberSubformInline formikProps={props} name={'phone_numbers'} inherited={inheritedPhoneNumbers} />

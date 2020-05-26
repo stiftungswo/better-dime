@@ -13,6 +13,7 @@ import { FormHeader } from '../../layout/FormHeader';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 import {Employee, WorkPeriod} from '../../types';
 import { empty } from '../../utilities/helpers';
+import AddressesSubformInline from '../persons/AddressesSubformInline';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
 
 export interface Props extends FormViewProps<Employee> {
@@ -100,6 +101,10 @@ export default class EmployeeForm extends React.Component<Props> {
                       </Grid>
                     </Grid>
                   </DimePaper>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <AddressesSubformInline formikProps={props} name={'addresses'}/>
                 </Grid>
 
                 <Grid item xs={12}>

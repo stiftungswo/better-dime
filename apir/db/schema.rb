@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_082727) do
+ActiveRecord::Schema.define(version: 2020_05_26_122928) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
     t.string "country"
-    t.integer "customer_id", null: false, unsigned: true
+    t.integer "customer_id", unsigned: true
     t.string "description"
     t.integer "zip", null: false
     t.string "street", null: false
@@ -27,7 +27,9 @@ ActiveRecord::Schema.define(version: 2020_05_26_082727) do
     t.integer "updated_by"
     t.integer "deleted_by"
     t.boolean "hidden", default: false, null: false
+    t.integer "employee_id", unsigned: true
     t.index ["customer_id"], name: "addresses_customer_id_foreign"
+    t.index ["employee_id"], name: "fk_rails_1c4d4ea1f4"
   end
 
   create_table "costgroups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -502,6 +504,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_082727) do
   end
 
   add_foreign_key "addresses", "customers", name: "addresses_customer_id_foreign", on_delete: :cascade
+  add_foreign_key "addresses", "employees"
   add_foreign_key "customers", "customers", column: "company_id", name: "customers_company_id_foreign", on_delete: :cascade
   add_foreign_key "customers", "rate_groups", name: "customers_rate_group_id_foreign"
   add_foreign_key "employee_settings", "employees", name: "employee_settings_employee_id_foreign", on_delete: :cascade
