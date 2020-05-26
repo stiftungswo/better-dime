@@ -21,40 +21,41 @@ Dime is developed in and used by a foundation in the German speaking part of Swi
 
 ## Entwicklung
 ### Vorbereitung
-#### Commit Hooks
-Damit der Code einheitlich formatiert bleibt, wird ein pre-commit Hook verwendet. Der Travis-Build failt, wenn der Code nicht richtig formatiert ist. 
+#### Ruby
+Damit am Dime entwickelt werden kann, muss Ruby installiert werden. Am besten wird ein Ruby version manager (e.g rbenv) installiert damit eine einfache Umstellung auf neuere Versionen ermöglicht wird. Momentan wird ruby 2.6.5 verwendet.
+#### MySQL
+Dime verwendet MySQL als Datenbankverwaltungssystem. Installiert MySQL gemäss dem Installationsanleitung für euer relevantes Betriebssystem. Da bei der Installation vom Dime auf Linux einige Probleme mit Version 8.0 entstehen, sollte MySQL 5.7 verwendet werden falls auf Linux entwickelt wird. Auf Mac kann MySQL 8.0 mit Homebrew problemlos verwendet werden.
 
-``ln -s $(pwd)/hooks/pre-commit $(pwd)/.git/hooks``
+#### Yarn
+Fürs frontend wird Yarn verwendet. Installiert Yarn gemäss der Installationsanleitung für euer relevantes Betriebssystem.
 
-#### Homebrew für Mac
-Fast jede Linux-Distribution wird mit einem Paketmanager ausgeliefert. Diese ermöglichen dir, bequem neue Programme zu installieren, ohne dazu eine aufwendige Installation durchführen zu müssen. Unter Mac hat die Community homebrew entwickelt, um einen solchen Paketmanager auf Mac bereitzustellen.
+### Dime Installation
 
-Die Installation kann im Terminal mit einem Einzeiler angestossen werden, welcher sich auf der [offiziellen Website](https://brew.sh/index_de) befindet.
+#### Backend
+1. Clone repository
+2. ``cd dime-clone-directory && cd apir``
+3. ``cp .env.example .env``
+4. In der .env Datei im apir folder folgende Anpassungen ausführen:
+ - DATABASE_USERNAME=MeinDatenbankUsername
+ - DATABASE_PASSWORD=MeinDatenbankPasswort
+ - DEVISE_JWT_SECRET_KEY=ZufälligeZeichenkette
+ - DEVISE_SECRET_KEY=ZufälligeZeichenkette
+ - DEVISE_PEPPER=         (Leer lassen)
+5. ``gem install bundler``
+6. ``bundle install``
+7. ``bundle exec rails db:create``
+8. ``bundle exec rails db:migrate``
 
-#### Docker
-Installation gemäss der Installationsanleitung auf der [Website](https://docs.docker.com/install/) durchführen. Wichtig: Für manche Betriebssysteme muss docker-compose noch separat installiert werden.
+#### Frontend
+1. ``cd dime-clone-directory && cd frontend``
+2. ``yarn install``
 
-### Backend
-1. Ins Verzeichnis des Dime wechseln (z.B. cd ``~/src/swo/betterDime``)
-2. Docker-Image der API bauen: ``docker build -t dime_api api``
-3. composer-Abhängigkeiten mit dem neuen Image installieren lassen: ``docker run --rm -v $PWD/api:/app -w /app dime_api composer install``
-4. Docker-Stack starten: ``docker-compose up -d``
-5. .env Datei kopieren: ``cp api/.env.example api/.env``
-6. Neuen Applikationskey erstellen und in die .env-Datei abfüllen als APP_KEY: ``openssl rand -base64 24``
-7. Neuen Key für die JWT-Tokens erstellen und in die .env-Datei als JWT_SECRET abfüllen: ``openssl rand -base64 24``
-8. Datenbank mit phpmyadmin (localhost:38080) namens "dime" erstellen.
-   * Testdaten Seeden `docker exec -it dime_api php artisan migrate:fresh --seed`
-9. Die API ist nun unter `localhost:38000` erreichbar.
+### Dime Starten
 
-### Frontend
-Damit insbesondere auf Macs die Kompilierzeiten beim Hot Reload nicht beeinträchtig werden, wird empfohlen, direkt auf dem Entwicklungssystem und nicht in einem Container zu entwickeln.
+1. ``cd dime-clone-directory && cd apir``
+2. ``rails s -p 38001``
+3. Neues Terminal aufmachen
+4. ``cd dime-clone-directory && cd frontend``
+5. ``yarn start``
 
-#### Lokal
-1. `cd betterDime/frontend`
-2. `yarn install`
-3. `yarn start`
-
-#### Docker
-1. `docker-compose up web-client`
-
-17.02.2020 14:05
+26.05.2020 14:50
