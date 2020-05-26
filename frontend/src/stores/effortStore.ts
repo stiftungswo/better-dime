@@ -32,6 +32,12 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   @observable
   selectedProject?: Project = undefined;
 
+  @observable
+  lastMoveProject?: number;
+
+  @observable
+  lastMovePosition?: number;
+
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
@@ -82,6 +88,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
         position_id: targetPosition || null,
       }),
     );
+    this.lastMoveProject = targetProject;
+    this.lastMovePosition = targetPosition || undefined;
     Cache.invalidateAllActiveCaches();
   }
 

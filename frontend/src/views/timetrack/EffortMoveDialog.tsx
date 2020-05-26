@@ -52,12 +52,16 @@ export default class EffortMoveDialog extends React.Component<Props> {
   }
 
   render() {
+    const {lastMoveProject, lastMovePosition} = this.props.effortStore!;
     return (
       <FormDialog
         open
         onClose={this.props.onClose}
         title={`${this.props.effortIds.length} Aufwände verschieben`}
-        initialValues={template}
+        initialValues={{
+          project_id: lastMoveProject || '',
+          project_position: lastMovePosition || '',
+        }}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
         render={(formikProps: FormikProps<Values>) => (
