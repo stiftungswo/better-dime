@@ -5,7 +5,7 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { NumberField, TextField } from 'src/form/fields/common';
+import {NumberField, SwitchField, TextField} from 'src/form/fields/common';
 import { DeleteButton } from 'src/layout/ConfirmationDialog';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { DimeField } from '../../form/fields/formik';
@@ -23,6 +23,7 @@ const template = () => ({
   formikKey: Math.random(),
   zip: 0,
   street: '',
+  hidden: false,
   supplement: '',
 });
 
@@ -62,6 +63,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   <DimeTableCell style={{ width: '15%' }}>Stadt</DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}>Land</DimeTableCell>
                   <DimeTableCell style={{ width: '30%' }}>Kommentar</DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}>Versteckt</DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
                 </TableRow>
               </TableHead>
@@ -74,6 +76,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                     <DimeTableCell>{a.city}</DimeTableCell>
                     <DimeTableCell>{a.country}</DimeTableCell>
                     <DimeTableCell>{a.description}</DimeTableCell>
+                    <DimeTableCell>{a.hidden}</DimeTableCell>
                     <DimeTableCell>(von Firma)</DimeTableCell>
                   </TableRow>
                 ))}
@@ -98,6 +101,9 @@ export default class AddressesSubformInline extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell>
                         <DimeField delayed component={TextField} name={name('description')} margin={'none'} multiline={true} />
+                      </DimeTableCell>
+                      <DimeTableCell>
+                        <DimeField delayed component={SwitchField} name={name('hidden')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />

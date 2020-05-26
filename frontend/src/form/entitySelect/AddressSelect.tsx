@@ -22,7 +22,9 @@ export class AddressSelect extends React.Component<Props> {
   get options() {
     const customer = this.props.customerStore!.customer;
     return customer
-      ? customer.addresses!.map((a: Address) => ({
+      ? customer.addresses!
+        .filter(a => this.props.value === a.id || !a.hidden)
+        .map((a: Address) => ({
           value: a.id,
           label: [a.street, a.supplement, a.zip, a.city, a.country].filter(x => Boolean(x)).join(', '),
         }))

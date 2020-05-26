@@ -6,3 +6,6 @@
 /api/log/*
 /apir/tmp/*
 /apir/log/*
+.generators
+.rakeTasks
+

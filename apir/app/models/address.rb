@@ -9,6 +9,7 @@ class Address < ApplicationRecord
 
   validates :zip, :city, :street, presence: true
   validates :zip, numericality: { greater_than_or_equal_to: 1000, only_integer: true }
+  validates :hidden, inclusion: [true, false]
 
   def supplement
     self[:supplement] || ""

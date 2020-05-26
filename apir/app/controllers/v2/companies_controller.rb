@@ -99,7 +99,7 @@ module V2
         :salutation,
         customer_tag_ids: [],
         phones_attributes: [:id, :number, :category, :customer_id],
-        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement]
+        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :hidden]
       )
     end
 

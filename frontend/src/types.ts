@@ -382,6 +382,7 @@ export interface Address {
   description: string;
   zip: number;
   street: string;
+  hidden: boolean;
   supplement: null | string;
   created_at: string;
   updated_at: string;
