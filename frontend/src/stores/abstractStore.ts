@@ -25,7 +25,9 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   get entity(): T | undefined {
-    throw new Error('Not implemented');
+    console.warn('Not implemented!');
+    return undefined;
+    // throw new Error('Not implemented');
   }
 
   set entity(e: T | undefined) {
@@ -33,7 +35,9 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   get entities(): OverviewType[] {
-    throw new Error('Not implemented');
+    console.warn('Not implemented!');
+    return [];
+    // throw new Error('Not implemented');
   }
 
   get searchQuery() {
