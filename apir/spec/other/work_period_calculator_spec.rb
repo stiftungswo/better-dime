@@ -35,24 +35,24 @@ RSpec.describe WorkPeriodCalculator do
     end
 
     expected_result = {
-      :beginning=>"2019-05-14".to_date,
-      :ending=>"2020-04-16".to_date,
-      :id=>work_periods[0].id,
-      :booked_minutes=>113.0,
-      :effective_time=>113.0,
-      :effort_till_today=>-61107.0,
-      :employee_id=>employee.id,
-      :overlapping_periods=>false,
-      :pensum=>50,
-      :period_vacation_budget=>501.7973231357552,
-      :remaining_vacation_budget=>501.7973231357552,
-      :target_time=>61220.0,
-      :target_time_till_today=>61220.0,
-      :vacation_takeover=>0.0,
-      :yearly_vacation_budget=>1080
+      beginning: "2019-05-14".to_date,
+      ending: "2020-04-16".to_date,
+      id: work_periods[0].id,
+      booked_minutes: 113.0,
+      effective_time: 113.0,
+      effort_till_today: -61_107.0,
+      employee_id: employee.id,
+      overlapping_periods: false,
+      pensum: 50,
+      period_vacation_budget: 501.7973231357552,
+      remaining_vacation_budget: 501.7973231357552,
+      target_time: 61_220.0,
+      target_time_till_today: 61_220.0,
+      vacation_takeover: 0.0,
+      yearly_vacation_budget: 1080
     }
 
-    got_result = (WorkPeriodCalculator.new(work_periods).calculate)[0]
+    got_result = described_class.new(work_periods).calculate[0]
 
     expect(got_result).to eq(expected_result)
   end
@@ -60,6 +60,6 @@ RSpec.describe WorkPeriodCalculator do
   it "calculates the correct work periods for no periods" do
     work_periods = []
 
-    expect(WorkPeriodCalculator.new(work_periods).calculate).to eq([])
+    expect(described_class.new(work_periods).calculate).to eq([])
   end
 end

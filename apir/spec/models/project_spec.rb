@@ -13,7 +13,7 @@ RSpec.describe Project, type: :model do
   it { is_expected.to belong_to(:address) }
   it { is_expected.to belong_to(:rate_group) }
 
-  it "should not validate category on archiving" do
+  it "does not validate category on archiving" do
     project = create(:project, offer: nil)
 
     expect(project.should_validate_category?).to eq(true)

@@ -27,7 +27,7 @@ module Pdfs
 
     def trim_text_if_needed(text, max_length)
       text_length = text.length
-      trimming = text_length > max_length+3
+      trimming = text_length > max_length + 3
       ending_index = trimming ? max_length : max_length + 3
       text[0...ending_index] + (trimming ? "..." : "")
     end
@@ -38,22 +38,22 @@ module Pdfs
 
       total_effort_hours = @employee.project_efforts.select do |e|
         (@from..@to) === e.date && e.project_position.rate_unit.is_time
-      end.inject(0) {|sum, e| sum + e.value}
+      end.inject(0) { |sum, e| sum + e.value }
 
       move_down 5
       text "Aufwandsrapport - " + @employee.full_name, @default_text_settings.merge(size: 14, style: :bold)
       text "Leistungen vom " + @from.strftime("%d.%m.%Y") + " bis " + @to.strftime("%d.%m.%Y"), @default_text_settings
-      text "Gesamtstunden: " + (total_effort_hours/60.0).round(2).to_s, @default_text_settings
+      text "Gesamtstunden: " + (total_effort_hours / 60.0).round(2).to_s, @default_text_settings
     end
 
     def draw_efforts
       move_down 20
 
-      efforts = @employee.project_efforts.select {|e| (@from..@to) === e.date}
+      efforts = @employee.project_efforts.select { |e| (@from..@to) === e.date }
       effort_dates = efforts.map(&:date).uniq
 
       table_data = [
-        ["Datum", "Projekt", "Bezeichnung",  "Anzahl", "Einheit"]
+        ["Datum", "Projekt", "Bezeichnung", "Anzahl", "Einheit"]
       ]
 
       content_widths = [bounds.width - 320, 150, 50, 45]
@@ -65,8 +65,8 @@ module Pdfs
         efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|
           same_positions = efforts.select { |e| e.date == date && e.position_id == effort.position_id }
           date_data.push [
-             trim_text_if_needed(effort.project_position.project.id.to_s + " - " + effort.project_position.project.name, 25),
-             trim_text_if_needed(effort.project_position.service.name, 30),
+            trim_text_if_needed(effort.project_position.project.id.to_s + " - " + effort.project_position.project.name, 25),
+            trim_text_if_needed(effort.project_position.service.name, 30),
             (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(2),
             effort.project_position.rate_unit.name
           ]

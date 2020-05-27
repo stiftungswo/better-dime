@@ -19,7 +19,7 @@ RSpec.describe EffortMover do
       project_id: project.id
     }
 
-    EffortMover.move(move_request)
+    described_class.move(move_request)
 
     expect(project.project_efforts.length).to eq(2)
 
@@ -53,7 +53,7 @@ RSpec.describe EffortMover do
       position_id: existing_position.id
     }
 
-    EffortMover.move(move_request)
+    described_class.move(move_request)
 
     expect(project.project_efforts.length).to eq(2)
 

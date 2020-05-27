@@ -18,25 +18,25 @@ RSpec.describe CostBreakdown do
     discount_a = create(:invoice_discount, invoice: invoice, percentage: false, value: 151.1)
     discount_b = create(:invoice_discount, invoice: invoice, percentage: true, value: 0.03156)
 
-    breakdown = CostBreakdown.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
+    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
 
     expected = {
-      :discount_total=>-6640,
-      :discounts=>[
-        {:name=>"My InvoiceDiscount", :value=>-151},
-        {:name=>"My InvoiceDiscount (3.16%)", :value=>-6484}
+      discount_total: -6640,
+      discounts: [
+        { name: "My InvoiceDiscount", value: -151 },
+        { name: "My InvoiceDiscount (3.16%)", value: -6484 }
       ],
-      :final_total=>213515.0,
-      :fixed_price=>nil,
-      :fixed_price_vats=>[],
-      :fixed_price_vats_sum=>0.0,
-      :raw_total=>198575.0,
-      :subtotal=>205215.0,
-      :total=>213515.0,
-      :vat_total=>14940,
-      :vats=>[
-        {:factor=>0.9660112564870988, :value=>14770, :vat=>"0.077"},
-        {:factor=>0.033988743512901105, :value=>168, :vat=>"0.025"}
+      final_total: 213_515.0,
+      fixed_price: nil,
+      fixed_price_vats: [],
+      fixed_price_vats_sum: 0.0,
+      raw_total: 198_575.0,
+      subtotal: 205_215.0,
+      total: 213_515.0,
+      vat_total: 14_940,
+      vats: [
+        { factor: 0.9660112564870988, value: 14_770, vat: "0.077" },
+        { factor: 0.033988743512901105, value: 168, vat: "0.025" }
       ]
     }
 
@@ -58,28 +58,28 @@ RSpec.describe CostBreakdown do
     discount_a = create(:invoice_discount, invoice: invoice, percentage: false, value: 151.1)
     discount_b = create(:invoice_discount, invoice: invoice, percentage: true, value: 0.03156)
 
-    breakdown = CostBreakdown.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
+    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
 
     expected = {
-      :discount_total=>-6640,
-      :discounts=>[
-        {:name=>"My InvoiceDiscount", :value=>-151},
-        {:name=>"My InvoiceDiscount (3.16%)", :value=>-6484}
+      discount_total: -6640,
+      discounts: [
+        { name: "My InvoiceDiscount", value: -151 },
+        { name: "My InvoiceDiscount (3.16%)", value: -6484 }
       ],
-      :final_total=>12000,
-      :fixed_price=>12000,
-      :fixed_price_vats=>[
-        {:value=>"802", :vat=>"0.077"},
-        {:value=>"10", :vat=>"0.025"}
+      final_total: 12_000,
+      fixed_price: 12_000,
+      fixed_price_vats: [
+        { value: "802", vat: "0.077" },
+        { value: "10", vat: "0.025" }
       ],
-      :fixed_price_vats_sum=>812.0,
-      :raw_total=>198575.0,
-      :subtotal=>205215.0,
-      :total=>213515.0,
-      :vat_total=>14940,
-      :vats=>[
-        {:factor=>0.9660112564870988, :value=>14770, :vat=>"0.077"},
-        {:factor=>0.033988743512901105, :value=>168, :vat=>"0.025"}
+      fixed_price_vats_sum: 812.0,
+      raw_total: 198_575.0,
+      subtotal: 205_215.0,
+      total: 213_515.0,
+      vat_total: 14_940,
+      vats: [
+        { factor: 0.9660112564870988, value: 14_770, vat: "0.077" },
+        { factor: 0.033988743512901105, value: 168, vat: "0.025" }
       ]
     }
 

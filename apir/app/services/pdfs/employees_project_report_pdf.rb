@@ -40,12 +40,12 @@ module Pdfs
           :project,
           :service
         ]
-      ).select { |e| (@from_date..@to_date) === e.date and e.project_position.rate_unit.is_time and not e.nil? }
+      ).select { |e| ((@from_date..@to_date) === e.date) && e.project_position.rate_unit.is_time && e }
     end
 
     def trim_text_if_needed(text, max_length)
       text_length = text.length
-      trimming = text_length > max_length+3
+      trimming = text_length > max_length + 3
       ending_index = trimming ? max_length : max_length + 3
       text[0...ending_index] + (trimming ? "..." : "")
     end
@@ -56,7 +56,7 @@ module Pdfs
 
       move_down 5
       text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
-      text "Leistungen von " + @employees.map {|e| e.full_name}.join(", "), @default_text_settings
+      text "Leistungen von " + @employees.map(&:full_name).join(", "), @default_text_settings
       text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
 
@@ -66,18 +66,18 @@ module Pdfs
       sum = 0
 
       efforts.each do |e|
-        sum = sum + e.value
+        sum += e.value
       end
 
-      (sum/60.0).round(2)
+      (sum / 60.0).round(2)
     end
 
     def draw_employee_efforts
       @employees.each do |employee|
-        efforts = efforts_in_range(employee).sort_by {|e| [e.date, e.project_position.project.id]}
+        efforts = efforts_in_range(employee).sort_by { |e| [e.date, e.project_position.project.id] }
         effort_dates = efforts.map(&:date).uniq.sort
 
-        if efforts.length > 0
+        if !efforts.empty?
           table_data = [
             {
               data: ["Datum", "Stunden", "Arbeit", "Projekt"],
@@ -105,12 +105,11 @@ module Pdfs
                 ],
                 style: {
                   borders: [],
-                  padding: [4, 10, 4, 0],
+                  padding: [4, 10, 4, 0]
                 }
               )
             end
           end
-
 
           move_down 25
           text "<b>" + employee.full_name + " | </b><font size='9'>Total Stunden: " + get_total_hours(employee).to_s + "</font>", @default_text_settings.merge(inline_format: true, size: 11)
@@ -118,7 +117,7 @@ module Pdfs
           indent(10, 0) do
             Pdfs::Generators::TableGenerator.new(@document).render(
               table_data,
-              [bounds.width - 400, 400 - 200 - 150, 165, 185],
+              [bounds.width - 400, 400 - 200 - 150, 165, 185]
             )
           end
         else

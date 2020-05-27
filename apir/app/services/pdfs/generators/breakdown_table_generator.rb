@@ -11,9 +11,9 @@ module Pdfs
       end
 
       def format_money(amount, rounding_method = :round)
-        rounded = (amount/5.0).round * 5 / 100.0 if rounding_method == :round
-        rounded = (amount/5.0).ceil * 5 / 100.0 if rounding_method == :ceil
-        rounded = (amount/5.0).floor * 5 / 100.0 if rounding_method == :floor
+        rounded = (amount / 5.0).round * 5 / 100.0 if rounding_method == :round
+        rounded = (amount / 5.0).ceil * 5 / 100.0 if rounding_method == :ceil
+        rounded = (amount / 5.0).floor * 5 / 100.0 if rounding_method == :floor
         number_to_currency(rounded, unit: "", separator: ".", delimiter: ",").tr(",", "'")
       end
 
@@ -63,13 +63,13 @@ module Pdfs
 
         positions.sort_by(&:order).each do |position|
           data.push(data: [
-            position.description.blank? ? position.try(:service).try(:name) : position.description,
-            format_money(position.price_per_rate),
-            position.rate_unit.billing_unit,
-            position.amount,
-            (position.vat * 100.0).round(2).to_s + "%",
-            format_money(position.calculated_total)
-          ])
+                      position.description.blank? ? position.try(:service).try(:name) : position.description,
+                      format_money(position.price_per_rate),
+                      position.rate_unit.billing_unit,
+                      position.amount,
+                      (position.vat * 100.0).round(2).to_s + "%",
+                      format_money(position.calculated_total)
+                    ])
         end
 
         data.push(
@@ -87,7 +87,7 @@ module Pdfs
       end
 
       def render_discounts
-        if @breakdown[:discounts].length > 0
+        unless @breakdown[:discounts].empty?
           data = [
             {
               data: [(I18n.t :discount).capitalize, (I18n.t :amount).capitalize],

@@ -29,10 +29,10 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
     end
 
     describe "#show" do
-      let(:customer_tag) {create(:customer_tag, name: "Tag A")}
-      before do
+      let(:customer_tag) { create(:customer_tag, name: "Tag A") }
 
-        get :show, format: :json, params: {id: customer_tag.id}
+      before do
+        get :show, format: :json, params: { id: customer_tag.id }
       end
 
       it "returns http success" do
@@ -45,10 +45,10 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
     end
 
     describe "#create" do
-      let(:customer_tag) {build(:customer_tag, name: "Tag A")}
+      let(:customer_tag) { build(:customer_tag, name: "Tag A") }
 
       it "returns http success for a valid param" do
-        post :create, format: :json, params: {customer_tag: customer_tag.as_json}
+        post :create, format: :json, params: { customer_tag: customer_tag.as_json }
 
         expect(response).to have_http_status(:success)
       end
@@ -58,25 +58,25 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
         existing_tag.reload
 
         # cannot create two tags with the same name
-        post :create, format: :json, params: {customer_tag: customer_tag.as_json}
+        post :create, format: :json, params: { customer_tag: customer_tag.as_json }
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "assigns the created tag" do
-        expect{post :create, format: :json, params: {customer_tag: customer_tag.as_json}}.to change(CustomerTag, :count).by(1)
+        expect { post :create, format: :json, params: { customer_tag: customer_tag.as_json } }.to change(CustomerTag, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:customer_tag) {create(:customer_tag, name: "Tag A")}
+      let(:customer_tag) { create(:customer_tag, name: "Tag A") }
 
       before do
         customer_tag.reload
       end
 
       it "returns updates correctly with valid params" do
-        put :update, format: :json, params: {id: customer_tag.id, customer_tag: customer_tag.as_json.except(:name).merge({name: "Tag B"})}
+        put :update, format: :json, params: { id: customer_tag.id, customer_tag: customer_tag.as_json.except(:name).merge({ name: "Tag B" }) }
         customer_tag.reload
 
         expect(customer_tag.name).to eq("Tag B")
@@ -86,22 +86,22 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
         customer_tag_b = create(:customer_tag, name: "Tag B")
         customer_tag_b.reload
 
-        put :update, format: :json, params: {id: customer_tag.id, customer_tag: customer_tag.as_json.except(:name).merge({name: "Tag B"})}
+        put :update, format: :json, params: { id: customer_tag.id, customer_tag: customer_tag.as_json.except(:name).merge({ name: "Tag B" }) }
         customer_tag.reload
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 
     describe "#archive" do
-      let(:customer_tag) {create(:customer_tag, archived: false, name: "Tag A")}
+      let(:customer_tag) { create(:customer_tag, archived: false, name: "Tag A") }
 
       before do
         customer_tag.reload
       end
 
       it "archives correctly" do
-        put :archive, format: :json, params: {id: customer_tag.id, archived: true, customer_tag: customer_tag.as_json}
+        put :archive, format: :json, params: { id: customer_tag.id, archived: true, customer_tag: customer_tag.as_json }
         customer_tag.reload
 
         expect(customer_tag.archived).to eq(true)
@@ -109,16 +109,16 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:customer_tag) {create(:customer_tag, name: "Tag A")}
+      let(:customer_tag) { create(:customer_tag, name: "Tag A") }
 
       before do
         customer_tag.reload
       end
 
       it "destroys the tag" do
-        expect{
-          delete :destroy, format: :json, params: {id: customer_tag.id, customer_tag: customer_tag.as_json}
-        }.to change(CustomerTag, :count).by(-1)
+        expect do
+          delete :destroy, format: :json, params: { id: customer_tag.id, customer_tag: customer_tag.as_json }
+        end.to change(CustomerTag, :count).by(-1)
       end
     end
   end

@@ -34,10 +34,10 @@ RSpec.describe V2::CustomersController, type: :controller do
     end
 
     describe "#show" do
-      let(:company) {create(:company, name: "Company A")}
+      let(:company) { create(:company, name: "Company A") }
 
       before do
-        get :show, format: :json, params: {id: company.id}
+        get :show, format: :json, params: { id: company.id }
       end
 
       it "returns http success" do
@@ -54,51 +54,51 @@ RSpec.describe V2::CustomersController, type: :controller do
     end
 
     describe "#create" do
-      let(:rate_group) {create(:rate_group)}
-      let(:company) {build(:company, name: "Company A", rate_group: rate_group)}
-      let(:company_invalid) {build(:company, name: "Company I")}
+      let(:rate_group) { create(:rate_group) }
+      let(:company) { build(:company, name: "Company A", rate_group: rate_group) }
+      let(:company_invalid) { build(:company, name: "Company I") }
 
       it "returns http success for a valid param" do
-        post :create, format: :json, params: {company: company.as_json.merge({type: 'Company'})}
+        post :create, format: :json, params: { company: company.as_json.merge({ type: "Company" }) }
 
         expect(response).to have_http_status(:success)
       end
 
       it "returns unprocessable for an invalid param" do
         # missing rate group
-        post :create, format: :json, params: {company: company_invalid.as_json.merge({type: 'Company'})}
+        post :create, format: :json, params: { company: company_invalid.as_json.merge({ type: "Company" }) }
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "assigns the created company" do
-        expect{
-          post :create, format: :json, params: {company: company.as_json.merge({type: 'Company'})}
-        }.to change(Customer, :count).by(1)
+        expect do
+          post :create, format: :json, params: { company: company.as_json.merge({ type: "Company" }) }
+        end.to change(Customer, :count).by(1)
       end
     end
 
     describe "#duplicate" do
-      let(:rate_group) {create(:rate_group)}
-      let(:company) {create(:company, name: "Company A", rate_group: rate_group)}
+      let(:rate_group) { create(:rate_group) }
+      let(:company) { create(:company, name: "Company A", rate_group: rate_group) }
 
       before do
         company.reload
       end
 
       it "returns http success for a valid param" do
-        expect{post :duplicate, format: :json, params: {id: company.id, company: company.as_json}}.to change(Company, :count).by(1)
+        expect { post :duplicate, format: :json, params: { id: company.id, company: company.as_json } }.to change(Company, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:company) {create(:company, name: "Company A")}
+      let(:company) { create(:company, name: "Company A") }
 
       describe "with valid params" do
         before do
           put :update, format: :json, params: {
             id: company.id,
-            company: company.as_json.except(:name).merge({name: "MyNewCompanyName"})
+            company: company.as_json.except(:name).merge({ name: "MyNewCompanyName" })
           }
 
           company.reload
@@ -117,14 +117,14 @@ RSpec.describe V2::CustomersController, type: :controller do
         before do
           put :update, format: :json, params: {
             id: company.id,
-            company: company.as_json.except(:email, :name).merge({name: "MyNewCompanyName", email: "A"*300})
+            company: company.as_json.except(:email, :name).merge({ name: "MyNewCompanyName", email: "A" * 300 })
           }
 
           company.reload
         end
 
         it "returns unprocessable" do
-          expect(response).to have_http_status(422)
+          expect(response).to have_http_status(:unprocessable_entity)
         end
 
         it "doesn't update the company" do
@@ -134,7 +134,7 @@ RSpec.describe V2::CustomersController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:company) {create(:company, name: "Company A")}
+      let(:company) { create(:company, name: "Company A") }
 
       before do
         create(:company, name: "Company B")
@@ -146,15 +146,15 @@ RSpec.describe V2::CustomersController, type: :controller do
       end
 
       it "deletes the company" do
-        delete :destroy, format: :json, params: {id: company.id, company: company.as_json}
+        delete :destroy, format: :json, params: { id: company.id, company: company.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the company" do
-        expect{
-          delete :destroy, format: :json, params: {id: company.id, company: company.as_json}
-        }.to change(Company, :count).from(4).to(3)
+        expect do
+          delete :destroy, format: :json, params: { id: company.id, company: company.as_json }
+        end.to change(Company, :count).from(4).to(3)
       end
     end
   end
@@ -169,7 +169,7 @@ RSpec.describe V2::CustomersController, type: :controller do
     it "returns an authorization error for #show" do
       company = create(:company, name: "Company A")
 
-      get :show, format: :json, params: {id: company.id}
+      get :show, format: :json, params: { id: company.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -177,7 +177,7 @@ RSpec.describe V2::CustomersController, type: :controller do
     it "returns an authorization error for #create" do
       company = build(:company, name: "Company A")
 
-      post :create, format: :json, params: {company: company.as_json}
+      post :create, format: :json, params: { company: company.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -185,7 +185,7 @@ RSpec.describe V2::CustomersController, type: :controller do
     it "returns an authorization error for #destroy" do
       company = create(:company, name: "Company A")
 
-      delete :destroy, format: :json, params: {id: company.id, company: company.as_json}
+      delete :destroy, format: :json, params: { id: company.id, company: company.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

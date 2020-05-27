@@ -9,13 +9,13 @@ module V2
 
     #:nocov:
     def project_report
-      from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
-      to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])
+      from_date = params[:from].blank? ? DateTime.now - 1.month : DateTime.parse(params[:from])
+      to_date = params[:to].blank? ? DateTime.now : DateTime.parse(params[:to])
       daily_rate = params[:daily_rate].to_f / 100.0 || 1200
       vat = params[:vat].to_f || 0.077
-      exclude_employee_ids = params[:exclude_employee_ids]&.split(',') || []
-      additional_cost_names = params[:additional_costs_names]&.split(',') || []
-      additional_cost_prices = params[:additional_costs_prices]&.split(',') || []
+      exclude_employee_ids = params[:exclude_employee_ids]&.split(",") || []
+      additional_cost_names = params[:additional_costs_names]&.split(",") || []
+      additional_cost_prices = params[:additional_costs_prices]&.split(",") || []
 
       pdf = Pdfs::ProjectReportPdf.new(
         GlobalSetting.first,
@@ -37,10 +37,10 @@ module V2
     end
 
     def employees_project_report
-      from_date = params[:from].blank? ? DateTime.now() - 1.month : DateTime.parse(params[:from])
-      to_date = params[:to].blank? ? DateTime.now() : DateTime.parse(params[:to])
+      from_date = params[:from].blank? ? DateTime.now - 1.month : DateTime.parse(params[:from])
+      to_date = params[:to].blank? ? DateTime.now : DateTime.parse(params[:to])
 
-      pdf = Pdfs::EmployeesProjectReportPdf.new GlobalSetting.first, Employee.find(params[:employee_ids].split(',')), from_date, to_date
+      pdf = Pdfs::EmployeesProjectReportPdf.new GlobalSetting.first, Employee.find(params[:employee_ids].split(",")), from_date, to_date
 
       respond_to do |format|
         format.pdf do

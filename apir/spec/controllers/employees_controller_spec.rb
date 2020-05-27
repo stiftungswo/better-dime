@@ -10,7 +10,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
       sign_in employee
     end
 
-    let(:employee_group) {create(:employee_group)}
+    let(:employee_group) { create(:employee_group) }
 
     describe "#index" do
       before do
@@ -34,10 +34,10 @@ RSpec.describe V2::EmployeesController, type: :controller do
     end
 
     describe "#show" do
-      let(:employee) {create(:employee, first_name: "Employee A")}
+      let(:employee) { create(:employee, first_name: "Employee A") }
 
       before do
-        get :show, format: :json, params: {id: employee.id}
+        get :show, format: :json, params: { id: employee.id }
       end
 
       it "returns http success" do
@@ -54,51 +54,51 @@ RSpec.describe V2::EmployeesController, type: :controller do
     end
 
     describe "#create" do
-      let(:employee) {build(:employee, first_name: "Employee A", employee_group: employee_group)}
-      let(:employee_invalid) {build(:employee, first_name: "Employee I", email: "invalid", employee_group: employee_group)}
+      let(:employee) { build(:employee, first_name: "Employee A", employee_group: employee_group) }
+      let(:employee_invalid) { build(:employee, first_name: "Employee I", email: "invalid", employee_group: employee_group) }
 
       before do
         employee_group.reload
       end
 
       it "returns http success for a valid param" do
-        post :create, format: :json, params: {employee: employee.as_json.merge(password: employee.password)}
+        post :create, format: :json, params: { employee: employee.as_json.merge(password: employee.password) }
 
         expect(response).to have_http_status(:success)
       end
 
       it "returns unprocessable for an invalid param" do
         # missing rate group
-        post :create, format: :json, params: {employee: employee_invalid.as_json.merge(password: employee.password)}
+        post :create, format: :json, params: { employee: employee_invalid.as_json.merge(password: employee.password) }
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "assigns the created company" do
-        expect{post :create, format: :json, params: {employee: employee.as_json.merge(password: employee.password)}}.to change(Employee, :count).by(1)
+        expect { post :create, format: :json, params: { employee: employee.as_json.merge(password: employee.password) } }.to change(Employee, :count).by(1)
       end
     end
 
     describe "#duplicate" do
-      let(:employee) {create(:employee, first_name: "Employee A")}
+      let(:employee) { create(:employee, first_name: "Employee A") }
 
       before do
         employee.reload
       end
 
       it "returns http success for a valid param" do
-        expect{post :duplicate, format: :json, params: {id: employee.id, employee: employee.as_json}}.to change(Employee, :count).by(1)
+        expect { post :duplicate, format: :json, params: { id: employee.id, employee: employee.as_json } }.to change(Employee, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:employee) {create(:employee, first_name: "Employee A", email: "myemail@stuff.com")}
+      let(:employee) { create(:employee, first_name: "Employee A", email: "myemail@stuff.com") }
 
       describe "with valid params" do
         before do
           put :update, format: :json, params: {
             id: employee.id,
-            employee: employee.as_json.except(:first_name).merge({first_name: "Employee X"})
+            employee: employee.as_json.except(:first_name).merge({ first_name: "Employee X" })
           }
 
           employee.reload
@@ -117,7 +117,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
         before do
           put :update, format: :json, params: {
             id: employee.id,
-            employee: employee.as_json.except(:email).merge({email: "invalid"})
+            employee: employee.as_json.except(:email).merge({ email: "invalid" })
           }
 
           employee.reload
@@ -130,7 +130,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:employee) {create(:employee, first_name: "Employee A")}
+      let(:employee) { create(:employee, first_name: "Employee A") }
 
       before do
         create(:employee, first_name: "Employee B")
@@ -142,16 +142,16 @@ RSpec.describe V2::EmployeesController, type: :controller do
       end
 
       it "returns sucess" do
-        delete :destroy, format: :json, params: {id: employee.id, employee: employee.as_json}
+        delete :destroy, format: :json, params: { id: employee.id, employee: employee.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the employee" do
         # go from 5 to 4 instead of 4 to 3 because we create one employee for authentication already
-        expect{
-          delete :destroy, format: :json, params: {id: employee.id, employee: employee.as_json}
-        }.to change(Employee, :count).from(5).to(4)
+        expect do
+          delete :destroy, format: :json, params: { id: employee.id, employee: employee.as_json }
+        end.to change(Employee, :count).from(5).to(4)
       end
     end
   end
@@ -166,7 +166,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
     it "returns an authorization error for #show" do
       employee = create(:employee, first_name: "Employee A")
 
-      get :show, format: :json, params: {id: employee.id}
+      get :show, format: :json, params: { id: employee.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -174,7 +174,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
     it "returns an authorization error for #create" do
       employee = build(:employee, first_name: "Employee A")
 
-      post :create, format: :json, params: {employee: employee.as_json}
+      post :create, format: :json, params: { employee: employee.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -182,7 +182,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
     it "returns an authorization error for #destroy" do
       employee = create(:employee, first_name: "Employee A")
 
-      delete :destroy, format: :json, params: {id: employee.id, employee: employee.as_json}
+      delete :destroy, format: :json, params: { id: employee.id, employee: employee.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

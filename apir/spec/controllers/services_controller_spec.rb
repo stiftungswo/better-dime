@@ -32,10 +32,10 @@ RSpec.describe V2::ServicesController, type: :controller do
     end
 
     describe "#show" do
-      let(:service) {create(:service, name: "Service A")}
+      let(:service) { create(:service, name: "Service A") }
 
       before do
-        get :show, format: :json, params: {id: service.id}
+        get :show, format: :json, params: { id: service.id }
       end
 
       it "returns http success" do
@@ -52,7 +52,7 @@ RSpec.describe V2::ServicesController, type: :controller do
     end
 
     describe "#create" do
-      let(:service) {build(:service, name: "Service A")}
+      let(:service) { build(:service, name: "Service A") }
 
       it "returns http success for a valid param" do
         post :create, format: :json, params: {
@@ -65,40 +65,40 @@ RSpec.describe V2::ServicesController, type: :controller do
       end
 
       it "doesn't allow creation with invalid parameter" do
-        expect{
+        expect do
           post :create, format: :json, params: {
             name: service.name,
-            vat: 3123123,
+            vat: 3_123_123,
             service: service.as_json.merge(name: service.name, vat: service.vat)
           }
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
 
       it "assigns the created company" do
-        expect{
+        expect do
           post :create, format: :json, params: {
             name: service.name,
             vat: service.vat,
             service: service.as_json.merge(name: service.name, vat: service.vat)
           }
-        }.to change(Service, :count).by(1)
+        end.to change(Service, :count).by(1)
       end
     end
 
     describe "#duplicate" do
-      let(:service) {create(:service, name: "Service A")}
+      let(:service) { create(:service, name: "Service A") }
 
       before do
         service.reload
       end
 
       it "returns http success for a valid param" do
-        expect{post :duplicate, format: :json, params: {id: service.id, service: service.as_json}}.to change(Service, :count).by(1)
+        expect { post :duplicate, format: :json, params: { id: service.id, service: service.as_json } }.to change(Service, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:service) {create(:service, name: "Service A")}
+      let(:service) { create(:service, name: "Service A") }
 
       describe "with valid params" do
         before do
@@ -123,7 +123,7 @@ RSpec.describe V2::ServicesController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:service) {create(:service, name: "Service A")}
+      let(:service) { create(:service, name: "Service A") }
 
       before do
         # reload before any action so we have it in the database before any action
@@ -131,15 +131,15 @@ RSpec.describe V2::ServicesController, type: :controller do
       end
 
       it "returns sucess" do
-        delete :destroy, format: :json, params: {id: service.id, service: service.as_json}
+        delete :destroy, format: :json, params: { id: service.id, service: service.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the category" do
-        expect{
-          delete :destroy, format: :json, params: {id: service.id, service: service.as_json}
-        }.to change(Service, :count).from(1).to(0)
+        expect do
+          delete :destroy, format: :json, params: { id: service.id, service: service.as_json }
+        end.to change(Service, :count).from(1).to(0)
       end
     end
   end
@@ -154,7 +154,7 @@ RSpec.describe V2::ServicesController, type: :controller do
     it "returns an authorization error for #show" do
       service = create(:service, name: "Service A")
 
-      get :show, format: :json, params: {id: service.id}
+      get :show, format: :json, params: { id: service.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -162,7 +162,7 @@ RSpec.describe V2::ServicesController, type: :controller do
     it "returns an authorization error for #create" do
       service = create(:service, name: "Service A")
 
-      post :create, format: :json, params: {service: service.as_json}
+      post :create, format: :json, params: { service: service.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -170,7 +170,7 @@ RSpec.describe V2::ServicesController, type: :controller do
     it "returns an authorization error for #destroy" do
       service = create(:service, name: "Service A")
 
-      delete :destroy, format: :json, params: {id: service.id, service: service.as_json}
+      delete :destroy, format: :json, params: { id: service.id, service: service.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

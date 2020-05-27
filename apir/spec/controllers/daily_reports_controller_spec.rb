@@ -12,7 +12,7 @@ RSpec.describe V2::DailyReportsController, type: :controller do
 
     describe "#index" do
       before do
-        get :index, format: :json, params: {from: "2019-05-14", to: "2019-07-19"}
+        get :index, format: :json, params: { from: "2019-05-14", to: "2019-07-19" }
       end
 
       it "returns http success" do

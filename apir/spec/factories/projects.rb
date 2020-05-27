@@ -17,7 +17,7 @@ FactoryBot.define do
     rate_group
 
     trait :with_fixed_price do
-      fixed_price { 12000 }
+      fixed_price { 12_000 }
     end
 
     trait :with_company_customer do

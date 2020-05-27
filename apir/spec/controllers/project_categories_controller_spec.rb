@@ -32,10 +32,10 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     end
 
     describe "#show" do
-      let(:project_category) {create(:project_category, name: "Category A")}
+      let(:project_category) { create(:project_category, name: "Category A") }
 
       before do
-        get :show, format: :json, params: {id: project_category.id}
+        get :show, format: :json, params: { id: project_category.id }
       end
 
       it "returns http success" do
@@ -52,27 +52,27 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     end
 
     describe "#create" do
-      let(:project_category) {build(:project_category, name: "Category A")}
+      let(:project_category) { build(:project_category, name: "Category A") }
 
       it "returns http success for a valid param" do
-        post :create, format: :json, params: {project_category: project_category.as_json}
+        post :create, format: :json, params: { project_category: project_category.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "assigns the created category" do
-        expect{post :create, format: :json, params: {project_category: project_category.as_json}}.to change(ProjectCategory, :count).by(1)
+        expect { post :create, format: :json, params: { project_category: project_category.as_json } }.to change(ProjectCategory, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:project_category) {create(:project_category, name: "Category A")}
+      let(:project_category) { create(:project_category, name: "Category A") }
 
       describe "with valid params" do
         before do
           put :update, format: :json, params: {
             id: project_category.id,
-            project_category: project_category.as_json.except(:name).merge({name: "Category X"})
+            project_category: project_category.as_json.except(:name).merge({ name: "Category X" })
           }
 
           project_category.reload
@@ -89,7 +89,7 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:project_category) {create(:project_category, name: "Category A")}
+      let(:project_category) { create(:project_category, name: "Category A") }
 
       before do
         # reload before any action so we have it in the database before any action
@@ -97,15 +97,15 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
       end
 
       it "returns sucess" do
-        delete :destroy, format: :json, params: {id: project_category.id, project_category: project_category.as_json}
+        delete :destroy, format: :json, params: { id: project_category.id, project_category: project_category.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the category" do
-        expect{
-          delete :destroy, format: :json, params: {id: project_category.id, project_category: project_category.as_json}
-        }.to change(ProjectCategory, :count).from(1).to(0)
+        expect do
+          delete :destroy, format: :json, params: { id: project_category.id, project_category: project_category.as_json }
+        end.to change(ProjectCategory, :count).from(1).to(0)
       end
     end
   end
@@ -120,7 +120,7 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     it "returns an authorization error for #show" do
       project_category = create(:project_category, name: "Category A")
 
-      get :show, format: :json, params: {id: project_category.id}
+      get :show, format: :json, params: { id: project_category.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -128,7 +128,7 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     it "returns an authorization error for #create" do
       project_category = create(:project_category, name: "Category A")
 
-      post :create, format: :json, params: {project_category: project_category.as_json}
+      post :create, format: :json, params: { project_category: project_category.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -136,7 +136,7 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
     it "returns an authorization error for #destroy" do
       project_category = create(:project_category, name: "Category A")
 
-      delete :destroy, format: :json, params: {id: project_category.id, project_category: project_category.as_json}
+      delete :destroy, format: :json, params: { id: project_category.id, project_category: project_category.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

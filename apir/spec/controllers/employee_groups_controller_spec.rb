@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe V2::EmployeeGroupsController, type: :controller do
   describe "with a logged in user" do
-    let(:employee) {create(:employee)}
+    let(:employee) { create(:employee) }
 
     before do
       sign_in employee
@@ -32,10 +32,10 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     end
 
     describe "#show" do
-      let(:employee_group) {create(:employee_group, name: "Group A")}
+      let(:employee_group) { create(:employee_group, name: "Group A") }
 
       before do
-        get :show, format: :json, params: {id: employee_group.id}
+        get :show, format: :json, params: { id: employee_group.id }
       end
 
       it "returns http success" do
@@ -52,7 +52,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     end
 
     describe "#create" do
-      let(:employee_group) {build(:employee_group, name: "Group A")}
+      let(:employee_group) { build(:employee_group, name: "Group A") }
 
       it "returns http success for a valid param" do
         post :create, format: :json, params: {
@@ -64,17 +64,17 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
       end
 
       it "assigns the created group" do
-        expect{
+        expect do
           post :create, format: :json, params: {
             name: employee_group.name,
             employee_group: employee_group.as_json
           }
-        }.to change(EmployeeGroup, :count).by(1)
+        end.to change(EmployeeGroup, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:employee_group) {create(:employee_group, name: "Group A")}
+      let(:employee_group) { create(:employee_group, name: "Group A") }
 
       describe "with valid params" do
         before do
@@ -98,7 +98,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:employee_group) {create(:employee_group, name: "Group A")}
+      let(:employee_group) { create(:employee_group, name: "Group A") }
 
       before do
         # reload before any action so we have it in the database before any action
@@ -106,16 +106,16 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
       end
 
       it "returns success" do
-        delete :destroy, format: :json, params: {id: employee_group.id, employee_group: employee_group.as_json}
+        delete :destroy, format: :json, params: { id: employee_group.id, employee_group: employee_group.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the employee group" do
         # we got 2 initially because we create a employee for authentication => creates an employee group
-        expect{
-          delete :destroy, format: :json, params: {id: employee_group.id, employee_group: employee_group.as_json}
-        }.to change(EmployeeGroup, :count).from(2).to(1)
+        expect do
+          delete :destroy, format: :json, params: { id: employee_group.id, employee_group: employee_group.as_json }
+        end.to change(EmployeeGroup, :count).from(2).to(1)
       end
     end
   end
@@ -130,7 +130,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     it "returns an authorization error for #show" do
       employee_group = create(:employee_group, name: "Group A")
 
-      get :show, format: :json, params: {id: employee_group.id}
+      get :show, format: :json, params: { id: employee_group.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -138,7 +138,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     it "returns an authorization error for #create" do
       employee_group = create(:employee_group, name: "Group A")
 
-      post :create, format: :json, params: {employee_group: employee_group.as_json}
+      post :create, format: :json, params: { employee_group: employee_group.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -146,7 +146,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
     it "returns an authorization error for #destroy" do
       employee_group = create(:employee_group, name: "Group A")
 
-      delete :destroy, format: :json, params: {id: employee_group.id, employee_group: employee_group.as_json}
+      delete :destroy, format: :json, params: { id: employee_group.id, employee_group: employee_group.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

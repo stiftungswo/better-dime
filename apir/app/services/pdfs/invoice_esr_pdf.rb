@@ -18,7 +18,7 @@ module Pdfs
     end
 
     def filename
-      "Einzahlungsschein_" + @invoice.id.to_s + "_" + @invoice.name.split(',')[0].split(';')[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+      "Einzahlungsschein_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
     end
 
     def document

@@ -11,7 +11,7 @@ module Pdfs
     end
 
     def filename
-      "Offerte_" + @offer.id.to_s + "_" + @offer.name.split(',')[0].split(';')[0] + "_" + @offer.created_at.strftime("%Y_%m_%d")
+      "Offerte_" + @offer.id.to_s + "_" + @offer.name.split(",")[0].split(";")[0] + "_" + @offer.created_at.strftime("%Y_%m_%d")
     end
 
     def data
@@ -48,9 +48,7 @@ module Pdfs
     end
 
     def draw_signature
-      if cursor < 150
-        start_new_page
-      end
+      start_new_page if cursor < 150
 
       move_down 20
       text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)

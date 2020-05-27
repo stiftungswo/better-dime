@@ -34,10 +34,10 @@ RSpec.describe V2::PeopleController, type: :controller do
     end
 
     describe "#show" do
-      let(:person) {create(:person, first_name: "person A")}
+      let(:person) { create(:person, first_name: "person A") }
 
       before do
-        get :show, format: :json, params: {id: person.id}
+        get :show, format: :json, params: { id: person.id }
       end
 
       it "returns http success" do
@@ -54,49 +54,49 @@ RSpec.describe V2::PeopleController, type: :controller do
     end
 
     describe "#create" do
-      let(:rate_group) {create(:rate_group)}
-      let(:person) {build(:person, first_name: "person A", rate_group: rate_group)}
-      let(:person_invalid) {build(:person, first_name: "person I")}
+      let(:rate_group) { create(:rate_group) }
+      let(:person) { build(:person, first_name: "person A", rate_group: rate_group) }
+      let(:person_invalid) { build(:person, first_name: "person I") }
 
       it "returns http success for a valid param" do
-        post :create, format: :json, params: {person: person.as_json}
+        post :create, format: :json, params: { person: person.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "returns unprocessable for an invalid param" do
         # missing rate group
-        post :create, format: :json, params: {person: person_invalid.as_json}
+        post :create, format: :json, params: { person: person_invalid.as_json }
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "assigns the created person" do
-        expect{post :create, format: :json, params: {person: person.as_json}}.to change(Person, :count).by(1)
+        expect { post :create, format: :json, params: { person: person.as_json } }.to change(Person, :count).by(1)
       end
     end
 
     describe "#duplicate" do
-      let(:rate_group) {create(:rate_group)}
-      let(:person) {create(:person, first_name: "person A", rate_group: rate_group)}
+      let(:rate_group) { create(:rate_group) }
+      let(:person) { create(:person, first_name: "person A", rate_group: rate_group) }
 
       before do
         person.reload
       end
 
       it "returns http success for a valid param" do
-        expect{post :duplicate, format: :json, params: {id: person.id, person: person.as_json}}.to change(Person, :count).by(1)
+        expect { post :duplicate, format: :json, params: { id: person.id, person: person.as_json } }.to change(Person, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:person) {create(:person, first_name: "person A", email: "mail@example.com")}
+      let(:person) { create(:person, first_name: "person A", email: "mail@example.com") }
 
       describe "with valid params" do
         before do
           put :update, format: :json, params: {
             id: person.id,
-            person: person.as_json.except(:email).merge({email: "newma@sf.fr"})
+            person: person.as_json.except(:email).merge({ email: "newma@sf.fr" })
           }
 
           person.reload
@@ -111,7 +111,7 @@ RSpec.describe V2::PeopleController, type: :controller do
         before do
           put :update, format: :json, params: {
             id: person.id,
-            person: person.as_json.except(:email).merge({email: "A"*300})
+            person: person.as_json.except(:email).merge({ email: "A" * 300 })
           }
 
           person.reload
@@ -124,7 +124,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     end
 
     describe "#hide" do
-      let(:person) {create(:person, hidden: false, first_name: "person A")}
+      let(:person) { create(:person, hidden: false, first_name: "person A") }
 
       before do
         put :hide, format: :json, params: {
@@ -146,7 +146,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     end
 
     describe "#destroy" do
-      let(:person) {create(:person, first_name: "person A")}
+      let(:person) { create(:person, first_name: "person A") }
 
       before do
         create(:person, first_name: "person B")
@@ -158,15 +158,15 @@ RSpec.describe V2::PeopleController, type: :controller do
       end
 
       it "deletes the person" do
-        delete :destroy, format: :json, params: {id: person.id, person: person.as_json}
+        delete :destroy, format: :json, params: { id: person.id, person: person.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the person" do
-        expect{
-          delete :destroy, format: :json, params: {id: person.id, person: person.as_json}
-        }.to change(Person, :count).from(4).to(3)
+        expect do
+          delete :destroy, format: :json, params: { id: person.id, person: person.as_json }
+        end.to change(Person, :count).from(4).to(3)
       end
     end
   end
@@ -181,7 +181,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     it "returns an authorization error for #show" do
       person = create(:person, first_name: "person A")
 
-      get :show, format: :json, params: {id: person.id}
+      get :show, format: :json, params: { id: person.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -189,7 +189,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     it "returns an authorization error for #create" do
       person = build(:person, first_name: "person A")
 
-      post :create, format: :json, params: {person: person.as_json}
+      post :create, format: :json, params: { person: person.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -197,7 +197,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     it "returns an authorization error for #hide" do
       person = create(:person, first_name: "person A")
 
-      put :hide, format: :json, params: {id: person.id, person: person.as_json.except(:hidden).merge({hidden: true})}
+      put :hide, format: :json, params: { id: person.id, person: person.as_json.except(:hidden).merge({ hidden: true }) }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -205,7 +205,7 @@ RSpec.describe V2::PeopleController, type: :controller do
     it "returns an authorization error for #destroy" do
       person = create(:person, first_name: "person A")
 
-      delete :destroy, format: :json, params: {id: person.id, person: person.as_json}
+      delete :destroy, format: :json, params: { id: person.id, person: person.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

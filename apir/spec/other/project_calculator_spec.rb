@@ -30,16 +30,16 @@ RSpec.describe ProjectCalculator do
     effort_d = create(:project_effort, value: 42.3, project_position: position_d, date: "2019-05-17")
     effort_e = create(:project_effort, value: 3.3, project_position: position_e, date: "2019-06-05")
 
-    calculator = ProjectCalculator.new(project)
+    calculator = described_class.new(project)
 
-    expect(calculator.budget_price).to eq(22655.0)
-    expect(calculator.budget_time).to eq(50337.0)
+    expect(calculator.budget_price).to eq(22_655.0)
+    expect(calculator.budget_time).to eq(50_337.0)
     expect(calculator.current_price).to eq(30.3321)
     expect(calculator.current_time).to eq(70.56)
   end
 
   it "calculates project properties correctly with fix prices" do
-    offer = create(:offer, fixed_price: 14522)
+    offer = create(:offer, fixed_price: 14_522)
     project = create(:project, offer: offer)
 
     no_time_unit = create(:rate_unit, is_time: false)
@@ -65,10 +65,10 @@ RSpec.describe ProjectCalculator do
     effort_d = create(:project_effort, value: 42.3, project_position: position_d, date: "2019-05-17")
     effort_e = create(:project_effort, value: 3.3, project_position: position_e, date: "2019-06-05")
 
-    calculator = ProjectCalculator.new(project)
+    calculator = described_class.new(project)
 
-    expect(calculator.budget_price).to eq(14522)
-    expect(calculator.budget_time).to eq(50337.0)
+    expect(calculator.budget_price).to eq(14_522)
+    expect(calculator.budget_time).to eq(50_337.0)
     expect(calculator.current_price).to eq(30.3321)
     expect(calculator.current_time).to eq(70.56)
   end

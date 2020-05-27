@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe Employee, type: :model do
+  let(:employee_model) { create(:employee) }
+
   it { is_expected.to belong_to :employee_group }
 
   it { is_expected.to have_many(:work_periods).dependent(:restrict_with_exception).inverse_of(:employee) }
@@ -16,8 +18,6 @@ RSpec.describe Employee, type: :model do
   it { is_expected.to validate_presence_of :last_name }
   it { is_expected.to validate_numericality_of(:holidays_per_year).allow_nil.is_greater_than_or_equal_to(0) }
   it { is_expected.to validate_numericality_of(:first_vacation_takeover).is_greater_than_or_equal_to(0) }
-
-  let(:employee_model) {create(:employee)}
 
   it "encrypts the password" do
     expect(employee_model.encrypted_password).to start_with("$2a$").or start_with("$2y$")

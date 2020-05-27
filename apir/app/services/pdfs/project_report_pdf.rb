@@ -55,7 +55,7 @@ module Pdfs
       draw_efforts
       draw_employee_summary
       draw_cost
-      draw_additional_cost if @additional_cost_names.length > 0
+      draw_additional_cost unless @additional_cost_names.empty?
       draw_total
     end
 
@@ -134,7 +134,7 @@ module Pdfs
         table_data.push(
           data: [
             employee.full_name,
-            (employee_efforts.inject(0) { |sum, e| sum + e.value / 60}).round(1)
+            (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
           ],
           style: {
             borders: [],
@@ -165,14 +165,14 @@ module Pdfs
       days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
       # map every day to the amount of employees which worked on that day
       days_to_employees = days_with_efforts.map do |day|
-        [day, efforts_in_range.select { |e| e.date == day && e.value > 0}.map(&:employee).uniq.length]
+        [day, efforts_in_range.select { |e| e.date == day && e.value > 0 }.map(&:employee).uniq.length]
       end.to_h.sort_by { |item| item[0] }
 
-      total = days_to_employees.inject(0) do |sum, (day, employees)|
+      total = days_to_employees.inject(0) do |sum, (_day, employees)|
         sum + employees * @daily_rate
       end
 
-      padding = [4,2,4,2]
+      padding = [4, 2, 4, 2]
 
       days_to_employees.each do |day, employees|
         table_data.push(
@@ -209,7 +209,7 @@ module Pdfs
       @document.indent(20, 0) do
         Pdfs::Generators::TableGenerator.new(@document).render(
           table_data,
-          [bounds.width-325,150,100,75],
+          [bounds.width - 325, 150, 100, 75],
           [3] => :right,
           [1] => :center
         )
@@ -217,7 +217,7 @@ module Pdfs
     end
 
     def draw_additional_cost
-      padding = [4,2,4,2]
+      padding = [4, 2, 4, 2]
 
       table_data = [
         {
@@ -230,13 +230,13 @@ module Pdfs
         }
       ]
       additional_costs = @additional_cost_names.zip(@additional_cost_prices)
-      total = @additional_cost_prices.inject(0) {|sum, p| sum + (p.to_f)/100.0}
+      total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 }
 
       additional_costs.each do |cost|
         table_data.push(
           data: [
             cost[0],
-            format_money((cost[1].to_f)/100.0)
+            format_money(cost[1].to_f / 100.0)
           ],
           style: {
             borders: [],
@@ -263,24 +263,24 @@ module Pdfs
       @document.indent(20, 0) do
         Pdfs::Generators::TableGenerator.new(@document).render(
           table_data,
-          [bounds.width/4*3,bounds.width/4],
+          [bounds.width / 4 * 3, bounds.width / 4],
           [1] => :right
         )
       end
     end
 
     def draw_total
-      padding = [4,2,4,2]
+      padding = [4, 2, 4, 2]
       days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
       # map every day to the amount of employees which worked on that day
       days_to_employees = days_with_efforts.map do |day|
-        [day, efforts_in_range.select { |e| e.date == day && e.value > 0}.map(&:employee).uniq.length]
+        [day, efforts_in_range.select { |e| e.date == day && e.value > 0 }.map(&:employee).uniq.length]
       end.to_h.sort_by { |item| item[0] }
-      employee_total = days_to_employees.inject(0) do |sum, (day, employees)|
+      employee_total = days_to_employees.inject(0) do |sum, (_day, employees)|
         sum + employees * @daily_rate
       end
 
-      total = @additional_cost_prices.inject(0) {|sum, p| sum + (p.to_f)/100.0} + employee_total
+      total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 } + employee_total
       table_data = [{
         data: ["", "Berechnung", "Total CHF"],
         style: {
@@ -307,19 +307,19 @@ module Pdfs
         data: [
           "Total",
           "",
-          format_money((1+@vat) * total)
+          format_money((1 + @vat) * total)
         ],
         style: {
           borders: [:top],
           border_width: 0.5,
           padding: padding,
-          font_style: :bold,
+          font_style: :bold
         }
       )
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width-175, 100, 75],
+        [bounds.width - 175, 100, 75],
         [2] => :right
       )
     end

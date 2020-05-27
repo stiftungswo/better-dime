@@ -5,8 +5,8 @@ module V2
     include V2::Concerns::ParamsExtractableEmployeeLocale
     include V2::Concerns::ParamsAuthenticatable
 
-    before_action :activate, unless: -> { request.format.pdf? or request.format.xlsx? }
-    before_action :authenticate_from_params!, if: -> { request.format.pdf? or request.format.xlsx? }
+    before_action :activate, unless: -> { request.format.pdf? || request.format.xlsx? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? || request.format.xlsx? }
 
     helper ApplicationHelper
     helper Ransack::Helpers::FormHelper
@@ -25,13 +25,9 @@ module V2
     def switch_locale(&action)
       locale = current_employee.try(:locale)
 
-      if locale.blank? && params[:token]
-        locale = extract_locale_from_params_employee
-      end
+      locale = extract_locale_from_params_employee if locale.blank? && params[:token]
 
-      if locale.blank?
-        locale = I18n.default_locale
-      end
+      locale = I18n.default_locale if locale.blank?
 
       I18n.with_locale(locale, &action)
     end

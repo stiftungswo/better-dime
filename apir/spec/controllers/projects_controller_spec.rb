@@ -34,10 +34,10 @@ RSpec.describe V2::ProjectsController, type: :controller do
     end
 
     describe "#show" do
-      let(:project) {create(:project, name: "Company A")}
+      let(:project) { create(:project, name: "Company A") }
 
       before do
-        get :show, format: :json, params: {id: project.id}
+        get :show, format: :json, params: { id: project.id }
       end
 
       it "returns http success" do
@@ -54,8 +54,8 @@ RSpec.describe V2::ProjectsController, type: :controller do
     end
 
     describe "#create" do
-      let(:project_template) {create(:project, name: "Project T")}
-      let(:project) {
+      let(:project_template) { create(:project, name: "Project T") }
+      let(:project) do
         build(
           :project,
           name: "Project A",
@@ -65,8 +65,8 @@ RSpec.describe V2::ProjectsController, type: :controller do
           rate_group: project_template.rate_group,
           project_category: project_template.project_category
         )
-      }
-      let(:project_invalid) {
+      end
+      let(:project_invalid) do
         build(
           :project,
           name: "Project A",
@@ -76,7 +76,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
           rate_group: project_template.rate_group,
           project_category: nil
         )
-      }
+      end
 
       before do
         project_template.reload
@@ -89,37 +89,37 @@ RSpec.describe V2::ProjectsController, type: :controller do
       end
 
       it "returns unprocessable for an invalid param" do
-        expect{
+        expect do
           post :create, format: :json, params: project_invalid.as_json
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
 
       it "assigns the created project" do
-        expect{post :create, format: :json, params: project.as_json}.to change(Project, :count).by(1)
+        expect { post :create, format: :json, params: project.as_json }.to change(Project, :count).by(1)
       end
     end
 
     describe "#duplicate" do
-      let(:project) {create(:project, name: "Project A")}
+      let(:project) { create(:project, name: "Project A") }
 
       before do
         project.reload
       end
 
       it "returns http success for a valid param" do
-        expect{post :duplicate, format: :json, params: {id: project.id, project: project.as_json}}.to change(Project, :count).by(1)
+        expect { post :duplicate, format: :json, params: { id: project.id, project: project.as_json } }.to change(Project, :count).by(1)
       end
     end
 
     describe "#update" do
-      let(:project) {create(:project, name: "Project A")}
+      let(:project) { create(:project, name: "Project A") }
 
       describe "with valid params" do
         before do
           put :update, format: :json, params: {
             id: project.id,
             name: "NewProjectName",
-            project: project.as_json.except(:name).merge({name: "NewProjectName"})
+            project: project.as_json.except(:name).merge({ name: "NewProjectName" })
           }
 
           project.reload
@@ -136,15 +136,15 @@ RSpec.describe V2::ProjectsController, type: :controller do
 
       describe "with invalid params" do
         it "returns unprocessable" do
-          expect {
-            put :update, format: :json, params: project.as_json.except(:fixed_price, :name).merge({name: "Project U", fixed_price: 3.2})
-          }.to raise_error(ValidationError)
+          expect do
+            put :update, format: :json, params: project.as_json.except(:fixed_price, :name).merge({ name: "Project U", fixed_price: 3.2 })
+          end.to raise_error(ValidationError)
         end
       end
     end
 
     describe "#destroy" do
-      let(:project) {create(:project, name: "Project A")}
+      let(:project) { create(:project, name: "Project A") }
 
       before do
         create(:project, name: "Project B")
@@ -156,15 +156,15 @@ RSpec.describe V2::ProjectsController, type: :controller do
       end
 
       it "deletes the project" do
-        delete :destroy, format: :json, params: {id: project.id, project: project.as_json}
+        delete :destroy, format: :json, params: { id: project.id, project: project.as_json }
 
         expect(response).to have_http_status(:success)
       end
 
       it "deletes the project" do
-        expect{
-          delete :destroy, format: :json, params: {id: project.id, project: project.as_json}
-        }.to change(Project, :count).from(4).to(3)
+        expect do
+          delete :destroy, format: :json, params: { id: project.id, project: project.as_json }
+        end.to change(Project, :count).from(4).to(3)
       end
     end
   end
@@ -179,7 +179,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
     it "returns an authorization error for #show" do
       project = create(:project, name: "Project A")
 
-      get :show, format: :json, params: {id: project.id}
+      get :show, format: :json, params: { id: project.id }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -187,7 +187,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
     it "returns an authorization error for #create" do
       project = build(:project, name: "Project A")
 
-      post :create, format: :json, params: {project: project.as_json}
+      post :create, format: :json, params: { project: project.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end
@@ -195,7 +195,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
     it "returns an authorization error for #destroy" do
       project = create(:project, name: "Project A")
 
-      delete :destroy, format: :json, params: {id: project.id, project: project.as_json}
+      delete :destroy, format: :json, params: { id: project.id, project: project.as_json }
 
       expect(response).to have_http_status(:unauthorized)
     end

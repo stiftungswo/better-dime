@@ -24,7 +24,7 @@ module V2
     end
 
     def get_efforts_for_employee(efforts, employee)
-      efforts.select { |e| e.employee == employee and not e.project_position.nil? }.map do |e|
+      efforts.select { |e| (e.employee == employee) && e.project_position }.map do |e|
         {
           date: e.date.strftime("%F"),
           value: e.value,

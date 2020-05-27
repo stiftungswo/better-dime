@@ -17,7 +17,7 @@ RSpec.describe RateUnitUpdater do
     # create a position with an archived rate unit
     position = create(:project_position, service: service, rate_unit: rate_unit_a)
 
-    RateUnitUpdater.update_rate_units([position], rate_group)
+    described_class.update_rate_units([position], rate_group)
 
     # expect the rate unit to have been updated to the non-archived one
     expect(position.rate_unit).to eq(rate_unit)

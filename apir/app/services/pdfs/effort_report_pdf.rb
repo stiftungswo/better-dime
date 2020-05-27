@@ -33,8 +33,8 @@ module Pdfs
 
       dates = efforts_holder.project_efforts.map(&:date) + efforts_holder.project_comments.map(&:date)
 
-      earliest_effort = dates.min || DateTime.now()
-      latest_effort = dates.max || DateTime.now()
+      earliest_effort = dates.min || DateTime.now
+      latest_effort = dates.max || DateTime.now
 
       move_down 5
       text I18n.t(:effort_report) + ": " + efforts_holder.name, @default_text_settings.merge(size: 14, style: :bold)

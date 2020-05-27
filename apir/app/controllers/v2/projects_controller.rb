@@ -56,7 +56,7 @@ module V2
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
-      render 'v2/invoices/show'
+      render "v2/invoices/show"
     end
 
     def potential_invoices

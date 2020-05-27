@@ -40,7 +40,7 @@ class Employee < ApplicationRecord
   def jwt_payload
     {
       is_admin: is_admin,
-      details:{
+      details: {
         first_name: first_name,
         last_name: last_name
       }

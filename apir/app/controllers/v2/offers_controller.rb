@@ -56,7 +56,7 @@ module V2
 
       raise ValidationError, @project.errors unless @project.save
 
-      render 'v2/projects/show'
+      render "v2/projects/show"
     end
 
     def print
