@@ -46,6 +46,8 @@ Fürs frontend wird Yarn verwendet. Installiert Yarn gemäss der Installationsan
 7. ``bundle exec rails db:create``
 8. ``bundle exec rails db:migrate``
 
+Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 gem verursacht wird sollte das mysql2 gem wie folt installiert werden: ``gem install mysql2 -v '0.5.2' -- --with-ldflags=-L/usr/local/opt/openssl/lib --with-cppflags=-I/usr/local/opt/openssl/include``. Zuerst ist sicherzustellen dass OpenSSL am speizifizierten Pfad (/usr/local/opt/openssl) installiert ist.
+
 #### Frontend
 1. ``cd dime-clone-directory && cd frontend``
 2. ``yarn install``
