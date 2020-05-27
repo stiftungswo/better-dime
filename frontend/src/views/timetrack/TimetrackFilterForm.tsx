@@ -37,6 +37,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
 
   changeGroupBy = (event: ChangeEvent, value: Grouping) => {
     this.props.timetrackFilterStore!.grouping = value;
+    this.props.timetrackFilterStore!.selectedEffortIds.clear();
   }
 
   render() {

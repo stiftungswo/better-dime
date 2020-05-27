@@ -1,3 +1,4 @@
+import {PropTypes} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -50,6 +51,7 @@ interface DeleteButtonProps {
   message?: string;
   title?: string;
   disabled?: boolean;
+  color?: PropTypes.Color;
 }
 
 interface DeleteButtonState {
@@ -81,7 +83,12 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
           {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
-        <ActionButton disabled={this.props.disabled} icon={DeleteIcon} title={this.props.title || "Löschen"} action={this.handleOpen} />
+        <ActionButton
+          color={this.props.color}
+          disabled={this.props.disabled}
+          icon={DeleteIcon}
+          title={this.props.title || "Löschen"}
+          action={this.handleOpen} />
       </>
     );
   }
