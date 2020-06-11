@@ -11,21 +11,20 @@ module Pdfs
 
     def update_font_families
       font_families.update(
-        "RobotoCondensed" => {
-          normal: font_file_path("RobotoCondensed-Regular.ttf"),
-          bold: font_file_path("RobotoCondensed-Bold.ttf"),
-          italic: font_file_path("RobotoCondensed-RegularItalic.ttf")
+        "OpenSans" => {
+          normal: font_file_path("OpenSans-Regular.ttf"),
+          bold: font_file_path("OpenSans-Bold.ttf"),
+          italic: font_file_path("OpenSans-Italic.ttf")
         }
       )
       font_families.update(
-        "Roboto" => {
-          normal: font_file_path("Roboto-Regular.ttf"),
-          bold: font_file_path("Roboto-Bold.ttf"),
-          italic: font_file_path("Roboto-Italic.ttf"),
-          light: font_file_path("Roboto-Light.ttf")
+        "PTSerif" => {
+          normal: font_file_path("PTSerif-Regular.ttf"),
+          bold: font_file_path("PTSerif-Bold.ttf"),
+          italic: font_file_path("PTSerif-Italic.ttf")
         }
       )
-      font "Roboto"
+      font "OpenSans"
     end
 
     private
