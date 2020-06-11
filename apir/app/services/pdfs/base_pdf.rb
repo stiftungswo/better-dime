@@ -18,7 +18,7 @@ module Pdfs
       }
 
       update_font_families
-      font "Helvetica", style: :normal, size: 10
+      font "OpenSans", style: :normal, size: 10
 
       # stroke_axis
 
