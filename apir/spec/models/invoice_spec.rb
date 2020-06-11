@@ -21,4 +21,12 @@ RSpec.describe Invoice, type: :model do
   describe "#ending" do
     it_behaves_like "only accepts dates", :ending
   end
+
+  # this applies to all text fields as it is defined in ApplicationRecord
+  it "normalizes unicode fields" do
+    invoice = Invoice.new
+    invoice.description = "a\u0308 o\u0308 u\u0308" # create äöü with the combining diaresis
+    invoice.validate
+    expect(invoice.description).to eq("ä ö ü")
+  end
 end
