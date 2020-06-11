@@ -8,4 +8,4 @@
 /apir/log/*
 .generators
 .rakeTasks
-
+.DS_Store
