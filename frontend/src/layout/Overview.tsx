@@ -159,6 +159,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               renderActions={this.props.renderActions}
               data={this.entities}
               onClickRow={this.handleClick}
+              clickable={this.props.onClickRow !== undefined}
               onClickChangePage={this.setPaginationPage}
               onClickChangePageSize={this.setPaginationPageSize}
               onClickChangeOrder={this.setPaginationPageOrder}
