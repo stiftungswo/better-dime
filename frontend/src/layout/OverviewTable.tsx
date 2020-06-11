@@ -14,6 +14,7 @@ import compose from '../utilities/compose';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { DimeTableCell } from './DimeTableCell';
 import { Column } from './Overview';
+import classNames = require("classnames");
 
 const styles = createStyles({
   hideActions: {
@@ -26,6 +27,9 @@ const styles = createStyles({
       },
     },
   },
+  pointer: {
+    cursor: 'pointer',
+  }
 });
 
 // tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
@@ -216,7 +220,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
           <TableBody>
             {sortedData.map((row, index) => (
               <TableRow
-                className={classes.hideActions}
+                className={classNames(classes.hideActions, {[classes.pointer]: this.props.onClickRow})}
                 hover
                 key={index}
                 onClick={this.handleRowClick(row, index)}
