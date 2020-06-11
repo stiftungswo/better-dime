@@ -1,14 +1,5 @@
 version: "3.2"
 services:
-  api:
-    build:
-      context: ./api
-      dockerfile: test.Dockerfile
-    container_name: dime_api
-    working_dir: /var/api
-    depends_on:
-    - mysql
-    env_file: 'api/.env.semaphore'
   apir:
     build:
       context: ./apir
