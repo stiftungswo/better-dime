@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
+import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { PaginationInfo } from '../types';
@@ -14,7 +15,6 @@ import compose from '../utilities/compose';
 import { SafeClickableTableRow } from '../utilities/SafeClickableTableRow';
 import { DimeTableCell } from './DimeTableCell';
 import { Column } from './Overview';
-import classNames = require("classnames");
 
 const styles = createStyles({
   hideActions: {
@@ -29,7 +29,7 @@ const styles = createStyles({
   },
   pointer: {
     cursor: 'pointer',
-  }
+  },
 });
 
 // tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
@@ -74,6 +74,7 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   columns: Array<Column<T>>;
   renderActions?: (e: T) => React.ReactNode;
   data: T[];
+  clickable?: boolean;
   onClickRow?: (e: T, index: number) => void;
   onClickChangePage?: (page: number) => void;
   onClickChangePageSize?: (pageSize: number) => void;
@@ -220,7 +221,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
           <TableBody>
             {sortedData.map((row, index) => (
               <TableRow
-                className={classNames(classes.hideActions, {[classes.pointer]: this.props.onClickRow})}
+                className={classNames(classes.hideActions, {[classes.pointer]: this.props.clickable})}
                 hover
                 key={index}
                 onClick={this.handleRowClick(row, index)}
