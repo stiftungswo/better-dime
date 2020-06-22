@@ -1,17 +1,5 @@
 version: "3.1"
 services:
-  api:
-    build:
-      context: ./api
-    container_name: dime_api
-    volumes:
-    - ./api:/var/app
-    working_dir: /var/app
-    command: "php -S 0.0.0.0:8000 -t ./public"
-    depends_on:
-    - mysql
-    ports:
-    - "38000:8000"
   apir:
     build:
         context: ./apir
