@@ -8,7 +8,7 @@ RSpec.describe Company, type: :model do
 
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :rate_group }
-    it { is_expected.to validate_uniqueness_of :name }
+    it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
     it { is_expected.to validate_length_of(:email).is_at_most(255) }
 
     it "has many people relation" do
