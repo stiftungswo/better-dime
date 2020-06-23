@@ -28,36 +28,41 @@ services:
     volumes:
         - ./apir:/apir
     working_dir: /apir
-    command: "bundle update guard guard-rspec guard-rubocop guard-brakeman && bundle exec guard --no-interactions"
+    command: bash -c "bundle update guard guard-rspec guard-rubocop guard-brakeman && bundle exec guard --no-interactions"
     depends_on:
         - mysql
     environment:
         - DATABASE_HOST=mysql
         - DATABASE_USERNAME=root
         - DATABASE_PASSWORD=
+        - DEVISE_JWT_SECRET_KEY=verysecret
+        - DEVISE_SECRET_KEY=verysecret
+
   mysql:
     image: mysql:5.7
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
     container_name: dime_db
     environment:
-    - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
     ports:
-    - "33306:3306"
+      - "33306:3306"
     volumes:
-    - ./database:/var/lib/mysql
+      - ./database:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: dime_phpmyadmin
     environment:
-    - PMA_ARBITRARY=1
+      - PMA_ARBITRARY=1
     ports:
-    - 38080:80
+      - 38080:80
+
   frontend:
     image: node:10
     container_name: dime_frontend
     volumes:
-    - ./frontend:/var/frontend
+      - ./frontend:/var/frontend
     working_dir: /var/frontend
     ports:
-    - "33000:3000"
+      - "33000:3000"
     command: bash -c "yarn install && yarn run start"
