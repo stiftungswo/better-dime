@@ -65,11 +65,13 @@ export default class EmployeeOverview extends React.Component<Props> {
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {
-              const newEntity: Employee = await employeeStore!.duplicate(e.id);
-              this.props.history.push(`/employees/${newEntity.id}`);
+              if (e.id) {
+                const newEntity: Employee = await employeeStore!.duplicate(e.id);
+                this.props.history.push(`/employees/${newEntity.id}`);
+              }
             }}
-            archiveAction={!e.archived ? () => employeeStore!.archive(e.id, true).then(r => employeeStore!.fetchAllPaginated()) : undefined}
-            restoreAction={e.archived ? () => employeeStore!.archive(e.id, false).then(r => employeeStore!.fetchAllPaginated()) : undefined}
+            archiveAction={(!e.archived && e.id) ? () => employeeStore!.archive(e.id!, true).then(r => employeeStore!.fetchAllPaginated()) : undefined}
+            restoreAction={(e.archived && e.id) ? () => employeeStore!.archive(e.id!, false).then(r => employeeStore!.fetchAllPaginated()) : undefined}
           />
         )}
         onClickRow={'/employees/:id'}

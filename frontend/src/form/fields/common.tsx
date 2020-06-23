@@ -87,7 +87,7 @@ export const EmailField = (props: DimeInputFieldProps) => <DimeInputField type={
 const toString = (n: number) => String(n);
 const toNumber = (s: string) => Number(s);
 export const NumberField = (props: TransformingFieldProps<number>) => (
-  <TransformingField {...props} toString={toString} toValue={toNumber} type={'number'} {...props} />
+  <TransformingField<number> {...props} toString={toString} toValue={toNumber} type={'number'} {...props} />
 );
 
 export const PasswordField = (props: DimeInputFieldProps) => <DimeInputField type={'password'} {...props} />;

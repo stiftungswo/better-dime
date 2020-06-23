@@ -50,10 +50,16 @@ export default class OfferOverview extends React.Component<Props> {
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {
-              const newEntity: Offer = await offerStore!.duplicate(e.id);
-              this.props.history.push(`/offers/${newEntity.id}`);
+              if (e.id) {
+                const newEntity: Offer = await offerStore!.duplicate(e.id);
+                this.props.history.push(`/offers/${newEntity.id}`);
+              }
             }}
-            deleteAction={() => offerStore!.delete(e.id).then(r => offerStore!.fetchAllPaginated())}
+            deleteAction={() => {
+              if (e.id) {
+                offerStore!.delete(e.id).then(r => offerStore!.fetchAllPaginated());
+              }
+            }}
             deleteMessage={
               'Willst du diese Offerte wirklich löschen? ' +
               'Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. ' +

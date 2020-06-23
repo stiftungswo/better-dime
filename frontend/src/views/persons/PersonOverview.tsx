@@ -56,11 +56,17 @@ export default class PersonOverview extends React.Component<Props> {
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {
-              const newEntity: Person = await peopleStore!.duplicate(e.id);
-              this.props.history.push(`/persons/${newEntity.id}`);
+              if (e.id) {
+                const newEntity: Person = await peopleStore!.duplicate(e.id);
+                this.props.history.push(`/persons/${newEntity.id}`);
+              }
             }}
             deleteMessage={'Möchtest du diese Person wirklich löschen?'}
-            deleteAction={() => peopleStore!.delete(e.id).then(r => peopleStore!.fetchAllPaginated())}
+            deleteAction={() => {
+              if (e.id) {
+                peopleStore!.delete(e.id).then(r => peopleStore!.fetchAllPaginated());
+              }
+            }}
           />
         )}
         onClickRow={'/persons/:id'}

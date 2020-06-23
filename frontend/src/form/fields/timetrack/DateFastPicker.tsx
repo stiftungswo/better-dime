@@ -63,7 +63,7 @@ class DateFastPickerInner extends React.Component<Props> {
             <BackIcon />
           </Badge>
         </Button>
-        <DatePicker className={classes.input} onChange={this.props.onChange} {...this.props} />
+        <DatePicker className={classes.input} {...this.props} />
         <Button onClick={this.forwardDay} {...buttonProps}>
           <Badge badgeContent={1}>
             <ForwardIcon />

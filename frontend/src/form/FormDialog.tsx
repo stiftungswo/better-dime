@@ -16,7 +16,7 @@ import { FormikSubmitDetector } from './FormikSubmitDetector';
 interface DialogFormProps<T> {
   title: string;
   onSubmit: (values: T) => Promise<void>;
-  validationSchema?: Schema<T>;
+  validationSchema: Schema<T>;
   render: (props: FormikProps<T>, id: number) => React.ReactNode;
   loading?: boolean;
   open: boolean;

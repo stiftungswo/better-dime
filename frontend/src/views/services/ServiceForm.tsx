@@ -50,7 +50,15 @@ export default class ServiceForm extends React.Component<Props> {
   }
 
   render() {
-    const { service } = this.props;
+    const service = this.props.service ?? {
+      name: '',
+      description: '',
+      vat: 0,
+      chargeable: false,
+      archived: false,
+      service_rates: [],
+      order: 0,
+    };
 
     return (
       <FormView

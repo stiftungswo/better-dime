@@ -8,11 +8,6 @@ const initializeLocalization = () => {
   return yup.setLocale({
     mixed: {
       required: requiredMessage,
-      typeError: requiredMessage,
-    },
-    number: {
-      required: requiredMessage,
-      typeError: requiredMessage,
     },
   });
 };

@@ -1,6 +1,7 @@
 import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Prompt } from 'react-router';
+import {Schema} from 'yup';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeContent';
 import { SaveIcon } from '../layout/icons';
@@ -18,6 +19,7 @@ export interface FormViewProps<T> {
 
 interface Props<T> extends FormViewProps<T> {
   render: (props: FormikProps<T>) => React.ReactNode;
+  validationSchema: Schema<T>;
 }
 
 export class FormView<Values = object, ExtraProps = {}> extends React.Component<FormikConfig<Values> & ExtraProps & Props<Values>> {

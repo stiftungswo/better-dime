@@ -5,7 +5,7 @@ export type TransformingFieldProps<T> = DimeCustomFieldProps<T | null>;
 
 interface Props<T> extends TransformingFieldProps<T> {
   toValue: (s: string) => T;
-  toString: (value: T) => string;
+  toString: ((value: T) => string) | any; // FIXME weird type bug
 }
 
 export class TransformingField<T> extends React.Component<Props<T>> {

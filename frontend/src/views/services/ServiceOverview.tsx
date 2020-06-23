@@ -64,11 +64,13 @@ export default class ServiceOverview extends React.Component<Props> {
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {
-              const newEntity: Service = await serviceStore!.duplicate(e.id);
-              this.props.history.push(`/services/${newEntity.id}`);
+              if (e.id) {
+                const newEntity: Service = await serviceStore!.duplicate(e.id);
+                this.props.history.push(`/services/${newEntity.id}`);
+              }
             }}
-            archiveAction={!e.archived ? () => serviceStore!.archive(e.id, true).then(r => serviceStore!.fetchAllPaginated()) : undefined}
-            restoreAction={e.archived ? () => serviceStore!.archive(e.id, false).then(r => serviceStore!.fetchAllPaginated()) : undefined}
+            archiveAction={(!e.archived && e.id) ? () => serviceStore!.archive(e.id!, true).then(r => serviceStore!.fetchAllPaginated()) : undefined}
+            restoreAction={(e.archived && e.id) ? () => serviceStore!.archive(e.id!, false).then(r => serviceStore!.fetchAllPaginated()) : undefined}
           />
         )}
         onClickRow={'/services/:id'}

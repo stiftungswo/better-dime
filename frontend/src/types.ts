@@ -327,7 +327,7 @@ export interface ProjectEffortTemplate {
 
 export interface ProjectComment {
   id?: number;
-  comment: string;
+  comment: string | null;
   date: Moment | string;
   project_id?: number;
 }
@@ -534,6 +534,7 @@ export type HandleFormikSubmit<Values> = (values: Values, formikBag: FormikBag<a
 export interface Listing {
   id?: number;
   archived?: boolean;
+  deletable?: boolean;
 }
 
 export type DimeDate = string;

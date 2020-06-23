@@ -60,7 +60,7 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
           loading={empty(store.settings)}
           title={'Einstellungen'}
           validationSchema={settingsSchema}
-          initialValues={store.settings}
+          initialValues={store.settings!}
           onSubmit={this.handleSubmit}
           render={(formikProps: FormikProps<GlobalSettings>) => {
             return (
