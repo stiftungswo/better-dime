@@ -3,11 +3,15 @@ services:
   apir:
     build:
       context: ./apir
-      dockerfile: prod.Dockerfile
+      dockerfile: dev.Dockerfile
     container_name: dime_apir
     working_dir: /var/apir
+    volumes:
+      - ./apir:/var/apir
+      - ${SEMAPHORE_CACHE_DIR}/bundle:/bundle
     depends_on:
         - mysql
+    env_file: 'apir/.env.semaphore'
   mysql:
     image: mysql:5.7
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
