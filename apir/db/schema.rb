@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_122928) do
+ActiveRecord::Schema.define(version: 2020_06_25_102546) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_122928) do
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "remember_created_at"
-    t.decimal "first_vacation_takeover", precision: 10, scale: 2, null: false
+    t.decimal "first_vacation_takeover", precision: 10, scale: 2, default: "0.0", null: false
     t.datetime "deleted_at"
     t.string "locale", default: "de", null: false
     t.index ["deleted_at"], name: "index_employees_on_deleted_at"
