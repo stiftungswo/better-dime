@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { PeopleStore } from 'src/stores/peopleStore';
+import { PeopleStore } from '../../stores/peopleStore';
 import { Person } from '../../types';
 import compose from '../../utilities/compose';
 import PersonForm from './PersonForm';

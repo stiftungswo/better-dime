@@ -64,7 +64,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
         {!isFirst && (
           <div style={{ paddingTop: '20px' }}/>
         )}
-        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))} />
+        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id!))} />
         <div style={{ overflowX: 'auto' }}>
           <Table padding={'dense'} style={{ minWidth: '1200px' }}>
             <TableHead>

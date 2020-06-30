@@ -1,11 +1,12 @@
-import { IconButton, ListItemText } from '@material-ui/core';
-import { Avatar, ListItemIcon, Menu, MenuItem } from '@material-ui/core/es';
-import { inject, observer } from 'mobx-react';
+import {IconButton, ListItemText} from '@material-ui/core';
+import {Avatar, ListItemIcon, Menu, MenuItem} from '@material-ui/core/es';
+import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import { MainStore } from 'src/stores/mainStore';
-import { ApiStore } from '../stores/apiStore';
+import {ApiStore} from '../stores/apiStore';
+import {MainStore, messages} from '../stores/mainStore';
+import {Locale} from '../types';
 import compose from '../utilities/compose';
-import { AccountIcon, LogoutIcon } from './icons';
+import {AccountIcon, LogoutIcon} from './icons';
 
 interface DimeAppBarUserMenuProps {
   mainStore?: MainStore;
@@ -27,13 +28,14 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     let fullName = '?';
 
     if (meDetail) {
-      const { first_name, last_name } = meDetail!;
+      const {first_name, last_name} = meDetail!;
       shortName = `${first_name.slice(0, 1)}${last_name.slice(0, 1)}`;
       fullName = `${first_name} ${last_name}`;
     }
 
-    const open = this.props.mainStore!.userMenuOpen;
-    const { userMenuAnchorEl } = this.props.mainStore!;
+    const mainStore = this.props.mainStore!;
+    const open = mainStore.userMenuOpen;
+    const {userMenuAnchorEl} = mainStore;
 
     return (
       <div>
@@ -56,30 +58,41 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
         >
           <MenuItem onClick={this.handleProfile}>
             <ListItemIcon>
-              <AccountIcon />
+              <AccountIcon/>
             </ListItemIcon>
-            <ListItemText inset primary={fullName} />
+            <ListItemText inset primary={fullName}/>
           </MenuItem>
           <MenuItem onClick={this.handleLogout}>
             <ListItemIcon>
-              <LogoutIcon />
+              <LogoutIcon/>
             </ListItemIcon>
-            <ListItemText inset primary="Abmelden" />
+            <ListItemText inset primary="Abmelden"/>
           </MenuItem>
+          {Object.keys(messages).map(locale => (
+            <MenuItem key={locale} onClick={() => this.handleLocaleSelect(locale as Locale)}>
+              <ListItemText inset primary={locale}/>
+            </MenuItem>
+          ))}
         </Menu>
       </div>
     );
   }
 
+  private handleLocaleSelect = (locale: Locale) => {
+    this.props.mainStore!.locale = locale;
+    this.props.mainStore!.userMenuOpen = false;
+
+  };
+
   private handleMenu = (event: React.MouseEvent<HTMLInputElement>) => {
     this.props.mainStore!.userMenuAnchorEl = event.currentTarget;
     this.props.mainStore!.userMenuOpen = true;
-  }
+  };
 
   private handleClose = () => {
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
-  }
+  };
 
   private handleProfile = () => {
     const myId = this.props.mainStore!.userId;
@@ -87,12 +100,12 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     this.props.mainStore!.userMenuOpen = false;
 
     this.props.mainStore!.navigateTo(`/employees/${myId}`);
-  }
+  };
 
   private handleLogout = () => {
     this.props.mainStore!.userMenuAnchorEl = null;
     this.props.mainStore!.userMenuOpen = false;
 
     this.props.apiStore!.logout();
-  }
+  };
 }

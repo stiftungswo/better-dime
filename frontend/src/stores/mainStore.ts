@@ -1,9 +1,20 @@
 import { History } from 'history';
 import { action, computed, observable } from 'mobx';
+import {createIntl, createIntlCache} from 'react-intl';
+import messagesDe from '../messages.de-CH.json';
+import messagesFr from '../messages.fr-CH.json';
+import {Locale} from '../types';
 import { Formatter } from '../utilities/formatter';
 import { buildURL } from '../utilities/helpers';
 import { Notifier } from '../utilities/notifier';
 import { ApiStore, baseUrlV2 } from './apiStore';
+
+const cache = createIntlCache();
+
+export const messages: {[locale in Locale]: any} = {
+  'de-CH': messagesDe,
+  'fr-CH': messagesFr,
+};
 
 /*
 This class manages global UI state and provides some facades for often used functionality
@@ -34,6 +45,17 @@ export class MainStore {
 
   @observable
   showArchived = false;
+
+  @observable
+  locale: Locale = 'de-CH';
+
+  @computed
+  get intl() {
+    return createIntl({
+        locale: this.locale,
+        messages: messages[this.locale]},
+      cache);
+  }
 
   // --- formatting
   formatDate = this.formatter.formatDate;

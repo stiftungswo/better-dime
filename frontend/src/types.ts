@@ -1,6 +1,7 @@
 import { FormikBag } from 'formik';
 import { Moment } from 'moment';
 
+export type Locale = 'de-CH' | 'fr-CH';
 // --
 // Domain Types
 // --
@@ -139,7 +140,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
 }
 
 export interface PositionGroup {
-  id?: number;
+  id?: number | null;
   name: string;
 }
 

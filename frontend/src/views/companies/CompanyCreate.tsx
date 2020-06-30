@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { CompanyStore } from 'src/stores/companyStore';
+import { CompanyStore } from '../../stores/companyStore';
 import { Company } from '../../types';
 import compose from '../../utilities/compose';
 import CompanyForm from './CompanyForm';

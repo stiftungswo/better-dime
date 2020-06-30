@@ -2,8 +2,8 @@ import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Address, Company } from 'src/types';
 import { CompanyStore } from '../../stores/companyStore';
+import { Address, Company } from '../../types';
 import compose from '../../utilities/compose';
 import CompanyForm from './CompanyForm';
 

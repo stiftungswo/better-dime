@@ -6,7 +6,6 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
-import { RateGroupStore } from 'src/stores/rateGroupStore';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -18,6 +17,7 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { MarkdownRender } from '../../layout/MarkdownRender';
 import TableToolbar from '../../layout/TableToolbar';
 import { GlobalSettingStore } from '../../stores/globalSettingStore';
+import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Service, ServiceRate } from '../../types';
 import compose from '../../utilities/compose';
@@ -50,7 +50,7 @@ export default class ServiceForm extends React.Component<Props> {
   }
 
   render() {
-    const service = this.props.service ?? {
+    const service = this.props.service || {
       name: '',
       description: '',
       vat: 0,

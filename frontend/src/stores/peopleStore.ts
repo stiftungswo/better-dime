@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import { PaginatedData, Person, ProjectListing } from 'src/types';
+import { PaginatedData, Person, ProjectListing } from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 

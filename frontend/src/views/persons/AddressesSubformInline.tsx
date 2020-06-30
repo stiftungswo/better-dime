@@ -5,14 +5,14 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import {NumberField, SwitchField, TextField} from 'src/form/fields/common';
-import { DeleteButton } from 'src/layout/ConfirmationDialog';
-import { PeopleStore } from 'src/stores/peopleStore';
+import {NumberField, SwitchField, TextField} from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
+import { DeleteButton } from '../../layout/ConfirmationDialog';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
+import { PeopleStore } from '../../stores/peopleStore';
 import { Address, Company, Person } from '../../types';
 import compose from '../../utilities/compose';
 

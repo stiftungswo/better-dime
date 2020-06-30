@@ -45,11 +45,6 @@ export class DatePicker extends React.Component<Props> {
         clearable={!required}
         error={Boolean(errorMessage)}
         helperText={errorMessage}
-        onError={(_, message: string) => {
-          if (onError) {
-            onError(message);
-          }
-        }}
         fullWidth={fullWidth}
         {...rest}
       />

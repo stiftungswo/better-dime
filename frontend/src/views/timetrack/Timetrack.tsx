@@ -23,6 +23,7 @@ import {TimetrackFilterForm} from './TimetrackFilterForm';
 import {TimetrackFormDialog} from './TimetrackFormDialog';
 import TimetrackProjectGroup from './TimetrackProjectGroup';
 import TimetrackServiceGroup from './TimetrackServiceGroup';
+import {MainStore} from '../../stores/mainStore';
 
 interface Props {
   effortStore?: EffortStore;
@@ -32,10 +33,11 @@ interface Props {
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  mainStore?: MainStore;
 }
 
 @compose(
-  inject('effortStore', 'employeeStore', 'projectStore', 'projectCommentStore', 'rateUnitStore', 'serviceStore', 'timetrackFilterStore'),
+  inject('effortStore', 'employeeStore', 'projectStore', 'projectCommentStore', 'rateUnitStore', 'serviceStore', 'timetrackFilterStore', 'mainStore'),
   observer,
 )
 export default class Timetrack extends React.Component<Props> {
@@ -192,7 +194,10 @@ export default class Timetrack extends React.Component<Props> {
               <DeleteButton color="inherit" onConfirm={this.handleDeleteEfforts} />
             </>
           </DimeAppBar>
-          : <DimeAppBar title={'Zeiterfassung'}>
+          : <DimeAppBar title={this.props.mainStore!.intl.formatMessage({
+            id: 'dime.frontend.timetrack.title',
+            defaultMessage: 'Zeiterfassung',
+          })}>
             <>
               <DimeAppBarButton icon={AddCommentIcon} title={'Kommentar erfassen'} action={this.handleCommentAdd} />
               <DimeAppBarButton icon={AddEffortIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />

@@ -22,8 +22,6 @@ const template = {
   positionGroupName: '',
 };
 
-type Values = typeof template;
-
 interface Props {
   mainStore?: MainStore;
   positionIndex: number;
@@ -37,7 +35,7 @@ interface Props {
 @inject('positionGroupStore', 'mainStore')
 @observer
 export default class PositionMoveDialog extends React.Component<Props> {
-  handleSubmit = async (formValues: Values) => {
+  handleSubmit = async (formValues: any) => {
     const values = schema.cast(formValues);
     const positionGroupName = values.positionGroupName != null ? values.positionGroupName : '';
 
@@ -73,7 +71,7 @@ export default class PositionMoveDialog extends React.Component<Props> {
         initialValues={template}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
-        render={(formikProps: FormikProps<Values>) => (
+        render={() => (
           <>
             <DimeField
               component={PositionGroupSelect}
