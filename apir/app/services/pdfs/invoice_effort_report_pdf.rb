@@ -9,7 +9,7 @@ module Pdfs
     end
 
     def subtitle
-      "Rechnung Nr. " + efforts_holder.id.to_s
+      "Projekt Nr. " + efforts_holder.id.to_s
     end
   end
 end
