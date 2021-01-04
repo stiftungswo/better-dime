@@ -50,7 +50,7 @@ module Pdfs
     end
 
     def draw_recipient_left
-      bounding_box([0.5.cm, 9.8.cm], width: 5.3.cm, height: 2.9.cm) do
+      bounding_box([0.75.cm, 9.8.cm], width: 5.3.cm, height: 2.9.cm) do
         # stroke_bounds
 
         text @global_setting.sender_name, size: 9, style: :bold, character_spacing: @spacing
