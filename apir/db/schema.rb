@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.boolean "hidden", default: false, null: false
-    t.bigint "employee_id", unsigned: true
     t.bigint "employee_id_id"
     t.index ["customer_id"], name: "index_addresses_on_customer_id"
     t.index ["deleted_at"], name: "index_addresses_on_deleted_at"
@@ -92,6 +91,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.boolean "archived"
     t.integer "holidays_per_year"
     t.bigint "employee_group_id"
+    t.boolean "hourly_paid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false

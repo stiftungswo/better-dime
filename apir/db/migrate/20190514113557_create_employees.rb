@@ -9,6 +9,7 @@ class CreateEmployees < ActiveRecord::Migration[5.2]
       t.boolean :archived
       t.integer :holidays_per_year, null: true
       t.references :employee_group, foreign_key: true
+      t.boolean :hourly_paid
 
       t.timestamps
     end
