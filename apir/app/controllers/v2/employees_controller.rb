@@ -120,7 +120,7 @@ module V2
         :employee_group_id,
         :locale,
         work_periods_attributes: [
-          :id, :ending, :pensum, :beginning, :yearly_vacation_budget
+          :id, :ending, :pensum, :beginning, :yearly_vacation_budget, :hourly_paid
         ],
         addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :hidden]
       )

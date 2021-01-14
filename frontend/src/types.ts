@@ -397,6 +397,7 @@ export interface WorkPeriod {
   employee_id: number;
   ending: string;
   pensum: number;
+  hourly_paid: boolean;
   period_vacation_budget: number;
   remaining_vacation_budget: number;
   target_time: number;

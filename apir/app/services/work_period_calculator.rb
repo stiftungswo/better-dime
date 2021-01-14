@@ -42,6 +42,7 @@ class WorkPeriodCalculator
       beginning: work_period.beginning,
       ending: work_period.ending,
       pensum: work_period.pensum,
+      hourly_paid: work_period.hourly_paid,
       yearly_vacation_budget: work_period.yearly_vacation_budget,
       overlapping_periods: false,
       vacation_takeover: 0.0,
