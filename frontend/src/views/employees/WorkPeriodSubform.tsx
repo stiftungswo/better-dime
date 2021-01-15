@@ -120,8 +120,8 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <p>Jährliches Ferienbudget</p>
                         </Tooltip>
                       </DimeTableCell>
-                      <DimeTableCell style={{ width: '4%' }}>Aktionen</DimeTableCell>
                       <DimeTableCell style={{ width: '4%' }}>Stundenlohn</DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -199,8 +199,9 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField
+                              delayed
                               component={SwitchField}
-                              name={'hourly_paid'}
+                              name={fieldName('hourly_paid')}
                             />
                           </DimeTableCell>
                           <DimeTableCell>

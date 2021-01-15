@@ -88,7 +88,7 @@ class WorkPeriodCalculator
   def calculate_vacation_takeover(periods, period)
     previous_work_period = get_previous_work_period periods, period
 
-    period[:vacation_takeover] = if previous_work_period
+    period[:vacation_takeover] = if !period[:hourly_paid] && previous_work_period && !previous_work_period[:hourly_paid]
                                    previous_work_period[:effort_till_today].to_f + previous_work_period[:remaining_vacation_budget].to_f
                                  else
                                    Employee.find(period[:employee_id]).first_vacation_takeover.to_f
