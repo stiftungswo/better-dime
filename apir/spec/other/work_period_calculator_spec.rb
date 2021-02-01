@@ -44,6 +44,7 @@ RSpec.describe WorkPeriodCalculator do
       employee_id: employee.id,
       overlapping_periods: false,
       pensum: 50,
+      hourly_paid: false,
       period_vacation_budget: 501.7973231357552,
       remaining_vacation_budget: 501.7973231357552,
       target_time: 61_220.0,

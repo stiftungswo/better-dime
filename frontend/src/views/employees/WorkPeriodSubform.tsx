@@ -5,7 +5,7 @@ import { FieldArray, FormikProps, getIn } from 'formik';
 import { Observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
-import { NumberField } from '../../form/fields/common';
+import { NumberField, SwitchField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
 import { DimeField } from '../../form/fields/formik';
@@ -21,6 +21,7 @@ const template = {
   beginning: moment().startOf('year'),
   vacation_takeover: 0,
   yearly_vacation_budget: 10080,
+  hourly_paid: false,
 };
 
 interface Props {
@@ -119,6 +120,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           <p>Jährliches Ferienbudget</p>
                         </Tooltip>
                       </DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}>Stundenlohn</DimeTableCell>
                       <DimeTableCell style={{ width: '4%' }}>Aktionen</DimeTableCell>
                     </TableRow>
                   </TableHead>
@@ -193,6 +195,13 @@ export class WorkPeriodSubform extends React.Component<Props> {
                               component={DurationField}
                               timeUnit={'workday'}
                               name={fieldName('yearly_vacation_budget')}
+                            />
+                          </DimeTableCell>
+                          <DimeTableCell>
+                            <DimeField
+                              delayed
+                              component={SwitchField}
+                              name={fieldName('hourly_paid')}
                             />
                           </DimeTableCell>
                           <DimeTableCell>
