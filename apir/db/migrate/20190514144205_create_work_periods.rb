@@ -6,6 +6,7 @@ class CreateWorkPeriods < ActiveRecord::Migration[5.2]
       t.date :ending, null: false
       t.integer :pensum, null: false
       t.integer :yearly_vacation_budget, null: false
+      t.boolean :hourly_paid
 
       t.timestamps
     end

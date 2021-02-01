@@ -443,6 +443,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.boolean "hourly_paid", default: false, null: false
     t.index ["deleted_at"], name: "index_work_periods_on_deleted_at"
     t.index ["employee_id"], name: "index_work_periods_on_employee_id"
   end
