@@ -20,6 +20,7 @@ interface State {
   rateUnitId: number;
   selectedFactor: number;
   value: number;
+  is_loading: boolean;
 }
 
 @compose(
@@ -29,13 +30,29 @@ interface State {
 export class TimeEffortValueField extends React.Component<Props> {
   state: State = {
     rateUnits: [],
-    rateUnitId: 1,
+    rateUnitId: this.props.rateUnitId || 1,
     selectedFactor: 60,
     value: this.props.value || 504,
+    is_loading: true,
   };
 
   async componentDidMount() {
-    this.setState({
+    let futureState = { ...this.state, is_loading: false };
+
+    futureState.rateUnits = this.props.rateUnitStore!.rateUnits!.filter((r: RateUnit) => r.is_time);
+
+    const potentialRateUnit = this.props.rateUnitStore!.rateUnits!.find((r: RateUnit) => r.id === futureState.rateUnitId);
+
+    if (potentialRateUnit) {
+      futureState = { ...futureState, rateUnitId: potentialRateUnit.id, selectedFactor: potentialRateUnit.factor };
+    }
+
+    if (this.props.value && potentialRateUnit) {
+      futureState.value = this.props.value === 1 ? 1 : this.props.value / potentialRateUnit.factor;
+    }
+    this.props.onChange(futureState.selectedFactor * futureState.value);
+    this.setState(futureState);
+/*     this.setState({
       rateUnits: this.props.rateUnitStore!.rateUnits!.filter((r: RateUnit) => r.is_time),
     });
 
@@ -47,10 +64,12 @@ export class TimeEffortValueField extends React.Component<Props> {
     if (this.props.value && potentialRateUnit) {
       this.setState({ value: this.props.value / potentialRateUnit.factor });
     }
+
+    this.setState({ is_loading: false }); */
   }
 
   render() {
-    if (this.state.rateUnits.length > 0) {
+    if (!this.state.is_loading) {
       return (
         <Grid container alignItems="center" spacing={8}>
           <Grid item xs={9}>
@@ -94,13 +113,17 @@ export class TimeEffortValueField extends React.Component<Props> {
     const previousValue = this.state.value;
 
     if (selectedRateUnit && previousRateUnit) {
+      const newValue = previousValue * (previousRateUnit.factor / selectedRateUnit.factor);
+
+      this.props.onChange(selectedRateUnit.factor * newValue);
+
+      // tslint:disable-next-line: no-console
+      console.log('rateunit change, prev unit:' + previousRateUnit.name + ', new unit:' + selectedRateUnit.name + ', prev value: ' + previousValue + ', new value: ' + newValue + ', change value:' + (newValue * selectedRateUnit.factor));
       this.setState({
         rateUnitId: selectedRateUnit.id,
         selectedFactor: selectedRateUnit.factor,
-        value: previousValue * (previousRateUnit.factor / selectedRateUnit.factor),
+        value: newValue,
       });
-
-      this.props.onChange(this.state.selectedFactor * this.state.value);
     } else {
       throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
     }
@@ -109,6 +132,8 @@ export class TimeEffortValueField extends React.Component<Props> {
   protected updateValue = (value: string) => {
     const parsedValue: number = Number(value);
 
+    // tslint:disable-next-line: no-console
+    console.log('value change og value:' + value + ', calc value: ' + (this.state.selectedFactor * parsedValue));
     if (isNaN(parsedValue)) {
       this.props.mainStore!.displayInfo('Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt ' +
         'getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, ' +
