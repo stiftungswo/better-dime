@@ -28,9 +28,9 @@ export class EffortValueField extends React.Component<Props> {
 
       if (selectedPosition) {
         if (selectedPosition.is_time) {
-          return <TimeEffortValueField {...this.props} />;
+          return <TimeEffortValueField {...this.props} rateUnitId={selectedPosition.rate_unit_id} />;
         } else {
-          return <FlatEffortValueField {...this.props} />;
+          return <FlatEffortValueField {...this.props} rateUnitId={selectedPosition.rate_unit_id} />;
         }
       } else {
         return <TextField label={'Ausgewählte Position nicht gefunden.'} disabled />;
