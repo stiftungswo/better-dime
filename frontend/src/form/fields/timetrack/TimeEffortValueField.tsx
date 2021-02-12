@@ -52,20 +52,6 @@ export class TimeEffortValueField extends React.Component<Props> {
     }
     this.props.onChange(futureState.selectedFactor * futureState.value);
     this.setState(futureState);
-/*     this.setState({
-      rateUnits: this.props.rateUnitStore!.rateUnits!.filter((r: RateUnit) => r.is_time),
-    });
-
-    const potentialRateUnit = this.props.rateUnitStore!.rateUnits!.find((r: RateUnit) => r.id === this.props.rateUnitId);
-    if (potentialRateUnit) {
-      this.setState({ rateUnitId: potentialRateUnit.id, selectedFactor: potentialRateUnit.factor });
-    }
-
-    if (this.props.value && potentialRateUnit) {
-      this.setState({ value: this.props.value / potentialRateUnit.factor });
-    }
-
-    this.setState({ is_loading: false }); */
   }
 
   render() {
@@ -117,8 +103,6 @@ export class TimeEffortValueField extends React.Component<Props> {
 
       this.props.onChange(selectedRateUnit.factor * newValue);
 
-      // tslint:disable-next-line: no-console
-      console.log('rateunit change, prev unit:' + previousRateUnit.name + ', new unit:' + selectedRateUnit.name + ', prev value: ' + previousValue + ', new value: ' + newValue + ', change value:' + (newValue * selectedRateUnit.factor));
       this.setState({
         rateUnitId: selectedRateUnit.id,
         selectedFactor: selectedRateUnit.factor,
@@ -132,8 +116,6 @@ export class TimeEffortValueField extends React.Component<Props> {
   protected updateValue = (value: string) => {
     const parsedValue: number = Number(value);
 
-    // tslint:disable-next-line: no-console
-    console.log('value change og value:' + value + ', calc value: ' + (this.state.selectedFactor * parsedValue));
     if (isNaN(parsedValue)) {
       this.props.mainStore!.displayInfo('Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt ' +
         'getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, ' +
