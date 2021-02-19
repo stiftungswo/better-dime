@@ -361,6 +361,7 @@ export interface Person {
   company?: Company;
   company_id: number | null;
   department: string | null;
+  department_in_address: boolean;
   email: string;
   first_name: string;
   hidden: boolean;
