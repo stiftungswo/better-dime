@@ -90,6 +90,7 @@ module V2
         :comment,
         :company_id,
         :department,
+        :department_in_address,
         :email,
         :first_name,
         :last_name,

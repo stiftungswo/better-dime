@@ -109,8 +109,13 @@ export default class PersonForm extends React.Component<Props> {
                         <Effect onChange={this.handleCompanyChange} />
                         <DimeField delayed component={CompanySelect} name={'company_id'} label={'Firma'} />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={4}>
                         <DimeField delayed component={TextField} name={'department'} label={'Abteilung'} />
+                      </Grid>
+                      <Grid item xs={12} sm={2}>
+                        <div style={{ marginTop: '1.5em' }}>
+                          <DimeField delayed component={SwitchField} name={'department_in_address'} label={'Adressrelevant?'} />
+                        </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen (Intern)'} />
