@@ -34,6 +34,7 @@ export default class PersonCreate extends React.Component<Props> {
       comment: '',
       company_id: null,
       department: null,
+      department_in_address: false,
       email: '',
       first_name: '',
       hidden: false,

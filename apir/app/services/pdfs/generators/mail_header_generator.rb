@@ -53,6 +53,7 @@ module Pdfs
           # stroke_bounds
 
           @document.text @data.customer.company.name, @default_text_settings if @data.customer.company
+          @document.text @data.customer.department, @default_text_settings if @data.customer.department && @data.customer.department_in_address
 
           salutation = @data.customer.salutation || ""
           @document.text salutation + " " + @data.customer.full_name, @default_text_settings
