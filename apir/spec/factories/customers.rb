@@ -5,6 +5,7 @@ FactoryBot.define do
     type { "Person" }
     comment { '9ü|_ 4 3\/3.-' }
     department { "MyDepartment" }
+    department_in_address { false }
     company { nil }
     email { "mail@example.com" }
     first_name { "Philipp" }

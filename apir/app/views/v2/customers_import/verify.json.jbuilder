@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.array! @customers do |customer|
-  json.extract! customer.decorate, :id, :type, :comment, :company_id, :department, :email, :first_name, :last_name, :hidden, :name
+  json.extract! customer.decorate, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :name
   json.extract! customer.decorate, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by
   json.set! :duplicate, customer.is_duplicated?
   json.set! :invalid, customer.errors.any?
