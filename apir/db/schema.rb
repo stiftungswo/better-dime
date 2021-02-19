@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.string "type", null: false
     t.text "comment"
     t.string "department"
+    t.boolean "department_in_address", default: false, null: false
     t.string "email"
     t.string "first_name"
     t.string "last_name"
