@@ -55,8 +55,7 @@ module Pdfs
           @document.text @data.customer.company.name, @default_text_settings if @data.customer.company
           @document.text @data.customer.department, @default_text_settings if @data.customer.department && @data.customer.department_in_address
 
-          salutation = @data.customer.salutation || ""
-          @document.text salutation + " " + @data.customer.full_name, @default_text_settings
+          @document.text (@data.customer.salutation || "") + " " + @data.customer.full_name, @default_text_settings
           @document.text @data.address.street + " " + (@data.address.supplement || ""), @default_text_settings
           @document.text @data.address.zip.to_s + " " + @data.address.city, @default_text_settings
         end
