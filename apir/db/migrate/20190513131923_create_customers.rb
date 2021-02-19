@@ -4,6 +4,7 @@ class CreateCustomers < ActiveRecord::Migration[5.2]
       t.string :type, null: false
       t.text :comment, null: true
       t.string :department, null: true
+      t.boolean :department_in_address, null: false, default: false
       t.references :customers, foreign_key: true
       t.string :email, null: true
       t.string :first_name, null: true
