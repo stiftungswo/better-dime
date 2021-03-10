@@ -134,12 +134,6 @@ export default class PersonForm extends React.Component<Props> {
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={SwitchField} name={'newsletter'} label={'Newsletter abonniert?'} />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={SwitchField} name={'biodiversity_course'} label={'Biodiversitätskurs News abonniert?'} />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
                         <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
                       </Grid>
                     </Grid>

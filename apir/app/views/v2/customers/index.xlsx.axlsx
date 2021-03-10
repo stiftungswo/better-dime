@@ -11,13 +11,9 @@ wb.add_worksheet(name: "Kunden") do |sheet|
       customer.company_name,
       customer.addresses,
       customer.department,
-      customer.department_in_address,
       customer.email,
       customer.phones,
-      customer.comment,
-      customer.accountant_id,
-      customer.newsletter,
-      customer.biodiversity_course
+      customer.comment
     ]
   end
 end
