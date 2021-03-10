@@ -11,8 +11,11 @@ FactoryBot.define do
     first_name { "Philipp" }
     last_name { "Saurer" }
     hidden { false }
+    accountant { nil }
     salutation { "LGBTQQIP2SAA+" }
     rate_group
+    newsletter { false }
+    biodiversity_course { false }
   end
 
   factory :company do
@@ -21,5 +24,6 @@ FactoryBot.define do
     hidden { false }
     name { "Test GmbH" }
     rate_group
+    accountant { nil }
   end
 end

@@ -5,9 +5,11 @@ import * as React from 'react';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
 import { OverviewTable } from 'src/layout/OverviewTable';
 import TableToolbar from 'src/layout/TableToolbar';
+import { EmployeeStore } from 'src/stores/employeeStore';
 import { MainStore } from 'src/stores/mainStore';
 import { Company, Person } from 'src/types';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -24,6 +26,7 @@ import { companySchema } from './companySchema';
 export interface Props extends FormViewProps<Company> {
   company: Company | undefined;
   customerTagStore?: CustomerTagStore;
+  employeeStore?: EmployeeStore;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
   rateGroupStore?: RateGroupStore;
@@ -52,7 +55,7 @@ const personsColumns = [
 ];
 
 @compose(
-  inject('customerTagStore', 'mainStore', 'peopleStore', 'rateGroupStore'),
+  inject('customerTagStore', 'employeeStore', 'mainStore', 'peopleStore', 'rateGroupStore'),
   observer,
 )
 export default class CompanyForm extends React.Component<Props> {
@@ -71,7 +74,12 @@ export default class CompanyForm extends React.Component<Props> {
   }
 
   componentWillMount() {
-    Promise.all([this.props.customerTagStore!.fetchAll(), this.props.peopleStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(
+    Promise.all([
+      this.props.customerTagStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+      this.props.peopleStore!.fetchAll(),
+      this.props.rateGroupStore!.fetchAll(),
+    ]).then(
       () => this.setState({ loading: false }),
     );
   }
@@ -113,6 +121,9 @@ export default class CompanyForm extends React.Component<Props> {
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
                       </Grid>
                     </Grid>
                   </DimePaper>

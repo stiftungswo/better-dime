@@ -12,6 +12,7 @@ class Employee < ApplicationRecord
   has_many :project_efforts, dependent: :restrict_with_exception
   has_many :projects, dependent: :restrict_with_exception, foreign_key: "accountant_id", inverse_of: :accountant
   has_many :addresses, dependent: :destroy
+  has_many :customers, dependent: :restrict_with_exception, foreign_key: "accountant_id", inverse_of: :accountant
 
   accepts_nested_attributes_for :work_periods, :addresses, allow_destroy: true
 

@@ -96,8 +96,11 @@ module V2
         :last_name,
         :hidden,
         :name,
+        :accountant_id,
         :rate_group_id,
         :salutation,
+        :newsletter,
+        :biodiversity_course,
         customer_tag_ids: [],
         phones_attributes: [:id, :number, :category, :customer_id],
         addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :hidden]
