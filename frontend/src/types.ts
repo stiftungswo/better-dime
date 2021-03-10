@@ -347,7 +347,10 @@ export interface Company {
   email: string;
   hidden: boolean;
   name: string;
+  accountant_id: number | null;
   rate_group_id: number;
+  newsletter: boolean;
+  biodiversity_course: boolean;
   tags?: number[];
   persons?: number[];
   addresses?: Address[];
@@ -366,8 +369,11 @@ export interface Person {
   first_name: string;
   hidden: boolean;
   last_name: string;
+  accountant_id: number | null;
   rate_group_id: number | null;
   salutation: string;
+  newsletter: boolean;
+  biodiversity_course: boolean;
   tags: number[];
   addresses?: Address[];
   phone_numbers?: PhoneNumber[];

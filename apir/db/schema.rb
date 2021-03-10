@@ -65,8 +65,11 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.string "last_name"
     t.boolean "hidden", default: false, null: false
     t.string "name"
+    t.bigint "accountant_id"
     t.bigint "rate_group_id"
     t.string "salutation"
+    t.boolean "newsletter", default: false, null: false
+    t.boolean "biodiversity_course", default: false, null:  false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "company_id"
@@ -453,6 +456,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
   add_foreign_key "addresses", "employees", column: "employee_id_id"
   add_foreign_key "customers", "customers", column: "company_id"
   add_foreign_key "customers", "rate_groups"
+  add_foreign_key "customers", "employees", column: "accountant_id"
   add_foreign_key "employees", "employee_groups"
   add_foreign_key "invoice_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number"
   add_foreign_key "invoice_costgroup_distributions", "invoices"
