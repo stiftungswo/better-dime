@@ -12,6 +12,7 @@ RSpec.describe Employee, type: :model do
   it { is_expected.to have_many(:invoices).dependent(:restrict_with_exception).inverse_of(:accountant) }
   it { is_expected.to have_many(:project_efforts).dependent(:restrict_with_exception) }
   it { is_expected.to have_many(:projects).dependent(:restrict_with_exception).inverse_of(:accountant) }
+  it { is_expected.to have_many(:customers).dependent(:restrict_with_exception).inverse_of(:accountant) }
 
   it { is_expected.to validate_presence_of :email }
   it { is_expected.to validate_presence_of :first_name }

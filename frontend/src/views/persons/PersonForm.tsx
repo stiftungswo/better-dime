@@ -5,12 +5,14 @@ import * as React from 'react';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
 import { CompanySelect } from '../../form/entitySelect/CompanySelect';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { EmailField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { CompanyStore } from '../../stores/companyStore';
 import { CustomerTagStore } from '../../stores/customerTagStore';
+import { EmployeeStore } from '../../stores/employeeStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { Person } from '../../types';
 import compose from '../../utilities/compose';
@@ -25,10 +27,11 @@ export interface Props extends FormViewProps<Person> {
   customerTagStore?: CustomerTagStore;
   person?: Person;
   rateGroupStore?: RateGroupStore;
+  employeeStore?: EmployeeStore;
 }
 
 @compose(
-  inject('companyStore', 'customerTagStore', 'rateGroupStore'),
+  inject('companyStore', 'customerTagStore', 'employeeStore', 'rateGroupStore'),
   observer,
 )
 export default class PersonForm extends React.Component<Props> {
@@ -49,6 +52,7 @@ export default class PersonForm extends React.Component<Props> {
     Promise.all([
       this.props.companyStore!.fetchAll(),
       this.props.customerTagStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
       this.props.rateGroupStore!.fetchAll(),
       loadCompany,
     ]).then(() => this.setState({ loading: false }));
@@ -128,6 +132,15 @@ export default class PersonForm extends React.Component<Props> {
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField delayed component={SwitchField} name={'newsletter'} label={'Newsletter abonniert?'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField delayed component={SwitchField} name={'biodiversity_course'} label={'Biodiversitätskurs News abonniert?'} />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
                       </Grid>
                     </Grid>
                   </DimePaper>
