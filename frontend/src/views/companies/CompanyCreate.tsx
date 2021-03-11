@@ -35,8 +35,6 @@ export default class CompanyCreate extends React.Component<Props> {
       name: '',
       accountant_id: null,
       hidden: false,
-      newsletter: false,
-      biodiversity_course: false,
       rate_group_id: 0,
       tags: [],
       addresses: [],

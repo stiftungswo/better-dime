@@ -68,8 +68,6 @@ ActiveRecord::Schema.define(version: 2020_06_25_102546) do
     t.bigint "accountant_id"
     t.bigint "rate_group_id"
     t.string "salutation"
-    t.boolean "newsletter", default: false, null: false
-    t.boolean "biodiversity_course", default: false, null:  false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "company_id"

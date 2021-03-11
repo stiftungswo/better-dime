@@ -14,8 +14,6 @@ class CreateCustomers < ActiveRecord::Migration[5.2]
       t.bigint :accountant_id
       t.references :rate_group, foreign_key: true
       t.string :salutation, null: true
-      t.boolean :newsletter, default: false, null: false
-      t.boolean :biodiversity_course, default: false, null: false
 
       t.timestamps
     end
