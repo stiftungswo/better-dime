@@ -13,11 +13,11 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { ErrorText } from '../../layout/ErrorText';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { Invoice, InvoiceCostgroup, Project, ProjectCostgroup } from '../../types';
+import { Project, ProjectCostgroup } from '../../types';
 import compose from '../../utilities/compose';
 
 const template = () => ({
-  costgroup_number: 0,
+  costgroup_number: '',
   formikKey: Math.random(),
   weight: 100,
 });
