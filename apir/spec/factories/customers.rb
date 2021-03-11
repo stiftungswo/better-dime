@@ -14,8 +14,6 @@ FactoryBot.define do
     accountant { nil }
     salutation { "LGBTQQIP2SAA+" }
     rate_group
-    newsletter { false }
-    biodiversity_course { false }
   end
 
   factory :company do
