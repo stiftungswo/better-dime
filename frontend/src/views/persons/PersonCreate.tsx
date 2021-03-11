@@ -42,8 +42,6 @@ export default class PersonCreate extends React.Component<Props> {
       accountant_id: null,
       rate_group_id: null,
       salutation: '',
-      newsletter: false,
-      biodiversity_course: false,
       tags: [],
       addresses: [],
       phone_numbers: [],
