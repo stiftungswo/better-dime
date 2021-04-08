@@ -72,6 +72,7 @@ export default class PositionSubformInline extends React.Component<Props> {
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
     const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), service.order, (a, b) => a - b);
     arrayHelpers.insert(insertIndex, {
+      amount: '',
       description: '',
       order: service.order,
       vat: service.vat,

@@ -160,6 +160,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   component={ProjectPositionSelect}
                   name={'position_id'}
                   label={'Aktivität'}
+                  portal
                 />
                 <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
