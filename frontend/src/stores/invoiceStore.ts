@@ -7,8 +7,8 @@ import { MainStore } from './mainStore';
 export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'die Rechnung',
-      plural: 'die Rechnungen',
+      singular: 'Die Rechnung',
+      plural: 'Die Rechnungen',
     };
   }
 

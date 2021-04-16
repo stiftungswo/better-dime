@@ -6,13 +6,15 @@ import Overview, { Column } from '../../layout/Overview';
 import { ProjectStore } from '../../stores/projectStore';
 import { Project, ProjectListing } from '../../types';
 import compose from '../../utilities/compose';
+import { Formatter } from '../../utilities/formatter';
 
 export type Props = {
   projectStore?: ProjectStore;
+  formatter?: Formatter;
 } & RouteComponentProps;
 
 @compose(
-  inject('projectStore'),
+  inject('projectStore', 'formatter'),
   observer,
   withRouter,
 )
@@ -21,6 +23,7 @@ export default class ProjectOverview extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
+    const formatDate = this.props.formatter!.formatDate;
     this.columns = [
       {
         id: 'id',
@@ -33,6 +36,11 @@ export default class ProjectOverview extends React.Component<Props> {
       {
         id: 'description',
         label: 'Beschreibung',
+      },
+      {
+        id: 'updated_at',
+        label: 'Zuletzt geändert',
+        format: d => formatDate(d.updated_at),
       },
     ];
 

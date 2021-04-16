@@ -163,7 +163,7 @@ export class AbstractStore<T, OverviewType = T> {
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
       return newEntity.data;
     } catch (e) {
-      this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.`);
+      this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.${this.entityName.singular === 'Das Projekt' ? ' Stelle sicher, dass ein Tätigkeitsbereich ausgewählt ist.' : ''}`);
       console.error(e);
       throw e;
     }
