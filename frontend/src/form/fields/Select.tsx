@@ -314,6 +314,7 @@ class IntegrationReactSelect extends React.Component<any> {
         )}
         {!this.props.creatable && (
           <Select
+            maxMenuHeight={this.props.maxMenuHeight || 250}
             menuPortalTarget={this.props.portal ? document.body : undefined}
             menuPlacement={this.props.portal ? 'auto' : undefined}
             menuPosition={this.props.portal ? 'absolute' : 'fixed'}

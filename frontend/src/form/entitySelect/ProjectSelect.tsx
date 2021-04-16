@@ -19,10 +19,11 @@ export class ProjectSelect<T> extends React.Component<Props<T>> {
       .map(e => ({
         value: e.id,
         label: `${e.id} ${e.name}`,
-      }));
+        updated_at: e.updated_at,
+      })).sort((a, b) => (a.updated_at > b.updated_at ? -1 : 1));
   }
 
   render() {
-    return <Select options={this.options} {...this.props} />;
+    return <Select portal options={this.options} {...this.props} />;
   }
 }
