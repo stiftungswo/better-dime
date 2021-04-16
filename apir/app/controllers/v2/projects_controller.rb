@@ -46,6 +46,8 @@ module V2
       # duplicating (since we are possibly duplicating old projects)
       RateUnitUpdater.update_rate_units @project.project_positions, @project.rate_group
 
+      @project.offer = nil
+
       raise ValidationError, @project.errors unless @project.save
 
       render :show
