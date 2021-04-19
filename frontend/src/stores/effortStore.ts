@@ -53,8 +53,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'die Leistung',
-      plural: 'die Leistungen',
+      singular: 'Die Leistung',
+      plural: 'Die Leistungen',
     };
   }
 

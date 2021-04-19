@@ -14,8 +14,8 @@ import { MainStore } from './mainStore';
 export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'die Offerte',
-      plural: 'die Offerten',
+      singular: 'Die Offerte',
+      plural: 'Die Offerten',
     };
   }
 

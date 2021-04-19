@@ -8,8 +8,8 @@ import { MainStore } from './mainStore';
 export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'der Projektkommentar',
-      plural: 'die Projektkommentare',
+      singular: 'Der Projektkommentar',
+      plural: 'Die Projektkommentare',
     };
   }
 
