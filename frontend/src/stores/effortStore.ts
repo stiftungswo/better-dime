@@ -53,8 +53,8 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'die Leistung',
-      plural: 'die Leistungen',
+      singular: 'Der Aufwand',
+      plural: 'Die Aufwände',
     };
   }
 
@@ -74,7 +74,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
       });
       this.efforts = res.data;
     } catch (e) {
-      this.mainStore.displayError('Fehler beim Laden der Leistungen');
+      this.mainStore.displayError('Fehler beim Laden der Aufwände');
     }
     this.loading = false;
   }

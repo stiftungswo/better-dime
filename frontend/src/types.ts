@@ -332,6 +332,14 @@ export interface ProjectComment {
   project_id?: number;
 }
 
+export interface ProjectCommentListing {
+  id: number;
+  comment: string | null;
+  date: string;
+  project_id: number;
+  project_name: string;
+}
+
 export interface ProjectCommentPreset {
   id?: number;
   comment_preset: string;

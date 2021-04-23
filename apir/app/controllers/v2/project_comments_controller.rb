@@ -31,6 +31,12 @@ module V2
       raise ValidationError, @comment.errors unless @comment.discard
     end
 
+    def move
+      CommentMover.move params
+      
+      render plain: "Successfully moved comments"
+    end
+
     private
 
     def set_comment

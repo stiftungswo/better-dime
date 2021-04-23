@@ -10,9 +10,9 @@ import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 
 interface Props {
   displayTotal: string;
-  onEffortAdd: () => void;
   efforts: ProjectEffortListing[];
   entityId: number;
+  onEffortAdd: () => void;
   onClickRow: (entity: ProjectEffortListing) => void;
   title: string;
   formatter?: Formatter;
@@ -48,9 +48,16 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
         defaultSort: 'desc',
       },
       {
+        id: 'employee',
+        numeric: false,
+        label: 'Mitarbeiter',
+        format: e => e.employee_full_name,
+        defaultSort: 'desc',
+      },
+      {
         id: '',
         numeric: false,
-        label: 'Aktivität',
+        label: 'Service',
         format: projectEffortListing =>
           projectEffortListing.position_description
             ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
@@ -72,7 +79,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
         columns={this.columns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
-        onClickRow={this.props.onClickRow}
+        onClickEffortRow={this.props.onClickRow}
         title={this.props.title}
       />
     );

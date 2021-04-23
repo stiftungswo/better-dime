@@ -143,7 +143,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                       />
                       <DeleteButton
                         disabled={!p.deletable}
-                        title={p.deletable ? 'Löschen' : 'Leistungen zuerst löschen!'}
+                        title={p.deletable ? 'Löschen' : 'Aufwand zuerst löschen!'}
                         /* tslint:disable-next-line:no-empty */
                         onConfirm={p.deletable ? () => onDelete(pIdx) : () => {}}
                       />
