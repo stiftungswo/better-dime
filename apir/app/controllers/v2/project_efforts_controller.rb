@@ -42,7 +42,7 @@ module V2
     def move
       EffortMover.move params
 
-      render plain: "Successfully moved timeslices!"
+      render plain: "Successfully moved efforts!"
     end
 
     private

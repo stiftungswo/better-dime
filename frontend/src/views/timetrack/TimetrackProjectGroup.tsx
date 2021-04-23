@@ -4,8 +4,8 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { ProjectListing } from '../../types';
 import compose from '../../utilities/compose';
 import { sum } from '../../utilities/helpers';
-import { TimetrackProjectCombinedTable } from './TimetrackProjectCombinedTable';
 import { TimetrackProjectSoloTable } from './TimetrackProjectSoloTable';
+import { TimetrackProjectTable } from './TimetrackProjectTable';
 import { EntityGroup, WithEfforts } from './types';
 
 interface Props extends EntityGroup {
@@ -40,11 +40,12 @@ export default class TimetrackProjectGroup extends React.Component<Props> {
 
     if (this.props.showProjectComments) {
       return (
-        <TimetrackProjectCombinedTable
+        <TimetrackProjectTable
           displayTotal={this.props.formatter!.formatTotalWorkHours(workedMinutes)}
           efforts={efforts}
           effortReportUrlParams={this.generateEffortReportUrl}
-          entity={entity}
+          entityId={entity.id}
+          title={entity.name}
           onClickEffortRow={onClickRow}
           onEffortAdd={this.onEffortAdd}
         />

@@ -147,7 +147,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
-              <DialogTitle>Leistung {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
+              <DialogTitle>Aufwand {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>
                 {!formikProps.values.id && (
@@ -159,7 +159,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
-                  label={'Aktivität'}
+                  label={'Service'}
                   portal
                 />
                 <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />

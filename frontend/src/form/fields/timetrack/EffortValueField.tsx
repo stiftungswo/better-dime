@@ -36,7 +36,7 @@ export class EffortValueField extends React.Component<Props> {
         return <TextField label={'Ausgewählte Position nicht gefunden.'} disabled />;
       }
     } else {
-      return <TextField label={'Kein Projekt oder Aktivität ausgewählt.'} disabled />;
+      return <TextField label={'Kein Projekt oder Service ausgewählt.'} disabled />;
     }
   }
 }

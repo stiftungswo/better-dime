@@ -84,6 +84,7 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   setSelected?: (e: T, state: boolean) => void;
   paginated?: boolean;
   paginationInfo?: PaginationInfo;
+  style?: object;
 }
 
 interface TableState {
@@ -193,21 +194,23 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
     const RowCheckbox = this.RowCheckbox;
     const handleChangePage = this.handleChangePage;
     const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
+    const style = this.props.style || {width: '100%'};
 
     return (
-      <div className="dev-fw-div">
+      <div style={style}>
         <Table>
           <TableHead>
             <TableRow>
               {this.props.selected && (
-                <DimeTableCell padding={'checkbox'}>
+                <DimeTableCell padding={'checkbox'} style={{width: '80px'}}>
                   <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
                 </DimeTableCell>
               )}
               {columns.map(col => (
                 <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
                   <TableSortLabel
-                    active={orderBy === col.id}
+                    disabled={noSort}
+                    active={!noSort && orderBy === col.id}
                     direction={order}
                     onClick={this.createSortHandler(col.id, col.orderTag, col.noSort)}
                   >
