@@ -41,8 +41,6 @@ interface Props {
 export default class EffortMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
 
-    // tslint:disable-next-line:no-console
-    console.log(this.props.commentIds);
     const values = schema.cast(formValues);
     if (this.props.effortIds.length > 0) {
       await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);

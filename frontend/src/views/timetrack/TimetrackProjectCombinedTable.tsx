@@ -80,8 +80,6 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
   }
 
   render() {
-    // tslint:disable-next-line:no-console
-    console.log(this.props);
     const { displayTotal, efforts, entity, onClickEffortRow, projectCommentStore, classes } = this.props;
     const comments = projectCommentStore!.projectComments.filter((comment: ProjectComment) => comment.project_id === entity.id);
     const formatter = this.props.formatter!;
