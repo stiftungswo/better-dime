@@ -52,6 +52,7 @@ export { default as DragHandle } from '@material-ui/icons/DragHandle';
 export { default as CloseIcon } from '@material-ui/icons/Close';
 export { default as ForwardIcon } from '@material-ui/icons/ArrowForwardIos';
 export { default as BackIcon } from '@material-ui/icons/ArrowBackIos';
+export { default as MailIcon } from '@material-ui/icons/Mail';
 
 // Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
