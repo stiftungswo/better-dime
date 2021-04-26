@@ -554,3 +554,9 @@ export type DimeDate = string;
 // If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
 // tslint:disable-next-line:no-any
 export type FormValues = any;
+
+export interface SelectedAction {
+  icon: React.ComponentType;
+  title: string;
+  action: (selectedIds: number[]) => void;
+}

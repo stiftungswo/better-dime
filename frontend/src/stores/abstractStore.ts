@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, ObservableMap } from 'mobx';
 import {Cache} from '../utilities/Cache';
 import { MainStore } from './mainStore';
 
@@ -53,9 +53,18 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @observable
+  selectedIds = new ObservableMap<number, boolean>();
+
+  @observable
   // tslint:disable-next-line:variable-name
   private _searchQuery: string = '';
-  constructor(protected mainStore: MainStore) {}
+  constructor(protected mainStore: MainStore) {
+    this.resetSelected();
+  }
+
+  resetSelected() {
+    this.selectedIds = new ObservableMap<number, boolean>();
+  }
 
   setEntities(e: OverviewType[]) {
     throw new Error('Not implemented');

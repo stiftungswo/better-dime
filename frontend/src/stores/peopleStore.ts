@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, ObservableMap } from 'mobx';
 import { PaginatedData, Person, ProjectListing } from 'src/types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -31,6 +31,9 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   @observable
   person?: Person = undefined;
 
+  @observable
+  selectedIds = new ObservableMap<number, boolean>();
+
   constructor(mainStore: MainStore) {
     super(mainStore);
   }
@@ -43,6 +46,12 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   async doFetchAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
     this.people = res.data.data;
+  }
+
+  @action
+  async doReturnAll() {
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
+    return res.data.data;
   }
 
   @action
