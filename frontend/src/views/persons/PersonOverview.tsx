@@ -64,6 +64,7 @@ export default class PersonOverview extends React.Component<Props> {
       document.execCommand('copy');
       document.body.removeChild(dummy);
       this.props.mainStore!.displaySuccess(`${emails.length} E-Mail Adresse${emails.length === 1 ? '' : 'n'} wurden erfolgreich in die Zwischenablage kopiert.`);
+      window.location.href = `mailto:${emails.toString()}`;
     } else {
       this.props.mainStore!.displayError('Alle ausgewählten Personen besitzen keine E-Mail Adresse.');
     }
@@ -86,13 +87,13 @@ export default class PersonOverview extends React.Component<Props> {
 
     const selectedAction1: SelectedAction = {
       icon: MailIcon,
-      title: 'E-Mails kopieren',
+      title: 'Mail öffnen',
       action: this.copyMails,
     };
 
     const selectedAction2: SelectedAction = {
       icon: CloseIcon,
-      title: 'Alle entwählen',
+      title: 'Auswahl aufheben',
       action: this.deSelect,
     };
 
