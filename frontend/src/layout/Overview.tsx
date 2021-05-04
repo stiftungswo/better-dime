@@ -146,7 +146,6 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   render() {
     const mainStore = this.props.mainStore!;
-    const selectedIds = this.selectedIds;
     const totalSelectedIds = this.totalSelectedIds.length;
     const reload = this.reload;
     const selectedActions = this.props.selectedActions;
@@ -197,7 +196,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               onClickChangeOrder={this.setPaginationPageOrder}
               paginated={this.props.paginated}
               paginationInfo={this.paginationInfo}
-              selected={this.props.hasSelect ? selectedIds : undefined}
+              selected={this.props.hasSelect ? this.selectedIds : undefined}
               setSelected={this.props.setSelected}
             />
           )}
