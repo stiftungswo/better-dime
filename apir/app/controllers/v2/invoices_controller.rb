@@ -6,7 +6,7 @@ module V2
 
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? }
-    before_action :set_invoice, only: [:show, :update, :destroy, :print, :print_esr, :effort_report]
+    before_action :set_invoice, only: [:show, :update, :destroy, :print, :print_qr_bill, :effort_report]
 
     def index
       @q = Invoice.order(id: :desc).ransack(search_params)
@@ -68,11 +68,11 @@ module V2
       end
     end
 
-    def print_esr
-      pdf = Pdfs::InvoiceEsrPdf.new GlobalSetting.first, @invoice
+    def print_qr_bill
+      pdf = Pdfs::InvoiceQrBillPdf.new GlobalSetting.first, @invoice
 
       if @invoice.invoice_costgroup_distributions.blank?
-        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print ESR's for invoices without cost groups")
+        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print QR-Bills's for invoices without cost groups")
 
         raise ValidationError, @invoice.errors
       end

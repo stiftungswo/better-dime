@@ -78,3 +78,10 @@ de:
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"
+  receipt: "Empfangsschein"
+  payment_part: "Zahlteil"
+  payable_to: "Konto / Zahlbar an"
+  payable_by: "Zahlbar durch"
+  currency: "Währung"
+  acceptance_point: "Annahmestelle"
+  additional_information: "Zusätzliche Informationen"

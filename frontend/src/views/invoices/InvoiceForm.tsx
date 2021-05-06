@@ -95,7 +95,7 @@ export default class InvoiceForm extends React.Component<Props> {
                 disabled={!invoice.project_id}
               />
               <PrintButton
-                path={`invoices/${invoice.id}/print_esr`}
+                path={`invoices/${invoice.id}/print_qr_bill`}
                 color={'inherit'}
                 title={
                   costGroupsExist

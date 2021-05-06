@@ -78,3 +78,10 @@ fr:
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"
+  receipt: "Récépissé"
+  payment_part: "Section paiement"
+  payable_to: "Compte / Payable à"
+  payable_by: "Payable par "
+  currency: "Monnaie"
+  acceptance_point: "Point de dépôt"
+  additional_information: "Informations supplémentaires"

@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     resources :invoices do
       post "duplicate", on: :member
       get "print", on: :member, defaults: { format: "pdf" }
-      get "print_esr", on: :member, defaults: { format: "pdf" }
+      get "print_qr_bill", on: :member, defaults: { format: "pdf" }
       get "effort_report", on: :member, defaults: { format: "pdf" }
     end
 
