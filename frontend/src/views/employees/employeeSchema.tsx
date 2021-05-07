@@ -5,7 +5,7 @@ export const editEmployeeSchema = localizeSchema(() =>
   yup.object({
     archived: yup.boolean(),
     can_login: yup.boolean().required(),
-    email: yup.string().required(),
+    email: yup.string().email('Ungültiges Email Format').required(),
     holidays_per_year: yup.number().nullable(true),
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
@@ -31,7 +31,7 @@ export const newEmployeeSchema = localizeSchema(() =>
   yup.object({
     archived: yup.boolean(),
     can_login: yup.boolean().required(),
-    email: yup.string().required(),
+    email: yup.string().email('Ungültiges Email Format').required(),
     holidays_per_year: yup.number().nullable(true),
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
@@ -74,5 +74,5 @@ export const employeeTemplate = {
   work_periods: [],
   password: '',
   locale: 'de',
-  employee_group_id: 0,
+  employee_group_id: null,
 };
