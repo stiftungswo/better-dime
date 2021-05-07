@@ -81,10 +81,6 @@ module Pdfs
       @bill = QRBills.generate(params)
     end
 
-
-
-
-
     def draw_receipt
       bounding_box([0.cm, 10.5.cm], width: 6.2.cm, height: 10.5.cm) do
         stroke_bounds
