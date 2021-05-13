@@ -37,6 +37,6 @@ export default class OfferUpdate extends React.Component<Props> {
     const offer = this.offer;
     const title = offer ? `${offer.name} - Offerten` : 'Offerte bearbeiten';
 
-    return <OfferForm title={title} onSubmit={this.handleSubmit} offer={offer as FormValues} />;
+    return <OfferForm title={title} onSubmit={this.handleSubmit} offer={offer as FormValues} showDateField={true} />;
   }
 }

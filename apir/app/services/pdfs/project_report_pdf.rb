@@ -78,9 +78,10 @@ module Pdfs
         {
           data: ["Datum", "Stunden", "Arbeit", "Mitarbeiter"],
           style: {
-            padding: [5, 10, 5, 0],
+            padding: [7, 10, 5, 0],
             font_style: :bold,
-            border_width: 1
+            border_width: 1,
+            borders: [:top]
           }
         }
       ]
@@ -120,9 +121,10 @@ module Pdfs
         {
           data: ["Mitarbeiter", "Total Stunden"],
           style: {
-            padding: [5, 0, 5, 0],
+            padding: [7, 0, 5, 0],
             font_style: :bold,
-            border_width: 1
+            border_width: 1,
+            borders: [:top]
           }
         }
       ]
@@ -157,7 +159,8 @@ module Pdfs
           style: {
             padding: [5, 0, 5, 0],
             font_style: :bold,
-            border_width: 1
+            border_width: 1,
+            borders: [:bottom]
           }
         }
       ]
@@ -225,7 +228,8 @@ module Pdfs
           style: {
             padding: [5, 0, 5, 0],
             font_style: :bold,
-            border_width: 1
+            border_width: 1,
+            borders: [:top]
           }
         }
       ]
@@ -286,7 +290,8 @@ module Pdfs
         style: {
           padding: [5, 0, 5, 0],
           font_style: :bold,
-          border_width: 1
+          border_width: 1,
+          borders: [:bottom]
         }
       }]
 
