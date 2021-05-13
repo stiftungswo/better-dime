@@ -51,7 +51,7 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
             <b>Nummerierte Liste: </b><br/>
             1. Listenelement 1<br/>
             2. Listenelement 2 (keine doppelten Zeilenumbrüche zwischen den Listenelementen!)<br/>
-            <b>Neuer Zeilenumbruch: </b> {'</br>'}
+            <b>Neuer Zeilenumbruch: </b> {'<br>'}
           </div>
         </Grid>
       </Grid>

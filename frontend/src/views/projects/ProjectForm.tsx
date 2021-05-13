@@ -167,7 +167,7 @@ class ProjectForm extends React.Component<Props> {
             return (
               <form onSubmit={props.handleSubmit}>
                 <Grid container spacing={24}>
-                  <Grid item xs={12} lg={8}>
+                  <Grid item xs={12} lg={10}>
                     {project.id && <Navigator project={project} />}
                     <DimePaper>
                       <Grid container spacing={24}>
@@ -226,14 +226,14 @@ class ProjectForm extends React.Component<Props> {
 
                   <Grid item xs={12}>
                     <Grid container spacing={24}>
-                      <Grid item xs={12} lg={8}>
+                      <Grid item xs={12} lg={5}>
                         <DimePaper>
                           <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
                         </DimePaper>
                       </Grid>
 
                       {project.id && (
-                        <Grid item xs={12} lg={4}>
+                        <Grid item xs={12} lg={10}>
                           <ProjectStatTable
                             moneyBudget={props.values.budget_price}
                             moneyUsed={props.values.current_price}
@@ -245,7 +245,7 @@ class ProjectForm extends React.Component<Props> {
                     </Grid>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={12} lg={12}>
                     {props.status! && props.status!.archived_units && afterUnitInvalidation && (
                       <>
                         <Grid container direction="row" alignItems="center" style={{marginLeft: '10px', paddingBottom: '5px'}}>

@@ -11,6 +11,7 @@ import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { StatusSelect } from '../../form/entitySelect/StatusSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
+import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeField } from '../../form/fields/formik';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -42,6 +43,7 @@ export type Props = {
   customerStore?: CustomerStore;
   employeeStore?: EmployeeStore;
   offer: Offer;
+  showDateField?: boolean;
   offerStore?: OfferStore;
   projectStore?: ProjectStore;
   rateGroupStore?: RateGroupStore;
@@ -58,6 +60,7 @@ class OfferForm extends React.Component<Props> {
 
   state = {
     loading: true,
+    date: undefined,
   };
   // set rateGroup based on selected customer.
   handleCustomerChange: OnChange<Offer> = (current, next, formik) => {
@@ -88,7 +91,6 @@ class OfferForm extends React.Component<Props> {
     if (!(empty(offer) || this.props.loading || this.state.loading)) {
       afterUnitInvalidation = isAfterArchivedUnitsCutoff(offer.created_at);
     }
-
     return (
       <FormView
         paper={false}
@@ -101,7 +103,7 @@ class OfferForm extends React.Component<Props> {
         appBarButtons={
           offer && offer.id ? (
             <>
-              <PrintButton path={`offers/${offer.id}/print`} color={'inherit'} />
+              <PrintButton path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
               {!offer.project_id && (
                 <ActionButton
                   action={() => offerStore!.createProject(offer.id!).then((p: Project) => this.props.history.push(`/projects/${p.id}`))}
@@ -176,6 +178,11 @@ class OfferForm extends React.Component<Props> {
                                 disabled={locked}
                               />
                             </Grid>
+                            {this.props.showDateField &&
+                              <Grid item xs={12} lg={4}>
+                                <DatePicker label={'Datum'} value={this.state.date} onChange={v => this.setState({['date']: v})} disabled={locked} />
+                              </Grid>
+                            }
                           </Grid>
                         </Grid>
                         <Grid item xs={12}>
