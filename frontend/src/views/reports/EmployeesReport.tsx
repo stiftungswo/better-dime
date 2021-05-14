@@ -77,7 +77,7 @@ export class EmployeesReport extends React.Component<Props, State> {
                 <Grid item xs={12}>
                   <DownloadButton
                     href={() => this.props.mainStore!.apiV2URL('reports/employees_report/', {
-                        employee_ids: yup.array().of(yup.number()).cast(formikProps.values.employee_ids).join(','),
+                        employee_ids: yup.array().of(yup.number()).cast(formikProps.values.employee_ids)?.join(','),
                         from: dimeDate().cast(formikProps.values.from),
                         to: dimeDate().cast(formikProps.values.to),
                       },

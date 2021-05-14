@@ -203,13 +203,13 @@ export class ProjectReport extends React.Component<Props, State> {
                       <DownloadButton
                         href={() => {
                           return this.props.mainStore!.apiV2URL('reports/project_report/' + formikProps.values.project_id, {
-                            additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                            additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs)?.map((value: any) => {
                               return value.name;
                             }).join(','),
-                            additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                            additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs)?.map((value: any) => {
                               return value.cost.toString();
                             }).join(','),
-                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || []).map((value: any) => {
+                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || [])?.map((value: any) => {
                               return value.toString();
                             }).join(','),
                             from: dimeDate().cast(formikProps.values.from),

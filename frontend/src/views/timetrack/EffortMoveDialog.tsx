@@ -43,12 +43,16 @@ export default class EffortMoveDialog extends React.Component<Props> {
 
     const values = schema.cast(formValues);
     if (this.props.effortIds.length > 0) {
-      await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);
-      await this.props.effortStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
+      if (values.project_id) {
+        await this.props.effortStore!.move(this.props.effortIds, values.project_id, values.project_position);
+        await this.props.effortStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
+      }
     }
     if (this.props.commentIds.length > 0) {
-      await this.props.projectCommentStore!.move(this.props.commentIds, values.project_id);
-      await this.props.projectCommentStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
+      if (values.project_id) {
+        await this.props.projectCommentStore!.move(this.props.commentIds, values.project_id);
+        await this.props.projectCommentStore!.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
+      }
     }
     this.props.onClose();
   }

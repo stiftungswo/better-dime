@@ -25,7 +25,7 @@ interface Props {
 
 const schema = localizeSchema(() =>
   yup.object({
-    comment: yup.string().required().nullable(true),
+    comment: yup.string().nullable(true),
     date: dimeDate(),
     project_id: selector(),
   }),
@@ -41,7 +41,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
     if (projectCommentStore.entity) {
       await projectCommentStore.put(schema.cast(entity));
     } else {
-      if (schema.cast(entity).comment != null) {
+      if (schema.cast(entity)?.comment != null) {
         await projectCommentStore.post(schema.cast(entity));
         await this.widenFilterSettings(entity);
       }
