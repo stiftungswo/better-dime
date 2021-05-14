@@ -8,7 +8,7 @@ json.set! :data do
                   :deleted_at, :employee_group_id, :first_vacation_takeover, :locale
     json.set! :group_name, employee.decorate.employee_group&.name
     json.group do
-      json.extract! employee.employee_group.decorate, :id, :name, :created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by
+      json.extract! employee.employee_group.decorate, :id, :name, :created_at, :updated_at, :deleted_at
     end
   end
 end
