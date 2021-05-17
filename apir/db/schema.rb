@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_14_105125) do
+ActiveRecord::Schema.define(version: 2021_05_14_064853) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -441,7 +441,7 @@ ActiveRecord::Schema.define(version: 2021_05_14_105125) do
     t.date "ending", null: false
     t.integer "pensum", null: false
     t.integer "yearly_vacation_budget", null: false
-    t.boolean "hourly_paid", default: false
+    t.boolean "hourly_paid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
