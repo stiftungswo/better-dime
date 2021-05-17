@@ -29,69 +29,55 @@ interface Props {
 @observer
 export class TimetrackProjectTable extends React.Component<Props> {
 
-  effortColumns: Array<Column<ProjectEffortListing>> = [];
-  commentColumns: Array<Column<ProjectCommentListing>> = [];
+  effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>> = [];
 
   constructor(props: Props) {
     super(props);
     const formatter = props.formatter!;
+
+    const commentStyle = { fontStyle: 'italic', color: 'rgb(100,100,100)' };
 
     this.effortColumns = [
       {
         id: 'date',
         numeric: false,
         label: 'Datum',
-        format: e => formatter.formatDate(e.date),
+        format: e => 'comment' in e ? <span style={commentStyle}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
         defaultSort: 'desc',
       },
       {
         id: 'employee',
         numeric: false,
         label: 'Mitarbeiter',
-        format: e => e.employee_full_name,
+        noSort: true,
+        format: e => 'comment' in e ? (<span style={commentStyle}>{e.comment}</span>) : e.employee_full_name,
         defaultSort: 'desc',
       },
       {
         id: '',
         numeric: false,
         label: 'Service',
-        format: projectEffortListing =>
-          projectEffortListing.position_description
-            ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
-            : projectEffortListing.service_name,
+        noSort: true,
+        format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
       },
       {
         id: 'effort_value',
         numeric: true,
+        noSort: true,
         label: 'Gebuchter Wert',
-        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-      },
-    ];
-
-    this.commentColumns = [
-      /*
-      {
-        id: 'date',
-        numeric: false,
-        label: 'Kommentare',
-        format: e => formatter.formatDate(e.date),
-        defaultSort: 'desc',
-      },
-      */
-      {
-        id: 'comment',
-        numeric: false,
-        label: 'Kommentare',
-        format: e => e.comment,
-        defaultSort: 'desc',
+        format: h => 'comment' in h ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
       },
     ];
   }
 
-  onClickCommentRow = async (entity: ProjectCommentListing | undefined) => {
+  onClickRow = async (entity: ProjectEffortListing | ProjectCommentListing) => {
     if (entity && entity.id) {
-      await this.props.projectCommentStore!.fetchOne(entity.id);
-      this.props.projectCommentStore!.editing = true;
+      if ('comment' in entity) {
+        await this.props.projectCommentStore!.fetchOne(entity.id);
+        this.props.projectCommentStore!.editing = true;
+      } else {
+        this.props.onClickEffortRow(entity);
+      }
     }
   }
 
@@ -113,18 +99,24 @@ export class TimetrackProjectTable extends React.Component<Props> {
       </>
     );
 
-    const comments = this.props.projectCommentStore!.projectComments.filter((comment: ProjectCommentListing) => comment.project_id === this.props.entityId);
+    const dates = this.props.efforts.map(e => {
+      return e.date;
+    });
+
+    const noEmployeeSelected = this.props.timetrackFilterStore!.selectedEmployees.length === 0;
+
+    const comments = this.props.projectCommentStore!.projectComments
+      .filter((comment: ProjectCommentListing) => comment.project_id === this.props.entityId)
+      .filter((comment: ProjectCommentListing) => dates.includes(comment.date) || noEmployeeSelected); // CHECKJ THIS TOU
 
     return (
       <TimetrackEntityGroup
         actions={projectGroupActions}
         columns={this.effortColumns}
-        commentColumns={this.commentColumns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
         comments={comments}
-        onClickEffortRow={this.props.onClickEffortRow}
-        onClickCommentRow={this.onClickCommentRow}
+        onClickRow={this.onClickRow}
         title={this.props.title}
       />
     );

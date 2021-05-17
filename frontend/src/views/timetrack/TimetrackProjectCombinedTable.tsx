@@ -21,10 +21,6 @@ import { Formatter } from '../../utilities/formatter';
 import { SafeClickableTableRow } from '../../utilities/SafeClickableTableRow';
 import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
 
-/*
-ATTENTION: Deprecated, TimetrackProjectTable is now used
-*/
-
 const styles = createStyles({
   hideActions: {
     '@media (hover)': {
@@ -104,26 +100,42 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
       </>
     );
 
-    const hasEfforts = efforts.length > 0;
-    const hasComments = comments.length > 0;
-
-    if (hasEfforts || hasComments) {
+    if (efforts.length > 0 || comments.length > 0) {
       return (
         <TimetrackExpansionPanel actions={projectGroupActions} title={entity.name} displayTotal={displayTotal}>
           <Table>
-            {hasEfforts &&
-              <TableHead>
-                <TableRow>
-                  <DimeTableCell style={{width: '165px'}}>Datum</DimeTableCell>
-                  <DimeTableCell>Mitarbeiter</DimeTableCell>
-                  <DimeTableCell>Service</DimeTableCell>
-                  <DimeTableCell numeric>Gebuchter Wert</DimeTableCell>
-                  <DimeTableCell numeric />
-                </TableRow>
-              </TableHead> }
-            {hasEfforts &&
-              <TableBody>
-                {efforts.map((e: ProjectEffortListing) => {
+            <TableHead>
+              <TableRow>
+                <DimeTableCell>Datum</DimeTableCell>
+                <DimeTableCell>Mitarbeiter</DimeTableCell>
+                <DimeTableCell>Aktivität</DimeTableCell>
+                <DimeTableCell numeric>Gebuchter Wert</DimeTableCell>
+                <DimeTableCell numeric />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {joinedForces.map((e: ProjectEffortListing | ProjectComment) => {
+                if ('comment' in e) {
+                  return (
+                    <TableRow
+                      hover
+                      className={classes.hideActions}
+                      key={`comment_${e.id}`}
+                      onClick={() => this.handleClickCommentRow(e)}
+                      component={SafeClickableTableRow}
+                    >
+                      <DimeTableCell style={{ fontStyle: 'italic' }}>{formatter.formatDate(e.date)}</DimeTableCell>
+                      <DimeTableCell colSpan={3} style={{ fontStyle: 'italic' }}>
+                        {e.comment}
+                      </DimeTableCell>
+                      <DimeTableCell numeric>
+                        <span className={'actions'}>
+                          <DeleteButton onConfirm={() => this.handleCommentDelete(e.id!)} />
+                        </span>
+                      </DimeTableCell>
+                    </TableRow>
+                  );
+                } else {
                   return (
                     <TableRow
                       hover
@@ -145,49 +157,16 @@ class TimetrackProjectCombinedTableInner extends React.Component<Props> {
                       </DimeTableCell>
                     </TableRow>
                   );
-                })}
-              </TableBody>}
-            {hasComments &&
-              <TableHead>
-                <TableRow style={hasEfforts ? {borderTop: '1.4px solid rgb(190,190,190)'} : {}}>
-                  <DimeTableCell style={{width: '165px'}}>Kommentare</DimeTableCell>
-                  <DimeTableCell numeric />
-                  <DimeTableCell numeric />
-                  <DimeTableCell numeric />
-                  <DimeTableCell numeric />
-                </TableRow>
-              </TableHead> }
-            {hasComments &&
-              <TableBody>
-                {comments.map((e: ProjectComment) => {
-                  return (
-                    <TableRow
-                      hover
-                      className={classes.hideActions}
-                      key={`comment_${e.id}`}
-                      onClick={() => this.handleClickCommentRow(e)}
-                      component={SafeClickableTableRow}
-                    >
-                      <DimeTableCell style={{ fontStyle: 'italic' }}>{formatter.formatDate(e.date)}</DimeTableCell>
-                      <DimeTableCell colspan={3} style={{ fontStyle: 'italic' }}>
-                        {e.comment}
-                      </DimeTableCell>
-                      <DimeTableCell numeric>
-                        <span className={'actions'}>
-                          <DeleteButton onConfirm={() => this.handleCommentDelete(e.id!)} />
-                        </span>
-                      </DimeTableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody> }
+                }
+              })}
+            </TableBody>
           </Table>
         </TimetrackExpansionPanel>
       );
     } else {
       return (
         <TimetrackExpansionPanel actions={projectGroupActions} title={entity.name}>
-          Keine Aufwände erfasst mit den gewählten Filtern.
+          Keine Leistungen erfasst mit den gewählten Filtern.
         </TimetrackExpansionPanel>
       );
     }

@@ -84,7 +84,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         columns={this.columns}
         efforts={efforts}
         title={`${entity.first_name} ${entity.last_name}`}
-        onClickEffortRow={this.props.onClickRow}
+        onClickRow={this.props.onClickRow}
         actions={
           <>
             <PrintButton
