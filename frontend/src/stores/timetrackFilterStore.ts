@@ -74,9 +74,14 @@ export class TimetrackFilterStore {
   }
 
   @computed
-  get comments(): ProjectCommentListing[] { // HERE
-    const filterIds = this.projectEffortFilter.projectIds;
-    return this.projectCommentStore.projectComments.filter(c => filterIds.includes(c.project_id!));
+  get comments(): ProjectCommentListing[] {
+    const projectIds = this.projectEffortFilter.projectIds;
+    return this.projectCommentStore.projectComments.filter(c => projectIds.includes(c.project_id!));
+  }
+
+  @computed
+  get selectedEmployees(): number[] {
+    return this.projectEffortFilter.employeeIds;
   }
 
   reset() {
