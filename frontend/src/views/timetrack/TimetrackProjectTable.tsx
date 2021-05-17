@@ -29,45 +29,42 @@ interface Props {
 @observer
 export class TimetrackProjectTable extends React.Component<Props> {
 
-  effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>> = [];
+  formatter = this.props.formatter!;
+
+  effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>> = [
+    {
+      id: 'date',
+      numeric: false,
+      label: 'Datum',
+      format: e => 'comment' in e ? <span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{this.formatter.formatDate(e.date)}</span> : this.formatter.formatDate(e.date),
+      defaultSort: 'desc',
+    },
+    {
+      id: 'employee',
+      numeric: false,
+      label: 'Mitarbeiter',
+      noSort: true,
+      format: e => 'comment' in e ? (<span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{e.comment}</span>) : e.employee_full_name,
+      defaultSort: 'desc',
+    },
+    {
+      id: '',
+      numeric: false,
+      label: 'Service',
+      noSort: true,
+      format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
+    },
+    {
+      id: 'effort_value',
+      numeric: true,
+      noSort: true,
+      label: 'Gebuchter Wert',
+      format: h => 'comment' in h ? '' : this.formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+    },
+  ];
 
   constructor(props: Props) {
     super(props);
-    const formatter = props.formatter!;
-
-    const commentStyle = { fontStyle: 'italic', color: 'rgb(100,100,100)' };
-
-    this.effortColumns = [
-      {
-        id: 'date',
-        numeric: false,
-        label: 'Datum',
-        format: e => 'comment' in e ? <span style={commentStyle}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
-        defaultSort: 'desc',
-      },
-      {
-        id: 'employee',
-        numeric: false,
-        label: 'Mitarbeiter',
-        noSort: true,
-        format: e => 'comment' in e ? (<span style={commentStyle}>{e.comment}</span>) : e.employee_full_name,
-        defaultSort: 'desc',
-      },
-      {
-        id: '',
-        numeric: false,
-        label: 'Service',
-        noSort: true,
-        format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
-      },
-      {
-        id: 'effort_value',
-        numeric: true,
-        noSort: true,
-        label: 'Gebuchter Wert',
-        format: h => 'comment' in h ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-      },
-    ];
   }
 
   onClickRow = async (entity: ProjectEffortListing | ProjectCommentListing) => {
@@ -99,15 +96,11 @@ export class TimetrackProjectTable extends React.Component<Props> {
       </>
     );
 
-    const dates = this.props.efforts.map(e => {
-      return e.date;
-    });
-
+    const dates = this.props.efforts.map(e => e.date);
     const noEmployeeSelected = this.props.timetrackFilterStore!.selectedEmployees.length === 0;
-
     const comments = this.props.projectCommentStore!.projectComments
       .filter((comment: ProjectCommentListing) => comment.project_id === this.props.entityId)
-      .filter((comment: ProjectCommentListing) => dates.includes(comment.date) || noEmployeeSelected); // CHECKJ THIS TOU
+      .filter((comment: ProjectCommentListing) => dates.includes(comment.date) || noEmployeeSelected);
 
     return (
       <TimetrackEntityGroup
