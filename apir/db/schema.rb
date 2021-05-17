@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_14_064853) do
+ActiveRecord::Schema.define(version: 2020_06_25_102546) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "city", null: false
@@ -24,10 +24,11 @@ ActiveRecord::Schema.define(version: 2021_05_14_064853) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.boolean "hidden", default: false, null: false
-    t.bigint "employee_id"
+    t.bigint "employee_id", unsigned: true
+    t.bigint "employee_id_id"
     t.index ["customer_id"], name: "index_addresses_on_customer_id"
     t.index ["deleted_at"], name: "index_addresses_on_deleted_at"
-    t.index ["employee_id"], name: "index_addresses_on_employee_id"
+    t.index ["employee_id_id"], name: "index_addresses_on_employee_id_id"
   end
 
   create_table "costgroups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -71,7 +72,6 @@ ActiveRecord::Schema.define(version: 2021_05_14_064853) do
     t.datetime "updated_at", null: false
     t.bigint "company_id"
     t.datetime "deleted_at"
-    t.index ["accountant_id"], name: "fk_rails_6a1bd7ef36"
     t.index ["company_id"], name: "index_customers_on_company_id"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["rate_group_id"], name: "index_customers_on_rate_group_id"
@@ -91,12 +91,13 @@ ActiveRecord::Schema.define(version: 2021_05_14_064853) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.boolean "can_login", default: true, null: false
-    t.boolean "archived", default: false
+    t.boolean "archived"
     t.integer "holidays_per_year"
     t.bigint "employee_group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
     t.decimal "first_vacation_takeover", precision: 10, scale: 2, default: "0.0", null: false
     t.datetime "deleted_at"
     t.string "locale", default: "de", null: false
@@ -441,19 +442,19 @@ ActiveRecord::Schema.define(version: 2021_05_14_064853) do
     t.date "ending", null: false
     t.integer "pensum", null: false
     t.integer "yearly_vacation_budget", null: false
-    t.boolean "hourly_paid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.boolean "hourly_paid", default: false, null: false
     t.index ["deleted_at"], name: "index_work_periods_on_deleted_at"
     t.index ["employee_id"], name: "index_work_periods_on_employee_id"
   end
 
   add_foreign_key "addresses", "customers"
-  add_foreign_key "addresses", "employees"
+  add_foreign_key "addresses", "employees", column: "employee_id_id"
   add_foreign_key "customers", "customers", column: "company_id"
-  add_foreign_key "customers", "employees", column: "accountant_id"
   add_foreign_key "customers", "rate_groups"
+  add_foreign_key "customers", "employees", column: "accountant_id"
   add_foreign_key "employees", "employee_groups"
   add_foreign_key "invoice_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number"
   add_foreign_key "invoice_costgroup_distributions", "invoices"
