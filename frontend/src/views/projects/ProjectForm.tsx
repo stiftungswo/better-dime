@@ -36,6 +36,7 @@ import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
+import { ProjectCategorySubform } from './ProjectCategorySubform';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
 import Navigator from './ProjectNavigator';
 import ProjectPositionRenderer from './ProjectPositionRenderer';
@@ -171,8 +172,11 @@ class ProjectForm extends React.Component<Props> {
                     {project.id && <Navigator project={project} />}
                     <DimePaper>
                       <Grid container spacing={24}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} lg={8}>
                           <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
+                        </Grid>
+                        <Grid item xs={12} lg={4}>
+                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <Effect onChange={this.handleCustomerChange} />
@@ -189,13 +193,6 @@ class ProjectForm extends React.Component<Props> {
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
-                        </Grid>
-
-                        <Grid item xs={12} lg={8}>
-                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
-                        </Grid>
-                        <Grid item xs={12} lg={4}>
-                          <DimeField required component={ProjectCategorySelect} name={'category_id'} label={'Tätigkeitsbereich'} />
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField
@@ -214,11 +211,11 @@ class ProjectForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
                         </Grid>
-                        <Grid item xs={12}>
-                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
-                        </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} lg={6}>
+                          <span style={{marginLeft: '10px'}}/>
                           <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} />
+                          <span style={{marginLeft: '20px'}}/>
+                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
                         </Grid>
                       </Grid>
                     </DimePaper>
@@ -229,6 +226,11 @@ class ProjectForm extends React.Component<Props> {
                       <Grid item xs={12} lg={5}>
                         <DimePaper>
                           <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                        </DimePaper>
+                      </Grid>
+                      <Grid item xs={12} lg={5}>
+                        <DimePaper>
+                          <ProjectCategorySubform formikProps={props} name={'category_distributions'} />
                         </DimePaper>
                       </Grid>
 

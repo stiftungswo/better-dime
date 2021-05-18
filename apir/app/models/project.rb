@@ -13,11 +13,13 @@ class Project < ApplicationRecord
   has_many :invoices, dependent: :restrict_with_exception
   has_many :project_comments, dependent: :destroy
   has_many :project_costgroup_distributions, dependent: :destroy
+  has_many :project_category_distributions, dependent: :destroy
   has_many :project_positions, dependent: :destroy
   has_many :project_efforts, through: :project_positions, dependent: :restrict_with_exception
   has_many :costgroups, through: :project_costgroup_distributions, dependent: :restrict_with_exception
+  has_many :project_categories, through: :project_category_distributions, dependent: :restrict_with_exception
 
-  accepts_nested_attributes_for :project_positions, :project_costgroup_distributions, allow_destroy: true
+  accepts_nested_attributes_for :project_positions, :project_costgroup_distributions, :project_category_distributions, allow_destroy: true
 
   validates :fixed_price, numericality: { only_integer: true }, allow_nil: true
   validates :accountant, :address, :name, :rate_group, presence: true
@@ -27,6 +29,10 @@ class Project < ApplicationRecord
 
   def listing_name
     name + (archived ? " [A]" : "")
+  end
+
+  def project_category_distributions
+    [{category_id: category_id, project_id: id, weight: 100}]
   end
 
   def project_calculator

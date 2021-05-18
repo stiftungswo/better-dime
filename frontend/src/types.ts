@@ -119,6 +119,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   category_id: number | null;
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
+  category_distributions: ProjectCategory[];
   deadline: null;
   description: string | null;
   fixed_price: null | number;
@@ -511,10 +512,16 @@ export interface Holiday {
   name: string;
 }
 
-export interface ProjectCategory {
+export interface Category {
   archived: boolean;
   id: number;
   name: string;
+}
+
+export interface ProjectCategory {
+  category_id: number;
+  project_id: number;
+  weight: number;
 }
 
 export interface RateUnit {

@@ -7,7 +7,7 @@ import { EditableOverview } from '../../layout/EditableOverview';
 import { Column } from '../../layout/Overview';
 import { MainStore } from '../../stores/mainStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
-import { ProjectCategory } from '../../types';
+import { Category } from '../../types';
 import compose from '../../utilities/compose';
 import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 
@@ -21,7 +21,7 @@ interface Props {
   observer,
 )
 export default class ProjectCategoryOverview extends React.Component<Props> {
-  columns: Array<Column<ProjectCategory>> = [];
+  columns: Array<Column<Category>> = [];
 
   constructor(props: Props) {
     super(props);
@@ -51,7 +51,7 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         columns={this.columns}
         schema={projectCategorySchema}
         defaultValues={projectCategoryTemplate}
-        renderActions={(e: ProjectCategory) => (
+        renderActions={(e: Category) => (
           <ActionButtons
             archiveAction={!e.archived ? () => projectCategoryStore!.archive(e.id, true) : undefined}
             restoreAction={e.archived ? () => projectCategoryStore!.archive(e.id, false) : undefined}

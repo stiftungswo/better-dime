@@ -9,6 +9,7 @@ json.offer_id project.offer.id if project.offer
 # add invoice ids
 json.invoice_ids project.invoice_ids
 
+json.category_distributions project.project_category_distributions
 json.costgroup_distributions project.project_costgroup_distributions
 json.positions project.project_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
