@@ -29,7 +29,7 @@ class Customer < ApplicationRecord
   before_save :down_case_type
 
   def self.params
-    attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at, :created_by, :updated_by, :deleted_by]
+    attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at]
   end
 
   alias phone_numbers phones

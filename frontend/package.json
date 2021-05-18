@@ -33,7 +33,7 @@
     "react-scripts-ts": "3.1.0",
     "react-select": "^2.1.1",
     "showdown": "^1.8.7",
-    "yup": "^0.26.6"
+    "yup": "^0.31.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",
