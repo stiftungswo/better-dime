@@ -55,6 +55,6 @@ export default class TimetrackServiceGroup extends React.Component<Props> {
 
   render() {
     const { entity } = this.props;
-    return <TimetrackEntityGroup columns={this.columns} efforts={entity.efforts} title={entity.name} onClickRow={this.props.onClickRow} />;
+    return <TimetrackEntityGroup columns={this.columns} efforts={entity.efforts} title={entity.name} onClickEffortRow={this.props.onClickRow} />;
   }
 }
