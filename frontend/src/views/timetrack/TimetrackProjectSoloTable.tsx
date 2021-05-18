@@ -79,7 +79,7 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
         columns={this.columns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
-        onClickEffortRow={this.props.onClickRow}
+        onClickRow={this.props.onClickRow}
         title={this.props.title}
       />
     );
