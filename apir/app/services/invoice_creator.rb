@@ -15,7 +15,7 @@ class InvoiceCreator
     invoice.invoice_discounts = create_discounts_from_project(invoice, project)
     invoice.invoice_positions = create_positions_from_project(invoice, project)
     invoice.beginning = get_invoice_beginning_date(project)
-    invoice.ending = get_invoice_ending_date(project)
+    invoice.ending = get_invoice_ending_date(project, invoice.beginning)
     invoice
   end
 
@@ -64,7 +64,11 @@ class InvoiceCreator
     project.invoices.max_by(&:ending)&.ending || project.project_efforts.min_by(&:date)&.date || DateTime.now
   end
 
-  def self.get_invoice_ending_date(project)
-    project.project_efforts.max_by(&:date)&.date || DateTime.now
+  def self.get_invoice_ending_date(project, beginning)
+    ending = project.project_efforts.max_by(&:date)&.date || DateTime.now
+    if (ending < beginning) 
+      ending = beginning
+    end
+    ending
   end
 end
