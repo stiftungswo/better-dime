@@ -29,11 +29,6 @@ class Project < ApplicationRecord
     name + (archived ? " [A]" : "")
   end
 
-  def project_category
-    puts project_categories[0]
-    1
-  end
-
   def project_calculator
     @project_calculator ||= ProjectCalculator.new self
   end
@@ -50,9 +45,4 @@ class Project < ApplicationRecord
     invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
   end
 
-  def should_validate_category?
-    # if we only archive or unarchive the project we don't validate the project category
-    # if it is a new record we don't validate either
-    offer.blank? || (!new_record? && changed != ["archived"])
-  end
 end

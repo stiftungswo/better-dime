@@ -137,7 +137,7 @@ export class ProjectReport extends React.Component<Props, State> {
               return (
                 <FormikSubmitDetector {...formikProps}>
                   <Grid container alignItems={'center'} spacing={24}>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={10} lg={10}>
                       <DateSpanPicker
                         fromValue={formikProps.values.from}
                         onChangeFrom={v => formikProps.setFieldValue('from', v)}
@@ -148,7 +148,7 @@ export class ProjectReport extends React.Component<Props, State> {
                     <Grid item xs={12} md={3}>
                       <DimeField required component={ProjectSelect} name="project_id" label={'Projekt'} />
                     </Grid>
-                    <Grid item xs={12} md={5}>
+                    <Grid item xs={12} md={3}>
                       <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
                     </Grid>
                     <Grid item xs={12} md={2}>
@@ -165,7 +165,7 @@ export class ProjectReport extends React.Component<Props, State> {
                       <>
                         <TableToolbar title={'Rechnungsposten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
                         <div style={{ padding: '0px 15px 20px 0px' }}>
-                          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+                          <Table padding={'dense'}>
                             <TableHead>
                               <TableRow>
                                 <DimeTableCell style={{ width: '80%' }}>Beschreibung</DimeTableCell>
