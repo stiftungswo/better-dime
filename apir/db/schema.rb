@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.string "name", null: false
     t.string "description"
     t.float "vat", limit: 53, null: false
-    t.boolean "archived", null: false
+    t.boolean "archived", default: false, null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.timestamp "deleted_at"
