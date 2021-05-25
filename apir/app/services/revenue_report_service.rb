@@ -22,7 +22,7 @@ class RevenueReportService
                            .where("project_efforts.date" => daterange)
                            .distinct
                            .includes(
-                             :accountant, :customer, :project_category, :project_costgroup_distributions,
+                             :accountant, :customer, :project_costgroup_distributions,
                              project_positions: [:project_efforts, :position_group, :rate_unit],
                              offer: [:accountant, :customer, :offer_positions, :offer_discounts],
                              invoices: [:invoice_costgroup_distributions, :invoice_discounts, invoice_positions: [:position_group]]
@@ -74,7 +74,9 @@ class RevenueReportService
         end
       end
 
-      row = ["Projekt", project.name, project.project_category&.name, project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, current_price, invoice_price, offer_price]
+      category_names = project.project_categories.map { |category| category.name }
+
+      row = ["Projekt", project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| (project_price_by_costgroup[cost_group.number] || 0) + (invoice_price_by_costgroup[cost_group.number] || 0) }
       row += [no_costgroup_prices]
       row

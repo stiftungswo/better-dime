@@ -22,6 +22,7 @@ module V2
       ParamsModifier.destroy_missing params, @project.project_positions, :positions
       # destroy costgroup distributions which were not passed along to the params
       ParamsModifier.destroy_missing params, @project.project_costgroup_distributions, :costgroup_distributions
+      ParamsModifier.destroy_missing params, @project.project_category_distributions, :category_distributions
 
       raise ValidationError, @project.errors unless @project.update(update_params)
 
@@ -41,7 +42,7 @@ module V2
     end
 
     def duplicate
-      @project = Project.find(params[:id]).deep_clone include: [:project_positions, :project_costgroup_distributions]
+      @project = Project.find(params[:id]).deep_clone include: [:project_positions, :project_costgroup_distributions, :project_category_distributions]
       # update any rate units which might be archived (if possible) when
       # duplicating (since we are possibly duplicating old projects)
       RateUnitUpdater.update_rate_units @project.project_positions, @project.rate_group
@@ -102,11 +103,13 @@ module V2
     def update_params
       ParamsModifier.copy_attributes params, :positions, :project_positions_attributes
       ParamsModifier.copy_attributes params, :costgroup_distributions, :project_costgroup_distributions_attributes
+      ParamsModifier.copy_attributes params, :category_distributions, :project_category_distributions_attributes
 
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id,
         :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
         project_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy],
+        project_category_distributions_attributes: [:id, :weight, :category_id, :_destroy],
         project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
       )
     end

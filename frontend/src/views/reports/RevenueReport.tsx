@@ -33,7 +33,7 @@ export class RevenueReport extends React.Component<Props> {
 
         <DimeContent loading={false}>
           <Grid container alignItems={'center'} spacing={24}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={8} lg={8}>
               <DateSpanPicker
                 fromValue={this.state.start}
                 onChangeFrom={d => this.setState({ start: d })}
