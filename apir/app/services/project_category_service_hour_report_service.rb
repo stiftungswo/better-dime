@@ -6,10 +6,12 @@ class ProjectCategoryServiceHourReportService
 
   def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year))
     self.range = range
-    self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service).where("rate_units.is_time" => true, "project_efforts.date" => range).left_outer_joins(project: [:project_category])
-    self.project_categories = ProjectCategory.where(id: project_positions.select("project_categories.id"))
+    self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service, :project)
+      .where("rate_units.is_time" => true, "project_efforts.date" => range)
+      .joins("LEFT OUTER JOIN project_category_distributions ON project_positions.project_id = project_category_distributions.project_id")
+    self.project_categories = ProjectCategory.where(id: project_positions.select("category_id"))
     self.services = Service.where(id: project_positions.select("services.id")).order(name: :asc)
-    self.effort_minutes = project_positions.group("project_categories.id", "services.id").sum("project_efforts.value")
+    self.effort_minutes = project_positions.group("category_id", "services.id").sum("project_efforts.value")
     self.effort_minutes_by_service = project_positions.group("services.id").sum("project_efforts.value")
   end
 

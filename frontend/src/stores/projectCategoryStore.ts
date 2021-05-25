@@ -1,9 +1,9 @@
 import { action, computed, observable } from 'mobx';
-import { ProjectCategory } from '../types';
+import { Category } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
-export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
+export class ProjectCategoryStore extends AbstractStore<Category> {
   protected get entityName() {
     return {
       singular: 'Der Tätigkeitsbereich',
@@ -12,16 +12,16 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   }
 
   @computed
-  get entity(): ProjectCategory | undefined {
+  get entity(): Category | undefined {
     return this.projectCategory;
   }
 
-  set entity(projectCategory: ProjectCategory | undefined) {
+  set entity(projectCategory: Category | undefined) {
     this.projectCategory = projectCategory;
   }
 
   @computed
-  get entities(): ProjectCategory[] {
+  get entities(): Category[] {
     return this.projectCategories;
   }
 
@@ -30,10 +30,10 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
   }
 
   @observable
-  projectCategories: ProjectCategory[] = [];
+  projectCategories: Category[] = [];
 
   @observable
-  projectCategory?: ProjectCategory;
+  projectCategory?: Category;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
@@ -41,24 +41,24 @@ export class ProjectCategoryStore extends AbstractStore<ProjectCategory> {
 
   @action
   async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<ProjectCategory[]>('/project_categories');
+    const res = await this.mainStore.apiV2.get<Category[]>('/project_categories');
     this.projectCategories = res.data;
   }
 
   @action
   async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<ProjectCategory[]>('/project_categories', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<Category[]>('/project_categories', {params: this.getQueryParams()});
     this.projectCategories = res.data;
   }
 
   @action
-  async doPost(projectCategory: ProjectCategory) {
+  async doPost(projectCategory: Category) {
     await this.mainStore.apiV2.post('/project_categories', projectCategory);
     await this.doFetchAll();
   }
 
   @action
-  async doPut(projectCategory: ProjectCategory) {
+  async doPut(projectCategory: Category) {
     await this.mainStore.apiV2.put('/project_categories/' + projectCategory.id, projectCategory);
     await this.doFetchAll();
   }

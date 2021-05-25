@@ -12,7 +12,6 @@ FactoryBot.define do
     association :accountant, factory: :employee
     association :customer, factory: :person
     address
-    project_category
     offer
     rate_group
 

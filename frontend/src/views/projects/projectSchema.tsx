@@ -17,7 +17,6 @@ export const projectSchema = localizeSchema(() => {
       chargeable: yup.boolean(),
       archived: yup.boolean(),
       deadline: dimeDate().nullable(true),
-      category_id: yup.number().nullable(true).required('Es muss eine Kategorie angegeben werden'),
       rate_group_id: selector(),
       fixed_price: nullableNumber(),
       positions: yup.array(
@@ -28,14 +27,19 @@ export const projectSchema = localizeSchema(() => {
           vat: requiredNumber(),
         }),
       ),
-      costgroup_distributions: yup
-        .array(
-          yup.object({
-            costgroup_number: requiredNumber(),
-            weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
-          }),
-        )
-        .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
+      category_distributions: yup.array(
+        yup.object({
+          category_id: requiredNumber(),
+          weight: requiredNumber().min(1, 'Das Gewicht eines Tätigkeitsbereiches muss grösser als 0 sein.'),
+        }),
+      ).min(1, 'Ein Projekt benötigt mindestens einen zugewiesenen Tätigkeitsbereich.'),
+      costgroup_distributions: yup.array(
+        yup.object({
+          costgroup_number: requiredNumber(),
+          weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
+        }),
+      )
+      .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
     });
   },
 );
@@ -48,9 +52,9 @@ export const projectTemplate = () => ({
   fixed_price: '',
   position_groupings: [],
   positions: [],
-  category_id: undefined,
   customer_id: undefined,
   address_id: undefined,
   rate_group_id: undefined,
   costgroup_distributions: [],
+  category_distributions: [],
 });
