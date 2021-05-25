@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "invoice_id", unsigned: true
     t.string "name", null: false
     t.boolean "percentage", default: false, null: false
-    t.decimal "value", precision: 11, scale: 3, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   create_table "rate_units", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "billing_unit", null: false
     t.string "effort_unit"
-    t.float "factor", limit: 53, default: 1.0, null: false
+    t.decimal "factor", precision: 10, scale: 4, default: "1.0", null: false
     t.boolean "is_time", null: false
     t.string "name", null: false
     t.boolean "archived", default: false, null: false
@@ -465,7 +465,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "deleted_by"
     t.index ["rate_group_id"], name: "service_rates_rate_group_id_foreign"
     t.index ["rate_unit_id"], name: "service_rates_rate_unit_id_foreign"
-    t.index ["service_id", "rate_group_id"], name: "service_rates_service_id_rate_group_id_unique", unique: true
+    t.index ["service_id", "rate_group_id"], name: "service_rates_service_id_rate_group_id_unique"
   end
 
   create_table "services", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
