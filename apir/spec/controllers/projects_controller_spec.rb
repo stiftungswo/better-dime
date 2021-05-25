@@ -69,7 +69,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
         build(
           :project,
           name: "Project A",
-          accountant: project_template.accountant,
+          accountant: nil,
           customer: project_template.customer,
           address: project_template.address,
           rate_group: project_template.rate_group,

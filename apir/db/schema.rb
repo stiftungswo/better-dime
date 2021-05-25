@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "holidays_per_year"
     t.timestamp "deleted_at"
     t.integer "employee_group_id", unsigned: true
-    t.decimal "first_vacation_takeover", precision: 8, scale: 2, default: "0.0", null: false
+    t.decimal "first_vacation_takeover", precision: 10, scale: 2, default: "0.0", null: false
     t.string "locale", default: "de", null: false
     t.index ["email"], name: "employees_email_unique", unique: true
     t.index ["employee_group_id"], name: "employees_employee_group_id_foreign"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "invoice_id", unsigned: true
     t.string "name", null: false
     t.boolean "percentage", default: false, null: false
-    t.decimal "value", precision: 11, scale: 3, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   end
 
   create_table "invoice_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.decimal "amount", precision: 8, scale: 2, null: false
+    t.decimal "amount", precision: 10, scale: 4, null: false
     t.string "description", null: false
     t.integer "invoice_id", unsigned: true
     t.integer "order"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.string "name", null: false
     t.integer "offer_id", null: false, unsigned: true
     t.boolean "percentage", default: false, null: false
-    t.decimal "value", precision: 10, scale: 3, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   end
 
   create_table "offer_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.decimal "amount", precision: 8, scale: 2, null: false
+    t.decimal "amount", precision: 10, scale: 4, null: false
     t.string "description"
     t.integer "offer_id", null: false, unsigned: true
     t.integer "order", null: false
@@ -374,7 +374,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.date "date", null: false
     t.integer "employee_id", unsigned: true
     t.integer "position_id", unsigned: true
-    t.decimal "value", precision: 10, scale: 3, null: false
+    t.decimal "value", precision: 10, scale: 4, null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -391,7 +391,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "project_id", unsigned: true
     t.integer "rate_unit_id", unsigned: true
     t.integer "service_id", unsigned: true
-    t.decimal "vat", precision: 4, scale: 3, null: false
+    t.decimal "vat", precision: 4, scale: 3, default: "0.077", null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   create_table "rate_units", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "billing_unit", null: false
     t.string "effort_unit"
-    t.float "factor", limit: 53, default: 1.0, null: false
+    t.decimal "factor", precision: 10, scale: 4, default: "1.0", null: false
     t.boolean "is_time", null: false
     t.string "name", null: false
     t.boolean "archived", default: false, null: false
@@ -465,14 +465,14 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
     t.integer "deleted_by"
     t.index ["rate_group_id"], name: "service_rates_rate_group_id_foreign"
     t.index ["rate_unit_id"], name: "service_rates_rate_unit_id_foreign"
-    t.index ["service_id", "rate_group_id"], name: "service_rates_service_id_rate_group_id_unique", unique: true
+    t.index ["service_id", "rate_group_id"], name: "service_rates_service_id_rate_group_id_unique"
   end
 
   create_table "services", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.float "vat", limit: 53, null: false
-    t.boolean "archived", null: false
+    t.decimal "vat", precision: 4, scale: 3, null: false
+    t.boolean "archived", default: false, null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.timestamp "deleted_at"
