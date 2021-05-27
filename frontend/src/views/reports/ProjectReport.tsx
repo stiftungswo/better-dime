@@ -49,7 +49,7 @@ const template = () => ({
   to: moment().endOf('month'),
   project_id: null,
   exclude_employee_ids: null,
-  daily_rate: 11500,
+  daily_rate: 9000,
   vat: 0.077,
   additional_costs: [],
 });
