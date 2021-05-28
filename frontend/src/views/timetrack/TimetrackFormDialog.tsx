@@ -151,23 +151,23 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <DimeField portal isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'} />
+                  <DimeField isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'} />
                 )}
-                {formikProps.values.id && <DimeField portal component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
-                <DimeField portal component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+                {formikProps.values.id && <DimeField component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
+                <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
                   label={'Service'}
-                  portal
+                  maxMenuHeight={200}
                 />
                 <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />
                     {!formikProps.values.id && (
-                      <DimeField portal component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar zu Projekt und Tag'} />
+                      <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar zu Projekt und Tag'} />
                     )}
                   </>
                 )}

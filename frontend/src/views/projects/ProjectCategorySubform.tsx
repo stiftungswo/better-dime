@@ -37,8 +37,6 @@ export class ProjectCategorySubform extends React.Component<Props> {
 
   render() {
     const { values, errors, touched } = this.props.formikProps;
-    // tslint:disable-next-line:no-console
-    console.log(values);
     const { disabled, name } = this.props;
     const weightSum = values.category_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);

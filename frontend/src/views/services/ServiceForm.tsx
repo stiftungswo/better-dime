@@ -135,7 +135,6 @@ export default class ServiceForm extends React.Component<Props> {
                                           disabled={this.props.rateUnitSelectDisabled}
                                           component={RateUnitSelect}
                                           name={`service_rates.${index}.rate_unit_id`}
-                                          portal
                                         />
                                       </DimeTableCell>
                                       <DimeTableCell>

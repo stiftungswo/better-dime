@@ -24,6 +24,6 @@ export class ProjectSelect<T> extends React.Component<Props<T>> {
   }
 
   render() {
-    return <Select portal options={this.options} {...this.props} />;
+    return <Select options={this.options} {...this.props} />;
   }
 }
