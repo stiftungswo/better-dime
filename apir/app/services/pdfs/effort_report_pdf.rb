@@ -7,6 +7,8 @@ module Pdfs
     def initialize(global_setting, data_holder)
       @global_setting = global_setting
       @data_holder = data_holder
+      @swo_blue = '007DC2'
+      @border_color = '81827e'
       super()
     end
 
@@ -14,32 +16,43 @@ module Pdfs
       @data_holder
     end
 
-    def subtitle
-      I18n.t(:project) + " Nr. " + efforts_holder.id.to_s
+    def invoice
+      @invoice = Invoice.find_by_project_id(efforts_holder.id)
+    end
+
+    def table_title(title)
+      @document.fill_color @swo_blue
+      @document.transparent(1) do
+        @document.fill_rectangle [0, @document.cursor], @document.bounds.width, 20
+      end
+      @document.fill_color 'ffffff'
+      @document.move_down 6
+      @document.indent(4,0) do
+        @document.text title, style: :bold
+      end
+      @document.fill_color '000000'
+      @document.move_down 6
     end
 
     def draw
-      Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder).draw(
-        @default_text_settings,
-        false
-      )
-      draw_description
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder)
+
+      header.draw(@default_text_settings, true)
+      header.draw_title(:effort_report)
+
+      draw_description(header)
       draw_efforts
+      draw_signature
     end
 
-    def draw_description
-      move_down 40
-      text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
+    def draw_description(header)
+      move_down 70
 
-      dates = efforts_holder.project_efforts.map(&:date) + efforts_holder.project_comments.map(&:date)
+      costgroups = efforts_holder.project_costgroup_distributions.map do |c|
+        c.weight.to_s + "% " + c.costgroup_number.to_s
+      end.join(", ")
 
-      earliest_effort = dates.min || DateTime.now
-      latest_effort = dates.max || DateTime.now
-
-      move_down 5
-      text I18n.t(:effort_report) + ": " + efforts_holder.name, @default_text_settings.merge(size: 14, style: :bold)
-      text subtitle, @default_text_settings.merge(style: :bold)
-      text I18n.t(:services_from_to, from: earliest_effort.strftime("%d.%m.%Y"), to: latest_effort.strftime("%d.%m.%Y")), @default_text_settings
+      header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, costgroups, :effort_report, efforts_holder.name)
 
       move_down 15
       text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)
@@ -47,17 +60,33 @@ module Pdfs
     end
 
     def draw_efforts
-      move_down 20
+      move_down 40 if cursor > 40
+      start_new_page if cursor < 60
 
       effort_dates = efforts_holder.project_efforts.map(&:date).uniq
       comment_dates = efforts_holder.project_comments.map(&:date).uniq
       uniq_dates = (effort_dates + comment_dates).uniq.sort
 
-      table_data = [
-        [I18n.t(:date_name), I18n.t(:description), I18n.t(:quantity), I18n.t(:unit)]
-      ]
+      earliest_effort = uniq_dates.min || DateTime.now
+      latest_effort = uniq_dates.max || DateTime.now
 
-      content_widths = [bounds.width - 190, 50, 65]
+      table_title(I18n.t(:services_from_to, from: earliest_effort.strftime("%d.%m.%Y"), to: latest_effort.strftime("%d.%m.%Y")))
+
+      padding = [6, 6, 0, 6]
+      table_data = [{
+        data: [I18n.t(:date_name), I18n.t(:description), I18n.t(:quantity), I18n.t(:unit)],
+        style: {
+          font_style: :bold,
+          height: 36,
+          padding: padding,
+          border_color: @border_color,
+          borders: [:bottom],
+          border_width: 0.5,
+          valign: :center
+        }
+      }]
+
+      content_widths = [@document.bounds.width - 180, 50, 55]
       widths = [75] + content_widths
 
       uniq_dates.each do |date|
@@ -65,11 +94,7 @@ module Pdfs
         num_comments = efforts_holder.project_comments.count { |e| e.date == date }
 
         efforts_holder.project_comments.select { |e| e.date == date }.each do |comment|
-          date_data.push [
-            comment.comment,
-            "",
-            ""
-          ]
+          date_data.push([comment.comment,"",""])
         end
 
         efforts_holder.project_efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|
@@ -83,38 +108,39 @@ module Pdfs
 
         subtable = make_table(date_data, column_widths: content_widths) do
           cells.borders = []
-          # pad the cells on top, right and bottom
-          columns(0..date_data[0].length - 2).padding = [3, 10, 3, 0]
-          # only have a very small right padding on the right most cell
-          columns(date_data[0].length - 1).padding = [3, 1, 3, 0]
           columns(1).align = :right
+
+          rows(0..date_data.length - 1).padding = [3, 6, 3, 6]
+          row(0).padding_top = 6
 
           rows(0..num_comments - 1).font_style = :italic if num_comments > 0
         end
 
-        table_data.push [date.strftime("%d.%m.%Y"), { content: subtable, colspan: 3 }]
+        table_data.push(
+          data: [date.strftime("%d.%m.%Y"), { content: subtable, colspan: 3 }],
+          style: {
+            padding_bottom: 4,
+            padding_top: 1,
+            border_color: @border_color,
+            borders: [:bottom],
+            border_width: 0.5,
+            valign: :center
+          }
+        )
       end
 
-      table(table_data, header: true, column_widths: widths) do
-        cells.borders = [:bottom]
-        cells.border_width = 0.5
-        cells.valign = :center
+      Pdfs::Generators::TableGenerator.new(@document).render(
+        table_data,
+        widths,
+        {
+          [2] => :right
+        },
+        true
+      )
+    end
 
-        # pad the cells on top, right and bottom
-        cells.padding = [5, 1, 5, 0]
-        columns(0).padding = [0, 0, 5, 0]
-        columns(2).align = :right
 
-        row(0).columns(0..table_data[0].length - 2).padding = [5, 10, 5, 0]
-        row(0).columns(table_data[0].length - 1).padding = [5, 1, 5, 0]
-
-        row(0).borders = [:bottom]
-        row(0).border_width = 1
-        # row(0).font_style = :bold
-        row(0).valign = :center
-        row(0).font_style = :bold
-      end
-
+    def draw_signature
       start_new_page if cursor < 100
 
       bounding_box([0, 70], width: bounds.width, height: 150) do
@@ -144,7 +170,6 @@ module Pdfs
           text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
         end
       end
-      
     end
   end
 end
