@@ -7,7 +7,7 @@ module Pdfs
         @document = document
       end
 
-      def render(data, column_widths, column_alignments = {}, padSides = false, isTotal = false)
+      def render(data, column_widths, column_alignments = {}, has_footer = true)
         table_data = data.map do |row|
           row[:data]
         end
@@ -17,9 +17,29 @@ module Pdfs
         end
 
         @document.table(table_data, header: true, column_widths: column_widths) do
-
-          # Apply passed styles
           cells.borders = []
+          # pad the cells on top, right and bottom
+          columns(0..table_data[0].length - 2).padding = [5, 10, 5, 0]
+          # only have a very small right padding on the right most cell
+          columns(table_data[0].length - 1).padding = [5, 1, 5, 0]
+
+          row(0).columns(0..table_data[0].length - 2).padding = [5, 10, 10, 0]
+          row(0).columns(table_data[0].length - 1).padding = [5, 1, 10, 0]
+
+          row(0).borders = [:bottom]
+          row(0).border_width = 0.5
+          # row(0).font_style = :bold
+          row(0).valign = :center
+
+          column_alignments.each do |key, value|
+            columns(key).align = value
+          end
+
+          if has_footer
+            row(table_data.length - 1).borders = [:top]
+            row(table_data.length - 1).border_width = 0.5
+            # row(data.length - 1).font_style = :bold
+          end
 
           table_style.each_with_index do |styles, index|
             next if styles.nil?
@@ -27,21 +47,6 @@ module Pdfs
             styles.each do |style_key, style_value|
               row(index).send(style_key.to_s + "=", style_value) if style_key
             end
-          end
-
-          column_alignments.each do |key, value|
-            columns(key).align = value
-          end
-          
-          if isTotal
-            rows(table_data.length-1).columns(0).text_color = '007DC2'
-            rows(table_data.length-1).columns(1).text_color = 'ffffff'
-            rows(table_data.length-1).columns(1).background_color = '007DC2'
-          end
-
-          if padSides
-            columns(0).padding_left = 5
-            columns(table_data[0].length - 1).padding_right = 5
           end
         end
       end

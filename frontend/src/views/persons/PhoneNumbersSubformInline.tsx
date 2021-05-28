@@ -81,7 +81,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                     return (
                       <TableRow key={phoneNumber.id || phoneNumber.formikKey}>
                         <DimeTableCell>
-                          <DimeField delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
+                          <DimeField delayed component={Select} name={name('category')} margin={'none'} options={this.options} />
                         </DimeTableCell>
                         <DimeTableCell>
                           <DimeField delayed component={TextField} name={name('number')} margin={'none'} />

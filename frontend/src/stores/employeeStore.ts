@@ -83,7 +83,11 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doPost(employee: Employee) {
+    // tslint:disable-next-line:no-console
+    console.error('employee: ', employee);
     await this.mainStore.apiV2.post('/employees', employee).then(res => {
+      // tslint:disable-next-line:no-console
+      console.error('data: ', res.data);
       this.employee = res.data;
     }).catch(this.handleError);
   }

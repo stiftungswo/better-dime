@@ -131,12 +131,12 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                     </DimeTableCell>
                     <DimeTableCell>
                       {(!archivedRate || !afterUnitInvalidation) && (
-                        <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                        <DimeField disabled component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                       )}
                       {archivedRate && afterUnitInvalidation && (
                         <Grid container direction="row" alignItems="center">
                           <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
-                            <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                            <DimeField disabled component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                           </Grid>
                           <Grid item style={{marginLeft: '5px'}}>
                             <Warning color={'error'}/>

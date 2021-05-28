@@ -70,7 +70,7 @@ export default class EmployeeForm extends React.Component<Props> {
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
-                <Grid item xs={12}>
+                <Grid item xs={10}>
                   <DimePaper>
                     <FormHeader> Allgemeine Informationen </FormHeader>
 
@@ -84,10 +84,10 @@ export default class EmployeeForm extends React.Component<Props> {
                     </Grid>
 
                     <Grid container>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={6} style={{paddingRight: '8px'}}>
                         <DimeField component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={6} style={{paddingLeft: '8px'}}>
                         <DimeField component={EmployeeGroupSelect} name={'employee_group_id'} label={'Gruppe'} />
                       </Grid>
                     </Grid>
@@ -103,7 +103,7 @@ export default class EmployeeForm extends React.Component<Props> {
                   </DimePaper>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={10}>
                   <AddressesSubformInline formikProps={props} name={'addresses'}/>
                 </Grid>
 
@@ -129,7 +129,7 @@ export default class EmployeeForm extends React.Component<Props> {
                   </DimePaper>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={10}>
                   <DimePaper>
                     <FormHeader> Benutzereinstellungen </FormHeader>
 

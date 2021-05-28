@@ -77,7 +77,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                       </DimeTableCell>
                       <DimeTableCell>{distribution}%</DimeTableCell>
                       <DimeTableCell>
-                        <DimeField portal component={CostgroupSelect} name={fieldName('costgroup_number')} />
+                        <DimeField component={CostgroupSelect} name={fieldName('costgroup_number')} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
