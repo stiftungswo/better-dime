@@ -77,12 +77,14 @@ module Pdfs
           inline_format: TRUE
         }
 
-        @document.float do
-          @document.text "#{label} "
-        end
+        @document.indent(20, 0) do
+          @document.float do
+            @document.text "#{label} "
+          end
 
-        @document.indent(label_width, 0) do
-          @document.text text.gsub("[step]", ""), settings
+          @document.indent(label_width, 0) do
+            @document.text text.gsub("[step]", ""), settings
+          end
         end
       end
 
@@ -109,7 +111,7 @@ module Pdfs
             style: :bold,
             character_spacing: @spacing,
             leading: 5,
-            size: _header_level == 1 ? 10 : 10,
+            size: _header_level == 1 ? 13 : 10,
             inline_format: TRUE
           }
           @document.text text, settings

@@ -19,84 +19,70 @@ module Pdfs
       @offer
     end
 
-    def project
-      @project = Project.find_by_offer_id(data.id)
-    end
-
-    def invoice
-      @invoice = Invoice.find_by_project_id(project.id) if project
-    end
-
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer, @date)
-      
-      header.draw(@default_text_settings, true)
-      header.draw_title(:offer)
-
-      draw_description(header)
+      Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer).draw @default_text_settings
+      draw_description
       draw_breakdown
       draw_signature
     end
 
-    def draw_description(header)
-      move_down 70
-
-      costgroups = nil
-
-      if project
-        costgroups = project.project_costgroup_distributions.map do |c|
-          c.weight.to_s + "% " + c.costgroup_number.to_s
-        end.join(", ")
-      end
-
-      header.draw_misc(invoice, project, data, data.accountant, costgroups, :offer, data.name)
+    def draw_description
+      move_down 10
+      text @global_setting.sender_city + ", " + @date.strftime("%d.%m.%Y"), @default_text_settings
+      text I18n.t(:clerk) + ": " + @offer.accountant.full_name, @default_text_settings
 
       move_down 20
+      text I18n.t(:offer) + ": " + @offer.name, @default_text_settings.merge(size: 14, style: :bold)
+      text I18n.t(:range_of_services) + " Nr. " + @offer.id.to_s, @default_text_settings
 
-      Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@offer.description[0] == '#' ? "" : "#Projektbeschrieb\n") + @offer.description)
+      move_down 20
+      Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading)).render(@offer.description)
     end
 
     def draw_breakdown
-      move_down 40 if cursor > 40
-      start_new_page if cursor < 100
+      start_new_page
+      text I18n.t(:cost_overview), @default_text_settings.merge(style: :bold, size: 12)
 
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
-
-      move_down 10
-      text I18n.t(:payable_deadline, days: 30), @default_text_settings
     end
 
     def draw_signature
-      start_new_page if cursor < 100
+      start_new_page if cursor < 150
 
-      bounding_box([0, 70], width: bounds.width, height: 150) do
+      move_down 20
+      text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
+      move_down 20
+
+      float do
+        text I18n.t(:signature_contractor) + ":", @default_text_settings.merge(style: :bold)
+      end
+      indent(bounds.width / 2.0, 0) do
+        text I18n.t(:signature_client) + ":", @default_text_settings.merge(style: :bold)
+      end
+
+      move_down 35
+
+      float do
+        text I18n.t(:place) + " / " + I18n.t(:date_name) + ":", @default_text_settings
+      end
+      indent(bounds.width / 2.0, 0) do
+        text I18n.t(:place) + " / " + I18n.t(:date_name) + ":", @default_text_settings
+      end
+
+      move_down 30
+
+      bounding_box([0, cursor], width: bounds.width, height: 20) do
         float do
-          indent(10, 0) do
-            text I18n.t(:signature_contractor), @default_text_settings.merge(size: 10, style: :bold)
-          end
+          text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
         end
 
-        indent(bounds.width / 2.0 + 50, 0) do
-          text I18n.t(:signature_client), @default_text_settings.merge(size: 10, style: :bold)
-        end
-
-        move_down 50
-
-        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 20) do
-            stroke_horizontal_rule
-            move_down 4
-            text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-        end
-
-        move_up 20
-
-        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 20) do
+        indent(bounds.width / 2.0, 0) do
+          move_down 9
+          dash(1, space: 1)
           stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
+          undash
         end
       end
     end
