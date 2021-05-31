@@ -3,18 +3,19 @@
 module Pdfs
   module Generators
     class MailHeaderGenerator
-      def initialize(document, global_setting, data, date=Time.current.to_date)
+      def initialize(document, global_setting, data, date=Time.current.to_date, accountant=nil)
         @document = document
         @global_setting = global_setting
         @data = data
         @date = date
-        @address_offset = 34
+        @address_offset = 40
         @logo_width = 150
         @logo_simple_width = 65
         @logo_height = 64
         @swo_blue = '007DC2'
         @page_offset = 30
         @title_widths = {:effort_report => 190, :invoice => 112, :offer => 84}
+        @accountant = accountant
       end
 
       def draw(text_settings, draw_recipient = true)
@@ -32,8 +33,8 @@ module Pdfs
         @document.move_down 11
 
         @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
-        @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor])
-        @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor])
+        @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor]) unless title_symbol === :offer
+        @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor]) unless title_symbol === :offer
         @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
         @document.draw_text @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [425, @document.cursor])
 
@@ -43,7 +44,7 @@ module Pdfs
         @document.draw_text project.id.to_s, @default_text_settings.merge(at: [75, @document.cursor]) if project
         @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [150, @document.cursor]) if invoice
         @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
-        @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor])
+        @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor]) if accountant
 
         @document.move_down 26
 
@@ -113,7 +114,8 @@ module Pdfs
           @document.text @global_setting.sender_street, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_phone, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 6)
+          @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 6) if @accountant && @accountant.email
+          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 6) unless @accountant && @accountant.email
         end
       end
 

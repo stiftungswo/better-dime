@@ -62,6 +62,7 @@ module Pdfs
         end
         @document.move_down 20
         @document.start_new_page if @document.cursor < 110
+        @document.start_new_page if @document.cursor < 110
         render_discounts
         @document.start_new_page if @document.cursor < 110
         render_total
@@ -115,19 +116,6 @@ module Pdfs
           }
         )
 
-        # data.push(
-        #   data: [I18n.t(:subtotal_inkl_vat), "", "", "", "", format_money(@breakdown[:total], :ceil)],
-        #   style: {
-        #     height: 30,
-        #     valign: :bottom,
-        #     padding: [0, 5, 7, 5],
-        #     font_style: :bold,
-        #     border_color: @border_color,
-        #     borders: [:bottom],
-        #     border_width: 0.5
-        #   }
-        # )
-
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,
           [185, 80, 60, 55, 55, @document.bounds.width - 435],
@@ -138,8 +126,34 @@ module Pdfs
         )
       end
 
+      def render_subtotal
+
+        data = [
+          {
+            data: [I18n.t(:subtotal_transfer), format_money(@breakdown[:total], :ceil)],
+            style: {
+              height: 30,
+              valign: :bottom,
+              padding: [0, 5, 7, 5],
+              font_style: :bold,
+              border_width: 0.5
+            }
+          }
+        ]
+
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          data,
+          [@document.bounds.width - 70, 70],
+            {
+              [0, 1] => :right
+            },
+            true
+        )
+
+      end
+
       def render_discounts
-        unless @breakdown[:discounts].empty?
+        # unless @breakdown[:discounts].empty?
 
           padding = [6, 10, 6, 0]
 
@@ -185,7 +199,7 @@ module Pdfs
           )
 
           @document.move_down 20
-        end
+        # end
       end
 
       def render_total
