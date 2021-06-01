@@ -53,6 +53,19 @@ export const newEmployeeSchema = localizeSchema(() =>
       }),
     ),
     employee_group_id: selector(),
+    addresses: yup.array(
+      yup.object({
+        city: yup.string().required(),
+        country: yup.string().required(),
+        description: yup.string(),
+        zip: yup
+          .number()
+          .required()
+          .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
+        street: yup.string().required(),
+        supplement: yup.string().nullable(true),
+      }),
+    ),
   }),
 );
 
@@ -75,4 +88,5 @@ export const employeeTemplate = {
   password: '',
   locale: 'de',
   employee_group_id: null,
+  addresses: [],
 };
