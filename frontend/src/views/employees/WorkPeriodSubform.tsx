@@ -9,7 +9,7 @@ import { NumberField, SwitchField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
 import { DimeField } from '../../form/fields/formik';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { Employee, WorkPeriod } from '../../types';
@@ -205,7 +205,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                             />
                           </DimeTableCell>
                           <DimeTableCell>
-                            <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
+                            <ConfirmationButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                           </DimeTableCell>
                         </TableRow>
                       );

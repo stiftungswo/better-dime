@@ -27,7 +27,7 @@ module Pdfs
         draw_recipient_address if draw_recipient
       end
 
-      def draw_misc(invoice, project, offer, accountant, costgroups, title_symbol, name)
+      def draw_misc(invoice, project, offer, accountant, costgroups, title_symbol, name, timespan=nil)
 
         @document.text name, @default_text_settings.merge(size: 12, style: :bold, color: @swo_blue)
         @document.move_down 11
@@ -48,9 +48,11 @@ module Pdfs
 
         @document.move_down 26
 
+        @document.text timespan, @default_text_settings.merge(leading: 6) if timespan
+
         @document.text I18n.t(:cost_groups) + " " + costgroups, @default_text_settings.merge(leading: 6) if costgroups
 
-        @document.text I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings if costgroups
+        @document.text I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings.merge(leading: 6) if costgroups
 
       end
 

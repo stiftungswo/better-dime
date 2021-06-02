@@ -16,7 +16,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
 import {FormikSubmitDetector} from '../../form/FormikSubmitDetector';
-import {DeleteButton} from '../../layout/ConfirmationDialog';
+import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import {DimeTableCell} from '../../layout/DimeTableCell';
@@ -184,7 +184,7 @@ export class ProjectReport extends React.Component<Props, State> {
                                       <DimeField delayed component={CurrencyField} name={`additional_costs.${index}.cost`} margin={'none'} />
                                     </DimeTableCell>
                                     <DimeTableCell>
-                                      <DeleteButton
+                                      <ConfirmationButton
                                         onConfirm={() => handleRemove(arrayHelpers, index, formikProps)}
                                       />
                                     </DimeTableCell>

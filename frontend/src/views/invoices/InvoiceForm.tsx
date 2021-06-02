@@ -13,10 +13,12 @@ import { DimeField } from '../../form/fields/formik';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import PercentageField from '../../form/fields/PercentageField';
 import { FormView, FormViewProps } from '../../form/FormView';
+import { ActionButton } from '../../layout/ActionButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
-import { ESRIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
+import { ESRIcon, InvoiceIcon, Renew, StatisticsIcon } from '../../layout/icons';
 import PrintButton from '../../layout/PrintButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
@@ -59,6 +61,10 @@ export default class InvoiceForm extends React.Component<Props> {
       this.props.employeeStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
+  }
+
+  handleTimeSpan = (invoice: Invoice) => {
+    return this.props.invoiceStore!.updateTimeSpan(invoice);
   }
 
   render() {
@@ -154,11 +160,19 @@ export default class InvoiceForm extends React.Component<Props> {
                                 label={'Verantwortlicher Mitarbeiter'}
                               />
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} lg={5}>
                               <DimeField required component={DatePicker} name={'beginning'} label={'Startdatum'} />
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} lg={5}>
                               <DimeField required component={DatePicker} name={'ending'} label={'Enddatum'} />
+                            </Grid>
+                            <Grid item xs={12} lg={2}>
+                              <ConfirmationButton
+                                onConfirm={() => this.handleTimeSpan(props.values)}
+                                icon={Renew}
+                                title={'Zeitspanne aktualisieren'}
+                                message={'Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getägtigte Änderungen an der Rechnung gehen dabei verloren.'}
+                              />
                             </Grid>
                           </Grid>
                         </Grid>

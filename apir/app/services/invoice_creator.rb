@@ -3,6 +3,20 @@
 class InvoiceCreator
   def self.create_invoice_from_project(project)
     invoice = Invoice.new
+    invoice.beginning = get_invoice_beginning_date(project)
+    invoice.ending = get_invoice_ending_date(project, invoice.beginning)
+    create_invoice(invoice, project)
+  end
+
+  def self.update_timespan(invoice, beginning, ending)
+    invoice.beginning = beginning
+    invoice.ending = ending
+    create_invoice(invoice, invoice.project)
+  end
+
+  private
+
+  def self.create_invoice(invoice, project)
     invoice.accountant = project.accountant
     invoice.project = project
     invoice.address = project.address
@@ -14,12 +28,8 @@ class InvoiceCreator
     invoice.invoice_costgroup_distributions = create_costgroups_from_project(invoice, project)
     invoice.invoice_discounts = create_discounts_from_project(invoice, project)
     invoice.invoice_positions = create_positions_from_project(invoice, project)
-    invoice.beginning = get_invoice_beginning_date(project)
-    invoice.ending = get_invoice_ending_date(project, invoice.beginning)
     invoice
   end
-
-  private
 
   def self.create_costgroups_from_project(invoice, project)
     project.project_costgroup_distributions.map do |costgroup|
@@ -51,7 +61,8 @@ class InvoiceCreator
       invoice_position.project_position = position
       invoice_position.rate_unit = position.rate_unit
       invoice_position.position_group = position.position_group
-      invoice_position.amount = position.efforts_value
+      amount = (position.project_efforts.inject(0) { |sum, e| sum + (e.date <= invoice.ending && e.date >= invoice.beginning ? e.value : 0) } / position.rate_unit.factor).round 2
+      invoice_position.amount = amount
       invoice_position.description = position.description.presence || position.service.name
       invoice_position.vat = position.vat
       invoice_position.price_per_rate = position.price_per_rate
@@ -61,7 +72,7 @@ class InvoiceCreator
   end
 
   def self.get_invoice_beginning_date(project)
-    project.invoices.max_by(&:ending)&.ending || project.project_efforts.min_by(&:date)&.date || DateTime.now
+    project.invoices.max_by(&:ending)&.ending + 1.day || project.project_efforts.min_by(&:date)&.date || DateTime.now
   end
 
   def self.get_invoice_ending_date(project, beginning)

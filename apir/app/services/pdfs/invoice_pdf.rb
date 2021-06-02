@@ -31,7 +31,8 @@ module Pdfs
         costgroup.weight_percent.round.to_s + "% " + costgroup.costgroup_number.to_s
       end.join(", ")
 
-      header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name)
+      header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name,
+        "Aufwandszeitraum: " + @invoice.beginning.strftime("%d.%m.%Y") + " bis " + @invoice.ending.strftime("%d.%m.%Y"))
 
       move_down 25
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))

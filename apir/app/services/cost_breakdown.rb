@@ -54,18 +54,18 @@ class CostBreakdown
 
   # return the list of groups with their respective positions
   def get_grouped_positions(positions, groups)
-    default_positions = positions.select { |p| p.position_group_id.nil? }
+    default_positions = positions.select { |p| p.position_group_id.nil? && p.amount > 0 }
     default_group = [{
-      group_name: (I18n.t :cost_overview),
+      group_name: "",
       positions: default_positions,
       subtotal: calculate_subtotal(default_positions)
     }]
 
     grouped_positions = groups.map do |group|
-      filtered_positions = positions.select { |p| p.position_group_id == group.id }
+      filtered_positions = positions.select { |p| p.position_group_id == group.id && p.amount > 0 }
 
       {
-        group_name: (I18n.t :cost_overview) + ' - ' + group.name,
+        group_name: group.name,
         positions: filtered_positions,
         subtotal: calculate_subtotal(filtered_positions)
       }
