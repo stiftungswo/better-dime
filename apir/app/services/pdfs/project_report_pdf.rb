@@ -67,7 +67,7 @@ module Pdfs
       move_down 5
       text "Projektrapport: " + @project.name, @default_text_settings.merge(size: 14, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
-      text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
+      text "Aufwände vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
 
     def draw_efforts

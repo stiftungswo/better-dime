@@ -9,7 +9,7 @@ import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
@@ -73,7 +73,7 @@ export default class InvoiceDiscountSubform extends React.Component<Props> {
                         )}
                       </DimeTableCell>
                       <DimeTableCell>
-                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
+                        <ConfirmationButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                       </DimeTableCell>
                     </TableRow>
                   );

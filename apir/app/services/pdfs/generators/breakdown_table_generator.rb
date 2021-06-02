@@ -35,36 +35,38 @@ module Pdfs
       end
 
       def render(header)
-        if @breakdown[:grouped_positions].length > 1
-          @breakdown[:grouped_positions].each do |group|
-            @document.start_new_page if @document.cursor < 100
-            table_title(group[:group_name])
-            render_positions_table header, group[:positions], group[:subtotal]
-            @document.move_down 30
-          end
+        if @breakdown[:grouped_positions].length > 0
+          if @breakdown[:grouped_positions].length > 1
+            @breakdown[:grouped_positions].each do |group|
+              @document.start_new_page if @document.cursor < 100
+              table_title(group[:group_name])
+              render_positions_table header, group[:positions], group[:subtotal]
+              @document.move_down 30
+            end
 
-          # @document.move_down 5
-          # Pdfs::Generators::TableGenerator.new(@document).render(
-          #   [{
-          #     data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:subtotal], :ceil)],
-          #     style: {
-          #       borders: [:top],
-          #       padding: [-2, 1, 0, 0],
-          #       font_style: :bold
-          #     }
-          #   }],
-          #   [@document.bounds.width - 100, 100],
-          #   [1] => :right
-          # )
-        else
-          table_title(@breakdown[:grouped_positions][0][:group_name])
-          render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
+            # @document.move_down 5
+            # Pdfs::Generators::TableGenerator.new(@document).render(
+            #   [{
+            #     data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:subtotal], :ceil)],
+            #     style: {
+            #       borders: [:top],
+            #       padding: [-2, 1, 0, 0],
+            #       font_style: :bold
+            #     }
+            #   }],
+            #   [@document.bounds.width - 100, 100],
+            #   [1] => :right
+            # )
+          else @breakdown[:grouped_positions].length === 1
+            table_title(@breakdown[:grouped_positions][0][:group_name])
+            render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
+          end
+          @document.move_down 20
+          @document.start_new_page if @document.cursor < 110
+          render_discounts
+          @document.start_new_page if @document.cursor < 50
+          render_total
         end
-        @document.move_down 20
-        @document.start_new_page if @document.cursor < 110
-        render_discounts
-        @document.start_new_page if @document.cursor < 110
-        render_total
       end
 
       def render_positions_table(header, positions, subtotal)
@@ -115,19 +117,6 @@ module Pdfs
           }
         )
 
-        # data.push(
-        #   data: [I18n.t(:subtotal_inkl_vat), "", "", "", "", format_money(@breakdown[:total], :ceil)],
-        #   style: {
-        #     height: 30,
-        #     valign: :bottom,
-        #     padding: [0, 5, 7, 5],
-        #     font_style: :bold,
-        #     border_color: @border_color,
-        #     borders: [:bottom],
-        #     border_width: 0.5
-        #   }
-        # )
-
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,
           [185, 80, 60, 55, 55, @document.bounds.width - 435],
@@ -138,8 +127,32 @@ module Pdfs
         )
       end
 
+      def render_subtotal
+        data = [
+          {
+            data: [I18n.t(:subtotal_transfer), format_money(@breakdown[:total], :ceil)],
+            style: {
+              height: 30,
+              valign: :bottom,
+              padding: [0, 5, 7, 5],
+              font_style: :bold,
+              border_width: 0.5
+            }
+          }
+        ]
+
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          data,
+          [@document.bounds.width - 70, 70],
+            {
+              [0, 1] => :right
+            },
+            true
+        )
+      end
+
       def render_discounts
-        unless @breakdown[:discounts].empty?
+        # unless @breakdown[:discounts].empty?
 
           padding = [6, 10, 6, 0]
 
@@ -185,7 +198,7 @@ module Pdfs
           )
 
           @document.move_down 20
-        end
+        # end
       end
 
       def render_total

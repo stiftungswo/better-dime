@@ -2,7 +2,7 @@ import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid/Grid';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {DeleteButton} from '../../layout/ConfirmationDialog';
+import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import {DimeAppBar, DimeAppBarButton} from '../../layout/DimeAppBar';
 import {DimeContent} from '../../layout/DimeContent';
 import {AddCommentIcon, AddEffortIcon, LogoIcon, MoveIcon} from '../../layout/icons';
@@ -215,7 +215,7 @@ export default class Timetrack extends React.Component<Props> {
           ? <DimeAppBar title={`${this.selectedEffortIds.length + this.selectedCommentIds.length} Ausgewählt`} alternativeColor>
             <>
               <DimeAppBarButton icon={MoveIcon} action={() => (this.setState({moving: true}))} title={'Verschieben'} />
-              <DeleteButton color="inherit" onConfirm={this.handleDelete} />
+              <ConfirmationButton color="inherit" onConfirm={this.handleDelete} />
             </>
           </DimeAppBar>
           : <DimeAppBar title={'Zeiterfassung'}>

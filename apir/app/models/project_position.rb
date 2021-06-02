@@ -20,14 +20,6 @@ class ProjectPosition < ApplicationRecord
     price_per_rate * efforts_value * vat
   end
 
-  def amount
-    efforts_value_with_unit
-  end
-
-  def calculated_total
-    price_per_rate * efforts_value
-  end
-
   def efforts_value
     (project_efforts.inject(0) { |sum, e| sum + e.value } / rate_unit.factor).round 2
   end

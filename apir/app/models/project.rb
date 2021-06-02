@@ -33,10 +33,6 @@ class Project < ApplicationRecord
     @project_calculator ||= ProjectCalculator.new self
   end
 
-  def breakdown
-    @breakdown ||= CostBreakdown.new(project_positions, [], position_groupings, fixed_price).calculate
-  end
-
   def position_groupings
     project_positions.uniq { |p| p.position_group&.id }.map(&:position_group).select { |g| g }
   end
@@ -44,5 +40,4 @@ class Project < ApplicationRecord
   def invoice_ids
     invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
   end
-
 end

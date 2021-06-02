@@ -35,7 +35,7 @@ module Pdfs
     end
 
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder)
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder, Time.current.to_date, efforts_holder.accountant)
 
       header.draw(@default_text_settings, true)
       header.draw_title(:effort_report)

@@ -34,7 +34,7 @@ fr:
   general_group_name: "Généralement"
   subtotal: "Sous-total"
   subtotal_chf_excl_vat: "Montant partiel CHF hors TVA"
-  subtotal_inkl_vat: "SOUS-TOTAL incl. TVA"
+  subtotal_transfer: "SOUS-TOTAL"
   total: "Total"
   discount: "Déduction"
   total_discount: "Déductions totales"

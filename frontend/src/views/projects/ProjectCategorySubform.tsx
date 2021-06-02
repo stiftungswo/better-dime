@@ -8,7 +8,7 @@ import * as React from 'react';
 import { ProjectCategorySelect } from '../../form/entitySelect/ProjectCategorySelect';
 import { NumberField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { ErrorText } from '../../layout/ErrorText';
 import TableToolbar from '../../layout/TableToolbar';
@@ -80,7 +80,7 @@ export class ProjectCategorySubform extends React.Component<Props> {
                         <DimeField component={ProjectCategorySelect} name={fieldName('category_id')} />
                       </DimeTableCell>
                       <DimeTableCell>
-                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
+                        <ConfirmationButton onConfirm={() => arrayHelpers.remove(index)} disabled={disabled} />
                       </DimeTableCell>
                     </TableRow>
                   );
