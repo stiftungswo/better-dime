@@ -72,7 +72,8 @@ class InvoiceCreator
   end
 
   def self.get_invoice_beginning_date(project)
-    project.invoices.max_by(&:ending)&.ending + 1.day || project.project_efforts.min_by(&:date)&.date || DateTime.now
+    last_date = project.invoices.max_by(&:ending)&.ending
+    last_date ? last_date + 1.day : (project.project_efforts.min_by(&:date)&.date || DateTime.now)
   end
 
   def self.get_invoice_ending_date(project, beginning)
