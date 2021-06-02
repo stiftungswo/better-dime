@@ -14,9 +14,7 @@ module V2
     end
 
     def create
-      puts person_params
       @person = Person.new(person_params.except(:id))
-      puts @person.id
       respond_to do |format|
         if @person.save
           format.json { render :show, status: :ok }

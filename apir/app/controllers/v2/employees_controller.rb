@@ -18,9 +18,7 @@ module V2
     end
 
     def create
-      puts employee_params
       @employee = Employee.new(employee_params.except(:id))
-      puts @employee.email
       respond_to do |format|
         if @employee.save
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
