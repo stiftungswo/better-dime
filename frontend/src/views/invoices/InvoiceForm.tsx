@@ -163,10 +163,10 @@ export default class InvoiceForm extends React.Component<Props> {
                             <Grid item xs={12} lg={5}>
                               <DimeField required component={DatePicker} name={'beginning'} label={'Startdatum'} />
                             </Grid>
-                            <Grid item xs={12} lg={5}>
+                            <Grid item xs={12} lg={6}>
                               <DimeField required component={DatePicker} name={'ending'} label={'Enddatum'} />
                             </Grid>
-                            <Grid item xs={12} lg={2}>
+                            <Grid item xs={12} lg={1}>
                               <ConfirmationButton
                                 onConfirm={() => this.handleTimeSpan(props.values)}
                                 icon={Renew}
