@@ -59,6 +59,7 @@ Rails.application.routes.draw do
       get "print", on: :member, defaults: { format: "pdf" }
       get "print_esr", on: :member, defaults: { format: "pdf" }
       get "effort_report", on: :member, defaults: { format: "pdf" }
+      put "update_timespan", on: :member
     end
 
     resources :services do

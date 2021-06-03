@@ -6,7 +6,7 @@ module V2
 
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? }
-    before_action :set_invoice, only: [:show, :update, :destroy, :print, :print_esr, :effort_report]
+    before_action :set_invoice, only: [:show, :update, :update_timespan, :destroy, :print, :print_esr, :effort_report]
 
     def index
       @q = Invoice.order(id: :desc).ransack(search_params)
@@ -26,6 +26,14 @@ module V2
       ParamsModifier.destroy_missing params, @invoice.invoice_costgroup_distributions, :costgroup_distributions
 
       raise ValidationError, @invoice.errors unless @invoice.update(update_params)
+
+      render :show
+    end
+
+    def update_timespan
+      @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], (DateTime.parse(params[:ending]) + 2.hours)
+
+      raise ValidationError, @invoice.errors unless @invoice.save
 
       render :show
     end
@@ -114,10 +122,10 @@ module V2
     def update_params
       ParamsModifier.copy_attributes params, :positions, :invoice_positions_attributes
       ParamsModifier.copy_attributes params, :discounts, :invoice_discounts_attributes
-      ParamsModifier.copy_attributes params, :costgroup_distributions, :invoice_costgroup_distributions_attributes
+      ParamsModifier.copy_attributes params, :costgroup_distributions, :invoice_costgroup_distributions_attributes2
 
       params.permit(
-        :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price, :beginning, :ending,
+        :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price,
         invoice_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :amount, :description, :order, :position_group_id, :_destroy],
         invoice_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
         invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy]

@@ -16,6 +16,7 @@ module Pdfs
       @exclude_employee_ids = exclude_employee_ids
       @additional_cost_names = additional_cost_names
       @additional_cost_prices = additional_cost_prices
+      @total = 0
       super()
     end
 
@@ -66,7 +67,7 @@ module Pdfs
       move_down 5
       text "Projektrapport: " + @project.name, @default_text_settings.merge(size: 14, style: :bold)
       text subtitle, @default_text_settings.merge(style: :bold)
-      text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
+      text "Aufwände vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
 
     def draw_efforts
@@ -133,10 +134,12 @@ module Pdfs
       effort_employees.each do |employee|
         employee_efforts = efforts_in_range.select { |e| e.employee == employee }
 
+        total_hours = (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
+
         table_data.push(
           data: [
             employee.full_name,
-            (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
+            total_hours
           ],
           style: {
             borders: [],
@@ -155,7 +158,7 @@ module Pdfs
     def draw_cost
       table_data = [
         {
-          data: ["Tag", "Anzahl Mitarbeiter", "Berechnung", "Total CHF"],
+          data: ["Mitarbeiter", "Anzahl Stunden", "Berechnung", "Total CHF"],
           style: {
             padding: [5, 0, 5, 0],
             font_style: :bold,
@@ -165,25 +168,23 @@ module Pdfs
         }
       ]
 
-      days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
-      # map every day to the amount of employees which worked on that day
-      days_to_employees = days_with_efforts.map do |day|
-        [day, efforts_in_range.select { |e| e.date == day && e.value > 0 }.map(&:employee).uniq.length]
-      end.to_h.sort_by { |item| item[0] }
-
-      total = days_to_employees.inject(0) do |sum, (_day, employees)|
-        sum + employees * @daily_rate
-      end
-
+      effort_employees = efforts_in_range.map(&:employee).uniq.sort
+      
       padding = [4, 2, 4, 2]
 
-      days_to_employees.each do |day, employees|
+      effort_employees.each do |employee|
+        employee_efforts = efforts_in_range.select { |e| e.employee == employee }
+
+        total_hours = (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
+        # Blindoles Blindoles costs nothing, it's meant for machines etc.
+        @total = @total + total_hours * (employee.full_name === "Blindoles Blindoles" ? 0 : @daily_rate) / 8.4
+
         table_data.push(
           data: [
-            day.strftime("%d.%m.%Y"),
-            employees.to_s,
-            employees.to_s + " * " + format_money(@daily_rate),
-            format_money(format_money(employees * @daily_rate))
+            employee.full_name,
+            total_hours,
+            total_hours.to_s + " * " + (employee.full_name === "Blindoles Blindoles" ? "0" : format_money(@daily_rate) + " / 8.4"),
+            format_money(format_money(total_hours * (employee.full_name === "Blindoles Blindoles" ? 0 : @daily_rate) / 8.4))
           ],
           style: {
             borders: [],
@@ -197,7 +198,7 @@ module Pdfs
           "Subtotal",
           "",
           "",
-          format_money(total)
+          format_money(@total)
         ],
         style: {
           borders: [:top],
@@ -234,7 +235,7 @@ module Pdfs
         }
       ]
       additional_costs = @additional_cost_names.zip(@additional_cost_prices)
-      total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 }
+      additional_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 }
 
       additional_costs.each do |cost|
         table_data.push(
@@ -252,7 +253,7 @@ module Pdfs
       table_data.push(
         data: [
           "Subtotal",
-          format_money(total)
+          format_money(additional_total)
         ],
         style: {
           borders: [:top],
@@ -275,16 +276,8 @@ module Pdfs
 
     def draw_total
       padding = [4, 2, 4, 2]
-      days_with_efforts = efforts_in_range.select { |e| e.value > 0 }.map(&:date).uniq
-      # map every day to the amount of employees which worked on that day
-      days_to_employees = days_with_efforts.map do |day|
-        [day, efforts_in_range.select { |e| e.date == day && e.value > 0 }.map(&:employee).uniq.length]
-      end.to_h.sort_by { |item| item[0] }
-      employee_total = days_to_employees.inject(0) do |sum, (_day, employees)|
-        sum + employees * @daily_rate
-      end
-
-      total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 } + employee_total
+    
+      final_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 } + @total
       table_data = [{
         data: ["", "Berechnung", "Total CHF"],
         style: {
@@ -298,8 +291,8 @@ module Pdfs
       table_data.push(
         data: [
           "MwSt.",
-          (@vat * 100).to_s + "% * " + format_money(total),
-          format_money(@vat * total)
+          (@vat * 100).to_s + "% * " + format_money(final_total),
+          format_money(@vat * final_total)
         ],
         style: {
           borders: [],
@@ -312,7 +305,7 @@ module Pdfs
         data: [
           "Total",
           "",
-          format_money((1 + @vat) * total)
+          format_money((1 + @vat) * final_total)
         ],
         style: {
           borders: [:top],
