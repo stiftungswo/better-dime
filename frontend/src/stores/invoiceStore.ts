@@ -38,6 +38,14 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
     this.invoices = e;
   }
 
+  async updateTimeSpan(entity: Invoice): Promise<void> {
+    await this.notifyProgress(() => {
+      return this.mainStore.apiV2.put<Invoice>('invoices/' + entity.id + '/update_timespan', entity).then((res) => {
+        this.invoice = res.data;
+      });
+    });
+  }
+
   protected async doDelete(id: number) {
     await this.mainStore.apiV2.delete('/invoices/' + id);
   }

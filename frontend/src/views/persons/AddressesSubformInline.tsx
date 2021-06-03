@@ -6,7 +6,7 @@ import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import {NumberField, SwitchField, TextField} from 'src/form/fields/common';
-import { DeleteButton } from 'src/layout/ConfirmationDialog';
+import { ConfirmationButton } from 'src/layout/ConfirmationDialog';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { DimeField } from '../../form/fields/formik';
 import { DimePaper } from '../../layout/DimePaper';
@@ -107,7 +107,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                         <DimeField delayed component={SwitchField} name={name('hidden')} margin={'none'} />
                       </DimeTableCell>}
                       <DimeTableCell>
-                        <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                        <ConfirmationButton onConfirm={() => arrayHelpers.remove(index)} />
                       </DimeTableCell>
                     </TableRow>
                   );

@@ -46,20 +46,21 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
   }
 }
 
-interface DeleteButtonProps {
+interface ConfirmationButtonProps {
   onConfirm: () => void;
   message?: string;
   title?: string;
   disabled?: boolean;
   color?: PropTypes.Color;
+  icon?: React.ComponentType;
 }
 
-interface DeleteButtonState {
+interface ConfirmationButtonState {
   open: boolean;
 }
 
 // tslint:disable
-export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButtonState> {
+export class ConfirmationButton extends React.Component<ConfirmationButtonProps, ConfirmationButtonState> {
   state = {
     open: false,
   };
@@ -80,14 +81,14 @@ export class DeleteButton extends React.Component<DeleteButtonProps, DeleteButto
   render = () => {
     return (
       <>
-        <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={'Löschen'}>
+        <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={this.props.title || 'Löschen'}>
           {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
         <ActionButton
           color={this.props.color}
           disabled={this.props.disabled}
-          icon={DeleteIcon}
-          title={this.props.title || "Löschen"}
+          icon={this.props.icon || DeleteIcon}
+          title={this.props.title || 'Löschen'}
           action={this.handleOpen} />
       </>
     );

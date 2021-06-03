@@ -34,7 +34,7 @@ de:
   general_group_name: "Generell"
   subtotal: "Subtotal"
   subtotal_chf_excl_vat: "Teilbetrag CHF exkl. MwSt."
-  subtotal_inkl_vat: "SUBTOTAL inkl. MwST."
+  subtotal_transfer: "SUBTOTAL"
   total: "Total"
   discount: "Abzug"
   total_discount: "Abzüge total"

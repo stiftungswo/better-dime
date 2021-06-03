@@ -56,8 +56,8 @@ module Pdfs
 
       move_down 5
       text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
-      text "Leistungen von " + @employees.map(&:full_name).join(", "), @default_text_settings
-      text "Leistungen vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
+      text "Aufwände von " + @employees.map(&:full_name).join(", "), @default_text_settings
+      text "Aufwände vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
     end
 
     def get_total_hours(employee)
