@@ -18,9 +18,7 @@ module V2
     end
 
     def create
-      puts employee_params
-      @employee = Employee.new(employee_params.except(:id).merge({ first_vacation_takeover: 0.0 }))
-      puts @employee
+      @employee = Employee.new(employee_params.except(:id))
       respond_to do |format|
         if @employee.save
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate

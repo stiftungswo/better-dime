@@ -36,8 +36,6 @@ export default class EmployeeCreate extends React.Component<Props> {
   handleSubmit = (employee: Employee) => {
     return this.props.employeeStore!.post(employee).then(() => {
       this.setState({ submitted: true });
-      // tslint:disable-next-line:no-console
-      console.error(this.props!.employeeStore!.employee);
       const idOfNewEmployee = this.props!.employeeStore!.employee!.id;
       this.props.history.replace('/employees/' + idOfNewEmployee);
     }).catch(this.handleFailure);

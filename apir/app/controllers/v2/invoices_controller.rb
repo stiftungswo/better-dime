@@ -122,7 +122,7 @@ module V2
     def update_params
       ParamsModifier.copy_attributes params, :positions, :invoice_positions_attributes
       ParamsModifier.copy_attributes params, :discounts, :invoice_discounts_attributes
-      ParamsModifier.copy_attributes params, :costgroup_distributions, :invoice_costgroup_distributions_attributes2
+      ParamsModifier.copy_attributes params, :costgroup_distributions, :invoice_costgroup_distributions_attributes
 
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price,

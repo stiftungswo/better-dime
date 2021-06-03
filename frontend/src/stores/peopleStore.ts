@@ -68,9 +68,8 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   @action
   async doPost(person: Person) {
-    return this.mainStore.apiV2.post('/people', person).then(res => {
-      this.entity = res.data;
-    }).catch(this.handleError);
+    const res = await this.mainStore.apiV2.post('/people', person);
+    this.entity = res.data;
   }
 
   @action
