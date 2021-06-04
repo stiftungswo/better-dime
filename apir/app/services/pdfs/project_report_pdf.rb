@@ -41,8 +41,7 @@ module Pdfs
         ]
       ).select do |e|
         (@from_date..@to_date) === e.date &&
-          !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i)) &&
-          e.project_position.rate_unit.is_time
+          !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i))
       end
     end
 
@@ -54,7 +53,6 @@ module Pdfs
 
       draw_description
       draw_efforts
-      draw_employee_summary
       draw_cost
       draw_additional_cost unless @additional_cost_names.empty?
       draw_total
@@ -77,7 +75,7 @@ module Pdfs
 
       table_data = [
         {
-          data: ["Datum", "Stunden", "Arbeit", "Mitarbeiter"],
+          data: ["Datum", "Anzahl", "Einheit", "Arbeit", "Mitarbeiter"],
           style: {
             padding: [7, 10, 5, 0],
             font_style: :bold,
@@ -96,7 +94,9 @@ module Pdfs
           table_data.push(
             data: [
               date.strftime("%d.%m.%Y"),
-              (same_positions.inject(0) { |sum, e| sum + e.value } / 60).round(1),
+              (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
+              #(effort.project_position.price_per_rate / 100).to_s + " " + effort.project_position.rate_unit.billing_unit.to_s,
+              effort.project_position.rate_unit.name,
               effort.project_position.service.name,
               effort.employee.full_name
             ],
@@ -110,47 +110,7 @@ module Pdfs
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
-        [bounds.width - 400, 400 - 175 - 125, 175, 125],
-        [1] => :right
-      )
-    end
-
-    def draw_employee_summary
-      move_down 20
-
-      table_data = [
-        {
-          data: ["Mitarbeiter", "Total Stunden"],
-          style: {
-            padding: [7, 0, 5, 0],
-            font_style: :bold,
-            border_width: 1,
-            borders: [:top]
-          }
-        }
-      ]
-
-      effort_employees = efforts_in_range.map(&:employee).uniq.sort
-      effort_employees.each do |employee|
-        employee_efforts = efforts_in_range.select { |e| e.employee == employee }
-
-        total_hours = (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
-
-        table_data.push(
-          data: [
-            employee.full_name,
-            total_hours
-          ],
-          style: {
-            borders: [],
-            padding: [4, 0, 4, 0]
-          }
-        )
-      end
-
-      Pdfs::Generators::TableGenerator.new(@document).render(
-        table_data,
-        [bounds.width - 200, 200],
+        [bounds.width - 400, 50, 50, 175, 125],
         [1] => :right
       )
     end
@@ -158,7 +118,7 @@ module Pdfs
     def draw_cost
       table_data = [
         {
-          data: ["Mitarbeiter", "Anzahl Stunden", "Berechnung", "Total CHF"],
+          data: ["Mitarbeiter", "Service", "Berechnung", "Total CHF"],
           style: {
             padding: [5, 0, 5, 0],
             font_style: :bold,
@@ -167,30 +127,42 @@ module Pdfs
           }
         }
       ]
-
-      effort_employees = efforts_in_range.map(&:employee).uniq.sort
       
       padding = [4, 2, 4, 2]
 
+      effort_employees = efforts_in_range.map(&:employee).uniq.sort
+
       effort_employees.each do |employee|
-        employee_efforts = efforts_in_range.select { |e| e.employee == employee }
+        used_position_ids = []
+        efforts_in_range.select { |e| e.employee == employee }.each do |effort|
+          same_positions = efforts_in_range.select do |e|
+            e.employee == employee && e.position_id == effort.position_id
+          end
 
-        total_hours = (employee_efforts.inject(0) { |sum, e| sum + e.value / 60 }).round(1)
-        # Blindoles Blindoles costs nothing, it's meant for machines etc.
-        @total = @total + total_hours * (employee.full_name === "Blindoles Blindoles" ? 0 : @daily_rate) / 8.4
+          unless used_position_ids.include? effort.position_id
+            used_position_ids.push(effort.position_id)
+            total_amount = (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1)
+            # Blindoles Blindoles costs nothing, it's meant for machines etc.
+            @total = @total + (total_amount * effort.project_position.price_per_rate / 100)
 
-        table_data.push(
-          data: [
-            employee.full_name,
-            total_hours,
-            total_hours.to_s + " * " + (employee.full_name === "Blindoles Blindoles" ? "0" : format_money(@daily_rate) + " / 8.4"),
-            format_money(format_money(total_hours * (employee.full_name === "Blindoles Blindoles" ? 0 : @daily_rate) / 8.4))
-          ],
-          style: {
-            borders: [],
-            padding: padding
-          }
-        )
+            rate_unit = effort.project_position.rate_unit
+            amount_string = total_amount.to_s + rate_unit.effort_unit.to_s
+            unit_string = (effort.project_position.price_per_rate / 100).to_s + " " + rate_unit.billing_unit.to_s
+
+            table_data.push(
+              data: [
+                employee.full_name,
+                effort.project_position.service.name,
+                amount_string + " * " + unit_string,
+                format_money(total_amount * effort.project_position.price_per_rate / 100)
+              ],
+              style: {
+                borders: [],
+                padding: padding
+              }
+            )
+          end
+        end
       end
 
       table_data.push(

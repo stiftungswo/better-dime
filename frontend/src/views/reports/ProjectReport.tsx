@@ -163,13 +163,13 @@ export class ProjectReport extends React.Component<Props, State> {
                     name="additional_costs"
                     render={(arrayHelpers: any) => (
                       <>
-                        <TableToolbar title={'Rechnungsposten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
+                        <TableToolbar title={'Zusätzliche Kosten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
                         <div style={{ padding: '0px 15px 20px 0px' }}>
                           <Table padding={'dense'}>
                             <TableHead>
                               <TableRow>
                                 <DimeTableCell style={{ width: '80%' }}>Beschreibung</DimeTableCell>
-                                <DimeTableCell style={{ width: '15%' }}>Preis.</DimeTableCell>
+                                <DimeTableCell style={{ width: '15%' }}>Preis</DimeTableCell>
                                 <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
                               </TableRow>
                             </TableHead>
