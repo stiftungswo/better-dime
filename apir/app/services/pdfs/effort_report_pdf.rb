@@ -12,6 +12,10 @@ module Pdfs
       super()
     end
 
+    def filename
+      "Aufwandsrapport_Projekt_" + efforts_holder.id.to_s + "_" + efforts_holder.name.split(",")[0].split(";")[0]
+    end
+
     def efforts_holder
       @data_holder
     end

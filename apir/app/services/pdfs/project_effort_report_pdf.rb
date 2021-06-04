@@ -7,9 +7,5 @@ module Pdfs
     def subtitle
       I18n.t(:project) + " Nr. " + efforts_holder.id.to_s
     end
-
-    def filename
-      "Projekt_" + efforts_holder.id.to_s + "_Aufwandsrapport"
-    end
   end
 end
