@@ -49,7 +49,7 @@ module Pdfs
         end.join(", ")
       end
 
-      header.draw_misc(invoice, project, data, data.accountant, costgroups, :offer, data.name)
+      header.draw_misc(nil, nil, data, data.accountant, costgroups, :offer, data.name)
 
       move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
