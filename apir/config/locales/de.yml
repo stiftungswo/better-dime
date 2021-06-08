@@ -59,6 +59,7 @@ de:
   project: "Projekt"
   payable_deadline: "Zahlbar %{days} Tage netto"
   effort_report: "Aufwandsrapport"
+  project_report: "Projektrapport"
   services_from_to: "Aufwände vom %{from} bis %{to}"
   summary: "Zusammenfassung"
   description: "Beschreibung"

@@ -43,20 +43,6 @@ module Pdfs
               render_positions_table header, group[:positions], group[:subtotal]
               @document.move_down 30
             end
-
-            # @document.move_down 5
-            # Pdfs::Generators::TableGenerator.new(@document).render(
-            #   [{
-            #     data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:subtotal], :ceil)],
-            #     style: {
-            #       borders: [:top],
-            #       padding: [-2, 1, 0, 0],
-            #       font_style: :bold
-            #     }
-            #   }],
-            #   [@document.bounds.width - 100, 100],
-            #   [1] => :right
-            # )
           else @breakdown[:grouped_positions].length === 1
             table_title(@breakdown[:grouped_positions][0][:group_name])
             render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
