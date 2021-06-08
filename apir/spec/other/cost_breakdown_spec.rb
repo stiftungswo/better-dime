@@ -68,11 +68,13 @@ RSpec.describe CostBreakdown do
       ],
       final_total: 12_000,
       fixed_price: 12_000,
-      fixed_price_vats: [
-        { value: "802", vat: "0.077" },
-        { value: "10", vat: "0.025" }
-      ],
-      fixed_price_vats_sum: 812.0,
+      fixed_price_vats: [],
+      fixed_price_vats_sum: 0,
+      # fixed_price_vats: [
+      #   { value: "802", vat: "0.077" },
+      #   { value: "10", vat: "0.025" }
+      # ],
+      # fixed_price_vats_sum: 812.0,
       raw_total: 198_575.0,
       subtotal: 205_215.0,
       total: 213_515.0,

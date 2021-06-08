@@ -50,9 +50,9 @@ module Pdfs
           @document.move_down 20
           @document.start_new_page if @document.cursor < 110
           render_discounts
-          @document.start_new_page if @document.cursor < 50
-          render_total
         end
+        @document.start_new_page if @document.cursor < 50
+        render_total
       end
 
       def render_positions_table(header, positions, subtotal)
