@@ -14,7 +14,7 @@ module Pdfs
         @logo_height = 64
         @swo_blue = '007DC2'
         @page_offset = 30
-        @title_widths = {:effort_report => 190, :invoice => 112, :offer => 84}
+        @title_widths = {:effort_report => 190, :invoice => 112, :offer => 84, :project_report => 162}
         @accountant = accountant
       end
 
@@ -32,28 +32,27 @@ module Pdfs
         @document.text name, @default_text_settings.merge(size: 12, style: :bold, color: @swo_blue)
         @document.move_down 11
 
-        @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
-        @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor]) unless title_symbol === :offer
-        @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor]) unless title_symbol === :offer
-        @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
-        @document.draw_text @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [425, @document.cursor])
+        unless title_symbol === :project_report
+          @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
+          @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
+          @document.draw_text @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [425, @document.cursor])
 
-        @document.move_down 16
+          @document.move_down 16
 
-        @document.draw_text offer.id.to_s, @default_text_settings.merge(at: [0, @document.cursor]) if offer
-        @document.draw_text project.id.to_s, @default_text_settings.merge(at: [75, @document.cursor]) if project
-        @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [150, @document.cursor]) if invoice
-        @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
-        @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor]) if accountant
+          @document.draw_text offer.id.to_s, @default_text_settings.merge(at: [0, @document.cursor]) if offer
+          @document.draw_text project.id.to_s, @default_text_settings.merge(at: [75, @document.cursor]) if project
+          @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [150, @document.cursor]) if invoice
+          @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
+          @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor]) if accountant
 
-        @document.move_down 26
+          @document.move_down 26
 
-        @document.text timespan, @default_text_settings.merge(leading: 6) if timespan
-
-        @document.text I18n.t(:cost_groups) + " " + costgroups, @default_text_settings.merge(leading: 6) if costgroups
-
-        @document.text I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings.merge(leading: 6) if costgroups
-
+          @document.text timespan, @default_text_settings.merge(leading: 6) if timespan
+          @document.text I18n.t(:cost_groups) + " " + costgroups, @default_text_settings.merge(leading: 6) if costgroups
+          @document.text I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings.merge(leading: 6) if costgroups
+        end
       end
 
       def draw_title(title_symbol)

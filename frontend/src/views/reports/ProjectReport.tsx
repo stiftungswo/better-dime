@@ -49,7 +49,6 @@ const template = () => ({
   to: moment().endOf('month'),
   project_id: null,
   exclude_employee_ids: null,
-  daily_rate: 9000,
   vat: 0.077,
   additional_costs: [],
 });
@@ -65,7 +64,6 @@ const schema = yup.object({
   to: dimeDate(),
   project_id: selector(),
   exclude_employee_ids: yup.array().of(selector()).nullable(true),
-  daily_rate: requiredNumber(),
   vat: requiredNumber(),
   additional_costs: yup.array().of(additionalCostSchema),
 });
@@ -152,9 +150,6 @@ export class ProjectReport extends React.Component<Props, State> {
                       <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
                     </Grid>
                     <Grid item xs={12} md={2}>
-                      <DimeField delayed component={CurrencyField} name={'daily_rate'} label={'Tagessatz'} />
-                    </Grid>
-                    <Grid item xs={12} md={2}>
                       <DimeField component={PercentageField} name={'vat'} label={'MwSt.'} />
                     </Grid>
                   </Grid>
@@ -215,7 +210,6 @@ export class ProjectReport extends React.Component<Props, State> {
                             from: dimeDate().cast(formikProps.values.from),
                             to: dimeDate().cast(formikProps.values.to),
                             project_id: selector().cast(formikProps.values.project_id),
-                            daily_rate: requiredNumber().cast(formikProps.values.daily_rate),
                             vat: requiredNumber().cast(formikProps.values.vat),
                           });
                         }
