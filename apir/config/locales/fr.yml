@@ -59,6 +59,7 @@ fr:
   project: "Projet"
   payable_deadline: "Payable %{days} jours net"
   effort_report: "Rapport d'effort"
+  project_report: "Rapport de projet"
   services_from_to: "Services de %{from} à %{to}"
   summary: "Résumé"
   description: "Description"

@@ -25,17 +25,17 @@ module Pdfs
     end
 
     def table_title(title)
-      @document.fill_color @swo_blue
-      @document.transparent(1) do
-        @document.fill_rectangle [0, @document.cursor], @document.bounds.width, 20
+      fill_color @swo_blue
+      transparent(1) do
+        fill_rectangle [0, cursor], bounds.width, 20
       end
-      @document.fill_color 'ffffff'
-      @document.move_down 6
-      @document.indent(4,0) do
-        @document.text title, style: :bold
+      fill_color 'ffffff'
+      move_down 6
+      indent(4,0) do
+        text title, style: :bold
       end
-      @document.fill_color '000000'
-      @document.move_down 6
+      fill_color '000000'
+      move_down 6
     end
 
     def draw
@@ -90,7 +90,7 @@ module Pdfs
         }
       }]
 
-      content_widths = [@document.bounds.width - 180, 50, 55]
+      content_widths = [bounds.width - 180, 50, 55]
       widths = [75] + content_widths
 
       uniq_dates.each do |date|
