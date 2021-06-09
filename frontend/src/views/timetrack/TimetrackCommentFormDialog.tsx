@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { InjectedProps } from '@material-ui/core/es/withMobileDialog';
-import { FormikProps } from 'formik';
+import { FormikActions, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
@@ -51,32 +51,25 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
     closeAfterSubmit: false,
   };
 
-  handleSubmit = async (entity: ProjectComment, formikProps: FormikProps<ProjectComment>) => {
+  handleSubmit = async (values: ProjectComment) => {
     const projectCommentStore = this.props.projectCommentStore!;
-    if (projectCommentStore.entity) {
-      await projectCommentStore.put(schema.cast(entity));
+    if (projectCommentStore.entity && values.id) {
+      await projectCommentStore.put(schema.cast(values));
     } else {
-      if (schema.cast(entity)?.comment != null) {
-        await projectCommentStore.post(schema.cast(entity));
-        await this.widenFilterSettings(entity);
+      if (schema.cast(values)?.comment != null) {
+        await projectCommentStore.post(schema.cast(values));
+        await this.widenFilterSettings(values);
       }
     }
     await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
-    formikProps.setSubmitting(false);
-    this.setState({ lastEntry: entity });
+    this.setState({ lastEntry: values });
     if (this.state.closeAfterSubmit) {
       projectCommentStore.editing = false;
     }
   }
 
-  handleClose = (props: FormikProps<ProjectComment>) => () => {
-    if (props.dirty) {
-      if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
-        this.props.onClose();
-      }
-    } else {
-      this.props.onClose();
-    }
+  handleClose = () => () => {
+   this.props.onClose();
   }
 
   componentDidMount(): void {
@@ -94,36 +87,39 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
         isInitialValid={true}
         validationSchema={schema}
         enableReinitialize
+        title={'Projekt-Kommentar erfassen'}
+        open
+        onClose={this.handleClose}
         onSubmit={this.handleSubmit}
+        fullScreen={fullScreen}
         render={(formikProps: FormikProps<ProjectComment>) => (
-          <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
-              <DialogTitle>Projekt-Kommentar erfassen</DialogTitle>
-
+            <FormikSubmitDetector {...formikProps}>
+              <Dialog open fullScreen={fullScreen} maxWidth="lg">
+                <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
               <DialogContent>
                 <DimeField component={DatePicker} name={'date'} label={'Datum'} />
                 <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
               </DialogContent>
 
-              <DialogActions>
-                  <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
-                  <Button
-                    onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
-                    disabled={formikProps.isSubmitting}
-                  >
-                    Speichern
-                  </Button>
-                  {!formikProps.values.id && (
-                    <Button
-                      onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
-                      disabled={formikProps.isSubmitting}
-                    >
-                      Speichern und weiter
-                    </Button>
-                  )}
-                </DialogActions>
-              </Dialog>
+            <DialogActions>
+              <Button onClick={this.handleClose()}>Abbruch</Button>
+              <Button
+                onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
+                disabled={formikProps.isSubmitting}
+              >
+                Speichern
+              </Button>
+              {!formikProps.values.id && (
+                <Button
+                  onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
+                  disabled={formikProps.isSubmitting}
+                >
+                  Speichern und weiter
+                </Button>
+              )}
+            </DialogActions>
+            </Dialog>
           </FormikSubmitDetector>
         )}
       />
