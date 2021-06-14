@@ -55,7 +55,7 @@ module Pdfs
       params[:bill_type]                                      = "red_without_reference"
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id.to_s}.png"
       params[:output_params][:format]                         = "qrcode_png"
-      params[:bill_params][:creditor][:iban]                  = "CH27 3000 0002 8000 4067 9"
+      params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
       params[:bill_params][:creditor][:address][:type]        = "S"
       params[:bill_params][:creditor][:address][:name]        = @global_setting.sender_name
       params[:bill_params][:creditor][:address][:line1]       = @global_setting.sender_street
@@ -96,7 +96,7 @@ module Pdfs
           leading = 9 - font_size
 
           text I18n.t(:payable_to), size: 6, style: :bold, leading: 3
-          text "CH27 3000 0002 8000 4067 9", size: font_size, leading: leading
+          text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
           text @global_setting.sender_street, size: font_size, leading: leading
           text @global_setting.sender_zip + " " + @global_setting.sender_city, size: font_size, leading: leading
@@ -165,7 +165,7 @@ module Pdfs
         bounding_box([5.6.cm, 10.cm], width: 8.7.cm, height: 8.5.cm) do
           #Information section
           text I18n.t(:payable_to), size: h_font_size, style: :bold, leading: h_leading
-          text "CH27 3000 0002 8000 4067 9", size: font_size, leading: leading
+          text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
           text @global_setting.sender_street, size: font_size, leading: leading
           text @global_setting.sender_zip + " " + @global_setting.sender_city, size: font_size, leading: leading
