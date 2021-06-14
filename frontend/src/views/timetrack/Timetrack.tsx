@@ -2,7 +2,7 @@ import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid/Grid';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
-import {DeleteButton} from '../../layout/ConfirmationDialog';
+import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import {DimeAppBar, DimeAppBarButton} from '../../layout/DimeAppBar';
 import {DimeContent} from '../../layout/DimeContent';
 import {AddCommentIcon, AddEffortIcon, LogoIcon, MoveIcon} from '../../layout/icons';
@@ -50,9 +50,16 @@ export default class Timetrack extends React.Component<Props> {
       .map(([id]) => id);
   }
 
+  get selectedCommentIds() {
+    return Array.from(this.props.timetrackFilterStore!.selectedCommentIds.entries())
+      .filter(([id, state]) => state)
+      .map(([id]) => id);
+  }
+
   componentWillMount() {
     const filter = this.props.timetrackFilterStore!.filter;
     this.props.timetrackFilterStore!.selectedEffortIds.clear();
+    this.props.timetrackFilterStore!.selectedCommentIds.clear();
     Promise.all([
       this.props.effortStore!.fetchWithProjectEffortFilter(filter),
       this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter),
@@ -72,10 +79,29 @@ export default class Timetrack extends React.Component<Props> {
     selectedEffortIds.forEach(id => filterStore.selectedEffortIds.set(id, false));
   }
 
+  handleDeleteComments = async () => {
+    const projectCommentStore = this.props.projectCommentStore!;
+    const filterStore = this.props.timetrackFilterStore!;
+    const selectedCommentIds = this.selectedCommentIds;
+    await Promise.all(selectedCommentIds.map(id => projectCommentStore.delete(id)));
+    await projectCommentStore.fetchWithProjectEffortFilter(filterStore.filter);
+    selectedCommentIds.forEach(id => filterStore.selectedCommentIds.set(id, false));
+  }
+
+  handleDelete = async () => {
+    this.handleDeleteEfforts();
+    this.handleDeleteComments();
+  }
+
   handleMoveEfforts = async () => {
       this.selectedEffortIds.forEach(id => this.props.timetrackFilterStore!.selectedEffortIds.set(id, false));
       this.setState({moving: false});
   }
+
+  handleMoveComments = async () => {
+    this.selectedCommentIds.forEach(id => this.props.timetrackFilterStore!.selectedCommentIds.set(id, false));
+    this.setState({moving: false});
+}
 
   handleEffortAdd = () => {
     this.props.effortStore!.effort = undefined;
@@ -181,21 +207,21 @@ export default class Timetrack extends React.Component<Props> {
   }
 
   render() {
-    const selectedIds = this.selectedEffortIds;
-    const effortsSelected = selectedIds.length > 0;
+    const effortsSelected = this.selectedEffortIds.length > 0;
+    const commentsSelected = this.selectedCommentIds.length > 0;
     return (
       <>
-        {effortsSelected
-          ? <DimeAppBar title={`${selectedIds.length} Ausgewählt`} alternativeColor>
+        {effortsSelected || commentsSelected
+          ? <DimeAppBar title={`${this.selectedEffortIds.length + this.selectedCommentIds.length} Ausgewählt`} alternativeColor>
             <>
               <DimeAppBarButton icon={MoveIcon} action={() => (this.setState({moving: true}))} title={'Verschieben'} />
-              <DeleteButton color="inherit" onConfirm={this.handleDeleteEfforts} />
+              <ConfirmationButton color="inherit" onConfirm={this.handleDelete} />
             </>
           </DimeAppBar>
           : <DimeAppBar title={'Zeiterfassung'}>
             <>
               <DimeAppBarButton icon={AddCommentIcon} title={'Kommentar erfassen'} action={this.handleCommentAdd} />
-              <DimeAppBarButton icon={AddEffortIcon} title={'Leistung erfassen'} action={this.handleEffortAdd} />
+              <DimeAppBarButton icon={AddEffortIcon} title={'Aufwand erfassen'} action={this.handleEffortAdd} />
             </>
           </DimeAppBar>
         }
@@ -211,7 +237,7 @@ export default class Timetrack extends React.Component<Props> {
           {this.props.effortStore!.editing && <TimetrackFormDialog onClose={this.handleClose} />}
           {this.props.projectCommentStore!.editing && <TimetrackCommentFormDialog onClose={this.handleClose} />}
         </DimeContent>
-        {this.state.moving && <EffortMoveDialog effortIds={selectedIds} onClose={this.handleMoveEfforts} />}
+        {this.state.moving && <EffortMoveDialog effortIds={this.selectedEffortIds} commentIds={this.selectedCommentIds} onClose={() => {this.handleMoveEfforts(); this.handleMoveComments(); }} />}
       </>
     );
   }

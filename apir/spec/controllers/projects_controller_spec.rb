@@ -63,18 +63,16 @@ RSpec.describe V2::ProjectsController, type: :controller do
           customer: project_template.customer,
           address: project_template.address,
           rate_group: project_template.rate_group,
-          project_category: project_template.project_category
         )
       end
       let(:project_invalid) do
         build(
           :project,
           name: "Project A",
-          accountant: project_template.accountant,
+          accountant: nil,
           customer: project_template.customer,
           address: project_template.address,
           rate_group: project_template.rate_group,
-          project_category: nil
         )
       end
 

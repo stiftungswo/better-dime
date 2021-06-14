@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import compose from '../utilities/compose';
 import { ActionButton, ActionButtonAction } from './ActionButton';
-import { DeleteButton } from './ConfirmationDialog';
+import { ConfirmationButton } from './ConfirmationDialog';
 import { FormHeader } from './FormHeader';
 import { AddIcon } from './icons';
 
@@ -69,7 +69,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
       {props.children}
       <div className={classes.actions}>
         {numSelected > 0 && deleteAction ? (
-          <DeleteButton onConfirm={deleteAction} />
+          <ConfirmationButton onConfirm={deleteAction} />
         ) : (
           addAction && <ActionButton icon={AddIcon} action={addAction} />
         )}

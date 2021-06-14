@@ -118,6 +118,8 @@ export class ApiStore {
 
     const api = this._apiV2;
 
+    // NEXT TIME LOGIN FAILS TRY HERE
+
     api.interceptors.response.use(
       response => {
         return response;

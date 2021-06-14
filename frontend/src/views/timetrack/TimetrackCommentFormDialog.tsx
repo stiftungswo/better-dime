@@ -1,6 +1,10 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import { InjectedProps } from '@material-ui/core/es/withMobileDialog';
+import { FormikActions, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormikSubmitDetector } from 'src/form/FormikSubmitDetector';
 import * as yup from 'yup';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
@@ -15,7 +19,7 @@ import { ProjectComment } from '../../types';
 import compose from '../../utilities/compose';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 
-interface Props {
+interface Props extends InjectedProps {
   onClose: () => void;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
@@ -23,9 +27,14 @@ interface Props {
   timetrackFilterStore?: TimetrackFilterStore;
 }
 
+interface State {
+  lastEntry?: ProjectComment;
+  closeAfterSubmit: boolean;
+}
+
 const schema = localizeSchema(() =>
   yup.object({
-    comment: yup.string().required().nullable(true),
+    comment: yup.string().nullable(true),
     date: dimeDate(),
     project_id: selector(),
   }),
@@ -35,19 +44,32 @@ const schema = localizeSchema(() =>
   inject('projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore', 'mainStore'),
   observer,
 )
-export class TimetrackCommentFormDialog extends React.Component<Props> {
-  handleSubmit = async (entity: ProjectComment) => {
+export class TimetrackCommentFormDialog extends React.Component<Props, State> {
+
+  state = {
+    lastEntry: undefined,
+    closeAfterSubmit: false,
+  };
+
+  handleSubmit = async (values: ProjectComment) => {
     const projectCommentStore = this.props.projectCommentStore!;
-    if (projectCommentStore.entity) {
-      await projectCommentStore.put(schema.cast(entity));
+    if (projectCommentStore.entity && values.id) {
+      await projectCommentStore.put(schema.cast(values));
     } else {
-      if (schema.cast(entity).comment != null) {
-        await projectCommentStore.post(schema.cast(entity));
-        await this.widenFilterSettings(entity);
+      if (schema.cast(values)?.comment != null) {
+        await projectCommentStore.post(schema.cast(values));
+        await this.widenFilterSettings(values);
       }
     }
     await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
-    projectCommentStore.editing = false;
+    this.setState({ lastEntry: values });
+    if (this.state.closeAfterSubmit) {
+      projectCommentStore.editing = false;
+    }
+  }
+
+  handleClose = () => () => {
+   this.props.onClose();
   }
 
   componentDidMount(): void {
@@ -57,20 +79,48 @@ export class TimetrackCommentFormDialog extends React.Component<Props> {
   }
 
   render() {
+    const { fullScreen } = this.props;
+
     return (
       <FormDialog
-        open
-        onClose={this.props.onClose}
-        title={'Projekt-Kommentar erfassen'}
-        initialValues={this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
+        initialValues={this.state.lastEntry || this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
+        isInitialValid={true}
         validationSchema={schema}
+        enableReinitialize
+        title={'Projekt-Kommentar erfassen'}
+        open
+        onClose={this.handleClose}
         onSubmit={this.handleSubmit}
-        render={() => (
-          <>
-            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
-            <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
-            <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
-          </>
+        fullScreen={fullScreen}
+        render={(formikProps: FormikProps<ProjectComment>) => (
+          <FormikSubmitDetector {...formikProps}>
+            <Dialog open fullScreen={fullScreen} maxWidth="lg">
+              <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
+              <DialogContent>
+                <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+                <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+                <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
+              </DialogContent>
+
+              <DialogActions>
+                <Button onClick={this.handleClose()}>Abbruch</Button>
+                <Button
+                  onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
+                  disabled={formikProps.isSubmitting}
+                >
+                  Speichern
+                </Button>
+                {!formikProps.values.id && (
+                  <Button
+                    onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
+                    disabled={formikProps.isSubmitting}
+                  >
+                    Speichern und weiter
+                  </Button>
+                )}
+              </DialogActions>
+            </Dialog>
+          </FormikSubmitDetector>
         )}
       />
     );

@@ -6,10 +6,11 @@ class ProjectServiceHourReportService
 
   def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year))
     self.range = range
-    self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service).where("rate_units.is_time" => true, "project_efforts.date" => range).left_outer_joins(project: [:project_category])
-    self.projects = Project.where(id: project_positions.select("projects.id")).includes(:project_category)
+    self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service)
+      .where("rate_units.is_time" => true, "project_efforts.date" => range)
+    self.projects = Project.where(id: project_positions.select("projects.id"))
     self.services = Service.where(id: project_positions.select("services.id")).order(name: :asc)
-    self.effort_minutes = project_positions.group("projects.id", "services.id").sum("project_efforts.value")
+    self.effort_minutes = project_positions.group("project_id", "services.id").sum("project_efforts.value")
     self.effort_minutes_by_service = project_positions.group("services.id").sum("project_efforts.value")
   end
 
@@ -36,14 +37,15 @@ class ProjectServiceHourReportService
 
   def rows
     effort.map do |project, service_effort|
-      row = [project.id || 0, project.name, project.project_category&.id, project.project_category&.name]
+      names = project.project_categories.map { |category| category.name }
+      row = [project.id || 0, project.name, project.project_categories&.ids.join(', '), names.join(', ')]
       row += services.map { |service| service_effort[service] || 0.0 }
       row
     end
   end
 
   def header
-    ["Projekt ID", "Projekt", "Tätigkeitsbereich ID", "Tätigkeitsbereich"] + services.map(&:name)
+    ["Projekt ID", "Projekt", "Tätigkeitsbereich IDs", "Tätigkeitsbereiche"] + services.map(&:name)
   end
 
   def footer

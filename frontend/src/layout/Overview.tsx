@@ -1,9 +1,10 @@
+import { pseudoRandomBytes } from 'crypto';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
-import {Listing, PaginationInfo} from '../types';
+import {Listing, PaginationInfo, SelectedAction} from '../types';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
@@ -36,6 +37,9 @@ interface Props<ListingType> {
   archivable?: boolean;
   searchable?: boolean;
   paginated?: boolean;
+  hasSelect?: boolean;
+  selectedActions?: SelectedAction[];
+  setSelected?: (e: ListingType, state: boolean) => void;
   adapter?: {
     getEntities: () => ListingType[];
     fetch: () => Promise<void>;
@@ -127,13 +131,40 @@ export default class Overview<ListingType extends Listing> extends React.Compone
     }
   }
 
+  get totalSelectedIds() {
+    return Array.from(this.props.store.selectedIds.entries())
+      .filter(([id, state]) => state)
+      .map(([id, state]) => id);
+  }
+
+  get selectedIds() {
+    const entityIds = this.entities.map(e => e.id);
+    return Array.from(this.props.store.selectedIds.entries())
+      .filter(([id, state]) => state && entityIds.includes(id))
+      .map(([id, state]) => id);
+  }
+
   render() {
     const mainStore = this.props.mainStore!;
+    const totalSelectedIds = this.totalSelectedIds.length;
     const reload = this.reload;
+    const selectedActions = this.props.selectedActions;
 
     return (
       <React.Fragment>
-        <DimeAppBar title={this.props.title}>
+        <DimeAppBar title={this.props.title + (totalSelectedIds > 0 ? ' (' + totalSelectedIds + ' ausgewählt)' : '')}>
+          {totalSelectedIds > 0 && selectedActions && (
+            selectedActions.map(action => {
+              return (
+                <DimeAppBarButton
+                  icon={action.icon}
+                  title={action.title}
+                  action={() => action.action(this.totalSelectedIds)}
+                  key={action.title}
+                />
+              );
+            })
+          )}
           {this.props.searchable && (
             <AppBarSearch onChange={this.updateQueryState} defaultValue={this.props.store!.searchQuery} delay={100} />
           )}
@@ -165,6 +196,8 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               onClickChangeOrder={this.setPaginationPageOrder}
               paginated={this.props.paginated}
               paginationInfo={this.paginationInfo}
+              selected={this.props.hasSelect ? this.selectedIds : undefined}
+              setSelected={this.props.setSelected}
             />
           )}
           {this.props.children}

@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { TextField } from 'src/form/fields/common';
 import Select from 'src/form/fields/Select';
-import { DeleteButton } from 'src/layout/ConfirmationDialog';
+import { ConfirmationButton } from 'src/layout/ConfirmationDialog';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { DimeField } from '../../form/fields/formik';
 import { DimePaper } from '../../layout/DimePaper';
@@ -81,13 +81,13 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
                     return (
                       <TableRow key={phoneNumber.id || phoneNumber.formikKey}>
                         <DimeTableCell>
-                          <DimeField delayed portal component={Select} name={name('category')} margin={'none'} options={this.options} />
+                          <DimeField delayed component={Select} name={name('category')} margin={'none'} options={this.options} />
                         </DimeTableCell>
                         <DimeTableCell>
                           <DimeField delayed component={TextField} name={name('number')} margin={'none'} />
                         </DimeTableCell>
                         <DimeTableCell>
-                          <DeleteButton onConfirm={() => arrayHelpers.remove(index)} />
+                          <ConfirmationButton onConfirm={() => arrayHelpers.remove(index)} />
                         </DimeTableCell>
                       </TableRow>
                     );

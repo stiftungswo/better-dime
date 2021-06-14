@@ -18,8 +18,7 @@ module V2
     end
 
     def create
-      @employee = Employee.new(employee_params.except(:id).merge({ first_vacation_takeover: 0.0 }))
-
+      @employee = Employee.new(employee_params.except(:id))
       respond_to do |format|
         if @employee.save
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
@@ -119,6 +118,7 @@ module V2
         :holidays_per_year,
         :employee_group_id,
         :locale,
+        :first_vacation_takeover,
         work_periods_attributes: [
           :id, :ending, :pensum, :beginning, :yearly_vacation_budget, :hourly_paid
         ],

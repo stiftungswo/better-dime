@@ -13,10 +13,13 @@ Rails.application.routes.draw do
       put "move", on: :collection
     end
 
+    resources :project_comments, constraints: { id: /[0-9]+/ } do
+      put "move", on: :collection
+    end
+
     resources :employee_groups
     resources :position_groups, only: :create
     resources :project_comment_presets
-    resources :project_comments
     resources :rate_units
     resources :rate_groups, only: :index
     resources :costgroups, only: :index
@@ -56,6 +59,7 @@ Rails.application.routes.draw do
       get "print", on: :member, defaults: { format: "pdf" }
       get "print_qr_bill", on: :member, defaults: { format: "pdf" }
       get "effort_report", on: :member, defaults: { format: "pdf" }
+      put "update_timespan", on: :member
     end
 
     resources :services do

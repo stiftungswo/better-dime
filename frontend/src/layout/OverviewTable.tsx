@@ -79,11 +79,11 @@ interface TableProps<T> extends WithStyles<typeof styles> {
   onClickChangePage?: (page: number) => void;
   onClickChangePageSize?: (pageSize: number) => void;
   onClickChangeOrder?: (tag: string, dir: string) => void;
-  noSort?: boolean;
   selected?: number[];
   setSelected?: (e: T, state: boolean) => void;
   paginated?: boolean;
   paginationInfo?: PaginationInfo;
+  style?: object;
 }
 
 interface TableState {
@@ -119,7 +119,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
       order = 'asc';
     }
 
-    if (!this.props.noSort && this.props.onClickChangePage) {
+    if (this.props.onClickChangePage) {
       this.props.onClickChangeOrder!(tag != null ? tag : property, order);
     }
     this.setState({ order, orderBy });
@@ -187,27 +187,29 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
   }
 
   render() {
-    const { columns, data, noSort, classes } = this.props;
+    const { columns, data, classes } = this.props;
     const { order, orderBy } = this.state;
-    const sortedData = (noSort || this.props.paginated) ? data : stableSort(data, getSorting(order, orderBy));
+    const sortedData = (this.props.paginated) ? data : stableSort(data, getSorting(order, orderBy));
     const RowCheckbox = this.RowCheckbox;
     const handleChangePage = this.handleChangePage;
     const handleChangeRowsPerPage = this.handleChangeRowsPerPage;
+    const style = this.props.style || {width: '100%'};
 
     return (
-      <div className="dev-fw-div">
+      <div style={style}>
         <Table>
           <TableHead>
             <TableRow>
               {this.props.selected && (
-                <DimeTableCell padding={'checkbox'}>
+                <DimeTableCell padding={'checkbox'} style={{width: '80px'}}>
                   <Checkbox {...this.selectAllState} onClick={this.handleSelectAll} />
                 </DimeTableCell>
               )}
               {columns.map(col => (
                 <DimeTableCell key={col.id} numeric={col.numeric} sortDirection={orderBy === col.id ? order : undefined}>
                   <TableSortLabel
-                    active={orderBy === col.id}
+                    disabled={col.noSort}
+                    active={!col.noSort && orderBy === col.id}
                     direction={order}
                     onClick={this.createSortHandler(col.id, col.orderTag, col.noSort)}
                   >

@@ -22,19 +22,21 @@ class CostBreakdown
     fixed_price_vats = []
     fixed_price_vats_sum = 0.0
 
-    if @fixed_price
-      vats.each do |vat|
-        ratio = vat[:value].to_f * (1.0 / vat[:vat].to_f) / subtotal
-        fixed_price_times_ratio = @fixed_price.to_f * ratio
-        fixed_price_vats_val = (fixed_price_times_ratio - (fixed_price_times_ratio / (1 + vat[:vat].to_f))).round
-        fixed_price_vats_sum += fixed_price_vats_val
+    # if @fixed_price
+    #   vats.each do |vat|
+    #     unless subtotal === 0
+    #       ratio = vat[:value].to_f * (1.0 / vat[:vat].to_f) / subtotal
+    #       fixed_price_times_ratio = @fixed_price.to_f * ratio
+    #       fixed_price_vats_val = (fixed_price_times_ratio - (fixed_price_times_ratio / (1 + vat[:vat].to_f))).round
+    #       fixed_price_vats_sum += fixed_price_vats_val
+    #     end
 
-        fixed_price_vats.push(
-          vat: vat[:vat],
-          value: fixed_price_vats_val.to_s
-        )
-      end
-    end
+    #     fixed_price_vats.push(
+    #       vat: vat[:vat],
+    #       value: fixed_price_vats_val.to_s || 0
+    #     )
+    #   end
+    # end
 
     {
       discounts: discounts,
@@ -54,15 +56,15 @@ class CostBreakdown
 
   # return the list of groups with their respective positions
   def get_grouped_positions(positions, groups)
-    default_positions = positions.select { |p| p.position_group_id.nil? }
+    default_positions = positions.select { |p| p.position_group_id.nil? && p.amount > 0 }
     default_group = [{
-      group_name: (I18n.t :general_group_name),
+      group_name: "",
       positions: default_positions,
       subtotal: calculate_subtotal(default_positions)
     }]
 
     grouped_positions = groups.map do |group|
-      filtered_positions = positions.select { |p| p.position_group_id == group.id }
+      filtered_positions = positions.select { |p| p.position_group_id == group.id && p.amount > 0 }
 
       {
         group_name: group.name,

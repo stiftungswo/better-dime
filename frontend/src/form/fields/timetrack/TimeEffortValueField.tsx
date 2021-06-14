@@ -71,7 +71,6 @@ export class TimeEffortValueField extends React.Component<Props> {
           <Grid item xs={3}>
             <Select
               options={this.options()}
-              portal
               label={'Zeiteinheit'}
               value={this.state.rateUnitId}
               onChange={(id: number) => this.updateSelectedRateUnit(id)}

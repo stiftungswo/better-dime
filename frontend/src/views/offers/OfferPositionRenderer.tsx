@@ -13,7 +13,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
@@ -131,12 +131,12 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                     </DimeTableCell>
                     <DimeTableCell>
                       {(!archivedRate || !afterUnitInvalidation) && (
-                        <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                        <DimeField disabled component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                       )}
                       {archivedRate && afterUnitInvalidation && (
                         <Grid container direction="row" alignItems="center">
                           <Grid item style={{color: 'red', width: 'calc(100% - 32px)'}}>
-                            <DimeField disabled portal component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
+                            <DimeField disabled component={RateUnitSelect} name={name('rate_unit_id')} margin={'none'} />
                           </Grid>
                           <Grid item style={{marginLeft: '5px'}}>
                             <Warning color={'error'}/>
@@ -158,7 +158,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                         title={'Verschieben'}
                         disabled={disabled}
                       />
-                      <DeleteButton onConfirm={() => onDelete(pIdx)} disabled={disabled} />
+                      <ConfirmationButton onConfirm={() => onDelete(pIdx)} disabled={disabled} />
                     </DimeTableCell>
                   </>
                 );

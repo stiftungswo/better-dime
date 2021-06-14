@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ActionButton, ActionButtonAction } from './ActionButton';
-import { DeleteButton } from './ConfirmationDialog';
+import { ConfirmationButton } from './ConfirmationDialog';
 import { ArchiveIcon, CopyIcon, EditIcon, RestoreIcon } from './icons';
 
 interface ActionProps {
@@ -18,6 +18,6 @@ export const ActionButtons = (props: ActionProps) => (
     {props.editAction && <ActionButton icon={EditIcon} action={props.editAction} title={'Bearbeiten'} />}
     {props.archiveAction && <ActionButton icon={ArchiveIcon} action={props.archiveAction} title={'Archivieren'} />}
     {props.restoreAction && <ActionButton icon={RestoreIcon} action={props.restoreAction} title={'Un-Archivieren'} />}
-    {props.deleteAction && <DeleteButton onConfirm={props.deleteAction} message={props.deleteMessage} />}
+    {props.deleteAction && <ConfirmationButton onConfirm={props.deleteAction} message={props.deleteMessage} />}
   </div>
 );

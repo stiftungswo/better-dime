@@ -16,7 +16,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
 import {FormikSubmitDetector} from '../../form/FormikSubmitDetector';
-import {DeleteButton} from '../../layout/ConfirmationDialog';
+import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import {DimeTableCell} from '../../layout/DimeTableCell';
@@ -49,7 +49,6 @@ const template = () => ({
   to: moment().endOf('month'),
   project_id: null,
   exclude_employee_ids: null,
-  daily_rate: 11500,
   vat: 0.077,
   additional_costs: [],
 });
@@ -65,7 +64,6 @@ const schema = yup.object({
   to: dimeDate(),
   project_id: selector(),
   exclude_employee_ids: yup.array().of(selector()).nullable(true),
-  daily_rate: requiredNumber(),
   vat: requiredNumber(),
   additional_costs: yup.array().of(additionalCostSchema),
 });
@@ -137,7 +135,7 @@ export class ProjectReport extends React.Component<Props, State> {
               return (
                 <FormikSubmitDetector {...formikProps}>
                   <Grid container alignItems={'center'} spacing={24}>
-                    <Grid item xs={12} md={12}>
+                    <Grid item xs={12} md={10} lg={10}>
                       <DateSpanPicker
                         fromValue={formikProps.values.from}
                         onChangeFrom={v => formikProps.setFieldValue('from', v)}
@@ -148,11 +146,8 @@ export class ProjectReport extends React.Component<Props, State> {
                     <Grid item xs={12} md={3}>
                       <DimeField required component={ProjectSelect} name="project_id" label={'Projekt'} />
                     </Grid>
-                    <Grid item xs={12} md={5}>
+                    <Grid item xs={12} md={3}>
                       <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
-                    </Grid>
-                    <Grid item xs={12} md={2}>
-                      <DimeField delayed component={CurrencyField} name={'daily_rate'} label={'Tagessatz'} />
                     </Grid>
                     <Grid item xs={12} md={2}>
                       <DimeField component={PercentageField} name={'vat'} label={'MwSt.'} />
@@ -163,13 +158,13 @@ export class ProjectReport extends React.Component<Props, State> {
                     name="additional_costs"
                     render={(arrayHelpers: any) => (
                       <>
-                        <TableToolbar title={'Rechnungsposten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
+                        <TableToolbar title={'Zusätzliche Kosten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
                         <div style={{ padding: '0px 15px 20px 0px' }}>
-                          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+                          <Table padding={'dense'}>
                             <TableHead>
                               <TableRow>
                                 <DimeTableCell style={{ width: '80%' }}>Beschreibung</DimeTableCell>
-                                <DimeTableCell style={{ width: '15%' }}>Preis.</DimeTableCell>
+                                <DimeTableCell style={{ width: '15%' }}>Preis</DimeTableCell>
                                 <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
                               </TableRow>
                             </TableHead>
@@ -184,7 +179,7 @@ export class ProjectReport extends React.Component<Props, State> {
                                       <DimeField delayed component={CurrencyField} name={`additional_costs.${index}.cost`} margin={'none'} />
                                     </DimeTableCell>
                                     <DimeTableCell>
-                                      <DeleteButton
+                                      <ConfirmationButton
                                         onConfirm={() => handleRemove(arrayHelpers, index, formikProps)}
                                       />
                                     </DimeTableCell>
@@ -203,19 +198,18 @@ export class ProjectReport extends React.Component<Props, State> {
                       <DownloadButton
                         href={() => {
                           return this.props.mainStore!.apiV2URL('reports/project_report/' + formikProps.values.project_id, {
-                            additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                            additional_costs_names: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs)?.map((value: any) => {
                               return value.name;
                             }).join(','),
-                            additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs).map((value: any) => {
+                            additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs)?.map((value: any) => {
                               return value.cost.toString();
                             }).join(','),
-                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || []).map((value: any) => {
+                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || [])?.map((value: any) => {
                               return value.toString();
                             }).join(','),
                             from: dimeDate().cast(formikProps.values.from),
                             to: dimeDate().cast(formikProps.values.to),
                             project_id: selector().cast(formikProps.values.project_id),
-                            daily_rate: requiredNumber().cast(formikProps.values.daily_rate),
                             vat: requiredNumber().cast(formikProps.values.vat),
                           });
                         }

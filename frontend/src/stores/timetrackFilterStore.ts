@@ -1,7 +1,7 @@
 import { compose } from '@typed/compose';
 import { computed, observable, ObservableMap } from 'mobx';
 import moment from 'moment';
-import { EmployeeListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing, ServiceListing } from '../types';
+import { EmployeeListing, ProjectCommentListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing, ServiceListing } from '../types';
 import { WithEfforts } from '../views/timetrack/types';
 import { EffortStore } from './effortStore';
 import { EmployeeStore } from './employeeStore';
@@ -22,6 +22,9 @@ export class TimetrackFilterStore {
 
   @observable
   selectedEffortIds = new ObservableMap<number, boolean>();
+
+  @observable
+  selectedCommentIds = new ObservableMap<number, boolean>();
 
   constructor(
     private mainStore: MainStore,
@@ -71,9 +74,14 @@ export class TimetrackFilterStore {
   }
 
   @computed
-  get comments() {
-    const filterIds = this.projectEffortFilter.projectIds;
-    return this.projectCommentStore.projectComments.filter(c => filterIds.includes(c.project_id!));
+  get comments(): ProjectCommentListing[] {
+    const projectIds = this.projectEffortFilter.projectIds;
+    return this.projectCommentStore.projectComments.filter(c => projectIds.includes(c.project_id!));
+  }
+
+  @computed
+  get selectedEmployees(): number[] {
+    return this.projectEffortFilter.employeeIds;
   }
 
   reset() {
@@ -90,6 +98,7 @@ export class TimetrackFilterStore {
 
     this.grouping = 'employee';
     this.selectedEffortIds = new ObservableMap<number, boolean>();
+    this.selectedCommentIds = new ObservableMap<number, boolean>();
   }
 
   private filterBy = <T extends Listing>(filterIds: number[]) => (entities: T[]) =>

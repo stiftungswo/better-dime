@@ -9,3 +9,4 @@
 .generators
 .rakeTasks
 .DS_Store
+/backup.sql

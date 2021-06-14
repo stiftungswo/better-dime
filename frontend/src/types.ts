@@ -116,9 +116,9 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   customer_id: number;
   address_id: number;
   archived: boolean;
-  category_id: number | null;
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
+  category_distributions: ProjectCategory[];
   deadline: null;
   description: string | null;
   fixed_price: null | number;
@@ -332,6 +332,14 @@ export interface ProjectComment {
   project_id?: number;
 }
 
+export interface ProjectCommentListing {
+  id: number;
+  comment: string | null;
+  date: string;
+  project_id: number;
+  project_name: string;
+}
+
 export interface ProjectCommentPreset {
   id?: number;
   comment_preset: string;
@@ -503,10 +511,16 @@ export interface Holiday {
   name: string;
 }
 
-export interface ProjectCategory {
+export interface Category {
   archived: boolean;
   id: number;
   name: string;
+}
+
+export interface ProjectCategory {
+  category_id: number;
+  project_id: number;
+  weight: number;
 }
 
 export interface RateUnit {
@@ -546,3 +560,9 @@ export type DimeDate = string;
 // If we'd type thoroughly we'd need to create a type for each models representation in a form / yup validation schema
 // tslint:disable-next-line:no-any
 export type FormValues = any;
+
+export interface SelectedAction {
+  icon: React.ComponentType;
+  title: string;
+  action: (selectedIds: number[]) => void;
+}

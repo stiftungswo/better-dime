@@ -1,20 +1,34 @@
 import { action, computed, observable } from 'mobx';
 import moment from 'moment';
-import { ProjectComment, ProjectEffortFilter } from '../types';
+import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
+import {Cache} from '../utilities/Cache';
 import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
 
 export class ProjectCommentStore extends AbstractStore<ProjectComment> {
-  protected get entityName(): { singular: string; plural: string } {
-    return {
-      singular: 'der Projektkommentar',
-      plural: 'die Projektkommentare',
-    };
+
+  @observable
+  projectComment?: ProjectComment;
+  @observable
+  projectComments: ProjectCommentListing[] = [];
+
+  @observable
+  editing: boolean = false;
+
+  @observable
+  projectCommentTemplate: ProjectComment = {
+    comment: '',
+    date: moment(),
+    project_id: undefined,
+  };
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
   }
 
   @computed
-  get entities(): ProjectComment[] {
+  get entities(): ProjectCommentListing[] {
     return this.projectComments;
   }
 
@@ -27,30 +41,17 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     this.projectComment = projectComment;
   }
 
-  @observable
-  editing: boolean = false;
-
-  @observable
-  projectCommentTemplate: ProjectComment = {
-    comment: '',
-    date: moment(),
-    project_id: undefined,
-  };
-
-  @observable
-  projectComments: ProjectComment[] = [];
-
-  @observable
-  projectComment?: ProjectComment;
-
-  constructor(mainStore: MainStore) {
-    super(mainStore);
+  protected get entityName(): { singular: string; plural: string } {
+    return {
+      singular: 'Der Projektkommentar',
+      plural: 'Die Projektkommentare',
+    };
   }
 
   @action
   async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     try {
-      const res = await this.mainStore.apiV2.get<ProjectComment[]>('/project_comments', {
+      const res = await this.mainStore.apiV2.get<ProjectCommentListing[]>('/project_comments', {
         params: {
           start: filter.start.format(apiDateFormat),
           end: filter.end.format(apiDateFormat),
@@ -64,14 +65,25 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   }
 
   @action
-  protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
-    this.projectComment = res.data;
+  async move(commentIds: number[], targetProject: number) {
+    await this.notifyProgress(() =>
+      this.mainStore.apiV2.put('project_comments/move', {
+        comment_ids: commentIds,
+        project_id: targetProject,
+      }),
+    );
+    Cache.invalidateAllActiveCaches();
   }
 
   @action
   protected async doPost(entity: ProjectComment): Promise<void> {
     const res = await this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity);
+    this.projectComment = res.data;
+  }
+
+  @action
+  protected async doFetchOne(id: number) {
+    const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
     this.projectComment = res.data;
   }
 

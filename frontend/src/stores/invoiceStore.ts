@@ -7,8 +7,8 @@ import { MainStore } from './mainStore';
 export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing> {
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'die Rechnung',
-      plural: 'die Rechnungen',
+      singular: 'Die Rechnung',
+      plural: 'Die Rechnungen',
     };
   }
 
@@ -36,6 +36,14 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
 
   setEntities(e: InvoiceListing[]) {
     this.invoices = e;
+  }
+
+  async updateTimeSpan(entity: Invoice): Promise<void> {
+    await this.notifyProgress(() => {
+      return this.mainStore.apiV2.put<Invoice>('invoices/' + entity.id + '/update_timespan', entity).then((res) => {
+        this.invoice = res.data;
+      });
+    });
   }
 
   protected async doDelete(id: number) {

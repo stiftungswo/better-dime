@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, ObservableMap } from 'mobx';
 import {Cache} from '../utilities/Cache';
 import { MainStore } from './mainStore';
 
@@ -53,9 +53,18 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   @observable
+  selectedIds = new ObservableMap<number, boolean>();
+
+  @observable
   // tslint:disable-next-line:variable-name
   private _searchQuery: string = '';
-  constructor(protected mainStore: MainStore) {}
+  constructor(protected mainStore: MainStore) {
+    this.resetSelected();
+  }
+
+  resetSelected() {
+    this.selectedIds = new ObservableMap<number, boolean>();
+  }
 
   setEntities(e: OverviewType[]) {
     throw new Error('Not implemented');
@@ -163,7 +172,7 @@ export class AbstractStore<T, OverviewType = T> {
       this.mainStore.displaySuccess(`${this.entityName.singular} wurde erfolgreich dupliziert.`);
       return newEntity.data;
     } catch (e) {
-      this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.`);
+      this.mainStore.displayError(`${this.entityName.singular} konnte nicht dupliziert werden.${this.entityName.singular === 'Das Projekt' ? ' Stelle sicher, dass ein Tätigkeitsbereich ausgewählt ist.' : ''}`);
       console.error(e);
       throw e;
     }

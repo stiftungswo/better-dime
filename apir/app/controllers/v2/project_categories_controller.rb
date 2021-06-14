@@ -65,7 +65,7 @@ module V2
     private
 
     def project_category_params
-      params.require(:project_category).permit(:id, :archived, :name, :deleted_at, :created_at, :updated_at, :created_by, :updated_by, :deleted_by)
+      params.require(:project_category).permit(:id, :archived, :name, :deleted_at, :created_at, :updated_at)
     end
 
     def legacy_params

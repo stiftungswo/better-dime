@@ -13,24 +13,6 @@ RSpec.describe Project, type: :model do
   it { is_expected.to belong_to(:address) }
   it { is_expected.to belong_to(:rate_group) }
 
-  it "does not validate category on archiving" do
-    project = create(:project, offer: nil)
-
-    expect(project.should_validate_category?).to eq(true)
-  end
-
-  describe "is expected to validate category" do
-    before { allow(subject).to receive(:should_validate_category?).and_return(true) }
-
-    it { is_expected.to validate_presence_of :project_category }
-  end
-
-  describe "is not expected to validate category" do
-    before { allow(subject).to receive(:should_validate_category?).and_return(false) }
-
-    it { is_expected.not_to validate_presence_of :project_category }
-  end
-
   it "belongs to an accountant" do
     expect(described_class.new).to belong_to(:accountant)
       .class_name(Employee.to_s)

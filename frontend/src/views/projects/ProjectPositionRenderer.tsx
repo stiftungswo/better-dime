@@ -13,7 +13,7 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
-import { DeleteButton } from '../../layout/ConfirmationDialog';
+import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
@@ -141,9 +141,9 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                         action={() => onMove(pIdx)}
                         title={'Verschieben'}
                       />
-                      <DeleteButton
+                      <ConfirmationButton
                         disabled={!p.deletable}
-                        title={p.deletable ? 'Löschen' : 'Leistungen zuerst löschen!'}
+                        title={p.deletable ? 'Löschen' : 'Aufwand zuerst löschen!'}
                         /* tslint:disable-next-line:no-empty */
                         onConfirm={p.deletable ? () => onDelete(pIdx) : () => {}}
                       />

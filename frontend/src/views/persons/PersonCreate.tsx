@@ -22,7 +22,7 @@ export default class PersonCreate extends React.Component<Props> {
   handleSubmit = (person: Person) => {
     return this.props.peopleStore!.post(person).then(() => {
       this.setState({ submitted: true });
-      const idOfNewPerson = this.props!.peopleStore!.person!.id;
+      const idOfNewPerson = this.props!.peopleStore!.entity!.id;
       this.props.history.replace('/persons/' + idOfNewPerson);
     });
   }

@@ -43,7 +43,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
       {
         id: 'service_name',
         numeric: false,
-        label: 'Aktivität',
+        label: 'Service',
         format: projectEffortListing => {
           const group = ' [' + (projectEffortListing.group_name ? projectEffortListing.group_name : defaultPositionGroup().name) + ']';
 

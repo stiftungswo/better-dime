@@ -26,7 +26,7 @@ export const DimeContent = withStyles(styles)(({ classes, children, loading, pap
       </div>
     ) : children;
   return (
-    <main className={classes.content}>
+    <main className={classes.content} style={{maxWidth: '1400px'}}>
       <div className={classes.toolbar} />
       <ErrorBoundary>{paper ? <DimePaper>{content}</DimePaper> : content}</ErrorBoundary>
     </main>

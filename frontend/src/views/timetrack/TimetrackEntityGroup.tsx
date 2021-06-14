@@ -1,10 +1,11 @@
 import {inject, observer} from 'mobx-react';
+import moment from 'moment';
 import React from 'react';
 import {Column} from '../../layout/Overview';
 import {OverviewTable} from '../../layout/OverviewTable';
 import {EffortStore} from '../../stores/effortStore';
 import {TimetrackFilterStore} from '../../stores/timetrackFilterStore';
-import {ProjectEffortListing} from '../../types';
+import {ProjectCommentListing, ProjectEffortListing} from '../../types';
 import {TimetrackExpansionPanel} from './TimetrackExpansionPanel';
 
 interface Props {
@@ -12,7 +13,8 @@ interface Props {
   columns: Array<Column<ProjectEffortListing>>;
   displayTotal?: string;
   efforts: ProjectEffortListing[];
-  onClickRow?: (entity: ProjectEffortListing) => void;
+  comments?: ProjectCommentListing[];
+  onClickRow?: (entity: ProjectEffortListing | ProjectCommentListing) => void;
   title: string;
   timetrackFilterStore?: TimetrackFilterStore;
   effortStore?: EffortStore;
@@ -29,14 +31,37 @@ export class TimetrackEntityGroup extends React.Component<Props> {
       .map(([id, state]) => id);
   }
 
+  get selectedCommentIds() {
+    const filterStore = this.props.timetrackFilterStore!;
+    const commentIds = this.props.comments?.map(c => c.id);
+    return Array.from(filterStore.selectedCommentIds.entries())
+      .filter(([id, state]) => state && commentIds?.includes(id))
+      .map(([id, state]) => id);
+  }
+
   render() {
     const { actions, columns, efforts, onClickRow, title, displayTotal } = this.props;
     const filterStore = this.props.timetrackFilterStore!;
     const selectedIds = this.selectedIds;
+    const selectedCommentIds = this.selectedCommentIds;
 
-    const setSelected = (effort: ProjectEffortListing, state: boolean) => {
-      filterStore.selectedEffortIds.set(effort.id, state);
+    const setSelected = (entity: ProjectEffortListing | ProjectCommentListing, state: boolean) => {
+      if ('comment' in entity) {
+        filterStore.selectedCommentIds.set(entity.id, state);
+      } else {
+        filterStore.selectedEffortIds.set(entity.id, state);
+      }
     };
+
+    let effortsPlusComments: Array<ProjectEffortListing | ProjectCommentListing> = this.props.efforts;
+    if (this.props.comments) {
+      effortsPlusComments = effortsPlusComments.concat(this.props.comments);
+      effortsPlusComments.sort((a, b) => {
+        const dateA = moment(a.date);
+        const dateB = moment(b.date);
+        return dateB.valueOf() - dateA.valueOf();
+      });
+    }
 
     return (
       <>
@@ -45,12 +70,19 @@ export class TimetrackEntityGroup extends React.Component<Props> {
           title={title}
           displayTotal={displayTotal}
         >
-          {efforts.length > 0 ? (
+          {effortsPlusComments.length > 0 ? (
             <>
-              <OverviewTable columns={columns} data={efforts} onClickRow={onClickRow} selected={selectedIds} setSelected={setSelected} />
+              <OverviewTable
+                columns={columns}
+                data={effortsPlusComments}
+                onClickRow={onClickRow}
+                selected={selectedIds.concat(selectedCommentIds)}
+                setSelected={setSelected}
+              />
             </>
-          ) : (
-            'Keine Leistungen erfasst mit den gewählten Filtern.'
+          ) :
+          (
+            'Keine Aufwände erfasst mit den gewählten Filtern.'
           )}
         </TimetrackExpansionPanel>
       </>

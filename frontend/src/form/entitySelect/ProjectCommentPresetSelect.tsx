@@ -64,6 +64,7 @@ export class ProjectCommentPresetSelect<T> extends React.Component<Props<T>> {
       <Select
         creatable
         isClearable
+        maxMenuHeight={200}
         formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
         options={this.options}
         onCreate={this.onCreate}
