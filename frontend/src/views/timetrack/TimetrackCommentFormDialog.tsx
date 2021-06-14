@@ -93,32 +93,32 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
         onSubmit={this.handleSubmit}
         fullScreen={fullScreen}
         render={(formikProps: FormikProps<ProjectComment>) => (
-            <FormikSubmitDetector {...formikProps}>
-              <Dialog open fullScreen={fullScreen} maxWidth="lg">
-                <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
+          <FormikSubmitDetector {...formikProps}>
+            <Dialog open fullScreen={fullScreen} maxWidth="lg">
+              <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
               <DialogContent>
                 <DimeField component={DatePicker} name={'date'} label={'Datum'} />
                 <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
               </DialogContent>
 
-            <DialogActions>
-              <Button onClick={this.handleClose()}>Abbruch</Button>
-              <Button
-                onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
-                disabled={formikProps.isSubmitting}
-              >
-                Speichern
-              </Button>
-              {!formikProps.values.id && (
+              <DialogActions>
+                <Button onClick={this.handleClose()}>Abbruch</Button>
                 <Button
-                  onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
+                  onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
-                  Speichern und weiter
+                  Speichern
                 </Button>
-              )}
-            </DialogActions>
+                {!formikProps.values.id && (
+                  <Button
+                    onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
+                    disabled={formikProps.isSubmitting}
+                  >
+                    Speichern und weiter
+                  </Button>
+                )}
+              </DialogActions>
             </Dialog>
           </FormikSubmitDetector>
         )}
