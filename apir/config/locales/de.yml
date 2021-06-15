@@ -81,3 +81,6 @@ de:
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"
+  project_description: "Projektbeschrieb"
+  current_language: "de"
+  effort_period: "Aufwandszeitraum"

@@ -36,7 +36,7 @@ module Pdfs
           @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
           @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor]) unless title_symbol === :offer
           @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor]) unless title_symbol === :offer
-          @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
+          @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - (I18n.t(:current_language) === "fr" ? 230 : 175), @document.cursor])
           @document.draw_text @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [425, @document.cursor])
 
           @document.move_down 16
@@ -44,7 +44,7 @@ module Pdfs
           @document.draw_text offer.id.to_s, @default_text_settings.merge(at: [0, @document.cursor]) if offer
           @document.draw_text project.id.to_s, @default_text_settings.merge(at: [75, @document.cursor]) if project
           @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [150, @document.cursor]) if invoice
-          @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
+          @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - (I18n.t(:current_language) === "fr" ? 230 : 175), @document.cursor])
           @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor]) if accountant
 
           @document.move_down 26
@@ -76,9 +76,9 @@ module Pdfs
         @document.repeat(:all) do
           @document.bounding_box([@document.bounds.width - @logo_width, @document.bounds.height + @page_offset], width: @logo_width, height: @logo_height) do
             # @document.stroke_bounds
-  
+
             image_path = Rails.root.join("app", "assets", "logo", "logo_full_new.png")
-  
+
             @document.move_up 15
             @document.image image_path, width: @logo_width
           end

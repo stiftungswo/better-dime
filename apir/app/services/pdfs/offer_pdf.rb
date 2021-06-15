@@ -53,7 +53,7 @@ module Pdfs
 
       move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@offer.description[0] == '#' ? "" : "#Projektbeschrieb\n") + @offer.description)
+        .render((@offer.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
     end
 
     def draw_breakdown
