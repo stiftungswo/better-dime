@@ -81,3 +81,6 @@ fr:
   time:
     formats:
       default: "%Y-%m-%d %H:%M:%S"
+  project_description: "Description du projet"
+  current_language: "fr"
+  effort_period: "Période d'effort"
