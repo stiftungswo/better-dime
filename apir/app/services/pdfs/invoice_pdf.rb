@@ -32,11 +32,11 @@ module Pdfs
       end.join(", ")
 
       header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name,
-        "Aufwandszeitraum: " + @invoice.beginning.strftime("%d.%m.%Y") + " bis " + @invoice.ending.strftime("%d.%m.%Y"))
+        I18n.t(:effort_period) + ": " + @invoice.beginning.strftime("%d.%m.%Y") + " - " + @invoice.ending.strftime("%d.%m.%Y"))
 
       move_down 25
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@invoice.description[0] == '#' ? "" : "#Projektbeschrieb\n") + @invoice.description)
+        .render((@invoice.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @invoice.description)
     end
 
     def draw_breakdown
