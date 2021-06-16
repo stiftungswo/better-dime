@@ -22,6 +22,9 @@ class CostBreakdown
     fixed_price_vats = []
     fixed_price_vats_sum = 0.0
 
+    # Did not understand the following calculations and fixed_price_vats wasn't used in rest of the code.
+    # Also, it leaded to errors in invoices with a fixed price, so I commented it out for now.
+    #
     # if @fixed_price
     #   vats.each do |vat|
     #     unless subtotal === 0
