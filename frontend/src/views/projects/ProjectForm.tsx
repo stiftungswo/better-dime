@@ -10,7 +10,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
-import { ProjectCategorySelect } from '../../form/entitySelect/ProjectCategorySelect';
 import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';

@@ -21,6 +21,7 @@ interface DialogFormProps<T> {
   loading?: boolean;
   open: boolean;
   onClose: () => void;
+  confirmText?: string;
 }
 
 @compose(withMobileDialog())
@@ -64,7 +65,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
                 <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
-                  Speichern
+                  {this.props.confirmText || 'Speichern'}
                 </Button>
               </DialogActions>
             </Dialog>
