@@ -52,7 +52,7 @@ module V2
     end
 
     def create_project
-      @project = ProjectCreator.create_project_from_offer @offer
+      @project = ProjectCreator.create_project_from_offer @offer, params[:costgroup], params[:category]
 
       raise ValidationError, @project.errors unless @project.save
 

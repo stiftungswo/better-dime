@@ -34,6 +34,9 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   @observable
+  creatingProject: boolean = false;
+
+  @observable
   offers: OfferListing[] = [];
   @observable
   offer?: Offer = undefined;
@@ -46,10 +49,10 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     this.offers = e;
   }
 
-  async createProject(id: number): Promise<Project> {
+  async createProject(id: number, costgroup: number, category: number): Promise<Project> {
     try {
       this.displayInProgress();
-      const res = await this.mainStore.apiV2.post<Project>(`/offers/${id}/create_project`);
+      const res = await this.mainStore.apiV2.post<Project>(`/offers/${id}/create_project`, {costgroup, category});
       Cache.invalidateAllActiveCaches();
       this.mainStore.displaySuccess('Das Projekt wurde erstellt');
       return res.data;
