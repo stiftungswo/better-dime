@@ -18,7 +18,7 @@ RSpec.describe ProjectCreator do
     position_a = create(:offer_position, offer: offer, service: service_a, rate_unit: rate_unit_a)
     position_b = create(:offer_position, offer: offer, service: service_b, rate_unit: rate_unit_b)
 
-    created = described_class.create_project_from_offer(offer)
+    created = described_class.create_project_from_offer(offer, 100, 10)
 
     expect(created.name).to eq(offer.name)
     expect(created.fixed_price).to eq(offer.fixed_price)
