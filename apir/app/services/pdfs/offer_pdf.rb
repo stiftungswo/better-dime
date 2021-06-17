@@ -28,7 +28,7 @@ module Pdfs
     end
 
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer, @date, @offer.accountant)
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer, @offer.created_at, @offer.accountant)
 
       header.draw(@default_text_settings, true)
       header.draw_title(:offer)
@@ -49,7 +49,7 @@ module Pdfs
         end.join(", ")
       end
 
-      header.draw_misc(nil, nil, data, data.accountant, costgroups, :offer, data.name)
+      header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
       move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
@@ -57,8 +57,6 @@ module Pdfs
     end
 
     def draw_breakdown
-      move_down 40 if cursor > 40
-      start_new_page if cursor < 100
 
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]

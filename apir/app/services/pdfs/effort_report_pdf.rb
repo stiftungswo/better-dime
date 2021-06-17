@@ -56,7 +56,7 @@ module Pdfs
         c.weight.to_s + "% " + c.costgroup_number.to_s
       end.join(", ")
 
-      header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, costgroups, :effort_report, efforts_holder.name)
+      header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, nil, :effort_report, efforts_holder.name)
 
       move_down 15
       text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)

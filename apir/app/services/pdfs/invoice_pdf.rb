@@ -40,8 +40,6 @@ module Pdfs
     end
 
     def draw_breakdown
-      move_down 40 if cursor > 40
-      start_new_page if cursor < 100
       Pdfs::Generators::BreakdownTableGenerator.new(document, @invoice.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
