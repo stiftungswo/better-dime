@@ -74,11 +74,22 @@ module Pdfs
       params[:bill_params][:debtor][:address][:line2]         = @invoice.address.street
       params[:bill_params][:debtor][:address][:postal_code]   = @invoice.address.zip.to_s
       params[:bill_params][:debtor][:address][:town]          = @invoice.address.city
+      params[:bill_params][:debtor][:address][:country]       = get_country_abbr(@invoice.address.country)
 
       params[:bill_params][:reference_type]                   = "NON"
       params[:bill_params][:additionally_information]         = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
 
       @bill = QRBills.generate(params)
+    end
+
+    def get_country_abbr(country)
+      abbreviation = case country
+                       when "CH", "Schweiz", "Suisse" then "CH"
+                       when "DE", "Deutschland" then "DE"
+                       when "FR", "Frankreich", "France" then "FR"
+                       else "CH"
+                     end
+      return abbreviation
     end
 
     def draw_receipt
@@ -110,6 +121,7 @@ module Pdfs
           text @invoice.customer.full_name, size: font_size, leading: leading
           text @invoice.address.street + supplement, size: font_size, leading: leading
           text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, leading: leading
+          text @invoice.address.country, size: font_size, leading: leading
         end
 
         bounding_box([0.5.cm, 3.7.cm], width: 5.2.cm, height: 1.4.cm) do
@@ -184,6 +196,7 @@ module Pdfs
           text @invoice.customer.full_name, size: font_size, leading: leading
           text @invoice.address.street + supplement, size: font_size, leading: leading
           text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, leading: leading
+          text @invoice.address.country, size: font_size, leading: leading
         end
       end
     end
