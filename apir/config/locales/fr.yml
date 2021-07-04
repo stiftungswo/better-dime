@@ -34,7 +34,7 @@ fr:
   general_group_name: "Généralement"
   subtotal: "Sous-total"
   subtotal_chf_excl_vat: "Montant partiel CHF hors TVA"
-  subtotal_transfer: "SOUS-TOTAL"
+  subtotal_excl_vat: "Sous-total hors TVA"
   total: "Total"
   discount: "Déduction"
   total_discount: "Déductions totales"
@@ -74,7 +74,8 @@ fr:
   outstanding_amount: "Montant à régler"
   invoice_nr: "Facture Nr."
   invoice_nr_esr: "Facture   Nr. "
-  fix_price_total: "Prix ​​fixe total"
+  fix_price_excl_vat: "Prix ​​fixe hors TVA"
+  fix_price_total: "Prix ​​fixe"
   date:
     formats:
       default: "%Y-%m-%d"

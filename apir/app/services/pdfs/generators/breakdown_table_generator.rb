@@ -50,9 +50,9 @@ module Pdfs
             render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
           end
           @document.move_down 20
-          @document.start_new_page if @document.cursor < 110
-          render_discounts
         end
+        @document.start_new_page if @document.cursor < 110
+        render_subtotal
         @document.start_new_page if @document.cursor < 50
         render_total
       end
@@ -115,45 +115,59 @@ module Pdfs
         )
       end
 
-      def render_discounts
+      def render_subtotal
 
         padding = [6, 10, 6, 0]
-
+        fixed_price = @breakdown[:fixed_price]
+        discounts = @breakdown[:discounts]
         data = []
 
-        unless @breakdown[:discounts].empty?
+        unless (fixed_price && fixed_price > 0)
 
-          data.push(
-            data: [(I18n.t :discount).capitalize, (I18n.t :amount).capitalize],
-            style: {
-              font_style: :bold,
-              padding: padding
-            }
-          )
+          unless discounts.empty?
 
-          @breakdown[:discounts].each do |discount|
             data.push(
-              data: [discount[:name], format_money(discount[:value])],
+              data: [(I18n.t :discount).capitalize, (I18n.t :amount).capitalize],
+              style: {
+                font_style: :bold,
+                padding: padding
+              }
+            )
+
+            discounts.each do |discount|
+              data.push(
+                data: [discount[:name], format_money(discount[:value])],
+                style: {
+                  padding: padding
+                }
+              )
+            end
+            data.push(
+              data: [(I18n.t :total_discount).capitalize, format_money(@breakdown[:discount_total], :floor)],
               style: {
                 padding: padding
               }
             )
           end
+
           data.push(
-            data: [(I18n.t :total_discount).capitalize, format_money(@breakdown[:discount_total], :floor)],
+            data: [(I18n.t :subtotal_excl_vat), format_money(@breakdown[:raw_total], :ceil)],
             style: {
+              font_style: :bold,
               padding: padding
             }
           )
         end
 
-        data.push(
-          data: [(I18n.t :subtotal).capitalize, format_money(@breakdown[:raw_total], :ceil)],
-          style: {
-            font_style: :bold,
-            padding: padding
-          }
-        )
+        if fixed_price && fixed_price > 0
+          data.push(
+            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / 1.077)],
+            style: {
+              font_style: :bold,
+              padding: padding,
+            }
+          )
+        end
 
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,
@@ -163,12 +177,14 @@ module Pdfs
           },
           true
         )
-        @document.move_down 20
+        @document.move_down 10
       end
 
       def render_total
 
         padding = [6, 10, 6, 0]
+        fixed_price = @breakdown[:fixed_price]
+        has_fixed_price = fixed_price && fixed_price > 0
 
         data = [
           {
@@ -180,39 +196,44 @@ module Pdfs
           }
         ]
 
-        @breakdown[:vats].each do |vat|
+        unless has_fixed_price
+          @breakdown[:vats].each do |vat|
+            data.push(
+              data: [(vat[:vat].to_f * 100.0).round(2).to_s + "%", format_money(vat[:value])],
+              style: {
+                padding: padding
+              }
+            )
+          end
+        end
+
+        total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
+        vat_total = has_fixed_price ? (total - fixed_price / 1.077) : @breakdown[:vat_total]
+
+        if has_fixed_price
           data.push(
-            data: [(vat[:vat].to_f * 100.0).round(2).to_s + "%", format_money(vat[:value])],
+            data: ["7.7%", format_money(vat_total)],
             style: {
               padding: padding
             }
           )
         end
+          
         data.push(
-          data: [(I18n.t :total_vat), format_money(@breakdown[:vat_total], :ceil)],
+          data: [(I18n.t :total_vat), format_money(vat_total)],
           style: {
             padding: padding
           }
         )
+
         data.push(
-          data: [I18n.t(:total), format_money(@breakdown[:total], :ceil)],
+          data: [has_fixed_price ? I18n.t(:fix_price_total) : I18n.t(:total), format_money(total, :ceil)],
           style: {
             font_style: :bold,
             padding: padding,
             size: 11
           }
         )
-
-        if @breakdown[:fixed_price] && @breakdown[:fixed_price] > 0
-          data.push(
-            data: [I18n.t(:fix_price_total), format_money(@breakdown[:fixed_price], :ceil)],
-            style: {
-              font_style: :bold,
-              padding: padding,
-              size: 11
-            }
-          )
-        end
 
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,

@@ -28,7 +28,7 @@ module Pdfs
     end
 
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer, @offer.created_at, @offer.accountant)
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @offer, @date, @offer.accountant)
 
       header.draw(@default_text_settings, true)
       header.draw_title(:offer)
@@ -39,16 +39,8 @@ module Pdfs
     end
 
     def draw_description(header)
-      move_down 70
-
-      costgroups = nil
-
-      if project
-        costgroups = project.project_costgroup_distributions.map do |c|
-          c.weight.to_s + "% " + c.costgroup_number.to_s
-        end.join(", ")
-      end
-
+      move_down 100
+      
       header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
       move_down 20

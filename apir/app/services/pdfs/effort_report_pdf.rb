@@ -50,11 +50,7 @@ module Pdfs
     end
 
     def draw_description(header)
-      move_down 70
-
-      costgroups = efforts_holder.project_costgroup_distributions.map do |c|
-        c.weight.to_s + "% " + c.costgroup_number.to_s
-      end.join(", ")
+      move_down 100
 
       header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, nil, :effort_report, efforts_holder.name)
 
