@@ -38,7 +38,7 @@ class RevenueReportService
 
   def rows
     all_rows = offers.map do |offer|
-      offer_price = (offer.breakdown[:fixed_price] || offer.breakdown[:total]).round # TODO: Decorator
+      offer_price = (offer.breakdown[:fixed_price] || offer.breakdown[:total]) # TODO: Decorator
       row = ["Offerte", offer.name, nil, offer.customer&.full_name, offer.created_at.strftime("%d.%m.%Y"), offer.accountant&.name, nil, nil, offer_price]
       row += cost_groups.map { nil }
       row += [nil]
@@ -48,13 +48,13 @@ class RevenueReportService
 
       no_costgroup_prices = 0
       current_price = project.current_price
-      project_price_by_costgroup = {}
-      total_pd_weight = project.project_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
-      project.project_costgroup_distributions.each do |distribution|
-        project_price_by_costgroup[distribution.costgroup_number] = (current_price * distribution.weight / total_pd_weight * -1).round
-      end
-
-      no_costgroup_prices += (current_price * -1).round if project.project_costgroup_distributions.blank?
+     project_price_by_costgroup = {}
+#     total_pd_weight = project.project_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
+#     project.project_costgroup_distributions.each do |distribution|
+#       project_price_by_costgroup[distribution.costgroup_number] = (current_price * distribution.weight / total_pd_weight * -1)
+#     end
+#
+#     no_costgroup_prices += (current_price * -1) if project.project_costgroup_distributions.blank?
 
       if project.invoices.blank?
         invoice_price = nil
@@ -67,10 +67,10 @@ class RevenueReportService
           total_id_weight = invoice.invoice_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
           invoice.invoice_costgroup_distributions.each do |distribution|
             invoice_price_by_costgroup[distribution.costgroup_number] ||= 0
-            invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight)).round
+            invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight))
           end
 
-          no_costgroup_prices += (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]).round if invoice.invoice_costgroup_distributions.blank?
+          no_costgroup_prices += (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) if invoice.invoice_costgroup_distributions.blank?
         end
       end
 
@@ -82,13 +82,13 @@ class RevenueReportService
       row
     end
     all_rows += invoices.map do |invoice|
-      invoice_price = (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]).round # TODO: Decorator
+      invoice_price = (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) # TODO: Decorator
       row = ["Rechnung", invoice.name, nil, invoice.customer&.full_name, invoice.created_at.strftime("%d.%m.%Y"), invoice.accountant&.name, nil, invoice_price, nil]
       invoice_price_by_costgroup = {}
       total_id_weight = invoice.invoice_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
       invoice.invoice_costgroup_distributions.each do |distribution|
         invoice_price_by_costgroup[distribution.costgroup_number] ||= 0
-        invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight)).round
+        invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight))
       end
       row += cost_groups.map { |cost_group| (invoice_price_by_costgroup[cost_group.number] || 0) }
       row += [nil]
