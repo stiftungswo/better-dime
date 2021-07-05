@@ -11,6 +11,7 @@ import { DimeTableCell } from './DimeTableCell';
 interface BTProps {
   mainStore?: MainStore;
   breakdown: Breakdown;
+  fixedPrice?: number | null;
 }
 
 @compose(
@@ -21,6 +22,13 @@ export class BreakdownTable extends React.Component<BTProps> {
   render() {
     const format = (amount: number) => this.props.mainStore!.formatCurrency(amount, true);
     const { subtotal, vatTotal, discountTotal, total } = this.props.breakdown;
+
+    // if (this.props.fixedPrice && this.props.fixedPrice > 0) {
+    //   total = this.props.fixedPrice;
+    //   subtotal = total / 1.077;
+    //   vatTotal = total - subtotal;
+    //   discountTotal = 0;
+    // }
 
     return (
       <Table>

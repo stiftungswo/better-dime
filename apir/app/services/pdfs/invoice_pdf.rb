@@ -25,14 +25,14 @@ module Pdfs
     end
 
     def draw_description(header)
-      move_down 70
+      move_down 90
 
       costgroups = @invoice.invoice_costgroup_distributions.map do |costgroup|
         costgroup.weight_percent.round.to_s + "% " + costgroup.costgroup_number.to_s
       end.join(", ")
 
       header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name,
-        I18n.t(:effort_period) + ": " + @invoice.beginning.strftime("%d.%m.%Y") + " - " + @invoice.ending.strftime("%d.%m.%Y"))
+        @invoice.beginning.strftime("%d.%m.%Y") + " - " + @invoice.ending.strftime("%d.%m.%Y"))
 
       move_down 25
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
@@ -40,8 +40,6 @@ module Pdfs
     end
 
     def draw_breakdown
-      move_down 40 if cursor > 40
-      start_new_page if cursor < 100
       Pdfs::Generators::BreakdownTableGenerator.new(document, @invoice.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
