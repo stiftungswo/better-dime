@@ -228,7 +228,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             <FormHeader>Berechnung</FormHeader>
                           </Grid>
                           <Grid item xs={12}>
-                            <BreakdownTable breakdown={invoice.breakdown} />
+                            <BreakdownTable breakdown={invoice.breakdown} fixedPrice={invoice.fixed_price} />
                           </Grid>
                           <Grid item xs={12} sm={6}>
                             <DimeField

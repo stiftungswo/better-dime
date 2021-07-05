@@ -245,7 +245,7 @@ class OfferForm extends React.Component<Props> {
                       <Grid item xs={12} lg={4}>
                         <DimePaper>
                           <FormHeader>Berechnung</FormHeader>
-                          <BreakdownTable breakdown={offer.breakdown} />
+                          <BreakdownTable breakdown={offer.breakdown} fixedPrice={offer.fixed_price} />
                           <DimeField
                             fullWidth={false}
                             delayed
