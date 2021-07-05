@@ -245,23 +245,6 @@ class OfferForm extends React.Component<Props> {
                       <Grid item xs={12} lg={4}>
                         <DimePaper>
                           <FormHeader>Berechnung</FormHeader>
-                          <BreakdownTable breakdown={offer.breakdown} />
-                          <DimeField
-                            fullWidth={false}
-                            delayed
-                            component={CurrencyField}
-                            name={'fixed_price'}
-                            label={'Fixpreis'}
-                            disabled={locked}
-                          />
-                        </DimePaper>
-                      </Grid>
-                    )}
-                  </Grid>
-                  {offer.id && (
-                      <Grid item xs={12} lg={4}>
-                        <DimePaper>
-                          <FormHeader>Berechnung</FormHeader>
                           <BreakdownTable breakdown={offer.breakdown} fixedPrice={offer.fixed_price} />
                           <DimeField
                             fullWidth={false}
