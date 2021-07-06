@@ -84,8 +84,7 @@ module Pdfs
                     format_money(position.calculated_total)
                   ],
             style: {
-              height: 22,
-              padding: padding,
+              padding: [6, 0, 6, 0],
               border_color: @border_color,
               borders: [:bottom],
               border_width: 0.5
