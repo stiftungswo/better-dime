@@ -47,14 +47,6 @@ class RevenueReportService
       offer_price = project.offer ? (project.offer.breakdown[:fixed_price] || project.offer.breakdown[:total]) : nil # TODO: Decorator
 
       no_costgroup_prices = 0
-      current_price = project.current_price
-     project_price_by_costgroup = {}
-#     total_pd_weight = project.project_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
-#     project.project_costgroup_distributions.each do |distribution|
-#       project_price_by_costgroup[distribution.costgroup_number] = (current_price * distribution.weight / total_pd_weight * -1)
-#     end
-#
-#     no_costgroup_prices += (current_price * -1) if project.project_costgroup_distributions.blank?
 
       if project.invoices.blank?
         invoice_price = nil
@@ -70,14 +62,14 @@ class RevenueReportService
             invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight))
           end
 
-          no_costgroup_prices += (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) if invoice.invoice_costgroup_distributions.blank?
+          no_costgroup_prices = (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) if invoice.invoice_costgroup_distributions.blank?
         end
       end
 
       category_names = project.project_categories.map { |category| category.name }
 
-      row = ["Projekt", project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, current_price, invoice_price, offer_price]
-      row += cost_groups.map { |cost_group| (project_price_by_costgroup[cost_group.number] || 0) + (invoice_price_by_costgroup[cost_group.number] || 0) }
+      row = ["Projekt", project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
+      row += cost_groups.map { |cost_group| (invoice_price_by_costgroup[cost_group.number] || 0) }
       row += [no_costgroup_prices]
       row
     end
