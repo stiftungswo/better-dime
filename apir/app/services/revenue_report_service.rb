@@ -59,17 +59,17 @@ class RevenueReportService
           total_id_weight = invoice.invoice_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
           invoice.invoice_costgroup_distributions.each do |distribution|
             invoice_price_by_costgroup[distribution.costgroup_number] ||= 0
-            invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * (distribution.weight / total_id_weight))
+            invoice_price_by_costgroup[distribution.costgroup_number] += ((invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) * distribution.weight / total_id_weight)
           end
 
-          no_costgroup_prices = (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) if invoice.invoice_costgroup_distributions.blank?
+          no_costgroup_prices += (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) if invoice.invoice_costgroup_distributions.blank?
         end
       end
 
       category_names = project.project_categories.map { |category| category.name }
 
       row = ["Projekt", project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
-      row += cost_groups.map { |cost_group| (invoice_price_by_costgroup[cost_group.number] || 0) }
+      row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
       row += [no_costgroup_prices]
       row
     end
