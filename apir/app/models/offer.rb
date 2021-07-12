@@ -19,9 +19,11 @@ class Offer < ApplicationRecord
             :short_description, :status, presence: true
 
   validates :name, length: { maximum: 255 }
+  validates :fixed_price, numericality: { only_integer: true }, if: -> { fixed_price.present? }
+  validates :fixed_price_vat, numericality: { greater_than_or_equal_to: 0 }, if: -> { fixed_price_vat.present? }
 
   def breakdown
-    CostBreakdown.new(offer_positions, offer_discounts, position_groupings, fixed_price).calculate
+    CostBreakdown.new(offer_positions, offer_discounts, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
   end
 
   def position_groupings

@@ -9,6 +9,7 @@ import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { StatusSelect } from '../../form/entitySelect/StatusSelect';
+import { VatSelect } from '../../form/entitySelect/VatSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -244,16 +245,33 @@ class OfferForm extends React.Component<Props> {
                     {offer.id && (
                       <Grid item xs={12} lg={4}>
                         <DimePaper>
-                          <FormHeader>Berechnung</FormHeader>
-                          <BreakdownTable breakdown={offer.breakdown} fixedPrice={offer.fixed_price} />
-                          <DimeField
-                            fullWidth={false}
-                            delayed
-                            component={CurrencyField}
-                            name={'fixed_price'}
-                            label={'Fixpreis'}
-                            disabled={locked}
-                          />
+                          <Grid container spacing={8}>
+                            <Grid item xs={12}>
+                              <FormHeader>Berechnung</FormHeader>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <BreakdownTable breakdown={offer.breakdown} fixedPrice={offer.fixed_price} />
+                            </Grid>
+                            <Grid item xs={12} sm={5}>
+                              <DimeField
+                                fullWidth={false}
+                                delayed
+                                component={CurrencyField}
+                                name={'fixed_price'}
+                                label={'Fixpreis'}
+                              />
+                            </Grid>
+                            <Grid item sm={3} />
+                            <Grid item xs={12} sm={4}>
+                              <DimeField
+                                component={VatSelect}
+                                name={'fixed_price_vat'}
+                                label={'MwSt. Satz'}
+                                placeholder={'7.7%'}
+                                disabled={!offer.fixed_price}
+                              />
+                            </Grid>
+                          </Grid>
                         </DimePaper>
                       </Grid>
                     )}
