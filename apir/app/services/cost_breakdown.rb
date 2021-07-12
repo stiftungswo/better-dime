@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class CostBreakdown
-  def initialize(positions, discounts, position_groupings, fixed_price)
+  def initialize(positions, discounts, position_groupings, fixed_price, fixed_price_vat)
     @positions = positions
     @discounts = discounts
     @position_groupings = position_groupings
     @fixed_price = fixed_price
+    @fixed_price_vat = fixed_price_vat
   end
 
   def calculate
@@ -19,8 +20,6 @@ class CostBreakdown
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
 
-    fixed_price_vats = []
-    fixed_price_vats_sum = 0.0
 
     # Did not understand the following calculations and fixed_price_vats wasn't used in rest of the code.
     # Also, it leaded to errors in invoices with a fixed price, so I commented it out for now.
@@ -51,8 +50,7 @@ class CostBreakdown
       vats: vats,
       vat_total: vats_total,
       fixed_price: @fixed_price,
-      fixed_price_vats: fixed_price_vats,
-      fixed_price_vats_sum: fixed_price_vats_sum,
+      fixed_price_vat: @fixed_price_vat,
       final_total: @fixed_price || total
     }
   end
