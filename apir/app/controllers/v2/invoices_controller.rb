@@ -61,7 +61,8 @@ module V2
     end
 
     def print
-      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice
+      date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]) + 2.hours)
+      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice, date
 
       if @invoice.invoice_costgroup_distributions.blank?
         @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print invoice without assigning cost groups")

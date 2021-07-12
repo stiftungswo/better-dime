@@ -197,7 +197,7 @@ class OfferForm extends React.Component<Props> {
                               </Grid>
                               {this.props.showDateField &&
                                 <Grid item xs={12} lg={4}>
-                                  <DatePicker label={'Datum'} value={this.state.date} onChange={v => this.setState({['date']: v})} disabled={locked} />
+                                  <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={v => this.setState({['date']: v})} disabled={locked} />
                                 </Grid>
                               }
                             </Grid>
