@@ -114,6 +114,9 @@ export class ApiStore {
   private initializeApiClient(tokenV2: string | null) {
     this._apiV2 = axios.create({ baseURL: baseUrlV2, headers: { Authorization: '' } });
 
+    // tslint:disable-next-line:no-console
+    console.log("Url: ", baseUrlV2);
+
     this.setAuthHeaderV2(tokenV2);
 
     const api = this._apiV2;
