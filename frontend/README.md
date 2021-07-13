@@ -670,7 +670,7 @@ Now that the compiler is configured, here is an example of importing an image fi
 import React from 'react';
 import logo from './logo.svg'; // Tell Webpack this JS file uses this image
 
-console.log(logo); // logo.84287d09.png
+console.log(logo); // /logo.84287d09.png
 
 function Header() {
   // Import result is the URL of your image
