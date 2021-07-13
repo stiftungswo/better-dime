@@ -93,7 +93,7 @@ export class ApiStore {
     const data = { email, password };
 
     // tslint:disable-next-line:no-console
-    console.log("Url: ", baseUrlV2);
+    console.log('Url: ', baseUrlV2);
 
     const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', { employee: data });
 
