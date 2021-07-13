@@ -4,18 +4,19 @@ require "prawn"
 
 module Pdfs
   class InvoicePdf < BasePdf
-    def initialize(global_setting, invoice)
+    def initialize(global_setting, invoice, date)
       @global_setting = global_setting
       @invoice = invoice
+      @date = date
       super()
     end
 
     def filename
-      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%d_%m")
     end
 
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @invoice, Time.current.to_date, @invoice.accountant)
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @invoice, @date, @invoice.accountant)
 
       header.draw(@default_text_settings, true)
       header.draw_title(:invoice)

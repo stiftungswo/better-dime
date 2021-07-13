@@ -29,7 +29,8 @@ class ProjectCalculator
           @project.offer.offer_positions,
           @project.offer.offer_discounts,
           @project.offer.position_groupings,
-          @project.offer.fixed_price
+          @project.offer.fixed_price,
+          @project.offer.fixed_price_vat || 0.077
         ).calculate[:total]
       else
         @project.offer.fixed_price

@@ -9,6 +9,7 @@ export const invoiceSchema = localizeSchema(() =>
     customer_id: selector(),
     description: yup.string().required(),
     fixed_price: nullableNumber(),
+    fixed_price_vat: nullableNumber(),
     beginning: dimeDate().required(),
     ending: dimeDate().required(),
     discounts: yup.array(
@@ -51,6 +52,8 @@ export const invoiceTemplate = () => ({
   positions: [],
   discounts: [],
   costgroup_distributions: [],
+  fixed_price: 0,
+  fixed_price_vat: 0,
   beginning: '',
   ending: '',
 });

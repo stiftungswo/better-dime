@@ -6,6 +6,7 @@ import * as React from 'react';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { VatSelect } from '../../form/entitySelect/VatSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -52,6 +53,7 @@ export interface Props extends FormViewProps<Invoice> {
 export default class InvoiceForm extends React.Component<Props> {
   state = {
     loading: true,
+    date: undefined,
   };
 
   componentWillMount() {
@@ -112,6 +114,7 @@ export default class InvoiceForm extends React.Component<Props> {
               />
               <PrintButton
                 path={`invoices/${invoice.id}/print`}
+                urlParams={{date: this.state.date}}
                 color={'inherit'}
                 title={
                   costGroupsExist
@@ -152,13 +155,16 @@ export default class InvoiceForm extends React.Component<Props> {
                                 label={'Adresse'}
                               />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} lg={8}>
                               <DimeField
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
                                 label={'Verantwortlicher Mitarbeiter'}
                               />
+                            </Grid>
+                            <Grid item xs={12} lg={4} style={{paddingTop: '24px'}}>
+                              <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
                             <Grid item xs={12} lg={5}>
                               <DimeField required component={DatePicker} name={'beginning'} label={'Startdatum'} />
@@ -171,7 +177,7 @@ export default class InvoiceForm extends React.Component<Props> {
                                 onConfirm={() => this.handleTimeSpan(props.values)}
                                 icon={Renew}
                                 title={'Zeitspanne aktualisieren'}
-                                message={'Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getägtigte Änderungen an der Rechnung gehen dabei verloren.'}
+                                message={'Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.'}
                               />
                             </Grid>
                           </Grid>
@@ -230,14 +236,23 @@ export default class InvoiceForm extends React.Component<Props> {
                           <Grid item xs={12}>
                             <BreakdownTable breakdown={invoice.breakdown} fixedPrice={invoice.fixed_price} />
                           </Grid>
-                          <Grid item xs={12} sm={6}>
+                          <Grid item xs={12} sm={5}>
                             <DimeField
                               fullWidth={false}
                               delayed
                               component={CurrencyField}
                               name={'fixed_price'}
                               label={'Fixpreis'}
-                              margin={'normal'}
+                            />
+                          </Grid>
+                          <Grid item sm={3} />
+                          <Grid item xs={12} sm={4}>
+                            <DimeField
+                              component={VatSelect}
+                              name={'fixed_price_vat'}
+                              label={'MwSt. Satz'}
+                              placeholder={'7.7%'}
+                              disabled={!invoice.fixed_price}
                             />
                           </Grid>
                         </Grid>
