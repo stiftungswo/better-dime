@@ -22,7 +22,7 @@ class Invoice < ApplicationRecord
   validates :fixed_price_vat, numericality: { greater_than_or_equal_to: 0 }, if: -> { fixed_price_vat.present? }
 
   def breakdown
-    @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, position_groupings, fixed_price).calculate
+    @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
   end
 
   def position_groupings
