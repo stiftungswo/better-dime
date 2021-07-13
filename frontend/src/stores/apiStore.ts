@@ -92,6 +92,9 @@ export class ApiStore {
     const { email, password } = values;
     const data = { email, password };
 
+    // tslint:disable-next-line:no-console
+    console.log("Url: ", baseUrlV2);
+
     const resV2 = await this._apiV2.post<JwtToken>('employees/sign_in', { employee: data });
 
     // tslint:disable-next-line:no-console
@@ -113,9 +116,6 @@ export class ApiStore {
 
   private initializeApiClient(tokenV2: string | null) {
     this._apiV2 = axios.create({ baseURL: baseUrlV2, headers: { Authorization: '' } });
-
-    // tslint:disable-next-line:no-console
-    console.log("Url: ", baseUrlV2);
 
     this.setAuthHeaderV2(tokenV2);
 
