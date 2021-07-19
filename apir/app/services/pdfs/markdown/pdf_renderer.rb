@@ -109,9 +109,10 @@ module Pdfs
             style: :bold,
             character_spacing: @spacing,
             leading: 5,
-            size: _header_level == 1 ? 10 : 10,
+            size: 10,
             inline_format: TRUE
           }
+          @document.start_new_page if @document.cursor < 50
           @document.text text, settings
         end
         @next_pad = 20

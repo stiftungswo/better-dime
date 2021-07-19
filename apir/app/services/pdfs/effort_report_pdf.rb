@@ -141,9 +141,9 @@ module Pdfs
 
 
     def draw_signature
-      start_new_page if cursor < 100
+      start_new_page if cursor < 90
 
-      bounding_box([0, 70], width: bounds.width, height: 150) do
+      bounding_box([0, 90], width: bounds.width, height: 150) do
         float do
           indent(10, 0) do
             text I18n.t(:signature_service_provider), @default_text_settings.merge(size: 10, style: :bold)

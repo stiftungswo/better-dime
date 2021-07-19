@@ -60,9 +60,9 @@ module Pdfs
     end
 
     def draw_signature
-      start_new_page if cursor < 70
+      start_new_page if cursor < 90
 
-      bounding_box([0, 70], width: bounds.width, height: 150) do
+      bounding_box([0, 90], width: bounds.width, height: 150) do
 
         float do
           indent(10, 0) do

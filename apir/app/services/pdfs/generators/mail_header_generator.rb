@@ -94,12 +94,12 @@ module Pdfs
 
       def draw_footer
         @document.repeat(:all) do
-          @document.bounding_box([@document.bounds.left, @document.bounds.bottom - 32], width: 200, height: 100) do
+          @document.bounding_box([@document.bounds.left, @document.bounds.bottom], width: 200, height: 113) do
           # @document.stroke_bounds
 
           @document.transparent(0.5) do
-            @document.text @global_setting.sender_street, @default_text_settings
-            @document.text "CH-" + @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings
+            @document.draw_text @global_setting.sender_street, @default_text_settings.merge(at: [0, 94])
+            @document.draw_text "CH-" + @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(at: [0, 81])
             @document.fill_color '007DC2'
             @document.draw_text "T ", @default_text_settings.merge(at: [0, 68], style: :bold)
             @document.fill_color '000000'
