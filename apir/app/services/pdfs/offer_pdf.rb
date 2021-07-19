@@ -39,11 +39,10 @@ module Pdfs
     end
 
     def draw_description(header)
-      move_down 100
+      move_down 90
       
       header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
-      move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
         .render((@offer.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
     end
