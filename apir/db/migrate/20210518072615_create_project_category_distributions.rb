@@ -1,9 +1,9 @@
 class CreateProjectCategoryDistributions < ActiveRecord::Migration[6.0]
   def change
     create_table :project_category_distributions do |t|
-      t.integer :category_id, unsigned: true
+      t.bigint :category_id, null: false
       t.integer :weight, null: false, default: 100
-      t.integer :project_id, unsigned: true
+      t.bigint :project_id, null: false
 
       t.timestamps
     end

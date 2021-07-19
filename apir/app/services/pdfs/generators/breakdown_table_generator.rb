@@ -51,9 +51,8 @@ module Pdfs
           end
           @document.move_down 20
         end
-        @document.start_new_page if @document.cursor < 110
+        @document.start_new_page if @document.cursor < 140
         render_subtotal
-        @document.start_new_page if @document.cursor < 50
         render_total
       end
 

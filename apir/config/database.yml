@@ -12,7 +12,7 @@ development:
 
 test:
   <<: *default
-  database: dime_test
+  database: better-dime_test
 
 production:
   <<: *default
