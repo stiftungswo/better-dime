@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.partial! "pagination", pagination: @projects_wp_invoices
 json.set! :data do
   json.array! @projects_wp_invoices do |project|
     json.extract! project.decorate, :id, :name

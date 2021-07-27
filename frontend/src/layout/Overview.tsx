@@ -1,10 +1,10 @@
 import { pseudoRandomBytes } from 'crypto';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
+import { AbstractPaginatedStore } from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
-import {Listing, PaginationInfo, SelectedAction} from '../types';
+import { Listing, PaginationInfo, SelectedAction } from '../types';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';

@@ -5,7 +5,15 @@ import { Cache } from '../utilities/Cache';
 import { AbstractPaginatedStore } from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
-export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing> {
+export interface ProjectWithPotentialInvoices {
+  id: number;
+  name: string;
+  last_effort_date: string;
+  last_invoice_date: string | null;
+  days_since_last_invoice: number | null;
+}
+
+export class ProjectWithPotentialInvoicesStore extends AbstractPaginatedStore<Project, ProjectWithPotentialInvoices> {
   protected get entityName(): { singular: string; plural: string } {
     return {
       singular: 'Das Projekt',
@@ -23,16 +31,16 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   @computed
-  get entities(): ProjectListing[] {
+  get entities(): ProjectWithPotentialInvoices[] {
     return this.projects;
   }
 
   get archivable() {
-    return true;
+    return false;
   }
 
   @observable
-  projects: ProjectListing[] = [];
+  projects: ProjectWithPotentialInvoices[] = [];
   @observable
   project?: Project = undefined;
 
@@ -40,7 +48,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     super(mainStore);
   }
 
-  setEntities(e: ProjectListing[]) {
+  setEntities(e: ProjectWithPotentialInvoices[]) {
     this.projects = e;
   }
 
@@ -48,44 +56,18 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     return query.toLowerCase();
   }
 
-  async createInvoice(id: number): Promise<Invoice> {
-    // creating a new invoice can affect caches so we invalidate all
-    try {
-      this.displayInProgress();
-      const res = await this.mainStore.apiV2.post<Invoice>(`/projects/${id}/create_invoice`);
-      Cache.invalidateAllActiveCaches();
-      this.mainStore.displaySuccess('Die Rechnung wurde erstellt');
-      return res.data;
-    } catch (e) {
-      this.mainStore.displayError('Beim Erstellen der Rechnung ist ein Fehler aufgetreten');
-      throw e;
-    }
-  }
-
-  protected async doArchive(id: number, archived: boolean) {
-    await this.mainStore.apiV2.put('/projects/' + id, { id, archived });
-  }
-
-  protected async doDelete(id: number) {
-    await this.mainStore.apiV2.delete('/projects/' + id);
-  }
-
-  protected async doDuplicate(id: number) {
-    return this.mainStore.apiV2.post<Project>('/projects/' + id + '/duplicate');
-  }
-
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects');
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectWithPotentialInvoices>>('/projects/potential_invoices');
     this.projects = res.data.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectWithPotentialInvoices>>('/projects/potential_invoices', {params: this.getQueryParams()});
     this.projects = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getPaginatedQueryParams()});
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectWithPotentialInvoices>>('/projects/potential_invoices', {params: this.getPaginatedQueryParams()});
     const page = res.data;
     this.projects = page.data;
     this.pageInfo = _.omit(page, 'data');

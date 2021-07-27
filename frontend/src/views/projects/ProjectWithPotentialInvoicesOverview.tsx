@@ -1,20 +1,18 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
-import { ProjectStore, ProjectWithPotentialInvoices } from '../../stores/projectStore';
-import { Project, ProjectListing } from '../../types';
+import { ProjectWithPotentialInvoices, ProjectWithPotentialInvoicesStore } from '../../stores/projectWithPotentialInvoicesStore';
 import compose from '../../utilities/compose';
 import { Formatter } from '../../utilities/formatter';
 
 export type Props = {
-  projectStore?: ProjectStore;
+  projectWithPotentialInvoicesStore?: ProjectWithPotentialInvoicesStore;
   formatter?: Formatter;
 } & RouteComponentProps;
 
 @compose(
-  inject('projectStore', 'formatter'),
+  inject('projectWithPotentialInvoicesStore', 'formatter'),
   observer,
   withRouter,
 )
@@ -46,21 +44,21 @@ export default class ProjectWithPotentialInvoicesOverview extends React.Componen
       {
         id: 'days_since_last_invoice',
         label: 'Tage',
+        noSort: true,
       },
     ];
+
   }
 
   render() {
-    const projectStore = this.props.projectStore!;
+    const projectWithPotentialInvoicesStore = this.props.projectWithPotentialInvoicesStore;
 
     return (
-      <Overview<ProjectWithPotentialInvoices>
+      <Overview
+        paginated
+        searchable
         title={'Nicht verrechnete Projekte'}
-        store={projectStore}
-        adapter={{
-          fetch: () => projectStore.fetchProjectsWithOpenInvoices(),
-          getEntities: () => projectStore.projectsWithPotentialInvoices,
-        }}
+        store={projectWithPotentialInvoicesStore!}
         onClickRow={'/projects/:id'}
         columns={this.columns}
       />
