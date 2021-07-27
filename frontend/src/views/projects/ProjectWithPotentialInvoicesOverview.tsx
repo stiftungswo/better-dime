@@ -34,7 +34,7 @@ export default class ProjectWithPotentialInvoicesOverview extends React.Componen
       {
         id: 'last_effort_date',
         label: 'Datum des letzten Aufwands',
-        format: d => formatDate(d.last_effort_date),
+        format: d => (d.last_effort_date ? formatDate(d.last_effort_date) : '-'),
       },
       {
         id: 'last_invoice_date',
