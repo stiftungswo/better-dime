@@ -63,13 +63,11 @@ module V2
     end
 
     def potential_invoices
-      @projects = Project.left_joins(:invoices, project_positions: :project_efforts).select(
+      @q = Project.left_joins(:invoices, project_positions: :project_efforts).select(
         "projects.id, projects.name, MAX(date) as last_effort_date, MAX(ending) as last_invoice_date"
-      ).group(:id)
-      @candidate_projects = @projects.page(legacy_params[:page]).per(legacy_params[:pageSize])
-      @projects_wp_invoices = @candidate_projects.select do |p|
-        p.last_invoice_date.nil? || (p.last_effort_date && (p.last_effort_date > p.last_invoice_date))
-      end
+      ).group(:id).order(id: :desc).having('last_invoice_date IS NULL OR (last_effort_date AND (last_effort_date > last_invoice_date))')
+      @q2 = @q.ransack(search_params).result.order(search_params[:s])
+      @projects_wp_invoices = @q2.page(legacy_params[:page]).per(legacy_params[:pageSize])
     end
 
     def effort_report
@@ -95,6 +93,9 @@ module V2
     def search_params
       search = params.fetch(:q, {}).permit!
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
+      # Could have a more prettier solution
+      search[:s] = "name asc" if search[:s] == "listing_name asc"
+      search[:s] = "name desc" if search[:s] == "listing_name desc"
       search[:archived_false] = true if legacy_params[:showArchived] == "false"
       search[:id_or_name_or_description_cont] ||= legacy_params[:filterSearch]
       search.permit(:s, :archived_false, :id_or_name_or_description_cont)

@@ -25,7 +25,7 @@ export default class EmployeeOverview extends React.Component<Props> {
       {
         id: 'id',
         label: 'ID',
-        numeric: true,
+        numeric: false,
       },
       {
         id: 'first_name',
