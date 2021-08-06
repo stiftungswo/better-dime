@@ -94,7 +94,8 @@ module Pdfs
 
     def draw_receipt
       bounding_box([0.cm, 10.5.cm], width: 6.2.cm, height: 10.5.cm) do
-        stroke_bounds
+        #Uncomment next line if regular paper is used or the bill is sent digitally
+        #stroke_bounds
 
         bounding_box([0.5.cm, 10.cm], width: 5.2.cm, height: 0.7.cm) do
           #Title section
@@ -150,7 +151,8 @@ module Pdfs
       h_leading = 11 - h_font_size
 
       bounding_box([6.2.cm, 10.5.cm], width: 14.8.cm, height: 10.5.cm) do
-        stroke_bounds
+        #Uncomment next line if regular paper is used or the bill is sent digitally
+        #stroke_bounds
 
         bounding_box([0.5.cm, 10.cm], width: 5.1.cm, height: 0.7.cm) do
           #Title section
