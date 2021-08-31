@@ -65,3 +65,6 @@ Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 ge
 5. ``yarn start``
 
 26.05.2020 14:50
+
+#Readme-Update
+Test um Semaphore Build zu starten.
