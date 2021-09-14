@@ -134,11 +134,13 @@ module Pdfs
           @document.text @data.customer.company.name, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.company
           @document.text @data.customer.department, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.department
           @document.text (@data.customer.salutation || "") + " " + @data.customer.full_name, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @data.address.street, @default_text_settings.merge(size: 10, leading: 6)
+          # use text_box to avoid line-wrapping long addresses
+          @document.text_box @data.address.street, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 10)
+          @document.move_down(16)
           if @data.address.supplement && @data.address.supplement.length > 0
             @document.text @data.address.supplement, @default_text_settings.merge(size: 10, leading: 6)
           end
-          @document.text @data.address.zip.to_s + " " + @data.address.city, @default_text_settings.merge(size: 10, leading: 6)
+          @document.text_box @data.address.zip.to_s + " " + @data.address.city, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 10)
         end
       end
     end
