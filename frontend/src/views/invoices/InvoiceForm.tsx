@@ -96,7 +96,7 @@ export default class InvoiceForm extends React.Component<Props> {
                 color={'inherit'}
                 title={
                   invoice.project_id
-                    ? 'Aufwandsrapport drucken'
+                    ? 'Aufwandsrapport für diese Rechnung drucken'
                     : 'Da die Rechnung kein verlinktes Projekt hat, kann kein Aufwandrapport erzeugt werden.'
                 }
                 icon={StatisticsIcon}
