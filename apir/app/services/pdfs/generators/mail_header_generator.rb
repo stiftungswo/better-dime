@@ -128,7 +128,8 @@ module Pdfs
       end
 
       def draw_recipient_address
-        @document.bounding_box([@document.bounds.width - 175, @document.bounds.height - @address_offset], width: 175, height: 100) do
+        # don't specify a height to ensure that everything lands on the same page
+        @document.bounding_box([@document.bounds.width - 175, @document.bounds.height - @address_offset], width: 175) do
           # @document.stroke_bounds
 
           @document.text @data.customer.company.name, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.company.present?
