@@ -12,9 +12,15 @@ const castValue = (value: ValueType) => {
     return value;
   }
   if (moment.isMoment(value)) {
-    return value;
+    if (value.isUtc()) {
+      return value;
+    } else {
+      // DatePicker returns: date at 00:00 UTC+2
+      // we want:            date at 00:00 UTC
+      return moment.utc(value.format(moment.HTML5_FMT.DATE));
+    }
   } else {
-    return moment(value);
+    return moment.utc(value);
   }
 };
 
