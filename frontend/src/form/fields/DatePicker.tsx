@@ -14,14 +14,12 @@ const castValue = (value: ValueType) => {
   if (moment.isMoment(value)) {
     if (value.isUtc()) {
       return value;
-    } else {
-      // DatePicker returns: date at 00:00 UTC+2
-      // we want:            date at 00:00 UTC
-      return moment.utc(value.format(moment.HTML5_FMT.DATE));
     }
-  } else {
-    return moment.utc(value);
+    // DatePicker returns: date at 00:00 UTC+2
+    // we want:            date at 00:00 UTC
+    return moment.utc(value.format(moment.HTML5_FMT.DATE));
   }
+  return moment.utc(value);
 };
 
 interface Props extends DimeCustomFieldProps<ValueType, Moment | null>, WidthToggle {
