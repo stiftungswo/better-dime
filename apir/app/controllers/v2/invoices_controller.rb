@@ -31,7 +31,7 @@ module V2
     end
 
     def update_timespan
-      @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], (DateTime.parse(params[:ending]) + 2.hours)
+      @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], params[:ending]
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
@@ -61,7 +61,7 @@ module V2
     end
 
     def print
-      date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]) + 2.hours)
+      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
       pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice, date
 
       if @invoice.invoice_costgroup_distributions.blank?

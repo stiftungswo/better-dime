@@ -38,7 +38,7 @@ class DateFastPickerInner extends React.Component<Props> {
 
   change = (add: number, bounds: unitOfTime.Base) => {
     if (this.props.value) {
-      const date = moment(this.props.value)
+      const date = moment.utc(this.props.value)
         .clone()
         .add(add, bounds);
 
