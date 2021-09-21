@@ -24,6 +24,15 @@ module Pdfs
       @invoice = Invoice.find_by_project_id(efforts_holder.id)
     end
 
+    def is_in_range?(date)
+      # overwritten in invoice_effort_report_pdf.rb
+      true
+    end
+
+    def effort_date_range(uniq_dates)
+      [uniq_dates.min || DateTime.now, uniq_dates.max || DateTime.now]
+    end
+
     def table_title(title)
       fill_color @swo_blue
       transparent(1) do
@@ -39,7 +48,8 @@ module Pdfs
     end
 
     def draw
-      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, efforts_holder, Time.current.to_date, efforts_holder.accountant)
+      # use data_holder here so this works with both invoices and projects.
+      header = Pdfs::Generators::MailHeaderGenerator.new(document, @global_setting, @data_holder, Time.current.to_date, @data_holder.accountant)
 
       header.draw(@default_text_settings, true)
       header.draw_title(:effort_report)
@@ -64,10 +74,9 @@ module Pdfs
 
       effort_dates = efforts_holder.project_efforts.map(&:date).uniq
       comment_dates = efforts_holder.project_comments.map(&:date).uniq
-      uniq_dates = (effort_dates + comment_dates).uniq.sort
+      uniq_dates = (effort_dates + comment_dates).uniq.select{ |date| is_in_range?(date) }.sort
 
-      earliest_effort = uniq_dates.min || DateTime.now
-      latest_effort = uniq_dates.max || DateTime.now
+      (earliest_effort, latest_effort) = effort_date_range(uniq_dates)
 
       table_title(I18n.t(:services_from_to, from: earliest_effort.strftime("%d.%m.%Y"), to: latest_effort.strftime("%d.%m.%Y")))
 

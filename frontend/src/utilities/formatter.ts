@@ -15,7 +15,7 @@ export class Formatter {
   }
 
   formatDate = (date: string | Moment) => {
-    const o = moment(date);
+    const o = moment.utc(date);
     return o.format(this.userDateFormat.format);
   }
 
