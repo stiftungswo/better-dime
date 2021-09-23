@@ -35,7 +35,8 @@ module Pdfs
     end
 
     def format_money(amount)
-      number_to_currency(amount, unit: "", separator: ".", delimiter: "'")
+      # "'" would get formatted as &#39; by number_to_currency for some reason.
+      number_to_currency(amount, unit: "", separator: ".", delimiter: ",").tr(",", "'")
     end
 
     def draw
