@@ -10,9 +10,9 @@ RUN chmod +x /tmp/wait-for-it.sh
 RUN gem install bundler -v "2.1.4" --no-document
 RUN apt-get update && apt-get install -y mariadb-client
 
-WORKDIR /api
+WORKDIR /apir
 COPY Gemfile* ./
-COPY . /api
+COPY . /apir
 
 RUN bundle install --jobs=8
 

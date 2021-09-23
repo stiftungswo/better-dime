@@ -18,11 +18,12 @@ import { HolidayStore } from '../stores/holidayStore';
 import { InvoiceStore } from '../stores/invoiceStore';
 import { MainStore } from '../stores/mainStore';
 import { OfferStore } from '../stores/offerStore';
-import {PositionGroupStore} from '../stores/positionGroupStore';
+import { PositionGroupStore } from '../stores/positionGroupStore';
 import { ProjectCategoryStore } from '../stores/projectCategoryStore';
-import {ProjectCommentPresetStore} from '../stores/projectCommentPresetStore';
+import { ProjectCommentPresetStore } from '../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../stores/projectCommentStore';
 import { ProjectStore } from '../stores/projectStore';
+import { ProjectWithPotentialInvoicesStore } from '../stores/projectWithPotentialInvoicesStore';
 import { RateGroupStore } from '../stores/rateGroupStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
 import { ServiceStore } from '../stores/serviceStore';
@@ -48,6 +49,7 @@ export class StoreProvider extends React.Component<Props> {
     rateGroupStore: RateGroupStore;
     customerStore: CustomerStore;
     projectStore: ProjectStore;
+    projectWithPotentialInvoicesStore: ProjectWithPotentialInvoicesStore;
     projectCategoryStore: ProjectCategoryStore;
     customerTagStore: CustomerTagStore;
     invoiceStore: InvoiceStore;
@@ -123,6 +125,7 @@ export class StoreProvider extends React.Component<Props> {
       rateGroupStore: new RateGroupStore(mainStore),
       customerStore: new CustomerStore(mainStore),
       projectStore,
+      projectWithPotentialInvoicesStore: new ProjectWithPotentialInvoicesStore(mainStore),
       projectCategoryStore: new ProjectCategoryStore(mainStore),
       customerTagStore: new CustomerTagStore(mainStore),
       invoiceStore: new InvoiceStore(mainStore),

@@ -29,29 +29,36 @@ module Pdfs
 
       def draw_misc(invoice, project, offer, accountant, costgroups, title_symbol, name, timespan=nil)
 
+        @document.text I18n.t(:date_name) + ' ' + @date.strftime("%d.%m.%Y"), @default_text_settings.merge(size: 8)
+        @document.text I18n.t(:vat) + ' Nr. ' + @global_setting.sender_vat, @default_text_settings.merge(size: 8) if costgroups
+        # @document.draw_text 'Schwerzenbach, ' + @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [@document.bounds.width - 145, @document.cursor], size: 8)
+        @document.move_down 11
         @document.text name, @default_text_settings.merge(size: 12, style: :bold, color: @swo_blue)
         @document.move_down 11
 
         unless title_symbol === :project_report
+          space = 72
           @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
-          @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [75, @document.cursor]) unless title_symbol === :offer
-          @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [150, @document.cursor]) unless title_symbol === :offer
-          @document.draw_text I18n.t(:date_name), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
-          @document.draw_text @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [425, @document.cursor])
+          @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [space, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [space*2, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text I18n.t(:cost_groups), @default_text_settings.merge(at: [space*3+10, @document.cursor]) if costgroups
+          @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
 
           @document.move_down 16
 
           @document.draw_text offer.id.to_s, @default_text_settings.merge(at: [0, @document.cursor]) if offer
-          @document.draw_text project.id.to_s, @default_text_settings.merge(at: [75, @document.cursor]) if project
-          @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [150, @document.cursor]) if invoice
-          @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
-          @document.draw_text accountant.full_name, @default_text_settings.merge(at: [425, @document.cursor]) if accountant
+          @document.draw_text project.id.to_s, @default_text_settings.merge(at: [space, @document.cursor]) if project
+          @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [space*2, @document.cursor]) if invoice
+          @document.draw_text costgroups, @default_text_settings.merge(at: [space*3+10, @document.cursor]) if costgroups
+          @document.draw_text accountant.full_name, @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor]) if accountant
 
           @document.move_down 26
 
-          @document.text timespan, @default_text_settings.merge(leading: 6) if timespan
-          @document.text I18n.t(:cost_groups) + " " + costgroups, @default_text_settings.merge(leading: 6) if costgroups
-          @document.text I18n.t(:vat) + "-ID " + @global_setting.sender_vat, @default_text_settings.merge(leading: 6) if costgroups
+          @document.draw_text I18n.t(:effort_period), @default_text_settings.merge(at: [0, @document.cursor]) if timespan
+
+          @document.move_down 16
+
+          @document.draw_text timespan, @default_text_settings.merge(at: [0, @document.cursor]) if timespan
         end
       end
 
@@ -76,9 +83,9 @@ module Pdfs
         @document.repeat(:all) do
           @document.bounding_box([@document.bounds.width - @logo_width, @document.bounds.height + @page_offset], width: @logo_width, height: @logo_height) do
             # @document.stroke_bounds
-  
+
             image_path = Rails.root.join("app", "assets", "logo", "logo_full_new.png")
-  
+
             @document.move_up 15
             @document.image image_path, width: @logo_width
           end
@@ -87,12 +94,12 @@ module Pdfs
 
       def draw_footer
         @document.repeat(:all) do
-          @document.bounding_box([@document.bounds.left, @document.bounds.bottom - 32], width: 200, height: 100) do
+          @document.bounding_box([@document.bounds.left, @document.bounds.bottom], width: 200, height: 113) do
           # @document.stroke_bounds
 
           @document.transparent(0.5) do
-            @document.text @global_setting.sender_street, @default_text_settings
-            @document.text "CH-" + @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings
+            @document.draw_text @global_setting.sender_street, @default_text_settings.merge(at: [0, 94])
+            @document.draw_text "CH-" + @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(at: [0, 81])
             @document.fill_color '007DC2'
             @document.draw_text "T ", @default_text_settings.merge(at: [0, 68], style: :bold)
             @document.fill_color '000000'
@@ -115,23 +122,24 @@ module Pdfs
           @document.text @global_setting.sender_street, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_phone, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 6) if @accountant && @accountant.email
-          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 6) unless @accountant && @accountant.email
+          @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 20) if @accountant && @accountant.email
+          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 20) unless @accountant && @accountant.email
         end
       end
 
       def draw_recipient_address
-        @document.bounding_box([@document.bounds.width - 175, @document.bounds.height - @address_offset], width: 175, height: 100) do
+        # don't specify a height to ensure that everything lands on the same page
+        @document.bounding_box([@document.bounds.width - 175, @document.bounds.height - @address_offset], width: 175) do
           # @document.stroke_bounds
 
-          @document.text @data.customer.company.name, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.company
-          @document.text @data.customer.department, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.department && @data.customer.department_in_address
+          @document.text @data.customer.company.name, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.company.present?
+          @document.text @data.customer.department, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.department.present?
           @document.text (@data.customer.salutation || "") + " " + @data.customer.full_name, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @data.address.street, @default_text_settings.merge(size: 10, leading: 6)
-          if @data.address.supplement && @data.address.supplement.length > 0
-            @document.text @data.address.supplement, @default_text_settings.merge(size: 10, leading: 6)
-          end
-          @document.text @data.address.zip.to_s + " " + @data.address.city, @default_text_settings.merge(size: 10, leading: 6)
+          # use text_box to avoid line-wrapping long addresses
+          @document.text_box @data.address.street, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
+          @document.move_down 16
+          @document.text @data.address.supplement, @default_text_settings.merge(size: 10, leading: 6) if @data.address.supplement.present?
+          @document.text_box @data.address.zip.to_s + " " + @data.address.city, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
         end
       end
     end

@@ -39,26 +39,15 @@ module Pdfs
     end
 
     def draw_description(header)
-      move_down 70
+      move_down 90
+      
+      header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
-      costgroups = nil
-
-      if project
-        costgroups = project.project_costgroup_distributions.map do |c|
-          c.weight.to_s + "% " + c.costgroup_number.to_s
-        end.join(", ")
-      end
-
-      header.draw_misc(nil, nil, data, data.accountant, costgroups, :offer, data.name)
-
-      move_down 20
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@offer.description[0] == '#' ? "" : "#Projektbeschrieb\n") + @offer.description)
+        .render((@offer.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
     end
 
     def draw_breakdown
-      move_down 40 if cursor > 40
-      start_new_page if cursor < 100
 
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
@@ -70,9 +59,9 @@ module Pdfs
     end
 
     def draw_signature
-      start_new_page if cursor < 70
+      start_new_page if cursor < 90
 
-      bounding_box([0, 70], width: bounds.width, height: 150) do
+      bounding_box([0, 90], width: bounds.width, height: 150) do
 
         float do
           indent(10, 0) do

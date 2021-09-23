@@ -123,6 +123,14 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
       this.props.effortStore!.editing = false;
     }
   }
+  handleSubmitAndErrors = async (entity: ProjectEffort | ProjectEffortTemplate, formikProps: FormikProps<ProjectEffort>) => {
+      try {
+        await this.handleSubmit(entity, formikProps);
+      } catch (e) {
+        // allow the user to try again without having to re-enter everything.
+        formikProps.setSubmitting(false);
+      }
+  }
 
   handleClose = (props: FormikProps<ProjectEffort>) => () => {
     if (props.dirty) {
@@ -142,7 +150,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
         isInitialValid={true}
         enableReinitialize
-        onSubmit={this.handleSubmit}
+        onSubmit={this.handleSubmitAndErrors}
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>

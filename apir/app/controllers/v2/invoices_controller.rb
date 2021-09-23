@@ -31,7 +31,7 @@ module V2
     end
 
     def update_timespan
-      @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], (DateTime.parse(params[:ending]) + 2.hours)
+      @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], params[:ending]
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
@@ -61,7 +61,8 @@ module V2
     end
 
     def print
-      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice
+      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
+      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice, date
 
       if @invoice.invoice_costgroup_distributions.blank?
         @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print invoice without assigning cost groups")
@@ -125,7 +126,7 @@ module V2
       ParamsModifier.copy_attributes params, :costgroup_distributions, :invoice_costgroup_distributions_attributes
 
       params.permit(
-        :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price,
+        :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price, :fixed_price_vat,
         invoice_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :amount, :description, :order, :position_group_id, :_destroy],
         invoice_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
         invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy]

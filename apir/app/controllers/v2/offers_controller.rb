@@ -52,7 +52,7 @@ module V2
     end
 
     def create_project
-      @project = ProjectCreator.create_project_from_offer @offer
+      @project = ProjectCreator.create_project_from_offer @offer, params[:costgroup], params[:category]
 
       raise ValidationError, @project.errors unless @project.save
 
@@ -60,7 +60,7 @@ module V2
     end
 
     def print
-      date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]) + 2.hours)
+      date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]))
       pdf = Pdfs::OfferPdf.new GlobalSetting.first, @offer, date
 
       respond_to do |format|

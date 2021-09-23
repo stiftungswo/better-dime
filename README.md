@@ -20,7 +20,11 @@ Dime is developed in and used by a foundation in the German speaking part of Swi
 
 
 ## Entwicklung
-### Vorbereitung
+
+### Docker
+Wir nutzen Docker. Das einzige, was installiert werden muss, ist Docker.
+
+### Vorbereitung (veraltet)
 #### Ruby
 Damit am Dime entwickelt werden kann, muss Ruby installiert werden. Am besten wird ein Ruby version manager (e.g rbenv) installiert damit eine einfache Umstellung auf neuere Versionen ermöglicht wird. Momentan wird ruby 2.6.5 verwendet.
 #### MySQL
@@ -61,3 +65,6 @@ Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 ge
 5. ``yarn start``
 
 26.05.2020 14:50
+
+#Readme-Update
+Test um Semaphore Build zu starten.

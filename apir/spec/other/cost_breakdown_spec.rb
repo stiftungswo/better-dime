@@ -18,7 +18,7 @@ RSpec.describe CostBreakdown do
     discount_a = create(:invoice_discount, invoice: invoice, percentage: false, value: 151.1)
     discount_b = create(:invoice_discount, invoice: invoice, percentage: true, value: 0.03156)
 
-    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
+    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price, invoice.fixed_price_vat || 0.077).calculate
 
     expected = {
       discount_total: -6640,
@@ -28,8 +28,7 @@ RSpec.describe CostBreakdown do
       ],
       final_total: 213_515.0,
       fixed_price: nil,
-      fixed_price_vats: [],
-      fixed_price_vats_sum: 0.0,
+      fixed_price_vat: 0.077,
       raw_total: 198_575.0,
       subtotal: 205_215.0,
       total: 213_515.0,
@@ -58,7 +57,7 @@ RSpec.describe CostBreakdown do
     discount_a = create(:invoice_discount, invoice: invoice, percentage: false, value: 151.1)
     discount_b = create(:invoice_discount, invoice: invoice, percentage: true, value: 0.03156)
 
-    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price).calculate
+    breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price, 0.077).calculate
 
     expected = {
       discount_total: -6640,
@@ -68,13 +67,7 @@ RSpec.describe CostBreakdown do
       ],
       final_total: 12_000,
       fixed_price: 12_000,
-      fixed_price_vats: [],
-      fixed_price_vats_sum: 0,
-      # fixed_price_vats: [
-      #   { value: "802", vat: "0.077" },
-      #   { value: "10", vat: "0.025" }
-      # ],
-      # fixed_price_vats_sum: 812.0,
+      fixed_price_vat: 0.077,
       raw_total: 198_575.0,
       subtotal: 205_215.0,
       total: 213_515.0,
