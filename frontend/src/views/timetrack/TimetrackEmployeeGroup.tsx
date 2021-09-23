@@ -62,9 +62,14 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
   }
 
   generateEffortReportUrl = (): object => {
+    const formatNull = (arg: any) => {
+        if (!arg) { return arg; }
+        return arg.format('YYYY-MM-DD');
+    };
+    // For some reason, .start / .end is null if the corresponding text field is empty.
     return {
-      end: this.props.timetrackFilterStore!.filter.end.format('YYYY-MM-DD'),
-      start: this.props.timetrackFilterStore!.filter.start.format('YYYY-MM-DD'),
+      end: formatNull(this.props.timetrackFilterStore!.filter.end),
+      start: formatNull(this.props.timetrackFilterStore!.filter.start),
     };
   }
 

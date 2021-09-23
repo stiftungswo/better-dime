@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.6.5"
+ruby "2.7.1"
 
 gem "axlsx_styler"
 gem "bootsnap", ">= 1.1.0", require: false
@@ -23,6 +23,7 @@ gem "paper_trail"
 gem "prawn"
 gem "prawn-table"
 gem "puma", "~> 4.3"
+gem "qr-bills"
 gem "rack-cors", require: "rack/cors"
 gem "rails", "~> 6.0.1"
 gem "ransack"
