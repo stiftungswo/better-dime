@@ -19,6 +19,7 @@ export interface ButtonProps {
   action?: ActionButtonAction;
   disabled?: boolean;
   color?: PropTypes.Color;
+  style?: React.CSSProperties;
 }
 
 const withSecondaryIcon = (Icon?: IconType) => (component: React.ReactNode) =>
@@ -55,7 +56,7 @@ export class ActionButton extends React.Component<ButtonProps> {
       withLink(this.route),
       withTooltip(this.props.title),
     )(
-      <IconButton onClick={this.onClick} disabled={this.props.disabled} color={this.props.color}>
+      <IconButton onClick={this.onClick} disabled={this.props.disabled} color={this.props.color} style={this.props.style}>
         {withSecondaryIcon(this.props.secondaryIcon)(<Icon />)}
       </IconButton>,
     );
