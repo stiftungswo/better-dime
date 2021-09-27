@@ -43,9 +43,7 @@ export class DelayedInput extends React.Component<InputProps, { focused: boolean
   }
 }
 
-type onChangeWrappedProps = (value: any) => void;
-
-const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType<DimeFormControlProps & DimeInputFieldProps>, onChangeWrapped: onChangeWrappedProps) => ({
+const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType<DimeFormControlProps & DimeInputFieldProps>) => ({
   form,
   field,
   // tslint:disable-next-line:trailing-comma
@@ -64,9 +62,6 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
     } else {
       form.setFieldValue(field.name, x);
     }
-    if (onChangeWrapped) {
-      onChangeWrapped(x);
-    }
   };
   const handleBlur = () => {
     form.setFieldTouched(field.name, true);
@@ -83,30 +78,26 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
   );
 };
 
-interface DimeFieldState {
-  component: React.ReactType;
-}
-
 type DimeFieldProps = any; // tslint:disable-line:no-any ; formik field does this, so we do too
 
 // tslint:disable
-export class DimeField extends React.Component<DimeFieldProps, DimeFieldState> {
+export class DimeField extends React.Component<DimeFieldProps, { component: React.ReactType }> {
   componentWillMount() {
     this.setState({
-      component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.onChangeWrapped),
+      component: wireFormik({ delayed: this.props.delayed })(this.props.component),
     });
   }
 
-  componentDidUpdate(prevProps: Readonly<DimeFieldState>) {
+  componentDidUpdate(prevProps: Readonly<DimeFieldProps>) {
     if (prevProps.component !== this.props.component) {
       this.setState({
-        component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.onChangeWrapped),
+        component: wireFormik({ delayed: this.props.delayed })(this.props.component),
       });
     }
   }
 
   render() {
-    const { component, delayed, onChangeWrapped, ...rest } = this.props;
+    const { component, delayed, ...rest } = this.props;
     return <Field component={this.state.component} {...rest} />;
   }
 }

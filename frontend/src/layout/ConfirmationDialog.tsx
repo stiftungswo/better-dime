@@ -53,7 +53,6 @@ interface ConfirmationButtonProps {
   disabled?: boolean;
   color?: PropTypes.Color;
   icon?: React.ComponentType;
-  style?: React.CSSProperties;
 }
 
 interface ConfirmationButtonState {
@@ -80,18 +79,16 @@ export class ConfirmationButton extends React.Component<ConfirmationButtonProps,
   }
 
   render = () => {
-    const { icon, title, ...rest } = this.props;
     return (
       <>
         <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={this.props.title || 'Löschen'}>
           {this.props.message ? this.props.message : 'Wirklich löschen?'}
         </ConfirmationDialog>
         <ActionButton
-          // color={this.props.color}
-          // disabled={this.props.disabled}
-          {...rest}
-          icon={icon || DeleteIcon}
-          title={title || 'Löschen'}
+          color={this.props.color}
+          disabled={this.props.disabled}
+          icon={this.props.icon || DeleteIcon}
+          title={this.props.title || 'Löschen'}
           action={this.handleOpen} />
       </>
     );

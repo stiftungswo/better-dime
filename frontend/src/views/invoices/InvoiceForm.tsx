@@ -54,7 +54,6 @@ export default class InvoiceForm extends React.Component<Props> {
   state = {
     loading: true,
     date: undefined,
-    dateRangeDirty: false,
   };
 
   componentWillMount() {
@@ -67,15 +66,7 @@ export default class InvoiceForm extends React.Component<Props> {
   }
 
   handleTimeSpan = (invoice: Invoice) => {
-    this.state.dateRangeDirty = false;
     return this.props.invoiceStore!.updateTimeSpan(invoice);
-  }
-
-  checkTimeSpan = (values: any) => {
-    if (this.state.dateRangeDirty) {
-      return { errorMessage: 'Bei Änderungen am Start-/Enddatum muss die Zeitspanne aktualisiert werden.' };
-    }
-    return {};
   }
 
   render() {
@@ -97,7 +88,6 @@ export default class InvoiceForm extends React.Component<Props> {
         initialValues={invoice}
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
-        validate={this.checkTimeSpan}
         appBarButtons={
           invoice && invoice.id ? (
             <>
@@ -177,30 +167,13 @@ export default class InvoiceForm extends React.Component<Props> {
                               <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
                             <Grid item xs={12} lg={5}>
-                              <DimeField
-                                required
-                                component={DatePicker}
-                                name={'beginning'}
-                                label={'Startdatum'}
-                                onChangeWrapped={(x: any) => {
-                                  this.state.dateRangeDirty = true;
-                                }}
-                              />
+                              <DimeField required component={DatePicker} name={'beginning'} label={'Startdatum'} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField
-                                required
-                                component={DatePicker}
-                                name={'ending'}
-                                label={'Enddatum'}
-                                onChangeWrapped={(x: any) => {
-                                  this.state.dateRangeDirty = true;
-                                }}
-                              />
+                              <DimeField required component={DatePicker} name={'ending'} label={'Enddatum'} />
                             </Grid>
                             <Grid item xs={12} lg={1}>
                               <ConfirmationButton
-                                {...(this.state.dateRangeDirty ? {style: {boxShadow: '0 0 1px 3px red'}} : {})}
                                 onConfirm={() => this.handleTimeSpan(props.values)}
                                 icon={Renew}
                                 title={'Zeitspanne aktualisieren'}
