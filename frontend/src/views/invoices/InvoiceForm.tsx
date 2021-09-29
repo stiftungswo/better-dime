@@ -68,7 +68,8 @@ export default class InvoiceForm extends React.Component<Props> {
 
   handleTimeSpan = (invoice: Invoice) => {
     this.state.dateRangeDirty = false;
-    return this.props.invoiceStore!.updateTimeSpan(invoice);
+    // call onSubmit to save to avoid glitches when switching to the project tab and back.
+    return this.props.invoiceStore!.updateTimeSpan(invoice).then(() => this.props.onSubmit(this.props.invoiceStore!.invoice!));
   }
 
   checkTimeSpan = (values: any) => {
