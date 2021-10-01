@@ -21,7 +21,12 @@ export class FormikSubmitDetector extends React.Component<Props> {
     const hasErrors = this.props.errors.constructor === Object && Object.keys(this.props.errors).length > 0;
     if (prevProps.isSubmitting && !this.props.isSubmitting && (!this.props.isValid || hasErrors)) {
       if (!this.props.isValid) {
-        this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
+        // you can only show one error message at a time?!
+        if (this.props.errors.errorMessage) {
+          this.props.mainStore!.displayError(this.props.errors.errorMessage);
+        } else {
+            this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
+        }
       }
       // tslint:disable-next-line:no-console
       console.log('We got submit errors: ', this.props.errors);
