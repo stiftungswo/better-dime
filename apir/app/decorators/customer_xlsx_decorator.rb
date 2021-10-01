@@ -16,9 +16,10 @@ class CustomerXlsxDecorator < ApplicationDecorator
       [
         [address.street, address.supplement].reject(&:blank?).join(" "),
         [address.zip, address.city].reject(&:blank?).join(" ")
-      ].reject(&:blank?).join(", ")
-    end.join(" | ")
+      ]
+    end
   end
+
 
   def phones
     object.phones.map(&:number).join(", ")
