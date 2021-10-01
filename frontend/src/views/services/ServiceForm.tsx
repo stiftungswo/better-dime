@@ -78,7 +78,7 @@ export default class ServiceForm extends React.Component<Props> {
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
               <Grid container spacing={24}>
-                <Grid item xs={12} lg={8}>
+                <Grid item xs={12}>
                   <DimePaper>
                     <Grid container spacing={24}>
                       <Grid item xs={12}>
@@ -112,7 +112,7 @@ export default class ServiceForm extends React.Component<Props> {
                     </Grid>
                   </DimePaper>
                 </Grid>
-                <Grid item xs={12} lg={8}>
+                <Grid item xs={12}>
                   <FieldArray
                     name="service_rates"
                     render={arrayHelpers => (

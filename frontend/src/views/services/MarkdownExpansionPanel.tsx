@@ -13,24 +13,18 @@ interface Props {
 }
 
 export class MarkdownExpansionPanel extends React.Component<Props> {
-  state = {
-    open: false,
-  };
-
-  changeExpansion = (event: React.SyntheticEvent, expanded: boolean) => {
-      this.setState({ open: expanded });
-  }
-
   render() {
     return (
-      <ExpansionPanel onChange={this.changeExpansion}>
+      <ExpansionPanel>
         <ExpansionPanelSummary disableRipple={true} expandIcon={<ExpandMoreIcon />}>
           <Typography variant={'h6'} color="inherit">
             {this.props.title}
           </Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>
-            {this.state.open && <MarkdownRender>{this.props.globalSettingStore!.settings!.service_order_comment}</MarkdownRender>}
+        <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap', position: 'relative'}}>
+            <MarkdownRender>
+              {this.props.globalSettingStore!.settings!.service_order_comment}
+            </MarkdownRender>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );
