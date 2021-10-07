@@ -58,6 +58,7 @@ RSpec.describe V2::ServicesController, type: :controller do
         post :create, format: :json, params: {
           name: service.name,
           vat: service.vat,
+          archived: false,
           service: service.as_json.merge(name: service.name, vat: service.vat, archived: false)
         }
 
@@ -69,6 +70,7 @@ RSpec.describe V2::ServicesController, type: :controller do
           post :create, format: :json, params: {
             name: service.name,
             vat: 3_123_123,
+            archived: false,
             service: service.as_json.merge(name: service.name, vat: service.vat, archived: false)
           }
         end.to raise_error(ValidationError)
@@ -79,6 +81,7 @@ RSpec.describe V2::ServicesController, type: :controller do
           post :create, format: :json, params: {
             name: service.name,
             vat: service.vat,
+            archived: false,
             service: service.as_json.merge(name: service.name, vat: service.vat, archived: false)
           }
         end.to change(Service, :count).by(1)
