@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_18_153846) do
+ActiveRecord::Schema.define(version: 2021_10_07_100147) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -440,7 +440,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   create_table "rate_units", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "billing_unit", null: false
     t.string "effort_unit"
-    t.float "factor", limit: 53, default: 1.0, null: false
+    t.decimal "factor", precision: 4, default: "1", null: false
     t.boolean "is_time", null: false
     t.string "name", null: false
     t.boolean "archived", default: false, null: false
@@ -471,7 +471,7 @@ ActiveRecord::Schema.define(version: 2021_05_18_153846) do
   create_table "services", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.float "vat", limit: 53, null: false
+    t.decimal "vat", precision: 4, scale: 3, null: false
     t.boolean "archived", null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
