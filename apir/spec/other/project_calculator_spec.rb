@@ -32,7 +32,7 @@ RSpec.describe ProjectCalculator do
 
     calculator = described_class.new(project)
 
-    expect(calculator.budget_price).to eq(22_655.0)
+    expect(calculator.budget_price).to eq(22_630.0)
     expect(calculator.budget_time).to eq(50_274.0)
     expect(calculator.current_price).to eq(30.3321)
     expect(calculator.current_time).to eq(70.56)
