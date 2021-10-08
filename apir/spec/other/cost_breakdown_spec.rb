@@ -26,16 +26,16 @@ RSpec.describe CostBreakdown do
         { name: "My InvoiceDiscount", value: -151 },
         { name: "My InvoiceDiscount (3.2%)", value: -6567 }
       ],
-      final_total: 213_515.0,
+      final_total: 213_450.0,
       fixed_price: nil,
       fixed_price_vat: 0.077,
-      raw_total: 198_575.0,
-      subtotal: 205_215.0,
-      total: 213_515.0,
-      vat_total: 14_940,
+      raw_total: 198_515.0,
+      subtotal: 205_240.0,
+      total: 213_450.0,
+      vat_total: 14_935,
       vats: [
-        { factor: 0.9660112564870988, value: 14_770, vat: "0.077" },
-        { factor: 0.033988743512901105, value: 168, vat: "0.025" }
+        { factor: 0.9660153966088482, value: 14_766, vat: "0.077" },
+        { factor: 0.03398460339115182, value: 168, vat: "0.025" }
       ]
     }
 
