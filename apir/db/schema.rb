@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_07_100147) do
+ActiveRecord::Schema.define(version: 2021_10_08_125902) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 2021_10_07_100147) do
     t.string "sender_web", default: "https://github.com/stiftungswo/betterDime", null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
-    t.string "service_order_comment", null: false
+    t.text "service_order_comment", null: false
     t.string "sender_bank_detail", default: "Example Bank, 0000 Example", null: false
     t.string "sender_bank_iban", default: "CH00 0000 0000 0000 0000 0", null: false
     t.string "sender_bank_bic", default: "EXABANK00000", null: false
