@@ -49,7 +49,7 @@ RSpec.describe CostBreakdown do
     group_b = create(:position_group, name: "Group B")
 
     position_a = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 5235, amount: 13.31, position_group: nil)
-    position_b = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 4312, amount: 3.145, position_group: nil)
+    position_b = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 4312, amount: 3.15, position_group: nil)
     position_c = create(:invoice_position, invoice: invoice, vat: 0.025, price_per_rate: 222, amount: 6, position_group: group_a)
     position_d = create(:invoice_position, invoice: invoice, vat: 0.025, price_per_rate: 11, amount: 513, position_group: group_a)
     position_e = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 9411, amount: 12.22, position_group: group_b)
@@ -63,18 +63,18 @@ RSpec.describe CostBreakdown do
       discount_total: -6640,
       discounts: [
         { name: "My InvoiceDiscount", value: -151 },
-        { name: "My InvoiceDiscount (3.16%)", value: -6484 }
+        { name: "My InvoiceDiscount (3.2%)", value: -6567 }
       ],
       final_total: 12_000,
       fixed_price: 12_000,
       fixed_price_vat: 0.077,
-      raw_total: 198_575.0,
-      subtotal: 205_215.0,
-      total: 213_515.0,
-      vat_total: 14_940,
+      raw_total: 198_515.0,
+      subtotal: 205_240.0,
+      total: 213_450.0,
+      vat_total: 14_935,
       vats: [
-        { factor: 0.9660112564870988, value: 14_770, vat: "0.077" },
-        { factor: 0.033988743512901105, value: 168, vat: "0.025" }
+        { factor: 0.9660153966088482, value: 14_766, vat: "0.077" },
+        { factor: 0.03398460339115182, value: 168, vat: "0.025" }
       ]
     }
 
