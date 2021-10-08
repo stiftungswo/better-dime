@@ -10,7 +10,7 @@ RSpec.describe CostBreakdown do
     group_b = create(:position_group, name: "Group B")
 
     position_a = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 5235, amount: 13.31, position_group: nil)
-    position_b = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 4312, amount: 3.145, position_group: nil)
+    position_b = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 4312, amount: 3.15, position_group: nil)
     position_c = create(:invoice_position, invoice: invoice, vat: 0.025, price_per_rate: 222, amount: 6, position_group: group_a)
     position_d = create(:invoice_position, invoice: invoice, vat: 0.025, price_per_rate: 11, amount: 513, position_group: group_a)
     position_e = create(:invoice_position, invoice: invoice, vat: 0.077, price_per_rate: 9411, amount: 12.22, position_group: group_b)
@@ -21,10 +21,10 @@ RSpec.describe CostBreakdown do
     breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price, invoice.fixed_price_vat || 0.077).calculate
 
     expected = {
-      discount_total: -6640,
+      discount_total: -6725,
       discounts: [
         { name: "My InvoiceDiscount", value: -151 },
-        { name: "My InvoiceDiscount (3.16%)", value: -6484 }
+        { name: "My InvoiceDiscount (3.2%)", value: -6567 }
       ],
       final_total: 213_515.0,
       fixed_price: nil,
@@ -60,7 +60,7 @@ RSpec.describe CostBreakdown do
     breakdown = described_class.new(invoice.invoice_positions, invoice.invoice_discounts, invoice.position_groupings, invoice.fixed_price, 0.077).calculate
 
     expected = {
-      discount_total: -6640,
+      discount_total: -6725,
       discounts: [
         { name: "My InvoiceDiscount", value: -151 },
         { name: "My InvoiceDiscount (3.2%)", value: -6567 }
