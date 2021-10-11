@@ -10,7 +10,7 @@ RSpec.describe ProjectCalculator do
     no_time_unit = create(:rate_unit, is_time: false)
 
     o_position_a = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 322, amount: 13.31)
-    o_position_b = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 125, amount: 13.145)
+    o_position_b = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 125, amount: 13.02)
     o_position_c = create(:offer_position, offer: offer, vat: 0.025, price_per_rate: 222, amount: 6.6)
     o_position_d = create(:offer_position, offer: offer, vat: 0.025, price_per_rate: 66, amount: 54.6)
     o_position_e = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 911, amount: 12.22)
@@ -32,8 +32,8 @@ RSpec.describe ProjectCalculator do
 
     calculator = described_class.new(project)
 
-    expect(calculator.budget_price).to eq(22_655.0)
-    expect(calculator.budget_time).to eq(50_337.0)
+    expect(calculator.budget_price).to eq(22_630.0)
+    expect(calculator.budget_time).to eq(50_274.0)
     expect(calculator.current_price).to eq(30.3321)
     expect(calculator.current_time).to eq(70.56)
   end
@@ -45,7 +45,7 @@ RSpec.describe ProjectCalculator do
     no_time_unit = create(:rate_unit, is_time: false)
 
     o_position_a = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 322, amount: 13.31)
-    o_position_b = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 125, amount: 13.145)
+    o_position_b = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 125, amount: 13.02)
     o_position_c = create(:offer_position, offer: offer, vat: 0.025, price_per_rate: 222, amount: 6.6)
     o_position_d = create(:offer_position, offer: offer, vat: 0.025, price_per_rate: 66, amount: 54.6)
     o_position_e = create(:offer_position, offer: offer, vat: 0.077, price_per_rate: 911, amount: 12.22)
@@ -68,7 +68,7 @@ RSpec.describe ProjectCalculator do
     calculator = described_class.new(project)
 
     expect(calculator.budget_price).to eq(14_522)
-    expect(calculator.budget_time).to eq(50_337.0)
+    expect(calculator.budget_time).to eq(50_274.0)
     expect(calculator.current_price).to eq(30.3321)
     expect(calculator.current_time).to eq(70.56)
   end
