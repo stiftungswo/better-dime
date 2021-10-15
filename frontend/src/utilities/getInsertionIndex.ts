@@ -1,49 +1,41 @@
-// https://gist.github.com/Izhaki/834a9d37d1ad34c6179b6a16e670b526
-// Finds the insertion index for an item in an array.
-// Uses compareFn (similar to that provided to array.sort())
-
-const getMidPoint = (start: number, end: number) => Math.floor((end - start) / 2) + start;
+// finds the index at which we should insert an element into an array
+// if we want to keep the later as sorted as possible,
+// with the following caveats:
+//  - The array might not be sorted, so we can't just binary search.
+//  - If there are multiple equally good positions, take the last one.
 
 export const getInsertionIndex = <T>(arr: T[], item: T, compareFn: (a: T, b: T) => number) => {
   const itemsCount = arr.length;
 
-  // No items in array, so return insertion index 0
-  if (itemsCount === 0) {
-    return 0;
-  }
+  // If one or more array elements are equal to the item,
+  // then we want to insert directly after the last one of them.
+  // Otherwise, insert at the position which minimizes the resulting number
+  // of inversions https://en.wikipedia.org/wiki/Inversion_(discrete_mathematics)
 
-  const lastItem = arr[itemsCount - 1];
+  let curInversions = arr.filter((elem: T) => compareFn(item, elem) > 0).length;
+  let bestIndex = 0;
+  let bestInversions = curInversions;
 
-  // In case the item is beyond the end of this array, or
-  // identical to the last item.
-  // We need this as for arrays with 1 item start and end will be
-  // 0 so we never enter the while loop below.
-  if (compareFn(item, lastItem) >= 0) {
-    return itemsCount;
-  }
-
-  let start = 0;
-  let end = itemsCount - 1;
-  let index = getMidPoint(start, end);
-
-  // Binary search - start in middle, divide and conquer.
-  while (start < end) {
-    const curItem = arr[index];
-
-    const comparison = compareFn(item, curItem);
+  for (let i = 0; i < itemsCount; ++i) {
+    const comparison = compareFn(item, arr[i]);
 
     if (comparison === 0) {
-      // Indentical item
-      break;
-    } else if (comparison < 0) {
-      // Target is lower in array, move the index halfway down.
-      end = index;
+        bestIndex = i + 1;
+        bestInversions = -1;
+        // don't return yet -- there might be multiples identical elements
+        // and we want the last one.
     } else {
-      // Target is higher in array, move the index halfway up.
-      start = index + 1;
+        if (comparison < 0) {
+            ++curInversions;
+        } else {
+            --curInversions;
+        }
+        // <= so we prefer later indices
+        if (curInversions <= bestInversions) {
+            bestInversions = curInversions;
+            bestIndex = i + 1;
+        }
     }
-    index = getMidPoint(start, end);
   }
-
-  return index;
+  return bestIndex;
 };

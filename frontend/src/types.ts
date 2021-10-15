@@ -177,6 +177,7 @@ export interface ServiceListing {
   name: string;
   description: string;
   archived: boolean;
+  order: number;
 }
 
 export interface ProjectPosition {

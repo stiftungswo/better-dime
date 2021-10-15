@@ -70,17 +70,26 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), service.order, (a, b) => a - b);
+    const servicesByOrder = this.props.formikProps.values.positions.map((p: any) => {
+      return this.props.serviceStore!.getOrder(p.service_id);
+    });
+    const insertIndex = getInsertionIndex(servicesByOrder, service.order, (a, b) => a - b);
     arrayHelpers.insert(insertIndex, {
       amount: '',
       description: '',
-      order: service.order,
+      // relative order in the array, not be be confused with the order value of a service.
+      // this will be set below.
+      order: 0,
       vat: service.vat,
       service_id: service.id,
       position_group_id: groupId,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
       formikKey: Math.random(),
+    });
+    // re-number realtive order in the array, as this is what will be saved.
+    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
+      p.order = index;
     });
     this.updateArchivedRateUnitStatus();
   }
