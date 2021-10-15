@@ -69,12 +69,20 @@ export default class PositionSubformInline extends React.Component<Props> {
     this.updateArchivedRateUnitStatus();
   }
 
-  insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
+  insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
     const servicesByOrder = this.props.formikProps.values.positions.map((p: any) => {
       return this.props.serviceStore!.getOrder(p.service_id);
     });
-    const insertIndex = getInsertionIndex(servicesByOrder, service.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, {
+    const insertIndex = getInsertionIndex(servicesByOrder, serviceOrder, (a, b) => a - b);
+    arrayHelpers.insert(insertIndex, serviceItem);
+    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
+      p.order = index;
+    });
+    this.updateArchivedRateUnitStatus();
+  }
+
+  insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
+    this.insertServiceItem(arrayHelpers, {
       amount: '',
       description: '',
       // relative order in the array, not be be confused with the order value of a service.
@@ -86,20 +94,13 @@ export default class PositionSubformInline extends React.Component<Props> {
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
       formikKey: Math.random(),
-    });
-    // re-number realtive order in the array, as this is what will be saved.
-    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
-      p.order = index;
-    });
-    this.updateArchivedRateUnitStatus();
+    }, service.order);
   }
 
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
     const item = arrayHelpers.remove(positionIndex) as any;
     item.position_group_id = newGroupId;
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), item.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, item);
-    this.updateArchivedRateUnitStatus();
+    this.insertServiceItem(arrayHelpers, item, this.props.serviceStore!.getOrder(item.service_id));
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
