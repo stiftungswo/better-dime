@@ -199,6 +199,7 @@ export interface ProjectPosition {
   efforts_value_with_unit: string;
   is_time: boolean;
   service: Service;
+  // relative order the the list, not to be confused with service.order
   order: number;
   position_group_id: number | null;
 }

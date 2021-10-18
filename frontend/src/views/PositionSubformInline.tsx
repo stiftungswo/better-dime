@@ -31,7 +31,8 @@ export interface Props {
 )
 export default class PositionSubformInline extends React.Component<Props> {
   state = {
-    dialogOpen: false,
+    dialogAddOpen: false,
+    dialogSortOpen: false,
     selected_group: defaultPositionGroup().name,
     moving: false,
     moving_index: null,
@@ -70,11 +71,14 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
-    const servicesByOrder = this.props.formikProps.values.positions.map((p: any) => {
-      return this.props.serviceStore!.getOrder(p.service_id);
-    });
-    const insertIndex = getInsertionIndex(servicesByOrder, serviceOrder, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, serviceItem);
+    // only consider positions from the same group
+    const relevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === serviceItem.position_group_id);
+    const relevantServiceOrders = relevantPositions.map((p: any) => p.service.order);
+    const relevantIndex = getInsertionIndex(relevantServiceOrders, serviceOrder, (a, b) => a - b);
+    // now we have an index in relevantPositions, but we want an index in all positions.
+    const fullIndex = relevantIndex === 0 ? 0 : relevantPositions[relevantIndex - 1].order + 1;
+    arrayHelpers.insert(fullIndex, serviceItem);
+    // recompute relative order among all positions.
     this.props.formikProps.values.positions.forEach((p: any, index: number) => {
       p.order = index;
     });
@@ -82,6 +86,8 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
+    // we're building a partial ProjectPosition object here.
+    // this will be replaced by a full ProjectPosition object once the user saves.
     this.insertServiceItem(arrayHelpers, {
       amount: '',
       description: '',
@@ -90,6 +96,7 @@ export default class PositionSubformInline extends React.Component<Props> {
       order: 0,
       vat: service.vat,
       service_id: service.id,
+      service,
       position_group_id: groupId,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
@@ -139,7 +146,11 @@ export default class PositionSubformInline extends React.Component<Props> {
           onDelete={(idx: number) => arrayHelpers.remove(idx)}
           onMove={(idx: number) => this.setState({moving: true, moving_index: idx})}
           onAdd={!this.props.formikProps.values.rate_group_id ? undefined : () => {
-            this.setState({ selected_group: group.name, dialogOpen: true });
+            this.setState({ selected_group: group.name, dialogAddOpen: true });
+          }}
+          // TODO: easier sort confirmation dialog.
+          onSort={!this.props.formikProps.values.rate_group_id ? undefined : () => {
+            this.setState({ selected_group: group.name, dialogSortOpen: true });
           }}
           group={group}
           values={values}
@@ -168,16 +179,17 @@ export default class PositionSubformInline extends React.Component<Props> {
               }).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
-              {this.state.dialogOpen && (
+              {this.state.dialogAddOpen && (
                 <ServiceSelectDialog
                   open
-                  onClose={() => this.setState({ dialogOpen: false })}
+                  onClose={() => this.setState({ dialogAddOpen: false })}
                   onSubmit={this.handleAdd(arrayHelpers)}
                   placeholder={defaultPositionGroup().name}
                   groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
                   groupingEntity={this.props.formikProps.values}
                 />
               )}
+              // TODO: sort confirmation dialog?
               {this.state.moving && (
                 <PositionMoveDialog
                   positionIndex={this.state.moving_index!}
