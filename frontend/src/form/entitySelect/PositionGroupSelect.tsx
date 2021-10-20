@@ -10,12 +10,16 @@ import Select from '../fields/Select';
 interface Props extends DimeCustomFieldProps<string | null> {
   groupingEntity: PositionGroupings<any>;
   placeholder?: string;
+  creatable: boolean;
 }
 
 @compose(
   observer,
 )
 export class PositionGroupSelect extends React.Component<Props> {
+  static defaultProps = {
+      creatable: true,
+  };
   state = {
     createdOptions: [] as any,
   };
@@ -59,7 +63,6 @@ export class PositionGroupSelect extends React.Component<Props> {
     if (this.props.groupingEntity) {
       return (
         <Select
-          creatable
           isClearable
           formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
           onCreate={this.onCreate}

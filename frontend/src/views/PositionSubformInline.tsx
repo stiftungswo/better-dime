@@ -3,6 +3,7 @@ import {Warning} from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { PositionGroupSortDialog } from '../form/PositionGroupSortDialog';
 import PositionMoveDialog from '../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/ServiceSelectDialog';
 import { MainStore } from '../stores/mainStore';
@@ -70,6 +71,14 @@ export default class PositionSubformInline extends React.Component<Props> {
     this.updateArchivedRateUnitStatus();
   }
 
+  recomputeRelativeOrder() {
+    // recompute relative order among all positions.
+    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
+      p.order = index;
+    });
+    this.updateArchivedRateUnitStatus();
+  }
+
   insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
     // only consider positions from the same group
     const relevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === serviceItem.position_group_id);
@@ -78,11 +87,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     // now we have an index in relevantPositions, but we want an index in all positions.
     const fullIndex = relevantIndex === 0 ? 0 : relevantPositions[relevantIndex - 1].order + 1;
     arrayHelpers.insert(fullIndex, serviceItem);
-    // recompute relative order among all positions.
-    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
-      p.order = index;
-    });
-    this.updateArchivedRateUnitStatus();
+    this.recomputeRelativeOrder();
   }
 
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
@@ -92,7 +97,7 @@ export default class PositionSubformInline extends React.Component<Props> {
       amount: '',
       description: '',
       // relative order in the array, not be be confused with the order value of a service.
-      // this will be set below.
+      // this will be set by insertServiceItem.
       order: 0,
       vat: service.vat,
       service_id: service.id,
@@ -104,10 +109,35 @@ export default class PositionSubformInline extends React.Component<Props> {
     }, service.order);
   }
 
+  findGroupFromName = (groupName: string | null) => {
+    if (groupName == null || groupName === '') {
+      return defaultPositionGroup();
+    }
+    return [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
+      return e.name.toLowerCase() === groupName.toLowerCase();
+    });
+  }
+
+  sortServices = (arrayHelpers: ArrayHelpers, groupId: number | null) => {
+    this.props.formikProps.values.positions
+      // get only positions of this group
+      .filter((p: any) => p.position_group_id === groupId)
+      // sort by decreasing index -> removal by index will work
+      .sort((p: any, q: any) => p.order - q.order)
+      .reverse()
+      // now remove them all
+      .map((p: any) => ({key: p.service.order, value: arrayHelpers.remove(p.order) as any}))
+      // sort by the service order
+      .sort((p: any, q: any) => p.key - q.key)
+      // and re-insert in order
+      .forEach((p: any) => arrayHelpers.push(p.value));
+    this.recomputeRelativeOrder();
+  }
+
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
     const item = arrayHelpers.remove(positionIndex) as any;
     item.position_group_id = newGroupId;
-    this.insertServiceItem(arrayHelpers, item, this.props.serviceStore!.getOrder(item.service_id));
+    this.insertServiceItem(arrayHelpers, item, item.service.order);
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
@@ -117,9 +147,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     }
     const positionGroupName = groupName != null ? groupName : '';
 
-    const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
-      return e.name.toLowerCase() === positionGroupName.toLowerCase();
-    });
+    const group = this.findGroupFromName(groupName);
 
     if (group == null && positionGroupName != null && positionGroupName.length > 0) {
       this.props.positionGroupStore!.post({name: positionGroupName}).then(nothing => {
@@ -136,6 +164,12 @@ export default class PositionSubformInline extends React.Component<Props> {
     }
     this.updateArchivedRateUnitStatus();
   }
+  handleSort = (arrayHelpers: ArrayHelpers) =>  (groupName: string | null) => {
+    const group = this.findGroupFromName(groupName);
+    if (group != null) {
+      this.sortServices(arrayHelpers, group.id);
+    }
+  }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
     const Tag = this.props.tag;
@@ -148,7 +182,6 @@ export default class PositionSubformInline extends React.Component<Props> {
           onAdd={!this.props.formikProps.values.rate_group_id ? undefined : () => {
             this.setState({ selected_group: group.name, dialogAddOpen: true });
           }}
-          // TODO: easier sort confirmation dialog.
           onSort={!this.props.formikProps.values.rate_group_id ? undefined : () => {
             this.setState({ selected_group: group.name, dialogSortOpen: true });
           }}
@@ -189,7 +222,16 @@ export default class PositionSubformInline extends React.Component<Props> {
                   groupingEntity={this.props.formikProps.values}
                 />
               )}
-              // TODO: sort confirmation dialog?
+              {this.state.dialogSortOpen && (
+                <PositionGroupSortDialog
+                  open
+                  onClose={() => this.setState({ dialogSortOpen: false })}
+                  onSubmit={this.handleSort(arrayHelpers)}
+                  placeholder={defaultPositionGroup().name}
+                  groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
+                  groupingEntity={this.props.formikProps.values}
+                />
+              )}
               {this.state.moving && (
                 <PositionMoveDialog
                   positionIndex={this.state.moving_index!}
