@@ -21,7 +21,7 @@ json.project_id offer.project&.id
 json.discounts offer.offer_discounts
 json.positions offer.offer_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :amount, :description, :price_per_rate, :rate_unit_id, :service_id,
-                :vat, :order, :position_group_id, :rate_unit_archived
+                :vat, :order, :position_group_id, :service, :rate_unit_archived
 end
 json.position_groupings offer.position_groupings do |group|
   json.extract! group, :id, :name
