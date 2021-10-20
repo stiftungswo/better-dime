@@ -119,6 +119,7 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   sortServices = (arrayHelpers: ArrayHelpers, groupId: number | null) => {
+    console.log(this.props.formikProps.values.positions); // tslint:disable-line:no-console
     this.props.formikProps.values.positions
       // get only positions of this group
       .filter((p: any) => p.position_group_id === groupId)

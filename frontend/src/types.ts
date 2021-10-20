@@ -67,6 +67,7 @@ export interface OfferPosition {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  service: Service;
   position_group_id: number | null;
 }
 
