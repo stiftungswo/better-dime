@@ -41,8 +41,10 @@ export class PositionGroupSortDialog extends React.Component<Props> {
   }
 
   handleSubmit = () => {
-    this.props.onSubmit(this.state.positionGroupName);
-    this.props.onClose();
+    this.props.serviceStore!.notifyProgress(async () => {
+      this.props.onSubmit(this.state.positionGroupName);
+      this.props.onClose();
+    });
   }
 
   render() {
