@@ -41,13 +41,8 @@ export class PositionGroupSortDialog extends React.Component<Props> {
   }
 
   handleSubmit = () => {
-    this.props.serviceStore!.notifyProgress(async () => {
-      // 2021-10-19 this line is needed, as arrayHelpers.remove(...) will otherwise
-      // return null later. I have no idea why this works, but I'm glad it does.
-      await sleep(100);
-      this.props.onSubmit(this.state.positionGroupName);
-      this.props.onClose();
-    });
+    this.props.onSubmit(this.state.positionGroupName);
+    this.props.onClose();
   }
 
   render() {

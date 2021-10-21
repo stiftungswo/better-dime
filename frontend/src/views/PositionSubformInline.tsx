@@ -119,19 +119,11 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   sortServices = (arrayHelpers: ArrayHelpers, groupId: number | null) => {
-    console.log(this.props.formikProps.values.positions); // tslint:disable-line:no-console
-    this.props.formikProps.values.positions
-      // get only positions of this group
+    const relevantPositions = this.props.formikProps.values.positions
       .filter((p: any) => p.position_group_id === groupId)
-      // sort by decreasing index -> removal by index will work
-      .sort((p: any, q: any) => p.order - q.order)
-      .reverse()
-      // now remove them all
-      .map((p: any) => ({key: p.service.order, value: arrayHelpers.remove(p.order) as any}))
-      // sort by the service order
-      .sort((p: any, q: any) => p.key - q.key)
-      // and re-insert in order
-      .forEach((p: any) => arrayHelpers.push(p.value));
+      .sort((p: any, q: any) => p.service.order - q.service.order);
+    const nonRelevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== groupId);
+    this.props.formikProps.values.positions = [].concat(nonRelevantPositions).concat(relevantPositions);
     this.recomputeRelativeOrder();
   }
 
@@ -207,7 +199,7 @@ export default class PositionSubformInline extends React.Component<Props> {
           return (
             <>
               {groups.filter(e => e != null && (e.name === defaultPositionGroup().name || values.positions.filter((p: any) => {
-                return p.position_group_id === e.id;
+                return p != null && p.position_group_id === e.id;
               }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
                 return a.name.localeCompare(b.name);
               }).map((e: any, index: number) => {
