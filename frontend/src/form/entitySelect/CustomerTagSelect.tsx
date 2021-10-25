@@ -6,7 +6,7 @@ import compose from '../../utilities/compose';
 import { DimeCustomFieldProps } from '../fields/common';
 import Select from '../fields/Select';
 
-interface Props extends DimeCustomFieldProps<number | null> {
+interface Props extends DimeCustomFieldProps<number[]> {
   customerTagStore?: CustomerTagStore;
 }
 
@@ -17,7 +17,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
 export class CustomerTagSelect extends React.Component<Props> {
   get options() {
     return this.props
-      .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.value === ct.id)
+      .customerTagStore!.entities.filter((ct: CustomerTag) => !ct.archived || this.props.value.some(e => e === ct.id))
       .map(e => ({
         value: e.id,
         label: e.name,

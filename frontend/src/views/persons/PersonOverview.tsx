@@ -1,25 +1,40 @@
+import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
-import { CloseIcon, MailIcon } from '../../layout/icons';
+import { DimePaper } from '../../layout/DimePaper';
+import { CloseIcon, ExpandMoreIcon, MailIcon } from '../../layout/icons';
 import Overview, { Column } from '../../layout/Overview';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 import { MainStore } from '../../stores/mainStore';
 import { PeopleStore } from '../../stores/peopleStore';
-import { Person, SelectedAction } from '../../types';
+import { CustomerOverviewFilter, Person, SelectedAction } from '../../types';
 import compose from '../../utilities/compose';
 
 type Props = {
+  customerTagStore?: CustomerTagStore;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
 } & RouteComponentProps;
 
 @compose(
-  inject('peopleStore', 'mainStore'),
+  inject('customerTagStore', 'peopleStore', 'mainStore'),
   observer,
   withRouter,
 )
 export default class PersonOverview extends React.Component<Props> {
+  state = {
+    open: true,
+    filterTags: [] as number[],
+  };
+
   columns: Array<Column<Person>>;
 
   constructor(props: Props) {
@@ -46,7 +61,23 @@ export default class PersonOverview extends React.Component<Props> {
     ];
   }
 
+  changeExpansion = (event: React.ChangeEvent<HTMLElement>, expanded: boolean) => {
+    let currentNode = event.target as HTMLElement | null;
+    let blockCollapse = false;
+    while (currentNode != null) {
+      if (currentNode.getAttribute('data-expansion-block') === 'true') {
+        blockCollapse = true;
+      }
+      currentNode = currentNode.parentElement;
+    }
+
+    if (!blockCollapse) {
+      this.setState({ open: !this.state.open });
+    }
+  }
+
   componentWillMount() {
+    this.props.customerTagStore!.fetchAll();
     this.props.peopleStore!.selectedIds.clear();
   }
 
@@ -80,6 +111,13 @@ export default class PersonOverview extends React.Component<Props> {
 
   setSelectedPeople = (person: Person, state: boolean) => {
     this.props.peopleStore!.selectedIds.set(person.id, state);
+  }
+
+  updateFilter = (v: number[]) => {
+    console.log(this.state.filterTags, '->', v); // tslint:disable-line:no-console
+    this.setState({filterTags: v});
+    this.props.peopleStore!.customerFilter.tags = v;
+    this.props.peopleStore!.fetchAllPaginated();
   }
 
   render() {
@@ -125,7 +163,23 @@ export default class PersonOverview extends React.Component<Props> {
         selectedActions={[selectedAction2, selectedAction1]}
         onClickRow={'/persons/:id'}
         columns={this.columns}
-      />
+      >
+        <Grid item sm={12} md={8} lg={6}>
+          <ExpansionPanel expanded={this.state.open} onChange={this.changeExpansion}>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon />}
+              disableRipple={true}
+            >
+              <Typography variant={'h5'} color="inherit">
+                Filter
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>
+              <CustomerTagSelect value={this.state.filterTags}  label={'Tags'} onChange={this.updateFilter} />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </Grid>
+      </Overview>
     );
   }
 }

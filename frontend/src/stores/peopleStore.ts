@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, observable, ObservableMap } from 'mobx';
-import { PaginatedData, Person, ProjectListing } from 'src/types';
+import { CustomerOverviewFilter, PaginatedData, Person, ProjectListing } from 'src/types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -26,6 +26,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   get entities(): Person[] {
     return this.people;
   }
+
   @observable
   people: Person[] = [];
   @observable
@@ -33,6 +34,9 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   @observable
   selectedIds = new ObservableMap<number, boolean>();
+
+  @observable
+  customerFilter: CustomerOverviewFilter = { tags: [] as number[] };
 
   constructor(mainStore: MainStore) {
     super(mainStore);
@@ -92,5 +96,21 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   protected async doDuplicate(id: number) {
     return this.mainStore.apiV2.post<Person>('/people/' + id + '/duplicate');
+  }
+
+  protected getTagFilterQuery() {
+    return {paramKey: 'customerSearchTags', paramVal: this.customerFilter.tags};
+  }
+
+  protected getQueryParams() {
+    const queryParamBuilder = {query: super.getQueryParams()};
+    this.appendQuery(this.getTagFilterQuery(), queryParamBuilder);
+    return queryParamBuilder.query;
+  }
+
+  protected getPaginatedQueryParams() {
+    const queryParamBuilder = {query: super.getPaginatedQueryParams()};
+    this.appendQuery(this.getTagFilterQuery(), queryParamBuilder);
+    return queryParamBuilder.query;
   }
 }

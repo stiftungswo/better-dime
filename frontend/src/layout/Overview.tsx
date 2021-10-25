@@ -1,3 +1,4 @@
+import Grid from '@material-ui/core/Grid/Grid';
 import { pseudoRandomBytes } from 'crypto';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -9,6 +10,7 @@ import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
 import { DimeContent } from './DimeContent';
+import { DimePaper } from './DimePaper';
 import { AddIcon, ArchiveIcon, InvisibleIcon, RefreshIcon, VisibleIcon } from './icons';
 import { OverviewTable } from './OverviewTable';
 
@@ -183,24 +185,30 @@ export default class Overview<ListingType extends Listing> extends React.Compone
           <DimeAppBarButton icon={RefreshIcon} title={'Aktualisieren'} action={this.reload} />
           {this.props.addAction && <DimeAppBarButton icon={AddIcon} title={'Hinzufügen'} action={this.props.addAction} />}
         </DimeAppBar>
-        <DimeContent loading={this.state.loading}>
-          {this.props.columns && (
-            <OverviewTable
-              columns={this.props.columns}
-              renderActions={this.props.renderActions}
-              data={this.entities}
-              onClickRow={this.handleClick}
-              clickable={this.props.onClickRow !== undefined}
-              onClickChangePage={this.setPaginationPage}
-              onClickChangePageSize={this.setPaginationPageSize}
-              onClickChangeOrder={this.setPaginationPageOrder}
-              paginated={this.props.paginated}
-              paginationInfo={this.paginationInfo}
-              selected={this.props.hasSelect ? this.selectedIds : undefined}
-              setSelected={this.props.setSelected}
-            />
-          )}
-          {this.props.children}
+        <DimeContent loading={this.state.loading} paper={false}>
+          <Grid container spacing={24}>
+            {this.props.children}
+            {this.props.columns && (
+              <Grid item xs={12}>
+                <DimePaper>
+                  <OverviewTable
+                    columns={this.props.columns}
+                    renderActions={this.props.renderActions}
+                    data={this.entities}
+                    onClickRow={this.handleClick}
+                    clickable={this.props.onClickRow !== undefined}
+                    onClickChangePage={this.setPaginationPage}
+                    onClickChangePageSize={this.setPaginationPageSize}
+                    onClickChangeOrder={this.setPaginationPageOrder}
+                    paginated={this.props.paginated}
+                    paginationInfo={this.paginationInfo}
+                    selected={this.props.hasSelect ? this.selectedIds : undefined}
+                    setSelected={this.props.setSelected}
+                  />
+                </DimePaper>
+              </Grid>
+            )}
+          </Grid>
         </DimeContent>
       </React.Fragment>
     );

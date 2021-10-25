@@ -388,6 +388,10 @@ export interface Person {
 
 export type Customer = Person | Company;
 
+export interface CustomerOverviewFilter {
+  tags: number[];
+}
+
 export interface Address {
   id: number;
   city: string;
@@ -422,7 +426,7 @@ export interface WorkPeriod {
   yearly_vacation_budget: number;
 }
 
-export interface CustomerFilter {
+export interface CustomerExportFilter {
   customer_tags: number[];
   export_format: number;
   showArchived: boolean;
