@@ -23,7 +23,7 @@ interface Props {
 )
 export default class PersonFilterForm extends React.Component<Props> {
   state = {
-    open: true,
+    open: false,
     filterTags: [] as number[],
   };
 
@@ -40,7 +40,7 @@ export default class PersonFilterForm extends React.Component<Props> {
 
   render() {
     return (
-      <Grid item sm={12} md={8} lg={6}>
+      <Grid item xs={12} sm={12} md={8} lg={6}>
         <ExpansionPanel expanded={this.state.open} onChange={() => this.setState({ open: !this.state.open })}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
