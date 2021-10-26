@@ -58,7 +58,6 @@ export default class PersonOverview extends React.Component<Props> {
   }
 
   componentWillMount() {
-    this.props.customerTagStore!.fetchAll();
     this.props.peopleStore!.selectedIds.clear();
   }
 
@@ -138,7 +137,7 @@ export default class PersonOverview extends React.Component<Props> {
         onClickRow={'/persons/:id'}
         columns={this.columns}
       >
-        <PersonFilterForm />
+        <PersonFilterForm store={this.props.peopleStore!}/>
       </Overview>
     );
   }
