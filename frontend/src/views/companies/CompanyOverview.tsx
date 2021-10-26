@@ -6,13 +6,14 @@ import Overview, { Column } from '../../layout/Overview';
 import { CompanyStore } from '../../stores/companyStore';
 import { Company } from '../../types';
 import compose from '../../utilities/compose';
+import PersonFilterForm from '../persons/PersonFilterForm';
 
 type Props = {
   companyStore?: CompanyStore;
 } & RouteComponentProps;
 
 @compose(
-  inject('companyStore'),
+  inject('customerTagStore', 'companyStore'),
   observer,
   withRouter,
 )
@@ -82,7 +83,9 @@ export default class CompanyOverview extends React.Component<Props> {
         )}
         onClickRow={'/companies/:id'}
         columns={this.columns}
-      />
+      >
+        <PersonFilterForm store={this.props.companyStore!}/>
+      </Overview>
     );
   }
 }

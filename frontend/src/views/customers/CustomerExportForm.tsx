@@ -9,10 +9,10 @@ import { SwitchField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { DimePaper } from '../../layout/DimePaper';
 import { MainStore } from '../../stores/mainStore';
-import { CustomerFilter } from '../../types';
+import { CustomerExportFilter } from '../../types';
 import compose from '../../utilities/compose';
 
-const initialValues: CustomerFilter = {
+const initialValues: CustomerExportFilter = {
   customer_tags: [],
   export_format: 1,
   showArchived: true,

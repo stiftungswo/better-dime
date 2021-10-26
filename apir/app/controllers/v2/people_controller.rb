@@ -5,7 +5,11 @@ module V2
     before_action :authenticate_employee!
 
     def index
-      @q = Person.left_outer_joins(:company, :addresses, :phones).includes(:phones, :addresses, :company).order(created_at: :desc).ransack(search_params)
+      @q = Person
+        .left_outer_joins(:company, :addresses, :phones, :customer_tags)
+        .includes(:phones, :addresses, :company, :customer_tags)
+        .order(created_at: :desc)
+        .ransack(search_params)
       @people = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize]).distinct
     end
 
@@ -105,7 +109,7 @@ module V2
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize, :format)
+      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize, :format, customerSearchTags: [])
     end
 
     # Also map the old params to new ransack params till the frontend is adapted
@@ -113,9 +117,9 @@ module V2
       search = params.fetch(:q, {})
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
       search[:archived_false] = true if ["false", false, nil].include?(params[:showArchived])
-      search[:people_tags_id_in] = params[:customer_tags] if legacy_params[:customer_tags]
+      search[:customer_tags_id_in] = params[:customerSearchTags] if params[:customerSearchTags]
       search[:id_or_first_name_or_last_name_or_email_or_company_name_cont] ||= legacy_params[:filterSearch]
-      search.permit(:s, :archived_false, :id_or_first_name_or_last_name_or_email_or_company_name_cont, :people_tags_id_in)
+      search.permit(:s, :archived_false, :id_or_first_name_or_last_name_or_email_or_company_name_cont, customer_tags_id_in: [])
     end
   end
 end

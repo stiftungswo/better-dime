@@ -79,7 +79,7 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
   }
 
   protected getPaginatedQueryParams() {
-    const queryParamBuilder = {query: {}, questionMarkAppended: false};
+    const queryParamBuilder = {query: {}};
 
     this.appendQuery(this.getArchiveQuery(), queryParamBuilder);
     this.appendQuery(this.getSearchFilterQuery(), queryParamBuilder);
