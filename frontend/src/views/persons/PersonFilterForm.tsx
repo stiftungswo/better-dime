@@ -33,7 +33,6 @@ export default class PersonFilterForm extends React.Component<Props> {
   }
 
   updateFilter = (v: number[]) => {
-    console.log(this.state.filterTags, '->', v); // tslint:disable-line:no-console
     this.setState({filterTags: v});
     this.props.store!.customerFilter.tags = v;
     this.props.store!.fetchAllPaginated();
