@@ -17,6 +17,7 @@ import { MainStore } from '../../stores/mainStore';
 import { PeopleStore } from '../../stores/peopleStore';
 import { CustomerOverviewFilter, Person, SelectedAction } from '../../types';
 import compose from '../../utilities/compose';
+import PersonFilterForm from './PersonFilterForm';
 
 type Props = {
   customerTagStore?: CustomerTagStore;
@@ -30,11 +31,6 @@ type Props = {
   withRouter,
 )
 export default class PersonOverview extends React.Component<Props> {
-  state = {
-    open: true,
-    filterTags: [] as number[],
-  };
-
   columns: Array<Column<Person>>;
 
   constructor(props: Props) {
@@ -59,21 +55,6 @@ export default class PersonOverview extends React.Component<Props> {
         format: p => <>{p.company ? p.company.name : ''}</>,
       },
     ];
-  }
-
-  changeExpansion = (event: React.ChangeEvent<HTMLElement>, expanded: boolean) => {
-    let currentNode = event.target as HTMLElement | null;
-    let blockCollapse = false;
-    while (currentNode != null) {
-      if (currentNode.getAttribute('data-expansion-block') === 'true') {
-        blockCollapse = true;
-      }
-      currentNode = currentNode.parentElement;
-    }
-
-    if (!blockCollapse) {
-      this.setState({ open: !this.state.open });
-    }
   }
 
   componentWillMount() {
@@ -111,13 +92,6 @@ export default class PersonOverview extends React.Component<Props> {
 
   setSelectedPeople = (person: Person, state: boolean) => {
     this.props.peopleStore!.selectedIds.set(person.id, state);
-  }
-
-  updateFilter = (v: number[]) => {
-    console.log(this.state.filterTags, '->', v); // tslint:disable-line:no-console
-    this.setState({filterTags: v});
-    this.props.peopleStore!.customerFilter.tags = v;
-    this.props.peopleStore!.fetchAllPaginated();
   }
 
   render() {
@@ -164,21 +138,7 @@ export default class PersonOverview extends React.Component<Props> {
         onClickRow={'/persons/:id'}
         columns={this.columns}
       >
-        <Grid item sm={12} md={8} lg={6}>
-          <ExpansionPanel expanded={this.state.open} onChange={this.changeExpansion}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              disableRipple={true}
-            >
-              <Typography variant={'h5'} color="inherit">
-                Filter
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>
-              <CustomerTagSelect value={this.state.filterTags}  label={'Tags'} onChange={this.updateFilter} />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </Grid>
+        <PersonFilterForm />
       </Overview>
     );
   }
