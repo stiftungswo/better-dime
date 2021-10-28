@@ -12,7 +12,7 @@ module Pdfs
     end
 
     def filename
-      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%d_%m")
+      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%m_%d")
     end
 
     def draw
