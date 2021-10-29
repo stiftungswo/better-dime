@@ -6,6 +6,6 @@ const toString = (n: number) => (n * factor).toFixed(2);
 const toValue = (s: string) => Number(s) / factor;
 
 const PercentageField = (props: TransformingFieldProps<number>) => (
-  <TransformingField {...props} toString={toString} toValue={toValue} type={'number'} unit={'%'} />
+  <TransformingField disableUpDown {...props} toString={toString} toValue={toValue} type={'number'} unit={'%'} />
 );
 export default PercentageField;
