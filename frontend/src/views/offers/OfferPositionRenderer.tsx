@@ -11,7 +11,7 @@ import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
-import PercentageField from '../../form/fields/PercentageField';
+import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -151,7 +151,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                       <DimeField component={NumberField} name={name('amount')} margin={'none'} disabled={disabled} />
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField delayed component={PercentageField} name={name('vat')} margin={'none'} disabled={disabled} />
+                      <DimeField delayed component={VatField} name={name('vat')} margin={'none'} disabled={disabled} />
                     </DimeTableCell>
                     <DimeTableCell>{this.props.mainStore!.formatCurrency(total, false)}</DimeTableCell>
                     <DimeTableCell style={{paddingRight: '0px'}}>

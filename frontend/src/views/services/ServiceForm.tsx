@@ -15,7 +15,7 @@ import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
-import PercentageField from '../../form/fields/PercentageField';
+import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -88,7 +88,7 @@ export default class ServiceForm extends React.Component<Props> {
                         <DimeField component={TextField} name={'description'} label={'Beschreibung'} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
-                        <DimeField component={PercentageField} required name={'vat'} label={'Mehrwertsteuer'} />
+                        <DimeField component={VatField} required name={'vat'} label={'Mehrwertsteuer'} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
