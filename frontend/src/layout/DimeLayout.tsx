@@ -15,7 +15,7 @@ import compose from '../utilities/compose';
 import { ChevronLeftIcon } from './icons';
 import { Navigation } from './Navigation';
 
-export const drawerWidth = 240;
+export const drawerWidth = 252;
 
 export const styles = (theme: Theme) =>
   createStyles({
