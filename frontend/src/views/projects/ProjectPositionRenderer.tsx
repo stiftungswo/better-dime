@@ -11,7 +11,7 @@ import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import {TextField} from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
-import PercentageField from '../../form/fields/PercentageField';
+import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -132,7 +132,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                       )}
                     </DimeTableCell>
                     <DimeTableCell>
-                      <DimeField required delayed component={PercentageField} name={name('vat')} margin={'none'} />
+                      <DimeField required delayed component={VatField} name={name('vat')} margin={'none'} />
                     </DimeTableCell>
                     <DimeTableCell>
                       {p.efforts_value_with_unit}

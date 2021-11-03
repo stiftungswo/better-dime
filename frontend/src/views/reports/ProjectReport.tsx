@@ -14,7 +14,7 @@ import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import {TextField} from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
-import PercentageField from '../../form/fields/PercentageField';
+import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import {FormikSubmitDetector} from '../../form/FormikSubmitDetector';
 import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import { DimeAppBar } from '../../layout/DimeAppBar';
@@ -150,7 +150,7 @@ export class ProjectReport extends React.Component<Props, State> {
                       <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
                     </Grid>
                     <Grid item xs={12} md={2}>
-                      <DimeField component={PercentageField} name={'vat'} label={'MwSt.'} />
+                      <DimeField component={VatField} name={'vat'} label={'MwSt.'} />
                     </Grid>
                   </Grid>
 
