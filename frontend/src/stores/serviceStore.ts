@@ -56,6 +56,11 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
     return service ? service.archived : false;
   }
 
+  getOrder(id: number) {
+    const service = this.services.find(s => s.id === id);
+    return service ? service.order : -1;
+  }
+
   async fetchAllPaginated(): Promise<void> {
     const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getPaginatedQueryParams()});
     const page = res.data;

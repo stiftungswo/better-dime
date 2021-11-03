@@ -1,21 +1,32 @@
+import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
+import Grid from '@material-ui/core/Grid/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
+import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
-import { CloseIcon, MailIcon } from '../../layout/icons';
+import { DimePaper } from '../../layout/DimePaper';
+import { CloseIcon, ExpandMoreIcon, MailIcon } from '../../layout/icons';
 import Overview, { Column } from '../../layout/Overview';
+import { CustomerTagStore } from '../../stores/customerTagStore';
 import { MainStore } from '../../stores/mainStore';
 import { PeopleStore } from '../../stores/peopleStore';
-import { Person, SelectedAction } from '../../types';
+import { CustomerOverviewFilter, Person, SelectedAction } from '../../types';
 import compose from '../../utilities/compose';
+import PersonFilterForm from './PersonFilterForm';
 
 type Props = {
+  customerTagStore?: CustomerTagStore;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
 } & RouteComponentProps;
 
 @compose(
-  inject('peopleStore', 'mainStore'),
+  inject('customerTagStore', 'peopleStore', 'mainStore'),
   observer,
   withRouter,
 )
@@ -125,7 +136,9 @@ export default class PersonOverview extends React.Component<Props> {
         selectedActions={[selectedAction2, selectedAction1]}
         onClickRow={'/persons/:id'}
         columns={this.columns}
-      />
+      >
+        <PersonFilterForm store={this.props.peopleStore!}/>
+      </Overview>
     );
   }
 }

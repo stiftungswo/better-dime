@@ -6,7 +6,6 @@ import { MainStore } from './mainStore';
 
 export interface QueryParamBuilder {
   query: any;
-  questionMarkAppended: boolean;
 }
 
 export interface QueryParam {
@@ -276,7 +275,7 @@ export class AbstractStore<T, OverviewType = T> {
   }
 
   protected getQueryParams() {
-    const queryParamBuilder = {query: {}, questionMarkAppended: false};
+    const queryParamBuilder = {query: {}};
 
     this.appendQuery(this.getArchiveQuery(), queryParamBuilder);
     this.appendQuery(this.getSearchFilterQuery(), queryParamBuilder);

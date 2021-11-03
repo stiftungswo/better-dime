@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, observable } from 'mobx';
-import {Company, PaginatedData, ProjectListing} from '../types';
+import {Company, CustomerOverviewFilter, PaginatedData, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -30,6 +30,8 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   companies: Company[] = [];
   @observable
   company?: Company = undefined;
+  @observable
+  customerFilter: CustomerOverviewFilter = { tags: [] as number[] };
 
   constructor(mainStore: MainStore) {
     super(mainStore);
@@ -81,5 +83,21 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     const page = res.data;
     this.companies = page.data;
     this.pageInfo = _.omit(page, 'data');
+  }
+
+  protected getTagFilterQuery() {
+    return {paramKey: 'customerSearchTags', paramVal: this.customerFilter.tags};
+  }
+
+  protected getQueryParams() {
+    const queryParamBuilder = {query: super.getQueryParams()};
+    this.appendQuery(this.getTagFilterQuery(), queryParamBuilder);
+    return queryParamBuilder.query;
+  }
+
+  protected getPaginatedQueryParams() {
+    const queryParamBuilder = {query: super.getPaginatedQueryParams()};
+    this.appendQuery(this.getTagFilterQuery(), queryParamBuilder);
+    return queryParamBuilder.query;
   }
 }

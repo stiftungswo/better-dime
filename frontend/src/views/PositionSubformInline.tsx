@@ -3,6 +3,7 @@ import {Warning} from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { PositionGroupSortDialog } from '../form/PositionGroupSortDialog';
 import PositionMoveDialog from '../form/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/ServiceSelectDialog';
 import { MainStore } from '../stores/mainStore';
@@ -31,7 +32,8 @@ export interface Props {
 )
 export default class PositionSubformInline extends React.Component<Props> {
   state = {
-    dialogOpen: false,
+    dialogAddOpen: false,
+    dialogSortOpen: false,
     selected_group: defaultPositionGroup().name,
     moving: false,
     moving_index: null,
@@ -69,28 +71,66 @@ export default class PositionSubformInline extends React.Component<Props> {
     this.updateArchivedRateUnitStatus();
   }
 
+  recomputeRelativeOrder() {
+    // recompute relative order among all positions.
+    this.props.formikProps.values.positions.forEach((p: any, index: number) => {
+      p.order = index;
+    });
+    this.updateArchivedRateUnitStatus();
+  }
+
+  insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
+    // only consider positions from the same group
+    const relevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === serviceItem.position_group_id);
+    const relevantServiceOrders = relevantPositions.map((p: any) => p.service.order);
+    const relevantIndex = getInsertionIndex(relevantServiceOrders, serviceOrder, (a, b) => a - b);
+    // now we have an index in relevantPositions, but we want an index in all positions.
+    const fullIndex = relevantIndex === 0 ? 0 : relevantPositions[relevantIndex - 1].order + 1;
+    arrayHelpers.insert(fullIndex, serviceItem);
+    this.recomputeRelativeOrder();
+  }
+
   insertService = (arrayHelpers: ArrayHelpers, service: Service, rate: ServiceRate, groupId: number | null) => {
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), service.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, {
+    // we're building a partial ProjectPosition object here.
+    // this will be replaced by a full ProjectPosition object once the user saves.
+    this.insertServiceItem(arrayHelpers, {
       amount: '',
       description: '',
-      order: service.order,
+      // relative order in the array, not be be confused with the order value of a service.
+      // this will be set by insertServiceItem.
+      order: 0,
       vat: service.vat,
       service_id: service.id,
+      service,
       position_group_id: groupId,
       rate_unit_id: rate.rate_unit_id,
       price_per_rate: rate.value,
       formikKey: Math.random(),
+    }, service.order);
+  }
+
+  findGroupFromName = (groupName: string | null) => {
+    if (groupName == null || groupName === '') {
+      return defaultPositionGroup();
+    }
+    return [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
+      return e.name.toLowerCase() === groupName.toLowerCase();
     });
-    this.updateArchivedRateUnitStatus();
+  }
+
+  sortServices = (arrayHelpers: ArrayHelpers, groupId: number | null) => {
+    const relevantPositions = this.props.formikProps.values.positions
+      .filter((p: any) => p.position_group_id === groupId)
+      .sort((p: any, q: any) => p.service.order - q.service.order);
+    const nonRelevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== groupId);
+    this.props.formikProps.values.positions = [].concat(nonRelevantPositions).concat(relevantPositions);
+    this.recomputeRelativeOrder();
   }
 
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
     const item = arrayHelpers.remove(positionIndex) as any;
     item.position_group_id = newGroupId;
-    const insertIndex = getInsertionIndex(this.props.formikProps.values.positions.map((p: any) => p.order), item.order, (a, b) => a - b);
-    arrayHelpers.insert(insertIndex, item);
-    this.updateArchivedRateUnitStatus();
+    this.insertServiceItem(arrayHelpers, item, item.service.order);
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
@@ -100,9 +140,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     }
     const positionGroupName = groupName != null ? groupName : '';
 
-    const group = [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings].find((e: PositionGroup) => {
-      return e.name.toLowerCase() === positionGroupName.toLowerCase();
-    });
+    const group = this.findGroupFromName(groupName);
 
     if (group == null && positionGroupName != null && positionGroupName.length > 0) {
       this.props.positionGroupStore!.post({name: positionGroupName}).then(nothing => {
@@ -119,6 +157,12 @@ export default class PositionSubformInline extends React.Component<Props> {
     }
     this.updateArchivedRateUnitStatus();
   }
+  handleSort = (arrayHelpers: ArrayHelpers) =>  (groupName: string | null) => {
+    const group = this.findGroupFromName(groupName);
+    if (group != null) {
+      this.sortServices(arrayHelpers, group.id);
+    }
+  }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
     const Tag = this.props.tag;
@@ -129,7 +173,10 @@ export default class PositionSubformInline extends React.Component<Props> {
           onDelete={(idx: number) => arrayHelpers.remove(idx)}
           onMove={(idx: number) => this.setState({moving: true, moving_index: idx})}
           onAdd={!this.props.formikProps.values.rate_group_id ? undefined : () => {
-            this.setState({ selected_group: group.name, dialogOpen: true });
+            this.setState({ selected_group: group.name, dialogAddOpen: true });
+          }}
+          onSort={!this.props.formikProps.values.rate_group_id ? undefined : () => {
+            this.setState({ selected_group: group.name, dialogSortOpen: true });
           }}
           group={group}
           values={values}
@@ -152,17 +199,27 @@ export default class PositionSubformInline extends React.Component<Props> {
           return (
             <>
               {groups.filter(e => e != null && (e.name === defaultPositionGroup().name || values.positions.filter((p: any) => {
-                return p.position_group_id === e.id;
+                return p != null && p.position_group_id === e.id;
               }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
                 return a.name.localeCompare(b.name);
               }).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
-              {this.state.dialogOpen && (
+              {this.state.dialogAddOpen && (
                 <ServiceSelectDialog
                   open
-                  onClose={() => this.setState({ dialogOpen: false })}
+                  onClose={() => this.setState({ dialogAddOpen: false })}
                   onSubmit={this.handleAdd(arrayHelpers)}
+                  placeholder={defaultPositionGroup().name}
+                  groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
+                  groupingEntity={this.props.formikProps.values}
+                />
+              )}
+              {this.state.dialogSortOpen && (
+                <PositionGroupSortDialog
+                  open
+                  onClose={() => this.setState({ dialogSortOpen: false })}
+                  onSubmit={this.handleSort(arrayHelpers)}
                   placeholder={defaultPositionGroup().name}
                   groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
                   groupingEntity={this.props.formikProps.values}

@@ -54,6 +54,7 @@ export { default as ForwardIcon } from '@material-ui/icons/ArrowForwardIos';
 export { default as BackIcon } from '@material-ui/icons/ArrowBackIos';
 export { default as MailIcon } from '@material-ui/icons/Mail';
 export { default as Renew } from '@material-ui/icons/Autorenew';
+export { default as SortIcon } from '@material-ui/icons/Sort';
 
 // Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';

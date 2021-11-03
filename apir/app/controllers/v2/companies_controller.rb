@@ -106,7 +106,7 @@ module V2
     end
 
     def legacy_params
-      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize)
+      params.permit(:orderByTag, :orderByDir, :showArchived, :filterSearch, :page, :pageSize, customerSearchTags: [])
     end
 
     # Also map the old params to new ransack params till the frontend is adapted
@@ -114,9 +114,9 @@ module V2
       search = params.fetch(:q, {})
       search[:s] ||= "#{legacy_params[:orderByTag]} #{legacy_params[:orderByDir]}"
       search[:archived_false] = true if ["false", false, nil].include?(params[:showArchived])
-      search[:companies_tags_id_in] = params[:customer_tags] if legacy_params[:customer_tags]
+      search[:customer_tags_id_in] = params[:customerSearchTags] if params[:customerSearchTags]
       search[:id_or_name_or_email_cont] ||= legacy_params[:filterSearch]
-      search.permit(:s, :archived_false, :id_or_name_or_email_cont, :companies_tags_id_in)
+      search.permit(:s, :archived_false, :id_or_name_or_email_cont, customer_tags_id_in: [])
     end
   end
 end

@@ -67,6 +67,7 @@ export interface OfferPosition {
   deleted_at: null;
   created_at: string;
   updated_at: string;
+  service: Service;
   position_group_id: number | null;
 }
 
@@ -177,6 +178,7 @@ export interface ServiceListing {
   name: string;
   description: string;
   archived: boolean;
+  order: number;
 }
 
 export interface ProjectPosition {
@@ -198,6 +200,7 @@ export interface ProjectPosition {
   efforts_value_with_unit: string;
   is_time: boolean;
   service: Service;
+  // relative order the the list, not to be confused with service.order
   order: number;
   position_group_id: number | null;
 }
@@ -385,6 +388,10 @@ export interface Person {
 
 export type Customer = Person | Company;
 
+export interface CustomerOverviewFilter {
+  tags: number[];
+}
+
 export interface Address {
   id: number;
   city: string;
@@ -419,7 +426,7 @@ export interface WorkPeriod {
   yearly_vacation_budget: number;
 }
 
-export interface CustomerFilter {
+export interface CustomerExportFilter {
   customer_tags: number[];
   export_format: number;
   showArchived: boolean;

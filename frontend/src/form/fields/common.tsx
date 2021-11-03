@@ -42,6 +42,7 @@ interface DimeFieldProps extends SharedProps, FormikInjectableProps {
 export interface DimeInputFieldProps<T = string> extends DimeFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: T;
+  className?: any;
 }
 
 export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps {
