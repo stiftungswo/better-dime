@@ -5,8 +5,8 @@ module V2
     include V2::Concerns::ParamsExtractableEmployeeLocale
     include V2::Concerns::ParamsAuthenticatable
 
-    before_action :activate, unless: -> { request.format.pdf? || request.format.xlsx? }
-    before_action :authenticate_from_params!, if: -> { request.format.pdf? || request.format.xlsx? }
+    before_action :activate, unless: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
+    before_action :authenticate_from_params!, if: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
 
     helper ApplicationHelper
     helper Ransack::Helpers::FormHelper
