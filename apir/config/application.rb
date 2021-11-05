@@ -17,6 +17,16 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+if defined?(Sentry) then
+  # configure sentry-rails
+  Sentry.init do |config|
+    config.dsn = ENV['SENTRY_DSN']
+    config.breadcrumbs_logger = [:active_support_logger, :http_logger]
+    config.send_default_pii = true
+  end
+  Sentry.capture_message("dacin test message")
+end
+
 module Api
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
