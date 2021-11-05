@@ -77,6 +77,7 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number; 
                 );
               })}
             </TableBody>
+            {dropProvided.placeholder}
           </RootRef>
         )}
       </Droppable>
