@@ -8,8 +8,7 @@ class ProjectPosition < ApplicationRecord
   belongs_to :position_group, optional: true
 
   has_many :project_efforts, foreign_key: :position_id, dependent: :restrict_with_exception
-  # allow deletion of project positions without having to deal with old invoices
-  has_many :invoice_position, dependent: :nullify
+  has_one :invoice_position, dependent: :restrict_with_exception
 
   validates :price_per_rate, :vat, :order, presence: true
   validates :vat, numericality: { greater_than_or_equal_to: 0 }
