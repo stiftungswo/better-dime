@@ -24,7 +24,6 @@ if defined?(Sentry) then
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
     config.send_default_pii = true
   end
-  Sentry.capture_message("dacin test message")
 end
 
 module Api
