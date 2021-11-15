@@ -162,20 +162,23 @@ module Pdfs
           text I18n.t(:signature_client), @default_text_settings.merge(size: 10, style: :bold)
         end
 
-        move_down 50
+        move_down 30
 
-        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 20) do
+        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 40) do
             stroke_horizontal_rule
-            move_down 4
-            text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
+            move_down 14
+            text "Schwerzenbach, " + Time.now.to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(size: 12)
+            stroke_horizontal_rule
         end
 
-        move_up 20
+        move_up 40
 
-        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 20) do
+        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 40) do
           stroke_horizontal_rule
           move_down 4
           text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
+          move_down 14
+          stroke_horizontal_rule
         end
       end
     end
