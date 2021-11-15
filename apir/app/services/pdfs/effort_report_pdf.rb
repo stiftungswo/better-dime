@@ -65,7 +65,7 @@ module Pdfs
       header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, nil, :effort_report, efforts_holder.name)
 
       text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)
-      text efforts_holder.description, @default_text_settings
+      text @data_holder.description, @default_text_settings
     end
 
     def draw_efforts
