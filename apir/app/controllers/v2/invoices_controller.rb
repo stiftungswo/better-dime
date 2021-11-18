@@ -94,7 +94,7 @@ module V2
     end
 
     def effort_report
-      pdf = Pdfs::InvoiceEffortReportPdf.new GlobalSetting.first, @invoice
+      pdf = Pdfs::InvoiceEffortReportPdf.new GlobalSetting.first, @invoice, params[:city]
 
       respond_to do |format|
         format.pdf do
