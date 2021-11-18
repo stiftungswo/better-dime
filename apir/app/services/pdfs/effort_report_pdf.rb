@@ -5,11 +5,12 @@ require "prawn"
 module Pdfs
   class EffortReportPdf < BasePdf
     def initialize(global_setting, data_holder, city)
+      pp(city)
       @global_setting = global_setting
       @data_holder = data_holder
       @swo_blue = '007DC2'
       @border_color = '81827e'
-      @signature_city = city if city.match? /\A[a-zA-Z]{1,20}\z/
+      @signature_city = city if city and city.match? /\A[a-zA-Z]{1,20}\z/
       super()
     end
 
