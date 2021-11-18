@@ -61,7 +61,7 @@ module V2
 
     def print
       date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]))
-      pdf = Pdfs::OfferPdf.new GlobalSetting.first, @offer, date
+      pdf = Pdfs::OfferPdf.new GlobalSetting.first, @offer, date, params[:city]
 
       respond_to do |format|
         format.pdf do

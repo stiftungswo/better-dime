@@ -3,15 +3,14 @@
 require "prawn"
 
 module Pdfs
-  class EffortReportPdf < BasePdf
+  class EffortReportPdf < SignaturePdf
     def initialize(global_setting, data_holder, city)
       pp(city)
       @global_setting = global_setting
       @data_holder = data_holder
       @swo_blue = '007DC2'
       @border_color = '81827e'
-      @signature_city = city if city and city.match? /\A[a-zA-Z]{1,20}\z/
-      super()
+      super(city)
     end
 
     def filename
@@ -58,7 +57,7 @@ module Pdfs
 
       draw_description(header)
       draw_efforts
-      draw_signature
+      draw_signature(I18n.t(:signature_service_provider), I18n.t(:signature_client))
     end
 
     def draw_description(header)
@@ -147,53 +146,6 @@ module Pdfs
         },
         true
       )
-    end
-
-
-    def draw_signature
-      start_new_page if cursor < 90
-
-      bounding_box([0, 90], width: bounds.width, height: 150) do
-        float do
-          indent(10, 0) do
-            text I18n.t(:signature_service_provider), @default_text_settings.merge(size: 10, style: :bold)
-          end
-        end
-
-        indent(bounds.width / 2.0 + 50, 0) do
-          text I18n.t(:signature_client), @default_text_settings.merge(size: 10, style: :bold)
-        end
-
-        move_down 10
-
-        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 60) do
-          if @signature_city.present? then
-            text @signature_city + ", " + Time.now.to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(size: 12)
-          else
-            move_down 16
-          end
-          # TODO: just store the cursor here and restore it below?
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-          move_down 14
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:signature), @default_text_settings
-        end
-
-        move_up 45
-
-        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 44) do
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-          move_down 14
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:signature), @default_text_settings
-        end
-      end
     end
   end
 end
