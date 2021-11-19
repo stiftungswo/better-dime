@@ -19,7 +19,7 @@ import { FormView, FormViewProps } from '../../form/FormView';
 import { ActionButton } from '../../layout/ActionButton';
 import { DimePaper } from '../../layout/DimePaper';
 import { AddIcon, InvoiceIcon, StatisticsIcon } from '../../layout/icons';
-import PrintWithCityButton from '../../layout/PrintWithCityButton';
+import PrintButton from '../../layout/PrintButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -145,7 +145,8 @@ class ProjectForm extends React.Component<Props> {
         appBarButtons={
           project && project.id ? (
             <>
-              <PrintWithCityButton
+              <PrintButton
+                hasCitySelection
                 path={`projects/${project.id}/effort_report`}
                 color={'inherit'}
                 title={'Aufwandsrapport drucken'}

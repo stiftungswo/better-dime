@@ -21,7 +21,6 @@ import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import { ESRIcon, InvoiceIcon, Renew, StatisticsIcon } from '../../layout/icons';
 import PrintButton from '../../layout/PrintButton';
-import PrintWithCityButton from '../../layout/PrintWithCityButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -103,7 +102,8 @@ export default class InvoiceForm extends React.Component<Props> {
         appBarButtons={
           invoice && invoice.id ? (
             <>
-              <PrintWithCityButton
+              <PrintButton
+                hasCitySelection
                 path={`invoices/${invoice.id}/effort_report`}
                 color={'inherit'}
                 title={

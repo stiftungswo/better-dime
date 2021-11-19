@@ -22,7 +22,6 @@ import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import { AddIcon, ProjectIcon } from '../../layout/icons';
 import PrintButton from '../../layout/PrintButton';
-import PrintWithCityButton from '../../layout/PrintWithCityButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
@@ -122,7 +121,7 @@ class OfferForm extends React.Component<Props> {
           appBarButtons={
             offer && offer.id ? (
               <>
-                <PrintWithCityButton path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
+                <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
                 {!offer.project_id && (
                   <ActionButton
                     action={() => this.props.offerStore!.creatingProject = true}
