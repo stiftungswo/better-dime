@@ -103,6 +103,7 @@ export default class InvoiceForm extends React.Component<Props> {
           invoice && invoice.id ? (
             <>
               <PrintButton
+                hasCitySelection
                 path={`invoices/${invoice.id}/effort_report`}
                 color={'inherit'}
                 title={

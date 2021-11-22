@@ -3,12 +3,12 @@
 require "prawn"
 
 module Pdfs
-  class OfferPdf < BasePdf
-    def initialize(global_setting, offer, date)
+  class OfferPdf < SignaturePdf
+    def initialize(global_setting, offer, date, city)
       @global_setting = global_setting
       @offer = offer
       @date = date
-      super()
+      super(city)
     end
 
     def project
@@ -35,7 +35,7 @@ module Pdfs
 
       draw_description(header)
       draw_breakdown
-      draw_signature
+      draw_signature(I18n.t(:signature_contractor), I18n.t(:signature_client))
     end
 
     def draw_description(header)
@@ -56,39 +56,6 @@ module Pdfs
       move_down 20
       text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
 
-    end
-
-    def draw_signature
-      start_new_page if cursor < 90
-
-      bounding_box([0, 90], width: bounds.width, height: 150) do
-
-        float do
-          indent(10, 0) do
-            text I18n.t(:signature_contractor), @default_text_settings.merge(size: 10, style: :bold)
-          end
-        end
-
-        indent(bounds.width / 2.0 + 50, 0) do
-          text I18n.t(:signature_client), @default_text_settings.merge(size: 10, style: :bold)
-        end
-
-        move_down 50
-
-        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 20) do
-            stroke_horizontal_rule
-            move_down 4
-            text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-        end
-
-        move_up 20
-
-        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 20) do
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-        end
-      end
     end
   end
 end
