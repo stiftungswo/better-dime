@@ -5,7 +5,6 @@ require "prawn"
 module Pdfs
   class EffortReportPdf < SignaturePdf
     def initialize(global_setting, data_holder, city)
-      pp(city)
       @global_setting = global_setting
       @data_holder = data_holder
       @swo_blue = '007DC2'
