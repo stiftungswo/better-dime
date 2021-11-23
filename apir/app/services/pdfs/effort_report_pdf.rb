@@ -3,13 +3,13 @@
 require "prawn"
 
 module Pdfs
-  class EffortReportPdf < BasePdf
-    def initialize(global_setting, data_holder)
+  class EffortReportPdf < SignaturePdf
+    def initialize(global_setting, data_holder, city)
       @global_setting = global_setting
       @data_holder = data_holder
       @swo_blue = '007DC2'
       @border_color = '81827e'
-      super()
+      super(city)
     end
 
     def filename
@@ -56,7 +56,7 @@ module Pdfs
 
       draw_description(header)
       draw_efforts
-      draw_signature
+      draw_signature(I18n.t(:signature_service_provider), I18n.t(:signature_client))
     end
 
     def draw_description(header)
@@ -65,7 +65,7 @@ module Pdfs
       header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, nil, :effort_report, efforts_holder.name)
 
       text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)
-      text efforts_holder.description, @default_text_settings
+      text @data_holder.description, @default_text_settings
     end
 
     def draw_efforts
@@ -145,39 +145,6 @@ module Pdfs
         },
         true
       )
-    end
-
-
-    def draw_signature
-      start_new_page if cursor < 90
-
-      bounding_box([0, 90], width: bounds.width, height: 150) do
-        float do
-          indent(10, 0) do
-            text I18n.t(:signature_service_provider), @default_text_settings.merge(size: 10, style: :bold)
-          end
-        end
-
-        indent(bounds.width / 2.0 + 50, 0) do
-          text I18n.t(:signature_client), @default_text_settings.merge(size: 10, style: :bold)
-        end
-
-        move_down 50
-
-        bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 20) do
-            stroke_horizontal_rule
-            move_down 4
-            text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-        end
-
-        move_up 20
-
-        bounding_box([bounds.width / 2.0 + 50, cursor], width: bounds.width / 2.0 - 75, height: 20) do
-          stroke_horizontal_rule
-          move_down 4
-          text I18n.t(:place) + " / " + I18n.t(:date_name), @default_text_settings
-        end
-      end
     end
   end
 end

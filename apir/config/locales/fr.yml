@@ -52,6 +52,7 @@ fr:
   signature_contractor: "Signature du mandataire"
   signature_client: "Signature du mandant"
   signature_service_provider: "Signature du fournisseur de prestations"
+  signature: "Signature"
   place: "Lieu"
   date_name: "Date"
   cost_groups: "Centres de coûts"
