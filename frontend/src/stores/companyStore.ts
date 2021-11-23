@@ -26,6 +26,11 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   get entities() {
     return this.companies;
   }
+
+  get archivable() {
+    return true;
+  }
+
   @observable
   companies: Company[] = [];
   @observable
@@ -57,6 +62,10 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   async doPut(company: Company) {
     const res = await this.mainStore.apiV2.put('/companies/' + company.id, company);
     this.company = res.data;
+  }
+
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.apiV2.put('/companies/' + id, { archived });
   }
 
   protected async doDelete(id: number) {

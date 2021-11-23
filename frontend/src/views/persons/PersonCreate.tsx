@@ -45,6 +45,7 @@ export default class PersonCreate extends React.Component<Props> {
       tags: [],
       addresses: [],
       phone_numbers: [],
+      archived: false,
     };
 
     return <PersonForm title={'Kunde erfassen'} onSubmit={this.handleSubmit} person={person} submitted={this.state.submitted} />;
