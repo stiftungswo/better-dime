@@ -58,6 +58,7 @@ export default class CompanyOverview extends React.Component<Props> {
 
     return (
       <Overview
+        archivable
         searchable
         paginated
         title={'Firmen'}
@@ -71,6 +72,8 @@ export default class CompanyOverview extends React.Component<Props> {
                 this.props.history.push(`/companies/${newEntity.id}`);
               }
             }}
+            archiveAction={(!e.archived && e.id) ? () => companyStore!.archive(e.id!, true).then(r => companyStore!.fetchAllPaginated()) : undefined}
+            restoreAction={(e.archived && e.id) ? () => companyStore!.archive(e.id!, false).then(r => companyStore!.fetchAllPaginated()) : undefined}
             deleteMessage={
               'Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.'
             }

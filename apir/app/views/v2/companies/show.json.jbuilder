@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
+json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
 
 json.company do
   if @company.company
-    json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
+    json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
   end
 end
 
@@ -22,7 +22,7 @@ end
 
 json.set! :people do
   json.array! @company.people do |person|
-    json.extract! person, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
+    json.extract! person, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
   end
 end
 

@@ -364,6 +364,7 @@ export interface Company {
   persons?: number[];
   addresses?: Address[];
   phone_numbers?: PhoneNumber[];
+  archived: boolean;
 }
 
 export interface Person {
@@ -384,6 +385,7 @@ export interface Person {
   tags: number[];
   addresses?: Address[];
   phone_numbers?: PhoneNumber[];
+  archived: boolean;
 }
 
 export type Customer = Person | Company;

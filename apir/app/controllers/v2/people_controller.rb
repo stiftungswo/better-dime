@@ -98,6 +98,7 @@ module V2
         :first_name,
         :last_name,
         :hidden,
+        :archived,
         :name,
         :accountant_id,
         :rate_group_id,

@@ -27,6 +27,10 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     return this.people;
   }
 
+  get archivable() {
+    return true;
+  }
+
   @observable
   people: Person[] = [];
   @observable
@@ -92,6 +96,10 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   protected async doDelete(id: number) {
     await this.mainStore.apiV2.delete('/people/' + id);
+  }
+
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.apiV2.put('/people/' + id, { archived });
   }
 
   protected async doDuplicate(id: number) {

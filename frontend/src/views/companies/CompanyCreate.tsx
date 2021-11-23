@@ -39,6 +39,7 @@ export default class CompanyCreate extends React.Component<Props> {
       tags: [],
       addresses: [],
       phone_numbers: [],
+      archived: false,
     };
 
     return <CompanyForm title={'Firma erfassen'} onSubmit={this.handleSubmit} company={company} submitted={this.state.submitted} />;

@@ -117,7 +117,12 @@ export default class CompanyForm extends React.Component<Props> {
                         <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                        <Grid item xs={12}>
+                          <DimeField delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} />
+                        </Grid>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />

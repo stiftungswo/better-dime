@@ -22,6 +22,7 @@ class Customer < ApplicationRecord
 
   validates :type, inclusion: %w[Person Company person company]
   validates :hidden, inclusion: [true, false]
+  validates :archived, inclusion: [true, false]
 
   scope :people, -> { where(type: "person") }
   scope :companies, -> { where(type: "company") }

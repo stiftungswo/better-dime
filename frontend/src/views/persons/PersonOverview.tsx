@@ -110,6 +110,7 @@ export default class PersonOverview extends React.Component<Props> {
 
     return (
       <Overview
+        archivable
         searchable
         paginated
         title={'Personen'}
@@ -125,6 +126,8 @@ export default class PersonOverview extends React.Component<Props> {
                 this.props.history.push(`/persons/${newEntity.id}`);
               }
             }}
+            archiveAction={(!e.archived && e.id) ? () => peopleStore!.archive(e.id!, true).then(r => peopleStore!.fetchAllPaginated()) : undefined}
+            restoreAction={(e.archived && e.id) ? () => peopleStore!.archive(e.id!, false).then(r => peopleStore!.fetchAllPaginated()) : undefined}
             deleteMessage={'Möchtest du diese Person wirklich löschen?'}
             deleteAction={() => {
               if (e.id) {
