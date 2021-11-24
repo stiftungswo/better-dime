@@ -28,6 +28,6 @@ export const personSchema = localizeSchema(() =>
         number: yup.string().required(),
       }),
     ),
-    tags: yup.array(requiredNumber()),
+    tags: yup.array(requiredNumber()).min(1, 'Wähle mindestens einen Tag aus.'),
   }),
 );

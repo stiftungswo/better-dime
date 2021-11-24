@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { localizeSchema, selector } from '../../utilities/validation';
+import { localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
 export const companySchema = localizeSchema(() =>
   yup.object({
@@ -27,6 +27,6 @@ export const companySchema = localizeSchema(() =>
         number: yup.string().required(),
       }),
     ),
-    tags: yup.array(yup.number().nullable(false)),
+    tags: yup.array(requiredNumber()).min(1, 'Wähle mindestens einen Tag aus.'),
   }),
 );
