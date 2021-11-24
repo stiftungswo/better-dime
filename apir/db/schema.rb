@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_08_125902) do
+ActiveRecord::Schema.define(version: 2021_11_22_092713) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2021_10_08_125902) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
+    t.boolean "archived", default: false, null: false
     t.index ["accountant_id"], name: "accountant_id"
     t.index ["company_id"], name: "customers_company_id_foreign"
     t.index ["rate_group_id"], name: "customers_rate_group_id_foreign"
