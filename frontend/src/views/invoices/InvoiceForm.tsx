@@ -100,7 +100,7 @@ export default class InvoiceForm extends React.Component<Props> {
         submitted={this.props.submitted}
         validate={this.checkTimeSpan}
         appBarButtons={
-          invoice && invoice.id ? (
+          invoice && invoice.id ? (dirty: boolean) => (
             <>
               <PrintButton
                 hasCitySelection

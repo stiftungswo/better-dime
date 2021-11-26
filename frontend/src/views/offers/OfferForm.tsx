@@ -119,7 +119,7 @@ class OfferForm extends React.Component<Props> {
           onSubmit={this.props.onSubmit}
           submitted={this.props.submitted}
           appBarButtons={
-            offer && offer.id ? (
+            offer && offer.id ? (dirty: boolean) => (
               <>
                 <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
                 {!offer.project_id && (
@@ -128,7 +128,8 @@ class OfferForm extends React.Component<Props> {
                     color={'inherit'}
                     icon={ProjectIcon}
                     secondaryIcon={AddIcon}
-                    title={'Projekt aus Offerte erstellen'}
+                    disabled={dirty}
+                    title={dirty ? 'Zuerst speichern!' : 'Projekt aus Offerte erstellen'}
                   />
                 )}
               </>
