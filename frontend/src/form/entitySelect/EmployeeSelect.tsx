@@ -18,6 +18,8 @@ export class EmployeeSelect<T> extends React.Component<Props<T>> {
   get options() {
     return this.props
       .employeeStore!.employees.filter((e: Employee) => !e.archived || this.props.value === e.id)
+      // put employees before zivis, as the former are used way more in timetrack.
+      .sort((e, f) => e.group!.id - f.group!.id)
       .map(e => ({
         value: e.id,
         label: `${e.first_name} ${e.last_name}`,
