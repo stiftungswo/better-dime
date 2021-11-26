@@ -14,7 +14,8 @@ export interface FormViewProps<T> {
   submitted?: boolean;
   loading?: boolean;
   paper?: boolean;
-  appBarButtons?: React.ReactNode;
+  // we need to pass formik.dirty to check whether the page was saved.
+  appBarButtons?: (dirty: boolean) => React.ReactNode;
 }
 
 interface Props<T> extends FormViewProps<T> {
@@ -42,7 +43,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <DimeAppBar title={this.props.title}>
-              {appBarButtons}
+              {appBarButtons(formikProps.dirty)}
               <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
             <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>

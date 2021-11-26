@@ -143,7 +143,7 @@ class ProjectForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         appBarButtons={
-          project && project.id ? (
+          project && project.id ? (dirty: boolean) => (
             <>
               <PrintButton
                 hasCitySelection
