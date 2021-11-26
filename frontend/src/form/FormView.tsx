@@ -43,7 +43,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
             <DimeAppBar title={this.props.title}>
-              {appBarButtons(formikProps.dirty)}
+              {appBarButtons && appBarButtons(formikProps.dirty)}
               <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
             <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>
