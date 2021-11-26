@@ -14,16 +14,17 @@ module Pdfs
     include Pdfs::PrawnHelper
     include ActionView::Helpers::NumberHelper
 
-    def initialize(global_setting, invoice)
+    def initialize(global_setting, invoice, date)
       @global_setting = global_setting
       @invoice = invoice
       @spacing = 0.25
+      @date = date
 
       draw
     end
 
     def filename
-      "QR-Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+      "QR-Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%m_%d")
     end
 
     def document
