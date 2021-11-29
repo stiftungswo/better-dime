@@ -30,6 +30,12 @@ const styles = createStyles({
   pointer: {
     cursor: 'pointer',
   },
+  // dummy span tag so that we can have a minimum row height.
+  // (MUI used to have this feature in v3, but it got removed in v4.)
+  dummy: {
+    minHeight: '43px',
+    display: 'inline-block',
+  },
 });
 
 // tslint:disable:no-any ; this is adapted from the docs. It should be typed eventually.
@@ -244,6 +250,7 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
                     <span className={'actions'}>{this.props.renderActions(row)}</span>
                   </DimeTableCell>
                 )}
+                <span className={classes.dummy} />
               </TableRow>
             ))}
           </TableBody>
