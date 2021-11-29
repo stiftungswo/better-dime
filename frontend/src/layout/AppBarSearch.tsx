@@ -1,5 +1,5 @@
 import { Theme } from '@material-ui/core';
-import InputBase from '@material-ui/core/InputBase/InputBase';
+import InputBase from '@material-ui/core/InputBase';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';

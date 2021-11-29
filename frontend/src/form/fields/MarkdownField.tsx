@@ -1,5 +1,5 @@
 import { IconButton, InputAdornment, Tooltip } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid';
 import * as React from 'react';
 import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 import { MarkdownRender } from '../../layout/MarkdownRender';

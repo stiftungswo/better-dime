@@ -1,12 +1,12 @@
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableHead from '@material-ui/core/TableHead/TableHead';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel/TableSortLabel';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import * as React from 'react';

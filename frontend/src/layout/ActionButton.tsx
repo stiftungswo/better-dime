@@ -1,5 +1,5 @@
-import IconButton from '@material-ui/core/IconButton/IconButton';
-import Tooltip from '@material-ui/core/Tooltip/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import * as React from 'react';
 
 import { PropTypes } from '@material-ui/core';

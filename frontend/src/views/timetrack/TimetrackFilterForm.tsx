@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button/Button';
-import Grid from '@material-ui/core/Grid/Grid';
-import Tab from '@material-ui/core/Tab/Tab';
-import Tabs from '@material-ui/core/Tabs/Tabs';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import { inject, observer } from 'mobx-react';
 import React, { ChangeEvent } from 'react';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';

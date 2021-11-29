@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {Warning} from '@material-ui/icons';
 import {FieldArray, FieldArrayRenderProps, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';

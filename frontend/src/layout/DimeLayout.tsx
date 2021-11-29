@@ -1,8 +1,8 @@
 import { Theme, WithStyles, withWidth } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
-import Divider from '@material-ui/core/Divider/Divider';
-import Drawer from '@material-ui/core/Drawer/Drawer';
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 import createStyles from '@material-ui/core/styles/createStyles';

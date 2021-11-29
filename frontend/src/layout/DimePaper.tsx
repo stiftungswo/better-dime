@@ -1,5 +1,5 @@
 import { WithStyles } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper/Paper';
+import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import * as React from 'react';

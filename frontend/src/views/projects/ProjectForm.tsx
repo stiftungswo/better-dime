@@ -1,6 +1,6 @@
 import MuiFormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MuiTextField from '@material-ui/core/TextField';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';

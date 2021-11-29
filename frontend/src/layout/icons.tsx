@@ -16,7 +16,7 @@ From https://material-ui.com/style/icons/#svg-icons :
     Note: Importing named exports in this way will result in the code for every icon being included in your project,
     so is not recommended unless you configure tree-shaking. It may also impact Hot Module Reload performance.
  */
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import * as React from 'react';
 
 // UI
