@@ -48,7 +48,7 @@ class CollapsibleInner extends React.Component<CollapsibleProps, CollapsibleStat
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
-          <ListItemText inset primary={this.props.label} />
+          <ListItemText primary={this.props.label} />
           {this.open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse in={this.open} timeout={'auto'} unmountOnExit>

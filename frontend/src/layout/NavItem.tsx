@@ -12,6 +12,8 @@ import UnstyledLink from './UnstyledLink';
 
 export const styles = (theme: Theme) => ({
   default: {
+    // why do we need to specify this explicitly??
+    color: theme.palette.text.primary,
     paddingLeft: theme.spacing(3),
   },
   nested: {

@@ -57,13 +57,13 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
             <ListItemIcon>
               <AccountIcon />
             </ListItemIcon>
-            <ListItemText inset primary={fullName} />
+            <ListItemText primary={fullName} />
           </MenuItem>
           <MenuItem onClick={this.handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Abmelden" />
+            <ListItemText primary="Abmelden" />
           </MenuItem>
         </Menu>
       </div>
