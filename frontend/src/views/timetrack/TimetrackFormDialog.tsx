@@ -2,7 +2,8 @@ import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core'
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -28,7 +29,7 @@ import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
-interface Props extends InjectedProps {
+interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
@@ -73,7 +74,6 @@ const multiSchema = localizeSchema(() =>
 @compose(
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
-  withMobileDialog(),
 )
 export class TimetrackFormDialog extends React.Component<Props, State> {
 
@@ -142,8 +142,9 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     }
   }
 
-  render() {
-    const { fullScreen } = this.props;
+  render() {// use hooks instead of withMobileDialog()
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
       <Formik

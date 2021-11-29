@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import { InjectedProps } from '@material-ui/core/es/withMobileDialog';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { FormikActions, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -19,7 +20,7 @@ import { ProjectComment } from '../../types';
 import compose from '../../utilities/compose';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 
-interface Props extends InjectedProps {
+interface Props {
   onClose: () => void;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
@@ -79,7 +80,9 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
   }
 
   render() {
-    const { fullScreen } = this.props;
+     // use hooks instead of withMobileDialog()
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
       <FormDialog

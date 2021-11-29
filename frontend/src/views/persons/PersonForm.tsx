@@ -93,10 +93,10 @@ export default class PersonForm extends React.Component<Props> {
         render={(props: FormikProps<Person>) => (
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={24}>
+              <Grid container spacing={6}>
                 <Grid item xs={12}>
                   <DimePaper>
-                    <Grid container spacing={16}>
+                    <Grid container spacing={4}>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={TextField} name={'salutation'} label={'Anrede'} />
                       </Grid>

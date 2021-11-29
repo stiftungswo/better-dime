@@ -134,7 +134,7 @@ export class ProjectReport extends React.Component<Props, State> {
               const values = formikProps.values;
               return (
                 <FormikSubmitDetector {...formikProps}>
-                  <Grid container alignItems={'center'} spacing={24}>
+                  <Grid container alignItems={'center'} spacing={6}>
                     <Grid item xs={12} md={10} lg={10}>
                       <DateSpanPicker
                         fromValue={formikProps.values.from}
@@ -160,7 +160,7 @@ export class ProjectReport extends React.Component<Props, State> {
                       <>
                         <TableToolbar title={'Zusätzliche Kosten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
                         <div style={{ padding: '0px 15px 20px 0px' }}>
-                          <Table padding={'dense'}>
+                          <Table>
                             <TableHead>
                               <TableRow>
                                 <DimeTableCell style={{ width: '80%' }}>Beschreibung</DimeTableCell>

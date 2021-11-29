@@ -1,9 +1,10 @@
-import {DialogTitle, withMobileDialog} from '@material-ui/core';
+import {DialogTitle} from '@material-ui/core';
 import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Prompt } from 'react-router';
@@ -24,9 +25,8 @@ interface DialogFormProps<T> {
   confirmText?: string;
 }
 
-@compose(withMobileDialog())
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
-  FormikConfig<Values> & ExtraProps & DialogFormProps<Values> & InjectedProps
+  FormikConfig<Values> & ExtraProps & DialogFormProps<Values>
 > {
   handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {
     await this.props.onSubmit(this.props.validationSchema.cast(values));
@@ -44,8 +44,10 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   }
 
   render() {
-    // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
-    const { fullScreen, ...rest } = this.props as any;
+    const { ...rest } = this.props as any;
+    // use hooks instead of withMobileDialog()
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return this.props.loading ? (
       <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>

@@ -227,7 +227,7 @@ export default class Timetrack extends React.Component<Props> {
         }
 
         <DimeContent loading={false} paper={false}>
-          <Grid container={true} spacing={8}>
+          <Grid container={true} spacing={2}>
             <TimetrackFilterForm />
 
             {/*{this.props.effortStore!.loading && <LoadingSpinner />}*/}

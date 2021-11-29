@@ -56,7 +56,7 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
             className={classNames({ [this.props.classes.selected]: selected })}
             disableRipple={true}
           >
-            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
+            <Grid justify="space-between" container spacing={6} alignItems={'center'}>
               <Grid item>
                 <Typography variant={'h5'} color="inherit">
                   {this.props.title}
@@ -64,7 +64,7 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
                 </Typography>
               </Grid>
               <Grid item data-expansion-block={true}>
-                <Grid container alignItems={'center'} spacing={8}>
+                <Grid container alignItems={'center'} spacing={2}>
                   {this.props.displayTotal && !selected && (
                     <Grid item>
                       <Typography variant={'h6'} color={'textSecondary'}>

@@ -261,8 +261,8 @@ class OverviewTableInner<T extends { id?: number }> extends React.Component<Tabl
             nextIconButtonProps={{
               'aria-label': 'next page',
             }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         )}
       </div>

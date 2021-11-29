@@ -56,7 +56,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
         render={arrayHelpers => (
           <DimePaper>
             <TableToolbar title={'Telefonnummern'} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
-            <Table padding={'dense'} style={{ minWidth: '1000px' }}>
+            <Table style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
                   <DimeTableCell style={{ width: '40%' }}>Kategorie</DimeTableCell>

@@ -36,10 +36,10 @@ export default class DailyReport extends React.Component<Props> {
       <>
         <DimeAppBar title={'Wochenrapport'} />
         <DimeContent paper={false}>
-          <Grid container spacing={24}>
+          <Grid container spacing={6}>
             <Grid item xs={12}>
               <DimePaper>
-                <Grid container spacing={8}>
+                <Grid container spacing={4}>
                   <Grid item xs={12} md={8}>
                     <DateSpanPicker
                       fromValue={dailyReportStore.from}

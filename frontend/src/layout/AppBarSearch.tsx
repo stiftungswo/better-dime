@@ -20,12 +20,12 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       'marginLeft': 0,
       'width': '100%',
       [breakpoints.up('sm')]: {
-        marginLeft: spacing.unit,
+        marginLeft: spacing(1),
         width: 'auto',
       },
     },
     searchIcon: {
-      width: spacing.unit * 9,
+      width: spacing(9),
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -42,10 +42,10 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       width: '100%',
     },
     inputInput: {
-      paddingTop: spacing.unit,
-      paddingRight: spacing.unit,
-      paddingBottom: spacing.unit,
-      paddingLeft: spacing.unit * 10,
+      paddingTop: spacing(1),
+      paddingRight: spacing(1),
+      paddingBottom: spacing(1),
+      paddingLeft: spacing(10),
       transition: transitions.create('width'),
       width: '100%',
       [breakpoints.up('sm')]: {

@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 import '@babel/polyfill';
 import MomentUtils from '@date-io/moment';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';

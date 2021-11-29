@@ -19,7 +19,7 @@ const styles = (theme: Theme) =>
     },
     input: {
       flexGrow: 1,
-      margin: `0 ${theme.spacing.unit / 2}px`,
+      margin: `0 ${theme.spacing(1 / 2)}`,
     },
   });
 

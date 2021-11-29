@@ -145,13 +145,13 @@ export default class InvoiceForm extends React.Component<Props> {
           return (
             <React.Fragment>
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={6}>
                   <Grid item xs={12}>
                     {invoice.id && <Navigator invoice={invoice} />}
                     <DimePaper>
-                      <Grid container spacing={8}>
+                      <Grid container spacing={2}>
                         <Grid item xs={12} lg={8}>
-                          <Grid container spacing={8}>
+                          <Grid container spacing={2}>
                             <Grid item xs={12}>
                               <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
@@ -258,7 +258,7 @@ export default class InvoiceForm extends React.Component<Props> {
                   {invoice.id && (
                     <Grid item xs={12} lg={4}>
                       <DimePaper>
-                        <Grid container spacing={8}>
+                        <Grid container spacing={2}>
                           <Grid item xs={12}>
                             <FormHeader>Berechnung</FormHeader>
                           </Grid>
