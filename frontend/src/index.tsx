@@ -2,9 +2,9 @@
 import '@babel/polyfill';
 import MomentUtils from '@date-io/moment';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
