@@ -100,10 +100,10 @@ export default class CompanyForm extends React.Component<Props> {
         render={(props: FormikProps<Company>) => (
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={6}>
+              <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <DimePaper>
-                    <Grid container spacing={4}>
+                    <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={TextField} name={'name'} label={'Name'} />
                       </Grid>

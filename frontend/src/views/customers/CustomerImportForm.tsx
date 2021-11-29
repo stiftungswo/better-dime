@@ -50,7 +50,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
       <>
         <Grid item xs={12}>
           <DimePaper>
-            <Grid justify="space-between" container spacing={6} alignItems={'center'}>
+            <Grid justify="space-between" container spacing={3} alignItems={'center'}>
               <Grid item>
                 <Typography gutterBottom variant={'h5'}>
                   Daten importieren
@@ -77,7 +77,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
               onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
-                  <Grid container alignItems={'center'} spacing={6}>
+                  <Grid container alignItems={'center'} spacing={3}>
                     <Grid item xs={12} md={4}>
                       <a
                         href={this.props.mainStore!.apiV2URL('customers/import/template.xlsx')}

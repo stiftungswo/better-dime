@@ -66,7 +66,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
               können.
             </Typography>
           )}
-          <Table style={{ minWidth: '1200px' }}>
+          <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />

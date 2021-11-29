@@ -24,7 +24,6 @@ const styles = (theme: Theme) =>
     },
     input: {
       display: 'flex',
-      padding: 0,
     },
     valueContainer: {
       display: 'flex',
@@ -33,7 +32,7 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     chip: {
-      margin: `${theme.spacing(1 / 2)} ${theme.spacing(1 / 4)}`,
+      margin: `${theme.spacing(0.5)} ${theme.spacing(0.25)}`,
       maxWidth: '170px',
     },
     label: {

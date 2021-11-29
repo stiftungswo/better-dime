@@ -65,7 +65,7 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
           render={(formikProps: FormikProps<GlobalSettings>) => {
             return (
               <form onSubmit={formikProps.handleSubmit}>
-                <Grid container spacing={6}>
+                <Grid container spacing={3}>
                   <Grid item>
                     <DimePaper>
                       <FormHeader>Dokumente</FormHeader>

@@ -186,7 +186,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
           {this.props.addAction && <DimeAppBarButton icon={AddIcon} title={'Hinzufügen'} action={this.props.addAction} />}
         </DimeAppBar>
         <DimeContent loading={this.state.loading} paper={false}>
-          <Grid container spacing={6}>
+          <Grid container spacing={3}>
             {this.props.children}
             {this.props.columns && (
               <Grid item xs={12}>

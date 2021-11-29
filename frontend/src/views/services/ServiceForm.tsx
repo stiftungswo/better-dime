@@ -77,10 +77,10 @@ export default class ServiceForm extends React.Component<Props> {
         render={(props: FormikProps<Service>) => (
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={6}>
+              <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <DimePaper>
-                    <Grid container spacing={6}>
+                    <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <DimeField required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
@@ -100,7 +100,7 @@ export default class ServiceForm extends React.Component<Props> {
                         </Grid>
                       </Grid>
                       <Grid item xs={12}>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={1}>
                           <Grid item xs={12} lg={4}>
                             <DimeField component={NumberField} required name={'order'} label={'Sortierreihenfolge'} />
                           </Grid>
