@@ -120,7 +120,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                         margin={'none'}
                         disabled={disabled}
                         multiline
-                        rowsMax={6}
+                        maxRows={6}
                       />
                     </DimeTableCell>
                     <DimeTableCell>

@@ -29,7 +29,7 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
               onChange={onChange}
               value={value}
               multiline
-              rowsMax={14}
+              maxRows={14}
               disabled={disabled}
               endAdornment={<InputAdornment position={'end'}>{previewToggle}</InputAdornment>}
             />

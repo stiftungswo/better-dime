@@ -200,7 +200,7 @@ class ProjectForm extends React.Component<Props> {
                             required
                             component={TextField}
                             multiline
-                            rowsMax={14}
+                            maxRows={14}
                             name={'description'}
                             label={'Beschreibung'}
                           />

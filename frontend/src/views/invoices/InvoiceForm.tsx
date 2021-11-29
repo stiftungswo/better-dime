@@ -217,7 +217,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             required
                             component={MarkdownField}
                             multiline
-                            rowsMax={14}
+                            maxRows={14}
                             name={'description'}
                             label={'Beschreibung'}
                           />

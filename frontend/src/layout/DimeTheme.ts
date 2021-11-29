@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 type Mode = 'dev' | 'prod';
@@ -23,7 +23,7 @@ const colors = {
 };
 
 export default (mode: Mode | 'prod') =>
-  createMuiTheme({
+  createTheme({
     palette: {
       ...colors[mode],
       error: red,
