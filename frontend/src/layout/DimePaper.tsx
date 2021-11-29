@@ -11,5 +11,5 @@ interface DimePaperProps extends WithStyles<typeof styles> {
 }
 
 export const DimePaper = withStyles(styles)(({ classes, children, overflowX = true }: DimePaperProps) => (
-  <Paper className={classNames(classes.mainContent, overflowX && classes.overflowX)}>{children}</Paper>
+  <Paper elevation={2} className={classNames(classes.mainContent, overflowX && classes.overflowX)}>{children}</Paper>
 ));

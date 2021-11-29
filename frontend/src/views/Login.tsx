@@ -108,7 +108,7 @@ class Login extends React.Component<Props> {
       <>
         <CssBaseline />
         <main className={classes.layout}>
-          <Paper className={classes.paper}>
+          <Paper elevation={2} className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LogoIcon />
             </Avatar>
