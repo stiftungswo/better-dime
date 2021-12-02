@@ -1,6 +1,5 @@
 import Checkbox from '@material-ui/core/Checkbox';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';

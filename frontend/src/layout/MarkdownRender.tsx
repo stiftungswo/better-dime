@@ -1,5 +1,5 @@
-import { Theme, WithStyles, withStyles } from '@material-ui/core';
-import createStyles from '@material-ui/core/styles/createStyles';
+import { Theme } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 import { Converter } from 'showdown';
 

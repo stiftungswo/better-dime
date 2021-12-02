@@ -4,9 +4,8 @@
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { Theme, withStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';

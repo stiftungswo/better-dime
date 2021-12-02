@@ -1,8 +1,8 @@
-import { Theme, WithStyles } from '@material-ui/core';
+import { Theme } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router';
