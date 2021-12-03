@@ -57,5 +57,11 @@ export default (mode: Mode | 'prod') =>
           height: '48px',
         },
       },
+      // allow input fields to strech
+      MuiInputBase: {
+        input: {
+          height: 'inherit',
+        },
+      },
     },
   });
