@@ -1,6 +1,3 @@
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -26,7 +23,7 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Service, ServiceRate } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
-import { MarkdownExpansionPanel } from './MarkdownExpansionPanel';
+import { MarkdownAccordion } from './MarkdownAccordion';
 import { serviceSchema } from './serviceSchema';
 
 export interface Props extends FormViewProps<Service> {
@@ -105,7 +102,7 @@ export default class ServiceForm extends React.Component<Props> {
                             <DimeField component={NumberField} required name={'order'} label={'Sortierreihenfolge'} />
                           </Grid>
                           <Grid item xs={12} lg={8} container direction="column" justify="center">
-                            <MarkdownExpansionPanel title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
+                            <MarkdownAccordion title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
                           </Grid>
                         </Grid>
                       </Grid>

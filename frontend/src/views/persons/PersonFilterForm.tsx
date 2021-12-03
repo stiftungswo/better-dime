@@ -1,6 +1,6 @@
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { inject, observer } from 'mobx-react';
@@ -41,19 +41,19 @@ export default class PersonFilterForm extends React.Component<Props> {
   render() {
     return (
       <Grid item xs={12} sm={12} md={8} lg={6}>
-        <ExpansionPanel expanded={this.state.open} onChange={() => this.setState({ open: !this.state.open })}>
-          <ExpansionPanelSummary
+        <Accordion expanded={this.state.open} onChange={() => this.setState({ open: !this.state.open })}>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             disableRipple={true}
           >
             <Typography variant={'h5'} color="inherit">
               Filter
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>
+          </AccordionSummary>
+          <AccordionDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>
             <CustomerTagSelect value={this.state.filterTags}  label={'Tags'} onChange={this.updateFilter} />
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       </Grid>
     );
   }

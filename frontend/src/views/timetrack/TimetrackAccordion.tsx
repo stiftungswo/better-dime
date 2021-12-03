@@ -1,7 +1,7 @@
 import { Theme } from '@material-ui/core';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Grid from '@material-ui/core/Grid';
 import { createStyles, withStyles, WithStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -25,7 +25,7 @@ interface Props extends WithStyles<typeof styles> {
   selectedCount?: number;
 }
 
-class TimetrackExpansionPanelInner extends React.Component<Props> {
+class TimetrackAccordionInner extends React.Component<Props> {
   state = {
     open: true,
   };
@@ -49,8 +49,8 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
     const selected = Boolean(this.props.selectedCount);
     return (
       <Grid item xs={12}>
-        <ExpansionPanel expanded={this.state.open} onChange={this.changeExpansion}>
-          <ExpansionPanelSummary
+        <Accordion expanded={this.state.open} onChange={this.changeExpansion}>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             className={classNames({ [this.props.classes.selected]: selected })}
             disableRipple={true}
@@ -75,12 +75,12 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
                 </Grid>
               </Grid>
             </Grid>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>{this.props.children}</ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionSummary>
+          <AccordionDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>{this.props.children}</AccordionDetails>
+        </Accordion>
       </Grid>
     );
   }
 }
 
-export const TimetrackExpansionPanel = withStyles(styles)(TimetrackExpansionPanelInner);
+export const TimetrackAccordion = withStyles(styles)(TimetrackAccordionInner);

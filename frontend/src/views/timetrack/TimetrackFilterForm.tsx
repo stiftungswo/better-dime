@@ -15,7 +15,7 @@ import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import compose from '../../utilities/compose';
 import { DateSpanPicker } from '../reports/DateSpanPicker';
-import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
+import { TimetrackAccordion } from './TimetrackAccordion';
 
 interface Props {
   effortStore?: EffortStore;
@@ -54,7 +54,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
         </Grid>
 
         <Grid item xs={12}>
-          <TimetrackExpansionPanel title={'Filter'}>
+          <TimetrackAccordion title={'Filter'}>
             <Grid container alignItems={'center'} spacing={3}>
               <Grid item xs={12} md={6}>
                 <DateSpanPicker
@@ -106,7 +106,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
                 </Button>
               </Grid>
             </Grid>
-          </TimetrackExpansionPanel>
+          </TimetrackAccordion>
         </Grid>
       </>
     );
