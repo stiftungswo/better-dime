@@ -2,6 +2,7 @@ import Input, { InputProps } from '@material-ui/core/Input';
 import { Field, FieldProps, getIn } from 'formik';
 import React from 'react';
 import { DimeFormControlProps, DimeInputFieldProps } from './common';
+import { DatePicker } from './DatePicker';
 
 /**
  * This component tries to improve Formik performance by delaying the onChange call until the input field is blurred.
@@ -45,7 +46,7 @@ export class DelayedInput extends React.Component<InputProps, { focused: boolean
 
 type onChangeWrappedProps = (value: any) => void;
 
-const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType<DimeFormControlProps & DimeInputFieldProps>, onChangeWrapped: onChangeWrappedProps) => ({
+const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType<DimeFormControlProps & DimeInputFieldProps>, isDatePicker: boolean, onChangeWrapped: onChangeWrappedProps) => ({
   form,
   field,
   // tslint:disable-next-line:trailing-comma
@@ -73,7 +74,7 @@ const wireFormik = ({ delayed = false } = {}) => (Component: React.ComponentType
   };
   return (
     <Component
-      InputComponent={delayed ? DelayedInput : Input}
+      {...(isDatePicker ? {} : {InputComponent: (delayed ? DelayedInput : Input)})}
       errorMessage={touched && error ? error : undefined}
       {...field}
       onChange={handleChange}
@@ -91,16 +92,19 @@ type DimeFieldProps = any; // tslint:disable-line:no-any ; formik field does thi
 
 // tslint:disable
 export class DimeField extends React.Component<DimeFieldProps, DimeFieldState> {
+  // we're looking for a displayName like "inject-DatePicker-with-formatter"
+  isDatePicker = this.props.component.displayName?.includes('DatePicker');
+
   componentWillMount() {
     this.setState({
-      component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.onChangeWrapped),
+      component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.isDatePicker, this.props.onChangeWrapped),
     });
   }
 
   componentDidUpdate(prevProps: Readonly<DimeFieldState>) {
     if (prevProps.component !== this.props.component) {
       this.setState({
-        component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.onChangeWrapped),
+        component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.isDatePicker, this.props.onChangeWrapped),
       });
     }
   }
