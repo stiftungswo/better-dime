@@ -35,4 +35,27 @@ export default (mode: Mode | 'prod') =>
       // E.g., shift from Red 500 to Red 300 or Red 700.
       tonalOffset: 0.2,
     },
+    overrides: {
+      // make text in table headers small and gray.
+      MuiTableSortLabel: {
+        root: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
+      MuiTableCell: {
+        head: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
+      // minmum table height, this was the default in MUI v3.
+      MuiTableRow: {
+        root: {
+          height: '48px',
+        },
+      },
+    },
   });
