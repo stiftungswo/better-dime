@@ -57,6 +57,7 @@ export class AbstractStore<T, OverviewType = T> {
   @observable
   // tslint:disable-next-line:variable-name
   private _searchQuery: string = '';
+
   constructor(protected mainStore: MainStore) {
     this.resetSelected();
     makeObservable(this);

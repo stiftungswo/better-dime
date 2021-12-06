@@ -1,4 +1,4 @@
-import { action, computed, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import {Company, PositionGroup} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -33,6 +33,7 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @action

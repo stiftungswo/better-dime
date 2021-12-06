@@ -1,4 +1,4 @@
-import {action, observable, override} from 'mobx';
+import {action, makeObservable, observable, override} from 'mobx';
 import {Cache} from '../utilities/Cache';
 import {AbstractStore} from './abstractStore';
 import {MainStore} from './mainStore';
@@ -17,6 +17,7 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   // We don't need to re-decorate methods of subclasses, so no @action here.

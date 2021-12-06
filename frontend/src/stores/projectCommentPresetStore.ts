@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import {PaginatedData, ProjectCommentPreset, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -42,6 +42,7 @@ export class ProjectCommentPresetStore extends AbstractPaginatedStore<ProjectCom
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   setEntities(e: ProjectCommentPreset[]) {

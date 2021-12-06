@@ -1,4 +1,4 @@
-import { action, computed, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
 import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -25,6 +25,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @computed

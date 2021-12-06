@@ -1,4 +1,4 @@
-import { action, computed, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -40,6 +40,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @computed

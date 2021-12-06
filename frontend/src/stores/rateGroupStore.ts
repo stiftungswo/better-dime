@@ -1,4 +1,4 @@
-import { action, computed, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import { RateGroup } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -19,6 +19,7 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   filter = (r: RateGroup) =>

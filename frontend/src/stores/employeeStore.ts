@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, observable } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import {
   Employee,
   EmployeeListing,
@@ -42,6 +42,7 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   setEntities(e: Employee[]) {
