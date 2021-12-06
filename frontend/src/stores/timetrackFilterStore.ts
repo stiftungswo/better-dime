@@ -1,5 +1,5 @@
 import { compose } from '@typed/compose';
-import { computed, observable, ObservableMap } from 'mobx';
+import { computed, makeObservable, observable, ObservableMap } from 'mobx';
 import moment from 'moment';
 import { EmployeeListing, ProjectCommentListing, ProjectEffortFilter, ProjectEffortListing, ProjectListing, ServiceListing } from '../types';
 import { WithEfforts } from '../views/timetrack/types';
@@ -35,6 +35,7 @@ export class TimetrackFilterStore {
     private projectCommentStore: ProjectCommentStore,
   ) {
     this.reset();
+    makeObservable(this);
   }
 
   @computed

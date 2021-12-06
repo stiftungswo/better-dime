@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
-import { action, computed, observable, ObservableMap } from 'mobx';
+import { action, computed, makeObservable, observable, ObservableMap } from 'mobx';
 import {Cache} from '../utilities/Cache';
 import { MainStore } from './mainStore';
 
@@ -59,6 +59,7 @@ export class AbstractStore<T, OverviewType = T> {
   private _searchQuery: string = '';
   constructor(protected mainStore: MainStore) {
     this.resetSelected();
+    makeObservable(this);
   }
 
   resetSelected() {
