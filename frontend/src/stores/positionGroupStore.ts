@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import {Company, PositionGroup} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -51,7 +51,7 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
     this.positionGroup = res.data;
   }
 
-  @action
+  @override
   async doPut(positionGroup: PositionGroup) {
     throw new Error('Not implemented, position group are never edited');
   }

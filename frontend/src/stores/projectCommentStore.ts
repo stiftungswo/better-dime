@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import moment from 'moment';
 import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -87,13 +87,13 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     this.projectComment = res.data;
   }
 
-  @action
+  @override
   protected async doPut(entity: ProjectComment): Promise<void> {
     const res = await this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity);
     this.projectComment = res.data;
   }
 
-  @action
+  @override
   protected async doDelete(id: number): Promise<void> {
     await this.mainStore.apiV2.delete('/project_comments/' + id);
   }

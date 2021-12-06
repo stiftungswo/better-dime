@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import {PaginatedData, ProjectCommentPreset, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -91,13 +91,13 @@ export class ProjectCommentPresetStore extends AbstractPaginatedStore<ProjectCom
     this.projectCommentPreset = res.data;
   }
 
-  @action
+  @override
   protected async doPut(entity: ProjectCommentPreset): Promise<void> {
     const res = await this.mainStore.apiV2.put<ProjectCommentPreset>('/project_comment_presets/' + entity.id, entity);
     this.projectCommentPreset = res.data;
   }
 
-  @action
+  @override
   protected async doDelete(id: number): Promise<void> {
     await this.mainStore.apiV2.delete('/project_comment_presets/' + id);
   }

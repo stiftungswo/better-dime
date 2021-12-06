@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import {Company, CustomerOverviewFilter, PaginatedData, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -58,21 +58,23 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     this.company = res.data;
   }
 
-  @action
+  @override
   async doPut(company: Company) {
     const res = await this.mainStore.apiV2.put('/companies/' + company.id, company);
     this.company = res.data;
   }
 
+  @override
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.apiV2.put('/companies/' + id, { archived });
   }
 
+  @override
   protected async doDelete(id: number) {
     await this.mainStore.apiV2.delete('/companies/' + id);
   }
 
-  @action
+  @override
   protected async doDuplicate(id: number) {
     return this.mainStore.apiV2.post<Company>('/companies/' + id + '/duplicate');
   }

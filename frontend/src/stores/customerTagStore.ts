@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import { CustomerTag } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -63,7 +63,7 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
     await this.doFetchAll();
   }
 
-  @action
+  @override
   async doPut(customerTag: CustomerTag) {
     await this.mainStore.apiV2.put('/customer_tags/' + customerTag.id, customerTag);
     await this.doFetchAll();

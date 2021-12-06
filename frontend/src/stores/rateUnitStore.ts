@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import {PaginatedData, RateUnit, RateUnitListing, ServiceListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -69,7 +69,7 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     await this.doFetchAll();
   }
 
-  @action
+  @override
   async doPut(rateUnit: RateUnit) {
     await this.mainStore.apiV2.put('/rate_units/' + rateUnit.id, rateUnit);
     await this.doFetchAll();

@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, override } from 'mobx';
 import moment from 'moment';
 import {Holiday, PaginatedData} from '../types';
 import { AbstractStore } from './abstractStore';
@@ -85,7 +85,7 @@ export class HolidayStore extends AbstractStore<Holiday> {
     await this.doFetchAll();
   }
 
-  @action
+  @override
   protected async doPut(holiday: Holiday) {
     await this.mainStore.apiV2.put('/holidays/' + holiday.id, holiday);
     await this.doFetchAll();
