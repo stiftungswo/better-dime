@@ -50,7 +50,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
       <>
         <Grid item xs={12}>
           <DimePaper>
-            <Grid justify="space-between" container spacing={3} alignItems={'center'}>
+            <Grid justifyContent="space-between" container spacing={3} alignItems={'center'}>
               <Grid item>
                 <Typography gutterBottom variant={'h5'}>
                   Daten importieren

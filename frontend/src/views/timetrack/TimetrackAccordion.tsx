@@ -55,7 +55,7 @@ class TimetrackAccordionInner extends React.Component<Props> {
             className={classNames({ [this.props.classes.selected]: selected })}
             disableRipple={true}
           >
-            <Grid justify="space-between" container spacing={3} alignItems={'center'}>
+            <Grid justifyContent="space-between" container spacing={3} alignItems={'center'}>
               <Grid item>
                 <Typography variant={'h5'} color="inherit">
                   {this.props.title}

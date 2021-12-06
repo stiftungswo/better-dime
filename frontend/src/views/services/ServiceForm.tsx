@@ -101,7 +101,7 @@ export default class ServiceForm extends React.Component<Props> {
                           <Grid item xs={12} lg={4}>
                             <DimeField component={NumberField} required name={'order'} label={'Sortierreihenfolge'} />
                           </Grid>
-                          <Grid item xs={12} lg={8} container direction="column" justify="center">
+                          <Grid item xs={12} lg={8} container direction="column" justifyContent="center">
                             <MarkdownAccordion title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
                           </Grid>
                         </Grid>
