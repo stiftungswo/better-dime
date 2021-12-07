@@ -1,19 +1,11 @@
 import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { styled, Theme } from '@material-ui/core/styles';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { DimePaper } from '../../layout/DimePaper';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  tablecell: {
-    body: {
-      backgroundColor: theme.palette.secondary.main,
-    },
-  },
-}));
 
 interface Props {
   mainStore?: MainStore;
@@ -22,13 +14,15 @@ interface Props {
   timeBudget: number;
   timeUsed: number;
 }
+const PaddedTableCell = styled(TableCell)(({theme}) => ({
+  padding: `${theme.spacing(0.5)}px ${theme.spacing(7)}px ${theme.spacing(0.5)}px ${theme.spacing(3)}px`,
+}), {withTheme: true});
 
 export const ProjectStatTable = compose(
   inject('mainStore'),
   observer,
 ) ((props: Props) => {
   const { mainStore, moneyBudget, moneyUsed, timeBudget, timeUsed } = props;
-  const classes = useStyles();
 
   return (
     <DimePaper>
@@ -38,30 +32,30 @@ export const ProjectStatTable = compose(
         <TableBody>
           {moneyBudget && (
             <TableRow>
-              <TableCell>Geldbudget</TableCell>
-              <TableCell>{mainStore!.formatCurrency(moneyBudget)}</TableCell>
+              <PaddedTableCell>Geldbudget</PaddedTableCell>
+              <PaddedTableCell>{mainStore!.formatCurrency(moneyBudget)}</PaddedTableCell>
             </TableRow>
           )}
 
           <TableRow>
-            <TableCell>Geld verwendet</TableCell>
-            <TableCell style={{ color: moneyBudget ? (moneyBudget > moneyUsed ? 'green' : 'red') : 'gray' }}>
+            <PaddedTableCell>Geld verwendet</PaddedTableCell>
+            <PaddedTableCell style={{ color: moneyBudget ? (moneyBudget > moneyUsed ? 'green' : 'red') : 'gray' }}>
               {mainStore!.formatCurrency(moneyUsed)}
-            </TableCell>
+            </PaddedTableCell>
           </TableRow>
 
           {timeBudget && (
             <TableRow>
-              <TableCell>Zeitbudget</TableCell>
-              <TableCell>{mainStore!.formatDuration(timeBudget, 'h', true)}</TableCell>
+              <PaddedTableCell>Zeitbudget</PaddedTableCell>
+              <PaddedTableCell>{mainStore!.formatDuration(timeBudget, 'h', true)}</PaddedTableCell>
             </TableRow>
           )}
 
           <TableRow>
-            <TableCell>Zeit verwendet</TableCell>
-            <TableCell style={{ color: timeBudget ? (timeBudget > timeUsed ? 'green' : 'red') : 'gray'}}>
+            <PaddedTableCell>Zeit verwendet</PaddedTableCell>
+            <PaddedTableCell style={{ color: timeBudget ? (timeBudget > timeUsed ? 'green' : 'red') : 'gray'}}>
               {mainStore!.formatDuration(timeUsed, 'h', true)}
-            </TableCell>
+            </PaddedTableCell>
           </TableRow>
         </TableBody>
       </Table>
