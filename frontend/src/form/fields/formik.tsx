@@ -93,7 +93,7 @@ type DimeFieldProps = any; // tslint:disable-line:no-any ; formik field does thi
 // tslint:disable
 export class DimeField extends React.Component<DimeFieldProps, DimeFieldState> {
   // we're looking for a displayName like "inject-DatePicker-with-formatter"
-  isDatePicker = this.props.component.displayName?.includes('DatePicker');
+  isDatePicker = /DatePicker|DateFastPicker/.test(this.props.component.displayName);
 
   componentWillMount() {
     this.setState({
