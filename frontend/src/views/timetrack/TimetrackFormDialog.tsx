@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -28,6 +27,7 @@ import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../type
 import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
+import { withFullScreen } from '../../utilities/withFullScreen';
 
 interface Props {
   onClose: () => void;
@@ -37,6 +37,7 @@ interface Props {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
   projectStore?: ProjectStore;
+  fullScreen?: boolean;
 }
 
 interface State {
@@ -74,6 +75,7 @@ const multiSchema = localizeSchema(() =>
 @compose(
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
+  withFullScreen,
 )
 export class TimetrackFormDialog extends React.Component<Props, State> {
 
@@ -142,10 +144,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     }
   }
 
-  render() {// use hooks instead of withMobileDialog()
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+  render() {
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
@@ -155,7 +154,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
+            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={this.props.fullScreen!} maxWidth="lg">
               <DialogTitle>Aufwand {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>

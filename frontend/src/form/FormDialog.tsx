@@ -12,6 +12,7 @@ import { Schema } from 'yup';
 import { LoadingSpinner } from '../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../types';
 import compose from '../utilities/compose';
+import { withFullScreen } from '../utilities/withFullScreen';
 import { FormikSubmitDetector } from './FormikSubmitDetector';
 
 interface DialogFormProps<T> {
@@ -23,8 +24,12 @@ interface DialogFormProps<T> {
   open: boolean;
   onClose: () => void;
   confirmText?: string;
+  fullScreen?: boolean;
 }
 
+@compose(
+  withFullScreen,
+)
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
   FormikConfig<Values> & ExtraProps & DialogFormProps<Values>
 > {
@@ -44,13 +49,10 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   }
 
   render() {
-    const { ...rest } = this.props as any;
-    // use hooks instead of withMobileDialog()
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const { fullScreen, ...rest } = this.props as any;
 
     return this.props.loading ? (
-      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen}>
+      <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen!}>
         <LoadingSpinner />
       </Dialog>
     ) : (
@@ -61,7 +63,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
+            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen!} maxWidth="lg">
               <DialogTitle>{this.props.title}</DialogTitle>
               <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
