@@ -51,6 +51,18 @@ export default (mode: Mode | 'prod') =>
           'color': 'rgba(0, 0, 0, 0.54)',
         },
       },
+      MuiTablePagination: {
+        caption: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+        select: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
       // minmum table height, this was the default in MUI v3.
       MuiTableRow: {
         root: {
