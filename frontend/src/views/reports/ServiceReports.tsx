@@ -35,7 +35,7 @@ export class ServiceReports extends React.Component<Props> {
         <DimeContent loading={false}>
           <Typography variant={'h5'}>Stunden pro Service</Typography>
 
-          <Grid container alignItems={'center'} spacing={24}>
+          <Grid container alignItems={'center'} spacing={3}>
             <Grid item xs={12} md={8}>
               <DateSpanPicker
                 fromValue={this.state.start}

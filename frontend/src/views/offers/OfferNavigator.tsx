@@ -1,5 +1,5 @@
-import Tab from '@material-ui/core/Tab/Tab';
-import Tabs from '@material-ui/core/Tabs/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Offer } from '../../types';

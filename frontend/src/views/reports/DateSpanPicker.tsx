@@ -1,7 +1,7 @@
 import { createStyles, Theme, WithStyles } from '@material-ui/core';
 import Badge from '@material-ui/core/Badge';
 import Button, { ButtonProps } from '@material-ui/core/Button';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
 import { DatePicker } from '../../form/fields/DatePicker';
@@ -17,7 +17,7 @@ const styles = (theme: Theme) =>
     },
     input: {
       flexGrow: 1,
-      margin: `0 ${theme.spacing.unit / 2}px`,
+      margin: `0 ${theme.spacing(0.5)}px`,
     },
   });
 

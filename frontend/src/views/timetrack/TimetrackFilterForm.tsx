@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button/Button';
-import Grid from '@material-ui/core/Grid/Grid';
-import Tab from '@material-ui/core/Tab/Tab';
-import Tabs from '@material-ui/core/Tabs/Tabs';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import { inject, observer } from 'mobx-react';
 import React, { ChangeEvent } from 'react';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
@@ -15,7 +15,7 @@ import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import compose from '../../utilities/compose';
 import { DateSpanPicker } from '../reports/DateSpanPicker';
-import { TimetrackExpansionPanel } from './TimetrackExpansionPanel';
+import { TimetrackAccordion } from './TimetrackAccordion';
 
 interface Props {
   effortStore?: EffortStore;
@@ -54,8 +54,8 @@ export class TimetrackFilterForm extends React.Component<Props> {
         </Grid>
 
         <Grid item xs={12}>
-          <TimetrackExpansionPanel title={'Filter'}>
-            <Grid container alignItems={'center'} spacing={24}>
+          <TimetrackAccordion title={'Filter'}>
+            <Grid container alignItems={'center'} spacing={3}>
               <Grid item xs={12} md={6}>
                 <DateSpanPicker
                   fromValue={filter.start}
@@ -106,7 +106,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
                 </Button>
               </Grid>
             </Grid>
-          </TimetrackExpansionPanel>
+          </TimetrackAccordion>
         </Grid>
       </>
     );

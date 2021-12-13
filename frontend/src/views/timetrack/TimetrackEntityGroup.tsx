@@ -6,7 +6,7 @@ import {OverviewTable} from '../../layout/OverviewTable';
 import {EffortStore} from '../../stores/effortStore';
 import {TimetrackFilterStore} from '../../stores/timetrackFilterStore';
 import {ProjectCommentListing, ProjectEffortListing} from '../../types';
-import {TimetrackExpansionPanel} from './TimetrackExpansionPanel';
+import {TimetrackAccordion} from './TimetrackAccordion';
 
 interface Props {
   actions?: React.ReactNode;
@@ -65,7 +65,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
 
     return (
       <>
-        <TimetrackExpansionPanel
+        <TimetrackAccordion
           actions={actions}
           title={title}
           displayTotal={displayTotal}
@@ -84,7 +84,7 @@ export class TimetrackEntityGroup extends React.Component<Props> {
           (
             'Keine Aufwände erfasst mit den gewählten Filtern.'
           )}
-        </TimetrackExpansionPanel>
+        </TimetrackAccordion>
       </>
     );
   }

@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import { InjectedProps } from '@material-ui/core/es/withMobileDialog';
+import { useTheme } from '@material-ui/core/styles';
 import { FormikActions, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -18,13 +18,15 @@ import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
 import { ProjectComment } from '../../types';
 import compose from '../../utilities/compose';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
+import { withFullScreen } from '../../utilities/withFullScreen';
 
-interface Props extends InjectedProps {
+interface Props {
   onClose: () => void;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
   mainStore?: MainStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  fullScreen?: boolean;
 }
 
 interface State {
@@ -43,6 +45,7 @@ const schema = localizeSchema(() =>
 @compose(
   inject('projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore', 'mainStore'),
   observer,
+  withFullScreen,
 )
 export class TimetrackCommentFormDialog extends React.Component<Props, State> {
 
@@ -79,7 +82,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
   }
 
   render() {
-    const { fullScreen } = this.props;
+    const fullScreen = this.props.fullScreen!;
 
     return (
       <FormDialog

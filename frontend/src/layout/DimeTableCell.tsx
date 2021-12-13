@@ -1,5 +1,6 @@
-import { createStyles, TableCell, WithStyles, withStyles } from '@material-ui/core';
+import { TableCell } from '@material-ui/core';
 import { TableCellProps } from '@material-ui/core/TableCell';
+import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import React from 'react';
 import compose from '../utilities/compose';
 

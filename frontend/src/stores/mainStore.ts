@@ -1,5 +1,5 @@
 import { History } from 'history';
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { Formatter } from '../utilities/formatter';
 import { buildURL } from '../utilities/helpers';
 import { Notifier } from '../utilities/notifier';
@@ -51,7 +51,9 @@ export class MainStore {
     readonly formatter: Formatter,
     readonly notifier: Notifier,
     private history: History,
-  ) {}
+  ) {
+    makeObservable(this);
+  }
 
   // --- routing / navigation
   @action

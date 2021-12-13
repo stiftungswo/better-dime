@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button/Button';
+import Button from '@material-ui/core/Button';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -39,7 +39,7 @@ export class CustomerExportForm extends React.Component<Props> {
             initialValues={initialValues}
             onSubmit={() => {}} // tslint:disable-line:no-empty
             render={formikProps => (
-              <Grid container alignItems={'center'} spacing={24}>
+              <Grid container alignItems={'center'} spacing={3}>
                 <Grid item xs={12} md={4}>
                   <DimeField delayed component={CustomerTagSelect} label={'Kundentags auswählen'} name={'customer_tags'} />
                 </Grid>

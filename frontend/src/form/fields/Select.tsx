@@ -4,9 +4,8 @@
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { Theme, withStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import createStyles from '@material-ui/core/styles/createStyles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
@@ -24,7 +23,7 @@ const styles = (theme: Theme) =>
     },
     input: {
       display: 'flex',
-      padding: 0,
+      padding: 'inherit',
     },
     valueContainer: {
       display: 'flex',
@@ -33,7 +32,7 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     chip: {
-      margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+      margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
       maxWidth: '170px',
     },
     label: {
@@ -45,7 +44,7 @@ const styles = (theme: Theme) =>
       backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
     },
     noOptionsMessage: {
-      padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+      padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     },
     singleValue: {
       position: 'absolute',
@@ -66,12 +65,12 @@ const styles = (theme: Theme) =>
     paper: {
       position: 'absolute',
       zIndex: 1,
-      marginTop: theme.spacing.unit,
+      marginTop: theme.spacing(1),
       left: 0,
       right: 0,
     },
     divider: {
-      height: theme.spacing.unit * 2,
+      height: theme.spacing(2),
     },
   });
 
@@ -167,7 +166,7 @@ function MultiValue(props: any) {
 
 function Menu(props: any) {
   return (
-    <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper elevation={2} square className={props.selectProps.classes.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );

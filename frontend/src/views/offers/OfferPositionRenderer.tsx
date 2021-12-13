@@ -1,8 +1,8 @@
 import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
@@ -66,7 +66,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
               können.
             </Typography>
           )}
-          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+          <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
@@ -120,7 +120,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                         margin={'none'}
                         disabled={disabled}
                         multiline
-                        rowsMax={6}
+                        maxRows={6}
                       />
                     </DimeTableCell>
                     <DimeTableCell>

@@ -1,8 +1,8 @@
 import {Divider, Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
@@ -65,7 +65,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
               können.
             </Typography>
           )}
-          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+          <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />

@@ -1,8 +1,7 @@
 import { Theme } from '@material-ui/core';
-import InputBase from '@material-ui/core/InputBase/InputBase';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import InputBase from '@material-ui/core/InputBase';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
@@ -13,19 +12,19 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
     search: {
       'position': 'relative',
       'borderRadius': shape.borderRadius,
-      'backgroundColor': fade(palette.common.white, 0.15),
+      'backgroundColor': alpha(palette.common.white, 0.15),
       '&:hover': {
-        backgroundColor: fade(palette.common.white, 0.25),
+        backgroundColor: alpha(palette.common.white, 0.25),
       },
       'marginLeft': 0,
       'width': '100%',
       [breakpoints.up('sm')]: {
-        marginLeft: spacing.unit,
+        marginLeft: spacing(1),
         width: 'auto',
       },
     },
     searchIcon: {
-      width: spacing.unit * 9,
+      width: spacing(9),
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',
@@ -42,10 +41,10 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       width: '100%',
     },
     inputInput: {
-      paddingTop: spacing.unit,
-      paddingRight: spacing.unit,
-      paddingBottom: spacing.unit,
-      paddingLeft: spacing.unit * 10,
+      paddingTop: spacing(1),
+      paddingRight: spacing(1),
+      paddingBottom: spacing(1),
+      paddingLeft: spacing(10),
       transition: transitions.create('width'),
       width: '100%',
       [breakpoints.up('sm')]: {

@@ -28,7 +28,7 @@ export default class PrintButton extends React.Component<Props> {
     cityDialogOpen: false,
   };
 
-  render = () => {
+  render() {
     const BadgeIcon = this.props.icon;
     if (this.props.disabled) {
       return (

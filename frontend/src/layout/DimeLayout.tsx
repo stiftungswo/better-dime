@@ -1,12 +1,11 @@
-import { Theme, WithStyles, withWidth } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline/CssBaseline';
-import Divider from '@material-ui/core/Divider/Divider';
-import Drawer from '@material-ui/core/Drawer/Drawer';
-import IconButton from '@material-ui/core/IconButton/IconButton';
+import { Theme, withWidth } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles from '@material-ui/core/styles/withStyles';
 import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -62,9 +61,9 @@ export const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing.unit * 7 + 1,
+      width: theme.spacing(7) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing.unit * 9 + 1,
+        width: theme.spacing(9) + 1,
       },
     },
     toolbar: {
@@ -76,12 +75,12 @@ export const styles = (theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing(3),
     },
     // HAX
     mainContent: {
       textAlign: 'left',
-      padding: theme.spacing.unit * 2,
+      padding: theme.spacing(2),
     },
     overflowX: {
       overflowX: 'auto',

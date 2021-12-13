@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/browser';
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { History } from 'history';
 import jwt_decode from 'jwt-decode';
-import { action, computed, observable, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import moment from 'moment';
 
 // this will be replaced by a build script, if necessary
@@ -74,6 +74,7 @@ export class ApiStore {
     this.restoreApiToken();
     this.updateSentryContext();
     this.initializeApiClient(this._tokenV2);
+    makeObservable(this);
   }
 
   @action

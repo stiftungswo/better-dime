@@ -1,6 +1,6 @@
 // tslint:disable:no-console
 import { AxiosResponse } from 'axios';
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {Address, Company, PaginationInfo, PhoneNumber} from '../types';
 import {AbstractCachedStore} from './abstractCachedStore';
 import {AbstractStore} from './abstractStore';
@@ -22,6 +22,11 @@ export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedS
   protected requestedPageOrderTag: string = 'id';
   @observable
   protected requestedPageOrderDir: string = 'desc';
+
+  constructor(protected mainStore: MainStore) {
+    super(mainStore);
+    makeObservable(this);
+  }
 
   @computed
   get paginationInfo(): PaginationInfo | undefined {

@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import { Category } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -37,6 +37,7 @@ export class ProjectCategoryStore extends AbstractStore<Category> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @action
@@ -57,7 +58,7 @@ export class ProjectCategoryStore extends AbstractStore<Category> {
     await this.doFetchAll();
   }
 
-  @action
+  @override
   async doPut(projectCategory: Category) {
     await this.mainStore.apiV2.put('/project_categories/' + projectCategory.id, projectCategory);
     await this.doFetchAll();

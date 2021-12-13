@@ -1,6 +1,6 @@
 import MuiFormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MuiTextField from '@material-ui/core/TextField';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
@@ -167,11 +167,11 @@ class ProjectForm extends React.Component<Props> {
         render={(props: FormikProps<Project>) => {
             return (
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} lg={10}>
                     {project.id && <Navigator project={project} />}
                     <DimePaper>
-                      <Grid container spacing={24}>
+                      <Grid container spacing={3}>
                         <Grid item xs={12} lg={8}>
                           <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                         </Grid>
@@ -200,7 +200,7 @@ class ProjectForm extends React.Component<Props> {
                             required
                             component={TextField}
                             multiline
-                            rowsMax={14}
+                            maxRows={14}
                             name={'description'}
                             label={'Beschreibung'}
                           />
@@ -222,7 +222,7 @@ class ProjectForm extends React.Component<Props> {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                       <Grid item xs={12} lg={5}>
                         <DimePaper>
                           <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />

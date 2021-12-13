@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -40,6 +40,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @computed
@@ -100,7 +101,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     this.loading = false;
   }
 
-  @action
+  @override
   protected async doPut(entity: ProjectEffort): Promise<void> {
     this.loading = true;
     const res = await this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
@@ -114,7 +115,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     this.effort = res.data;
   }
 
-  @action
+  @override
   protected async doDelete(id: number): Promise<void> {
     await this.mainStore.apiV2.delete('/project_efforts/' + id);
   }

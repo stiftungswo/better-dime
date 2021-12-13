@@ -1,4 +1,4 @@
-import {action, observable} from 'mobx';
+import {action, makeObservable, observable, override} from 'mobx';
 import {Cache} from '../utilities/Cache';
 import {AbstractStore} from './abstractStore';
 import {MainStore} from './mainStore';
@@ -17,9 +17,11 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
-  @action
+  // We don't need to re-decorate methods of subclasses, so no @action here.
+  @override
   async fetchAll() {
     const cached = this.fetchAllCache.fetchAll();
 
@@ -33,7 +35,7 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
     }
   }
 
-  @action
+  @override
   async fetchOne(id: number) {
     const cached = this.fetchOneCache.fetchOne(id);
 
@@ -47,27 +49,27 @@ export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, O
     }
   }
 
-  @action
+  @override
   async post(entity: T) {
     return super.post(entity);
   }
 
-  @action
+  @override
   async put(entity: T) {
     return super.put(entity);
   }
 
-  @action
+  @override
   async delete(id: number) {
     return super.delete(id);
   }
 
-  @action
+  @override
   async duplicate(id: number): Promise<T> {
     return super.duplicate(id);
   }
 
-  @action
+  @override
   async archive(id: number, archived: boolean) {
     return super.archive(id, archived);
   }

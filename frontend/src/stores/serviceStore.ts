@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, observable } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import {PaginatedData, Service, ServiceListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -37,6 +37,7 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   setEntities(e: ServiceListing[]) {

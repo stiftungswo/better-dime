@@ -1,8 +1,9 @@
 // tslint:disable:no-console
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { ProjectEffort } from '../types';
 import {Cache} from '../utilities/Cache';
 import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export interface CustomerImportSettings {
   customer_tags: number[];
@@ -47,6 +48,11 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
 
   @observable
   importIsLoading?: boolean = false;
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+    makeObservable(this);
+  }
 
   @action
   async verifyImportFile(file: File, name: string) {

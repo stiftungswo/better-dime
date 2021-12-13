@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import { RateGroup } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -19,6 +19,7 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   filter = (r: RateGroup) =>
@@ -41,12 +42,12 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 
-  @action
+  @override
   async doPut(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }
 
-  @action
+  @override
   protected async doDelete(id: number) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }

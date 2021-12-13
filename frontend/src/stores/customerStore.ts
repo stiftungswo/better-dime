@@ -1,6 +1,7 @@
-import { computed, observable } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import { Customer, PaginatedData } from '../types';
 import { AbstractStore } from './abstractStore';
+import { MainStore } from './mainStore';
 
 export class CustomerStore extends AbstractStore<Customer> {
   protected get entityName() {
@@ -29,6 +30,11 @@ export class CustomerStore extends AbstractStore<Customer> {
 
   @observable
   customer?: Customer = undefined;
+
+  constructor(mainStore: MainStore) {
+    super(mainStore);
+    makeObservable(this);
+  }
 
   protected async doFetchAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Customer>>('/customers');

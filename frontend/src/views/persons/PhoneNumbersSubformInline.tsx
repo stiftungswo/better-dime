@@ -1,7 +1,7 @@
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -56,7 +56,7 @@ export default class PhoneNumberSubformInline extends React.Component<Props> {
         render={arrayHelpers => (
           <DimePaper>
             <TableToolbar title={'Telefonnummern'} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
-            <Table padding={'dense'} style={{ minWidth: '1000px' }}>
+            <Table size="small" style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
                   <DimeTableCell style={{ width: '40%' }}>Kategorie</DimeTableCell>

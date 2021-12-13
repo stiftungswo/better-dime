@@ -1,8 +1,8 @@
 import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core';
-import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import { InjectedProps } from '@material-ui/core/withMobileDialog';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import { useTheme } from '@material-ui/core/styles';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -27,8 +27,9 @@ import { ProjectComment, ProjectEffort, ProjectEffortTemplate } from '../../type
 import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
+import { withFullScreen } from '../../utilities/withFullScreen';
 
-interface Props extends InjectedProps {
+interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
@@ -36,6 +37,7 @@ interface Props extends InjectedProps {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
   projectStore?: ProjectStore;
+  fullScreen?: boolean;
 }
 
 interface State {
@@ -73,7 +75,7 @@ const multiSchema = localizeSchema(() =>
 @compose(
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
-  withMobileDialog(),
+  withFullScreen,
 )
 export class TimetrackFormDialog extends React.Component<Props, State> {
 
@@ -143,8 +145,6 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   }
 
   render() {
-    const { fullScreen } = this.props;
-
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
@@ -154,7 +154,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={fullScreen} maxWidth="lg">
+            <Dialog open onClose={this.handleClose(formikProps)} fullScreen={this.props.fullScreen!} maxWidth="lg">
               <DialogTitle>Aufwand {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
 
               <DialogContent>

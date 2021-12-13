@@ -1,11 +1,11 @@
 import { PropTypes } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Input, { InputProps } from '@material-ui/core/Input/Input';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import Input, { InputProps } from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
-import Switch from '@material-ui/core/Switch/Switch';
+import Switch from '@material-ui/core/Switch';
 import React, { ReactNode } from 'react';
 import {TransformingField, TransformingFieldProps} from './TransformingField';
 

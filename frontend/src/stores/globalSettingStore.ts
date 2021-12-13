@@ -1,4 +1,4 @@
-import { computed, observable } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -40,6 +40,7 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   protected async doPut(entity: GlobalSettings): Promise<void> {

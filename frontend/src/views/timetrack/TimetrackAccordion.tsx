@@ -1,11 +1,10 @@
 import { Theme } from '@material-ui/core';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
-import Grid from '@material-ui/core/Grid/Grid';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography/Typography';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Grid from '@material-ui/core/Grid';
+import { createStyles, withStyles, WithStyles} from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import React from 'react';
 import { ExpandMoreIcon } from '../../layout/icons';
@@ -26,7 +25,7 @@ interface Props extends WithStyles<typeof styles> {
   selectedCount?: number;
 }
 
-class TimetrackExpansionPanelInner extends React.Component<Props> {
+class TimetrackAccordionInner extends React.Component<Props> {
   state = {
     open: true,
   };
@@ -50,13 +49,13 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
     const selected = Boolean(this.props.selectedCount);
     return (
       <Grid item xs={12}>
-        <ExpansionPanel expanded={this.state.open} onChange={this.changeExpansion}>
-          <ExpansionPanelSummary
+        <Accordion expanded={this.state.open} onChange={this.changeExpansion}>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             className={classNames({ [this.props.classes.selected]: selected })}
             disableRipple={true}
           >
-            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
+            <Grid justifyContent="space-between" container spacing={3} alignItems={'center'}>
               <Grid item>
                 <Typography variant={'h5'} color="inherit">
                   {this.props.title}
@@ -64,7 +63,7 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
                 </Typography>
               </Grid>
               <Grid item data-expansion-block={true}>
-                <Grid container alignItems={'center'} spacing={8}>
+                <Grid container alignItems={'center'} spacing={1}>
                   {this.props.displayTotal && !selected && (
                     <Grid item>
                       <Typography variant={'h6'} color={'textSecondary'}>
@@ -76,12 +75,12 @@ class TimetrackExpansionPanelInner extends React.Component<Props> {
                 </Grid>
               </Grid>
             </Grid>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>{this.props.children}</ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionSummary>
+          <AccordionDetails style={{ overflowX: 'auto', overflowY: 'hidden', flexWrap: 'wrap' }}>{this.props.children}</AccordionDetails>
+        </Accordion>
       </Grid>
     );
   }
 }
 
-export const TimetrackExpansionPanel = withStyles(styles)(TimetrackExpansionPanelInner);
+export const TimetrackAccordion = withStyles(styles)(TimetrackAccordionInner);
