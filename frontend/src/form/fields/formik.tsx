@@ -110,6 +110,7 @@ export class DimeField extends React.Component<DimeFieldProps, DimeFieldState> {
   }
 
   render() {
+    console.log('DimeField' + this.props.component.displayName + ' -> ' + this.isDatePicker); // tslint:disable-line:no-console
     const { component, delayed, onChangeWrapped, ...rest } = this.props;
     return <Field component={this.state.component} {...rest} />;
   }
