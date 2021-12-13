@@ -14,7 +14,7 @@ import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { ActionButton } from '../../layout/ActionButton';
 import { DimePaper } from '../../layout/DimePaper';
@@ -206,7 +206,7 @@ class ProjectForm extends React.Component<Props> {
                           />
                         </Grid>
                         <Grid item xs={12} lg={8}>
-                          <DimeField component={DatePicker} name={'deadline'} label={'Deadline'} />
+                          <DimeDatePickerField component={DatePicker} name={'deadline'} label={'Deadline'} />
                         </Grid>
                         <Grid item xs={12} lg={8}>
                           <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />

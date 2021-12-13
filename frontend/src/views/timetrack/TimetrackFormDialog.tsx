@@ -12,7 +12,7 @@ import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
@@ -170,7 +170,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   label={'Service'}
                   maxMenuHeight={200}
                 />
-                <DimeField component={DateFastPicker} name={'date'} label={'Datum'} />
+                <DimeDatePickerField component={DateFastPicker} name={'date'} label={'Datum'} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />

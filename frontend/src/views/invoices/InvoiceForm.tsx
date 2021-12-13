@@ -10,7 +10,7 @@ import { VatSelect } from '../../form/entitySelect/VatSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import PercentageField from '../../form/fields/PercentageField';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -179,7 +179,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
                             <Grid item xs={12} lg={5}>
-                              <DimeField
+                              <DimeDatePickerField
                                 required
                                 component={DatePicker}
                                 name={'beginning'}
@@ -190,7 +190,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField
+                              <DimeDatePickerField
                                 required
                                 component={DatePicker}
                                 name={'ending'}

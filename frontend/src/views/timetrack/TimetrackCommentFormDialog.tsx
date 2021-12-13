@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { FormDialog } from '../../form/FormDialog';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
@@ -100,7 +100,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
             <Dialog open fullScreen={fullScreen} maxWidth="lg">
               <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
               <DialogContent>
-                <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+                <DimeDatePickerField component={DatePicker} name={'date'} label={'Datum'} />
                 <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
                 <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
               </DialogContent>

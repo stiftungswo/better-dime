@@ -92,26 +92,26 @@ type DimeFieldProps = any; // tslint:disable-line:no-any ; formik field does thi
 
 // tslint:disable
 export class DimeField extends React.Component<DimeFieldProps, DimeFieldState> {
-  // we're looking for a displayName like "inject-DatePicker-with-formatter"
-  isDatePicker = /DatePicker|DateFastPicker/.test(this.props.component.displayName);
-
   componentWillMount() {
     this.setState({
-      component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.isDatePicker, this.props.onChangeWrapped),
+      component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.isDatePicker, this.props.onChangeWrapped),
     });
   }
 
   componentDidUpdate(prevProps: Readonly<DimeFieldState>) {
     if (prevProps.component !== this.props.component) {
       this.setState({
-        component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.isDatePicker, this.props.onChangeWrapped),
+        component: wireFormik({ delayed: this.props.delayed })(this.props.component, this.props.isDatePicker, this.props.onChangeWrapped),
       });
     }
   }
 
   render() {
-    console.log('DimeField' + this.props.component.displayName + ' -> ' + this.isDatePicker); // tslint:disable-line:no-console
-    const { component, delayed, onChangeWrapped, ...rest } = this.props;
+    const { component, delayed, onChangeWrapped, isDatePicker, ...rest } = this.props;
     return <Field component={this.state.component} {...rest} />;
   }
+}
+
+export function DimeDatePickerField (props: DimeFieldProps){
+    return <DimeField isDatePicker {...props} />;
 }

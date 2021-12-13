@@ -8,7 +8,7 @@ import React from 'react';
 import { NumberField, SwitchField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
@@ -161,18 +161,18 @@ export class WorkPeriodSubform extends React.Component<Props> {
                                   <Warning color={'error'}/>
                                 </Grid>
                                 <Grid item style={{color: 'red', marginLeft: '10px'}}>
-                                  <DimeField component={DatePicker} name={fieldName('beginning')} />
+                                  <DimeDatePickerField component={DatePicker} name={fieldName('beginning')} />
                                 </Grid>
                               </Grid>
                             </DimeTableCell>
                           )}
                           {!w.overlapping_periods && (
                             <DimeTableCell>
-                              <DimeField component={DatePicker} name={fieldName('beginning')} />
+                              <DimeDatePickerField component={DatePicker} name={fieldName('beginning')} />
                             </DimeTableCell>
                           )}
                           <DimeTableCell>
-                            <DimeField component={DatePicker} name={fieldName('ending')} />
+                            <DimeDatePickerField component={DatePicker} name={fieldName('ending')} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />
