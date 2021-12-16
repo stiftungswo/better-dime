@@ -9,11 +9,11 @@ import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
-import { LoadingSpinner } from '../layout/LoadingSpinner';
-import { HandleFormikSubmit } from '../types';
-import compose from '../utilities/compose';
-import { withFullScreen } from '../utilities/withFullScreen';
-import { FormikSubmitDetector } from './FormikSubmitDetector';
+import { LoadingSpinner } from '../../layout/LoadingSpinner';
+import { HandleFormikSubmit } from '../../types';
+import compose from '../../utilities/compose';
+import { withFullScreen } from '../../utilities/withFullScreen';
+import { FormikSubmitDetector } from '../FormikSubmitDetector';
 
 interface DialogFormProps<T> {
   title: string;

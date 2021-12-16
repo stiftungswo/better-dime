@@ -2,15 +2,15 @@ import {ArrayHelpers, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import * as yup from 'yup';
-import { FormDialog } from '../form/FormDialog';
-import {AbstractStore} from '../stores/abstractStore';
-import {MainStore} from '../stores/mainStore';
-import {PositionGroupStore} from '../stores/positionGroupStore';
-import {PositionGroup, PositionGroupings, Project} from '../types';
-import {defaultPositionGroup} from '../utilities/helpers';
-import { localizeSchema, nullableNumber, selector } from '../utilities/validation';
-import {PositionGroupSelect} from './entitySelect/PositionGroupSelect';
-import {DimeField} from './fields/formik';
+import {AbstractStore} from '../../stores/abstractStore';
+import {MainStore} from '../../stores/mainStore';
+import {PositionGroupStore} from '../../stores/positionGroupStore';
+import {PositionGroup, PositionGroupings, Project} from '../../types';
+import {defaultPositionGroup} from '../../utilities/helpers';
+import { localizeSchema, nullableNumber, selector } from '../../utilities/validation';
+import {PositionGroupSelect} from '../entitySelect/PositionGroupSelect';
+import {DimeField} from '../fields/formik';
+import { FormDialog } from './FormDialog';
 
 const schema = localizeSchema(() =>
   yup.object({

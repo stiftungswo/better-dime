@@ -3,9 +3,10 @@ import {Warning} from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { PositionGroupSortDialog } from '../form/PositionGroupSortDialog';
-import PositionMoveDialog from '../form/PositionMoveDialog';
-import { ServiceSelectDialog } from '../form/ServiceSelectDialog';
+import { PositionGroupRenameDialog } from '../form/dialog/PositionGroupRenameDialog';
+import { PositionGroupSortDialog } from '../form/dialog/PositionGroupSortDialog';
+import PositionMoveDialog from '../form/dialog/PositionMoveDialog';
+import { ServiceSelectDialog } from '../form/dialog/ServiceSelectDialog';
 import { MainStore } from '../stores/mainStore';
 import {PositionGroupStore} from '../stores/positionGroupStore';
 import {RateUnitStore} from '../stores/rateUnitStore';
@@ -34,6 +35,7 @@ export default class PositionSubformInline extends React.Component<Props> {
   state = {
     dialogAddOpen: false,
     dialogSortOpen: false,
+    dialogRenameOpen: false,
     selected_group: defaultPositionGroup().name,
     moving: false,
     moving_index: null,
@@ -163,6 +165,15 @@ export default class PositionSubformInline extends React.Component<Props> {
       this.sortServices(arrayHelpers, group.id);
     }
   }
+  handleRename = (groups: PositionGroup[]) => (groupName: string, newName: string) => {
+      console.log(groups); // tslint:disable-line:no-console
+      console.log(groupName + ' -> ' + newName); // tslint:disable-line:no-console
+
+      const index = groups.findIndex(e => e.name === groupName);
+      groups[index].name = newName;
+
+      console.log(groups); // tslint:disable-line:no-console
+  }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
     const Tag = this.props.tag;
@@ -177,6 +188,9 @@ export default class PositionSubformInline extends React.Component<Props> {
           }}
           onSort={!this.props.formikProps.values.rate_group_id ? undefined : () => {
             this.setState({ selected_group: group.name, dialogSortOpen: true });
+          }}
+          onRename={!this.props.formikProps.values.rate_group_id ? undefined : () => {
+            this.setState({ selected_group: group.name, dialogRenameOpen: true });
           }}
           group={group}
           values={values}
@@ -220,6 +234,16 @@ export default class PositionSubformInline extends React.Component<Props> {
                   open
                   onClose={() => this.setState({ dialogSortOpen: false })}
                   onSubmit={this.handleSort(arrayHelpers)}
+                  placeholder={defaultPositionGroup().name}
+                  groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
+                  groupingEntity={this.props.formikProps.values}
+                />
+              )}
+              {this.state.dialogRenameOpen && (
+                <PositionGroupRenameDialog
+                  open
+                  onClose={() => this.setState({ dialogRenameOpen: false })}
+                  onSubmit={this.handleRename(this.props.formikProps.values.position_groupings)}
                   placeholder={defaultPositionGroup().name}
                   groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
                   groupingEntity={this.props.formikProps.values}
