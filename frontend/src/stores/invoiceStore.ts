@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {Invoice, InvoiceListing, PaginatedData} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -52,36 +52,43 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
   }
 
   protected async doFetchAll(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices');
-    this.invoices = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices').then(
+      action(res => { this.invoices = res.data.data; }),
+    );
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices', {params: this.getQueryParams()});
-    this.invoices = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices', {params: this.getQueryParams()}).then(
+      action(res => { this.invoices = res.data.data; }),
+    );
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices', {params: this.getPaginatedQueryParams()});
-    const page = res.data;
-    this.invoices = page.data;
-    this.pageInfo = _.omit(page, 'data');
+    this.mainStore.apiV2.get<PaginatedData<InvoiceListing>>('/invoices', {params: this.getPaginatedQueryParams()}).then(action(res => {
+      const page = res.data;
+      this.invoices = page.data;
+      this.pageInfo = _.omit(page, 'data');
+    }));
   }
 
+  @action
   protected async doFetchOne(id: number) {
     this.invoice = undefined;
-    const res = await this.mainStore.apiV2.get<Invoice>('/invoices/' + id);
-    this.invoice = res.data;
+    this.mainStore.apiV2.get<Invoice>('/invoices/' + id).then(
+      action(res => { this.invoice = res.data; }),
+    );
   }
 
   protected async doPost(entity: Invoice): Promise<void> {
-    const res = await this.mainStore.apiV2.post<Invoice>('/invoices', entity);
-    this.invoice = res.data;
+    this.mainStore.apiV2.post<Invoice>('/invoices', entity).then(
+      action(res => { this.invoice = res.data; }),
+    );
   }
 
   protected async doPut(entity: Invoice): Promise<void> {
-    const res = await this.mainStore.apiV2.put<Invoice>('/invoices/' + entity.id, entity);
-    this.invoice = res.data;
+    this.mainStore.apiV2.put<Invoice>('/invoices/' + entity.id, entity).then(
+      action(res => { this.invoice = res.data; }),
+    );
   }
 
   protected async doDuplicate(id: number) {

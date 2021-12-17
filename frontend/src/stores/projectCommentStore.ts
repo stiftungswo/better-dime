@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
 import moment from 'moment';
 import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -59,7 +59,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
           project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
         },
       });
-      this.projectComments = res.data;
+      runInAction(() => { this.projectComments = res.data; });
     } catch (e) {
       this.mainStore.displayError('Fehler beim laden der Projektkommentare');
     }
@@ -76,22 +76,22 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     Cache.invalidateAllActiveCaches();
   }
 
-  @action
   protected async doPost(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity);
-    this.projectComment = res.data;
+    this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity).then(
+      action(res => { this.projectComment = res.data; }),
+    );
   }
 
-  @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
-    this.projectComment = res.data;
+    this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id).then(
+      action(res => { this.projectComment = res.data; }),
+    );
   }
 
-  @override
   protected async doPut(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity);
-    this.projectComment = res.data;
+    this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity).then(
+      action(res => { this.projectComment = res.data; }),
+    );
   }
 
   @override

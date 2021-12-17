@@ -62,31 +62,29 @@ export class HolidayStore extends AbstractStore<Holiday> {
     return this.mainStore.apiV2.post<Holiday>('/holidays/' + id + '/duplicate');
   }
 
-  @action
   protected async doFetch() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
-    this.holidays = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays').then(
+      action(res => { this.holidays = res.data.data; }),
+    );
   }
 
-  @action
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
-    this.holidays = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays').then(
+      action(res => { this.holidays = res.data.data; }),
+    );
   }
 
-  @action
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays', {params: this.getQueryParams()});
-    this.holidays = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays', {params: this.getQueryParams()}).then(
+      action(res => { this.holidays = res.data.data; }),
+    );
   }
 
-  @action
   protected async doPost(holiday: Holiday) {
     await this.mainStore.apiV2.post('/holidays', holiday);
     await this.doFetchAll();
   }
 
-  @override
   protected async doPut(holiday: Holiday) {
     await this.mainStore.apiV2.put('/holidays/' + holiday.id, holiday);
     await this.doFetchAll();

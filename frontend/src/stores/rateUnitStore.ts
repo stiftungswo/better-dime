@@ -46,25 +46,25 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
   }
 
   async fetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getPaginatedQueryParams()});
-    const page = res.data;
-    this.rateUnits = page.data;
-    this.pageInfo = _.omit(page, 'data');
+    this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getPaginatedQueryParams()}).then(action(res => {
+      const page = res.data;
+      this.rateUnits = page.data;
+      this.pageInfo = _.omit(page, 'data');
+    }));
   }
 
-  @action
   async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getQueryParams()});
-    this.rateUnits = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getQueryParams()}).then(
+      action(res => { this.rateUnits = res.data.data; }),
+    );
   }
 
-  @action
   async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units');
-    this.rateUnits = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units').then(
+      action(res => { this.rateUnits = res.data.data; }),
+    );
   }
 
-  @action
   async doPost(rateUnit: RateUnit) {
     await this.mainStore.apiV2.post('/rate_units', rateUnit);
     await this.doFetchAll();
@@ -81,9 +81,9 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     this.doFetchAll();
   }
 
-  @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<RateUnit>('/rate_units/' + id);
-    this.rateUnit = res.data;
+    this.mainStore.apiV2.get<RateUnit>('/rate_units/' + id).then(
+      action(res => { this.rateUnit = res.data; }),
+    );
   }
 }

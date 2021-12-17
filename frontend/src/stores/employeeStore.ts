@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {
   Employee,
   EmployeeListing,
@@ -62,20 +62,23 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees');
-    this.employees = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees').then(
+      action(res => { this.employees = res.data.data; }),
+    );
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getQueryParams()});
-    this.employees = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getQueryParams()}).then(
+      action(res => { this.employees = res.data.data; }),
+    );
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getPaginatedQueryParams()});
-    const page = res.data;
-    this.employees = page.data;
-    this.pageInfo = _.omit(page, 'data');
+    this.mainStore.apiV2.get<PaginatedData<Employee>>('/employees', {params: this.getPaginatedQueryParams()}).then(action(res => {
+      const page = res.data;
+      this.employees = page.data;
+      this.pageInfo = _.omit(page, 'data');
+    }));
   }
 
   protected async doFetchOne(id: number) {

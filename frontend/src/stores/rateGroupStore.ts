@@ -25,19 +25,18 @@ export class RateGroupStore extends AbstractStore<RateGroup> {
   filter = (r: RateGroup) =>
     r.name.toLowerCase().includes(this.searchQuery) || r.description.toLowerCase().includes(this.searchQuery)
 
-  @action
   async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<RateGroup[]>('/rate_groups');
-    this.rateGroups = res.data;
+    this.mainStore.apiV2.get<RateGroup[]>('/rate_groups').then(
+      action(res => { this.rateGroups = res.data; }),
+    );
   }
 
-  @action
   async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<RateGroup[]>('/rate_groups', {params: this.getQueryParams()});
-    this.rateGroups = res.data;
+    this.mainStore.apiV2.get<RateGroup[]>('/rate_groups', {params: this.getQueryParams()}).then(
+      action(res => { this.rateGroups = res.data; }),
+    );
   }
 
-  @action
   async doPost(rateGroup: RateGroup) {
     throw new Error('Not implemented, rate_groups should not be editable');
   }

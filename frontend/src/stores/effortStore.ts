@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -77,7 +77,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     } catch (e) {
       this.mainStore.displayError('Fehler beim Laden der Aufwände');
     }
-    this.loading = false;
+    runInAction(() => { this.loading = false; });
   }
 
   @action
@@ -98,21 +98,21 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.loading = true;
     await this.mainStore.apiV2.post<ProjectEffort>('/project_efforts', entity);
-    this.loading = false;
+    runInAction(() => { this.loading = false; });
   }
 
-  @override
   protected async doPut(entity: ProjectEffort): Promise<void> {
     this.loading = true;
-    const res = await this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
-    this.effort = res.data;
-    this.loading = false;
+    this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity).then(
+      action(res => { this.effort = res.data; }),
+    );
+    runInAction(() => { this.loading = false; });
   }
 
-  @action
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<ProjectEffort>('/project_efforts/' + id);
-    this.effort = res.data;
+    this.mainStore.apiV2.get<ProjectEffort>('/project_efforts/' + id).then(
+      action(res => { this.effort = res.data; }),
+    );
   }
 
   @override

@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -44,12 +44,14 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
   }
 
   protected async doPut(entity: GlobalSettings): Promise<void> {
-    const res = await this.mainStore.apiV2.put('/global_settings', entity);
-    this.settings = res.data;
+    this.mainStore.apiV2.put('/global_settings', entity).then(
+      action(res => { this.settings = res.data; }),
+    );
   }
 
   protected async doFetchOne() {
-    const res = await this.mainStore.apiV2.get<GlobalSettings>('/global_settings');
-    this.settings = res.data;
+    this.mainStore.apiV2.get<GlobalSettings>('/global_settings').then(
+      action(res => { this.settings = res.data; }),
+    );
   }
 }
