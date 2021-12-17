@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import { Invoice, PaginatedData, Project, ProjectListing } from '../types';
 import { Cache } from '../utilities/Cache';
 import { AbstractPaginatedStore } from './abstractPaginatedStore';
@@ -76,41 +76,34 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchAll(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects').then(
-      action(res => { this.projects = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects');
+    this.projects = res.data.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getQueryParams()}).then(
-      action(res => { this.projects = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getQueryParams()});
+    this.projects = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getPaginatedQueryParams()}).then(action(res => {
-      const page = res.data;
-      this.projects = page.data;
-      this.pageInfo = _.omit(page, 'data');
-    }));
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.projects = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doFetchOne(id: number) {
-    this.mainStore.apiV2.get<Project>('/projects/' + id).then(
-      action(res => { this.project = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Project>('/projects/' + id);
+    this.project = res.data;
   }
 
   protected async doPost(entity: Project): Promise<void> {
-    this.mainStore.apiV2.post<Project>('/projects', entity).then(
-      action(res => { this.project = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.post<Project>('/projects', entity);
+    this.project = res.data;
   }
 
-  @override
   protected async doPut(entity: Project): Promise<void> {
-    this.mainStore.apiV2.put<Project>('/projects/' + entity.id, entity).then(
-      action(res => this.project = res.data),
-    );
+    const res = await this.mainStore.apiV2.put<Project>('/projects/' + entity.id, entity);
+    this.project = res.data;
   }
 }

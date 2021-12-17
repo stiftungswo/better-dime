@@ -47,22 +47,22 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     this.companies = e;
   }
 
+  @action
   async doFetchOne(id: number) {
-    this.mainStore.apiV2.get<Company>('/companies/' + id).then(
-      action(res => { this.company = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Company>('/companies/' + id);
+    this.company = res.data;
   }
 
+  @action
   async doPost(company: Company) {
-    this.mainStore.apiV2.post('/companies', company).then(
-      action(res => { this.company = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.post('/companies', company);
+    this.company = res.data;
   }
 
+  @override
   async doPut(company: Company) {
-    this.mainStore.apiV2.put('/companies/' + company.id, company).then(
-      action(res => { this.company = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.put('/companies/' + company.id, company);
+    this.company = res.data;
   }
 
   @override
@@ -81,23 +81,20 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
   }
 
   protected async doFetchAll() {
-    this.mainStore.apiV2.get<PaginatedData<Company>>('/companies').then(
-      action(res => { this.companies = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<Company>>('/companies');
+    this.companies = res.data.data;
   }
 
   protected async doFetchFiltered() {
-    this.mainStore.apiV2.get<PaginatedData<Company>>('/companies', {params: this.getQueryParams()}).then(
-      action(res => { this.companies = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<Company>>('/companies', {params: this.getQueryParams()});
+    this.companies = res.data.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<Company>>('/companies', {params: this.getPaginatedQueryParams()}).then(action(res => {
-      const page = res.data;
-      this.companies = page.data;
-      this.pageInfo = _.omit(page, 'data');
-    }));
+    const res = await this.mainStore.apiV2.get<PaginatedData<Company>>('/companies', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.companies = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected getTagFilterQuery() {

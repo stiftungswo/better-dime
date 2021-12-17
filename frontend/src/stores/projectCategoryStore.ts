@@ -40,23 +40,25 @@ export class ProjectCategoryStore extends AbstractStore<Category> {
     makeObservable(this);
   }
 
+  @action
   async doFetchAll() {
-    this.mainStore.apiV2.get<Category[]>('/project_categories').then(
-      action(res => { this.projectCategories = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Category[]>('/project_categories');
+    this.projectCategories = res.data;
   }
 
+  @action
   async doFetchFiltered() {
-    this.mainStore.apiV2.get<Category[]>('/project_categories', {params: this.getQueryParams()}).then(
-      action(res => { this.projectCategories = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Category[]>('/project_categories', {params: this.getQueryParams()});
+    this.projectCategories = res.data;
   }
 
+  @action
   async doPost(projectCategory: Category) {
     await this.mainStore.apiV2.post('/project_categories', projectCategory);
     await this.doFetchAll();
   }
 
+  @override
   async doPut(projectCategory: Category) {
     await this.mainStore.apiV2.put('/project_categories/' + projectCategory.id, projectCategory);
     await this.doFetchAll();

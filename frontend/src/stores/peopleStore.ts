@@ -51,35 +51,37 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     this.people = e;
   }
 
+  @action
   async doFetchAll() {
-    this.mainStore.apiV2.get<PaginatedData<Person>>('/people').then(
-      action(res => { this.people = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
+    this.people = res.data.data;
   }
 
-  async doReturnAll(): Promise<Person[]> {
+  @action
+  async doReturnAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
     return res.data.data;
   }
 
+  @action
   async doFetchFiltered() {
-    this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getQueryParams()}).then(
-      action(res => { this.people = res.data.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getQueryParams()});
+    this.people = res.data.data;
   }
 
+  @action
   async doFetchOne(id: number) {
-    this.mainStore.apiV2.get<Person>('/people/' + id).then(
-      action(res => { this.person = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Person>('/people/' + id);
+    this.person = res.data;
   }
 
+  @action
   async doPost(person: Person) {
-    this.mainStore.apiV2.post('/people', person).then(
-      action(res => { this.entity = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.post('/people', person);
+    this.entity = res.data;
   }
 
+  @override
   async doPut(person: Person) {
     this.mainStore.apiV2.put('/people/' + person.id, person).then(res => {
       this.person = res.data;
@@ -87,11 +89,10 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getPaginatedQueryParams()}).then(action(res => {
-      const page = res.data;
-      this.people = page.data;
-      this.pageInfo = _.omit(page, 'data');
-    }));
+    const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.people = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
   protected async doDelete(id: number) {

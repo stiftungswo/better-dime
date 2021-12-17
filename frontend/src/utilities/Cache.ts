@@ -1,3 +1,5 @@
+import {action, observable} from 'mobx';
+
 /**
  * This class implements a cache which can be used to avoid having to fetch data from the DB
  */

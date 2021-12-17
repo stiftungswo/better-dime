@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import {PaginatedData, ProjectCommentPreset, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -49,50 +49,53 @@ export class ProjectCommentPresetStore extends AbstractPaginatedStore<ProjectCom
     this.projectCommentPresets = e;
   }
 
+  @action
   protected async doFetchAll() {
     try {
       const res = await this.mainStore.apiV2.get<PaginatedData<ProjectCommentPreset>>('/project_comment_presets');
-      runInAction(() => { this.projectCommentPresets = res.data.data; });
+      this.projectCommentPresets = res.data.data;
     } catch (e) {
       this.mainStore.displayError('Fehler beim laden der Kommentarevorschläge');
     }
   }
 
+  @action
   protected async doFetchFiltered() {
     try {
       const res = await this.mainStore.apiV2.get<PaginatedData<ProjectCommentPreset>>('/project_comment_presets', {
         params: this.getQueryParams(),
       });
-      runInAction(() => { this.projectCommentPresets = res.data.data; });
+      this.projectCommentPresets = res.data.data;
     } catch (e) {
       this.mainStore.displayError('Fehler beim laden der Kommentarevorschläge');
     }
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<ProjectCommentPreset>>('/project_comment_presets', { params: this.getPaginatedQueryParams() }).then(action(res => {
-      const page = res.data;
-      this.projectCommentPresets = page.data;
-      this.pageInfo = _.omit(page, 'data');
-    }));
+    const res = await this.mainStore.apiV2.get<PaginatedData<ProjectCommentPreset>>('/project_comment_presets', {
+      params: this.getPaginatedQueryParams(),
+    });
+    const page = res.data;
+    this.projectCommentPresets = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
+  @action
   protected async doFetchOne(id: number) {
-    this.mainStore.apiV2.get<ProjectCommentPreset>('/project_comment_presets/' + id).then(
-      action(res => { this.projectCommentPreset = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<ProjectCommentPreset>('/project_comment_presets/' + id);
+    this.projectCommentPreset = res.data;
   }
 
+  @action
   protected async doPost(entity: ProjectCommentPreset): Promise<void> {
-    this.mainStore.apiV2.post<ProjectCommentPreset>('/project_comment_presets', entity).then(
-      action(res => { this.projectCommentPreset = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.post<ProjectCommentPreset>('/project_comment_presets', entity);
+    this.projectCommentPreset = res.data;
   }
 
+  @override
   protected async doPut(entity: ProjectCommentPreset): Promise<void> {
-    this.mainStore.apiV2.put<ProjectCommentPreset>('/project_comment_presets/' + entity.id, entity).then(
-      action(res => { this.projectCommentPreset = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.put<ProjectCommentPreset>('/project_comment_presets/' + entity.id, entity);
+    this.projectCommentPreset = res.data;
   }
 
   @override

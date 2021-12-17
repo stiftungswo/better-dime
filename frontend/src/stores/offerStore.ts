@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, makeObservable, observable } from 'mobx';
+import { computed, makeObservable, observable } from 'mobx';
 import {
   Offer,
   OfferListing,
@@ -72,42 +72,35 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
   }
 
   protected async doFetchAll(): Promise<void> {
-    this.mainStore.apiV2.get<OfferListing[]>('/offers').then(
-      action(res => { this.offers = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<OfferListing[]>('/offers');
+    this.offers = res.data;
   }
 
   protected async doFetchFiltered(): Promise<void> {
-    this.mainStore.apiV2.get<OfferListing[]>('/offers', {params: this.getQueryParams()}).then(
-      action(res => { this.offers = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<OfferListing[]>('/offers', {params: this.getQueryParams()});
+    this.offers = res.data;
   }
 
   protected async doFetchAllPaginated(): Promise<void> {
-    this.mainStore.apiV2.get<PaginatedData<OfferListing>>('/offers', {params: this.getPaginatedQueryParams()}).then(action(res => {
-      const page = res.data;
-      this.offers = page.data;
-      this.pageInfo = _.omit(page, 'data');
-    }));
+    const res = await this.mainStore.apiV2.get<PaginatedData<OfferListing>>('/offers', {params: this.getPaginatedQueryParams()});
+    const page = res.data;
+    this.offers = page.data;
+    this.pageInfo = _.omit(page, 'data');
   }
 
-  @action
   protected async doFetchOne(id: number) {
     this.offer = undefined;
-    this.mainStore.apiV2.get<Offer>('/offers/' + id).then(
-      action(res => { this.offer = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.get<Offer>('/offers/' + id);
+    this.offer = res.data;
   }
 
   protected async doPost(entity: Offer): Promise<void> {
-    this.mainStore.apiV2.post<Offer>('/offers', entity).then(
-      action(res => { this.offer = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.post<Offer>('/offers', entity);
+    this.offer = res.data;
   }
 
   protected async doPut(entity: Offer): Promise<void> {
-    this.mainStore.apiV2.put<Offer>('/offers/' + entity.id, entity).then(
-      action(res => { this.offer = res.data; }),
-    );
+    const res = await this.mainStore.apiV2.put<Offer>('/offers/' + entity.id, entity);
+    this.offer = res.data;
   }
 }
