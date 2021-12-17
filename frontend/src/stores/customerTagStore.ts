@@ -40,31 +40,28 @@ export class CustomerTagStore extends AbstractStore<CustomerTag> {
     makeObservable(this);
   }
 
-  @action
   async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags');
-    this.customerTags = res.data;
+    this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags').then(
+      action(res => { this.customerTags = res.data; }),
+    );
   }
 
-  @action
   async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()});
-    this.customerTags = res.data;
+    this.mainStore.apiV2.get<CustomerTag[]>('/customer_tags', {params: this.getQueryParams()}).then(
+      action(res => { this.customerTags = res.data; }),
+    );
   }
 
-  @action
   async doFetchOne(id: number) {
     await this.mainStore.apiV2.get<CustomerTag>('/customer_tags/' + id);
     await this.doFetchAll();
   }
 
-  @action
   async doPost(customerTag: CustomerTag) {
     await this.mainStore.apiV2.post('/customer_tags', customerTag);
     await this.doFetchAll();
   }
 
-  @override
   async doPut(customerTag: CustomerTag) {
     await this.mainStore.apiV2.put('/customer_tags/' + customerTag.id, customerTag);
     await this.doFetchAll();

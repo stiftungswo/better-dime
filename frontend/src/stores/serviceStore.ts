@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {PaginatedData, Service, ServiceListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -63,20 +63,23 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
   }
 
   async fetchAllPaginated(): Promise<void> {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getPaginatedQueryParams()});
-    const page = res.data;
-    this.services = page.data;
-    this.pageInfo = _.omit(page, 'data');
+    this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getPaginatedQueryParams()}).then(action(res => {
+      const page = res.data;
+      this.services = page.data;
+      this.pageInfo = _.omit(page, 'data');
+    }));
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getQueryParams()});
-    this.services = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services', {params: this.getQueryParams()}).then(
+      action(res => { this.services = res.data.data; }),
+    );
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services');
-    this.services = res.data.data;
+    this.mainStore.apiV2.get<PaginatedData<ServiceListing>>('/services').then(
+      action(res => { this.services = res.data.data; }),
+    );
   }
 
   protected async doArchive(id: number, archived: boolean) {
@@ -88,18 +91,20 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<Service>('/services/' + id);
-    this.service = res.data;
-    return res.data;
+    return this.mainStore.apiV2.get<Service>('/services/' + id).then(
+      action(res => this.service = res.data),
+    );
   }
 
   protected async doPost(entity: Service): Promise<void> {
-    const res = await this.mainStore.apiV2.post('/services', entity);
-    this.service = res.data;
+    this.mainStore.apiV2.post('/services', entity).then(
+      action(res => { this.service = res.data; }),
+    );
   }
 
   protected async doPut(entity: Service): Promise<void> {
-    const res = await this.mainStore.apiV2.put(`/services/${entity.id}`, entity);
-    this.service = res.data;
+    this.mainStore.apiV2.put(`/services/${entity.id}`, entity).then(
+      action(res => { this.service = res.data; }),
+    );
   }
 }

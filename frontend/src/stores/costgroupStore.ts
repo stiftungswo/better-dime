@@ -25,12 +25,14 @@ export class CostgroupStore extends AbstractStore<Costgroup> {
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<Costgroup[]>('/costgroups');
-    this.costgroups = res.data;
+    this.mainStore.apiV2.get<Costgroup[]>('/costgroups').then(
+      action(res => { this.costgroups = res.data; }),
+    );
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<Costgroup[]>('/costgroups', {params: this.getQueryParams()});
-    this.costgroups = res.data;
+    this.mainStore.apiV2.get<Costgroup[]>('/costgroups', {params: this.getQueryParams()}).then(
+      action(res => { this.costgroups = res.data; }),
+    );
   }
 }

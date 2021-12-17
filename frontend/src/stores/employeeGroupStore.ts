@@ -35,31 +35,28 @@ export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
     makeObservable(this);
   }
 
-  @action
   async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<EmployeeGroup[]>('/employee_groups');
-    this.employeeGroups = res.data;
+    this.mainStore.apiV2.get<EmployeeGroup[]>('/employee_groups').then(
+      action(res => { this.employeeGroups = res.data; }),
+    );
   }
 
-  @action
   async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<EmployeeGroup[]>('/employee_groups', {params: this.getQueryParams()});
-    this.employeeGroups = res.data;
+    this.mainStore.apiV2.get<EmployeeGroup[]>('/employee_groups', {params: this.getQueryParams()}).then(
+      action(res => { this.employeeGroups = res.data; }),
+    );
   }
 
-  @action
   async doFetchOne(id: number) {
     await this.mainStore.apiV2.get<EmployeeGroup>('/employee_groups/' + id);
     await this.doFetchAll();
   }
 
-  @action
   async doPost(employeeGroup: EmployeeGroup) {
     await this.mainStore.apiV2.post('/employee_groups', employeeGroup);
     await this.doFetchAll();
   }
 
-  @override
   async doPut(employeeGroup: EmployeeGroup) {
     await this.mainStore.apiV2.put('/employee_groups/' + employeeGroup.id, employeeGroup);
     await this.doFetchAll();
