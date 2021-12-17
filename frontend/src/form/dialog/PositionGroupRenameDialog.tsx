@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -91,14 +92,16 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
         render={(formikProps: FormikProps<Values>) => (
           <>
             {this.props.groupingEntity && (
-              <DimeField
-                name={'oldGroupName'}
-                component={PositionGroupSelect}
-                creatable={false}
-                label={'Service Gruppe'}
-                groupingEntity={this.props.groupingEntity!}
-                placeholder={this.props.placeholder}
-              />
+              <Box>
+                <DimeField
+                  name={'oldGroupName'}
+                  component={PositionGroupSelect}
+                  creatable={false}
+                  label={'Service Gruppe'}
+                  groupingEntity={this.props.groupingEntity!}
+                  placeholder={this.props.placeholder}
+                />
+              </Box>
             )}
             <DimeField
               name={'newGroupName'}
