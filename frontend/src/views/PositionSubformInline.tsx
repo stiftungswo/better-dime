@@ -129,6 +129,15 @@ export default class PositionSubformInline extends React.Component<Props> {
     this.recomputeRelativeOrder();
   }
 
+  renameGroup = (oldGroup: number | null, newGroup: number | null) => {
+    const renamedPositions = this.props.formikProps.values.positions
+      .filter((p: any) => p.position_group_id === oldGroup)
+      .map((p: any) => ({...p, position_group_id: newGroup}));
+    const nonRelevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== oldGroup);
+    this.props.formikProps.values.positions = [].concat(nonRelevantPositions).concat(renamedPositions);
+    this.recomputeRelativeOrder();
+  }
+
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
     const item = arrayHelpers.remove(positionIndex) as any;
     item.position_group_id = newGroupId;
@@ -165,14 +174,11 @@ export default class PositionSubformInline extends React.Component<Props> {
       this.sortServices(arrayHelpers, group.id);
     }
   }
-  handleRename = (groups: PositionGroup[]) => (groupName: string, newName: string) => {
-      console.log(groups); // tslint:disable-line:no-console
-      console.log(groupName + ' -> ' + newName); // tslint:disable-line:no-console
-
-      const index = groups.findIndex(e => e.name === groupName);
-      groups[index].name = newName;
-
-      console.log(groups); // tslint:disable-line:no-console
+  handleRename = (groups: PositionGroup[]) => (groupName: string, newGroup: number | null) => {
+    const oldGroup = this.findGroupFromName(groupName);
+    if (oldGroup != null) {
+      this.renameGroup(oldGroup.id, newGroup);
+    }
   }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {

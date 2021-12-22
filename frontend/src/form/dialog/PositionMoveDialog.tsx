@@ -34,31 +34,38 @@ interface Props {
   placeholder?: string;
 }
 
+export async function resolveNewGroupName(newGroupName: string | null, groupingEntity: PositionGroupings<any>, positionGroupStore?: PositionGroupStore): Promise<number | null> {
+  const positionGroupName = newGroupName ? newGroupName : '';
+  const group = [defaultPositionGroup(), ...groupingEntity.position_groupings].find((e: PositionGroup) => {
+    return e.name.toLowerCase() === positionGroupName.toLowerCase();
+  });
+
+  if (group == null && positionGroupName != null && positionGroupName.length > 0) {
+    // create a new group. This is done only here to avoid creating useless groups.
+    return positionGroupStore!.post({name: positionGroupName}).then(nothing => {
+      groupingEntity.position_groupings.push({
+        id: positionGroupStore!.positionGroup!.id,
+        name: positionGroupName,
+      });
+      return positionGroupStore!.positionGroup!.id!;
+    });
+  } else if (group != null && group.id != null) {
+    // prexisting named groups
+    return group.id;
+  } else {
+    // default group?
+    return null;
+  }
+}
+
 @inject('positionGroupStore', 'mainStore')
 @observer
 export default class PositionMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
-    const positionGroupName = values.positionGroupName != null ? values.positionGroupName : '';
-
-    const group = [defaultPositionGroup(), ...this.props.groupingEntity.position_groupings].find((e: PositionGroup) => {
-      return e.name.toLowerCase() === positionGroupName.toLowerCase();
+    resolveNewGroupName(values.positionGroupName, this.props.groupingEntity, this.props.positionGroupStore).then(groupId => {
+      this.props.onUpdate(this.props.positionIndex, groupId);
     });
-
-    if (group == null && positionGroupName != null && positionGroupName.length > 0) {
-      this.props.positionGroupStore!.post({name: positionGroupName}).then(nothing => {
-        this.props.groupingEntity.position_groupings.push({
-          id: this.props.positionGroupStore!.positionGroup!.id,
-          name: positionGroupName,
-        });
-        this.props.onUpdate(this.props.positionIndex, this.props.positionGroupStore!.positionGroup!.id!);
-      });
-    } else if (group != null && group.id != null) {
-      this.props.onUpdate(this.props.positionIndex, group.id);
-    } else {
-      this.props.onUpdate(this.props.positionIndex, null);
-    }
-
     this.props.onClose();
   }
 

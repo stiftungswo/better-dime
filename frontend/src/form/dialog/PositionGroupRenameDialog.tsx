@@ -18,41 +18,26 @@ import { ServiceSelect } from '../entitySelect/ServiceSelect';
 import { TextField } from '../fields/common';
 import {DimeField} from '../fields/formik';
 import { FormDialog } from './FormDialog';
+import { resolveNewGroupName } from './PositionMoveDialog';
 
 const schema = localizeSchema(() =>
   yup.object({
-    oldGroupName: yup.string().nullable(true).test(
-      'non-default',
-      'Die Gruppe "Generell" kann nicht unbenannt werden',
-      (oldGroupName) => oldGroupName && oldGroupName !== defaultPositionGroup().name,
-    ),
-    newGroupName: yup.string().nullable(true).test(
-      'non-empty',
-      'Name darf nicht leer sein',
-      (newGroupName) => !!newGroupName,
-    ).test(
-      'non-duplicate',
-      'Name bereits in Verwendung',
-      function(newGroupName: any[]) {
-        return !this.parent.curGroupNames.some((e: any) => e === newGroupName);
-      },
-    ),
-    curGroupNames: yup.mixed(),
+    oldGroupName: yup.string().nullable(true),
+    newGroupName: yup.string().nullable(true),
   }),
 );
 
 interface Values {
   oldGroupName: string;
   newGroupName: string;
-  curGroupNames: string[]; // used for validation
 }
 
 interface Props {
   open: boolean;
   onClose: () => void;
   positionGroupStore?: PositionGroupStore;
-  onSubmit: (groupName: string, newName: string) => void;
-  groupingEntity?: PositionGroupings<any>;
+  onSubmit: (groupName: string, newName: number | null) => void;
+  groupingEntity: PositionGroupings<any>;
   groupName?: string;
   placeholder?: string;
 }
@@ -68,15 +53,16 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
 
   handleSubmit = async (formValues: Values) => {
     this.props.positionGroupStore!.notifyProgress(async () => {
-     const values = schema.cast(formValues);
-     this.props.onSubmit(values.oldGroupName!, values.newGroupName!);
-     this.props.onClose();
+      const values = schema.cast(formValues);
+      const groupId = await resolveNewGroupName(values.newGroupName!, this.props.groupingEntity, this.props.positionGroupStore);
+      this.props.onSubmit(values.oldGroupName!, groupId);
+      this.props.onClose();
     });
   }
 
   render() {
     const names = [
-      ...this.props.groupingEntity!.position_groupings.map((e: PositionGroup) => e.name),
+      ...this.props.groupingEntity.position_groupings.map((e: PositionGroup) => e.name),
       defaultPositionGroup().name,
     ];
     // the default group is not stored in the DB, so it can't be renamed.
@@ -84,29 +70,30 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
       <FormDialog
         open
         onClose={this.props.onClose}
-        title="Servicegruppe umbenennen"
-        confirmText="umbenennen"
-        initialValues={{oldGroupName: this.props.groupName, newGroupName: '', curGroupNames: names}}
+        title="Ganze Gruppe verschieben"
+        confirmText="Verschieben"
+        initialValues={{oldGroupName: this.props.groupName, newGroupName: ''}}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
         render={(formikProps: FormikProps<Values>) => (
           <>
-            {this.props.groupingEntity && (
-              <Box>
-                <DimeField
-                  name={'oldGroupName'}
-                  component={PositionGroupSelect}
-                  creatable={false}
-                  label={'Service Gruppe'}
-                  groupingEntity={this.props.groupingEntity!}
-                  placeholder={this.props.placeholder}
-                />
-              </Box>
-            )}
+            <Box>
+              <DimeField
+                name={'oldGroupName'}
+                component={PositionGroupSelect}
+                creatable={false}
+                label={'Service Gruppe'}
+                groupingEntity={this.props.groupingEntity}
+                placeholder={this.props.placeholder}
+              />
+            </Box>
             <DimeField
               name={'newGroupName'}
-              component={TextField}
-              label={'Neuer Name'}
+              component={PositionGroupSelect}
+              creatable={true}
+              label={'Veschieben nach'}
+              groupingEntity={this.props.groupingEntity}
+              placeholder={this.props.placeholder}
             />
           </>
         )}
