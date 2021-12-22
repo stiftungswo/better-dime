@@ -15,7 +15,7 @@ import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import {DragHandle, MoveIcon, RenameIcon, SortIcon} from '../../layout/icons';
+import {DragHandle, MoveIcon, SortIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
@@ -58,7 +58,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={disabled ? undefined : onAdd}
         >
-          <ActionButton icon={RenameIcon} action={onRename} title={'Servicegruppe umbenennen.'} />
+          <ActionButton icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
           <ActionButton icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
