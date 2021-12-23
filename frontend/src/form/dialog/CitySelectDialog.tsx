@@ -10,16 +10,16 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { DimePaper } from '../layout/DimePaper';
-import { FormHeader } from '../layout/FormHeader';
-import {AbstractStore} from '../stores/abstractStore';
-import { MainStore } from '../stores/mainStore';
-import { ServiceStore } from '../stores/serviceStore';
-import {PositionGroupings, Service} from '../types';
-import compose from '../utilities/compose';
-import {defaultPositionGroup} from '../utilities/helpers';
-import {PositionGroupSelect} from './entitySelect/PositionGroupSelect';
-import { ServiceSelect } from './entitySelect/ServiceSelect';
+import { DimePaper } from '../../layout/DimePaper';
+import { FormHeader } from '../../layout/FormHeader';
+import {AbstractStore} from '../../stores/abstractStore';
+import { MainStore } from '../../stores/mainStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import {PositionGroupings, Service} from '../../types';
+import compose from '../../utilities/compose';
+import {defaultPositionGroup} from '../../utilities/helpers';
+import {PositionGroupSelect} from '../entitySelect/PositionGroupSelect';
+import { ServiceSelect } from '../entitySelect/ServiceSelect';
 
 interface Props {
   open: boolean;
