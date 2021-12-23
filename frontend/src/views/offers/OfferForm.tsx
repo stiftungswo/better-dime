@@ -260,6 +260,7 @@ class OfferForm extends React.Component<Props> {
                                 component={CurrencyField}
                                 name={'fixed_price'}
                                 label={'Fixpreis'}
+                                disabled={locked}
                               />
                             </Grid>
                             <Grid item sm={3} />
@@ -269,7 +270,7 @@ class OfferForm extends React.Component<Props> {
                                 name={'fixed_price_vat'}
                                 label={'MwSt. Satz'}
                                 placeholder={'7.7%'}
-                                disabled={!offer.fixed_price}
+                                disabled={!offer.fixed_price || locked}
                               />
                             </Grid>
                           </Grid>
