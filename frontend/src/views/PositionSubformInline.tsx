@@ -41,6 +41,16 @@ export default class PositionSubformInline extends React.Component<Props> {
     moving_index: null,
   };
 
+  getPositionsInGroup = (groupId: number | null) => {
+    return this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === groupId);
+  }
+
+  overwritePositionsInGroup = (groupId: number | null, newPositions: any) => {
+    const otherPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== groupId);
+    this.props.formikProps.values.positions = [].concat(otherPositions).concat(newPositions);
+    this.recomputeRelativeOrder();
+  }
+
   updateArchivedRateUnitStatus = () => {
     let archivedRates = false;
     let archivedServices = false;
@@ -83,7 +93,7 @@ export default class PositionSubformInline extends React.Component<Props> {
 
   insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
     // only consider positions from the same group
-    const relevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === serviceItem.position_group_id);
+    const relevantPositions = this.getPositionsInGroup(serviceItem.position_group_id);
     const relevantServiceOrders = relevantPositions.map((p: any) => p.service.order);
     const relevantIndex = getInsertionIndex(relevantServiceOrders, serviceOrder, (a, b) => a - b);
     // now we have an index in relevantPositions, but we want an index in all positions.
@@ -121,21 +131,18 @@ export default class PositionSubformInline extends React.Component<Props> {
   }
 
   sortServices = (arrayHelpers: ArrayHelpers, groupId: number | null) => {
-    const relevantPositions = this.props.formikProps.values.positions
-      .filter((p: any) => p.position_group_id === groupId)
+    const sortedPositions = this.getPositionsInGroup(groupId)
       .sort((p: any, q: any) => p.service.order - q.service.order);
-    const nonRelevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== groupId);
-    this.props.formikProps.values.positions = [].concat(nonRelevantPositions).concat(relevantPositions);
-    this.recomputeRelativeOrder();
+    this.overwritePositionsInGroup(groupId, sortedPositions);
   }
 
+  // move all serves from one group to another. This can be used for renaming among other things.
   renameGroup = (oldGroup: number | null, newGroup: number | null) => {
-    const renamedPositions = this.props.formikProps.values.positions
-      .filter((p: any) => p.position_group_id === oldGroup)
+    const renamedPositions = this.getPositionsInGroup(oldGroup)
       .map((p: any) => ({...p, position_group_id: newGroup}));
-    const nonRelevantPositions = this.props.formikProps.values.positions.filter((p: any) => p.position_group_id !== oldGroup);
-    this.props.formikProps.values.positions = [].concat(nonRelevantPositions).concat(renamedPositions);
-    this.recomputeRelativeOrder();
+    // slight abuse of notation here: we want to delete all services of oldGroup
+    // while adding some additional services to newGroup. This call does just that.
+    this.overwritePositionsInGroup(oldGroup, renamedPositions);
   }
 
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
