@@ -77,6 +77,7 @@ export default class PositionMoveDialog extends React.Component<Props> {
         open
         onClose={this.props.onClose}
         title="Service verschieben"
+        confirmText="Verschieben"
         initialValues={template}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
