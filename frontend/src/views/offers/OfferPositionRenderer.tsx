@@ -58,8 +58,8 @@ export default class OfferPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={disabled ? undefined : onAdd}
         >
-          <ActionButton icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
-          <ActionButton icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
+          <ActionButton disabled={disabled} icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
+          <ActionButton disabled={disabled} icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (
