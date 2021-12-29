@@ -55,12 +55,18 @@ class InvoiceCreator
   end
 
   def self.create_positions_from_project(invoice, project)
+    group_mapping = Hash[project.position_groupings.map do |old_group|
+      new_group = old_group.dup
+      [old_group, new_group]
+    end]
+    group_mapping[nil] = nil
+
     project.project_positions.map do |position|
       invoice_position = InvoicePosition.new
       invoice_position.invoice = invoice
       invoice_position.project_position = position
       invoice_position.rate_unit = position.rate_unit
-      invoice_position.position_group = position.position_group
+      invoice_position.position_group = group_mapping[position.position_group]
       amount = (position.project_efforts.inject(0) { |sum, e| sum + (e.date <= invoice.ending && e.date >= invoice.beginning ? e.value : 0) } / position.rate_unit.factor).round 2
       invoice_position.amount = amount
       invoice_position.description = position.description.presence || position.service.name
