@@ -42,6 +42,8 @@ module V2
 
     def duplicate
       @offer = Offer.find(params[:id]).deep_clone include: [:offer_positions, :offer_discounts]
+      # create new position groups
+      PositionGroupRemapper.remap_position_groups(@offer.position_groupings, @offer.offer_positions)
       # update any rate units which might be archived (if possible) when
       # duplicating (since we are possibly duplicating old offers)
       RateUnitUpdater.update_rate_units @offer.offer_positions, @offer.rate_group

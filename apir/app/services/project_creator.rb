@@ -37,23 +37,19 @@ class ProjectCreator
   end
 
   def self.create_positions_from_offer(project, offer)
-    group_mapping = Hash[offer.position_groupings.map do |old_group|
-      new_group = old_group.dup
-      [old_group, new_group]
-    end]
-    group_mapping[nil] = nil
-
-    offer.offer_positions.map do |position|
+    new_positions = offer.offer_positions.map do |position|
       project_position = ProjectPosition.new
       project_position.project = project
       project_position.rate_unit = position.rate_unit
       project_position.service = position.service
-      project_position.position_group = group_mapping[position.position_group]
+      project_position.position_group = position.position_group
       project_position.description = position.description
       project_position.vat = position.vat
       project_position.price_per_rate = position.price_per_rate
       project_position.order = position.order
       project_position
     end || []
+    PositionGroupRemapper.remap_position_groups(offer.position_groupings, new_positions)
+    new_positions
   end
 end

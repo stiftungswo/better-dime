@@ -54,6 +54,9 @@ module V2
       @invoice = Invoice.find(params[:id]).deep_clone(
         include: [:invoice_positions, :invoice_discounts, :invoice_costgroup_distributions]
       )
+      # create new position groups
+      PositionGroupRemapper.remap_position_groups(@invoice.position_groupings, @invoice.invoice_positions)
+
 
       raise ValidationError, @invoice.errors unless @invoice.save
 

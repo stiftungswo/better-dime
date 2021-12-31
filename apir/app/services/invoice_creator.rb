@@ -61,7 +61,7 @@ class InvoiceCreator
     end]
     group_mapping[nil] = nil
 
-    project.project_positions.map do |position|
+    new_positions = project.project_positions.map do |position|
       invoice_position = InvoicePosition.new
       invoice_position.invoice = invoice
       invoice_position.project_position = position
@@ -75,6 +75,8 @@ class InvoiceCreator
       invoice_position.order = position.order
       invoice_position
     end || []
+    PositionGroupRemapper.remap_position_groups(project.position_groupings, new_positions)
+    new_positions
   end
 
   def self.get_invoice_beginning_date(project)

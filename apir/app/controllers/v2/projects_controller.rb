@@ -43,6 +43,8 @@ module V2
 
     def duplicate
       @project = Project.find(params[:id]).deep_clone include: [:project_positions, :project_costgroup_distributions, :project_category_distributions]
+      # create new position groups
+      PositionGroupRemapper.remap_position_groups(@project.position_groupings, @project.project_positions)
       # update any rate units which might be archived (if possible) when
       # duplicating (since we are possibly duplicating old projects)
       RateUnitUpdater.update_rate_units @project.project_positions, @project.rate_group
