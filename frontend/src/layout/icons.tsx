@@ -16,7 +16,7 @@ From https://material-ui.com/style/icons/#svg-icons :
     Note: Importing named exports in this way will result in the code for every icon being included in your project,
     so is not recommended unless you configure tree-shaking. It may also impact Hot Module Reload performance.
  */
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import * as React from 'react';
 
 // UI
@@ -55,6 +55,7 @@ export { default as BackIcon } from '@material-ui/icons/ArrowBackIos';
 export { default as MailIcon } from '@material-ui/icons/Mail';
 export { default as Renew } from '@material-ui/icons/Autorenew';
 export { default as SortIcon } from '@material-ui/icons/Sort';
+export { default as RenameIcon } from '@material-ui/icons/Create';
 
 // Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';

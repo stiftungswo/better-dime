@@ -50,7 +50,7 @@ export const offerTemplate = () => ({
   positions: [],
   position_groupings: [],
   discounts: [],
-  fixed_price: 0,
+  fixed_price: null,
   fixed_price_vat: 0,
   customer_id: undefined,
   address_id: undefined,

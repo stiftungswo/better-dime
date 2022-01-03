@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
@@ -69,12 +69,12 @@ export default class EmployeeForm extends React.Component<Props> {
         ) => (
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={24}>
+              <Grid container spacing={3}>
                 <Grid item xs={10}>
                   <DimePaper>
                     <FormHeader> Allgemeine Informationen </FormHeader>
 
-                    <Grid container spacing={16}>
+                    <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
                         <DimeField component={TextField} name={'first_name'} label={'Vorname'} />
                       </Grid>
@@ -92,7 +92,7 @@ export default class EmployeeForm extends React.Component<Props> {
                       </Grid>
                     </Grid>
 
-                    <Grid container={true} spacing={16}>
+                    <Grid container={true} spacing={2}>
                       <Grid item={true} xs={12} sm={6}>
                         <DimeField component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
                       </Grid>
@@ -133,7 +133,7 @@ export default class EmployeeForm extends React.Component<Props> {
                   <DimePaper>
                     <FormHeader> Benutzereinstellungen </FormHeader>
 
-                    <Grid container={true} spacing={16}>
+                    <Grid container={true} spacing={2}>
                       <Grid item={true} xs={12} sm={6}>
                         <DimeField component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
                       </Grid>
@@ -142,7 +142,7 @@ export default class EmployeeForm extends React.Component<Props> {
                       </Grid>
                     </Grid>
 
-                    <Grid container={true} spacing={8}>
+                    <Grid container={true} spacing={1}>
                       <Grid item={true} xs={12}>
                         <DimeField component={SwitchField} name={'can_login'} label={'Login aktiviert?'} fullWidth={true} />
                       </Grid>

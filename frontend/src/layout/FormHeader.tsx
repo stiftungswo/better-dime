@@ -1,10 +1,13 @@
 import { PropTypes } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography/Typography';
+import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
+
+// fix issue where PropTypes.Color also contains 'default'.
+type PropTypesColor = 'inherit' | 'initial' | 'primary' | 'secondary' | 'error';
 
 interface FormHeaderProps {
   children: React.ReactNode;
-  color?: PropTypes.Color | 'textPrimary' | 'textSecondary' | 'error';
+  color?: PropTypesColor | 'textPrimary' | 'textSecondary' | 'error';
 }
 
 export const FormHeader = ({ children, color }: FormHeaderProps) => (

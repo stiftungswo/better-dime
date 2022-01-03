@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
@@ -10,7 +10,7 @@ import { VatSelect } from '../../form/entitySelect/VatSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { MarkdownField } from '../../form/fields/MarkdownField';
 import PercentageField from '../../form/fields/PercentageField';
 import { FormView, FormViewProps } from '../../form/FormView';
@@ -100,7 +100,7 @@ export default class InvoiceForm extends React.Component<Props> {
         submitted={this.props.submitted}
         validate={this.checkTimeSpan}
         appBarButtons={
-          invoice && invoice.id ? (
+          invoice && invoice.id ? (dirty: boolean) => (
             <>
               <PrintButton
                 hasCitySelection
@@ -145,13 +145,13 @@ export default class InvoiceForm extends React.Component<Props> {
           return (
             <React.Fragment>
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   <Grid item xs={12}>
                     {invoice.id && <Navigator invoice={invoice} />}
                     <DimePaper>
-                      <Grid container spacing={8}>
+                      <Grid container spacing={1}>
                         <Grid item xs={12} lg={8}>
-                          <Grid container spacing={8}>
+                          <Grid container spacing={1}>
                             <Grid item xs={12}>
                               <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                             </Grid>
@@ -179,7 +179,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
                             <Grid item xs={12} lg={5}>
-                              <DimeField
+                              <DimeDatePickerField
                                 required
                                 component={DatePicker}
                                 name={'beginning'}
@@ -190,7 +190,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField
+                              <DimeDatePickerField
                                 required
                                 component={DatePicker}
                                 name={'ending'}
@@ -217,7 +217,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             required
                             component={MarkdownField}
                             multiline
-                            rowsMax={14}
+                            maxRows={14}
                             name={'description'}
                             label={'Beschreibung'}
                           />
@@ -258,7 +258,7 @@ export default class InvoiceForm extends React.Component<Props> {
                   {invoice.id && (
                     <Grid item xs={12} lg={4}>
                       <DimePaper>
-                        <Grid container spacing={8}>
+                        <Grid container spacing={1}>
                           <Grid item xs={12}>
                             <FormHeader>Berechnung</FormHeader>
                           </Grid>

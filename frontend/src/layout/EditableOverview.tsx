@@ -2,7 +2,7 @@ import { Omit } from '@material-ui/core';
 import { FormikBag, FormikProps } from 'formik';
 import * as React from 'react';
 import { Schema } from 'yup';
-import { FormDialog } from '../form/FormDialog';
+import { FormDialog } from '../form/dialog/FormDialog';
 import {AbstractPaginatedStore} from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { HandleFormikSubmit, Listing } from '../types';

@@ -79,6 +79,7 @@ export class TimetrackProjectTable extends React.Component<Props> {
   }
 
   handleProjectCommentAdd = () => {
+    this.props.projectCommentStore!.projectComment = undefined;
     this.props.projectCommentStore!.projectCommentTemplate!.project_id = this.props.entityId;
     this.props.projectCommentStore!.editing = true;
   }

@@ -78,7 +78,8 @@ module V2
     end
 
     def print_qr_bill
-      pdf = Pdfs::InvoiceQrBillPdf.new GlobalSetting.first, @invoice
+      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
+      pdf = Pdfs::InvoiceQrBillPdf.new GlobalSetting.first, @invoice, date
 
       if @invoice.invoice_costgroup_distributions.blank?
         @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print QR-Bills's for invoices without cost groups")

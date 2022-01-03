@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { Variant } from '../layout/Snackbar';
 
 interface MessageInfo {
@@ -26,6 +26,10 @@ export class Notifier {
   };
 
   queue: MessageInfo[] = [];
+
+  constructor() {
+    makeObservable(this);
+  }
 
   @action
   info = (message: string, options: NotifyOptions = {}) => {

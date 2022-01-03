@@ -1,5 +1,5 @@
 import { Grid, Input, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button/Button';
+import Button from '@material-ui/core/Button';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -50,7 +50,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
       <>
         <Grid item xs={12}>
           <DimePaper>
-            <Grid justify="space-between" container spacing={24} alignItems={'center'}>
+            <Grid justifyContent="space-between" container spacing={3} alignItems={'center'}>
               <Grid item>
                 <Typography gutterBottom variant={'h5'}>
                   Daten importieren
@@ -77,7 +77,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
               onSubmit={e => this.handleSubmit(e)}
               render={formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
-                  <Grid container alignItems={'center'} spacing={24}>
+                  <Grid container alignItems={'center'} spacing={3}>
                     <Grid item xs={12} md={4}>
                       <a
                         href={this.props.mainStore!.apiV2URL('customers/import/template.xlsx')}

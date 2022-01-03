@@ -35,7 +35,7 @@ export class CustomerImportExportOverview extends React.Component<Props> {
         <DimeAppBar title={'Kundendaten importieren / exportieren'} />
 
         <DimeContent loading={this.state.loading} paper={this.state.loading}>
-          <Grid container spacing={24}>
+          <Grid container spacing={3}>
             <CustomerExportForm {...this.props} />
             <CustomerImportForm />
           </Grid>

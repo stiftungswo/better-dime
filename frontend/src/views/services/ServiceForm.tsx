@@ -1,12 +1,9 @@
-import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
-import Grid from '@material-ui/core/Grid/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
-import Typography from '@material-ui/core/Typography/Typography';
+import Grid from '@material-ui/core/Grid';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
@@ -26,7 +23,7 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Service, ServiceRate } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
-import { MarkdownExpansionPanel } from './MarkdownExpansionPanel';
+import { MarkdownAccordion } from './MarkdownAccordion';
 import { serviceSchema } from './serviceSchema';
 
 export interface Props extends FormViewProps<Service> {
@@ -77,10 +74,10 @@ export default class ServiceForm extends React.Component<Props> {
         render={(props: FormikProps<Service>) => (
           <React.Fragment>
             <form onSubmit={props.handleSubmit}>
-              <Grid container spacing={24}>
+              <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <DimePaper>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <DimeField required component={TextField} name={'name'} label={'Name'} />
                       </Grid>
@@ -100,12 +97,12 @@ export default class ServiceForm extends React.Component<Props> {
                         </Grid>
                       </Grid>
                       <Grid item xs={12}>
-                        <Grid container spacing={8}>
+                        <Grid container spacing={1}>
                           <Grid item xs={12} lg={4}>
                             <DimeField component={NumberField} required name={'order'} label={'Sortierreihenfolge'} />
                           </Grid>
-                          <Grid item xs={12} lg={8} container direction="column" justify="center">
-                            <MarkdownExpansionPanel title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
+                          <Grid item xs={12} lg={8} container direction="column" justifyContent="center">
+                            <MarkdownAccordion title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
                           </Grid>
                         </Grid>
                       </Grid>

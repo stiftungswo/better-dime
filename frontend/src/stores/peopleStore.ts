@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { action, computed, observable, ObservableMap } from 'mobx';
+import { action, computed, makeObservable, observable, ObservableMap, override } from 'mobx';
 import { CustomerOverviewFilter, PaginatedData, Person, ProjectListing } from 'src/types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
@@ -36,7 +36,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
   @observable
   person?: Person = undefined;
 
-  @observable
+  @override
   selectedIds = new ObservableMap<number, boolean>();
 
   @observable
@@ -44,6 +44,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   setEntities(e: Person[]) {
@@ -80,7 +81,7 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     this.entity = res.data;
   }
 
-  @action
+  @override
   async doPut(person: Person) {
     this.mainStore.apiV2.put('/people/' + person.id, person).then(res => {
       this.person = res.data;

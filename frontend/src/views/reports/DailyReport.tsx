@@ -1,12 +1,12 @@
-import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent/DialogContent';
-import Grid from '@material-ui/core/Grid/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import Grid from '@material-ui/core/Grid';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { DimeAppBar } from '../../layout/DimeAppBar';
@@ -36,10 +36,10 @@ export default class DailyReport extends React.Component<Props> {
       <>
         <DimeAppBar title={'Wochenrapport'} />
         <DimeContent paper={false}>
-          <Grid container spacing={24}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <DimePaper>
-                <Grid container spacing={8}>
+                <Grid container spacing={2}>
                   <Grid item xs={12} md={8}>
                     <DateSpanPicker
                       fromValue={dailyReportStore.from}

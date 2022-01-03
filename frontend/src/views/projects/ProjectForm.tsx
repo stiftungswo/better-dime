@@ -1,6 +1,6 @@
 import MuiFormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import MuiTextField from '@material-ui/core/TextField';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
@@ -14,7 +14,7 @@ import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { ActionButton } from '../../layout/ActionButton';
 import { DimePaper } from '../../layout/DimePaper';
@@ -143,7 +143,7 @@ class ProjectForm extends React.Component<Props> {
         onSubmit={this.props.onSubmit}
         submitted={this.props.submitted}
         appBarButtons={
-          project && project.id ? (
+          project && project.id ? (dirty: boolean) => (
             <>
               <PrintButton
                 hasCitySelection
@@ -167,11 +167,11 @@ class ProjectForm extends React.Component<Props> {
         render={(props: FormikProps<Project>) => {
             return (
               <form onSubmit={props.handleSubmit}>
-                <Grid container spacing={24}>
+                <Grid container spacing={3}>
                   <Grid item xs={12} lg={10}>
                     {project.id && <Navigator project={project} />}
                     <DimePaper>
-                      <Grid container spacing={24}>
+                      <Grid container spacing={3}>
                         <Grid item xs={12} lg={8}>
                           <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
                         </Grid>
@@ -200,13 +200,13 @@ class ProjectForm extends React.Component<Props> {
                             required
                             component={TextField}
                             multiline
-                            rowsMax={14}
+                            maxRows={14}
                             name={'description'}
                             label={'Beschreibung'}
                           />
                         </Grid>
                         <Grid item xs={12} lg={8}>
-                          <DimeField component={DatePicker} name={'deadline'} label={'Deadline'} />
+                          <DimeDatePickerField component={DatePicker} name={'deadline'} label={'Deadline'} />
                         </Grid>
                         <Grid item xs={12} lg={8}>
                           <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
@@ -222,7 +222,7 @@ class ProjectForm extends React.Component<Props> {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={3}>
                       <Grid item xs={12} lg={5}>
                         <DimePaper>
                           <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />

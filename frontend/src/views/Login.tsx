@@ -3,8 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
-import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
@@ -25,38 +24,38 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
     layout: {
       width: 'auto',
       display: 'block', // Fix IE11 issue.
-      marginLeft: spacing.unit * 3,
-      marginRight: spacing.unit * 3,
-      [breakpoints.up(400 + spacing.unit * 3 * 2)]: {
+      marginLeft: spacing(3),
+      marginRight: spacing(3),
+      [breakpoints.up(400 + spacing(3 * 2))]: {
         width: 400,
         marginLeft: 'auto',
         marginRight: 'auto',
       },
     },
     paper: {
-      marginTop: spacing.unit * 8,
+      marginTop: spacing(8),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing.unit * 2}px ${spacing.unit * 3}px ${spacing.unit * 6}px`,
+      padding: `${spacing(2)}px ${spacing(3)}px ${spacing(6)}px`,
     },
     avatar: {
-      margin: spacing.unit,
+      margin: spacing(1),
       color: '#fff',
       backgroundColor: palette.primary.main,
     },
     form: {
       width: '100%', // Fix IE11 issue.
-      marginTop: spacing.unit,
+      marginTop: spacing(1),
     },
     submit: {
-      marginTop: spacing.unit * 3,
+      marginTop: spacing(3),
       backgroundColor: palette.primary.main,
     },
     attributions: {
       'position': 'absolute',
-      'bottom': spacing.unit,
-      'right': spacing.unit,
+      'bottom': spacing(1),
+      'right': spacing(1),
       'textAlign': 'right',
       'color': '#ddd',
       '& a': {
@@ -108,7 +107,7 @@ class Login extends React.Component<Props> {
       <>
         <CssBaseline />
         <main className={classes.layout}>
-          <Paper className={classes.paper}>
+          <Paper elevation={2} className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LogoIcon />
             </Avatar>

@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable, override } from 'mobx';
 import { EmployeeGroup } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -32,6 +32,7 @@ export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
+    makeObservable(this);
   }
 
   @action
@@ -58,12 +59,13 @@ export class EmployeeGroupStore extends AbstractStore<EmployeeGroup> {
     await this.doFetchAll();
   }
 
-  @action
+  @override
   async doPut(employeeGroup: EmployeeGroup) {
     await this.mainStore.apiV2.put('/employee_groups/' + employeeGroup.id, employeeGroup);
     await this.doFetchAll();
   }
 
+  @override
   protected async doDelete(id: number) {
     await this.mainStore.apiV2.delete('/employee_groups/' + id);
     this.doFetchAll();

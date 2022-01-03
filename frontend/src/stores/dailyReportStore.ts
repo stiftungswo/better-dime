@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import moment from 'moment';
 import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
@@ -36,7 +36,9 @@ export class DailyReportStore {
   @observable
   to = moment().endOf('day');
 
-  constructor(private mainStore: MainStore) {}
+  constructor(private mainStore: MainStore) {
+    makeObservable(this);
+  }
 
   @action.bound
   async fetch() {

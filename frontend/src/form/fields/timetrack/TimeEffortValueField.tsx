@@ -57,7 +57,7 @@ export class TimeEffortValueField extends React.Component<Props> {
   render() {
     if (!this.state.is_loading) {
       return (
-        <Grid container alignItems="center" spacing={8}>
+        <Grid container alignItems="center" spacing={1}>
           <Grid item xs={9}>
             <TextField
               fullWidth

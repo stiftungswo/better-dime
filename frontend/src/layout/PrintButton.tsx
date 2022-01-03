@@ -2,7 +2,7 @@ import { PropTypes } from '@material-ui/core';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import CitySelectDialog from '../form/CitySelectDialog';
+import CitySelectDialog from '../form/dialog/CitySelectDialog';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
 import { ActionButton } from './ActionButton';
@@ -28,7 +28,7 @@ export default class PrintButton extends React.Component<Props> {
     cityDialogOpen: false,
   };
 
-  render = () => {
+  render() {
     const BadgeIcon = this.props.icon;
     if (this.props.disabled) {
       return (

@@ -1,8 +1,8 @@
 import {Divider, Typography} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead/TableHead';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {Warning} from '@material-ui/icons';
 import {FieldArrayRenderProps} from 'formik';
 import { inject } from 'mobx-react';
@@ -32,6 +32,7 @@ interface Props {
   onMove: (idx: number) => void;
   onAdd: (() => void) | undefined;
   onSort: (() => void) | undefined;
+  onRename: (() => void) | undefined;
   group: PositionGroup;
   values: any;
   isFirst?: boolean;
@@ -43,7 +44,7 @@ interface Props {
 )
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
-    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, onSort } = this.props;
+    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, onSort, onRename } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -56,6 +57,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={onAdd}
         >
+          <ActionButton icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
           <ActionButton icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
@@ -65,7 +67,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
               können.
             </Typography>
           )}
-          <Table padding={'dense'} style={{ minWidth: '1200px' }}>
+          <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />

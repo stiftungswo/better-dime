@@ -3,7 +3,7 @@ import * as React from 'react';
 import { TextField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
-import { DimeField } from '../../form/fields/formik';
+import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
 import { Column } from '../../layout/Overview';
@@ -76,7 +76,7 @@ export default class HolidayOverview extends React.Component<Props> {
         renderForm={() => (
           <>
             <DimeField component={TextField} name={'name'} label={'Name'} />
-            <DimeField component={DatePicker} name={'date'} label={'Datum'} />
+            <DimeDatePickerField component={DatePicker} name={'date'} label={'Datum'} />
             <DimeField component={DurationField} timeUnit={'hour'} name={'duration'} label={'Dauer'} />
           </>
         )}

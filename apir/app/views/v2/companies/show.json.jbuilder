@@ -2,11 +2,7 @@
 
 json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
 
-json.company do
-  if @company.company
-    json.extract! @company, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at, :deleted_at
-  end
-end
+# don't extract @company.company, this only leads to bugs due to duplicate data.
 
 json.set! :addresses do
   json.array! @company.addresses do |address|

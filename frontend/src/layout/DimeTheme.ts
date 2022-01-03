@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 import { red } from '@material-ui/core/colors';
 
 type Mode = 'dev' | 'prod';
@@ -23,7 +23,7 @@ const colors = {
 };
 
 export default (mode: Mode | 'prod') =>
-  createMuiTheme({
+  createTheme({
     palette: {
       ...colors[mode],
       error: red,
@@ -35,7 +35,45 @@ export default (mode: Mode | 'prod') =>
       // E.g., shift from Red 500 to Red 300 or Red 700.
       tonalOffset: 0.2,
     },
-    typography: {
-      useNextVariants: true,
+    overrides: {
+      // make text in table headers small and gray.
+      MuiTableSortLabel: {
+        root: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
+      MuiTableCell: {
+        head: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
+      MuiTablePagination: {
+        caption: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+        select: {
+          'font-size': '0.75rem',
+          'font-weight': '500',
+          'color': 'rgba(0, 0, 0, 0.54)',
+        },
+      },
+      // minmum table height, this was the default in MUI v3.
+      MuiTableRow: {
+        root: {
+          height: '48px',
+        },
+      },
+      // allow input fields to strech
+      MuiInputBase: {
+        input: {
+          height: 'inherit',
+        },
+      },
     },
   });

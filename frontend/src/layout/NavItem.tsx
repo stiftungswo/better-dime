@@ -1,8 +1,8 @@
-import { Theme, WithStyles } from '@material-ui/core';
-import withStyles from '@material-ui/core/es/styles/withStyles';
-import ListItem from '@material-ui/core/ListItem/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText/ListItemText';
+import { Theme } from '@material-ui/core';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router';
@@ -12,10 +12,12 @@ import UnstyledLink from './UnstyledLink';
 
 export const styles = (theme: Theme) => ({
   default: {
-    paddingLeft: theme.spacing.unit * 3,
+    // why do we need to specify this explicitly??
+    color: theme.palette.text.primary,
+    paddingLeft: theme.spacing(3),
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing(4),
   },
 });
 

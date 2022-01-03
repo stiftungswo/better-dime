@@ -1,6 +1,6 @@
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableRow from '@material-ui/core/TableRow/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { MainStore } from '../stores/mainStore';

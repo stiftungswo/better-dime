@@ -1,5 +1,5 @@
 import { IconButton, InputAdornment, Tooltip } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid';
 import * as React from 'react';
 import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 import { MarkdownRender } from '../../layout/MarkdownRender';
@@ -22,14 +22,14 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
       </Tooltip>
     );
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={3}>
         <Grid item xs={12} lg={this.state.preview ? 6 : 12}>
           <DimeFormControl label={label} required={required} errorMessage={errorMessage}>
             <InputComponent
               onChange={onChange}
               value={value}
               multiline
-              rowsMax={14}
+              maxRows={14}
               disabled={disabled}
               endAdornment={<InputAdornment position={'end'}>{previewToggle}</InputAdornment>}
             />

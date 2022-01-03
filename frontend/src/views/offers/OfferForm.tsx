@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid/Grid';
+import Grid from '@material-ui/core/Grid';
 import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
@@ -119,7 +119,7 @@ class OfferForm extends React.Component<Props> {
           onSubmit={this.props.onSubmit}
           submitted={this.props.submitted}
           appBarButtons={
-            offer && offer.id ? (
+            offer && offer.id ? (dirty: boolean) => (
               <>
                 <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
                 {!offer.project_id && (
@@ -128,7 +128,8 @@ class OfferForm extends React.Component<Props> {
                     color={'inherit'}
                     icon={ProjectIcon}
                     secondaryIcon={AddIcon}
-                    title={'Projekt aus Offerte erstellen'}
+                    disabled={dirty}
+                    title={dirty ? 'Zuerst speichern!' : 'Projekt aus Offerte erstellen'}
                   />
                 )}
               </>
@@ -139,11 +140,11 @@ class OfferForm extends React.Component<Props> {
             return (
               <React.Fragment>
                 <form onSubmit={props.handleSubmit}>
-                  <Grid container spacing={24}>
+                  <Grid container spacing={3}>
                     <Grid item xs={12}>
                       {offer.id && <Navigator offer={offer} />}
                       <DimePaper>
-                        <Grid container spacing={24}>
+                        <Grid container spacing={3}>
                           {locked && (
                             <Grid item xs={12}>
                               <p>
@@ -153,7 +154,7 @@ class OfferForm extends React.Component<Props> {
                             </Grid>
                           )}
                           <Grid item xs={12} lg={8}>
-                            <Grid container spacing={8}>
+                            <Grid container spacing={1}>
                               <Grid item xs={12}>
                                 <DimeField delayed required component={TextField} name={'name'} label={'Name'} disabled={locked} />
                               </Grid>
@@ -245,7 +246,7 @@ class OfferForm extends React.Component<Props> {
                     {offer.id && (
                       <Grid item xs={12} lg={4}>
                         <DimePaper>
-                          <Grid container spacing={8}>
+                          <Grid container spacing={1}>
                             <Grid item xs={12}>
                               <FormHeader>Berechnung</FormHeader>
                             </Grid>
@@ -259,6 +260,7 @@ class OfferForm extends React.Component<Props> {
                                 component={CurrencyField}
                                 name={'fixed_price'}
                                 label={'Fixpreis'}
+                                disabled={locked}
                               />
                             </Grid>
                             <Grid item sm={3} />
@@ -268,7 +270,7 @@ class OfferForm extends React.Component<Props> {
                                 name={'fixed_price_vat'}
                                 label={'MwSt. Satz'}
                                 placeholder={'7.7%'}
-                                disabled={!offer.fixed_price}
+                                disabled={!offer.fixed_price || locked}
                               />
                             </Grid>
                           </Grid>
