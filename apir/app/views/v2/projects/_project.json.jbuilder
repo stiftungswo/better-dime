@@ -17,5 +17,5 @@ json.positions project.project_positions.sort_by(&:order) do |position|
                 :rate_unit_archived, :deletable, :service, :is_time
 end
 json.position_groupings project.position_groupings do |group|
-  json.extract! group, :id, :name
+  json.extract! group, :id, :name, :order, :shared
 end

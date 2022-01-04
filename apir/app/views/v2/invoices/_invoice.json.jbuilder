@@ -25,5 +25,5 @@ json.positions invoice.invoice_positions.sort_by { |p| p.order.to_i } do |positi
                 :vat, :order, :position_group_id, :rate_unit_archived, :calculated_total
 end
 json.position_groupings invoice.position_groupings do |group|
-  json.extract! group, :id, :name
+  json.extract! group, :id, :name, :order, :shared
 end
