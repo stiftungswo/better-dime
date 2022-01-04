@@ -49,7 +49,7 @@ class ProjectCreator
       project_position.order = position.order
       project_position
     end || []
-    PositionGroupRemapper.remap_position_groups(offer.position_groupings, new_positions)
+    PositionGroupRemapper.remap_all_groups(offer.position_groupings, new_positions)
     new_positions
   end
 end

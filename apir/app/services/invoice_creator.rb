@@ -75,7 +75,7 @@ class InvoiceCreator
       invoice_position.order = position.order
       invoice_position
     end || []
-    PositionGroupRemapper.remap_position_groups(project.position_groupings, new_positions)
+    PositionGroupRemapper.remap_all_groups(project.position_groupings, new_positions)
     new_positions
   end
 

@@ -25,6 +25,11 @@ module V2
       # destroy costgroup distributions which were not passed along to the params
       ParamsModifier.destroy_missing params, @invoice.invoice_costgroup_distributions, :costgroup_distributions
 
+      # replace shared position groups by new ones to enable modification in the frontend
+      if PositionGroupRemapper.remap_shared_groups(@invoice.position_groupings, @invoice.invoice_positions) then
+        raise ValidationError, @invoice.errors unless @invoice.save
+      end
+
       raise ValidationError, @invoice.errors unless @invoice.update(update_params)
 
       render :show
@@ -55,7 +60,7 @@ module V2
         include: [:invoice_positions, :invoice_discounts, :invoice_costgroup_distributions]
       )
       # create new position groups
-      PositionGroupRemapper.remap_position_groups(@invoice.position_groupings, @invoice.invoice_positions)
+      PositionGroupRemapper.remap_all_groups(@invoice.position_groupings, @invoice.invoice_positions)
 
 
       raise ValidationError, @invoice.errors unless @invoice.save
