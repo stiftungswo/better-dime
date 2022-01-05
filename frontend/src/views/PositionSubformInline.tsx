@@ -1,5 +1,5 @@
-import {Grid} from '@material-ui/core';
-import {Warning} from '@material-ui/icons';
+import { Grid } from '@material-ui/core';
+import { Warning } from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -7,14 +7,16 @@ import { PositionGroupRenameDialog } from '../form/dialog/PositionGroupRenameDia
 import { PositionGroupSortDialog } from '../form/dialog/PositionGroupSortDialog';
 import PositionMoveDialog from '../form/dialog/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/dialog/ServiceSelectDialog';
+import { ActionButton } from '../layout/ActionButton';
+import { MoveIcon, SortIcon } from '../layout/icons';
 import { MainStore } from '../stores/mainStore';
-import {PositionGroupStore} from '../stores/positionGroupStore';
-import {RateUnitStore} from '../stores/rateUnitStore';
+import { PositionGroupStore } from '../stores/positionGroupStore';
+import { RateUnitStore } from '../stores/rateUnitStore';
 import { ServiceStore } from '../stores/serviceStore';
-import {PositionGroup, RateUnit, Service, ServiceListing, ServiceRate} from '../types';
+import { PositionGroup, RateUnit, Service, ServiceListing, ServiceRate } from '../types';
 import compose from '../utilities/compose';
 import { getInsertionIndex } from '../utilities/getInsertionIndex';
-import {defaultPositionGroup} from '../utilities/helpers';
+import { defaultPositionGroup } from '../utilities/helpers';
 
 export interface Props {
   mainStore?: MainStore;
@@ -190,26 +192,27 @@ export default class PositionSubformInline extends React.Component<Props> {
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
     const Tag = this.props.tag;
+    const { disabled, formikProps } = this.props;
+    const makeButtonAction = (stateUpdate: any) => {
+        if (!formikProps.values.rate_group_id) { return undefined; }
+        return () => { this.setState({ selected_group: group.name, ...stateUpdate }); };
+    };
     return (
       <>
         <Tag
           arrayHelpers={arrayHelpers}
           onDelete={(idx: number) => arrayHelpers.remove(idx)}
           onMove={(idx: number) => this.setState({moving: true, moving_index: idx})}
-          onAdd={!this.props.formikProps.values.rate_group_id ? undefined : () => {
+          onAdd={!formikProps.values.rate_group_id ? undefined : () => {
             this.setState({ selected_group: group.name, dialogAddOpen: true });
-          }}
-          onSort={!this.props.formikProps.values.rate_group_id ? undefined : () => {
-            this.setState({ selected_group: group.name, dialogSortOpen: true });
-          }}
-          onRename={!this.props.formikProps.values.rate_group_id ? undefined : () => {
-            this.setState({ selected_group: group.name, dialogRenameOpen: true });
           }}
           group={group}
           values={values}
           name={this.props.name}
           isFirst={isFirst}
-          disabled={this.props.disabled}
+          disabled={disabled}
+          groupRenameButton={formikProps.values.rate_group_id && (<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={'Alle Services dieser Gruppe verschieben.'} />)}
+          groupSortButton={formikProps.values.rate_group_id && (<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={'Alle Services nach Standardsortierung umsortieren.'} />)}
         />
       </>
     );

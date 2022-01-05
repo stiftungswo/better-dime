@@ -3,8 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {Warning} from '@material-ui/icons';
-import {FieldArrayRenderProps} from 'formik';
+import { Warning } from '@material-ui/icons';
+import { FieldArrayRenderProps } from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
@@ -12,16 +12,16 @@ import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField, { VatField } from '../../form/fields/PercentageField';
-import {ActionButton} from '../../layout/ActionButton';
+import { ActionButton } from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import {DragHandle, MoveIcon, SortIcon} from '../../layout/icons';
+import { DragHandle, MoveIcon } from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import {OfferPosition, PositionGroup} from '../../types';
+import { OfferPosition, PositionGroup } from '../../types';
 import compose from '../../utilities/compose';
-import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { isAfterArchivedUnitsCutoff } from '../../utilities/validation';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 interface Props {
@@ -31,8 +31,8 @@ interface Props {
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
   onAdd: (() => void) | undefined;
-  onSort: (() => void) | undefined;
-  onRename: (() => void) | undefined;
+  groupRenameButton: React.ReactNode;
+  groupSortButton: React.ReactNode;
   group: PositionGroup;
   values: any;
   isFirst?: boolean;
@@ -45,7 +45,7 @@ interface Props {
 )
 export default class OfferPositionRenderer extends React.Component<Props> {
   render() {
-    const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd, onSort, onRename } = this.props;
+    const { arrayHelpers, values, group, isFirst, groupRenameButton, groupSortButton, disabled, onDelete, onMove, onAdd } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -58,8 +58,8 @@ export default class OfferPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={disabled ? undefined : onAdd}
         >
-          <ActionButton disabled={disabled} icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
-          <ActionButton disabled={disabled} icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
+          {groupSortButton}
+          {groupRenameButton}
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (
