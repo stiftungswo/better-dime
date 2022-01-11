@@ -5,10 +5,11 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { PositionGroupRenameDialog } from '../form/dialog/PositionGroupRenameDialog';
 import { PositionGroupSortDialog } from '../form/dialog/PositionGroupSortDialog';
+import PositionGroupsReorderDialog from '../form/dialog/PositionGroupsReorderDialog';
 import PositionMoveDialog from '../form/dialog/PositionMoveDialog';
 import { ServiceSelectDialog } from '../form/dialog/ServiceSelectDialog';
 import { ActionButton } from '../layout/ActionButton';
-import { MoveIcon, SortIcon } from '../layout/icons';
+import { MoveIcon, ReorderIcon, SortIcon } from '../layout/icons';
 import { MainStore } from '../stores/mainStore';
 import { PositionGroupStore } from '../stores/positionGroupStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
@@ -38,6 +39,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     dialogAddOpen: false,
     dialogSortOpen: false,
     dialogRenameOpen: false,
+    dialogReorderOpen: false,
     selected_group: defaultPositionGroup().name,
     moving: false,
     moving_index: null,
@@ -45,6 +47,13 @@ export default class PositionSubformInline extends React.Component<Props> {
 
   getPositionsInGroup = (groupId: number | null) => {
     return this.props.formikProps.values.positions.filter((p: any) => p.position_group_id === groupId);
+  }
+  getGroupsInOrder() {
+    return [defaultPositionGroup(), ...this.props.formikProps.values.position_groupings]
+      .sort((a: PositionGroup, b: PositionGroup) => {
+        return (a.order || 0) - (b.order || 0)
+         || a.name.localeCompare(b.name);
+      });
   }
 
   overwritePositionsInGroup = (groupId: number | null, newPositions: any) => {
@@ -189,14 +198,21 @@ export default class PositionSubformInline extends React.Component<Props> {
       this.renameGroup(oldGroup.id, newGroup);
     }
   }
+  handleReorder = (groups: PositionGroup[]) => (reorderedGroups: PositionGroup[]) => {
+    // the defaulPositionGroup() is not stored in the DB,
+    // so it will have to end up with an order of 0.
+    const offset = reorderedGroups.find(e => e.id === defaultPositionGroup().id)?.order || 0;
+    groups.forEach((g: PositionGroup) => {
+      // .find should never return undefined here, but just in case
+      const newOrder = reorderedGroups.find(e => e.id === g.id)?.order || 0;
+      g.order = newOrder - offset;
+    });
+  }
 
   renderTable = (arrayHelpers: any, values: any, group: PositionGroup, isFirst: boolean) => {
     const Tag = this.props.tag;
     const { disabled, formikProps } = this.props;
-    const makeButtonAction = (stateUpdate: any) => {
-        if (!formikProps.values.rate_group_id) { return undefined; }
-        return () => { this.setState({ selected_group: group.name, ...stateUpdate }); };
-    };
+    const makeButtonAction = (stateUpdate: any) => () => { this.setState({ selected_group: group.name, ...stateUpdate }); };
     return (
       <>
         <Tag
@@ -211,8 +227,9 @@ export default class PositionSubformInline extends React.Component<Props> {
           name={this.props.name}
           isFirst={isFirst}
           disabled={disabled}
-          groupRenameButton={formikProps.values.rate_group_id && (<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={'Alle Services dieser Gruppe verschieben.'} />)}
-          groupSortButton={formikProps.values.rate_group_id && (<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={'Alle Services nach Standardsortierung umsortieren.'} />)}
+          groupRenameButton={(<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={'Alle Services dieser Gruppe verschieben.'} />)}
+          groupSortButton={(<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={'Alle Services nach Standardsortierung umsortieren.'} />)}
+          groupReorderButton={(<ActionButton disabled={disabled} icon={ReorderIcon} action={makeButtonAction({dialogReorderOpen: true })} title={'Reihenfolge der Servicegruppen.'} />)}
         />
       </>
     );
@@ -220,7 +237,7 @@ export default class PositionSubformInline extends React.Component<Props> {
 
   render() {
     const { values } = this.props.formikProps;
-    const groups = [defaultPositionGroup(), ...values.position_groupings];
+    const groups = this.getGroupsInOrder();
 
     return (
       <FieldArray
@@ -230,9 +247,7 @@ export default class PositionSubformInline extends React.Component<Props> {
             <>
               {groups.filter(e => e != null && (e.name === defaultPositionGroup().name || values.positions.filter((p: any) => {
                 return p != null && p.position_group_id === e.id;
-              }).length > 0)).sort((a: PositionGroup, b: PositionGroup) => {
-                return a.name.localeCompare(b.name);
-              }).map((e: any, index: number) => {
+              }).length > 0)).map((e: any, index: number) => {
                 return this.renderTable(arrayHelpers, values, e, index === 0);
               })}
               {this.state.dialogAddOpen && (
@@ -263,6 +278,14 @@ export default class PositionSubformInline extends React.Component<Props> {
                   placeholder={defaultPositionGroup().name}
                   groupName={this.state.selected_group === defaultPositionGroup().name ? '' : this.state.selected_group}
                   groupingEntity={this.props.formikProps.values}
+                />
+              )}
+              {this.state.dialogReorderOpen && (
+                <PositionGroupsReorderDialog
+                  open
+                  onClose={() => this.setState({ dialogReorderOpen: false })}
+                  onSubmit={this.handleReorder(this.props.formikProps.values.position_groupings)}
+                  allGroups={groups}
                 />
               )}
               {this.state.moving && (

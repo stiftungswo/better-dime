@@ -33,6 +33,7 @@ interface Props {
   onAdd: (() => void) | undefined;
   groupRenameButton: React.ReactNode;
   groupSortButton: React.ReactNode;
+  groupReorderButton: React.ReactNode;
   group: PositionGroup;
   values: any;
   isFirst?: boolean;
@@ -44,7 +45,7 @@ interface Props {
 )
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
-    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, groupSortButton, groupRenameButton } = this.props;
+    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, groupRenameButton, groupSortButton, groupReorderButton } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -57,8 +58,9 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={onAdd}
         >
-          {groupSortButton}
-          {groupRenameButton}
+          {values.rate_group_id && groupReorderButton}
+          {values.rate_group_id && groupSortButton}
+          {values.rate_group_id && groupRenameButton}
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (
