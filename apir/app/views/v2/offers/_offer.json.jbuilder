@@ -24,5 +24,5 @@ json.positions offer.offer_positions.sort_by(&:order) do |position|
                 :vat, :order, :position_group_id, :service, :rate_unit_archived
 end
 json.position_groupings offer.position_groupings do |group|
-  json.extract! group, :id, :name
+  json.extract! group, :id, :name, :order, :shared
 end

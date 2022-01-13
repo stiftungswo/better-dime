@@ -24,7 +24,15 @@ module V2
       ParamsModifier.destroy_missing params, @project.project_costgroup_distributions, :costgroup_distributions
       ParamsModifier.destroy_missing params, @project.project_category_distributions, :category_distributions
 
+      PositionGroupUpdater.update_all(params[:position_groupings])
+      params.delete(:position_groupings)
+
       raise ValidationError, @project.errors unless @project.update(update_params)
+
+      # replace shared position groups by new ones to enable modification in the frontend
+      if PositionGroupRemapper.remap_shared_groups(@project.position_groupings, @project.project_positions) then
+        raise ValidationError, @project.errors unless @project.save
+      end
 
       render :show
     end
@@ -43,6 +51,8 @@ module V2
 
     def duplicate
       @project = Project.find(params[:id]).deep_clone include: [:project_positions, :project_costgroup_distributions, :project_category_distributions]
+      # create new position groups
+      PositionGroupRemapper.remap_all_groups(@project.position_groupings, @project.project_positions)
       # update any rate units which might be archived (if possible) when
       # duplicating (since we are possibly duplicating old projects)
       RateUnitUpdater.update_rate_units @project.project_positions, @project.rate_group
@@ -111,7 +121,8 @@ module V2
         :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
         project_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy],
         project_category_distributions_attributes: [:id, :weight, :category_id, :_destroy],
-        project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
+        project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
+        position_groupings: [:id, :name, :order, :shared]
       )
     end
   end

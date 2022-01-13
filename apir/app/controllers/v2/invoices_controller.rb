@@ -25,7 +25,15 @@ module V2
       # destroy costgroup distributions which were not passed along to the params
       ParamsModifier.destroy_missing params, @invoice.invoice_costgroup_distributions, :costgroup_distributions
 
+      PositionGroupUpdater.update_all(params[:position_groupings])
+      params.delete(:position_groupings)
+
       raise ValidationError, @invoice.errors unless @invoice.update(update_params)
+
+      # replace shared position groups by new ones to enable modification in the frontend
+      if PositionGroupRemapper.remap_shared_groups(@invoice.position_groupings, @invoice.invoice_positions) then
+        raise ValidationError, @invoice.errors unless @invoice.save
+      end
 
       render :show
     end
@@ -54,6 +62,9 @@ module V2
       @invoice = Invoice.find(params[:id]).deep_clone(
         include: [:invoice_positions, :invoice_discounts, :invoice_costgroup_distributions]
       )
+      # create new position groups
+      PositionGroupRemapper.remap_all_groups(@invoice.position_groupings, @invoice.invoice_positions)
+
 
       raise ValidationError, @invoice.errors unless @invoice.save
 
@@ -130,7 +141,8 @@ module V2
         :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price, :fixed_price_vat,
         invoice_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :amount, :description, :order, :position_group_id, :_destroy],
         invoice_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
-        invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy]
+        invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy],
+        position_groupings: [:id, :name, :order, :shared]
       )
     end
   end

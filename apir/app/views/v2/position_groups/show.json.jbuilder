@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-json.extract! @position_group.decorate, :id, :name
+json.extract! @position_group.decorate, :id, :name, :order, :shared

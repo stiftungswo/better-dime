@@ -15,7 +15,7 @@ import PercentageField, { VatField } from '../../form/fields/PercentageField';
 import {ActionButton} from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import {DragHandle, MoveIcon, SortIcon} from '../../layout/icons';
+import {DragHandle, MoveIcon} from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import {MainStore} from '../../stores/mainStore';
 import {ServiceStore} from '../../stores/serviceStore';
@@ -31,8 +31,9 @@ interface Props {
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
   onAdd: (() => void) | undefined;
-  onSort: (() => void) | undefined;
-  onRename: (() => void) | undefined;
+  groupRenameButton: React.ReactNode;
+  groupSortButton: React.ReactNode;
+  groupReorderButton: React.ReactNode;
   group: PositionGroup;
   values: any;
   isFirst?: boolean;
@@ -44,7 +45,7 @@ interface Props {
 )
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
-    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, onSort, onRename } = this.props;
+    const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, groupRenameButton, groupSortButton, groupReorderButton } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -57,8 +58,9 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
           numSelected={0}
           addAction={onAdd}
         >
-          <ActionButton icon={MoveIcon} action={onRename} title={'Alle Services dieser Gruppe verschieben.'} />
-          <ActionButton icon={SortIcon} action={onSort} title={'Alle Services nach Standardsortierung umsortieren.'} />
+          {values.rate_group_id && groupReorderButton}
+          {values.rate_group_id && groupSortButton}
+          {values.rate_group_id && groupRenameButton}
         </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (

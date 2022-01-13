@@ -43,6 +43,8 @@ interface Props {
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
   onAdd: (() => void) | undefined;
+  groupRenameButton: React.ReactNode;
+  groupReorderButton: React.ReactNode;
   group: PositionGroup;
   values: any;
   isFirst?: boolean;
@@ -56,7 +58,7 @@ interface Props {
 )
 export default class InvoicePositionRenderer extends React.Component<Props> {
   render() {
-    const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd } = this.props;
+    const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd, groupRenameButton, groupReorderButton } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -64,7 +66,10 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
         {!isFirst && (
           <div style={{ paddingTop: '20px' }}/>
         )}
-        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))} />
+        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))}>
+          {groupReorderButton}
+          {groupRenameButton}
+        </TableToolbar>
         <div style={{ overflowX: 'auto' }}>
           <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
