@@ -2,6 +2,7 @@
 
 class PositionGroupUpdater
   def self.update_all(params)
+    if not params then return end
     params.each do |param| update_one(param) end
   end
 
