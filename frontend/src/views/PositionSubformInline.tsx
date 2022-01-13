@@ -213,6 +213,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     const Tag = this.props.tag;
     const { disabled, formikProps } = this.props;
     const makeButtonAction = (stateUpdate: any) => () => { this.setState({ selected_group: group.name, ...stateUpdate }); };
+    const hasSharedGroups = formikProps.values.position_groupings.some((e: any) => e.shared);
     return (
       <>
         <Tag
@@ -229,7 +230,12 @@ export default class PositionSubformInline extends React.Component<Props> {
           disabled={disabled}
           groupRenameButton={(<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={'Alle Services dieser Gruppe verschieben.'} />)}
           groupSortButton={(<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={'Alle Services nach Standardsortierung umsortieren.'} />)}
-          groupReorderButton={(<ActionButton disabled={disabled} icon={ReorderIcon} action={makeButtonAction({dialogReorderOpen: true })} title={'Reihenfolge der Servicegruppen.'} />)}
+          groupReorderButton={(<ActionButton
+            disabled={disabled || hasSharedGroups}
+            icon={ReorderIcon}
+            action={makeButtonAction({dialogReorderOpen: true })}
+            title={hasSharedGroups ? 'Zuerst Speichern!' : 'Reihenfolge der Servicegruppen.'}
+          />)}
         />
       </>
     );
