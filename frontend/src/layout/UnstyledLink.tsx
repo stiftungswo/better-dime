@@ -1,5 +1,13 @@
+import { useTheme } from '@material-ui/core/styles';
 import * as React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-const UnstyledLink = (props: LinkProps) => <Link style={{ textDecoration: 'none', color: 'white' }} {...props} />;
-export default UnstyledLink;
+export default function UnstyledLink(props: LinkProps) {
+  const theme = useTheme();
+  return (
+    <Link
+      style={{ textDecoration: 'none', color: theme.palette.text.primary }}
+      {...props}
+    />
+  );
+}

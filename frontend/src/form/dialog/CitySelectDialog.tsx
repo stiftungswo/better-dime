@@ -12,6 +12,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
+import UnstyledBackendLink from '../../layout/UnstyledBackendLink';
 import {AbstractStore} from '../../stores/abstractStore';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
@@ -49,17 +50,17 @@ export default class CitySelectDialog extends React.Component<Props> {
         </DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
           <List>
-            <a href={buildUrl('')} target={'_blank'} style={{ color: 'white' }}>
+            <UnstyledBackendLink url={buildUrl('')}>
               <ListItem button key="" onClick={onClose}>
-                <ListItemText primary="<kein Ort>" />
+                <ListItemText primary="<kein Ort>"/>
               </ListItem>
-            </a>
+            </UnstyledBackendLink>
             {cities.map(city => (
-              <a href={buildUrl(city.url)} target={'_blank'} style={{ color: 'white' }}>
-                <ListItem button key={city.name} onClick={onClose}>
-                  <ListItemText primary={city.name} />
+              <UnstyledBackendLink url={buildUrl(city.url)}>
+                <ListItem button key={city.name} onClick={onClose} >
+                  <ListItemText primary={city.name}/>
                 </ListItem>
-              </a>
+              </UnstyledBackendLink>
             ))}
           </List>
         </DialogContent>
