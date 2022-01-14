@@ -7,6 +7,7 @@ import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
 import { ActionButton } from './ActionButton';
 import { PrintIcon } from './icons';
+import UnstyledBackendLink from './UnstyledBackendLink';
 
 interface Props {
   icon?: React.ReactType<SvgIconProps>;
@@ -44,7 +45,6 @@ export default class PrintButton extends React.Component<Props> {
             color={this.props.color}
             action={() => this.setState({ cityDialogOpen: true })}
             disabled={false}
-            style={{ color: 'white' }}
           />
           {this.state.cityDialogOpen && (
             <CitySelectDialog open path={this.props.path} onClose={() => this.setState({ cityDialogOpen: false })}/>
@@ -53,7 +53,7 @@ export default class PrintButton extends React.Component<Props> {
       );
     } else {
       return (
-        <a href={this.props.mainStore!.apiV2URL(this.props.path, this.props.urlParams)} target={'_blank'} style={{ color: 'white' }}>
+        <UnstyledBackendLink url={this.props.mainStore!.apiV2URL(this.props.path, this.props.urlParams)}>
           <ActionButton
             icon={PrintIcon}
             secondaryIcon={BadgeIcon}
@@ -61,7 +61,7 @@ export default class PrintButton extends React.Component<Props> {
             color={this.props.color}
             disabled={false}
           />
-        </a>
+        </UnstyledBackendLink>
       );
     }
   }
