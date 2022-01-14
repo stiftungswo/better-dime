@@ -60,6 +60,7 @@ class CostBreakdown
     default_positions = positions.select { |p| p.position_group_id.nil? && p.amount > 0 }
     default_group = [{
       group_name: "",
+      order: 0,
       positions: default_positions,
       subtotal: calculate_subtotal(default_positions)
     }]
@@ -69,12 +70,13 @@ class CostBreakdown
 
       {
         group_name: group.name,
+        order: (group.order or 0),
         positions: filtered_positions,
         subtotal: calculate_subtotal(filtered_positions)
       }
     end
 
-    grouped_positions.concat(default_group).sort_by { |group| group[:group_name] }.reject do |group|
+    grouped_positions.concat(default_group).sort_by { |group| [group[:order], group[:group_name]] }.reject do |group|
       group[:positions].empty?
     end
   end

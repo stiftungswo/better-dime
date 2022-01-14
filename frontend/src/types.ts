@@ -142,6 +142,8 @@ export interface Project extends PositionGroupings<ProjectPosition> {
 export interface PositionGroup {
   id?: number;
   name: string;
+  order?: number;
+  shared?: boolean;
 }
 
 export interface ProjectCostgroup {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_22_092713) do
+ActiveRecord::Schema.define(version: 2021_12_31_144937) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -308,6 +308,8 @@ ActiveRecord::Schema.define(version: 2021_11_22_092713) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
+    t.boolean "shared", default: false, null: false
+    t.integer "order"
   end
 
   create_table "project_categories", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

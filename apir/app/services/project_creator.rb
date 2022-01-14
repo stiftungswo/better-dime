@@ -37,7 +37,7 @@ class ProjectCreator
   end
 
   def self.create_positions_from_offer(project, offer)
-    offer.offer_positions.map do |position|
+    new_positions = offer.offer_positions.map do |position|
       project_position = ProjectPosition.new
       project_position.project = project
       project_position.rate_unit = position.rate_unit
@@ -49,5 +49,7 @@ class ProjectCreator
       project_position.order = position.order
       project_position
     end || []
+    PositionGroupRemapper.remap_all_groups(offer.position_groupings, new_positions)
+    new_positions
   end
 end

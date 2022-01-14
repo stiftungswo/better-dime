@@ -47,10 +47,6 @@ interface Props {
   observer,
 )
 export class PositionGroupRenameDialog extends React.Component<Props> {
-  componentDidMount(): void {
-    this.setState({positionGroupName: this.props.groupName, newName: ''});
-  }
-
   handleSubmit = async (formValues: Values) => {
     this.props.positionGroupStore!.notifyProgress(async () => {
       const values = schema.cast(formValues);

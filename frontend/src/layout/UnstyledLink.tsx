@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-const UnstyledLink = (props: LinkProps) => <Link style={{ textDecoration: 'none', color: 'white' }} {...props} />;
-export default UnstyledLink;
+export default function UnstyledLink(props: LinkProps) {
+  return <Link style={{ textDecoration: 'none', color: 'inherit' }} {...props} />;
+}

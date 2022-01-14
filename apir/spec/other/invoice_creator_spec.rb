@@ -36,7 +36,7 @@ RSpec.describe InvoiceCreator do
                                  i_position.rate_unit == project_position.rate_unit &&
                                  i_position.invoice == created &&
                                  i_position.project_position == project_position &&
-                                 i_position.position_group == project_position.position_group &&
+                                 i_position.position_group.name == project_position.position_group.name &&
                                  # i_position.amount == project_position.efforts_value &&
                                  i_position.vat == project_position.vat
       end
