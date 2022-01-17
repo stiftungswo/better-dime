@@ -105,7 +105,7 @@ export default class PositionSubformInline extends React.Component<Props> {
   insertServiceItem(arrayHelpers: ArrayHelpers, serviceItem: any, serviceOrder: number) {
     // only consider positions from the same group
     const relevantPositions = this.getPositionsInGroup(serviceItem.position_group_id);
-    const relevantServiceOrders = relevantPositions.map((p: any) => p.service.order);
+    const relevantServiceOrders = relevantPositions.map((p: any) => p.service?.order || 0);
     const relevantIndex = getInsertionIndex(relevantServiceOrders, serviceOrder, (a, b) => a - b);
     // now we have an index in relevantPositions, but we want an index in all positions.
     const fullIndex = relevantIndex === 0 ? 0 : relevantPositions[relevantIndex - 1].order + 1;
@@ -159,7 +159,8 @@ export default class PositionSubformInline extends React.Component<Props> {
   handleUpdate = (arrayHelpers: ArrayHelpers) => (positionIndex: number, newGroupId: number | null) => {
     const item = arrayHelpers.remove(positionIndex) as any;
     item.position_group_id = newGroupId;
-    this.insertServiceItem(arrayHelpers, item, item.service.order);
+    // if we're dealing with invoices, item.service is undefined
+    this.insertServiceItem(arrayHelpers, item, item.service?.order || 1);
   }
 
   handleAdd = (arrayHelpers: ArrayHelpers) => (service: Service, groupName: string | null) => {
