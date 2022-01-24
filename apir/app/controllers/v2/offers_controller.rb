@@ -23,8 +23,7 @@ module V2
       # destroy discounts which were not passed along to the params
       ParamsModifier.destroy_missing(params, @offer.offer_discounts, :discounts)
 
-      PositionGroupUpdater.update_all(params[:position_groupings])
-      params.delete(:position_groupings) # position groups are not part of the model.
+      PositionGroupUpdater.update_all(groupings_params[:position_groupings])
 
       raise ValidationError, @offer.errors unless @offer.update(update_params)
 
@@ -97,6 +96,12 @@ module V2
       search.permit(:s, :id_or_name_or_description_or_short_description_cont)
     end
 
+    def groupings_params
+      params.permit(
+        position_groupings: [:id, :name, :order, :shared]
+      )
+    end
+
     def update_params
       ParamsModifier.copy_attributes params, :positions, :offer_positions_attributes
       ParamsModifier.copy_attributes params, :discounts, :offer_discounts_attributes
@@ -105,9 +110,9 @@ module V2
         :accountant_id, :address_id, :customer_id, :description, :fixed_price,
         :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
         offer_positions_attributes: [:id, :amount, :vat, :price_per_rate, :description, :order, :position_group_id, :service_id, :rate_unit_id, :_destroy],
-        offer_discounts_attributes: [:id, :name, :percentage, :value, :_destroy],
-        position_groupings: [:id, :name, :order, :shared]
+        offer_discounts_attributes: [:id, :name, :percentage, :value, :_destroy]
       )
     end
+    
   end
 end
