@@ -28,7 +28,7 @@ module Pdfs
     end
 
     def document
-      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, margin: [0, 0, 0, 0])
+      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, margin: [0, 0, 0, 5])
     end
 
     def format_money_qr_bill(amount)
@@ -127,7 +127,7 @@ module Pdfs
           text @invoice.address.country, size: font_size, leading: leading
         end
 
-        bounding_box([0.5.cm, 3.7.cm], width: 5.2.cm, height: 1.4.cm) do
+        bounding_box([0.5.cm, 3.7.cm], width: 5.0.cm, height: 1.4.cm) do
           #Amount section
           bounding_box([0.cm, 1.4.cm], width: 2.6.cm, height: 1.4.cm) do
             text I18n.t(:currency), size: 6, style: :bold, leading: 3
@@ -139,7 +139,7 @@ module Pdfs
           end
         end
 
-        bounding_box([0.5.cm, 2.3.cm], width: 5.2.cm, height: 1.8.cm) do
+        bounding_box([0.5.cm, 2.3.cm], width: 5.0.cm, height: 1.8.cm) do
           #Acceptance point section
           text I18n.t(:acceptance_point), size: 6, style: :bold, leading: 2, align: :right
         end
@@ -206,7 +206,7 @@ module Pdfs
     end
 
     def draw_info
-      bounding_box([0.5.cm, 16.5.cm], width: 20.cm, height: 6.cm) do
+      bounding_box([0.5.cm, 16.5.cm], width: 19.0.cm, height: 6.cm) do
         #stroke_bounds
         leading = 6
 

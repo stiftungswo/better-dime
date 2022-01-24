@@ -24,8 +24,7 @@ module V2
       ParamsModifier.destroy_missing params, @project.project_costgroup_distributions, :costgroup_distributions
       ParamsModifier.destroy_missing params, @project.project_category_distributions, :category_distributions
 
-      PositionGroupUpdater.update_all(params[:position_groupings])
-      params.delete(:position_groupings)
+      PositionGroupUpdater.update_all(groupings_params[:position_groupings])
 
       raise ValidationError, @project.errors unless @project.update(update_params)
 
@@ -111,6 +110,12 @@ module V2
       search.permit(:s, :archived_false, :id_or_name_or_description_cont)
     end
 
+    def groupings_params
+      params.permit(
+        position_groupings: [:id, :name, :order, :shared]
+      )
+    end
+
     def update_params
       ParamsModifier.copy_attributes params, :positions, :project_positions_attributes
       ParamsModifier.copy_attributes params, :costgroup_distributions, :project_costgroup_distributions_attributes
@@ -121,8 +126,7 @@ module V2
         :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
         project_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy],
         project_category_distributions_attributes: [:id, :weight, :category_id, :_destroy],
-        project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
-        position_groupings: [:id, :name, :order, :shared]
+        project_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
       )
     end
   end

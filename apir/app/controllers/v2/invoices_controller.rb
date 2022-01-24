@@ -25,8 +25,7 @@ module V2
       # destroy costgroup distributions which were not passed along to the params
       ParamsModifier.destroy_missing params, @invoice.invoice_costgroup_distributions, :costgroup_distributions
 
-      PositionGroupUpdater.update_all(params[:position_groupings])
-      params.delete(:position_groupings)
+      PositionGroupUpdater.update_all(groupings_params[:position_groupings])
 
       raise ValidationError, @invoice.errors unless @invoice.update(update_params)
 
@@ -132,6 +131,12 @@ module V2
       search.permit(:s, :id_or_name_or_description_cont)
     end
 
+    def groupings_params
+      params.permit(
+        position_groupings: [:id, :name, :order, :shared]
+      )
+    end
+
     def update_params
       ParamsModifier.copy_attributes params, :positions, :invoice_positions_attributes
       ParamsModifier.copy_attributes params, :discounts, :invoice_discounts_attributes
@@ -141,8 +146,7 @@ module V2
         :accountant_id, :address_id, :customer_id, :description, :name, :fixed_price, :fixed_price_vat,
         invoice_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :amount, :description, :order, :position_group_id, :_destroy],
         invoice_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy],
-        invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy],
-        position_groupings: [:id, :name, :order, :shared]
+        invoice_discounts_attributes: [:id, :name, :value, :percentage, :_destroy]
       )
     end
   end
