@@ -1,17 +1,21 @@
 import { Avatar, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { MainStore } from 'src/stores/mainStore';
+import { injectIntl, IntlShape } from 'react-intl';
+import { frenchLocale, germanLocale, MainStore } from 'src/stores/mainStore';
 import { ApiStore } from '../stores/apiStore';
 import compose from '../utilities/compose';
-import { AccountIcon, LogoutIcon } from './icons';
+import { AccountIcon, LanguageIcon, LogoutIcon } from './icons';
 
 interface DimeAppBarUserMenuProps {
   mainStore?: MainStore;
   apiStore?: ApiStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'apiStore'),
   observer,
 )
@@ -21,7 +25,8 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
   }
 
   render() {
-    const meDetail = this.props.apiStore!.meDetail;
+    const { apiStore, mainStore, intl } = this.props;
+    const meDetail = apiStore!.meDetail;
     let shortName = '?';
     let fullName = '?';
 
@@ -31,12 +36,14 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
       fullName = `${first_name} ${last_name}`;
     }
 
-    const open = this.props.mainStore!.userMenuOpen;
-    const { userMenuAnchorEl } = this.props.mainStore!;
+    const open = mainStore!.userMenuOpen;
+    const { userMenuAnchorEl } = mainStore!;
+
+    const languageName = intl!.formatMessage({id: 'language.name'});
 
     return (
       <div>
-        <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={this.handleMenu} color="inherit">
+        <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={action(this.handleMenu)} color="inherit">
           <Avatar>{shortName}</Avatar>
         </IconButton>
         <Menu
@@ -51,15 +58,21 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
             horizontal: 'right',
           }}
           open={open}
-          onClose={this.handleClose}
+          onClose={action(this.handleClose)}
         >
-          <MenuItem onClick={this.handleProfile}>
+          <MenuItem onClick={action(this.handleProfile)}>
             <ListItemIcon>
               <AccountIcon />
             </ListItemIcon>
             <ListItemText primary={fullName} />
           </MenuItem>
-          <MenuItem onClick={this.handleLogout}>
+          <MenuItem onClick={action(this.changeLanguage)}>
+            <ListItemIcon>
+              <LanguageIcon />
+            </ListItemIcon>
+            <ListItemText primary={languageName} />
+          </MenuItem>
+          <MenuItem onClick={action(this.handleLogout)}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
@@ -93,5 +106,11 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     this.props.mainStore!.userMenuOpen = false;
 
     this.props.apiStore!.logout();
+  }
+
+  private changeLanguage = () => {
+    const { intl } = this.props;
+    const newLocale = intl!.locale === germanLocale ? frenchLocale : germanLocale;
+    this.props.mainStore!.currentLocale = newLocale;
   }
 }
