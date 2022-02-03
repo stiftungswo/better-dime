@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { ProjectCommentStore } from 'src/stores/projectCommentStore';
 import { TimetrackFilterStore } from 'src/stores/timetrackFilterStore';
 import { ActionButton } from '../../layout/ActionButton';
@@ -8,6 +9,7 @@ import { Column } from '../../layout/Overview';
 import PrintButton from '../../layout/PrintButton';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectCommentListing, ProjectEffortListing } from '../../types';
+import compose from '../../utilities/compose';
 import { Formatter } from '../../utilities/formatter';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 
@@ -21,50 +23,54 @@ interface Props {
   projectCommentStore?: ProjectCommentStore;
   effortStore?: EffortStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  intl?: IntlShape;
   formatter?: Formatter;
   effortReportUrlParams: () => object;
 }
 
-@inject('projectCommentStore', 'effortStore', 'timetrackFilterStore', 'formatter')
-@observer
+@compose(
+  injectIntl,
+  inject('projectCommentStore', 'effortStore', 'timetrackFilterStore', 'formatter'),
+  observer,
+)
 export class TimetrackProjectTable extends React.Component<Props> {
-
-  formatter = this.props.formatter!;
-
-  effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>> = [
-    {
-      id: 'date',
-      numeric: false,
-      label: 'Datum',
-      format: e => 'comment' in e ? <span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{this.formatter.formatDate(e.date)}</span> : this.formatter.formatDate(e.date),
-      defaultSort: 'desc',
-    },
-    {
-      id: 'employee',
-      numeric: false,
-      label: 'Mitarbeiter',
-      noSort: true,
-      format: e => 'comment' in e ? (<span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{e.comment}</span>) : e.employee_full_name,
-      defaultSort: 'desc',
-    },
-    {
-      id: '',
-      numeric: false,
-      label: 'Service',
-      noSort: true,
-      format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
-    },
-    {
-      id: 'effort_value',
-      numeric: true,
-      noSort: true,
-      label: 'Gebuchter Wert',
-      format: h => 'comment' in h ? '' : this.formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-    },
-  ];
+  private effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>>;
 
   constructor(props: Props) {
     super(props);
+    const intl = this.props.intl!;
+    const formatter = this.props.formatter!;
+    this.effortColumns = [
+      {
+        id: 'date',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.date'}),
+        format: e => 'comment' in e ? <span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
+        defaultSort: 'desc',
+      },
+      {
+        id: 'employee',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.employee'}),
+        noSort: true,
+        format: e => 'comment' in e ? (<span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{e.comment}</span>) : e.employee_full_name,
+        defaultSort: 'desc',
+      },
+      {
+        id: '',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.service'}),
+        noSort: true,
+        format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
+      },
+      {
+        id: 'effort_value',
+        numeric: true,
+        noSort: true,
+        label: intl.formatMessage({id: 'general.effort_value'}),
+        format: h => 'comment' in h ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+      },
+    ];
   }
 
   onClickRow = async (entity: ProjectEffortListing | ProjectCommentListing) => {
@@ -85,11 +91,12 @@ export class TimetrackProjectTable extends React.Component<Props> {
   }
 
   render() {
+    const intl = this.props.intl!;
     const projectGroupActions = (
       <>
         <PrintButton
           path={'projects/' + this.props.entityId + '/effort_report'}
-          title={'Aufwandsrapport drucken'}
+          title={intl.formatMessage({id: 'general.action.print_project_effort_report'})}
           urlParams={this.props.effortReportUrlParams()}
         />
         <ActionButton icon={AddCommentIcon} action={this.handleProjectCommentAdd} title={'Kommentar hinzufügen'} />

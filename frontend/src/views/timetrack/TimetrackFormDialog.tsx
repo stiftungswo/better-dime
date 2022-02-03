@@ -7,6 +7,7 @@ import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
@@ -37,6 +38,7 @@ interface Props {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
   projectStore?: ProjectStore;
+  intl?: IntlShape;
   fullScreen?: boolean;
 }
 
@@ -73,6 +75,7 @@ const multiSchema = localizeSchema(() =>
 );
 
 @compose(
+  injectIntl,
   inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
   withFullScreen,
@@ -145,6 +148,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   }
 
   render() {
+    const intl = this.props.intl!;
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
@@ -155,46 +159,50 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
         render={(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open onClose={this.handleClose(formikProps)} fullScreen={this.props.fullScreen!} maxWidth="lg">
-              <DialogTitle>Aufwand {formikProps.values.id ? 'bearbeiten' : 'erfassen'}</DialogTitle>
+              <DialogTitle>
+                <FormattedMessage id={'view.timetrack.form_dialog.' + (formikProps.values.id ? 'edit_effort' : 'record_effort')} />
+              </DialogTitle>
 
               <DialogContent>
                 {!formikProps.values.id && (
-                  <DimeField isMulti component={EmployeeSelect} name={'employee_ids'} label={'Mitarbeiter'} />
+                  <DimeField isMulti component={EmployeeSelect} name={'employee_ids'} label={intl.formatMessage({id: 'general.employee'})} />
                 )}
-                {formikProps.values.id && <DimeField component={EmployeeSelect} name={'employee_id'} label={'Mitarbeiter'} />}
-                <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
+                {formikProps.values.id && <DimeField component={EmployeeSelect} name={'employee_id'} label={intl.formatMessage({id: 'general.employee'})} />}
+                <DimeField component={ProjectSelect} name={'project_id'} label={intl.formatMessage({id: 'general.project'})} />
                 <DimeField
                   projectId={formikProps.values.project_id}
                   component={ProjectPositionSelect}
                   name={'position_id'}
-                  label={'Service'}
+                  label={intl.formatMessage({id: 'general.service'})}
                   maxMenuHeight={200}
                 />
-                <DimeDatePickerField component={DateFastPicker} name={'date'} label={'Datum'} />
+                <DimeDatePickerField component={DateFastPicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
-                    <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={'Wert'} />
+                    <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={intl.formatMessage({id: 'general.value'})} />
                     {!formikProps.values.id && (
-                      <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar zu Projekt und Tag'} />
+                      <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'view.timetrack.form_dialog.comment_label'})} />
                     )}
                   </>
                 )}
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
+                <Button onClick={this.handleClose(formikProps)}>
+                  <FormattedMessage id={'general.action.cancel'} />
+                </Button>
                 <Button
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
-                  Speichern
+                  <FormattedMessage id={'general.action.save'} />
                 </Button>
                 {!formikProps.values.id && (
                   <Button
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
-                    Speichern und weiter
+                    <FormattedMessage id={'general.action.save_continue'} />
                   </Button>
                 )}
               </DialogActions>

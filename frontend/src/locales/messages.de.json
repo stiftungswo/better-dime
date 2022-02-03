@@ -1,4 +1,46 @@
 {
   "language.name": "Deutsch",
+
+  "general.has_selected": "{count} Ausgewählt",
+  "general.date": "Datum",
+  "general.employee": "Mitarbeiter",
+  "general.employee.plural": "Mitarbeiter",
+  "general.project": "Projekt",
+  "general.project.plural": "Projekte",
+  "general.service": "Service",
+  "general.service.plural": "Services",
+  "general.comment": "Kommentar",
+  "general.invoice": "Rechnung",
+  "general.effort_value": "Gebuchter Wert",
+  "general.value": "Wert",
+  "general.description": "Beschreibung",
+
+  "general.action.save": "Speichern",
+  "general.action.save_and_continue": "Speichern und weiter",
+  "general.action.cancel": "Abbruch",
+  "general.action.delete": "Löschen",
+  "general.action.move": "Verschieben",
+  "general.action.add_effort": "Aufwand hinzufügen",
+  "general.action.print_project_effort_report": "Aufwandsrapport drucken",
+  "general.action.print_employtee_effort_report": "Stundenübersicht drucken",
+  
+  "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
+  "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",
+  "view.timetrack.timetrack": "Zeiterfassung",
+  "view.timetrack.record_comment": "Kommentar erfassen",
+  "view.timetrack.record_effort": "Aufwand erfassen",
+  "view.timetrack.comment_form_dialog.edit_comment": "Projekt-Kommentar bearbeiten",
+  "view.timetrack.comment_form_dialog.record_comment": "Projekt-Kommentar erfassen",
+  "view.timetrack.filter_form.title": "Filter",
+  "view.timetrack.filter_form.show_empty": "Leere Gruppen anzeigen",
+  "view.timetrack.filter_form.show_comments": "Projekt-Kommentare anzeigen",
+  "view.timetrack.filter_form.refresh": "Aktualisieren",
+  "view.timetrack.form_dialog.record_effort": "Aufwand erfassen",
+  "view.timetrack.form_dialog.edit_effort": "Aufwand bearbeiten",
+  "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
+  "view.timetrack.service_group.": "Beschreibung",
+  "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
+  
+
   "form.confirmation_dialog.cancel": "Abbrechen"
 }
