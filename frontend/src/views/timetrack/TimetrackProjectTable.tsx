@@ -34,44 +34,6 @@ interface Props {
   observer,
 )
 export class TimetrackProjectTable extends React.Component<Props> {
-  private effortColumns: Array<Column<ProjectEffortListing | ProjectCommentListing>>;
-
-  constructor(props: Props) {
-    super(props);
-    const intl = this.props.intl!;
-    const formatter = this.props.formatter!;
-    this.effortColumns = [
-      {
-        id: 'date',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.date'}),
-        format: e => 'comment' in e ? <span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
-        defaultSort: 'desc',
-      },
-      {
-        id: 'employee',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.employee'}),
-        noSort: true,
-        format: e => 'comment' in e ? (<span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{e.comment}</span>) : e.employee_full_name,
-        defaultSort: 'desc',
-      },
-      {
-        id: '',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.service'}),
-        noSort: true,
-        format: e => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
-      },
-      {
-        id: 'effort_value',
-        numeric: true,
-        noSort: true,
-        label: intl.formatMessage({id: 'general.effort_value'}),
-        format: h => 'comment' in h ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-      },
-    ];
-  }
 
   onClickRow = async (entity: ProjectEffortListing | ProjectCommentListing) => {
     if (entity && entity.id) {
@@ -92,6 +54,38 @@ export class TimetrackProjectTable extends React.Component<Props> {
 
   render() {
     const intl = this.props.intl!;
+    const formatter = this.props.formatter!;
+    const effortColumns: Array<Column<ProjectEffortListing>> = [
+      {
+        id: 'date',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.date'}),
+        format: (e: any) => 'comment' in e ? <span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
+        defaultSort: 'desc',
+      },
+      {
+        id: 'employee',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.employee'}),
+        noSort: true,
+        format: (e: any) => 'comment' in e ? (<span style={{ fontStyle: 'italic', color: 'rgb(100,100,100)' }}>{e.comment}</span>) : e.employee_full_name,
+        defaultSort: 'desc',
+      },
+      {
+        id: '',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.service'}),
+        noSort: true,
+        format: (e: any) => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
+      },
+      {
+        id: 'effort_value',
+        numeric: true,
+        noSort: true,
+        label: intl.formatMessage({id: 'general.effort_value'}),
+        format: (h: any) => 'comment' in h ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+      },
+    ];
     const projectGroupActions = (
       <>
         <PrintButton
@@ -113,7 +107,7 @@ export class TimetrackProjectTable extends React.Component<Props> {
     return (
       <TimetrackEntityGroup
         actions={projectGroupActions}
-        columns={this.effortColumns}
+        columns={effortColumns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
         comments={comments}

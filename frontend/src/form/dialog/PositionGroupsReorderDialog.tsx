@@ -12,6 +12,7 @@ import { ArrayHelpers, FieldArray, FieldArrayRenderProps, FormikProps } from 'fo
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
@@ -20,6 +21,7 @@ import { PositionGroup, PositionGroupings, Service } from '../../types';
 import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { localizeSchema } from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DraggableTableBody } from '../../views/invoices/DraggableTableBody';
 import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
 import { ServiceSelect } from '../entitySelect/ServiceSelect';
@@ -42,11 +44,13 @@ interface Props {
   open: boolean;
   onClose: () => void;
   positionGroupStore?: PositionGroupStore;
+  intl?: IntlShape;
   onSubmit: (groups: PositionGroup[]) => void;
   allGroups: PositionGroup[]; // in sorted order, includes the default group.
 }
 
 @compose(
+  injectIntl,
   inject('positionGroupStore'),
   observer,
 )
@@ -65,7 +69,9 @@ export default class PositionGroupRenameDialog extends React.Component<Props> {
           <TableHead>
             <TableRow>
               <DimeTableCell/>
-              <DimeTableCell>Gruppe</DimeTableCell>
+              <DimeTableCell>
+                <FormattedMessage id="form.dialog.position_groups_reorder.group" />
+              </DimeTableCell>
             </TableRow>
           </TableHead>
           <DraggableTableBody
@@ -94,13 +100,14 @@ export default class PositionGroupRenameDialog extends React.Component<Props> {
   render() {
     // the default group is not part of props.positionGroups, so we add it here
     const { allGroups } = this.props;
+    const intlText = wrapIntl(this.props.intl!, 'form.dialog.position_groups_reorder');
 
     return (
       <FormDialog
         open
         onClose={this.props.onClose}
-        title="Reihenfolge der Servicegruppen"
-        confirmText="Übernehmen"
+        title={intlText('title')}
+        confirmText={intlText('confirm_text')}
         initialValues={{groups: allGroups}}
         validationSchema={schema}
         onSubmit={this.handleSubmit}

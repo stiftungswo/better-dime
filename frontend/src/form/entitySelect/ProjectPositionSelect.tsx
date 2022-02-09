@@ -1,10 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { EffortStore } from '../../stores/effortStore';
 import { ProjectStore } from '../../stores/projectStore';
-import {PositionGroup} from '../../types';
+import { PositionGroup } from '../../types';
 import compose from '../../utilities/compose';
-import {defaultPositionGroup} from '../../utilities/helpers';
+import { defaultPositionGroup } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DimeCustomFieldProps } from '../fields/common';
 import Select from '../fields/Select';
 
@@ -12,9 +14,11 @@ interface Props extends DimeCustomFieldProps<number | null> {
   effortStore?: EffortStore;
   projectId: number;
   projectStore?: ProjectStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('effortStore', 'projectStore'),
   observer,
 )
@@ -50,14 +54,15 @@ export class ProjectPositionSelect extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.entity_select.project_position_select');
     if (this.props.projectId) {
       if (this.props.projectStore!.project) {
         return <Select options={this.options} {...this.props} />;
       } else {
-        return <Select options={[]} isDisabled isLoading placeholder={'Projekt-Positionen werden abgerufen ...'} {...this.props} />;
+        return <Select options={[]} isDisabled isLoading placeholder={intlText('wait_fetching')} {...this.props} />;
       }
     } else {
-      return <Select options={[]} isDisabled placeholder={'Zuerst Projekt auswählen'} {...this.props} />;
+      return <Select options={[]} isDisabled placeholder={intlText('missing_project')} {...this.props} />;
     }
   }
 

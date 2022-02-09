@@ -39,7 +39,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
     const open = mainStore!.userMenuOpen;
     const { userMenuAnchorEl } = mainStore!;
 
-    const languageName = intl!.formatMessage({id: 'language.name'});
+    const languageName = intl!.formatMessage({id: 'language.display_name'});
 
     return (
       <div>

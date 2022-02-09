@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
 
@@ -9,9 +10,11 @@ interface Props {
   isValid: boolean;
   errors?: any;
   mainStore?: MainStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore'),
   observer,
 )
@@ -25,7 +28,7 @@ export class FormikSubmitDetector extends React.Component<Props> {
         if (this.props.errors.errorMessage) {
           this.props.mainStore!.displayError(this.props.errors.errorMessage);
         } else {
-            this.props.mainStore!.displayError('Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.');
+            this.props.mainStore!.displayError(this.props.intl!.formatMessage({id: 'form.failed_to_save'}));
         }
       }
       // tslint:disable-next-line:no-console

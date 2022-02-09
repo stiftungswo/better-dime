@@ -6,6 +6,7 @@ import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
@@ -79,10 +80,12 @@ export type Props = {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
+  intl?: IntlShape;
 } & RouteComponentProps &
   FormViewProps<Project>;
 
 @compose(
+  injectIntl,
   inject(
     'costgroupStore',
     'customerStore',
@@ -126,7 +129,7 @@ class ProjectForm extends React.Component<Props> {
   }
 
   render() {
-    const { project, mainStore, projectStore } = this.props;
+    const { project, mainStore, projectStore, intl } = this.props;
     let afterUnitInvalidation = false;
 
     if (!(empty(project) || this.props.loading || this.state.loading)) {
@@ -135,6 +138,7 @@ class ProjectForm extends React.Component<Props> {
 
     return (
       <FormView
+        intl={intl!}
         paper={false}
         loading={empty(project) || this.props.loading || this.state.loading}
         title={this.props.title}

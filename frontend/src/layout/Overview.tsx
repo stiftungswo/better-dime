@@ -2,10 +2,12 @@ import Grid from '@material-ui/core/Grid';
 import { pseudoRandomBytes } from 'crypto';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { AbstractPaginatedStore } from '../stores/abstractPaginatedStore';
 import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
 import { Listing, PaginationInfo, SelectedAction } from '../types';
+import compose from '../utilities/compose';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
@@ -36,6 +38,7 @@ interface Props<ListingType> {
   columns?: Array<Column<ListingType>>;
   onClickRow?: ((e: ListingType) => void) | string;
   mainStore?: MainStore;
+  intl?: IntlShape;
   archivable?: boolean;
   searchable?: boolean;
   paginated?: boolean;
@@ -53,8 +56,11 @@ interface State {
   previousSearchQuery: string;
 }
 
-@inject('mainStore')
-@observer
+@compose(
+  injectIntl,
+  inject('mainStore'),
+  observer,
+)
 export default class Overview<ListingType extends Listing> extends React.Component<Props<Listing>, State> {
   constructor(props: Props<ListingType>) {
     super(props);
@@ -148,13 +154,14 @@ export default class Overview<ListingType extends Listing> extends React.Compone
 
   render() {
     const mainStore = this.props.mainStore!;
+    const intl = this.props.intl!;
     const totalSelectedIds = this.totalSelectedIds.length;
     const reload = this.reload;
     const selectedActions = this.props.selectedActions;
 
     return (
       <React.Fragment>
-        <DimeAppBar title={this.props.title + (totalSelectedIds > 0 ? ' (' + totalSelectedIds + ' ausgewählt)' : '')}>
+        <DimeAppBar title={this.props.title + (totalSelectedIds > 0 ? ' (' + intl.formatMessage({id: 'general.has_selected'}, {count: totalSelectedIds}) + ')' : '')}>
           {totalSelectedIds > 0 && selectedActions && (
             selectedActions.map(action => {
               return (
@@ -182,8 +189,8 @@ export default class Overview<ListingType extends Listing> extends React.Compone
               }
             />
           )}
-          <DimeAppBarButton icon={RefreshIcon} title={'Aktualisieren'} action={this.reload} />
-          {this.props.addAction && <DimeAppBarButton icon={AddIcon} title={'Hinzufügen'} action={this.props.addAction} />}
+          <DimeAppBarButton icon={RefreshIcon} title={intl.formatMessage({id: 'general.action.refresh'})} action={this.reload} />
+          {this.props.addAction && <DimeAppBarButton icon={AddIcon} title={intl.formatMessage({id: 'general.action.add'})} action={this.props.addAction} />}
         </DimeAppBar>
         <DimeContent loading={this.state.loading} paper={false}>
           <Grid container spacing={3}>

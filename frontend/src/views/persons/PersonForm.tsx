@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
 import { CompanySelect } from '../../form/entitySelect/CompanySelect';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
@@ -28,9 +29,11 @@ export interface Props extends FormViewProps<Person> {
   person?: Person;
   rateGroupStore?: RateGroupStore;
   employeeStore?: EmployeeStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('companyStore', 'customerTagStore', 'employeeStore', 'rateGroupStore'),
   observer,
 )
@@ -76,13 +79,14 @@ export default class PersonForm extends React.Component<Props> {
   }
 
   render() {
-    const { person } = this.props;
+    const { person, intl } = this.props;
     const { company } = this.props.companyStore!;
     const inheritedAddresses = company ? company.addresses : [];
     const inheritedPhoneNumbers = company ? company.phone_numbers : [];
 
     return (
       <FormView
+        intl={intl!}
         paper={false}
         title={this.props.title}
         validationSchema={personSchema}

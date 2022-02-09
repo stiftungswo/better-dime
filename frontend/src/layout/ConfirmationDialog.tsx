@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import {PropTypes} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -5,6 +6,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import compose from '../utilities/compose';
 import { ActionButton } from './ActionButton';
 import { DeleteIcon } from './icons';
 
@@ -13,9 +16,13 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   open: boolean;
   title?: string;
+  intl?: IntlShape;
   children: React.ReactNode;
 }
 
+@compose(
+  injectIntl,
+)
 export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
   handleClose = () => {
     this.props.onClose();
@@ -27,6 +34,7 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
 
   render() {
     const { children, title, open } = this.props;
+    const intl = this.props.intl!;
 
     /**  data-expansion-block={true} is so we don't collapse the TimetrackExpansionPanel when we click somewhere */
     return (
@@ -35,10 +43,10 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary">
-            Abbrechen
+            <FormattedMessage id={'general.action.cancel'} />
           </Button>
           <Button onClick={this.handleOk} color="primary">
-            Ok
+            <FormattedMessage id={'general.action.ok'} />
           </Button>
         </DialogActions>
       </Dialog>
@@ -54,13 +62,16 @@ interface ConfirmationButtonProps {
   color?: PropTypes.Color;
   icon?: React.ComponentType;
   style?: React.CSSProperties;
+  intl?: IntlShape;
 }
 
 interface ConfirmationButtonState {
   open: boolean;
 }
 
-// tslint:disable
+@compose(
+  injectIntl,
+)
 export class ConfirmationButton extends React.Component<ConfirmationButtonProps, ConfirmationButtonState> {
   state = {
     open: false,
@@ -81,18 +92,21 @@ export class ConfirmationButton extends React.Component<ConfirmationButtonProps,
 
   render = () => {
     const { icon, title, ...rest } = this.props;
+    const intl = this.props.intl!;
+    const titleOrDefault = this.props.title || intl.formatMessage({id: 'general.action.delete'});
     return (
       <>
-        <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={this.props.title || 'Löschen'}>
-          {this.props.message ? this.props.message : 'Wirklich löschen?'}
+        <ConfirmationDialog onClose={this.handleClose} onConfirm={this.handleConfirm} open={this.state.open} title={titleOrDefault}>
+          {this.props.message ? this.props.message : intl.formatMessage({id: 'layout.confirmation_dialog.confirm_delete'})}
         </ConfirmationDialog>
         <ActionButton
           // color={this.props.color}
           // disabled={this.props.disabled}
           {...rest}
           icon={icon || DeleteIcon}
-          title={title || 'Löschen'}
-          action={this.handleOpen} />
+          title={titleOrDefault}
+          action={this.handleOpen}
+        />
       </>
     );
   }

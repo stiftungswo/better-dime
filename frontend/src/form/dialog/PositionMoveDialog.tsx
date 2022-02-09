@@ -1,15 +1,18 @@
-import {ArrayHelpers, FormikProps} from 'formik';
+import { ArrayHelpers, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
-import {AbstractStore} from '../../stores/abstractStore';
-import {MainStore} from '../../stores/mainStore';
-import {PositionGroupStore} from '../../stores/positionGroupStore';
-import {PositionGroup, PositionGroupings, Project} from '../../types';
-import {defaultPositionGroup} from '../../utilities/helpers';
+import { AbstractStore } from '../../stores/abstractStore';
+import { MainStore } from '../../stores/mainStore';
+import { PositionGroupStore } from '../../stores/positionGroupStore';
+import { PositionGroup, PositionGroupings, Project } from '../../types';
+import compose from '../../utilities/compose';
+import { defaultPositionGroup } from '../../utilities/helpers';
 import { localizeSchema, nullableNumber, selector } from '../../utilities/validation';
-import {PositionGroupSelect} from '../entitySelect/PositionGroupSelect';
-import {DimeField} from '../fields/formik';
+import { wrapIntl } from '../../utilities/wrapIntl';
+import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
+import { DimeField } from '../fields/formik';
 import { FormDialog } from './FormDialog';
 
 const schema = localizeSchema(() =>
@@ -26,8 +29,9 @@ type Values = typeof template;
 
 interface Props {
   mainStore?: MainStore;
-  positionIndex: number;
   positionGroupStore?: PositionGroupStore;
+  intl?: IntlShape;
+  positionIndex: number;
   groupingEntity: PositionGroupings<any>;
   onClose: () => void;
   onUpdate: (positionIndex: number, newGroupId: number | null) => void;
@@ -57,9 +61,11 @@ export async function resolveNewGroupName(newGroupName: string | null, groupingE
     return null;
   }
 }
-
-@inject('positionGroupStore', 'mainStore')
-@observer
+@compose(
+  injectIntl,
+  inject('positionGroupStore', 'mainStore'),
+  observer,
+)
 export default class PositionMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
     const values = schema.cast(formValues);
@@ -71,13 +77,14 @@ export default class PositionMoveDialog extends React.Component<Props> {
 
   render() {
     const placeholder = this.props.placeholder;
+    const intlText = wrapIntl(this.props.intl!, 'form.dialog.position_move');
 
     return (
       <FormDialog
         open
         onClose={this.props.onClose}
-        title="Service verschieben"
-        confirmText="Verschieben"
+        title={intlText('title')}
+        confirmText={intlText('confirm_text')}
         initialValues={template}
         validationSchema={schema}
         onSubmit={this.handleSubmit}

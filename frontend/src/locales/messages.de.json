@@ -1,28 +1,141 @@
 {
-  "language.name": "Deutsch",
+  "language.display_name": "Deutsch",
 
-  "general.has_selected": "{count} Ausgewählt",
+  "general.has_selected": "{count} ausgewählt",
   "general.date": "Datum",
   "general.employee": "Mitarbeiter",
   "general.employee.plural": "Mitarbeiter",
+  "general.customer": "Kunde",
+  "general.customer.plural": "Kunden",
+  "general.offer": "Offerte",
+  "general.offer.plural": "Offerten",
   "general.project": "Projekt",
   "general.project.plural": "Projekte",
+  "general.invoice": "Rechnung",
+  "general.invoice.plural": "Rechnungen",
   "general.service": "Service",
   "general.service.plural": "Services",
   "general.comment": "Kommentar",
-  "general.invoice": "Rechnung",
   "general.effort_value": "Gebuchter Wert",
   "general.value": "Wert",
   "general.description": "Beschreibung",
+  "general.name": "Name",
 
   "general.action.save": "Speichern",
   "general.action.save_and_continue": "Speichern und weiter",
-  "general.action.cancel": "Abbruch",
+  "general.action.cancel": "Abbrechen",
+  "general.action.ok": "Ok",
+  "general.action.add": "Hinzufügen",
+  "general.action.create": "Erstellen",
+  "general.action.refresh": "Aktualisieren",
   "general.action.delete": "Löschen",
   "general.action.move": "Verschieben",
+  "general.action.edit": "Bearbeiten",
+  "general.action.duplicate": "Duplizieren",
+  "general.action.archive": "Archivieren",
+  "general.action.dearchive": "Un-Archivieren",
   "general.action.add_effort": "Aufwand hinzufügen",
   "general.action.print_project_effort_report": "Aufwandsrapport drucken",
   "general.action.print_employtee_effort_report": "Stundenübersicht drucken",
+
+  "form.failed_to_save": "Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.",
+
+  "form.dialog.service_select.service_group": "Service Gruppe",
+  "form.dialog.service_select.title": "Service hinzufügen",
+
+  "form.dialog.city_select.title": "Ort für Unterschrift auswählen",
+  "form.dialog.city_select.none": "<kein Ort>",
+  "form.dialog.city_select.basel": "Basel",
+  "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
+  "form.dialog.city_select.wallis": "Sierre (Wallis)",
+  
+  "form.dialog.form.confirm_close": "Die Änderungen wurden noch nicht gespeichert. Verwerfen?",
+
+  "form.dialog.position_group_rename.title": "Ganze Gruppe verschieben",
+  "form.dialog.position_group_rename.service_group": "Service Gruppe",
+  "form.dialog.position_group_rename.move_to": "Veschieben nach",
+
+  "form.dialog.position_group_sort.title": "Services automatisiert umsortieren?",
+  "form.dialog.position_group_sort.service_group": "Service Gruppe",
+  "form.dialog.position_group_sort.confirm": "Umsortieren",
+
+  "form.dialog.position_groups_reorder.": "Reihenfolge der Servicegruppen",
+  "form.dialog.position_groups_reorder.confirm_text": "Übernehmen",
+  "form.dialog.position_groups_reorder.group": "Gruppe",
+
+  "form.dialog.position_move.title": "Service verschieben",
+  "form.dialog.position_move.confirm_text": "Verschieben",
+
+  "form.entity_select.project_position_select.wait_fetching": "Projekt-Positionen werden abgerufen ...",
+  "form.entity_select.project_position_select.missing_project": "Zuerst Projekt auswählen",
+
+  "form.entity_select.address_select.wait_fetching": "Adressen werden abgerufen ...",
+  "form.entity_select.address_select.missing_customer": "zuerst Kunde auswählen",
+
+  "form.entity_select.export_format.just_email_addresses": "Nur E-Mail (Textdokument)",
+  "form.entity_select.export_format.whole_excel_file": "Excel-Dokument",
+
+  "form.entity_select.export_grouping.by_project": "Nach Projekt gruppiert",
+  "form.entity_select.export_grouping.by_category": "Nach Projekt-Kategorie gruppiert",
+
+  "form.entity_select.position_group": "Kein Subjekt wurde übergeben",
+  
+  "form.fields.select.placeholder": "Bitte auswählen...",
+  "form.fields.select.no_options": "Keine Optionen verfügbar",
+
+  "form.fields.timetrack.effort_value_field.position_not_found": "Ausgewählte Position nicht gefunden.",
+  "form.fields.timetrack.effort_value_field.placeholder": "Kein Projekt oder Service ausgewählt.",
+
+  "form.fields.timetrack.time_effort_value_field.time_unit": "Zeiteinheit",
+  "form.fields.timetrack.time_effort_value_field.select_error_message": "Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!",
+  "form.fields.timetrack.time_effort_value_field.invalid_number_warning": "Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, kann der Eintrag nicht gespeichert werden!",
+
+
+  "form.view.warn_discard_changes": "Änderungen verwerfen?",
+  
+
+  "layout.app_bar_search.placeholder": "Suche…",
+
+  "layout.confirmation_dialog.confirm_delete": "Wirklich löschen?",
+
+  "layout.breakdown_table.subtotal": "Subtotal",
+  "layout.breakdown_table.vat_total": "MwSt.",
+  "layout.breakdown_table.discount_total": "Total Abzüge",
+  "layout.breakdown_table.final_cost": "Total",
+
+  "layout.print_button.print": "Drucken",
+
+  "layout.navigation.timetrack": "Zeiterfassung",
+  "layout.navigation.offers": "Offerten",
+  "layout.navigation.projects": "Projekte",
+  "layout.navigation.projects.all": "Alle",
+  "layout.navigation.projects.invoiceless": "Nicht verrechnet",
+  "layout.navigation.invoices": "Rechnungen",
+  "layout.navigation.employees": "Mitarbeiter",
+  "layout.navigation.customers": "Kunden",
+  "layout.navigation.customers.persons": "Personen",
+  "layout.navigation.customers.companies": "Firmen",
+  "layout.navigation.customers.tags": "Tags",
+  "layout.navigation.customers.transfer": "Import / Export",
+  "layout.navigation.reports": "Rapporte",
+  "layout.navigation.reports.daily": "Wochenrapport",
+  "layout.navigation.reports.service": "Service-Rapporte",
+  "layout.navigation.reports.revenue": "Umsatzrapport",
+  "layout.navigation.reports.employees": "Mitarbeiterraport",
+  "layout.navigation.reports.project": "Projektrapport",
+  "layout.navigation.reports.costgroup": "Kostenstellenraport",
+  "layout.navigation.data": "Stammdaten",
+  "layout.navigation.data.services": "Services",
+  "layout.navigation.data.rate_groups": "Tarif-Gruppen",
+  "layout.navigation.data.rate_units": "Tarif-Typen",
+  "layout.navigation.data.employee_groups": "Mitarbeiter-Gruppen",
+  "layout.navigation.data.comment_presets": "Kommentarvorlagen",
+  "layout.navigation.data.holidays": "Feiertage",
+  "layout.navigation.data.project_categories": "Tätigkeitsbereiche",
+  "layout.navigation.data.global_settings": "Einstellungen",
+  
+
+  "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
   
   "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
   "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",
@@ -40,7 +153,42 @@
   "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
   "view.timetrack.service_group.": "Beschreibung",
   "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
+  "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
+  
+  
+  "view.offer.form.save_first": "Zuerst speichern!",
+  "view.offer.form.create_project_from_offer": "Projekt aus Offerte erstellen",
+  "view.offer.form.locked_offer": "Die Offerte ist auf dem Status \"Bestätigt\" und kann deswegen nicht mehr bearbeitet werden. Um die Offerte anzupassen, ändere erst den Status.",
+  "view.offer.form.name": "Name",
+  "view.offer.form.customer": "Kunde",
+  "view.offer.form.address": "Adresse",
+  "view.offer.form.rate": "Tarif",
+  "view.offer.form.accountant": "Verantwortlicher Mitarbeiter",
+  "view.offer.form.status": "Status",
+  "view.offer.form.short_description": "Kurzbeschreibung",
+  "view.offer.form.date": "Ausstellungsdatum",
+  "view.offer.form.description": "Beschreibung",
+  "view.offer.form.archived_rate_groups_warning": "Services mit archivierten Einheiten vorhanden!",
+  "view.offer.form.breakdown": "Berechnung",
+  "view.offer.form.fixed_price": "Fixpreis",
+  "view.offer.form.vat_rate": "MwSt. Satz",
+  "view.offer.position_renderer.note": "Hinweis",
+  "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
+  "view.offer.position_renderer.rate": "Tarif",
+  "view.offer.position_renderer.rate_unit": "Tariftyp",
+  "view.offer.position_renderer.amount": "Menge",
+  "view.offer.position_renderer.vat": "MwSt.",
+  "view.offer.position_renderer.total": "Total CHF (mit MWSt.)",
+  "view.offer.position_renderer.actions": "Aktionen",
+  "view.offer.discount_subform.title": "Abzüge",
+  "view.offer.discount_subform.percentage": "Prozent",
+  "view.offer.discount_subform.discount": "Abzug",
+  "view.offer.discount_subform.actions": "Aktionen",
+  "view.offer.addcc_dialog.title": "Kostenstelle und Tätigkeitsbereich hinzufügen",
+  "view.offer.addcc_dialog.confirm_text": "Projekt erstellen",
+  "view.offer.addcc_dialog.cost_group": "Kostenstelle",
+  "view.offer.addcc_dialog.category": "Tätigkeitsbereich",
   
 
-  "form.confirmation_dialog.cancel": "Abbrechen"
+  "end.of.file": "Keep this line at the end to deal with json's non-existing trailing comma."
 }

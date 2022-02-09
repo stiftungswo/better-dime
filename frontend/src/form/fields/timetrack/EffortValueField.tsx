@@ -1,9 +1,11 @@
 import { TextField } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { EffortStore } from '../../../stores/effortStore';
 import { ProjectPosition } from '../../../types';
 import compose from '../../../utilities/compose';
+import { wrapIntl } from '../../../utilities/wrapIntl';
 import { DimeCustomFieldProps } from '../common';
 import { FlatEffortValueField } from './FlatEffortValueField';
 import { TimeEffortValueField } from './TimeEffortValueField';
@@ -12,14 +14,17 @@ interface Props extends DimeCustomFieldProps<number> {
   rateUnitId: number;
   positionId?: number;
   effortStore?: EffortStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('effortStore'),
   observer,
 )
 export class EffortValueField extends React.Component<Props> {
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.fields.timetrack.effort_value_field');
     const { positionId } = this.props;
     const { selectedProject } = this.props.effortStore!;
 
@@ -33,10 +38,10 @@ export class EffortValueField extends React.Component<Props> {
           return <FlatEffortValueField {...this.props} rateUnitId={selectedPosition.rate_unit_id} />;
         }
       } else {
-        return <TextField label={'Ausgewählte Position nicht gefunden.'} disabled />;
+        return <TextField label={intlText('position_not_found')} disabled />;
       }
     } else {
-      return <TextField label={'Kein Projekt oder Service ausgewählt.'} disabled />;
+      return <TextField label={intlText('placeholder')} disabled />;
     }
   }
 }

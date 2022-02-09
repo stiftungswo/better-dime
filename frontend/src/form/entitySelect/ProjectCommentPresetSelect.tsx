@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import {ProjectCommentStore} from '../../stores/projectCommentStore';
 import compose from '../../utilities/compose';
@@ -8,9 +9,11 @@ import Select, { DimeSelectFieldProps } from '../fields/Select';
 interface Props<T = number> extends DimeSelectFieldProps<T> {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   projectCommentStore?: ProjectCommentStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('projectCommentStore', 'projectCommentPresetStore'),
   observer,
 )
@@ -60,12 +63,13 @@ export class ProjectCommentPresetSelect<T> extends React.Component<Props<T>> {
   }
 
   render() {
+    const creationText = this.props.intl!.formatMessage({id: 'general.action.create'});
     return (
       <Select
         creatable
         isClearable
         maxMenuHeight={200}
-        formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
+        formatCreateLabel={(userInput: any) => creationText + `: ${userInput}`}
         options={this.options}
         onCreate={this.onCreate}
         {...this.props}

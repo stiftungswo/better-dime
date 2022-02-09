@@ -4,19 +4,21 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {FormikProps} from 'formik';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { PositionGroupStore } from '../../stores/positionGroupStore';
-import {PositionGroup, PositionGroupings, Service} from '../../types';
+import { PositionGroup, PositionGroupings, Service } from '../../types';
 import compose from '../../utilities/compose';
-import {defaultPositionGroup} from '../../utilities/helpers';
+import { defaultPositionGroup } from '../../utilities/helpers';
 import { localizeSchema } from '../../utilities/validation';
-import {PositionGroupSelect} from '../entitySelect/PositionGroupSelect';
+import { wrapIntl } from '../../utilities/wrapIntl';
+import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
 import { ServiceSelect } from '../entitySelect/ServiceSelect';
 import { TextField } from '../fields/common';
-import {DimeField} from '../fields/formik';
+import { DimeField } from '../fields/formik';
 import { FormDialog } from './FormDialog';
 import { resolveNewGroupName } from './PositionMoveDialog';
 
@@ -36,6 +38,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   positionGroupStore?: PositionGroupStore;
+  intl?: IntlShape;
   onSubmit: (groupName: string, newName: number | null) => void;
   groupingEntity: PositionGroupings<any>;
   groupName?: string;
@@ -43,6 +46,7 @@ interface Props {
 }
 
 @compose(
+ injectIntl,
   inject('positionGroupStore'),
   observer,
 )
@@ -57,6 +61,7 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.dialog.position_group_rename');
     const names = [
       ...this.props.groupingEntity.position_groupings.map((e: PositionGroup) => e.name),
       defaultPositionGroup().name,
@@ -66,8 +71,8 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
       <FormDialog
         open
         onClose={this.props.onClose}
-        title="Ganze Gruppe verschieben"
-        confirmText="Verschieben"
+        title={intlText('title')}
+        confirmText={intlText('general.action.move', true)}
         initialValues={{oldGroupName: this.props.groupName, newGroupName: ''}}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
@@ -78,7 +83,7 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
                 name={'oldGroupName'}
                 component={PositionGroupSelect}
                 creatable={false}
-                label={'Service Gruppe'}
+                label={intlText('service_group')}
                 groupingEntity={this.props.groupingEntity}
                 placeholder={this.props.placeholder}
               />
@@ -87,7 +92,7 @@ export class PositionGroupRenameDialog extends React.Component<Props> {
               name={'newGroupName'}
               component={PositionGroupSelect}
               creatable={true}
-              label={'Veschieben nach'}
+              label={intlText('move_to')}
               groupingEntity={this.props.groupingEntity}
               placeholder={this.props.placeholder}
             />

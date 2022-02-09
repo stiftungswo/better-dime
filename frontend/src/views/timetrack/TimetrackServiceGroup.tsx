@@ -19,18 +19,18 @@ interface Props extends EntityGroup {
   observer,
 )
 export default class TimetrackServiceGroup extends React.Component<Props> {
-  private columns: Array<Column<ProjectEffortListing>>;
 
-  constructor(props: Props) {
-    super(props);
-    const intl = props.intl!;
-    const formatter = props.formatter!;
-    this.columns = [
+  render() {
+    const { entity } = this.props;
+
+    const intl = this.props.intl!;
+    const formatter = this.props.formatter!;
+    const columns: Array<Column<ProjectEffortListing>> = [
       {
         id: 'date',
         numeric: false,
         label: intl.formatMessage({id: 'general.date'}),
-        format: e => formatter.formatDate(e.date),
+        format: (e: any) => formatter.formatDate(e.date),
         defaultSort: 'desc',
       },
       {
@@ -52,13 +52,10 @@ export default class TimetrackServiceGroup extends React.Component<Props> {
         id: 'effort_value',
         numeric: true,
         label: intl.formatMessage({id: 'general.effort_value'}),
-        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+        format: (h: any) => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
       },
     ];
-  }
 
-  render() {
-    const { entity } = this.props;
-    return <TimetrackEntityGroup columns={this.columns} efforts={entity.efforts} title={entity.name} onClickRow={this.props.onClickRow} />;
+    return <TimetrackEntityGroup columns={columns} efforts={entity.efforts} title={entity.name} onClickRow={this.props.onClickRow} />;
   }
 }

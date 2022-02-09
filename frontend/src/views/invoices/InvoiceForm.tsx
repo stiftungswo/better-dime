@@ -3,6 +3,7 @@ import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
@@ -44,9 +45,11 @@ export interface Props extends FormViewProps<Invoice> {
   invoiceStore?: InvoiceStore;
   invoice: Invoice;
   rateUnitStore?: RateUnitStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('costgroupStore', 'customerStore', 'employeeStore', 'invoiceStore', 'rateUnitStore'),
   observer,
 )
@@ -80,7 +83,7 @@ export default class InvoiceForm extends React.Component<Props> {
   }
 
   render() {
-    const { invoice } = this.props;
+    const { invoice, intl } = this.props;
     let afterUnitInvalidation = false;
 
     if (!(empty(invoice) || this.props.loading || this.state.loading)) {
@@ -91,6 +94,7 @@ export default class InvoiceForm extends React.Component<Props> {
 
     return (
       <FormView
+        intl={intl!}
         paper={false}
         loading={empty(invoice) || this.props.loading}
         title={this.props.title}

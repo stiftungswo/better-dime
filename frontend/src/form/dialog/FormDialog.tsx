@@ -7,12 +7,14 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
 import { LoadingSpinner } from '../../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../../types';
 import compose from '../../utilities/compose';
 import { withFullScreen } from '../../utilities/withFullScreen';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { FormikSubmitDetector } from '../FormikSubmitDetector';
 
 interface DialogFormProps<T> {
@@ -25,9 +27,11 @@ interface DialogFormProps<T> {
   onClose: () => void;
   confirmText?: string;
   fullScreen?: boolean;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   withFullScreen,
 )
 export class FormDialog<Values = object, ExtraProps = {}> extends React.Component<
@@ -38,9 +42,9 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
     formikBag.setSubmitting(false);
   }
 
-  handleClose = (props: FormikProps<Values>) => () => {
+  handleClose = (props: FormikProps<Values>, confirmText: string) => () => {
     if (props.dirty) {
-      if (confirm('Die Änderungen wurden noch nicht gespeichert. Verwerfen?')) {
+      if (confirm(confirmText)) {
         this.props.onClose();
       }
     } else {
@@ -50,6 +54,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
 
   render() {
     const { fullScreen, ...rest } = this.props as any;
+    const intlText = wrapIntl(this.props.intl!, 'form.dialog.form');
 
     return this.props.loading ? (
       <Dialog open={this.props.open} onClose={this.props.onClose} fullScreen={fullScreen!}>
@@ -62,14 +67,16 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
         isInitialValid={true}
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Prompt when={formikProps.dirty} message={() => 'Die Änderungen wurden noch nicht gespeichert. Verwerfen?'} />
-            <Dialog open={this.props.open} onClose={this.handleClose(formikProps)} fullScreen={fullScreen!} maxWidth="lg">
+            <Prompt when={formikProps.dirty} message={() => intlText('confirm_close')} />
+            <Dialog open={this.props.open} onClose={this.handleClose(formikProps, intlText('confirm_close'))} fullScreen={fullScreen!} maxWidth="lg">
               <DialogTitle>{this.props.title}</DialogTitle>
               <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps)}>Abbruch</Button>
+                <Button onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
+                  <FormattedMessage id="general.action.cancel" />
+                </Button>
                 <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
-                  {this.props.confirmText || 'Speichern'}
+                  {this.props.confirmText || intlText('general.action.save', true)}
                 </Button>
               </DialogActions>
             </Dialog>

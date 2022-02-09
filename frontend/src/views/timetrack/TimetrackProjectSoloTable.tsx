@@ -28,45 +28,6 @@ interface Props {
   observer,
 )
 export class TimetrackProjectSoloTable extends React.Component<Props> {
-  columns: Array<Column<ProjectEffortListing>> = [];
-
-  constructor(props: Props) {
-    super(props);
-    const formatter = props.formatter!;
-    const intl = this.props.intl!;
-
-    this.columns = [
-      {
-        id: 'date',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.date'}),
-        format: e => formatter.formatDate(e.date),
-        defaultSort: 'desc',
-      },
-      {
-        id: 'employee',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.employee'}),
-        format: e => e.employee_full_name,
-        defaultSort: 'desc',
-      },
-      {
-        id: '',
-        numeric: false,
-        label: intl.formatMessage({id: 'general.service'}),
-        format: projectEffortListing =>
-          projectEffortListing.position_description
-            ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
-            : projectEffortListing.service_name,
-      },
-      {
-        id: 'effort_value',
-        numeric: true,
-        label: intl.formatMessage({id: 'general.effort_value'}),
-        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
-      },
-    ];
-  }
 
   projectGroupActions = (intl: IntlShape) => (
     <>
@@ -80,10 +41,44 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
   )
 
   render() {
+    const formatter = this.props.formatter!;
+    const intl = this.props.intl!;
+    const columns: Array<Column<ProjectEffortListing>> = [
+      {
+        id: 'date',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.date'}),
+        format: (e: any) => formatter.formatDate(e.date),
+        defaultSort: 'desc',
+      },
+      {
+        id: 'employee',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.employee'}),
+        format: (e: any) => e.employee_full_name,
+        defaultSort: 'desc',
+      },
+      {
+        id: '',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.service'}),
+        format: (projectEffortListing: any) =>
+          projectEffortListing.position_description
+            ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
+            : projectEffortListing.service_name,
+      },
+      {
+        id: 'effort_value',
+        numeric: true,
+        label: intl.formatMessage({id: 'general.effort_value'}),
+        format: (h: any) => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+      },
+    ];
+
     return (
       <TimetrackEntityGroup
         actions={this.projectGroupActions(this.props.intl!)}
-        columns={this.columns}
+        columns={columns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
         onClickRow={this.props.onClickRow}

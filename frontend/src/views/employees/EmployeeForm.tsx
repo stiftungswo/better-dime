@@ -3,6 +3,7 @@ import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { EmployeeGroupSelect } from '../../form/entitySelect/EmployeeGroupSelect';
 import { EmailField, NumberField, PasswordField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
@@ -12,6 +13,7 @@ import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 import {Employee, WorkPeriod} from '../../types';
+import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
@@ -20,10 +22,13 @@ export interface Props extends FormViewProps<Employee> {
   employee: Employee | undefined;
   schema: object;
   employeeGroupStore?: EmployeeGroupStore;
+  intl?: IntlShape;
 }
-
-@inject('employeeGroupStore')
-@observer
+@compose(
+  injectIntl,
+  inject('employeeGroupStore'),
+  observer,
+)
 export default class EmployeeForm extends React.Component<Props> {
   state = {
     loading: true,
@@ -42,7 +47,7 @@ export default class EmployeeForm extends React.Component<Props> {
   }
 
   render() {
-    const { employee, schema } = this.props;
+    const { employee, schema, intl } = this.props;
     let hasOverlaps = false;
 
     if (employee !== undefined) {
@@ -57,6 +62,7 @@ export default class EmployeeForm extends React.Component<Props> {
 
     return (
       <FormView
+        intl={intl!}
         title={this.props.title}
         validationSchema={schema}
         loading={empty(employee) || this.props.loading || this.state.loading}
