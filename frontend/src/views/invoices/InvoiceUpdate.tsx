@@ -1,10 +1,12 @@
 import { action, computed, toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { InvoiceStore } from '../../stores/invoiceStore';
 import { FormValues, Invoice } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import InvoiceForm from './InvoiceForm';
 
 interface InvoiceDetailRouterProps {
@@ -13,9 +15,11 @@ interface InvoiceDetailRouterProps {
 
 export interface Props extends RouteComponentProps<InvoiceDetailRouterProps> {
   invoiceStore?: InvoiceStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('invoiceStore'),
   observer,
 )
@@ -45,7 +49,8 @@ export default class InvoiceUpdate extends React.Component<Props> {
 
   render() {
     const invoice = this.invoice;
-    const title = invoice ? `${invoice.name} - Rechnungen` : 'Rechnung bearbeiten';
+    const intlText = wrapIntl(this.props.intl!, 'view.invoice.update');
+    const title = invoice ? `${invoice.name} - ` + intlText('general.invoice.plural', true) : intlText('edit_invoice');
 
     return <InvoiceForm title={title} onSubmit={this.handleSubmit} invoice={invoice as FormValues} />;
   }

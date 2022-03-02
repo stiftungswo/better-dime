@@ -43,21 +43,22 @@ export default class OfferDiscountSubform extends React.Component<Props> {
 
   render() {
     const { values } = this.props.formikProps;
-    const intl = this.props.intl!;
     const { disabled } = this.props;
+    const intl = this.props.intl!;
+    const idPrefix = 'view.offer.discount_subform';
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={intl.formatMessage({id: 'view.offer.discount_subform.title'})} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template())} />
+            <TableToolbar title={intl.formatMessage({id: idPrefix + '.title'})} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template())} />
             <Table>
               <TableHead>
                 <TableRow>
                   <DimeTableCell> <FormattedMessage id={'general.name'} /> </DimeTableCell>
-                  <DimeTableCell> <FormattedMessage id={'view.offer.discount_subform.percentage'} /> </DimeTableCell>
-                  <DimeTableCell> <FormattedMessage id={'view.offer.discount_subform.discounts'} /></DimeTableCell>
-                  <DimeTableCell> <FormattedMessage id={'view.offer.discount_subform.actions'} /></DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.percentage'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.discount'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

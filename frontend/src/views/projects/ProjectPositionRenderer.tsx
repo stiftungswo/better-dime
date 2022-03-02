@@ -1,33 +1,36 @@
-import {Divider, Typography} from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {Warning} from '@material-ui/icons';
-import {FieldArrayRenderProps} from 'formik';
+import { Warning } from '@material-ui/icons';
+import { FieldArrayRenderProps } from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
-import {TextField} from '../../form/fields/common';
+import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
 import PercentageField, { VatField } from '../../form/fields/PercentageField';
-import {ActionButton} from '../../layout/ActionButton';
+import { ActionButton } from '../../layout/ActionButton';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
-import {DragHandle, MoveIcon} from '../../layout/icons';
+import { DragHandle, MoveIcon } from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
-import {MainStore} from '../../stores/mainStore';
-import {ServiceStore} from '../../stores/serviceStore';
-import {PositionGroup, ProjectPosition} from '../../types';
+import { MainStore } from '../../stores/mainStore';
+import { ServiceStore } from '../../stores/serviceStore';
+import { PositionGroup, ProjectPosition } from '../../types';
 import compose from '../../utilities/compose';
-import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { isAfterArchivedUnitsCutoff } from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DraggableTableBody } from '../invoices/DraggableTableBody';
 
 interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
   arrayHelpers: FieldArrayRenderProps;
+  intl?: IntlShape;
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
   onAdd: (() => void) | undefined;
@@ -41,12 +44,15 @@ interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'serviceStore'),
 )
 export default class ProjectPositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, onDelete, onMove, onAdd, groupRenameButton, groupSortButton, groupReorderButton } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
+    const idPrefix = 'view.project.position_renderer';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
 
     return (
       <>
@@ -54,7 +60,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
           <div style={{ paddingTop: '20px' }}/>
         )}
         <TableToolbar
-          title={'Services - ' + group.name}
+          title={intlText('general.service.plural', true) + ' - ' + group.name}
           numSelected={0}
           addAction={onAdd}
         >
@@ -65,22 +71,21 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (
             <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
-              <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden
-              können.
+              <b><FormattedMessage id={idPrefix + '.note'} /></b> <FormattedMessage id={idPrefix + '.note_content'} />
             </Typography>
           )}
           <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '17%' }}>Service</DimeTableCell>
-                <DimeTableCell style={{ width: '17.5%' }}>Beschreibung</DimeTableCell>
-                <DimeTableCell style={{ width: '12.5%' }}>Tarif</DimeTableCell>
-                <DimeTableCell style={{ width: '17.5%' }}>Einheit</DimeTableCell>
-                <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell style={{ width: '7%' }}>Anzahl</DimeTableCell>
-                <DimeTableCell style={{ width: '5%' }}>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '15.5%', paddingLeft: '40px' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id="general.service" /> </DimeTableCell>
+                <DimeTableCell style={{ width: '17.5%' }}> <FormattedMessage id={idPrefix + '.description'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '12.5%' }}> <FormattedMessage id={idPrefix + '.rate'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '17.5%' }}> <FormattedMessage id={idPrefix + '.unit'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={idPrefix + '.vat'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '7%' }}> <FormattedMessage id={idPrefix + '.count'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '5%' }}> <FormattedMessage id={idPrefix + '.total'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15.5%', paddingLeft: '40px' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -146,11 +151,11 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                       <ActionButton
                         icon={MoveIcon}
                         action={() => onMove(pIdx)}
-                        title={'Verschieben'}
+                        title={intlText('general.action.move')}
                       />
                       <ConfirmationButton
                         disabled={!p.deletable}
-                        title={p.deletable ? 'Löschen' : 'Aufwand zuerst löschen!'}
+                        title={p.deletable ? intlText('general.action.delete', true) : intlText('has_efforts_warning')}
                         /* tslint:disable-next-line:no-empty */
                         onConfirm={p.deletable ? () => onDelete(pIdx) : () => {}}
                       />

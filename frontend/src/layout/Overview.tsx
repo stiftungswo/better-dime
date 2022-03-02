@@ -8,6 +8,7 @@ import { AbstractStore } from '../stores/abstractStore';
 import { MainStore } from '../stores/mainStore';
 import { Listing, PaginationInfo, SelectedAction } from '../types';
 import compose from '../utilities/compose';
+import { wrapIntl } from '../utilities/wrapIntl';
 import { ActionButtonAction } from './ActionButton';
 import { AppBarSearch } from './AppBarSearch';
 import { DimeAppBar, DimeAppBarButton } from './DimeAppBar';
@@ -155,6 +156,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
   render() {
     const mainStore = this.props.mainStore!;
     const intl = this.props.intl!;
+    const intlText = wrapIntl(intl, 'layout.overview');
     const totalSelectedIds = this.totalSelectedIds.length;
     const reload = this.reload;
     const selectedActions = this.props.selectedActions;
@@ -181,7 +183,7 @@ export default class Overview<ListingType extends Listing> extends React.Compone
             <DimeAppBarButton
               icon={ArchiveIcon}
               secondaryIcon={mainStore.showArchived ? InvisibleIcon : VisibleIcon}
-              title={`Archivierte Objekte ${mainStore.showArchived ? 'ausblenden' : 'einblenden'}`}
+              title={intlText(mainStore.showArchived ? 'hide_archived_objects' : 'show_archived_objects')}
               action={() => {
                   mainStore.showArchived = !mainStore.showArchived;
                   reload();

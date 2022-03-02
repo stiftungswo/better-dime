@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { FieldArray, FormikProps, getIn } from 'formik';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
 import { NumberField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
@@ -24,39 +25,41 @@ const template = () => ({
 
 export interface Props {
   mainStore?: MainStore;
+  intl?: IntlShape;
   formikProps: FormikProps<Project>;
   name: string;
   disabled?: boolean;
 }
 
-@compose(observer)
+@compose(
+  injectIntl,
+  observer,
+)
 export class ProjectCostgroupSubform extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
   render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     const weightSum = values.costgroup_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
+    const idPrefix = 'view.project.project_costgroup_subform';
+    const intl = this.props.intl!;
     return (
       <FieldArray
         name={name}
         render={arrayHelpers => (
           <>
             <TableToolbar
-              title={'Kostenstellen'}
+              title={intl.formatMessage({id: 'general.cost_group.plural'})}
               error={Boolean(currentError)}
               addAction={disabled ? undefined : () => arrayHelpers.push(template())}
             />
             <Table>
               <TableHead>
                 <TableRow>
-                  <DimeTableCell style={{ width: '20%' }}>Gewicht</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Anteil</DimeTableCell>
-                  <DimeTableCell style={{ width: '50%' }}>Kostenstelle</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
+                  <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '50%' }}> <FormattedMessage id={'general.cost_group'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

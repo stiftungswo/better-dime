@@ -34,7 +34,8 @@ import { Invoice, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
-import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { isAfterArchivedUnitsCutoff } from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import PositionSubformInline from '../PositionSubformInline';
 import { ProjectCategorySubform } from './ProjectCategorySubform';
 import { ProjectCostgroupSubform } from './ProjectCostgroupSubform';
@@ -135,6 +136,7 @@ class ProjectForm extends React.Component<Props> {
     if (!(empty(project) || this.props.loading || this.state.loading)) {
       afterUnitInvalidation = isAfterArchivedUnitsCutoff(project.created_at);
     }
+    const intlText = wrapIntl(this.props.intl!, 'view.project.form');
 
     return (
       <FormView
@@ -153,7 +155,7 @@ class ProjectForm extends React.Component<Props> {
                 hasCitySelection
                 path={`projects/${project.id}/effort_report`}
                 color={'inherit'}
-                title={'Aufwandsrapport drucken'}
+                title={intlText('print_effort_report')}
                 icon={StatisticsIcon}
               />
               <ActionButton
@@ -161,7 +163,7 @@ class ProjectForm extends React.Component<Props> {
                 color={'inherit'}
                 icon={InvoiceIcon}
                 secondaryIcon={AddIcon}
-                title={'Neue Rechnung aus Projekt generieren'}
+                title={intlText('generate_invoice')}
               />
             </>
           ) : (
@@ -177,14 +179,14 @@ class ProjectForm extends React.Component<Props> {
                     <DimePaper>
                       <Grid container spacing={3}>
                         <Grid item xs={12} lg={8}>
-                          <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
+                          <DimeField delayed required component={TextField} name={'name'} label={intlText('general.name', true)} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
-                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={intlText('accountant')} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <Effect onChange={this.handleCustomerChange} />
-                          <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
+                          <DimeField required component={CustomerSelect} name={'customer_id'} label={intlText('general.customer', true)} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <DimeField
@@ -192,11 +194,11 @@ class ProjectForm extends React.Component<Props> {
                             component={AddressSelect}
                             customerId={props.values.customer_id}
                             name={'address_id'}
-                            label={'Adresse'}
+                            label={intlText('address')}
                           />
                         </Grid>
                         <Grid item xs={12} lg={4}>
-                          <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                          <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intlText('rate')} />
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField
@@ -206,20 +208,20 @@ class ProjectForm extends React.Component<Props> {
                             multiline
                             maxRows={14}
                             name={'description'}
-                            label={'Beschreibung'}
+                            label={intlText('description')}
                           />
                         </Grid>
                         <Grid item xs={12} lg={8}>
-                          <DimeDatePickerField component={DatePicker} name={'deadline'} label={'Deadline'} />
+                          <DimeDatePickerField component={DatePicker} name={'deadline'} label={intlText('deadline')} />
                         </Grid>
                         <Grid item xs={12} lg={8}>
-                          <DimeField delayed component={CurrencyField} name={'fixed_price'} label={'Fixpreis'} />
+                          <DimeField delayed component={CurrencyField} name={'fixed_price'} label={intlText('fixed_price')} />
                         </Grid>
                         <Grid item xs={12} lg={6}>
                           <span style={{marginLeft: '10px'}}/>
-                          <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} />
+                          <DimeField component={SwitchField} name={'archived'} label={intlText('general.action.archive', true)} />
                           <span style={{marginLeft: '20px'}}/>
-                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
+                          <DimeField component={SwitchField} name={'chargeable'} label={intlText('chargeable')} />
                         </Grid>
                       </Grid>
                     </DimePaper>
@@ -259,7 +261,7 @@ class ProjectForm extends React.Component<Props> {
                             <Warning color={'error'}/>
                           </Grid>
                           <Grid item style={{color: 'red', marginLeft: '5px'}}>
-                            Services mit archivierten Einheiten vorhanden!
+                            <FormattedMessage id="view.project.form.archived_rate_units_warning" />
                           </Grid>
                         </Grid>
                       </>

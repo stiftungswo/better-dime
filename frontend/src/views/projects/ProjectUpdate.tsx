@@ -1,10 +1,12 @@
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { ProjectStore } from '../../stores/projectStore';
 import { FormValues, Project } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import ProjectForm from './ProjectForm';
 
 interface ProjectDetailRouterProps {
@@ -13,9 +15,11 @@ interface ProjectDetailRouterProps {
 
 export interface Props extends RouteComponentProps<ProjectDetailRouterProps> {
   projectStore?: ProjectStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('projectStore'),
   observer,
 )
@@ -42,7 +46,8 @@ export default class ProjectUpdate extends React.Component<Props> {
 
   render() {
     const project = this.project;
-    const title = project ? `${project.name} - Projekt` : 'Projekte bearbeiten';
+    const intlText = wrapIntl(this.props.intl!, 'view.project.update');
+    const title = project ? `${project.name} - ` +  intlText('general.project', true) : intlText('edit_projects');
 
     return <ProjectForm title={title} onSubmit={this.handleSubmit} project={project as FormValues} />;
   }

@@ -84,7 +84,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                 <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={'view.offer.position_renderer.amount'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={'view.offer.position_renderer.vat'} /> </DimeTableCell>
                 <DimeTableCell> <FormattedMessage id={'view.offer.position_renderer.total'} /> </DimeTableCell>
-                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}><FormattedMessage id={'view.offer.position_renderer.actions'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}> <FormattedMessage id={'view.offer.position_renderer.actions'} /> </DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody

@@ -20,6 +20,10 @@
   "general.value": "Wert",
   "general.description": "Beschreibung",
   "general.name": "Name",
+  "general.project_category": "Tätigkeitsbereich",
+  "general.project_category.plural": "Tätigkeitsbereiche",
+  "general.cost_group": "Kostenstelle",
+  "general.cost_group.plural": "Kostenstellen",
 
   "general.action.save": "Speichern",
   "general.action.save_and_continue": "Speichern und weiter",
@@ -48,7 +52,7 @@
   "form.dialog.city_select.basel": "Basel",
   "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
   "form.dialog.city_select.wallis": "Sierre (Wallis)",
-  
+
   "form.dialog.form.confirm_close": "Die Änderungen wurden noch nicht gespeichert. Verwerfen?",
 
   "form.dialog.position_group_rename.title": "Ganze Gruppe verschieben",
@@ -59,7 +63,7 @@
   "form.dialog.position_group_sort.service_group": "Service Gruppe",
   "form.dialog.position_group_sort.confirm": "Umsortieren",
 
-  "form.dialog.position_groups_reorder.": "Reihenfolge der Servicegruppen",
+  "form.dialog.position_groups_reorder.title": "Reihenfolge der Servicegruppen",
   "form.dialog.position_groups_reorder.confirm_text": "Übernehmen",
   "form.dialog.position_groups_reorder.group": "Gruppe",
 
@@ -79,7 +83,7 @@
   "form.entity_select.export_grouping.by_category": "Nach Projekt-Kategorie gruppiert",
 
   "form.entity_select.position_group": "Kein Subjekt wurde übergeben",
-  
+
   "form.fields.select.placeholder": "Bitte auswählen...",
   "form.fields.select.no_options": "Keine Optionen verfügbar",
 
@@ -92,7 +96,7 @@
 
 
   "form.view.warn_discard_changes": "Änderungen verwerfen?",
-  
+
 
   "layout.app_bar_search.placeholder": "Suche…",
 
@@ -133,29 +137,47 @@
   "layout.navigation.data.holidays": "Feiertage",
   "layout.navigation.data.project_categories": "Tätigkeitsbereiche",
   "layout.navigation.data.global_settings": "Einstellungen",
-  
 
-  "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
-  
-  "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
-  "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",
-  "view.timetrack.timetrack": "Zeiterfassung",
-  "view.timetrack.record_comment": "Kommentar erfassen",
-  "view.timetrack.record_effort": "Aufwand erfassen",
-  "view.timetrack.comment_form_dialog.edit_comment": "Projekt-Kommentar bearbeiten",
-  "view.timetrack.comment_form_dialog.record_comment": "Projekt-Kommentar erfassen",
-  "view.timetrack.filter_form.title": "Filter",
-  "view.timetrack.filter_form.show_empty": "Leere Gruppen anzeigen",
-  "view.timetrack.filter_form.show_comments": "Projekt-Kommentare anzeigen",
-  "view.timetrack.filter_form.refresh": "Aktualisieren",
-  "view.timetrack.form_dialog.record_effort": "Aufwand erfassen",
-  "view.timetrack.form_dialog.edit_effort": "Aufwand bearbeiten",
-  "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
-  "view.timetrack.service_group.": "Beschreibung",
-  "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
-  "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
-  
-  
+  "layout.overview.show_archived_objects": "Archivierte Objekte einblenden",
+  "layout.overview.hide_archived_objects": "Archivierte Objekte ausblenden",
+
+
+  "view.invoice.create.create_invoice": "Rechnung erstellen",
+
+  "view.invoice.form.print_effort_report": "Aufwandsrapport für diese Rechnung drucken",
+  "view.invoice.form.error_no_project": "Da die Rechnung kein verlinktes Projekt hat, kann kein Aufwandrapport erzeugt werden.",
+  "view.invoice.form.print_qr_bill": "Einzahlungsschein drucken",
+  "view.invoice.form.missing_cost_group_qr": "Es muss eine Kostenstelle zugewiesen werden bevor der Einzahlungsschein gedruckt werden kann.",
+  "view.invoice.form.print_invoice": "Rechnung drucken",
+  "view.invoice.form.missing_cost_group_invoice": "Es muss eine Kostenstelle zugewiesen werden bevor die Rechnung gedruckt werden kann.",
+  "view.invoice.form.error_date_range_dirty": "Bei Änderungen am Start-/Enddatum muss die Zeitspanne aktualisiert werden.",
+  "view.invoice.form.address": "Adresse",
+  "view.invoice.form.accountant": "Verantwortlicher Mitarbeiter",
+  "view.invoice.form.print_date": "Ausstellungsdatum",
+  "view.invoice.form.start_date": "Startdatum",
+  "view.invoice.form.end_date": "Enddatum",
+  "view.invoice.form.update_time_span": "Zeitspanne aktualisieren",
+  "view.invoice.form.update_time_span_warning": "Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.",
+  "view.invoice.form.description": "Beschreibung",
+
+  "view.invoice.position_renderer.position": "Rechnungsposten",
+
+  "view.invoice.update.edit_invoice": "Rechnung bearbeiten",
+
+  "view.invoice.overview.description": "Beschreibung",
+  "view.invoice.overview.start": "Start",
+  "view.invoice.overview.end": "Ende",
+
+  "view.offer.addcc_dialog.title": "Kostenstelle und Tätigkeitsbereich hinzufügen",
+  "view.offer.addcc_dialog.confirm_text": "Projekt erstellen",
+  "view.offer.addcc_dialog.cost_group": "Kostenstelle",
+  "view.offer.addcc_dialog.category": "Tätigkeitsbereich",
+
+  "view.offer.discount_subform.title": "Abzüge",
+  "view.offer.discount_subform.percentage": "Prozent",
+  "view.offer.discount_subform.discount": "Abzug",
+  "view.offer.discount_subform.actions": "Aktionen",
+
   "view.offer.form.save_first": "Zuerst speichern!",
   "view.offer.form.create_project_from_offer": "Projekt aus Offerte erstellen",
   "view.offer.form.locked_offer": "Die Offerte ist auf dem Status \"Bestätigt\" und kann deswegen nicht mehr bearbeitet werden. Um die Offerte anzupassen, ändere erst den Status.",
@@ -172,6 +194,7 @@
   "view.offer.form.breakdown": "Berechnung",
   "view.offer.form.fixed_price": "Fixpreis",
   "view.offer.form.vat_rate": "MwSt. Satz",
+
   "view.offer.position_renderer.note": "Hinweis",
   "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
   "view.offer.position_renderer.rate": "Tarif",
@@ -180,15 +203,84 @@
   "view.offer.position_renderer.vat": "MwSt.",
   "view.offer.position_renderer.total": "Total CHF (mit MWSt.)",
   "view.offer.position_renderer.actions": "Aktionen",
-  "view.offer.discount_subform.title": "Abzüge",
-  "view.offer.discount_subform.percentage": "Prozent",
-  "view.offer.discount_subform.discount": "Abzug",
-  "view.offer.discount_subform.actions": "Aktionen",
-  "view.offer.addcc_dialog.title": "Kostenstelle und Tätigkeitsbereich hinzufügen",
-  "view.offer.addcc_dialog.confirm_text": "Projekt erstellen",
-  "view.offer.addcc_dialog.cost_group": "Kostenstelle",
-  "view.offer.addcc_dialog.category": "Tätigkeitsbereich",
-  
+
+  "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
+
+  "view.offer.update.update_offer": "Offerte bearbeiten",
+
+  "view.position_subform_inline.move_group": "Alle Services dieser Gruppe verschieben.",
+  "view.position_subform_inline.sort_group": "Alle Services nach Standardsortierung umsortieren.",
+  "view.position_subform_inline.groups_order": "Reihenfolge der Servicegruppen.",
+  "view.position_subform_inline.save_first": "Zuerst Speichern!",
+
+  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Datum des letzten Aufwands",
+  "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Datum der letzten Rechnung",
+  "view.project.projects_with_potential_invoices_overview.days": "Tage",
+  "view.project.projects_with_potential_invoices_overview.title": "Nicht verrechnete Projekte",
+
+  "view.project.project_category_subform.title": "Tätigkeitsbereiche",
+  "view.project.project_category_subform.weight": "Gewicht",
+  "view.project.project_category_subform.fraction": "Anteil",
+  "view.project.project_category_subform.actions": "Aktionen",
+
+  "view.project.project_costgroup_subform.weight": "Gewicht",
+  "view.project.project_costgroup_subform.fraction": "Anteil",
+  "view.project.project_costgroup_subform.actions": "Aktionen",
+
+  "view.project.project_create.title": "Projekt erstellen",
+
+  "view.project.form.print_effort_report": "Aufwandsrapport drucken",
+  "view.project.form.generate_invoice": "Neue Rechnung aus Projekt generieren",
+  "view.project.form.accountant": "Verantwortlicher Mitarbeiter",
+  "view.project.form.address": "Adresse",
+  "view.project.form.description": "Beschreibung",
+  "view.project.form.deadline": "Deadline",
+  "view.project.form.chargeable": "Verrechenbar",
+  "view.project.form.archived_rate_units_warning": "Services mit archivierten Einheiten vorhanden!",
+  "view.project.form.rate": "Tarif",
+  "view.project.form.fixed_price": "Fixpreis",
+
+  "view.project.overview.delete_warning": "Möchtest du dieses Projekt wirklich löschen?",
+  "view.project.overview.description": "Beschreibung",
+  "view.project.overview.last_change": "Zuletzt geändert",
+
+  "view.project.position_renderer.description": "Beschreibung",
+  "view.project.position_renderer.rate": "Tarif",
+  "view.project.position_renderer.unit": "Einheit",
+  "view.project.position_renderer.vat": "MwSt.",
+  "view.project.position_renderer.count": "Anzahl",
+  "view.project.position_renderer.total": "Total CHF (mit MWSt.)",
+  "view.project.position_renderer.actions": "Aktionen",
+  "view.project.position_renderer.has_efforts_warning": "Aufwand zuerst löschen!",
+  "view.project.position_renderer.note": "Hinweis:",
+  "view.project.position_renderer.note_content": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden können.",
+
+  "view.project.stat_table.remaining_budget": "Restbudget",
+  "view.project.stat_table.stats": "Projekt Statistik",
+  "view.project.stat_table.money_budget": "Geldbudget",
+  "view.project.stat_table.money_used": "Geld verwendet",
+  "view.project.stat_table.time_budget": "Zeitbudget",
+  "view.project.stat_table.time_used": "Zeit verwendet",
+
+  "view.project.update.edit_projects": "Projekte bearbeiten",
+
+  "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
+  "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",
+  "view.timetrack.timetrack": "Zeiterfassung",
+  "view.timetrack.record_comment": "Kommentar erfassen",
+  "view.timetrack.record_effort": "Aufwand erfassen",
+  "view.timetrack.comment_form_dialog.edit_comment": "Projekt-Kommentar bearbeiten",
+  "view.timetrack.comment_form_dialog.record_comment": "Projekt-Kommentar erfassen",
+  "view.timetrack.filter_form.title": "Filter",
+  "view.timetrack.filter_form.show_empty": "Leere Gruppen anzeigen",
+  "view.timetrack.filter_form.show_comments": "Projekt-Kommentare anzeigen",
+  "view.timetrack.filter_form.refresh": "Aktualisieren",
+  "view.timetrack.form_dialog.record_effort": "Aufwand erfassen",
+  "view.timetrack.form_dialog.edit_effort": "Aufwand bearbeiten",
+  "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
+  "view.timetrack.service_group.description": "Beschreibung",
+  "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
+
 
   "end.of.file": "Keep this line at the end to deal with json's non-existing trailing comma."
 }

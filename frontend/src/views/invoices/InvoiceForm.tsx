@@ -31,6 +31,7 @@ import { Invoice } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import PositionSubformInline from '../PositionSubformInline';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
 import InvoiceDiscountSubform from './InvoiceDiscountSubform';
@@ -75,15 +76,17 @@ export default class InvoiceForm extends React.Component<Props> {
     return this.props.invoiceStore!.updateTimeSpan(invoice).then(() => this.props.onSubmit(this.props.invoiceStore!.invoice!));
   }
 
-  checkTimeSpan = (values: any) => {
+  checkTimeSpan = (intlText: any) => (values: any) => {
     if (this.state.dateRangeDirty) {
-      return { errorMessage: 'Bei Änderungen am Start-/Enddatum muss die Zeitspanne aktualisiert werden.' };
+      return { errorMessage: intlText('error_date_range_dirty') };
     }
     return {};
   }
 
   render() {
-    const { invoice, intl } = this.props;
+    const { invoice } = this.props;
+    const intl = this.props.intl!;
+    const intlText = wrapIntl(intl, 'view.invoice.form');
     let afterUnitInvalidation = false;
 
     if (!(empty(invoice) || this.props.loading || this.state.loading)) {
@@ -94,7 +97,7 @@ export default class InvoiceForm extends React.Component<Props> {
 
     return (
       <FormView
-        intl={intl!}
+        intl={intl}
         paper={false}
         loading={empty(invoice) || this.props.loading}
         title={this.props.title}
@@ -112,8 +115,8 @@ export default class InvoiceForm extends React.Component<Props> {
                 color={'inherit'}
                 title={
                   invoice.project_id
-                    ? 'Aufwandsrapport für diese Rechnung drucken'
-                    : 'Da die Rechnung kein verlinktes Projekt hat, kann kein Aufwandrapport erzeugt werden.'
+                    ? intlText('print_effort_report')
+                    : intlText('error_no_project')
                 }
                 icon={StatisticsIcon}
                 disabled={!invoice.project_id}
@@ -123,8 +126,8 @@ export default class InvoiceForm extends React.Component<Props> {
                 color={'inherit'}
                 title={
                   costGroupsExist
-                    ? 'Einzahlungsschein drucken'
-                    : 'Es muss eine Kostenstelle zugewiesen werden bevor der Einzahlungsschein gedruckt werden kann.'}
+                    ? intlText('print_qr_bill')
+                    : intlText('missing_cost_group_qr')}
                 icon={ESRIcon}
                 disabled={!costGroupsExist}
               />
@@ -134,8 +137,8 @@ export default class InvoiceForm extends React.Component<Props> {
                 color={'inherit'}
                 title={
                   costGroupsExist
-                    ? 'Rechnung drucken'
-                    : 'Es muss eine Kostenstelle zugewiesen werden bevor die Rechnung gedruckt werden kann.'
+                    ? intlText('print_invoice')
+                    : intlText('missing_cost_group_invoice')
                 }
                 icon={InvoiceIcon}
                 disabled={!costGroupsExist}
@@ -157,10 +160,10 @@ export default class InvoiceForm extends React.Component<Props> {
                         <Grid item xs={12} lg={8}>
                           <Grid container spacing={1}>
                             <Grid item xs={12}>
-                              <DimeField delayed required component={TextField} name={'name'} label={'Name'} />
+                              <DimeField delayed required component={TextField} name={'name'} label={intlText('general.name', true)} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
-                              <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} />
+                              <DimeField required component={CustomerSelect} name={'customer_id'} label={intlText('general.customer', true)} />
                             </Grid>
                             <Grid item xs={12} lg={6}>
                               <DimeField
@@ -168,7 +171,7 @@ export default class InvoiceForm extends React.Component<Props> {
                                 component={AddressSelect}
                                 customerId={props.values.customer_id}
                                 name={'address_id'}
-                                label={'Adresse'}
+                                label={intlText('address')}
                               />
                             </Grid>
                             <Grid item xs={12} lg={8}>
@@ -176,18 +179,18 @@ export default class InvoiceForm extends React.Component<Props> {
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
-                                label={'Verantwortlicher Mitarbeiter'}
+                                label={intlText('accountant')}
                               />
                             </Grid>
                             <Grid item xs={12} lg={4} style={{paddingTop: '24px'}}>
-                              <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
+                              <DatePicker label={intlText('print_date')} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
                             <Grid item xs={12} lg={5}>
                               <DimeDatePickerField
                                 required
                                 component={DatePicker}
                                 name={'beginning'}
-                                label={'Startdatum'}
+                                label={intlText('start_date')}
                                 onChangeWrapped={(x: any) => {
                                   this.state.dateRangeDirty = true;
                                 }}
@@ -198,7 +201,7 @@ export default class InvoiceForm extends React.Component<Props> {
                                 required
                                 component={DatePicker}
                                 name={'ending'}
-                                label={'Enddatum'}
+                                label={intlText('end_date')}
                                 onChangeWrapped={(x: any) => {
                                   this.state.dateRangeDirty = true;
                                 }}
@@ -209,8 +212,8 @@ export default class InvoiceForm extends React.Component<Props> {
                                 {...(this.state.dateRangeDirty ? {style: {boxShadow: '0 0 1px 3px red'}} : {})}
                                 onConfirm={() => this.handleTimeSpan(props.values)}
                                 icon={Renew}
-                                title={'Zeitspanne aktualisieren'}
-                                message={'Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.'}
+                                title={intlText('update_time_span')}
+                                message={intlText('update_time_span_warning')}
                               />
                             </Grid>
                           </Grid>
@@ -223,7 +226,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             multiline
                             maxRows={14}
                             name={'description'}
-                            label={'Beschreibung'}
+                            label={intlText('description')}
                           />
                         </Grid>
                       </Grid>
@@ -238,7 +241,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             <Warning color={'error'}/>
                           </Grid>
                           <Grid item style={{color: 'red', marginLeft: '5px'}}>
-                            Services mit archivierten Einheiten vorhanden!
+                            <FormattedMessage id="view.project.form.archived_rate_units_warning" />
                           </Grid>
                         </Grid>
                       </>
@@ -264,7 +267,9 @@ export default class InvoiceForm extends React.Component<Props> {
                       <DimePaper>
                         <Grid container spacing={1}>
                           <Grid item xs={12}>
-                            <FormHeader>Berechnung</FormHeader>
+                            <FormHeader>
+                              <FormattedMessage id={'view.offer.form.breakdown'} />
+                            </FormHeader>
                           </Grid>
                           <Grid item xs={12}>
                             <BreakdownTable breakdown={invoice.breakdown} fixedPrice={invoice.fixed_price} />
@@ -275,7 +280,7 @@ export default class InvoiceForm extends React.Component<Props> {
                               delayed
                               component={CurrencyField}
                               name={'fixed_price'}
-                              label={'Fixpreis'}
+                              label={intl.formatMessage({id: 'view.offer.form.fixed_price'})}
                             />
                           </Grid>
                           <Grid item sm={3} />
@@ -283,7 +288,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             <DimeField
                               component={VatSelect}
                               name={'fixed_price_vat'}
-                              label={'MwSt. Satz'}
+                              label={intl.formatMessage({id: 'view.offer.form.vat_rate'})}
                               placeholder={'7.7%'}
                               disabled={!invoice.fixed_price}
                             />
