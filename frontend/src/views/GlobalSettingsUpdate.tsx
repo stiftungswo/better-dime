@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import * as yup from 'yup';
 import { TextField } from '../form/fields/common';
@@ -19,6 +20,7 @@ import { localizeSchema } from '../utilities/validation';
 export interface Props extends RouteComponentProps {
   mainStore?: MainStore;
   globalSettingStore?: GlobalSettingStore;
+  intl?: IntlShape;
 }
 
 const settingsSchema = localizeSchema(() =>
@@ -39,6 +41,7 @@ const settingsSchema = localizeSchema(() =>
 );
 
 @compose(
+  injectIntl,
   inject('mainStore', 'globalSettingStore'),
   observer,
 )
@@ -56,6 +59,7 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
     return (
       <>
         <FormView
+          intl={this.props.intl!}
           paper={false}
           loading={empty(store.settings)}
           title={'Einstellungen'}

@@ -49,7 +49,7 @@ export const projectTemplate = () => ({
   name: '',
   description: '',
   deadline: '',
-  fixed_price: '',
+  fixed_price: null,
   position_groupings: [],
   positions: [],
   customer_id: undefined,

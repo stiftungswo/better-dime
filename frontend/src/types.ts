@@ -553,6 +553,8 @@ export interface EmployeeGroup {
   id: number;
 }
 
+export type Locale = 'de' | 'fr'; // | 'en';
+
 // --
 // Helper types
 // --

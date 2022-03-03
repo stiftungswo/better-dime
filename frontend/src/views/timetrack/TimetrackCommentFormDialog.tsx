@@ -4,6 +4,7 @@ import { FormikActions, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { FormikSubmitDetector } from 'src/form/FormikSubmitDetector';
 import * as yup from 'yup';
 import { FormDialog } from '../../form/dialog/FormDialog';
@@ -26,6 +27,7 @@ interface Props {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   mainStore?: MainStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  intl?: IntlShape;
   fullScreen?: boolean;
 }
 
@@ -43,6 +45,7 @@ const schema = localizeSchema(() =>
 );
 
 @compose(
+  injectIntl,
   inject('projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore', 'mainStore'),
   observer,
   withFullScreen,
@@ -83,6 +86,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
 
   render() {
     const fullScreen = this.props.fullScreen!;
+    const intl = this.props.intl!;
 
     return (
       <FormDialog
@@ -90,7 +94,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
         isInitialValid={true}
         validationSchema={schema}
         enableReinitialize
-        title={'Projekt-Kommentar erfassen'}
+        title={'invisible pink elephants'}
         open
         onClose={this.handleClose}
         onSubmit={this.handleSubmit}
@@ -98,27 +102,31 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
         render={(formikProps: FormikProps<ProjectComment>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open fullScreen={fullScreen} maxWidth="lg">
-              <DialogTitle>{(formikProps.values.id ? 'Projekt-Kommentar bearbeiten' : 'Projekt-Kommentar erfassen')}</DialogTitle>
+              <DialogTitle>
+                <FormattedMessage id={'view.timetrack.comment_form_dialog.' + (formikProps.values.id ? 'edit_comment' : 'record_comment')} />
+              </DialogTitle>
               <DialogContent>
-                <DimeDatePickerField component={DatePicker} name={'date'} label={'Datum'} />
-                <DimeField component={ProjectSelect} name={'project_id'} label={'Projekt'} />
-                <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={'Kommentar'} />
+                <DimeDatePickerField component={DatePicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
+                <DimeField component={ProjectSelect} name={'project_id'} label={intl.formatMessage({id: 'general.project'})} />
+                <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'general.comment'})} />
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose()}>Abbruch</Button>
+                <Button onClick={this.handleClose()}>
+                  <FormattedMessage id={'general.action.cancel'} />
+                </Button>
                 <Button
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
-                  Speichern
+                  <FormattedMessage id={'general.action.save'} />
                 </Button>
                 {!formikProps.values.id && (
                   <Button
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
-                    Speichern und weiter
+                    <FormattedMessage id={'general.action.save_and_continue'} />
                   </Button>
                 )}
               </DialogActions>

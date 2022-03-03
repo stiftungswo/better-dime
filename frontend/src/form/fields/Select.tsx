@@ -4,15 +4,17 @@
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@material-ui/core/styles';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import React from 'react';
+import { useIntl } from 'react-intl';
 import Select, {Creatable} from 'react-select';
 import {ActionMeta} from 'react-select/lib/types';
 import { CancelIcon } from '../../layout/icons';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DimeCustomFieldProps, DimeFormControl } from './common';
 
 const styles = (theme: Theme) =>
@@ -73,6 +75,7 @@ const styles = (theme: Theme) =>
       height: theme.spacing(2),
     },
   });
+const useStyles = makeStyles(styles);
 
 function NoOptionsMessage(props: any) {
   return (
@@ -183,7 +186,7 @@ const components = {
   ValueContainer,
 };
 
-class IntegrationReactSelect extends React.Component<any> {
+class IntegrationReactSelectInner extends React.Component<any> {
   select: any;
 
   state = {
@@ -251,8 +254,9 @@ class IntegrationReactSelect extends React.Component<any> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.fields.select');
     // tslint:disable-next-line:max-line-length
-    const { classes, theme, margin, required, disabled, placeholder = 'Bitte auswählen...', errorMessage, fullWidth = true, ...rest } = this
+    const { classes, theme, margin, required, disabled, placeholder = intlText('placeholder'), errorMessage, fullWidth = true, ...rest } = this
       .props as any;
 
     const myLabel = this.props.label
@@ -292,7 +296,7 @@ class IntegrationReactSelect extends React.Component<any> {
             error={Boolean(errorMessage)}
             margin={margin}
             placeholder={placeholder}
-            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            noOptionsMessage={() => intlText('no_options')}
             {...rest}
             options={this.options}
             value={this.value}
@@ -317,7 +321,7 @@ class IntegrationReactSelect extends React.Component<any> {
             error={Boolean(errorMessage)}
             margin={margin}
             placeholder={placeholder}
-            noOptionsMessage={() => 'Keine Optionen verfügbar'}
+            noOptionsMessage={() => intlText('no_options')}
             {...rest}
             value={this.value}
             onChange={this.handleChange}
@@ -329,7 +333,13 @@ class IntegrationReactSelect extends React.Component<any> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
+// mixing @injectIntl with withStyles(...) doesn't work.
+export default function IntegrationReactSelect(props: any) {
+  const intl = useIntl();
+  const classes = useStyles();
+  const theme = useTheme();
+  return <IntegrationReactSelectInner intl={intl} classes={classes} theme={theme} {...props} />;
+}
 
 type Single = number | null;
 type Multi = number[] | [];

@@ -7,6 +7,7 @@ import { Warning } from '@material-ui/icons';
 import { FieldArrayRenderProps } from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -27,6 +28,7 @@ import { DraggableTableBody } from '../invoices/DraggableTableBody';
 interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
+  intl?: IntlShape;
   arrayHelpers: FieldArrayRenderProps;
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
@@ -42,11 +44,13 @@ interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'serviceStore'),
 )
 export default class OfferPositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, groupRenameButton, groupSortButton, groupReorderButton, disabled, onDelete, onMove, onAdd } = this.props;
+    const intl = this.props.intl!;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
 
     return (
@@ -55,7 +59,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
           <div style={{ paddingTop: '20px' }}/>
         )}
         <TableToolbar
-          title={'Services - ' + group.name}
+          title={intl.formatMessage({id: 'general.service.plural'}) + ' - ' + group.name}
           numSelected={0}
           addAction={disabled ? undefined : onAdd}
         >
@@ -66,22 +70,21 @@ export default class OfferPositionRenderer extends React.Component<Props> {
         <div style={{ overflowX: 'auto' }}>
           {!values.rate_group_id && (
             <Typography variant={'body2'} style={{ paddingLeft: '24px' }}>
-              <b>Hinweis:</b> Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden
-              können.
+              <b>{intl.formatMessage({id: 'view.offer.position_renderer.note'})}</b> {intl.formatMessage({id: 'view.offer.position_renderer.note_body'})}
             </Typography>
           )}
           <Table size="small" style={{ minWidth: '1200px' }}>
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '15%' }}>Service</DimeTableCell>
-                <DimeTableCell style={{ width: '17%' }}>Beschreibung</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Tariftyp</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
-                <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell>Total CHF (mit MWSt.)</DimeTableCell>
-                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.service'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id={'general.description'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'view.offer.position_renderer.rate'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'view.offer.position_renderer.rate_unit'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={'view.offer.position_renderer.amount'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={'view.offer.position_renderer.vat'} /> </DimeTableCell>
+                <DimeTableCell> <FormattedMessage id={'view.offer.position_renderer.total'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '10%', paddingLeft: '40px' }}> <FormattedMessage id={'view.offer.position_renderer.actions'} /> </DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -162,7 +165,7 @@ export default class OfferPositionRenderer extends React.Component<Props> {
                       <ActionButton
                         icon={MoveIcon}
                         action={() => onMove(pIdx)}
-                        title={'Verschieben'}
+                        title={intl.formatMessage({id: 'general.action.move'})}
                         disabled={disabled}
                       />
                       <ConfirmationButton onConfirm={() => onDelete(pIdx)} disabled={disabled} />

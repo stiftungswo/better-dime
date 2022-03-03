@@ -1,11 +1,13 @@
 import { Grid, TextField } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { LoadingSpinner } from '../../../layout/LoadingSpinner';
 import { MainStore } from '../../../stores/mainStore';
 import { RateUnitStore } from '../../../stores/rateUnitStore';
 import { RateUnit } from '../../../types';
 import compose from '../../../utilities/compose';
+import { wrapIntl } from '../../../utilities/wrapIntl';
 import { DimeCustomFieldProps } from '../common';
 import Select from '../Select';
 
@@ -13,6 +15,7 @@ interface Props extends DimeCustomFieldProps<number> {
   mainStore?: MainStore;
   rateUnitId: number;
   rateUnitStore?: RateUnitStore;
+  intl?: IntlShape;
 }
 
 interface State {
@@ -24,6 +27,7 @@ interface State {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'rateUnitStore'),
   observer,
 )
@@ -55,15 +59,16 @@ export class TimeEffortValueField extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.fields.timetrack.time_effort_value_field');
     if (!this.state.is_loading) {
       return (
         <Grid container alignItems="center" spacing={1}>
           <Grid item xs={9}>
             <TextField
               fullWidth
-              label={'Wert'}
+              label={intlText('general.value', true)}
               value={this.state.value}
-              onChange={e => this.updateValue(e.target.value)}
+              onChange={e => this.updateValue(e.target.value, intlText)}
               style={{ marginTop: '16px', marginBottom: '8px' }}
               inputProps={{ step: '0.01' }}
             />
@@ -71,9 +76,9 @@ export class TimeEffortValueField extends React.Component<Props> {
           <Grid item xs={3}>
             <Select
               options={this.options()}
-              label={'Zeiteinheit'}
+              label={intlText('time_unit')}
               value={this.state.rateUnitId}
-              onChange={(id: number) => this.updateSelectedRateUnit(id)}
+              onChange={(id: number) => this.updateSelectedRateUnit(id, intlText)}
             />
           </Grid>
         </Grid>
@@ -92,7 +97,7 @@ export class TimeEffortValueField extends React.Component<Props> {
       }));
   }
 
-  protected updateSelectedRateUnit = (id: number) => {
+  protected updateSelectedRateUnit = (id: number, intlText: any) => {
     const selectedRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === id);
     const previousRateUnit = this.state.rateUnits.find((r: RateUnit) => r.id === this.state.rateUnitId);
     const previousValue = this.state.value;
@@ -108,17 +113,15 @@ export class TimeEffortValueField extends React.Component<Props> {
         value: newValue,
       });
     } else {
-      throw new Error('Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!');
+      throw new Error(intlText('select_error_message'));
     }
   }
 
-  protected updateValue = (value: string) => {
+  protected updateValue = (value: string, intlText: any) => {
     const parsedValue: number = Number(value);
 
     if (isNaN(parsedValue)) {
-      this.props.mainStore!.displayInfo('Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt ' +
-        'getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, ' +
-        'kann der Eintrag nicht gespeichert werden!', {
+      this.props.mainStore!.displayInfo(intlText('invalid_number_warning'), {
         autoHideDuration: 6000,
       });
     } else {

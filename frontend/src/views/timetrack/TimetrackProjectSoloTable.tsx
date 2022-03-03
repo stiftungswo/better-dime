@@ -1,10 +1,12 @@
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { ActionButton } from '../../layout/ActionButton';
 import { AddEffortIcon } from '../../layout/icons';
 import { Column } from '../../layout/Overview';
 import PrintButton from '../../layout/PrintButton';
 import { ProjectEffortListing } from '../../types';
+import compose from '../../utilities/compose';
 import { Formatter } from '../../utilities/formatter';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
 
@@ -17,48 +19,50 @@ interface Props {
   title: string;
   formatter?: Formatter;
   effortReportUrlParams: () => object;
+  intl?: IntlShape;
 }
 
-@inject('mainStore', 'formatter')
-@observer
+@compose(
+  injectIntl,
+  inject('mainStore', 'formatter'),
+  observer,
+)
 export class TimetrackProjectSoloTable extends React.Component<Props> {
-  columns: Array<Column<ProjectEffortListing>> = [];
 
-  projectGroupActions = (
+  projectGroupActions = (intl: IntlShape) => (
     <>
       <PrintButton
         path={'projects/' + this.props.entityId + '/effort_report'}
-        title={'Aufwandsrapport drucken'}
+        title={intl.formatMessage({id: 'general.action.print_project_effort_report'})}
         urlParams={this.props.effortReportUrlParams()}
       />
       <ActionButton icon={AddEffortIcon} title={'Aufwand hinzufügen'} action={this.props.onEffortAdd} />
     </>
-  );
+  )
 
-  constructor(props: Props) {
-    super(props);
-    const formatter = props.formatter!;
-
-    this.columns = [
+  render() {
+    const formatter = this.props.formatter!;
+    const intl = this.props.intl!;
+    const columns: Array<Column<ProjectEffortListing>> = [
       {
         id: 'date',
         numeric: false,
-        label: 'Datum',
-        format: e => formatter.formatDate(e.date),
+        label: intl.formatMessage({id: 'general.date'}),
+        format: (e: any) => formatter.formatDate(e.date),
         defaultSort: 'desc',
       },
       {
         id: 'employee',
         numeric: false,
-        label: 'Mitarbeiter',
-        format: e => e.employee_full_name,
+        label: intl.formatMessage({id: 'general.employee'}),
+        format: (e: any) => e.employee_full_name,
         defaultSort: 'desc',
       },
       {
         id: '',
         numeric: false,
-        label: 'Service',
-        format: projectEffortListing =>
+        label: intl.formatMessage({id: 'general.service'}),
+        format: (projectEffortListing: any) =>
           projectEffortListing.position_description
             ? projectEffortListing.service_name + ' (' + projectEffortListing.position_description + ')'
             : projectEffortListing.service_name,
@@ -66,17 +70,15 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
       {
         id: 'effort_value',
         numeric: true,
-        label: 'Gebuchter Wert',
-        format: h => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+        label: intl.formatMessage({id: 'general.effort_value'}),
+        format: (h: any) => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
       },
     ];
-  }
 
-  render() {
     return (
       <TimetrackEntityGroup
-        actions={this.projectGroupActions}
-        columns={this.columns}
+        actions={this.projectGroupActions(this.props.intl!)}
+        columns={columns}
         displayTotal={this.props.displayTotal}
         efforts={this.props.efforts}
         onClickRow={this.props.onClickRow}

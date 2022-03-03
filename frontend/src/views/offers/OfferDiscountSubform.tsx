@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { FieldArray, FormikProps } from 'formik';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
@@ -25,12 +26,16 @@ const template = () => ({
 
 export interface Props {
   mainStore?: MainStore;
+  intl?: IntlShape;
   formikProps: FormikProps<Offer>;
   name: string;
   disabled?: boolean;
 }
 
-@compose(observer)
+@compose(
+  injectIntl,
+  observer,
+)
 export default class OfferDiscountSubform extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
@@ -39,19 +44,21 @@ export default class OfferDiscountSubform extends React.Component<Props> {
   render() {
     const { values } = this.props.formikProps;
     const { disabled } = this.props;
+    const intl = this.props.intl!;
+    const idPrefix = 'view.offer.discount_subform';
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
           <>
-            <TableToolbar title={'Abzüge'} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template())} />
+            <TableToolbar title={intl.formatMessage({id: idPrefix + '.title'})} numSelected={0} addAction={disabled ? undefined : () => arrayHelpers.push(template())} />
             <Table>
               <TableHead>
                 <TableRow>
-                  <DimeTableCell>Name</DimeTableCell>
-                  <DimeTableCell>Prozent</DimeTableCell>
-                  <DimeTableCell>Abzug</DimeTableCell>
-                  <DimeTableCell>Aktionen</DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={'general.name'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.percentage'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.discount'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -1,13 +1,14 @@
 import { Theme } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, WithStyles } from '@material-ui/core/styles';
 import { alpha } from '@material-ui/core/styles/colorManipulator';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
+import { IntlShape, useIntl } from 'react-intl';
 import { CloseIcon, SearchIcon } from './icons';
 
-export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
+const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIndex, shape }: Theme) =>
   createStyles({
     search: {
       'position': 'relative',
@@ -55,8 +56,10 @@ export const styles = ({ palette, spacing, breakpoints, mixins, transitions, zIn
       },
     },
   });
+const useStyles = makeStyles(styles);
 
 interface Props extends WithStyles<typeof styles> {
+  intl?: IntlShape;
   onChange: (value: string) => void;
   defaultValue: string;
   delay?: number;
@@ -89,6 +92,7 @@ class AppBarSearchInner extends React.Component<Props> {
 
   render() {
     const { classes } = this.props;
+    const intl = this.props.intl!;
     const clearable = Boolean(this.state.value);
     return (
       <div className={classes.search}>
@@ -98,7 +102,7 @@ class AppBarSearchInner extends React.Component<Props> {
         <InputBase
           value={this.state.value}
           onChange={e => this.handleChange(e.target.value)}
-          placeholder="Suche…"
+          placeholder={intl.formatMessage({id: 'layout.app_bar_search.placeholder'})}
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput,
@@ -108,5 +112,12 @@ class AppBarSearchInner extends React.Component<Props> {
     );
   }
 }
-
-export const AppBarSearch = withStyles(styles)(AppBarSearchInner);
+// mixing @injectIntl with withStyles(...) didn't work, so here's a wrapper
+// component with hooks.
+export const AppBarSearch = (props: any) => {
+  const intl = useIntl();
+  const classes = useStyles();
+  return (
+    <AppBarSearchInner intl={intl} classes={classes} {...props} />
+  );
+};

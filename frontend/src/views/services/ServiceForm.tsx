@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
@@ -31,10 +32,12 @@ export interface Props extends FormViewProps<Service> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   globalSettingStore?: GlobalSettingStore;
+  intl?: IntlShape;
   service: Service | undefined;
 }
 
 @compose(
+  injectIntl,
   inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore'),
   observer,
 )
@@ -64,6 +67,7 @@ export default class ServiceForm extends React.Component<Props> {
 
     return (
       <FormView
+        intl={this.props.intl!}
         paper={false}
         loading={empty(service) || this.props.loading || this.state.loading}
         title={this.props.title}

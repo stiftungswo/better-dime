@@ -12,6 +12,7 @@ import App from './App';
 import './index.css';
 import DimeTheme from './layout/DimeTheme';
 import { DimeSnackbar } from './layout/Snackbar';
+import { StoreConnectedIntlProvider } from './utilities/StoreConnectedIntlProvider';
 import { StoreProvider } from './utilities/StoreProvider';
 
 import moment from 'moment';
@@ -33,14 +34,16 @@ const mode = url.includes('localhost') || url.includes('test') ? 'dev' : 'prod';
 
 ReactDOM.render(
   <StoreProvider history={browserHistory}>
-    <MuiThemeProvider theme={DimeTheme(mode)}>
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <DimeSnackbar />
-        <Router history={browserHistory}>
-          <App />
-        </Router>
-      </MuiPickersUtilsProvider>
-    </MuiThemeProvider>
+    <StoreConnectedIntlProvider>
+      <MuiThemeProvider theme={DimeTheme(mode)}>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <DimeSnackbar />
+          <Router history={browserHistory}>
+            <App />
+          </Router>
+        </MuiPickersUtilsProvider>
+      </MuiThemeProvider>
+    </StoreConnectedIntlProvider>
   </StoreProvider>,
   document.getElementById('root') as HTMLElement,
 );

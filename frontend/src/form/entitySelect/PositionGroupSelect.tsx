@@ -1,9 +1,11 @@
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import {AbstractStore} from '../../stores/abstractStore';
 import {PositionGroup, PositionGroupings} from '../../types';
 import compose from '../../utilities/compose';
 import {defaultPositionGroup} from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DimeCustomFieldProps } from '../fields/common';
 import Select from '../fields/Select';
 
@@ -11,9 +13,11 @@ interface Props extends DimeCustomFieldProps<string | null> {
   groupingEntity: PositionGroupings<any>;
   placeholder?: string;
   creatable: boolean;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   observer,
 )
 export class PositionGroupSelect extends React.Component<Props> {
@@ -60,18 +64,19 @@ export class PositionGroupSelect extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'form.entity_select.position_group');
     if (this.props.groupingEntity) {
       return (
         <Select
           isClearable
-          formatCreateLabel={(userInput: any) => `Erstellen: ${userInput}`}
+          formatCreateLabel={(userInput: any) => intlText('general.action.create') + `: ${userInput}`}
           onCreate={this.onCreate}
           options={this.options}
           {...this.props}
         />
       );
     } else {
-      return <Select options={[]} isDisabled placeholder={'Kein Subjekt wurde übergeben'} {...this.props} />;
+      return <Select options={[]} isDisabled placeholder={intlText('missing_subject')} {...this.props} />;
     }
   }
 }

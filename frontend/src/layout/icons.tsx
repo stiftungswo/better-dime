@@ -57,6 +57,7 @@ export { default as Renew } from '@material-ui/icons/Autorenew';
 export { default as SortIcon } from '@material-ui/icons/Sort';
 export { default as RenameIcon } from '@material-ui/icons/Create';
 export { default as ReorderIcon } from '@material-ui/icons/SwapVert';
+export { default as LanguageIcon } from '@material-ui/icons/Translate';
 
 // Domain
 export { default as LogoIcon } from '@material-ui/icons/BeachAccess';

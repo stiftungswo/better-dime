@@ -5,6 +5,7 @@ import { FieldArray, FormikProps, getIn } from 'formik';
 import { Observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NumberField, SwitchField } from '../../form/fields/common';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
@@ -13,6 +14,8 @@ import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import TableToolbar from '../../layout/TableToolbar';
 import { Employee, WorkPeriod } from '../../types';
+import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 
 const template = {
   ending: moment().endOf('year'),
@@ -29,15 +32,19 @@ interface Props {
   formikProps: FormikProps<Employee>;
   name: string;
   yearly_vacation_budget: number | null;
+  intl?: IntlShape;
 }
-
+@compose(
+  injectIntl,
+)
 export class WorkPeriodSubform extends React.Component<Props> {
-
   render() {
     const { yearly_vacation_budget } = this.props;
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     const currentError = getIn(touched, name) && getIn(errors, name);
+    const idPrefix = 'view.employee.work_period_subform';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
 
     const templateVals = {
       ...template,
@@ -52,7 +59,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
             {() => (
               <>
                 <TableToolbar
-                  title={'Arbeitsperioden'}
+                  title={intlText('work_period')}
                   error={Boolean(currentError)}
                   addAction={disabled ? undefined : () => arrayHelpers.push(templateVals)}
                 />
@@ -60,68 +67,56 @@ export class WorkPeriodSubform extends React.Component<Props> {
                 <Table style={{ minWidth: '1300px' }}>
                   <TableHead>
                     <TableRow>
-                      <DimeTableCell style={{ width: '17%' }}>Start</DimeTableCell>
-                      <DimeTableCell style={{ width: '17%' }}>Ende</DimeTableCell>
-                      <DimeTableCell style={{ width: '8%' }}>Pensum</DimeTableCell>
+                      <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id={idPrefix + '.start'} /> </DimeTableCell>
+                      <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id={idPrefix + '.end'} /> </DimeTableCell>
+                      <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={idPrefix + '.pensum'} /> </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
-                          title={
-                            'Die Sollzeit sind die zu leistenden Arbeitsstunden basierend auf dem gewählten Start- und Enddatum ' +
-                            'addiert mit dem Ferienguthaben für diese Periode. Öffentliche Feiertage werden abgezogen.'
-                          }
+                          title={intlText('target_time.tooltip')}
                         >
-                          <p>Sollzeit</p>
+                          <p> <FormattedMessage id={idPrefix + '.target_time'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
-                          title={
-                            'Die Istzeit wird direkt aus der Zeiterfassung berechnet und umfasst alle Zeiteinträge, ' +
-                            'welche auf diese Person innerhalb des gewählten Start- und Enddatum bei der Periode gebucht wurden.'
-                          }
+                          title={intlText('effective_time.tooltip')}
                         >
-                          <p>Istzeit</p>
+                          <p> <FormattedMessage id={idPrefix + '.effective_time'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
-                          title={
-                            'Gebuchte Stunden innerhalb der Periode bis heute ' +
-                            '(oder falls das Enddatum vor dem heutigen Datum liegt, bis zum Enddatum).'
-                          }
+                          title={intlText('effort_until_today.tooltip')}
                         >
-                          <p>Heute</p>
+                          <p> <FormattedMessage id={idPrefix + '.effort_until_today'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
                         <Tooltip
-                          title={
-                            'Guthaben für Ferien in Stunden. Dies wird anteilsmässig aus dem jährlichen Ferienbudget berechnet. ' +
-                            'Dazu gezählt wird der Ferienübertrag.'
-                          }
+                          title={intlText('vacation_budget.tooltip')}
                         >
-                          <p>Ferienguthaben</p>
+                          <p> <FormattedMessage id={idPrefix + '.vacation_budget'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '7%' }}>
-                        <Tooltip title={'Das unverbuchte Guthaben an Ferienstunden.'}>
-                          <p>Restliches Ferienguthaben</p>
+                        <Tooltip title={intlText('remaining_vacation_budget.tooltip')}>
+                          <p> <FormattedMessage id={idPrefix + '.remaining_vacation_budget'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '11%' }}>
                         <Tooltip
-                          title={'Der Übertrag rechnet sich aus der Zahl im "Heute"-Feld addiert mit dem restlichen Ferienguthaben.'}
+                          title={intlText('vacation_takeover.tooltip')}
                         >
-                          <p>Übertrag</p>
+                          <p> <FormattedMessage id={idPrefix + '.vacation_takeover'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '8%' }}>
-                        <Tooltip title={'Das jährliche Ferienbudget ist immer auf ein 100% zu verstehen.'}>
-                          <p>Jährliches Ferienbudget</p>
+                        <Tooltip title={intlText('yearly_vacation_budget.tooltip')}>
+                          <p> <FormattedMessage id={idPrefix + '.yearly_vacation_budget'} /> </p>
                         </Tooltip>
                       </DimeTableCell>
-                      <DimeTableCell style={{ width: '4%' }}>Stundenlohn</DimeTableCell>
-                      <DimeTableCell style={{ width: '4%' }}>Aktionen</DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}> <FormattedMessage id={idPrefix + '.hourly_pay'} /> </DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
