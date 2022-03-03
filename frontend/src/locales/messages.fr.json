@@ -141,6 +141,43 @@
   "layout.overview.hide_archived_objects": "Masquer les objets archivés",
 
 
+  "view.employee.first_name": "Prénom",
+  "view.employee.last_name": "Nom de famille",
+  "view.employee.group": "Groupe",
+  "view.employee.can_login": "Login activé?",
+  "view.employee.new_password": "Nouveau mot de passe",
+  "view.employee.new_password_again": "Répéter le nouveau mot de passe",
+  "view.employee.holidays_per_year": "Jours de vacances par an",
+  "view.employee.locale": "Langue",
+  "view.employee.is_archived": "Utilisateur archivé?",
+  "view.employee.is_admin": "L'utilisateur a des droits d'administrateur?",
+  "view.employee.user_settings": "Paramètres de l'utilisateur",
+  "view.employee.general_info": "Informations générales",
+
+  "view.employee.update.update_employee": "Modifier un employé",
+
+  "view.employee.work_period_subform.work_period": "Périodes de travail",
+  "view.employee.work_period_subform.start": "Début",
+  "view.employee.work_period_subform.end": "Fin",
+  "view.employee.work_period_subform.pensum": "Taux d'occupation",
+  "view.employee.work_period_subform.target_time": "Heures théorique",
+  "view.employee.work_period_subform.effective_time": "Heures réelle",
+  "view.employee.work_period_subform.effort_until_today": "Heures jusqu'à aujourd'hui",
+  "view.employee.work_period_subform.vacation_budget": "Budget vacances",
+  "view.employee.work_period_subform.remaining_vacation_budget": "Crédit de vacances restant",
+  "view.employee.work_period_subform.vacation_takeover": "Report",
+  "view.employee.work_period_subform.yearly_vacation_budget": "Budget vacances annuelt",
+  "view.employee.work_period_subform.hourly_pay": "Salaire horaire",
+  "view.employee.work_period_subform.actions": "Actions",
+
+  "view.employee.work_period_subform.target_time.tooltip": "Les heures théoriques sont les heures de travail à effectuer basées sur les dates de début et de fin choisies, additionnées au crédit de vacances pour cette période. Les jours de congé publics sont déduits.",
+  "view.employee.work_period_subform.effective_time.tooltip": "Les heures effectives sont calculées directement à partir de la saisie des temps et comprennent toutes les entrées de temps qui ont été comptabilisées pour cette personne au cours des dates de début et de fin sélectionnées pour la période.",
+  "view.employee.work_period_subform.effort_until_today.tooltip": "Heures comptabilisées au cours de la période jusqu'à aujourd'hui (ou jusqu'à la date de fin si celle-ci est antérieure à aujourd'hui).",
+  "view.employee.work_period_subform.vacation_budget.tooltip": "Crédit pour les vacances en heures. Celui-ci est calculé au prorata du budget annuel de vacances. Le report de vacances en fait partie.",
+  "view.employee.work_period_subform.remaining_vacation_budget.tooltip": "Le crédit d'heures de vacances non comptabilisé.",
+  "view.employee.work_period_subform.vacation_takeover.tooltip": "Le report se calcule en additionnant le chiffre indiqué dans le champ \"Heures jusqu'à aujourd'hui\" et le solde du crédit de vacances.",
+  "view.employee.work_period_subform.yearly_vacation_budget.tooltip": "Le budget annuel des vacances doit toujours être calculé sur une base de 100%.",
+
   "view.invoice.create.create_invoice": "Créer une facture",
 
   "view.invoice.form.print_effort_report": "Imprimer le rapport de dépenses pour cette facture.",
@@ -207,6 +244,17 @@
 
   "view.offer.update.update_offer": "Modifier l'offre",
   
+  "view.person.addresses_subform_inline.street": "Rue",
+  "view.person.addresses_subform_inline.supplement": "Complément d'adresse",
+  "view.person.addresses_subform_inline.zip": "CODE POSTAL",
+  "view.person.addresses_subform_inline.city": "Ville",
+  "view.person.addresses_subform_inline.country": "Pays",
+  "view.person.addresses_subform_inline.description": "Commentaire",
+  "view.person.addresses_subform_inline.hidden": "Caché",
+  "view.person.addresses_subform_inline.actions": "Actions",
+  "view.person.addresses_subform_inline.from_company": "(de l'entreprise)",
+  "view.person.addresses_subform_inline.addresses": "Adresses",
+
   "view.position_subform_inline.move_group": "Déplacer tous les services de ce groupe.",
   "view.position_subform_inline.sort_group": "Réorganiser tous les services selon le tri standard.",
   "view.position_subform_inline.groups_order": "Ordre des groupes de services.",
@@ -265,7 +313,7 @@
 
   "view.timetrack.no_entries_found": "Aucune entrée n'a été trouvée avec les filtres actuels",
   "view.timetrack.show_empty_groups": "Afficher les groupes vides",
-  "view.timetrack.timetrack": "Enregistrement de temps",
+  "view.timetrack.timetrack": "Saisie de temps",
   "view.timetrack.record_comment": "Saisir un commentaire",
   "view.timetrack.record_effort": "Saisir l'effort",
   "view.timetrack.comment_form_dialog.edit_comment": "Modifier le commentaire du projet",

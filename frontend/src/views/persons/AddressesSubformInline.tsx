@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import {NumberField, SwitchField, TextField} from 'src/form/fields/common';
 import { ConfirmationButton } from 'src/layout/ConfirmationDialog';
 import { PeopleStore } from 'src/stores/peopleStore';
@@ -15,6 +16,7 @@ import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
 import { Address, Company, Person } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 
 const template = () => ({
   city: '',
@@ -30,6 +32,7 @@ const template = () => ({
 export interface Props {
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
+  intl?: IntlShape;
   formikProps: FormikProps<Person | Company>;
   name: string;
   disabled?: boolean;
@@ -38,6 +41,7 @@ export interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'peopleStore'),
   observer,
 )
@@ -49,23 +53,25 @@ export default class AddressesSubformInline extends React.Component<Props> {
   render() {
     const { values } = this.props.formikProps;
     const { inherited = [], hideable = false } = this.props;
+    const idPrefix = 'view.person.addresses_subform_inline';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
     return (
       <FieldArray
         name={this.props.name}
         render={arrayHelpers => (
           <DimePaper>
-            <TableToolbar title={'Adressen'} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
+            <TableToolbar title={intlText('addresses')} numSelected={0} addAction={() => this.handleAdd(arrayHelpers)} />
             <Table size="small" style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
-                  <DimeTableCell style={{ width: '20%' }}>Strasse</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Addresszusatz</DimeTableCell>
-                  <DimeTableCell style={{ width: '10%' }}>PLZ</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Stadt</DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}>Land</DimeTableCell>
-                  <DimeTableCell style={{ width: '30%' }}>Kommentar</DimeTableCell>
-                  {hideable && <DimeTableCell style={{ width: '15%' }}>Versteckt</DimeTableCell>}
-                  <DimeTableCell style={{ width: '15%' }}>Aktionen</DimeTableCell>
+                  <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.street'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.supplement'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={idPrefix + '.zip'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.city'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.country'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '30%' }}> <FormattedMessage id={idPrefix + '.description'} /> </DimeTableCell>
+                  {hideable && <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.hidden'} /> </DimeTableCell>}
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -78,7 +84,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                     <DimeTableCell>{a.country}</DimeTableCell>
                     <DimeTableCell>{a.description}</DimeTableCell>
                     {hideable && <DimeTableCell>{a.hidden}</DimeTableCell>}
-                    <DimeTableCell>(von Firma)</DimeTableCell>
+                    <DimeTableCell> <FormattedMessage id={idPrefix + '.from_company'} /> </DimeTableCell>
                   </TableRow>
                 ))}
                 {(values.addresses ? values.addresses : []).map((a: Address & { formikKey?: number }, index: number) => {

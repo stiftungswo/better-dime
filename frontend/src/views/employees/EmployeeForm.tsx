@@ -15,6 +15,7 @@ import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 import {Employee, WorkPeriod} from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import { WorkPeriodSubform } from './WorkPeriodSubform';
 
@@ -48,6 +49,7 @@ export default class EmployeeForm extends React.Component<Props> {
 
   render() {
     const { employee, schema, intl } = this.props;
+    const intlText = wrapIntl(intl!, 'view.employee');
     let hasOverlaps = false;
 
     if (employee !== undefined) {
@@ -78,14 +80,14 @@ export default class EmployeeForm extends React.Component<Props> {
               <Grid container spacing={3}>
                 <Grid item xs={10}>
                   <DimePaper>
-                    <FormHeader> Allgemeine Informationen </FormHeader>
+                    <FormHeader> <FormattedMessage id="view.employee.general_info" /> </FormHeader>
 
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <DimeField component={TextField} name={'first_name'} label={'Vorname'} />
+                        <DimeField component={TextField} name={'first_name'} label={intlText('first_name')} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField component={TextField} name={'last_name'} label={'Nachname'} />
+                        <DimeField component={TextField} name={'last_name'} label={intlText('last_name')} />
                       </Grid>
                     </Grid>
 
@@ -94,16 +96,16 @@ export default class EmployeeForm extends React.Component<Props> {
                         <DimeField component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6} style={{paddingLeft: '8px'}}>
-                        <DimeField component={EmployeeGroupSelect} name={'employee_group_id'} label={'Gruppe'} />
+                        <DimeField component={EmployeeGroupSelect} name={'employee_group_id'} label={intlText('group')} />
                       </Grid>
                     </Grid>
 
                     <Grid container={true} spacing={2}>
                       <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={PasswordField} name={'password'} label={'Neues Passwort'} fullWidth={true} />
+                        <DimeField component={PasswordField} name={'password'} label={intlText('new_password')} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={PasswordField} name={'password_repeat'} label={'Neues Passwort wiederholen'} />
+                        <DimeField component={PasswordField} name={'password_repeat'} label={intlText('new_password_again')} />
                       </Grid>
                     </Grid>
                   </DimePaper>
@@ -137,26 +139,26 @@ export default class EmployeeForm extends React.Component<Props> {
 
                 <Grid item xs={10}>
                   <DimePaper>
-                    <FormHeader> Benutzereinstellungen </FormHeader>
+                    <FormHeader> <FormattedMessage id="view.employee.user_settings" /> </FormHeader>
 
                     <Grid container={true} spacing={2}>
                       <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={NumberField} name={'holidays_per_year'} label={'Ferientage pro Jahr'} fullWidth={true} />
+                        <DimeField component={NumberField} name={'holidays_per_year'} label={intlText('holidays_per_year')} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12} sm={6}>
-                        <DimeField component={Select} name={'locale'} label={'Sprache'} fullWidth={true} options={this.getLocaleOptions()} />
+                        <DimeField component={Select} name={'locale'} label={intlText('locale')} fullWidth={true} options={this.getLocaleOptions()} />
                       </Grid>
                     </Grid>
 
                     <Grid container={true} spacing={1}>
                       <Grid item={true} xs={12}>
-                        <DimeField component={SwitchField} name={'can_login'} label={'Login aktiviert?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'can_login'} label={intlText('can_login')} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12}>
-                        <DimeField component={SwitchField} name={'archived'} label={'Benutzer archiviert?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'archived'} label={intlText('is_archived')} fullWidth={true} />
                       </Grid>
                       <Grid item={true} xs={12}>
-                        <DimeField component={SwitchField} name={'is_admin'} label={'Benutzer hat Administratorrecht?'} fullWidth={true} />
+                        <DimeField component={SwitchField} name={'is_admin'} label={intlText('is_admin')} fullWidth={true} />
                       </Grid>
                     </Grid>
                   </DimePaper>
