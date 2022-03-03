@@ -50,7 +50,7 @@ export default class InvoiceUpdate extends React.Component<Props> {
   render() {
     const invoice = this.invoice;
     const intlText = wrapIntl(this.props.intl!, 'view.invoice.update');
-    const title = invoice ? `${invoice.name} - ` + intlText('general.invoice.plural', true) : intlText('edit_invoice');
+    const title = invoice ? `${invoice.name} - ` + intlText('general.invoice', true) : intlText('edit_invoice');
 
     return <InvoiceForm title={title} onSubmit={this.handleSubmit} invoice={invoice as FormValues} />;
   }

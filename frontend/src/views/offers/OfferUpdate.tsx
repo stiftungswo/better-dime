@@ -40,7 +40,7 @@ export default class OfferUpdate extends React.Component<Props> {
   render() {
     const intlText = wrapIntl(this.props.intl!, 'view.offer.update');
     const offer = this.offer;
-    const title = offer ? `${offer.name} - ` + intlText('general.offer.plural', true) : intlText('update_offer');
+    const title = offer ? `${offer.name} - ` + intlText('general.offer', true) : intlText('update_offer');
 
     return <OfferForm title={title} onSubmit={this.handleSubmit} offer={offer as FormValues} showDateField={true} />;
   }

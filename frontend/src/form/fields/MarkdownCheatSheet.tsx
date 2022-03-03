@@ -8,8 +8,8 @@ export default function MarkdownCheatSheet() {
   return isFrench ? (
     <div style={{fontSize: '13px', lineHeight: '15px'}}>
       <p style={{fontSize: '14px', marginBottom: '5px', marginTop: '0px'}}><b>Cheatsheet Markdown</b></p>
-      <b>Titre: </b> #Titre de la Description<br/>
-      <b>Sous-titres: </b> ##Sous-titres de la Description<br/>
+      <b>Titre: </b> #Titre de la description<br/>
+      <b>Sous-titres: </b> ##Sous-titres de la description<br/>
       <b>Texte en gras: </b> **Texte**<br/>
       <b>Texte en italique: </b> *Texte*<br/>
       <b>Liste: </b><br/>
