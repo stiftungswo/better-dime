@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
@@ -9,23 +10,25 @@ import { MainStore } from '../../stores/mainStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { Category } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { projectCategorySchema, projectCategoryTemplate } from './projectCategorySchema';
 
 interface Props {
   mainStore?: MainStore;
   projectCategoryStore?: ProjectCategoryStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'projectCategoryStore'),
   observer,
 )
 export default class ProjectCategoryOverview extends React.Component<Props> {
-  columns: Array<Column<Category>> = [];
-
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+  render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.project_category.overview');
+    const projectCategoryStore = this.props.projectCategoryStore;
+    const columns: Array<Column<Category>> = [
       {
         id: 'id',
         numeric: false,
@@ -34,21 +37,17 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
       {
         id: 'name',
         numeric: false,
-        label: 'Name',
+        label: intlText('general.name', true),
       },
     ];
-  }
-
-  render() {
-    const projectCategoryStore = this.props.projectCategoryStore;
 
     return (
       <EditableOverview
         archivable
         searchable
-        title={'Tätigkeitsbereiche'}
+        title={intlText('title')}
         store={projectCategoryStore!}
-        columns={this.columns}
+        columns={columns}
         schema={projectCategorySchema}
         defaultValues={projectCategoryTemplate}
         renderActions={(e: Category) => (
@@ -59,8 +58,8 @@ export default class ProjectCategoryOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'name'} label={'Name'} />
-            <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} />
+            <DimeField component={TextField} name={'name'} label={intlText('general.name', true)} />
+            <DimeField component={SwitchField} name={'archived'} label={intlText('general.is_archived', true)} />
           </>
         )}
       />

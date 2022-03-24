@@ -1,6 +1,7 @@
 import { Grid } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
@@ -10,65 +11,64 @@ import { MainStore } from '../../stores/mainStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { RateUnit } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { rateUnitSchema, rateUnitTemplate } from './rateUnitSchema';
 
 interface Props {
   mainStore?: MainStore;
   rateUnitStore?: RateUnitStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'rateUnitStore'),
   observer,
 )
 export default class RateUnitOverview extends React.Component<Props> {
-  columns: Array<Column<RateUnit>> = [];
-
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
-      {
-        id: 'listing_name',
-        numeric: false,
-        label: 'Name',
-      },
-      {
-        id: 'factor',
-        numeric: true,
-        label: 'Umrechnungsfaktor',
-      },
-      {
-        id: 'billing_unit',
-        numeric: false,
-        label: 'Verrechnungseinheit',
-      },
-      {
-        id: 'effort_unit',
-        numeric: false,
-        label: 'Zeiterfassungseinheit',
-      },
-      {
-        id: 'is_time',
-        numeric: false,
-        label: 'Zeiteinheit',
-        format: e => (e.is_time ? 'Ja' : 'Nein'),
-      },
-    ];
-  }
-
   archiveRateUnit(e: RateUnit, archive: boolean) {
     this.props.rateUnitStore!.archive(e.id, archive).then(() => this.props.rateUnitStore!.fetchAllPaginated());
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.rate_unit.overview');
+    const columns: Array<Column<RateUnit>> = [
+      {
+        id: 'listing_name',
+        numeric: false,
+        label: intlText('general.name', true),
+      },
+      {
+        id: 'factor',
+        numeric: true,
+        label: intlText('factor'),
+      },
+      {
+        id: 'billing_unit',
+        numeric: false,
+        label: intlText('billing_unit'),
+      },
+      {
+        id: 'effort_unit',
+        numeric: false,
+        label: intlText('effort_unit'),
+      },
+      {
+        id: 'is_time',
+        numeric: false,
+        label: intlText('is_time_unit'),
+        format: e => (e.is_time ? 'Ja' : 'Nein'),
+      },
+    ];
+
     return (
       <EditableOverview
         archivable
         paginated
         searchable
-        title={'Tarif-Typen'}
+        title={intlText('popup_title')}
         store={this.props.rateUnitStore!}
-        columns={this.columns}
+        columns={columns}
         schema={rateUnitSchema}
         defaultValues={rateUnitTemplate}
         renderActions={(e: RateUnit) => (
@@ -80,27 +80,27 @@ export default class RateUnitOverview extends React.Component<Props> {
         renderForm={props => (
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <DimeField component={TextField} name={'name'} label={'Name'} />
+              <DimeField component={TextField} name={'name'} label={intlText('general.name', true)} />
             </Grid>
 
             <Grid item xs={4}>
-              <DimeField component={NumberField} name={'factor'} label={'Umrechnungsfaktor'} />
+              <DimeField component={NumberField} name={'factor'} label={intlText('factor')}/>
             </Grid>
 
             <Grid item xs={4}>
-              <DimeField component={TextField} name={'billing_unit'} label={'Verrechnungseinheit'} />
+              <DimeField component={TextField} name={'billing_unit'} label={intlText('billing_unit')} />
             </Grid>
 
             <Grid item xs={4}>
-              <DimeField component={TextField} name={'effort_unit'} label={'Zeiterfassungseinheit'} />
+              <DimeField component={TextField} name={'effort_unit'} label={intlText('effort_unit')} />
             </Grid>
 
             <Grid item xs={6}>
-              <DimeField component={SwitchField} name={'is_time'} label={'Zeiteinheit?'} />
+              <DimeField component={SwitchField} name={'is_time'} label={intlText('is_time_unit')} />
             </Grid>
 
             <Grid item xs={6}>
-              <DimeField component={SwitchField} name={'archived'} label={'Archiviert?'} />
+              <DimeField component={SwitchField} name={'archived'} label={intlText('general.is_archived', true)} />
             </Grid>
           </Grid>
         )}

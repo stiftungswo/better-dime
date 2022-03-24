@@ -5,6 +5,10 @@
   "general.date": "Date",
   "general.employee": "Employé",
   "general.employee.plural": "Employés",
+  "general.company": "Entreprise",
+  "general.company.plural": "Entreprises",
+  "general.person": "Personne",
+  "general.person.plural": "Personnes",
   "general.customer": "Client",
   "general.customer.plural": "Clients",
   "general.offer": "Offre",
@@ -15,6 +19,8 @@
   "general.invoice.plural": "Factures",
   "general.service": "Service",
   "general.service.plural": "Services",
+  "general.tag": "Balise",
+  "general.tag.plural": "Balises",
   "general.comment": "Commentaire",
   "general.effort_value": "Valeur comptabilisée",
   "general.value": "Valeur",
@@ -24,6 +30,18 @@
   "general.project_category.plural": "Domaines d'activité",
   "general.cost_group": "Centre de coûts",
   "general.cost_group.plural": "Centres de coûts",
+  "general.no": "Non",
+  "general.yes": "Oui",
+  "general.first_name": "Prenom",
+  "general.last_name": "Nom de famille",
+  "general.actions": "Actions",
+  "general.rate": "Tarif",
+  "general.rate.plural": "Tarifs",
+  "general.rate_group": "Groupe de tarifs",
+  "general.rate_group.plural": "Groupes de tarifs",
+  "general.accountant": "Employé responsable",
+  "general.is_archived": "Archivé?",
+  "general.vat": "TVA",
 
   "general.action.save": "Enregistrer",
   "general.action.save_and_continue": "Enregistrer et continuer",
@@ -41,6 +59,9 @@
   "general.action.add_effort": "Ajouter un effort",
   "general.action.print_project_effort_report": "Imprimer le rapport d'effort",
   "general.action.print_employtee_effort_report": "Imprimer le récapitulatif des heures",
+  "general.action.logout": "Déconnecter",
+  "general.action.fetch": "Récupérer",
+  "general.action.download": "Télécharger",
 
   "form.failed_to_save": "Les données n'ont pas pu être enregistrées car le formulaire contient des informations non valides",
 
@@ -76,7 +97,7 @@
   "form.entity_select.address_select.wait_fetching": "Les adresses sont récupérées ...",
   "form.entity_select.address_select.missing_customer": "Sélectionner d'abord le client",
 
-  "form.entity_select.export_format.just_email_addresses": "Courrier électronique uniquement (document texte)",
+  "form.entity_select.export_format.just_email_addresses": "Juste l'E-Mail (document texte)",
   "form.entity_select.export_format.whole_excel_file": "Document Excel",
 
   "form.entity_select.export_grouping.by_project": "Regroupé par projet",
@@ -102,7 +123,6 @@
   "layout.confirmation_dialog.confirm_delete": "Supprimer vraiment?",
 
   "layout.breakdown_table.subtotal": "Sous-total",
-  "layout.breakdown_table.vat_total": "TVA",
   "layout.breakdown_table.discount_total": "Total des déductions",
   "layout.breakdown_table.final_cost": "Total",
 
@@ -122,7 +142,7 @@
   "layout.navigation.customers.transfer": "Import / Export",
   "layout.navigation.reports": "Rapports",
   "layout.navigation.reports.daily": "Rapport hebdomadaire",
-  "layout.navigation.reports.service": "Rapports de service",
+  "layout.navigation.reports.service": "Rapport de service",
   "layout.navigation.reports.revenue": "Rapport de ventes",
   "layout.navigation.reports.employees": "Rapport des employés",
   "layout.navigation.reports.project": "Rapport de projet",
@@ -131,7 +151,7 @@
   "layout.navigation.data.services": "Services",
   "layout.navigation.data.rate_groups": "Groupes de tarifs",
   "layout.navigation.data.rate_units": "Types de tarifs",
-  "layout.navigation.data.employee_groups": "Groupes d'employés",
+  "layout.navigation.data.employee_groups": "Catégories d'employés",
   "layout.navigation.data.comment_presets": "Modèles de commentaires",
   "layout.navigation.data.holidays": "Jours fériés",
   "layout.navigation.data.project_categories": "Domaines d'activité",
@@ -140,6 +160,22 @@
   "layout.overview.show_archived_objects": "Afficher les objets archivés",
   "layout.overview.hide_archived_objects": "Masquer les objets archivés",
 
+  "view.comment_preset.overview.delete_warning": "Veux-tu vraiment supprimer ce modèle de commentaire?",
+  "view.comment_preset.overview.comment_preset": "Modèle de commentaire",
+  "view.comment_preset.overview.title": "Modèles de commentaires",
+
+  "view.company.create.title": "Saisir une entreprise",
+
+  "view.company.form.first_name": "Prénom",
+  "view.company.form.last_name": "Nom de famille",
+  "view.company.form.street": "Rue",
+  "view.company.form.comments": "Commentaires",
+  "view.company.form.is_hidden": "Contact caché?",
+
+  "view.company.overview.street": "Rue",
+  "view.company.overview.plz": "CP",
+  "view.company.overview.city": "Ville",
+  "view.company.overview.delete_warning": "Veux-tu vraiment supprimer cette entreprise ? Cela supprime également toutes les personnes jointes ainsi que les adresses et les numéros de téléphone.",
 
   "view.employee.first_name": "Prénom",
   "view.employee.last_name": "Nom de famille",
@@ -168,7 +204,6 @@
   "view.employee.work_period_subform.vacation_takeover": "Report",
   "view.employee.work_period_subform.yearly_vacation_budget": "Budget vacances annuelt",
   "view.employee.work_period_subform.hourly_pay": "Salaire horaire",
-  "view.employee.work_period_subform.actions": "Actions",
 
   "view.employee.work_period_subform.target_time.tooltip": "Les heures théoriques sont les heures de travail à effectuer basées sur les dates de début et de fin choisies, additionnées au crédit de vacances pour cette période. Les jours de congé publics sont déduits.",
   "view.employee.work_period_subform.effective_time.tooltip": "Les heures effectives sont calculées directement à partir de la saisie des temps et comprennent toutes les entrées de temps qui ont été comptabilisées pour cette personne au cours des dates de début et de fin sélectionnées pour la période.",
@@ -178,7 +213,13 @@
   "view.employee.work_period_subform.vacation_takeover.tooltip": "Le report se calcule en additionnant le chiffre indiqué dans le champ \"Heures jusqu'à aujourd'hui\" et le solde du crédit de vacances.",
   "view.employee.work_period_subform.yearly_vacation_budget.tooltip": "Le budget annuel des vacances doit toujours être calculé sur une base de 100%.",
 
-  "view.invoice.create.create_invoice": "Créer une facture",
+  "view.employee_group.overview.title": "Catégories d'employés",
+
+  "view.holiday.overview.title": "Jours fériés",
+  "view.holiday.overview.delete_warning": "Veux-tu vraiment supprimer ce jour férié ? Le temps qui était auparavant crédité par le jour férié sera déduit pour tous les collaborateurs !",
+  "view.holiday.overview.duration": "Durée",
+
+  "view.invoice.create.create_invoice": "Saisir une facture",
 
   "view.invoice.form.print_effort_report": "Imprimer le rapport de dépenses pour cette facture.",
   "view.invoice.form.error_no_project": "Comme la facture n'a pas de projet lié, aucun rapport de charge ne peut être généré.",
@@ -188,7 +229,6 @@
   "view.invoice.form.missing_cost_group_invoice": "Il faut attribuer un centre de coûts avant de pouvoir imprimer la facture.",
   "view.invoice.form.error_date_range_dirty": "En cas de modification de la date de début/fin, la période doit être mise à jour.",
   "view.invoice.form.address": "Adresse",
-  "view.invoice.form.accountant": "Employé responsable",
   "view.invoice.form.print_date": "Date d'émission",
   "view.invoice.form.start_date": "Date de début",
   "view.invoice.form.end_date": "Date de fin",
@@ -212,16 +252,12 @@
   "view.offer.discount_subform.title": "Déductions",
   "view.offer.discount_subform.percentage": "Pourcentage",
   "view.offer.discount_subform.discount": "Déduction",
-  "view.offer.discount_subform.actions": "Actions",
 
   "view.offer.form.save_first": "Enregistrer en premier!",
   "view.offer.form.create_project_from_offer": "Créer un projet à partir d'une offre",
   "view.offer.form.locked_offer": "L'offre est à l'état \"Bestbestätigt\" et ne peut donc plus être modifiée. Pour adapter l'offre, changez d'abord le statut",
-  "view.offer.form.name": "Nom",
   "view.offer.form.customer": "Client",
   "view.offer.form.address": "Adresse",
-  "view.offer.form.rate": "Tarif",
-  "view.offer.form.accountant": "Employé responsable",
   "view.offer.form.status": "Statut",
   "view.offer.form.short_description": "Description courte",
   "view.offer.form.date": "Date d'émission",
@@ -235,56 +271,70 @@
 
   "view.offer.position_renderer.note": "Note",
   "view.offer.position_renderer.note_body": "Il faut d'abord sélectionner un groupe de tarifs avant de pouvoir ajouter de nouvelles positions à l'offre.",
-  "view.offer.position_renderer.rate": "Tarif",
   "view.offer.position_renderer.rate_unit": "Type de tarif",
   "view.offer.position_renderer.amount": "Quantité",
-  "view.offer.position_renderer.vat": "TVA",
   "view.offer.position_renderer.total": "Total CHF (avec TVA)",
-  "view.offer.position_renderer.actions": "Actions",
 
   "view.offer.update.update_offer": "Modifier l'offre",
   
   "view.person.addresses_subform_inline.street": "Rue",
   "view.person.addresses_subform_inline.supplement": "Complément d'adresse",
-  "view.person.addresses_subform_inline.zip": "CODE POSTAL",
+  "view.person.addresses_subform_inline.zip": "Code Postal",
   "view.person.addresses_subform_inline.city": "Ville",
   "view.person.addresses_subform_inline.country": "Pays",
   "view.person.addresses_subform_inline.description": "Commentaire",
   "view.person.addresses_subform_inline.hidden": "Caché",
-  "view.person.addresses_subform_inline.actions": "Actions",
   "view.person.addresses_subform_inline.from_company": "(de l'entreprise)",
   "view.person.addresses_subform_inline.addresses": "Adresses",
+
+  "view.person.create.title": "Saisir un client",
+
+  "view.person.form.solutation": "Titre de civilité",
+  "view.person.form.department": "Département",
+  "view.person.form.use_department_address": "Reprendre l'adresse?",
+  "view.person.form.comments": "Remarques (internes)",
+  "view.person.form.is_contact_hidden": "Contact caché?",
+
+  "view.person.overview.first_name": "Prénom",
+  "view.person.overview.last_name": "Nom de famille",
+  "view.person.overview.delete_warning": "Veux-tu vraiment supprimer cette personne ?",
+  "view.person.overview.open_email": "Ouvrir l'e-mail",
+  "view.person.overview.cancel_selection": "Annuler la sélection",
+
+  "view.person.phone_number_subform_inline.main_number": "Numéro principal",
+  "view.person.phone_number_subform_inline.direct_dial": "Ligne directe",
+  "view.person.phone_number_subform_inline.private": "Privé",
+  "view.person.phone_number_subform_inline.mobile": "Mobile",
+  "view.person.phone_number_subform_inline.fax": "Fax",
+  "view.person.phone_number_subform_inline.category": "Catégorie",
+  "view.person.phone_number_subform_inline.number": "Numéro",
+  "view.person.phone_number_subform_inline.from_company": "(de l'entreprise)",
+
+  "view.person.update.edit_customer": "Modifier le client",
 
   "view.position_subform_inline.move_group": "Déplacer tous les services de ce groupe.",
   "view.position_subform_inline.sort_group": "Réorganiser tous les services selon le tri standard.",
   "view.position_subform_inline.groups_order": "Ordre des groupes de services.",
   "view.position_subform_inline.save_first": "Enregistrez d'abord!",
 
-  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Date de la dernière dépense",
-  "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Date de la dernière facture",
-  "view.project.projects_with_potential_invoices_overview.days": "Jours",
-  "view.project.projects_with_potential_invoices_overview.title": "Projets non facturés",
+  "view.project_category.overview.title": "Domaines d'activité",
 
-  "view.project.project_category_subform.title": "Domaines d'activité",
-  "view.project.project_category_subform.weight": "Pondération",
-  "view.project.project_category_subform.fraction": "Part",
-  "view.project.project_category_subform.actions": "Actions",
+  "view.project.category_subform.title": "Domaines d'activité",
+  "view.project.category_subform.weight": "Pondération",
+  "view.project.category_subform.fraction": "Part",
 
-  "view.project.project_costgroup_subform.weight": "Pondération",
-  "view.project.project_costgroup_subform.fraction": "Part",
-  "view.project.project_costgroup_subform.actions": "Actions",
+  "view.project.costgroup_subform.weight": "Pondération",
+  "view.project.costgroup_subform.fraction": "Part",
 
-  "view.project.project_create.title": "Créer un projet",
+  "view.project.create.title": "Saisir un projet",
 
   "view.project.form.print_effort_report": "Imprimer le rapport de dépenses",
   "view.project.form.generate_invoice": "Générer une nouvelle facture à partir du projet",
-  "view.project.form.accountant": "Employé responsable",
   "view.project.form.address": "Adresse",
   "view.project.form.description": "Description",
   "view.project.form.deadline": "Date limite",
   "view.project.form.chargeable": "Facturable",
   "view.project.form.archived_rate_units_warning": "Services avec unités archivées disponibles!",
-  "view.project.form.rate": "Tarif",
   "view.project.form.fixed_price": "Prix fixe",
 
   "view.project.overview.delete_warning": "Voulez-vous vraiment supprimer ce projet?",
@@ -292,15 +342,17 @@
   "view.project.overview.last_change": "Dernière modification",
 
   "view.project.position_renderer.description": "Description",
-  "view.project.position_renderer.rate": "Tarif",
   "view.project.position_renderer.unit": "Unité",
-  "view.project.position_renderer.vat": "TVA",
   "view.project.position_renderer.count": "Nombre",
   "view.project.position_renderer.total": "Total CHF (avec TVA)",
-  "view.project.position_renderer.actions": "Actions",
   "view.project.position_renderer.has_efforts_warning": "Supprimez d'abord les dépenses!",
   "view.project.position_renderer.note": "Note:",
   "view.project.position_renderer.note_content": "Il faut d'abord sélectionner un groupe tarifaire avant de pouvoir ajouter de nouvelles positions au projet.",
+
+  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Date de la dernière dépense",
+  "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Date de la dernière facture",
+  "view.project.projects_with_potential_invoices_overview.days": "Jours",
+  "view.project.projects_with_potential_invoices_overview.title": "Projets non facturés",
 
   "view.project.stat_table.remaining_budget": "Budget résiduel",
   "view.project.stat_table.stats": "Projet Statistiques",
@@ -310,6 +362,38 @@
   "view.project.stat_table.time_used": "Temps utilisé",
 
   "view.project.update.edit_projects": "Modifier le Projet",
+
+  "view.rate_unit.overview.factor": "Facteur de conversion",
+  "view.rate_unit.overview.billing_unit": "Unité de facturation",
+  "view.rate_unit.overview.effort_unit": "Unité de saisie du temps",
+  "view.rate_unit.overview.is_time_unit": "Unité de temps?",
+  "view.rate_unit.overview.popup_title": "Types de tarifs",
+
+  "view.report.daily.no_results": "Aucun résultat",
+
+  "view.report.date_span_picker.from": "Du",
+  "view.report.date_span_picker.to": "Au",
+
+  "view.report.project.excluded_employees": "Employés exclus",
+  "view.report.project.description": "Description",
+  "view.report.project.price": "Prix",
+  "view.report.project.additional_costs": "Frais supplémentaires",
+
+  "view.report.service.grouping": "Regroupement",
+  "view.report.service.title": "Heures par service",
+
+  "view.service.create.title": "Créer un service",
+
+  "view.service.form.value_added_tax": "Taxe sur la valeur ajoutée",
+  "view.service.form.chargeable": "Facturable",
+  "view.service.form.archived": "Archivé",
+  "view.service.form.sorting_order": "Ordre de tri",
+  "view.service.form.sorting_order_details": "Explication de l'ordre de tri",
+  "view.service.form.unit": "Unité",
+
+  "view.service.overview.order": "Ordre",
+
+  "view.service.update.edit_service": "Service bearbeiten",
 
   "view.timetrack.no_entries_found": "Aucune entrée n'a été trouvée avec les filtres actuels",
   "view.timetrack.show_empty_groups": "Afficher les groupes vides",
@@ -322,11 +406,11 @@
   "view.timetrack.filter_form.show_empty": "Afficher les groupes vides",
   "view.timetrack.filter_form.show_comments": "Afficher les commentaires du projet",
   "view.timetrack.filter_form.refresh": "Actualiser",
-  "view.timetrack.form_dialog.record_effort": "Enregistrer l'effort",
+  "view.timetrack.form_dialog.record_effort": "Saisir l'effort",
   "view.timetrack.form_dialog.edit_effort": "Modifier les charges",
   "view.timetrack.form_dialog.comment_label": "Commentaire sur le projet et le jour",
   "view.timetrack.service_group.description": "Description",
-  "view.timetrack.service_group.recorded_value": "Valeur enregistrée",
+  "view.timetrack.service_group.recorded_value": "Valeur saisie",
 
 
   "end.of.file": "Keep this line at the end to deal with json's non-existing trailing comma."

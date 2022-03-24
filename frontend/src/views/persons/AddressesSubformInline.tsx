@@ -71,7 +71,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                   <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.country'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '30%' }}> <FormattedMessage id={idPrefix + '.description'} /> </DimeTableCell>
                   {hideable && <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.hidden'} /> </DimeTableCell>}
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

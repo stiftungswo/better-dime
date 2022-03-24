@@ -76,7 +76,7 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary="Abmelden" />
+            <ListItemText primary={intl!.formatMessage({id: 'general.action.logout'})} />
           </MenuItem>
         </Menu>
       </div>

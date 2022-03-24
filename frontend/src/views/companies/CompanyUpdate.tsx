@@ -1,10 +1,12 @@
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { Address, Company } from 'src/types';
 import { CompanyStore } from '../../stores/companyStore';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import CompanyForm from './CompanyForm';
 
 interface PersonDetailRouterProps {
@@ -13,9 +15,11 @@ interface PersonDetailRouterProps {
 
 export interface Props extends RouteComponentProps<PersonDetailRouterProps> {
   companyStore?: CompanyStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('companyStore'),
   observer,
 )
@@ -49,7 +53,8 @@ export default class CompanyUpdate extends React.Component<Props> {
 
   render() {
     const company = this.company;
-    const title = company ? `${company.name} - Firma` : 'Kunde bearbeiten';
+    const intlText = wrapIntl(this.props.intl!, 'view.person.update');
+    const title = company ? `${company.name} - ` + intlText('general.company', true) : intlText('edit_customer');
 
     return <CompanyForm title={title} onSubmit={this.handleSubmit} company={company!} />;
   }

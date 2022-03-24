@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { PeopleStore } from 'src/stores/peopleStore';
 import { Person } from '../../types';
@@ -8,11 +9,13 @@ import PersonForm from './PersonForm';
 
 export interface Props extends RouteComponentProps {
   peopleStore?: PeopleStore;
+  intl?: IntlShape;
 }
 
 @compose(
   inject('peopleStore'),
   observer,
+  injectIntl,
 )
 export default class PersonCreate extends React.Component<Props> {
   state = {
@@ -47,7 +50,8 @@ export default class PersonCreate extends React.Component<Props> {
       phone_numbers: [],
       archived: false,
     };
+    const intl = this.props.intl!;
 
-    return <PersonForm title={'Kunde erfassen'} onSubmit={this.handleSubmit} person={person} submitted={this.state.submitted} />;
+    return <PersonForm title={intl.formatMessage({id: 'view.person.create.title'})} onSubmit={this.handleSubmit} person={person} submitted={this.state.submitted} />;
   }
 }

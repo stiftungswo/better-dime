@@ -24,6 +24,7 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Service, ServiceRate } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { MarkdownAccordion } from './MarkdownAccordion';
 import { serviceSchema } from './serviceSchema';
 
@@ -55,6 +56,8 @@ export default class ServiceForm extends React.Component<Props> {
   }
 
   render() {
+    const idPrefix = 'view.service.form';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
     const service = this.props.service ?? {
       name: '',
       description: '',
@@ -83,30 +86,30 @@ export default class ServiceForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                        <DimeField required component={TextField} name={'name'} label={'Name'} />
+                        <DimeField required component={TextField} name={'name'} label={intlText('general.name', true)} />
                       </Grid>
                       <Grid item xs={12}>
-                        <DimeField component={TextField} name={'description'} label={'Beschreibung'} />
+                        <DimeField component={TextField} name={'description'} label={intlText('general.description', true)} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
-                        <DimeField component={VatField} required name={'vat'} label={'Mehrwertsteuer'} />
+                        <DimeField component={VatField} required name={'vat'} label={intlText('value_added_tax')} />
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
                           {/*FIXME this field doesn't exist on the backend?*/}
-                          <DimeField component={SwitchField} name={'chargeable'} label={'Verrechenbar'} />
+                          <DimeField component={SwitchField} name={'chargeable'} label={intlText('chargeable')} />
                         </Grid>
                         <Grid item xs={12}>
-                          <DimeField component={SwitchField} name={'archived'} label={'Archiviert'} fullWidth={true} />
+                          <DimeField component={SwitchField} name={'archived'} label={intlText('archived')} fullWidth={true} />
                         </Grid>
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>
                           <Grid item xs={12} lg={4}>
-                            <DimeField component={NumberField} required name={'order'} label={'Sortierreihenfolge'} />
+                            <DimeField component={NumberField} required name={'order'} label={intlText('sorting_order')} />
                           </Grid>
                           <Grid item xs={12} lg={8} container direction="column" justifyContent="center">
-                            <MarkdownAccordion title={'Erläuterung Sortierreihenfolge'} globalSettingStore={this.props.globalSettingStore} />
+                            <MarkdownAccordion title={intlText('sorting_order_details')} globalSettingStore={this.props.globalSettingStore} />
                           </Grid>
                         </Grid>
                       </Grid>
@@ -120,13 +123,13 @@ export default class ServiceForm extends React.Component<Props> {
                       <Observer>
                         {() => (
                           <DimePaper>
-                            <TableToolbar title={'Tarife'} numSelected={0} />
+                            <TableToolbar title={intlText('general.rate.plural', true)} numSelected={0} />
                             <Table>
                               <TableHead>
                                 <TableRow>
-                                  <DimeTableCell style={{ width: '33%' }}>Tarifgruppe</DimeTableCell>
-                                  <DimeTableCell style={{ width: '33%' }}>Einheit</DimeTableCell>
-                                  <DimeTableCell style={{ width: '34%' }}>Wert</DimeTableCell>
+                                  <DimeTableCell style={{ width: '33%' }}> <FormattedMessage id="general.rate_group" /> </DimeTableCell>
+                                  <DimeTableCell style={{ width: '33%' }}> <FormattedMessage id={idPrefix + '.unit'} /></DimeTableCell>
+                                  <DimeTableCell style={{ width: '34%' }}> <FormattedMessage id="general.value" /> </DimeTableCell>
                                 </TableRow>
                               </TableHead>
                               <TableBody>

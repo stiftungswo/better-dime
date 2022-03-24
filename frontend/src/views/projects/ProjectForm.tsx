@@ -182,7 +182,7 @@ class ProjectForm extends React.Component<Props> {
                           <DimeField delayed required component={TextField} name={'name'} label={intlText('general.name', true)} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
-                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={intlText('accountant')} />
+                          <DimeField required component={EmployeeSelect} name={'accountant_id'} label={intlText('general.accountant', true)} />
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <Effect onChange={this.handleCustomerChange} />
@@ -198,7 +198,7 @@ class ProjectForm extends React.Component<Props> {
                           />
                         </Grid>
                         <Grid item xs={12} lg={4}>
-                          <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intlText('rate')} />
+                          <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intlText('general.rate', true)} />
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField
