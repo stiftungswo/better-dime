@@ -202,7 +202,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
-                    <FormattedMessage id={'general.action.save_continue'} />
+                    <FormattedMessage id={'general.action.save_and_continue'} />
                   </Button>
                 )}
               </DialogActions>

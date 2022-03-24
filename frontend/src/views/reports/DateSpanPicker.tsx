@@ -4,8 +4,11 @@ import Button, { ButtonProps } from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { BackIcon, ForwardIcon } from '../../layout/icons';
+import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -26,8 +29,12 @@ interface Props extends WithStyles<typeof styles> {
   toValue: Moment;
   onChangeFrom: (moment: Moment) => void;
   onChangeTo: (moment: Moment) => void;
+  intl?: IntlShape;
 }
 
+@compose(
+  injectIntl,
+)
 class DateSpanPickerInner extends React.Component<Props> {
   forwardWeek = () => this.change(1, 'week');
   backWeek = () => this.change(-1, 'week');
@@ -50,6 +57,7 @@ class DateSpanPickerInner extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.report.date_span_picker');
     const { classes } = this.props;
     const buttonProps: ButtonProps = {
       className: classes.button,
@@ -66,8 +74,8 @@ class DateSpanPickerInner extends React.Component<Props> {
             <BackIcon />
           </Badge>
         </Button>
-        <DatePicker className={classes.input} label={'Von'} value={this.props.fromValue} onChange={this.props.onChangeFrom} />
-        <DatePicker className={classes.input} label={'Bis'} value={this.props.toValue} onChange={this.props.onChangeTo} />
+        <DatePicker className={classes.input} label={intlText('from')} value={this.props.fromValue} onChange={this.props.onChangeFrom} />
+        <DatePicker className={classes.input} label={intlText('to')} value={this.props.toValue} onChange={this.props.onChangeTo} />
         {/*<Button onClick={()=>this.current('week')}{...buttonProps}><Badge badgeContent={7}><NowIcon/></Badge></Button>*/}
         {/*<Button onClick={()=>this.current('month')}{...buttonProps}><Badge badgeContent={30}><NowIcon/></Badge></Button>*/}
         <Button onClick={this.forwardWeek} {...buttonProps}>

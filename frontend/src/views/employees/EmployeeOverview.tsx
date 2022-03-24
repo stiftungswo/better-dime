@@ -51,7 +51,7 @@ export default class EmployeeOverview extends React.Component<Props> {
       {
         id: 'can_login',
         label: intlText('can_login'),
-        format: e => (e.can_login ? 'Ja' : 'Nein'),
+        format: e => (e.can_login ? intlText('general.yes', true) : intlText('general.no', true)),
       },
     ];
 

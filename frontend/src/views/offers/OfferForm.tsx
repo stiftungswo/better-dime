@@ -160,7 +160,7 @@ class OfferForm extends React.Component<Props> {
                           <Grid item xs={12} lg={8}>
                             <Grid container spacing={1}>
                               <Grid item xs={12}>
-                                <DimeField delayed required component={TextField} name={'name'} label={intl.formatMessage({id: 'view.offer.form.name'})} disabled={locked} />
+                                <DimeField delayed required component={TextField} name={'name'} label={intl.formatMessage({id: 'general.name'})} disabled={locked} />
                               </Grid>
                               <Grid item xs={12} lg={4}>
                                 <Effect onChange={this.handleCustomerChange} />
@@ -177,14 +177,14 @@ class OfferForm extends React.Component<Props> {
                                 />
                               </Grid>
                               <Grid item xs={12} lg={4}>
-                                <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intl.formatMessage({id: 'view.offer.form.rate'})} disabled={locked} />
+                                <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intl.formatMessage({id: 'general.rate'})} disabled={locked} />
                               </Grid>
                               <Grid item xs={12} lg={8}>
                                 <DimeField
                                   required
                                   component={EmployeeSelect}
                                   name={'accountant_id'}
-                                  label={intl.formatMessage({id: 'view.offer.form.accountant'})}
+                                  label={intl.formatMessage({id: 'general.accountant'})}
                                   disabled={locked}
                                 />
                               </Grid>

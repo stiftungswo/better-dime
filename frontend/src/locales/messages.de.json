@@ -5,6 +5,10 @@
   "general.date": "Datum",
   "general.employee": "Mitarbeiter",
   "general.employee.plural": "Mitarbeiter",
+  "general.company": "Firma",
+  "general.company.plural": "Firmen",
+  "general.person": "Person",
+  "general.person.plural": "Personen",
   "general.customer": "Kunde",
   "general.customer.plural": "Kunden",
   "general.offer": "Offerte",
@@ -15,6 +19,8 @@
   "general.invoice.plural": "Rechnungen",
   "general.service": "Service",
   "general.service.plural": "Services",
+  "general.tag": "Tag",
+  "general.tag.plural": "Tags",
   "general.comment": "Kommentar",
   "general.effort_value": "Gebuchter Wert",
   "general.value": "Wert",
@@ -24,6 +30,18 @@
   "general.project_category.plural": "Tätigkeitsbereiche",
   "general.cost_group": "Kostenstelle",
   "general.cost_group.plural": "Kostenstellen",
+  "general.no": "Nein",
+  "general.yes": "Ja",
+  "general.first_name": "Vorname",
+  "general.last_name": "Nachname",
+  "general.actions": "Aktionen",
+  "general.rate": "Tarif",
+  "general.rate.plural": "Tarife",
+  "general.rate_group": "Tarif-Gruppe",
+  "general.rate_group.plural": "Tarif-Gruppen",
+  "general.accountant": "Verantwortlicher Mitarbeiter",
+  "general.is_archived": "Archiviert?",
+  "general.vat": "MwSt.",
 
   "general.action.save": "Speichern",
   "general.action.save_and_continue": "Speichern und weiter",
@@ -41,6 +59,9 @@
   "general.action.add_effort": "Aufwand hinzufügen",
   "general.action.print_project_effort_report": "Aufwandsrapport drucken",
   "general.action.print_employtee_effort_report": "Stundenübersicht drucken",
+  "general.action.logout": "Abmelden",
+  "general.action.fetch": "Laden",
+  "general.action.download": "Herunterladen",
 
   "form.failed_to_save": "Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.",
 
@@ -103,7 +124,6 @@
   "layout.confirmation_dialog.confirm_delete": "Wirklich löschen?",
 
   "layout.breakdown_table.subtotal": "Subtotal",
-  "layout.breakdown_table.vat_total": "MwSt.",
   "layout.breakdown_table.discount_total": "Total Abzüge",
   "layout.breakdown_table.final_cost": "Total",
 
@@ -141,6 +161,29 @@
   "layout.overview.show_archived_objects": "Archivierte Objekte einblenden",
   "layout.overview.hide_archived_objects": "Archivierte Objekte ausblenden",
 
+  "view.comment_preset.overview.delete_warning": "Möchtest du diese Kommentarvorlage wirklich löschen?",
+  "view.comment_preset.overview.comment_preset": "Kommentarvorlage",
+  "view.comment_preset.overview.title": "Kommentarvorlagen",
+
+  "view.company.create.title": "Firma erfassen",
+
+  "view.company.form.first_name": "Vorname",
+  "view.company.form.last_name": "Nachname",
+  "view.company.form.street": "Strasse",
+  "view.company.form.comments": "Bemerkungen",
+  "view.company.form.is_hidden": "Kontakt versteckt?",
+
+  "view.company.overview.street": "Strasse",
+  "view.company.overview.plz": "PLZ",
+  "view.company.overview.city": "Ort",
+  "view.company.overview.delete_warning": "Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.",
+
+  "view.customer.export_form.title": "Daten exportieren",
+  "view.customer.export_form.select_tags": "Kundentags auswählen",
+  "view.customer.export_form.show_archived": "Verstecke Kunden miteinbeziehen?",
+  "view.customer.export_form.select_export_format": "Export-Format",
+
+  "view.customer.import_export_overview.title": "Kundendaten importieren / exportieren",
 
   "view.employee.first_name": "Vorname",
   "view.employee.last_name": "Nachname",
@@ -176,7 +219,12 @@
   "view.employee.work_period_subform.yearly_vacation_budget": "Jährliches Ferienbudget",
   "view.employee.work_period_subform.yearly_vacation_budget.tooltip": "Das jährliche Ferienbudget ist immer auf ein 100% zu verstehen.",
   "view.employee.work_period_subform.hourly_pay": "Stundenlohn",
-  "view.employee.work_period_subform.actions": "Aktionen",
+
+  "view.employee_group.overview.title": "Mitarbeiter Gruppen",
+  
+  "view.holiday.overview.title": "Feiertage",
+  "view.holiday.overview.delete_warning": "Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!",
+  "view.holiday.overview.duration": "Dauer",
 
   "view.invoice.create.create_invoice": "Rechnung erstellen",
 
@@ -188,7 +236,6 @@
   "view.invoice.form.missing_cost_group_invoice": "Es muss eine Kostenstelle zugewiesen werden bevor die Rechnung gedruckt werden kann.",
   "view.invoice.form.error_date_range_dirty": "Bei Änderungen am Start-/Enddatum muss die Zeitspanne aktualisiert werden.",
   "view.invoice.form.address": "Adresse",
-  "view.invoice.form.accountant": "Verantwortlicher Mitarbeiter",
   "view.invoice.form.print_date": "Ausstellungsdatum",
   "view.invoice.form.start_date": "Startdatum",
   "view.invoice.form.end_date": "Enddatum",
@@ -209,19 +256,17 @@
   "view.offer.addcc_dialog.cost_group": "Kostenstelle",
   "view.offer.addcc_dialog.category": "Tätigkeitsbereich",
 
+  "view.offer.create.title": "Offerte erstellen",
+
   "view.offer.discount_subform.title": "Abzüge",
   "view.offer.discount_subform.percentage": "Prozent",
   "view.offer.discount_subform.discount": "Abzug",
-  "view.offer.discount_subform.actions": "Aktionen",
 
   "view.offer.form.save_first": "Zuerst speichern!",
   "view.offer.form.create_project_from_offer": "Projekt aus Offerte erstellen",
   "view.offer.form.locked_offer": "Die Offerte ist auf dem Status \"Bestätigt\" und kann deswegen nicht mehr bearbeitet werden. Um die Offerte anzupassen, ändere erst den Status.",
-  "view.offer.form.name": "Name",
   "view.offer.form.customer": "Kunde",
   "view.offer.form.address": "Adresse",
-  "view.offer.form.rate": "Tarif",
-  "view.offer.form.accountant": "Verantwortlicher Mitarbeiter",
   "view.offer.form.status": "Status",
   "view.offer.form.short_description": "Kurzbeschreibung",
   "view.offer.form.date": "Ausstellungsdatum",
@@ -233,12 +278,9 @@
 
   "view.offer.position_renderer.note": "Hinweis",
   "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
-  "view.offer.position_renderer.rate": "Tarif",
   "view.offer.position_renderer.rate_unit": "Tariftyp",
   "view.offer.position_renderer.amount": "Menge",
-  "view.offer.position_renderer.vat": "MwSt.",
   "view.offer.position_renderer.total": "Total CHF (mit MWSt.)",
-  "view.offer.position_renderer.actions": "Aktionen",
 
   "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
@@ -251,40 +293,57 @@
   "view.person.addresses_subform_inline.country": "Land",
   "view.person.addresses_subform_inline.description": "Kommentar",
   "view.person.addresses_subform_inline.hidden": "Versteckt",
-  "view.person.addresses_subform_inline.actions": "Aktionen",
   "view.person.addresses_subform_inline.from_company": "(von Firma)",
   "view.person.addresses_subform_inline.addresses": "Adressen",
+
+  "view.person.create.title": "Kunde erfassen",
+  
+  "view.person.form.solutation": "Anrede",
+  "view.person.form.department": "Abteilung",
+  "view.person.form.use_department_address": "Adressrelevant?",
+  "view.person.form.comments": "Bemerkungen (Intern)",
+  "view.person.form.is_contact_hidden": "Kontakt versteckt?",
+
+  "view.person.overview.first_name": "Vorname",
+  "view.person.overview.last_name": "Nachname",
+  "view.person.overview.delete_warning": "Möchtest du diese Person wirklich löschen?",
+  "view.person.overview.open_email": "Mail öffnen",
+  "view.person.overview.cancel_selection": "Auswahl aufheben",
+
+  "view.person.phone_number_subform_inline.main_number": "Hauptnummer",
+  "view.person.phone_number_subform_inline.direct_dial": "Direktwahl",
+  "view.person.phone_number_subform_inline.private": "Privat",
+  "view.person.phone_number_subform_inline.mobile": "Mobile",
+  "view.person.phone_number_subform_inline.fax": "Fax",
+  "view.person.phone_number_subform_inline.category": "Kategorie",
+  "view.person.phone_number_subform_inline.number": "Nummer",
+  "view.person.phone_number_subform_inline.from_company": "(von Firma)",
+
+  "view.person.update.edit_customer": "Kunde bearbeiten",
 
   "view.position_subform_inline.move_group": "Alle Services dieser Gruppe verschieben.",
   "view.position_subform_inline.sort_group": "Alle Services nach Standardsortierung umsortieren.",
   "view.position_subform_inline.groups_order": "Reihenfolge der Servicegruppen.",
   "view.position_subform_inline.save_first": "Zuerst Speichern!",
 
-  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Datum des letzten Aufwands",
-  "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Datum der letzten Rechnung",
-  "view.project.projects_with_potential_invoices_overview.days": "Tage",
-  "view.project.projects_with_potential_invoices_overview.title": "Nicht verrechnete Projekte",
+  "view.project_category.overview.title": "Tätigkeitsbereiche",
 
-  "view.project.project_category_subform.title": "Tätigkeitsbereiche",
-  "view.project.project_category_subform.weight": "Gewicht",
-  "view.project.project_category_subform.fraction": "Anteil",
-  "view.project.project_category_subform.actions": "Aktionen",
+  "view.project.category_subform.title": "Tätigkeitsbereiche",
+  "view.project.category_subform.weight": "Gewicht",
+  "view.project.category_subform.fraction": "Anteil",
 
-  "view.project.project_costgroup_subform.weight": "Gewicht",
-  "view.project.project_costgroup_subform.fraction": "Anteil",
-  "view.project.project_costgroup_subform.actions": "Aktionen",
+  "view.project.costgroup_subform.weight": "Gewicht",
+  "view.project.costgroup_subform.fraction": "Anteil",
 
-  "view.project.project_create.title": "Projekt erstellen",
+  "view.project.create.title": "Projekt erstellen",
 
   "view.project.form.print_effort_report": "Aufwandsrapport drucken",
   "view.project.form.generate_invoice": "Neue Rechnung aus Projekt generieren",
-  "view.project.form.accountant": "Verantwortlicher Mitarbeiter",
   "view.project.form.address": "Adresse",
   "view.project.form.description": "Beschreibung",
   "view.project.form.deadline": "Deadline",
   "view.project.form.chargeable": "Verrechenbar",
   "view.project.form.archived_rate_units_warning": "Services mit archivierten Einheiten vorhanden!",
-  "view.project.form.rate": "Tarif",
   "view.project.form.fixed_price": "Fixpreis",
 
   "view.project.overview.delete_warning": "Möchtest du dieses Projekt wirklich löschen?",
@@ -292,15 +351,17 @@
   "view.project.overview.last_change": "Zuletzt geändert",
 
   "view.project.position_renderer.description": "Beschreibung",
-  "view.project.position_renderer.rate": "Tarif",
   "view.project.position_renderer.unit": "Einheit",
-  "view.project.position_renderer.vat": "MwSt.",
   "view.project.position_renderer.count": "Anzahl",
   "view.project.position_renderer.total": "Total CHF (mit MWSt.)",
-  "view.project.position_renderer.actions": "Aktionen",
   "view.project.position_renderer.has_efforts_warning": "Aufwand zuerst löschen!",
   "view.project.position_renderer.note": "Hinweis:",
   "view.project.position_renderer.note_content": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zum Projekt hinzugefügt werden können.",
+
+  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Datum des letzten Aufwands",
+  "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Datum der letzten Rechnung",
+  "view.project.projects_with_potential_invoices_overview.days": "Tage",
+  "view.project.projects_with_potential_invoices_overview.title": "Nicht verrechnete Projekte",
 
   "view.project.stat_table.remaining_budget": "Restbudget",
   "view.project.stat_table.stats": "Projekt Statistik",
@@ -310,6 +371,38 @@
   "view.project.stat_table.time_used": "Zeit verwendet",
 
   "view.project.update.edit_projects": "Projekte bearbeiten",
+
+  "view.rate_unit.overview.factor": "Umrechnungsfaktor",
+  "view.rate_unit.overview.billing_unit": "Verrechnungseinheit",
+  "view.rate_unit.overview.effort_unit": "Zeiterfassungseinheit",
+  "view.rate_unit.overview.is_time_unit": "Zeiteinheit?",
+  "view.rate_unit.overview.popup_title": "Tarif-Typen",
+
+  "view.report.daily.no_results": "Keine Resultate",
+
+  "view.report.date_span_picker.from": "Von",
+  "view.report.date_span_picker.to": "Bis",
+
+  "view.report.project.excluded_employees": "Exklusive Mitarbeiter",
+  "view.report.project.description": "Beschreibung",
+  "view.report.project.price": "Preis",
+  "view.report.project.additional_costs": "Zusätzliche Kosten",
+
+  "view.report.service.grouping": "Gruppierung",
+  "view.report.service.title": "Stunden pro Service",
+
+  "view.service.create.title": "Service erstellen",
+
+  "view.service.form.value_added_tax": "Mehrwertsteuer",
+  "view.service.form.chargeable": "Verrechenbar",
+  "view.service.form.archived": "Archiviert",
+  "view.service.form.sorting_order": "Sortierreihenfolge",
+  "view.service.form.sorting_order_details": "Erläuterung Sortierreihenfolge",
+  "view.service.form.unit": "Einheit",
+
+  "view.service.overview.order": "Reihenf.",
+
+  "view.service.update.edit_service": "Service bearbeiten",
 
   "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
   "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",

@@ -80,12 +80,12 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                 <DimeTableCell style={{ width: '5%' }} />
                 <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id="general.service" /> </DimeTableCell>
                 <DimeTableCell style={{ width: '17.5%' }}> <FormattedMessage id={idPrefix + '.description'} /> </DimeTableCell>
-                <DimeTableCell style={{ width: '12.5%' }}> <FormattedMessage id={idPrefix + '.rate'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '12.5%' }}> <FormattedMessage id={'general.rate'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '17.5%' }}> <FormattedMessage id={idPrefix + '.unit'} /> </DimeTableCell>
-                <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={idPrefix + '.vat'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={'general.vat'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '7%' }}> <FormattedMessage id={idPrefix + '.count'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '5%' }}> <FormattedMessage id={idPrefix + '.total'} /> </DimeTableCell>
-                <DimeTableCell style={{ width: '15.5%', paddingLeft: '40px' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15.5%', paddingLeft: '40px' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody

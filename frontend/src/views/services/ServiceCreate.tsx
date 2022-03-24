@@ -1,21 +1,25 @@
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { FormValues, RateGroup, Service } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import ServiceForm from './ServiceForm';
 import { serviceTemplate } from './serviceSchema';
 
 export interface Props extends RouteComponentProps {
   serviceStore?: ServiceStore;
   rateGroupStore?: RateGroupStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('serviceStore', 'rateGroupStore'),
   observer,
 )
@@ -53,9 +57,10 @@ export default class ServiceCreate extends React.Component<Props> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.service.create');
     return (
       <ServiceForm
-        title={'Service erstellen'}
+        title={intlText('title')}
         onSubmit={this.handleSubmit}
         // tslint:disable-next-line:no-any ; at some point we need to address the disparity between template and domain types
         service={this.service as any}

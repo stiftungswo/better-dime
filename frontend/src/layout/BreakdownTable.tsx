@@ -39,7 +39,7 @@ export class BreakdownTable extends React.Component<BTProps> {
             <DimeTableCell numeric>{format(subtotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.vat_total'} /> </DimeTableCell>
+            <DimeTableCell> <FormattedMessage id={'general.vat'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(vatTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>

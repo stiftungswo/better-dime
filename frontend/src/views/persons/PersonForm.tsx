@@ -19,6 +19,7 @@ import { Person } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import AddressesSubformInline from './AddressesSubformInline';
 import { personSchema } from './personSchema';
 import PhoneNumberSubformInline from './PhoneNumbersSubformInline';
@@ -83,6 +84,7 @@ export default class PersonForm extends React.Component<Props> {
     const { company } = this.props.companyStore!;
     const inheritedAddresses = company ? company.addresses : [];
     const inheritedPhoneNumbers = company ? company.phone_numbers : [];
+    const intlText = wrapIntl(intl!, 'view.person.form');
 
     return (
       <FormView
@@ -102,48 +104,48 @@ export default class PersonForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={TextField} name={'salutation'} label={'Anrede'} />
+                        <DimeField delayed component={TextField} name={'salutation'} label={intlText('solutation')} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={TextField} name={'first_name'} label={'Vorname'} />
+                        <DimeField delayed component={TextField} name={'first_name'} label={intlText('general.first_name', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={TextField} name={'last_name'} label={'Nachname'} />
+                        <DimeField delayed component={TextField} name={'last_name'} label={intlText('general.last_name', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Effect onChange={this.handleCompanyChange} />
-                        <DimeField delayed component={CompanySelect} name={'company_id'} label={'Firma'} />
+                        <DimeField delayed component={CompanySelect} name={'company_id'} label={intlText('general.company', true)} />
                       </Grid>
                       <Grid item xs={12} sm={4}>
-                        <DimeField delayed component={TextField} name={'department'} label={'Abteilung'} />
+                        <DimeField delayed component={TextField} name={'department'} label={intlText('department')} />
                       </Grid>
                       <Grid item xs={12} sm={2}>
                         <div style={{marginTop: '1.5em'}}>
-                          <DimeField delayed component={SwitchField} name={'department_in_address'} label={'Adressrelevant?'} />
+                          <DimeField delayed component={SwitchField} name={'department_in_address'} label={intlText('use_department_address')} />
                         </div>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen (Intern)'} />
+                        <DimeField delayed multiline component={TextField} name={'comment'} label={intlText('comments')} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                        <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={intlText('general.rate', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Grid item xs={12}>
-                          <DimeField delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                          <DimeField delayed component={SwitchField} name={'hidden'} label={intlText('is_contact_hidden')} />
                         </Grid>
                         <Grid item xs={12}>
-                          <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} />
+                          <DimeField delayed component={SwitchField} name={'archived'} label={intlText('general.is_archived', true)} />
                         </Grid>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={intlText('general.accountant', true)} />
                       </Grid>
                     </Grid>
                   </DimePaper>

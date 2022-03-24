@@ -41,7 +41,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
     const { disabled, name } = this.props;
     const weightSum = values.costgroup_distributions.map(d => d.weight).reduce((a, b) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
-    const idPrefix = 'view.project.project_costgroup_subform';
+    const idPrefix = 'view.project.costgroup_subform';
     const intl = this.props.intl!;
     return (
       <FieldArray
@@ -59,7 +59,7 @@ export default class InvoiceCostgroupSubform extends React.Component<Props> {
                   <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '50%' }}> <FormattedMessage id={'general.cost_group'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

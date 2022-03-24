@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import {EmployeeSelect} from '../../form/entitySelect/EmployeeSelect';
 import { DimeField } from '../../form/fields/formik';
@@ -13,11 +14,13 @@ import {EmployeeStore} from '../../stores/employeeStore';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
 import { dimeDate, requiredNumber, selector } from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
   employeeStore?: EmployeeStore;
+  intl?: IntlShape;
 }
 
 interface State {
@@ -37,6 +40,7 @@ const schema = yup.object({
 });
 
 @compose(
+  injectIntl,
   inject('mainStore', 'employeeStore'),
   observer,
 )
@@ -51,9 +55,10 @@ export class EmployeesReport extends React.Component<Props, State> {
   }
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.report.employee');
     return (
       <>
-        <DimeAppBar title={'Mitarbeiterraport'} />
+        <DimeAppBar title={intlText('layout.navigation.reports.employees', true)} />
         <DimeContent loading={this.state.loading}>
           <Formik
             initialValues={template}
@@ -72,7 +77,7 @@ export class EmployeesReport extends React.Component<Props, State> {
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <DimeField isMulti required component={EmployeeSelect} name="employee_ids" label={'Mitarbeiter'} />
+                  <DimeField isMulti required component={EmployeeSelect} name="employee_ids" label={intlText('general.employee.plural', true)} />
                 </Grid>
                 <Grid item xs={12}>
                   <DownloadButton
@@ -84,7 +89,7 @@ export class EmployeesReport extends React.Component<Props, State> {
                     )}
                     disabled={!formikProps.isValid}
                   >
-                    PDF Herunterladen
+                    <FormattedMessage id="general.action.download" />
                   </DownloadButton>
                 </Grid>
               </Grid>

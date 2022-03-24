@@ -116,7 +116,7 @@ export class WorkPeriodSubform extends React.Component<Props> {
                         </Tooltip>
                       </DimeTableCell>
                       <DimeTableCell style={{ width: '4%' }}> <FormattedMessage id={idPrefix + '.hourly_pay'} /> </DimeTableCell>
-                      <DimeTableCell style={{ width: '4%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                      <DimeTableCell style={{ width: '4%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

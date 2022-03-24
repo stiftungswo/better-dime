@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
@@ -7,23 +8,26 @@ import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Service, ServiceListing } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 
 export type Props = {
   serviceStore?: ServiceStore;
   mainStore?: MainStore;
+  intl?: IntlShape;
 } & RouteComponentProps;
 
 @compose(
+  injectIntl,
   inject('serviceStore', 'mainStore'),
   observer,
   withRouter,
 )
 export default class ServiceOverview extends React.Component<Props> {
-  columns: Array<Column<ServiceListing>> = [];
+  render() {
+    const serviceStore = this.props.serviceStore;
+    const intlText = wrapIntl(this.props.intl!, 'view.service.overview');
 
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+    const columns: Array<Column<ServiceListing>> = [
       {
         id: 'id',
         numeric: true,
@@ -33,34 +37,30 @@ export default class ServiceOverview extends React.Component<Props> {
       {
         id: 'order',
         numeric: true,
-        label: 'R.',
+        label: intlText('order'),
       },
       {
         id: 'name',
         numeric: false,
-        label: 'Name',
+        label: intlText('general.name', true),
         format: s => s.name + (s.archived ? ' [A]' : ''),
       },
       {
         id: 'description',
         numeric: false,
-        label: 'Beschreibung',
+        label: intlText('general.description', true),
       },
     ];
-  }
-
-  render() {
-    const serviceStore = this.props.serviceStore;
 
     return (
       <Overview
         archivable
         paginated
         searchable
-        title={'Services'}
+        title={intlText('general.service.plural', true)}
         store={this.props.serviceStore!}
         addAction={'/services/new'}
-        columns={this.columns}
+        columns={columns}
         renderActions={e => (
           <ActionButtons
             copyAction={async () => {

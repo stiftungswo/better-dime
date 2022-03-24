@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import { DimePaper } from '../../layout/DimePaper';
@@ -16,14 +17,17 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DailyReportEffort, DailyReportStore } from '../../stores/dailyReportStore';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   dailyReportStore?: DailyReportStore;
   mainStore?: MainStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('dailyReportStore', 'mainStore'),
   observer,
 )
@@ -32,9 +36,10 @@ export default class DailyReport extends React.Component<Props> {
     const dailyReportStore = this.props.dailyReportStore!;
     const { dates, employees } = dailyReportStore.result;
     const { detail } = dailyReportStore;
+    const intlText = wrapIntl(this.props.intl!, 'view.report.daily');
     return (
       <>
-        <DimeAppBar title={'Wochenrapport'} />
+        <DimeAppBar title={intlText('layout.navigation.reports.daily', true)} />
         <DimeContent paper={false}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -50,7 +55,7 @@ export default class DailyReport extends React.Component<Props> {
                   </Grid>
                   <Grid item xs={12}>
                     <Button onClick={dailyReportStore.fetch} color={'primary'} variant="contained">
-                      Laden
+                      <FormattedMessage id="general.action.fetch" />
                     </Button>
                   </Grid>
                 </Grid>
@@ -78,7 +83,7 @@ export default class DailyReport extends React.Component<Props> {
                     </TableBody>
                   </Table>
                 ) : (
-                  'Keine Resultate'
+                  intlText('no_results')
                 )}
               </DimePaper>
             </Grid>

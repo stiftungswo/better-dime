@@ -43,7 +43,7 @@ export default class ProjectCreate extends React.Component<Props> {
     const intl = this.props.intl!;
     return (
       <ProjectForm
-        title={intl.formatMessage({id: 'view.project.project_create.title'})}
+        title={intl.formatMessage({id: 'view.project.create.title'})}
         onSubmit={this.handleSubmit}
         project={
           {

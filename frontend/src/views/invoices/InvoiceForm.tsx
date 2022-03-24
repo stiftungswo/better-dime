@@ -179,7 +179,7 @@ export default class InvoiceForm extends React.Component<Props> {
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
-                                label={intlText('accountant')}
+                                label={intlText('general.accountant', true)}
                               />
                             </Grid>
                             <Grid item xs={12} lg={4} style={{paddingTop: '24px'}}>

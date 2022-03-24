@@ -42,7 +42,7 @@ export class ProjectCategorySubform extends React.Component<Props> {
     const weightSum = values.category_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
     const intl = this.props.intl!;
-    const idPrefix = 'view.project.project_category_subform';
+    const idPrefix = 'view.project.category_subform';
     return (
       <FieldArray
         name={name}
@@ -59,7 +59,7 @@ export class ProjectCategorySubform extends React.Component<Props> {
                   <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '50%' }}> <FormattedMessage id={'general.project_category'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

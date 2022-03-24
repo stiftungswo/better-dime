@@ -58,7 +58,7 @@ export default class OfferDiscountSubform extends React.Component<Props> {
                   <DimeTableCell> <FormattedMessage id={'general.name'} /> </DimeTableCell>
                   <DimeTableCell> <FormattedMessage id={idPrefix + '.percentage'} /> </DimeTableCell>
                   <DimeTableCell> <FormattedMessage id={idPrefix + '.discount'} /> </DimeTableCell>
-                  <DimeTableCell> <FormattedMessage id={idPrefix + '.actions'} /> </DimeTableCell>
+                  <DimeTableCell> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
