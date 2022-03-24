@@ -177,6 +177,13 @@
   "view.company.overview.city": "Ville",
   "view.company.overview.delete_warning": "Veux-tu vraiment supprimer cette entreprise ? Cela supprime également toutes les personnes jointes ainsi que les adresses et les numéros de téléphone.",
 
+  "view.customer.export_form.title": "Exporter",
+  "view.customer.export_form.select_tags": "Sélectionner les tags client",
+  "view.customer.export_form.show_archived": "Inclure les clients cachés?",
+  "view.customer.export_form.select_export_format": "Format d'export",
+
+  "view.customer.import_export_overview.title": "Importer / exporter des données clients",
+
   "view.employee.first_name": "Prénom",
   "view.employee.last_name": "Nom de famille",
   "view.employee.group": "Groupe",

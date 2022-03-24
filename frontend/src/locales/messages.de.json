@@ -178,6 +178,13 @@
   "view.company.overview.city": "Ort",
   "view.company.overview.delete_warning": "Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.",
 
+  "view.customer.export_form.title": "Daten exportieren",
+  "view.customer.export_form.select_tags": "Kundentags auswählen",
+  "view.customer.export_form.show_archived": "Verstecke Kunden miteinbeziehen?",
+  "view.customer.export_form.select_export_format": "Export-Format",
+
+  "view.customer.import_export_overview.title": "Kundendaten importieren / exportieren",
+
   "view.employee.first_name": "Vorname",
   "view.employee.last_name": "Nachname",
   "view.employee.group": "Gruppe",
