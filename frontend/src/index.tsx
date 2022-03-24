@@ -17,6 +17,7 @@ import { StoreProvider } from './utilities/StoreProvider';
 
 import moment from 'moment';
 import 'moment/locale/de-ch';
+import 'moment/locale/fr';
 moment.locale('de-ch');
 
 const browserHistory = createBrowserHistory();

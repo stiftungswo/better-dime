@@ -238,7 +238,7 @@
 
   "view.invoice.position_renderer.position": "Articles de facturation",
 
-  "view.invoice.update.edit_invoice": "Modifier la facture",
+  "view.invoice.update.edit_invoice": "Modifier une facture",
 
   "view.invoice.overview.description": "Description",
   "view.invoice.overview.start": "Début",
@@ -248,6 +248,8 @@
   "view.offer.addcc_dialog.confirm_text": "Créer un projet",
   "view.offer.addcc_dialog.cost_group": "Centre de coûts",
   "view.offer.addcc_dialog.category": "Domaine d'activité",
+
+  "view.offer.create.title": "Créer une offre",
 
   "view.offer.discount_subform.title": "Déductions",
   "view.offer.discount_subform.percentage": "Pourcentage",
@@ -275,7 +277,7 @@
   "view.offer.position_renderer.amount": "Quantité",
   "view.offer.position_renderer.total": "Total CHF (avec TVA)",
 
-  "view.offer.update.update_offer": "Modifier l'offre",
+  "view.offer.update.update_offer": "Modifier une offre",
   
   "view.person.addresses_subform_inline.street": "Rue",
   "view.person.addresses_subform_inline.supplement": "Complément d'adresse",
@@ -310,7 +312,7 @@
   "view.person.phone_number_subform_inline.number": "Numéro",
   "view.person.phone_number_subform_inline.from_company": "(de l'entreprise)",
 
-  "view.person.update.edit_customer": "Modifier le client",
+  "view.person.update.edit_customer": "Modifier un client",
 
   "view.position_subform_inline.move_group": "Déplacer tous les services de ce groupe.",
   "view.position_subform_inline.sort_group": "Réorganiser tous les services selon le tri standard.",
@@ -361,7 +363,7 @@
   "view.project.stat_table.time_budget": "Budget temps",
   "view.project.stat_table.time_used": "Temps utilisé",
 
-  "view.project.update.edit_projects": "Modifier le Projet",
+  "view.project.update.edit_projects": "Modifier un Projet",
 
   "view.rate_unit.overview.factor": "Facteur de conversion",
   "view.rate_unit.overview.billing_unit": "Unité de facturation",

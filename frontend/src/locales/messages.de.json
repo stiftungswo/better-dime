@@ -249,6 +249,8 @@
   "view.offer.addcc_dialog.cost_group": "Kostenstelle",
   "view.offer.addcc_dialog.category": "Tätigkeitsbereich",
 
+  "view.offer.create.title": "Offerte erstellen",
+
   "view.offer.discount_subform.title": "Abzüge",
   "view.offer.discount_subform.percentage": "Prozent",
   "view.offer.discount_subform.discount": "Abzug",
