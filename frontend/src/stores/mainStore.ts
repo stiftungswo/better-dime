@@ -1,5 +1,6 @@
 import { History } from 'history';
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
+import moment from 'moment';
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import messagesDe from '../locales/messages.de.json';
 import messagesFr from '../locales/messages.fr.json';
@@ -18,6 +19,11 @@ export const defaultLocale = germanLocale;
 export const messages: { [locale in Locale]: any } = {
   [germanLocale]: messagesDe,
   [frenchLocale]: messagesFr,
+};
+
+const momentLocale: { [locale in Locale]: any } = {
+  [germanLocale]: 'de-ch',
+  [frenchLocale]: 'fr',
 };
 
 /*
@@ -84,11 +90,9 @@ export class MainStore {
   ) {
     makeObservable(this);
 
-    /*autorun(() => {
-      moment.locale(this.currentLocale);
-      this.monthNames = moment.months();
-      this.apiStore.setLanguageForApi(this.currentLocale);
-    });*/
+    autorun(() => {
+      moment.locale(momentLocale[this.currentLocale]);
+    });
   }
 
   // --- routing / navigation
