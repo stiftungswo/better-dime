@@ -151,7 +151,7 @@ export default class ProjectPositionRenderer extends React.Component<Props> {
                       <ActionButton
                         icon={MoveIcon}
                         action={() => onMove(pIdx)}
-                        title={intlText('general.action.move')}
+                        title={intlText('general.action.move', true)}
                       />
                       <ConfirmationButton
                         disabled={!p.deletable}

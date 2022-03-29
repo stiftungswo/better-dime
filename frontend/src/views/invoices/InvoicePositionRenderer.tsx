@@ -83,7 +83,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
                 <DimeTableCell style={{ width: '28%' }}> <FormattedMessage id={'general.description'} /> </DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'view.offer.position_renderer.rate'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.rate'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id={'view.offer.position_renderer.rate_unit'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={'view.offer.position_renderer.amount'} /> </DimeTableCell>
                 <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={'general.vat'} /> </DimeTableCell>

@@ -106,7 +106,7 @@ export class TimetrackFilterForm extends React.Component<Props> {
 
               <Grid item xs={12} md={4}>
                 <Button onClick={this.handleSubmit} color={'primary'} variant="contained">
-                  <FormattedMessage id={intl.formatMessage({id: 'view.timetrack.filter_form.refresh'})} />
+                  <FormattedMessage id="view.timetrack.filter_form.refresh" />
                 </Button>
               </Grid>
             </Grid>

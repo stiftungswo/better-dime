@@ -24,7 +24,7 @@ export default withRouter(({ invoice: { project_id, offer_id, sibling_invoice_id
       ))}
       <Tab label={intlText('invoice') + ` ${id}`} />
       {sibling_invoice_ids.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('Invoice') + ` ${pId}`} />
+        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('invoice') + ` ${pId}`} />
       ))}
     </Tabs>
   );

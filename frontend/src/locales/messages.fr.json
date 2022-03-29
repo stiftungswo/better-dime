@@ -80,7 +80,7 @@
   "form.dialog.position_group_rename.service_group": "Groupe de service",
   "form.dialog.position_group_rename.move_to": "Déplacer vers",
 
-  "form.dialog.position_group_sort.title": "Réorganiser les services de manière automatisée?",
+  "form.dialog.position_group_sort.title": "Réordonner les services de manière automatisée?",
   "form.dialog.position_group_sort.service_group": "Groupe de services",
   "form.dialog.position_group_sort.confirm": "Réordonner",
 
@@ -182,7 +182,7 @@
   "view.customer.export_form.show_archived": "Inclure les clients cachés?",
   "view.customer.export_form.select_export_format": "Format d'export",
 
-  "view.customer.import_export_overview.title": "Importer / exporter des données clients",
+  "view.customer.import_export_overview.title": "Importer / Exporter des données clients",
 
   "view.employee.first_name": "Prénom",
   "view.employee.last_name": "Nom de famille",
