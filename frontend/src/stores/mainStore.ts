@@ -107,4 +107,10 @@ export class MainStore {
       token: includeAuth ? this.apiStore.tokenV2.toString().replace('Bearer ', '') : undefined,
     });
   }
+  apiV2URL_localized(path: string, params: object = {}): string {
+    return this.apiV2URL(path, {
+      ...params,
+      locale: this.currentLocale,
+    });
+  }
 }
