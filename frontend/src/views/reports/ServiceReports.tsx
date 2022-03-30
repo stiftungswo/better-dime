@@ -4,19 +4,23 @@ import Grid from '@material-ui/core/Grid';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { ExportGroupingSelect } from '../../form/entitySelect/ExportGroupingSelect';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import { apiDateFormat } from '../../stores/apiStore';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore'),
   observer,
 )
@@ -28,12 +32,14 @@ export class ServiceReports extends React.Component<Props> {
   };
 
   render() {
+    const idPrefix = 'view.report.service';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
     return (
       <>
-        <DimeAppBar title={'Service-Rapporte'} />
+        <DimeAppBar title={intlText('layout.navigation.reports.service', true)} />
 
         <DimeContent loading={false}>
-          <Typography variant={'h5'}>Stunden pro Service</Typography>
+          <Typography variant={'h5'}> <FormattedMessage id={idPrefix + '.title'} /> </Typography>
 
           <Grid container alignItems={'center'} spacing={3}>
             <Grid item xs={12} md={8}>
@@ -46,7 +52,7 @@ export class ServiceReports extends React.Component<Props> {
             </Grid>
             <Grid item xs={12} md={4}>
               <ExportGroupingSelect
-                label={'Gruppierung'}
+                label={intlText('grouping')}
                 value={this.state.grouping as 'project' | 'category'}
                 onChange={d => this.setState({ grouping: d })}
               />
@@ -54,7 +60,7 @@ export class ServiceReports extends React.Component<Props> {
             <Grid item xs={12}>
               <a href={this.getHref()} target={'_blank'} style={{ textDecoration: 'none', color: 'white' }}>
                 <Button color={'primary'} variant="contained">
-                  Herunterladen
+                  <FormattedMessage id="general.action.download" />
                 </Button>
               </a>
             </Grid>

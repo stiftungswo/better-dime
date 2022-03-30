@@ -1,27 +1,31 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { Employee, EmployeeListing } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 
 type Props = {
   employeeStore?: EmployeeStore;
+  intl?: IntlShape;
 } & RouteComponentProps;
 
 @compose(
+  injectIntl,
   inject('employeeStore'),
   observer,
   withRouter,
 )
 export default class EmployeeOverview extends React.Component<Props> {
-  columns: Array<Column<Employee>>;
+  render() {
+    const employeeStore = this.props.employeeStore;
+    const intlText = wrapIntl(this.props.intl!, 'view.employee');
 
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+    const columns: Array<Column<Employee>> = [
       {
         id: 'id',
         label: 'ID',
@@ -29,11 +33,11 @@ export default class EmployeeOverview extends React.Component<Props> {
       },
       {
         id: 'first_name',
-        label: 'Vorname',
+        label: intlText('first_name'),
       },
       {
         id: 'last_name',
-        label: 'Nachname',
+        label: intlText('last_name'),
       },
       {
         id: 'email',
@@ -42,24 +46,20 @@ export default class EmployeeOverview extends React.Component<Props> {
       {
         id: 'group_name',
         orderTag: 'employee_group_id',
-        label: 'Gruppe',
+        label: intlText('group'),
       },
       {
         id: 'can_login',
-        label: 'Login aktiviert?',
-        format: e => (e.can_login ? 'Ja' : 'Nein'),
+        label: intlText('can_login'),
+        format: e => (e.can_login ? intlText('general.yes', true) : intlText('general.no', true)),
       },
     ];
-  }
-
-  render() {
-    const employeeStore = this.props.employeeStore;
 
     return (
       <Overview
         archivable
         paginated
-        title={'Mitarbeiter'}
+        title={intlText('general.employee.plural', true)}
         store={employeeStore!}
         addAction={'/employees/new'}
         renderActions={e => (
@@ -75,7 +75,7 @@ export default class EmployeeOverview extends React.Component<Props> {
           />
         )}
         onClickRow={'/employees/:id'}
-        columns={this.columns}
+        columns={columns}
         searchable
       />
     );

@@ -6,6 +6,7 @@ import {Warning} from '@material-ui/icons';
 import {FieldArray, FieldArrayRenderProps, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { NumberField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -22,6 +23,7 @@ import {ServiceStore} from '../../stores/serviceStore';
 import {Invoice, InvoicePosition, PositionGroup, RateUnit} from '../../types';
 import compose from '../../utilities/compose';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DraggableTableBody } from './DraggableTableBody';
 
 const template = (groupId?: number) => ({
@@ -39,6 +41,7 @@ interface Props {
   mainStore?: MainStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
+  intl?: IntlShape;
   arrayHelpers: FieldArrayRenderProps;
   onDelete: (idx: number) => void;
   onMove: (idx: number) => void;
@@ -53,6 +56,7 @@ interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'rateUnitStore'),
   observer,
 )
@@ -60,13 +64,16 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
   render() {
     const { arrayHelpers, values, group, isFirst, disabled, onDelete, onMove, onAdd, groupRenameButton, groupReorderButton } = this.props;
     const afterUnitInvalidation = isAfterArchivedUnitsCutoff(this.props.values.created_at);
+    const intl = this.props.intl!;
+    const idPrefix = 'view.invoice.position_renderer';
+    const intlText = wrapIntl(intl, idPrefix);
 
     return (
       <>
         {!isFirst && (
           <div style={{ paddingTop: '20px' }}/>
         )}
-        <TableToolbar title={'Rechnungsposten - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))}>
+        <TableToolbar title={intlText('position') + ' - ' + group.name} addAction={() => arrayHelpers.push(template(group.id))}>
           {groupReorderButton}
           {groupRenameButton}
         </TableToolbar>
@@ -75,13 +82,13 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
             <TableHead>
               <TableRow>
                 <DimeTableCell style={{ width: '5%' }} />
-                <DimeTableCell style={{ width: '28%' }}>Beschreibung</DimeTableCell>
-                <DimeTableCell style={{ width: '15%' }}>Tarif</DimeTableCell>
-                <DimeTableCell style={{ width: '17%' }}>Tariftyp</DimeTableCell>
-                <DimeTableCell style={{ width: '10%' }}>Menge</DimeTableCell>
-                <DimeTableCell style={{ width: '8%' }}>MwSt.</DimeTableCell>
-                <DimeTableCell style={{ width: '7%' }}>Total CHF</DimeTableCell>
-                <DimeTableCell style={{ width: '10%', paddingLeft: '40px'  }}>Aktionen</DimeTableCell>
+                <DimeTableCell style={{ width: '28%' }}> <FormattedMessage id={'general.description'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.rate'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '17%' }}> <FormattedMessage id={'view.offer.position_renderer.rate_unit'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={'view.offer.position_renderer.amount'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={'general.vat'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '7%' }}> <FormattedMessage id={'view.offer.position_renderer.total'} /> </DimeTableCell>
+                <DimeTableCell style={{ width: '10%', paddingLeft: '40px'  }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
               </TableRow>
             </TableHead>
             <DraggableTableBody
@@ -135,7 +142,7 @@ export default class InvoicePositionRenderer extends React.Component<Props> {
                       <ActionButton
                         icon={MoveIcon}
                         action={() => onMove(pIdx)}
-                        title={'Verschieben'}
+                        title={intl.formatMessage({id: 'general.action.move'})}
                         disabled={disabled}
                       />
                       <ConfirmationButton onConfirm={() => onDelete(pIdx)} />

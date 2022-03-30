@@ -3,6 +3,7 @@ import {Warning} from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
@@ -55,10 +56,12 @@ export type Props = {
   serviceStore?: ServiceStore;
   costgroupStore?: CostgroupStore;
   projectCategoryStore?: ProjectCategoryStore;
+  intl?: IntlShape;
 } & FormViewProps<Offer> &
   RouteComponentProps;
 
 @compose(
+  injectIntl,
   inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore'),
   observer,
 )
@@ -102,6 +105,7 @@ class OfferForm extends React.Component<Props> {
 
   render() {
     const { offer, offerStore } = this.props;
+    const intl = this.props.intl!;
     let afterUnitInvalidation = false;
 
     if (!(empty(offer) || this.props.loading || this.state.loading)) {
@@ -111,6 +115,7 @@ class OfferForm extends React.Component<Props> {
       <>
         {this.props.offerStore!.creatingProject && <AddCCDialog onConfirm={(costgroup, category) => this.handleConfirm(offer, costgroup, category)} onClose={this.handleClose} />}
         <FormView
+          intl={intl}
           paper={false}
           loading={empty(offer) || this.props.loading || this.state.loading}
           title={this.props.title}
@@ -129,7 +134,7 @@ class OfferForm extends React.Component<Props> {
                     icon={ProjectIcon}
                     secondaryIcon={AddIcon}
                     disabled={dirty}
-                    title={dirty ? 'Zuerst speichern!' : 'Projekt aus Offerte erstellen'}
+                    title={dirty ? intl.formatMessage({id: 'view.offer.form.save_first'}) : intl.formatMessage({id: 'view.offer.form.create_project_from_offer'})}
                   />
                 )}
               </>
@@ -148,19 +153,18 @@ class OfferForm extends React.Component<Props> {
                           {locked && (
                             <Grid item xs={12}>
                               <p>
-                                Die Offerte ist auf dem Status "Bestätigt" und kann deswegen nicht mehr bearbeitet werden. Um die Offerte
-                                anzupassen, ändere erst den Status.
+                                <FormattedMessage id={'view.offer.form.locked_offer'} />
                               </p>
                             </Grid>
                           )}
                           <Grid item xs={12} lg={8}>
                             <Grid container spacing={1}>
                               <Grid item xs={12}>
-                                <DimeField delayed required component={TextField} name={'name'} label={'Name'} disabled={locked} />
+                                <DimeField delayed required component={TextField} name={'name'} label={intl.formatMessage({id: 'general.name'})} disabled={locked} />
                               </Grid>
                               <Grid item xs={12} lg={4}>
                                 <Effect onChange={this.handleCustomerChange} />
-                                <DimeField required component={CustomerSelect} name={'customer_id'} label={'Kunde'} disabled={locked} />
+                                <DimeField required component={CustomerSelect} name={'customer_id'} label={intl.formatMessage({id: 'view.offer.form.customer'})} disabled={locked} />
                               </Grid>
                               <Grid item xs={12} lg={4}>
                                 <DimeField
@@ -168,24 +172,29 @@ class OfferForm extends React.Component<Props> {
                                   component={AddressSelect}
                                   customerId={props.values.customer_id}
                                   name={'address_id'}
-                                  label={'Adresse'}
+                                  label={intl.formatMessage({id: 'view.offer.form.address'})}
                                   disabled={locked}
                                 />
                               </Grid>
                               <Grid item xs={12} lg={4}>
-                                <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} disabled={locked} />
+                                <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intl.formatMessage({id: 'general.rate'})} disabled={locked} />
                               </Grid>
                               <Grid item xs={12} lg={8}>
                                 <DimeField
                                   required
                                   component={EmployeeSelect}
                                   name={'accountant_id'}
-                                  label={'Verantwortlicher Mitarbeiter'}
+                                  label={intl.formatMessage({id: 'general.accountant'})}
                                   disabled={locked}
                                 />
                               </Grid>
                               <Grid item xs={12} lg={4}>
-                                <DimeField required component={StatusSelect} name={'status'} label={'Status'} />
+                                <DimeField
+                                  required
+                                  component={StatusSelect}
+                                  name={'status'}
+                                  label={intl.formatMessage({id: 'view.offer.form.status'})}
+                                />
                               </Grid>
                               <Grid item xs={12}>
                                 <DimeField
@@ -193,13 +202,13 @@ class OfferForm extends React.Component<Props> {
                                   required
                                   component={TextField}
                                   name={'short_description'}
-                                  label={'Kurzbeschreibung'}
+                                  label={intl.formatMessage({id: 'view.offer.form.short_description'})}
                                   disabled={locked}
                                 />
                               </Grid>
                               {this.props.showDateField &&
                                 <Grid item xs={12} lg={4}>
-                                  <DatePicker label={'Ausstellungsdatum'} value={this.state.date} onChange={v => this.setState({['date']: v})} disabled={locked} />
+                                  <DatePicker label={intl.formatMessage({id: 'view.offer.form.date'})} value={this.state.date} onChange={v => this.setState({['date']: v})} disabled={locked} />
                                 </Grid>
                               }
                             </Grid>
@@ -212,7 +221,7 @@ class OfferForm extends React.Component<Props> {
                               multiline
                               rowsMax={14}
                               name={'description'}
-                              label={'Beschreibung'}
+                              label={intl.formatMessage({id: 'view.offer.form.description'})}
                               disabled={locked}
                             />
                           </Grid>
@@ -228,7 +237,7 @@ class OfferForm extends React.Component<Props> {
                               <Warning color={'error'}/>
                             </Grid>
                             <Grid item style={{color: 'red', marginLeft: '5px'}}>
-                              Services mit archivierten Einheiten vorhanden!
+                              <FormattedMessage id={'view.offer.form.archived_rate_groups_warning'} />
                             </Grid>
                           </Grid>
                         </>
@@ -248,7 +257,9 @@ class OfferForm extends React.Component<Props> {
                         <DimePaper>
                           <Grid container spacing={1}>
                             <Grid item xs={12}>
-                              <FormHeader>Berechnung</FormHeader>
+                              <FormHeader>
+                                <FormattedMessage id={'view.offer.form.breakdown'} />
+                              </FormHeader>
                             </Grid>
                             <Grid item xs={12}>
                               <BreakdownTable breakdown={offer.breakdown} fixedPrice={offer.fixed_price} />
@@ -259,7 +270,7 @@ class OfferForm extends React.Component<Props> {
                                 delayed
                                 component={CurrencyField}
                                 name={'fixed_price'}
-                                label={'Fixpreis'}
+                                label={intl.formatMessage({id: 'view.offer.form.fixed_price'})}
                                 disabled={locked}
                               />
                             </Grid>
@@ -268,7 +279,7 @@ class OfferForm extends React.Component<Props> {
                               <DimeField
                                 component={VatSelect}
                                 name={'fixed_price_vat'}
-                                label={'MwSt. Satz'}
+                                label={intl.formatMessage({id: 'view.offer.form.vat_rate'})}
                                 placeholder={'7.7%'}
                                 disabled={!offer.fixed_price || locked}
                               />

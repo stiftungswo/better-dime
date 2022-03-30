@@ -3,6 +3,7 @@ import { Warning } from '@material-ui/icons';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { PositionGroupRenameDialog } from '../form/dialog/PositionGroupRenameDialog';
 import { PositionGroupSortDialog } from '../form/dialog/PositionGroupSortDialog';
 import PositionGroupsReorderDialog from '../form/dialog/PositionGroupsReorderDialog';
@@ -18,12 +19,14 @@ import { PositionGroup, RateUnit, Service, ServiceListing, ServiceRate } from '.
 import compose from '../utilities/compose';
 import { getInsertionIndex } from '../utilities/getInsertionIndex';
 import { defaultPositionGroup } from '../utilities/helpers';
+import { wrapIntl } from '../utilities/wrapIntl';
 
 export interface Props {
   mainStore?: MainStore;
   serviceStore?: ServiceStore;
   rateUnitStore?: RateUnitStore;
   positionGroupStore?: PositionGroupStore;
+  intl?: IntlShape;
   formikProps: FormikProps<any>;
   name: string;
   tag: any;
@@ -31,6 +34,7 @@ export interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('mainStore', 'serviceStore', 'positionGroupStore', 'rateUnitStore'),
   observer,
 )
@@ -215,6 +219,7 @@ export default class PositionSubformInline extends React.Component<Props> {
     const { disabled, formikProps } = this.props;
     const makeButtonAction = (stateUpdate: any) => () => { this.setState({ selected_group: group.name, ...stateUpdate }); };
     const hasSharedGroups = formikProps.values.position_groupings.some((e: any) => e.shared);
+    const intlText = wrapIntl(this.props.intl!, 'view.position_subform_inline');
     return (
       <>
         <Tag
@@ -229,13 +234,13 @@ export default class PositionSubformInline extends React.Component<Props> {
           name={this.props.name}
           isFirst={isFirst}
           disabled={disabled}
-          groupRenameButton={(<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={'Alle Services dieser Gruppe verschieben.'} />)}
-          groupSortButton={(<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={'Alle Services nach Standardsortierung umsortieren.'} />)}
+          groupRenameButton={(<ActionButton disabled={disabled} icon={MoveIcon} action={makeButtonAction({dialogRenameOpen: true })} title={intlText('move_group')} />)}
+          groupSortButton={(<ActionButton disabled={disabled} icon={SortIcon} action={makeButtonAction({dialogSortOpen: true })} title={intlText('sort_group')} />)}
           groupReorderButton={(<ActionButton
             disabled={disabled || hasSharedGroups}
             icon={ReorderIcon}
             action={makeButtonAction({dialogReorderOpen: true })}
-            title={hasSharedGroups ? 'Zuerst Speichern!' : 'Reihenfolge der Servicegruppen.'}
+            title={hasSharedGroups ? intlText('save_first') : intlText('groups_order')}
           />)}
         />
       </>

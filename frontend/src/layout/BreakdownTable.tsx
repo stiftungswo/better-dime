@@ -3,6 +3,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { MainStore } from '../stores/mainStore';
 import { Breakdown } from '../types';
 import compose from '../utilities/compose';
@@ -34,19 +35,19 @@ export class BreakdownTable extends React.Component<BTProps> {
       <Table>
         <TableBody>
           <TableRow>
-            <DimeTableCell>Subtotal</DimeTableCell>
+            <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.subtotal'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(subtotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <DimeTableCell>MwSt.</DimeTableCell>
+            <DimeTableCell> <FormattedMessage id={'general.vat'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(vatTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <DimeTableCell>Total Abzüge</DimeTableCell>
+            <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.discount_total'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(discountTotal)}</DimeTableCell>
           </TableRow>
           <TableRow>
-            <DimeTableCell>Total</DimeTableCell>
+            <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.final_cost'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(total)}</DimeTableCell>
           </TableRow>
         </TableBody>

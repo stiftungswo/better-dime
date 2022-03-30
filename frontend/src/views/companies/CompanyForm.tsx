@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateGroupSelect } from 'src/form/entitySelect/RateGroupSelect';
 import { OverviewTable } from 'src/layout/OverviewTable';
 import TableToolbar from 'src/layout/TableToolbar';
@@ -19,6 +20,7 @@ import { PeopleStore } from '../../stores/peopleStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import AddressesSubformInline from '../persons/AddressesSubformInline';
 import PhoneNumberSubformInline from '../persons/PhoneNumbersSubformInline';
 import { companySchema } from './companySchema';
@@ -30,31 +32,11 @@ export interface Props extends FormViewProps<Company> {
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
   rateGroupStore?: RateGroupStore;
+  intl?: IntlShape;
 }
 
-const personsColumns = [
-  {
-    id: 'first_name',
-    label: 'Vorname',
-  },
-  {
-    id: 'last_name',
-    label: 'Nachname',
-  },
-  {
-    id: 'email',
-    label: 'E-Mail',
-  },
-  {
-    id: '_',
-    label: 'Strasse',
-    format: (p: Person) => {
-      return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
-    },
-  },
-];
-
 @compose(
+  injectIntl,
   inject('customerTagStore', 'employeeStore', 'mainStore', 'peopleStore', 'rateGroupStore'),
   observer,
 )
@@ -85,11 +67,35 @@ export default class CompanyForm extends React.Component<Props> {
   }
 
   render() {
-    const { company, mainStore } = this.props;
+    const { company, mainStore, intl } = this.props;
     const { loading } = this.state;
+    const intlText = wrapIntl(intl!, 'view.company.form');
+
+    const personsColumns = [
+      {
+        id: 'first_name',
+        label: intlText('first_name'),
+      },
+      {
+        id: 'last_name',
+        label: intlText('last_name'),
+      },
+      {
+        id: 'email',
+        label: 'E-Mail',
+      },
+      {
+        id: '_',
+        label: intlText('street'),
+        format: (p: Person) => {
+          return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
+        },
+      },
+    ];
 
     return (
       <FormView
+        intl={intl!}
         paper={false}
         title={this.props.title}
         validationSchema={companySchema}
@@ -105,27 +111,27 @@ export default class CompanyForm extends React.Component<Props> {
                   <DimePaper>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={TextField} name={'name'} label={'Name'} />
+                        <DimeField delayed component={TextField} name={'name'} label={intlText('general.name', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={EmailField} name={'email'} label={'E-Mail'} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={'Tarif'} />
+                        <DimeField delayed component={RateGroupSelect} name={'rate_group_id'} label={intlText('general.rate', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed multiline component={TextField} name={'comment'} label={'Bemerkungen'} />
+                        <DimeField delayed multiline component={TextField} name={'comment'} label={intlText('comments')} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Grid item xs={12}>
-                          <DimeField delayed component={SwitchField} name={'hidden'} label={'Kontakt versteckt?'} />
+                          <DimeField delayed component={SwitchField} name={'hidden'} label={intlText('is_hidden')} />
                         </Grid>
                         <Grid item xs={12}>
-                          <DimeField delayed component={SwitchField} name={'archived'} label={'Archiviert?'} />
+                          <DimeField delayed component={SwitchField} name={'archived'} label={intlText('general.is_archived', true)} />
                         </Grid>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={'Tags'} />
+                        <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={intlText('general.tag.plural', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
@@ -142,7 +148,7 @@ export default class CompanyForm extends React.Component<Props> {
                 <Grid item xs={12}>
                   {!loading && (
                     <DimePaper>
-                      <TableToolbar title={'Mitarbeiter'} />
+                      <TableToolbar title={intlText('general.employee', true)} />
                       <OverviewTable
                         data={this.persons}
                         onClickRow={(m: Person) => {

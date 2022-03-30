@@ -1,10 +1,12 @@
 import { toJS } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { Address, Person } from 'src/types';
 import { PeopleStore } from '../../stores/peopleStore';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import PersonForm from './PersonForm';
 
 interface PersonDetailRouterProps {
@@ -13,11 +15,13 @@ interface PersonDetailRouterProps {
 
 export interface Props extends RouteComponentProps<PersonDetailRouterProps> {
   peopleStore?: PeopleStore;
+  intl?: IntlShape;
 }
 
 @compose(
   inject('peopleStore'),
   observer,
+  injectIntl,
 )
 export default class PersonUpdate extends React.Component<Props> {
   constructor(props: Props) {
@@ -48,7 +52,8 @@ export default class PersonUpdate extends React.Component<Props> {
 
   render() {
     const person = this.person;
-    const title = person ? `${person.first_name} ${person.last_name} - Kunde` : 'Kunde bearbeiten';
+    const intlText = wrapIntl(this.props.intl!, 'view.person.update');
+    const title = person ? `${person.first_name} ${person.last_name} - ` + intlText('general.customer', true) : intlText('edit_customer');
 
     return <PersonForm title={title} onSubmit={this.handleSubmit} person={person} />;
   }

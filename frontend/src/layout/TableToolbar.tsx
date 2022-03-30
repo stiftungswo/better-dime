@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import compose from '../utilities/compose';
 import { ActionButton, ActionButtonAction } from './ActionButton';
 import { ConfirmationButton } from './ConfirmationDialog';
@@ -59,7 +60,7 @@ const TableToolbar = compose(withStyles(toolbarStyles))((props: EnhancedTableToo
       <div className={classes.title} style={{textTransform: 'capitalize'}}>
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subtitle1">
-            {numSelected} ausgewählt
+            <FormattedMessage id="general.has_selected" values={{count: numSelected}} />
           </Typography>
         ) : (
           <FormHeader color={error ? 'error' : undefined}>{title}</FormHeader>

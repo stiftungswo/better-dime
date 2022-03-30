@@ -8,6 +8,7 @@ import {ArrayHelpers, FieldArray, Formik, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import {EmployeeSelect} from '../../form/entitySelect/EmployeeSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
@@ -26,12 +27,14 @@ import { MainStore } from '../../stores/mainStore';
 import { ProjectStore } from '../../stores/projectStore';
 import compose from '../../utilities/compose';
 import { dimeDate, requiredNumber, selector } from '../../utilities/validation';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
   projectStore?: ProjectStore;
   employeeStore?: EmployeeStore;
+  intl?: IntlShape;
 }
 
 interface State {
@@ -69,6 +72,7 @@ const schema = yup.object({
 });
 
 @compose(
+  injectIntl,
   inject('mainStore', 'projectStore', 'employeeStore'),
   observer,
 )
@@ -118,10 +122,12 @@ export class ProjectReport extends React.Component<Props, State> {
   render() {
     const handleAdd = this.handleAdd;
     const handleRemove = this.handleRemove;
+    const idPrefix = 'view.report.project';
+    const intlText = wrapIntl(this.props.intl!, idPrefix);
 
     return (
       <>
-        <DimeAppBar title={'Projektrapport'} />
+        <DimeAppBar title={intlText('layout.navigation.reports.project', true)} />
         <DimeContent loading={this.state.loading}>
           <Formik
             initialValues={template()}
@@ -144,13 +150,13 @@ export class ProjectReport extends React.Component<Props, State> {
                       />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <DimeField required component={ProjectSelect} name="project_id" label={'Projekt'} />
+                      <DimeField required component={ProjectSelect} name="project_id" label={intlText('general.project', true)} />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={'Exklusive Mitarbeiter'} />
+                      <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={intlText('excluded_employees')} />
                     </Grid>
                     <Grid item xs={12} md={2}>
-                      <DimeField component={VatField} name={'vat'} label={'MwSt.'} />
+                      <DimeField component={VatField} name={'vat'} label={intlText('general.vat', true)} />
                     </Grid>
                   </Grid>
 
@@ -158,14 +164,14 @@ export class ProjectReport extends React.Component<Props, State> {
                     name="additional_costs"
                     render={(arrayHelpers: any) => (
                       <>
-                        <TableToolbar title={'Zusätzliche Kosten'} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
+                        <TableToolbar title={intlText('additional_costs')} addAction={() => handleAdd(arrayHelpers)} style={{paddingLeft: '0px'}}/>
                         <div style={{ padding: '0px 15px 20px 0px' }}>
                           <Table size="small">
                             <TableHead>
                               <TableRow>
-                                <DimeTableCell style={{ width: '80%' }}>Beschreibung</DimeTableCell>
-                                <DimeTableCell style={{ width: '15%' }}>Preis</DimeTableCell>
-                                <DimeTableCell style={{ width: '5%' }}>Aktionen</DimeTableCell>
+                                <DimeTableCell style={{ width: '80%' }}> <FormattedMessage id={idPrefix + '.description'} /> </DimeTableCell>
+                                <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.price'} /> </DimeTableCell>
+                                <DimeTableCell style={{ width: '5%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -216,7 +222,7 @@ export class ProjectReport extends React.Component<Props, State> {
                         }
                         disabled={!formikProps.isValid}
                       >
-                        PDF Herunterladen
+                        <FormattedMessage id="general.action.download" />
                       </DownloadButton>
                     </Grid>
                   </Grid>

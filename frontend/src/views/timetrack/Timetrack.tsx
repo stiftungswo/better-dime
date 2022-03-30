@@ -2,6 +2,7 @@ import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
+import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
 import {ConfirmationButton} from '../../layout/ConfirmationDialog';
 import {DimeAppBar, DimeAppBarButton} from '../../layout/DimeAppBar';
 import {DimeContent} from '../../layout/DimeContent';
@@ -27,6 +28,7 @@ import TimetrackServiceGroup from './TimetrackServiceGroup';
 interface Props {
   effortStore?: EffortStore;
   employeeStore?: EmployeeStore;
+  intl?: IntlShape;
   projectStore?: ProjectStore;
   projectCommentStore?: ProjectCommentStore;
   rateUnitStore?: RateUnitStore;
@@ -35,6 +37,7 @@ interface Props {
 }
 
 @compose(
+  injectIntl,
   inject('effortStore', 'employeeStore', 'projectStore', 'projectCommentStore', 'rateUnitStore', 'serviceStore', 'timetrackFilterStore'),
   observer,
 )
@@ -128,8 +131,12 @@ export default class Timetrack extends React.Component<Props> {
       <p>
         <LogoIcon fontSize={'large'} />
       </p>
-      <p>Mit den aktuellen Filtern wurden keine Einträge gefunden</p>
-      <Button onClick={() => (this.props.timetrackFilterStore!.filter.showEmptyGroups = true)}>Leere Gruppen anzeigen</Button>
+      <p>
+        <FormattedMessage id={'view.timetrack.no_entries_found'} />
+      </p>
+      <Button onClick={() => (this.props.timetrackFilterStore!.filter.showEmptyGroups = true)}>
+        <FormattedMessage id={'view.timetrack.show_empty_groups'} />
+      </Button>
     </Grid>
   )
 
@@ -207,21 +214,22 @@ export default class Timetrack extends React.Component<Props> {
   }
 
   render() {
+    const intl = this.props.intl!;
     const effortsSelected = this.selectedEffortIds.length > 0;
     const commentsSelected = this.selectedCommentIds.length > 0;
     return (
       <>
         {effortsSelected || commentsSelected
-          ? <DimeAppBar title={`${this.selectedEffortIds.length + this.selectedCommentIds.length} Ausgewählt`} alternativeColor>
+          ? <DimeAppBar title={intl.formatMessage({id: 'general.has_selected'}, {count: this.selectedEffortIds.length + this.selectedCommentIds.length})} alternativeColor>
             <>
-              <DimeAppBarButton icon={MoveIcon} action={() => (this.setState({moving: true}))} title={'Verschieben'} />
+              <DimeAppBarButton icon={MoveIcon} action={() => (this.setState({moving: true}))} title={intl.formatMessage({id: 'general.action.move'})} />
               <ConfirmationButton color="inherit" onConfirm={this.handleDelete} />
             </>
           </DimeAppBar>
-          : <DimeAppBar title={'Zeiterfassung'}>
+          : <DimeAppBar title={intl.formatMessage({id: 'view.timetrack.timetrack'})}>
             <>
-              <DimeAppBarButton icon={AddCommentIcon} title={'Kommentar erfassen'} action={this.handleCommentAdd} />
-              <DimeAppBarButton icon={AddEffortIcon} title={'Aufwand erfassen'} action={this.handleEffortAdd} />
+              <DimeAppBarButton icon={AddCommentIcon} title={intl.formatMessage({id: 'view.timetrack.record_comment'})} action={this.handleCommentAdd} />
+              <DimeAppBarButton icon={AddEffortIcon} title={intl.formatMessage({id: 'view.timetrack.record_effort'})} action={this.handleEffortAdd} />
             </>
           </DimeAppBar>
         }

@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { MainStore } from '../../stores/mainStore';
 import { ProjectStore } from '../../stores/projectStore';
@@ -13,9 +14,11 @@ export interface Props extends RouteComponentProps {
   projectStore?: ProjectStore;
   mainStore?: MainStore;
   rateGroupStore?: RateGroupStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('projectStore', 'mainStore'),
   observer,
 )
@@ -37,9 +40,10 @@ export default class ProjectCreate extends React.Component<Props> {
   }
 
   render() {
+    const intl = this.props.intl!;
     return (
       <ProjectForm
-        title={'Projekt erstellen'}
+        title={intl.formatMessage({id: 'view.project.create.title'})}
         onSubmit={this.handleSubmit}
         project={
           {

@@ -2,6 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
 import { DimeField } from '../../form/fields/formik';
@@ -14,46 +15,23 @@ import { MainStore } from '../../stores/mainStore';
 import { PeopleStore } from '../../stores/peopleStore';
 import { CustomerOverviewFilter, Person, SelectedAction } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import PersonFilterForm from './PersonFilterForm';
 
 type Props = {
   customerTagStore?: CustomerTagStore;
   mainStore?: MainStore;
   peopleStore?: PeopleStore;
+  intl?: IntlShape;
 } & RouteComponentProps;
 
 @compose(
+  injectIntl,
   inject('customerTagStore', 'peopleStore', 'mainStore'),
   observer,
   withRouter,
 )
 export default class PersonOverview extends React.Component<Props> {
-  columns: Array<Column<Person>>;
-
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
-      {
-        id: 'first_name',
-        label: 'Vorname',
-      },
-      {
-        id: 'last_name',
-        label: 'Nachname',
-      },
-      {
-        id: 'email',
-        label: 'E-Mail',
-      },
-      {
-        id: 'company_id',
-        noSort: true,
-        label: 'Firma',
-        format: p => <>{p.company ? p.company.name : ''}</>,
-      },
-    ];
-  }
-
   componentWillMount() {
     this.props.peopleStore!.selectedIds.clear();
   }
@@ -92,25 +70,47 @@ export default class PersonOverview extends React.Component<Props> {
 
   render() {
     const peopleStore = this.props.peopleStore;
+    const intlText = wrapIntl(this.props.intl!, 'view.person.overview');
 
     const selectedAction1: SelectedAction = {
       icon: MailIcon,
-      title: 'Mail öffnen',
+      title: intlText('open_email'),
       action: this.copyMails,
     };
 
     const selectedAction2: SelectedAction = {
       icon: CloseIcon,
-      title: 'Auswahl aufheben',
+      title: intlText('cancel_selection'),
       action: this.deSelect,
     };
+
+    const columns: Array<Column<Person>> = [
+      {
+        id: 'first_name',
+        label: intlText('first_name'),
+      },
+      {
+        id: 'last_name',
+        label: intlText('last_name'),
+      },
+      {
+        id: 'email',
+        label: 'E-Mail',
+      },
+      {
+        id: 'company_id',
+        noSort: true,
+        label: intlText('general.company', true),
+        format: p => <>{p.company ? p.company.name : ''}</>,
+      },
+    ];
 
     return (
       <Overview
         archivable
         searchable
         paginated
-        title={'Personen'}
+        title={intlText('general.person.plural', true)}
         store={peopleStore!}
         addAction={'/persons/new'}
         setSelected={this.setSelectedPeople}
@@ -125,7 +125,7 @@ export default class PersonOverview extends React.Component<Props> {
             }}
             archiveAction={(!e.archived && e.id) ? () => peopleStore!.archive(e.id!, true).then(r => peopleStore!.fetchAllPaginated()) : undefined}
             restoreAction={(e.archived && e.id) ? () => peopleStore!.archive(e.id!, false).then(r => peopleStore!.fetchAllPaginated()) : undefined}
-            deleteMessage={'Möchtest du diese Person wirklich löschen?'}
+            deleteMessage={intlText('delete_warning')}
             deleteAction={() => {
               if (e.id) {
                 peopleStore!.delete(e.id).then(r => peopleStore!.fetchAllPaginated());
@@ -135,7 +135,7 @@ export default class PersonOverview extends React.Component<Props> {
         )}
         selectedActions={[selectedAction2, selectedAction1]}
         onClickRow={'/persons/:id'}
-        columns={this.columns}
+        columns={columns}
       >
         <PersonFilterForm store={this.props.peopleStore!}/>
       </Overview>

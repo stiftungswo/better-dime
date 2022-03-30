@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { ActionButtons } from '../../layout/ActionButtons';
 import Overview, { Column } from '../../layout/Overview';
@@ -9,19 +10,23 @@ import compose from '../../utilities/compose';
 
 type Props = {
   offerStore?: OfferStore;
+  intl?: IntlShape;
 } & RouteComponentProps;
 
 @compose(
+  injectIntl,
   inject('offerStore'),
   observer,
   withRouter,
 )
 export default class OfferOverview extends React.Component<Props> {
-  columns: Array<Column<OfferListing>>;
 
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+  render() {
+    const offerStore = this.props.offerStore!;
+    // columns have to be reconstructed on every render(),
+    // as the locale might have changed.
+    const intl = this.props.intl!;
+    const columns = [
       {
         id: 'id',
         label: 'ID',
@@ -29,22 +34,19 @@ export default class OfferOverview extends React.Component<Props> {
       },
       {
         id: 'name',
-        label: 'Name',
+        label: intl.formatMessage({id: 'general.name'}),
       },
       {
         id: 'short_description',
-        label: 'Beschreibung',
+        label: intl.formatMessage({id: 'general.description'}),
       },
     ];
-  }
 
-  render() {
-    const offerStore = this.props.offerStore!;
     return (
       <Overview
         searchable
         paginated
-        title={'Offerten'}
+        title={intl.formatMessage({id: 'general.offer.plural'})}
         store={offerStore}
         addAction={'/offers/new'}
         renderActions={e => (
@@ -60,15 +62,11 @@ export default class OfferOverview extends React.Component<Props> {
                 offerStore!.delete(e.id).then(r => offerStore!.fetchAllPaginated());
               }
             }}
-            deleteMessage={
-              'Willst du diese Offerte wirklich löschen? ' +
-              'Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. ' +
-              'Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.'
-            }
+            deleteMessage={intl.formatMessage({id: 'view.offer.overview.delete_warning'})}
           />
         )}
         onClickRow={'/offers/:id'}
-        columns={this.columns}
+        columns={columns}
       />
     );
   }

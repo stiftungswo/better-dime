@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
@@ -9,41 +10,40 @@ import { MainStore } from '../../stores/mainStore';
 import { ProjectCommentPresetStore } from '../../stores/projectCommentPresetStore';
 import { ProjectCommentPreset } from '../../types';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { commentPresetSchema, commentPresetTemplate } from './commentPresetSchema';
 
 interface Props {
   projectCommentPresetStore?: ProjectCommentPresetStore;
   mainStore?: MainStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('projectCommentPresetStore', 'mainStore'),
   observer,
 )
 export default class CommentPresetOverview extends React.Component<Props> {
-  columns: Array<Column<ProjectCommentPreset>> = [];
+  render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.comment_preset.overview');
+    const projectCommentPresetStore = this.props.projectCommentPresetStore;
 
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+    const columns: Array<Column<ProjectCommentPreset>> = [
       {
         id: 'comment_preset',
         numeric: false,
-        label: 'Name',
+        label: intlText('general.name', true),
       },
     ];
-  }
-
-  render() {
-    const projectCommentPresetStore = this.props.projectCommentPresetStore;
 
     return (
       <EditableOverview
         searchable
         paginated
-        title={'Kommentarvorlagen'}
+        title={intlText('title')}
         store={projectCommentPresetStore!}
-        columns={this.columns}
+        columns={columns}
         schema={commentPresetSchema}
         defaultValues={commentPresetTemplate}
         onSubmit={async (entity) => {
@@ -60,14 +60,12 @@ export default class CommentPresetOverview extends React.Component<Props> {
               await projectCommentPresetStore!.delete(e.id!);
               await projectCommentPresetStore!.fetchAll();
             }}
-            deleteMessage={
-              'Möchtest du diese Kommentarvorlage wirklich löschen?'
-            }
+            deleteMessage={intlText('delete_warning')}
           />
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'comment_preset'} label={'Kommentarvorlage'} />
+            <DimeField component={TextField} name={'comment_preset'} label={intlText('comment_preset')} />
           </>
         )}
       />

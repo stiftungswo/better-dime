@@ -1,20 +1,20 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DimeCustomFieldProps, WidthToggle } from '../fields/common';
 import Select from '../fields/Select';
 
-const options = [
-  {
-    label: 'Nach Projekt gruppiert',
-    value: 'project',
-  },
-  {
-    label: 'Nach Projekt-Kategorie gruppiert',
-    value: 'category',
-  },
-];
-
-export class ExportGroupingSelect extends React.Component<DimeCustomFieldProps<'project' | 'category'> & WidthToggle> {
-  render() {
-    return <Select options={options} {...this.props} />;
-  }
+export function ExportGroupingSelect(props: DimeCustomFieldProps<'project' | 'category'> & WidthToggle) {
+  const intlText = wrapIntl(useIntl(), 'form.entity_select.export_grouping');
+  const options = [
+    {
+      label: intlText('by_project'),
+      value: 'project',
+    },
+    {
+      label: intlText('by_category'),
+      value: 'category',
+    },
+  ];
+  return <Select options={options} {...props} />;
 }

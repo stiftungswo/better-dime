@@ -1,5 +1,6 @@
 import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Prompt } from 'react-router';
 import {Schema} from 'yup';
 import { DimeAppBar, DimeAppBarButton } from '../layout/DimeAppBar';
@@ -21,13 +22,15 @@ export interface FormViewProps<T> {
 interface Props<T> extends FormViewProps<T> {
   render: (props: FormikProps<T>) => React.ReactNode;
   validationSchema: Schema<T>;
+  // the used has to explicitly pass intl, as
+  // @injectIntl didn't work due to the template logic.
+  intl: IntlShape;
 }
-
 export class FormView<Values = object, ExtraProps = {}> extends React.Component<FormikConfig<Values> & ExtraProps & Props<Values>> {
 
   render() {
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
-    const { appBarButtons, ...rest } = this.props as any;
+    const { appBarButtons, intl, ...rest } = this.props as any;
     return this.props.loading ? (
       <React.Fragment>
         <DimeAppBar title={this.props.title} />
@@ -41,10 +44,10 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
         isInitialValid={true}
         render={(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
-            <Prompt when={!this.props.submitted && formikProps.dirty} message={() => 'Änderungen verwerfen?'} />
+            <Prompt when={!this.props.submitted && formikProps.dirty} message={() => intl.formatMessage({id: 'form.view.warn_discard_changes'})} />
             <DimeAppBar title={this.props.title}>
               {appBarButtons && appBarButtons(formikProps.dirty)}
-              <DimeAppBarButton icon={SaveIcon} title={'Speichern'} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
+              <DimeAppBarButton icon={SaveIcon} title={intl.formatMessage({id: 'general.action.save'})} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
             <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>
           </FormikSubmitDetector>

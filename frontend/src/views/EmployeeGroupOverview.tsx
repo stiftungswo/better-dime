@@ -1,5 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { SwitchField, TextField } from '../form/fields/common';
 import { DimeField } from '../form/fields/formik';
@@ -10,10 +11,12 @@ import { EmployeeGroupStore } from '../stores/employeeGroupStore';
 import { MainStore } from '../stores/mainStore';
 import { EmployeeGroup } from '../types';
 import compose from '../utilities/compose';
+import { wrapIntl } from '../utilities/wrapIntl';
 
 interface Props {
   mainStore?: MainStore;
   employeeGroupStore?: EmployeeGroupStore;
+  intl?: IntlShape;
 }
 
 const schema = yup.object({
@@ -25,15 +28,16 @@ const template = {
 };
 
 @compose(
+  injectIntl,
   inject('mainStore', 'employeeGroupStore'),
   observer,
 )
 export default class EmployeeGroupOverview extends React.Component<Props> {
-  columns: Array<Column<EmployeeGroup>> = [];
+  render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.employee_group.overview');
+    const employeeGroupStore = this.props.employeeGroupStore;
 
-  constructor(props: Props) {
-    super(props);
-    this.columns = [
+    const columns: Array<Column<EmployeeGroup>> = [
       {
         id: 'id',
         numeric: false,
@@ -42,20 +46,16 @@ export default class EmployeeGroupOverview extends React.Component<Props> {
       {
         id: 'name',
         numeric: false,
-        label: 'Name',
+        label: intlText('general.name', true),
       },
     ];
-  }
-
-  render() {
-    const employeeGroupStore = this.props.employeeGroupStore;
 
     return (
       <EditableOverview
         searchable
-        title={'Mitarbeiter Gruppen'}
+        title={intlText('title')}
         store={employeeGroupStore!}
-        columns={this.columns}
+        columns={columns}
         schema={schema}
         defaultValues={template}
         renderActions={(e: EmployeeGroup) => <ActionButtons deleteAction={() => employeeGroupStore!.delete(e.id)} />}

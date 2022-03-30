@@ -3,19 +3,23 @@ import Grid from '@material-ui/core/Grid';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeAppBar } from '../../layout/DimeAppBar';
 import { DimeContent } from '../../layout/DimeContent';
 import { apiDateFormat } from '../../stores/apiStore';
 import { MainStore } from '../../stores/mainStore';
 import compose from '../../utilities/compose';
+import { wrapIntl } from '../../utilities/wrapIntl';
 import { DateSpanPicker } from './DateSpanPicker';
 
 interface Props {
   mainStore?: MainStore;
+  intl?: IntlShape;
 }
 
 @compose(
+  injectIntl,
   inject('mainStore'),
   observer,
 )
@@ -27,9 +31,10 @@ export class PercentageReport extends React.Component<Props> {
   };
 
   render() {
+    const intlText = wrapIntl(this.props.intl!, 'view.report.costgroup');
     return (
       <>
-        <DimeAppBar title={'Kostenstellenraport'} />
+        <DimeAppBar title={intlText('layout.navigation.reports.costgroup', true)} />
 
         <DimeContent loading={false}>
           <Grid container alignItems={'center'} spacing={3}>
@@ -44,7 +49,7 @@ export class PercentageReport extends React.Component<Props> {
             <Grid item xs={12}>
               <a href={this.getHref()} target={'_blank'} style={{ textDecoration: 'none', color: 'white' }}>
                 <Button color={'primary'} variant="contained">
-                  Herunterladen
+                  <FormattedMessage id="general.action.download" />
                 </Button>
               </a>
             </Grid>
