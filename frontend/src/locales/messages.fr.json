@@ -228,7 +228,7 @@
 
   "view.invoice.create.create_invoice": "Saisir une facture",
 
-  "view.invoice.form.print_effort_report": "Imprimer le rapport de dépenses pour cette facture.",
+  "view.invoice.form.print_effort_report": "Imprimer le rapport d'effort pour cette facture.",
   "view.invoice.form.error_no_project": "Comme la facture n'a pas de projet lié, aucun rapport de charge ne peut être généré.",
   "view.invoice.form.print_qr_bill": "Imprimer le bulletin de versement",
   "view.invoice.form.missing_cost_group_qr": "Il faut attribuer un centre de coûts avant de pouvoir imprimer le bulletin de versement.",
@@ -337,7 +337,7 @@
 
   "view.project.create.title": "Saisir un projet",
 
-  "view.project.form.print_effort_report": "Imprimer le rapport de dépenses",
+  "view.project.form.print_effort_report": "Imprimer le rapport d'effort",
   "view.project.form.generate_invoice": "Générer une nouvelle facture à partir du projet",
   "view.project.form.address": "Adresse",
   "view.project.form.description": "Description",
@@ -354,11 +354,11 @@
   "view.project.position_renderer.unit": "Unité",
   "view.project.position_renderer.count": "Nombre",
   "view.project.position_renderer.total": "Total CHF (avec TVA)",
-  "view.project.position_renderer.has_efforts_warning": "Supprimez d'abord les dépenses!",
+  "view.project.position_renderer.has_efforts_warning": "Supprimez d'abord les efforts!",
   "view.project.position_renderer.note": "Note:",
   "view.project.position_renderer.note_content": "Il faut d'abord sélectionner un groupe tarifaire avant de pouvoir ajouter de nouvelles positions au projet.",
 
-  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Date de la dernière dépense",
+  "view.project.projects_with_potential_invoices_overview.last_effort_date": "Date de la dernière effort",
   "view.project.projects_with_potential_invoices_overview.last_invoice_date": "Date de la dernière facture",
   "view.project.projects_with_potential_invoices_overview.days": "Jours",
   "view.project.projects_with_potential_invoices_overview.title": "Projets non facturés",
