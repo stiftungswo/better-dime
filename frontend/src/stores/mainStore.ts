@@ -4,7 +4,7 @@ import moment from 'moment';
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import messagesDe from '../locales/messages.de.json';
 import messagesFr from '../locales/messages.fr.json';
-import { Locale } from '../types';
+import { Employee, Locale } from '../types';
 import { Formatter } from '../utilities/formatter';
 import { buildURL } from '../utilities/helpers';
 import { Notifier } from '../utilities/notifier';
@@ -20,6 +20,10 @@ export const messages: { [locale in Locale]: any } = {
   [germanLocale]: messagesDe,
   [frenchLocale]: messagesFr,
 };
+
+function isValidLocale(name: string): boolean {
+    return name === germanLocale || name === frenchLocale;
+}
 
 const momentLocale: { [locale in Locale]: any } = {
   [germanLocale]: 'de-ch',
@@ -89,6 +93,7 @@ export class MainStore {
     private history: History,
   ) {
     makeObservable(this);
+    this.handle_user_based_locale();
 
     autorun(() => {
       moment.locale(momentLocale[this.currentLocale]);
@@ -106,5 +111,23 @@ export class MainStore {
       ...params,
       token: includeAuth ? this.apiStore.tokenV2.toString().replace('Bearer ', '') : undefined,
     });
+  }
+  apiV2URL_localized(path: string, params: object = {}): string {
+    return this.apiV2URL(path, {
+      ...params,
+      locale: this.currentLocale,
+    });
+  }
+
+  async handle_user_based_locale(): Promise<void> {
+      // fetches user language from backend and init locale based on that.
+      const myId = this.userId;
+      if (myId === undefined) { return; }
+      const result = await this.apiV2.get<Employee>('/employees/' + myId!);
+      const myLocale = result.data.locale;
+      if (isValidLocale(myLocale)) {
+          this.currentLocale = myLocale as Locale;
+      }
+      console.log(myLocale); // tslint:disable-line:no-console
   }
 }

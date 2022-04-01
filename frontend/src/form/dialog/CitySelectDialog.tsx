@@ -46,7 +46,7 @@ export default class CitySelectDialog extends React.Component<Props> {
       {id: 'schwerzenbach', url: 'Schwerzenbach'},
       {id: 'wallis', url: 'Sierre'},
     ];
-    const buildUrl = (cityId: string) => this.props.mainStore!.apiV2URL(this.props.path, {city: cityId});
+    const buildUrl = (cityId: string) => this.props.mainStore!.apiV2URL_localized(this.props.path, {city: cityId});
 
     return (
       <Dialog open onClose={onClose} maxWidth="lg">

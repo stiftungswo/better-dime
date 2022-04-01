@@ -23,13 +23,20 @@ module V2
     end
 
     def switch_locale(&action)
-      locale = current_employee.try(:locale)
+
+      locale = locale_params[:locale]
+
+      locale = current_employee.try(:locale) if locale.blank?
 
       locale = extract_locale_from_params_employee if locale.blank? && params[:token]
 
       locale = I18n.default_locale if locale.blank?
 
       I18n.with_locale(locale, &action)
+    end
+
+    def locale_params
+      params.permit(:locale)
     end
   end
 end

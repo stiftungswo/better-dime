@@ -57,7 +57,7 @@ export default class PrintButton extends React.Component<Props> {
       );
     } else {
       return (
-        <UnstyledBackendLink url={this.props.mainStore!.apiV2URL(this.props.path, this.props.urlParams)}>
+        <UnstyledBackendLink url={this.props.mainStore!.apiV2URL_localized(this.props.path, this.props.urlParams)}>
           <ActionButton
             icon={PrintIcon}
             secondaryIcon={BadgeIcon}
