@@ -3,8 +3,7 @@ import { localizeSchema, nullableNumber, requiredNumber, selector, titleRegex } 
 
 export const offerSchema = localizeSchema(() => {
     const regex = titleRegex();
-    const errorMessage = 'Offertentitel muss folgendes Format haben: Gemeinde, Flurname, Arbeiten, Jahreszahl. Beispiel: \n' +
-      'Dübendorf, Chriesbach, Initialpflege, 2019';
+    const errorMessage = 'general.schema.title_format';
 
     return yup.object({
       name: yup.string().matches(regex, regexData => {

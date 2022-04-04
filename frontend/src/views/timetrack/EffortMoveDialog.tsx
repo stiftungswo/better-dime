@@ -1,6 +1,7 @@
 import {FormikProps} from 'formik';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
+import { injectIntl, IntlShape } from 'react-intl';
 import { ProjectCommentStore } from 'src/stores/projectCommentStore';
 import * as yup from 'yup';
 import {FormDialog} from '../../form/dialog/FormDialog';
@@ -10,7 +11,9 @@ import {DimeField} from '../../form/fields/formik';
 import {EffortStore} from '../../stores/effortStore';
 import {ProjectStore} from '../../stores/projectStore';
 import {TimetrackFilterStore} from '../../stores/timetrackFilterStore';
+import compose from '../../utilities/compose';
 import {localizeSchema, nullableNumber, selector} from '../../utilities/validation';
+import wrapIntl from '../../utilities/wrapIntl';
 
 const schema = localizeSchema(() =>
   yup.object({
@@ -33,11 +36,15 @@ interface Props {
   effortStore?: EffortStore;
   projectCommentStore?: ProjectCommentStore;
   timetrackFilterStore?: TimetrackFilterStore;
+  intl?: IntlShape;
   onClose: () => void;
 }
 
-@inject('effortStore', 'projectStore', 'timetrackFilterStore', 'projectCommentStore')
-@observer
+@compose(
+  injectIntl,
+  inject('effortStore', 'projectStore', 'timetrackFilterStore', 'projectCommentStore'),
+  observer,
+)
 export default class EffortMoveDialog extends React.Component<Props> {
   handleSubmit = async (formValues: Values) => {
 
@@ -57,24 +64,25 @@ export default class EffortMoveDialog extends React.Component<Props> {
     this.props.onClose();
   }
 
-  printEffort = (n: number) => {
+  printEffort = (n: number, intlText: any) => {
     if (n === 1) {
-      return ' Aufwand';
+      return ' ' + intlText('effort');
     } else {
-      return ' Aufwände';
+      return ' ' + intlText('effort.plural');
     }
   }
 
-  printComment = (n: number) => {
+  printComment = (n: number, intlText: any) => {
     if (n === 1) {
-      return ' Kommentar';
+      return ' ' + intlText('comment');
     } else {
-      return ' Kommentare';
+      return ' ' + intlText('comment.plural');
     }
   }
 
   render() {
     const {lastMoveProject, lastMovePosition} = this.props.effortStore!;
+    const intlText = wrapIntl(this.props.intl!, 'view.timetrack.effort_move_dialog');
     const nEfforts = this.props.effortIds.length;
     const nComments = this.props.commentIds.length;
     const moveEfforts = nEfforts > 0;
@@ -85,7 +93,7 @@ export default class EffortMoveDialog extends React.Component<Props> {
       <FormDialog
         open
         onClose={this.props.onClose}
-        title={`${moveEfforts ? nEfforts + this.printEffort(nEfforts) : ''} ${moveBoth ? ' und ' : ''} ${moveComments ? nComments + this.printComment(nComments) : ''} verschieben`}
+        title={`${moveEfforts ? nEfforts + this.printEffort(nEfforts, intlText) : ''} ${moveBoth ? intlText('spaced_and') : ''} ${moveComments ? nComments + this.printComment(nComments, intlText) : ''} ${intlText('general.action.move')}`}
         initialValues={{
           project_id: lastMoveProject || '',
           project_position: lastMovePosition || '',

@@ -5,13 +5,13 @@ export const editEmployeeSchema = localizeSchema(() =>
   yup.object({
     archived: yup.boolean(),
     can_login: yup.boolean().required(),
-    email: yup.string().email('Ungültiges Email Format').required(),
+    email: yup.string().email('view.employee.schema.invalid_email').required(),
     holidays_per_year: yup.number().nullable(true),
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
     last_name: yup.string().required(),
     password: yup.string(),
-    password_repeat: yup.string().oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.'),
+    password_repeat: yup.string().oneOf([yup.ref('password'), null], 'view.employee.schema.nonmachting_password'),
     locale: yup.string(),
     work_periods: yup.array(
       yup.object({
@@ -31,7 +31,7 @@ export const newEmployeeSchema = localizeSchema(() =>
   yup.object({
     archived: yup.boolean(),
     can_login: yup.boolean().required(),
-    email: yup.string().email('Ungültiges Email Format').required(),
+    email: yup.string().email('view.employee.schema.invalid_email').required(),
     holidays_per_year: yup.number().nullable(true),
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
@@ -41,7 +41,7 @@ export const newEmployeeSchema = localizeSchema(() =>
     locale: yup.string().required(),
     password_repeat: yup
       .string()
-      .oneOf([yup.ref('password'), null], 'Passwort muss mit neuem Passwort übereinstimmen.')
+      .oneOf([yup.ref('password'), null], 'view.employee.schema.nonmachting_password')
       .required(),
     work_periods: yup.array(
       yup.object({
@@ -61,7 +61,7 @@ export const newEmployeeSchema = localizeSchema(() =>
         zip: yup
           .number()
           .required()
-          .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
+          .min(1000, 'general.schema.plz_digits'),
         street: yup.string().required(),
         supplement: yup.string().nullable(true),
       }),
