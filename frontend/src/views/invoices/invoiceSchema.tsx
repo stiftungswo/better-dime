@@ -34,10 +34,10 @@ export const invoiceSchema = localizeSchema(() =>
       .array(
         yup.object({
           costgroup_number: selector(),
-          weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
+          weight: requiredNumber().min(1, 'general.schema.cost_group_has_weight'),
         }),
       )
-      .min(1, 'Eine Rechnung benötigt mindestens eine zugewiesene Kostenstelle.'),
+      .min(1, 'view.invoice.schema.cost_group_required'),
   }),
 );
 

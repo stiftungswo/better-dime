@@ -69,7 +69,7 @@ const multiSchema = localizeSchema(() =>
       employee_ids: yup
         .array()
         .of(yup.number())
-        .min(1, 'Dies ist ein erforderliches Feld.'),
+        .min(1, 'validation.schema.required_field'),
     })
     .shape(baseEffortFields),
 );

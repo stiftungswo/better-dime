@@ -63,6 +63,12 @@
   "general.action.fetch": "Récupérer",
   "general.action.download": "Télécharger",
 
+  "general.schema.plz_digits": "Le code postal doit comporter au moins quatre chiffres.",
+  "general.schema.category_has_weight": "Le poids d'un domaine d'activité doit être supérieur à 0.",
+  "general.schema.cost_group_has_weight": "Le poids d'un centre de coûts doit être supérieur à 0.",
+  "general.schema.title_format": "Le titre de l'offre doit avoir le format suivant: Commune, lieu-dit, travaux, année. Exemple: \nDübendorf, Chriesbach, Entretien initial, 2019",
+  "general.schema.tag_required": "Choisis au moins un tag.",
+
   "form.failed_to_save": "Les données n'ont pas pu être enregistrées car le formulaire contient des informations non valides",
 
   "form.dialog.service_select.service_group": "Groupe de services",
@@ -160,6 +166,8 @@
   "layout.overview.show_archived_objects": "Afficher les objets archivés",
   "layout.overview.hide_archived_objects": "Masquer les objets archivés",
 
+  "validation.schema.required_field": "Il s'agit d'un champ obligatoire.",
+
   "view.comment_preset.overview.delete_warning": "Veux-tu vraiment supprimer ce modèle de commentaire?",
   "view.comment_preset.overview.comment_preset": "Modèle de commentaire",
   "view.comment_preset.overview.title": "Modèles de commentaires",
@@ -176,6 +184,8 @@
   "view.company.overview.plz": "CP",
   "view.company.overview.city": "Ville",
   "view.company.overview.delete_warning": "Veux-tu vraiment supprimer cette entreprise ? Cela supprime également toutes les personnes jointes ainsi que les adresses et les numéros de téléphone.",
+
+  "view.company.schema.tag_required": "Choisis au moins un tag.",
 
   "view.customer.export_form.title": "Exporter",
   "view.customer.export_form.select_tags": "Sélectionner les tags client",
@@ -197,6 +207,9 @@
   "view.employee.user_settings": "Paramètres de l'utilisateur",
   "view.employee.general_info": "Informations générales",
 
+  "view.employee.schema.invalid_email": "Format d'e-mail non valide",
+  "view.employee.schema.nonmachting_password": "Le mot de passe doit correspondre au nouveau mot de passe.",
+
   "view.employee.update.update_employee": "Modifier un employé",
 
   "view.employee.work_period_subform.work_period": "Périodes de travail",
@@ -211,7 +224,6 @@
   "view.employee.work_period_subform.vacation_takeover": "Report",
   "view.employee.work_period_subform.yearly_vacation_budget": "Budget vacances annuelt",
   "view.employee.work_period_subform.hourly_pay": "Salaire horaire",
-
   "view.employee.work_period_subform.target_time.tooltip": "Les heures théoriques sont les heures de travail à effectuer basées sur les dates de début et de fin choisies, additionnées au crédit de vacances pour cette période. Les jours de congé publics sont déduits.",
   "view.employee.work_period_subform.effective_time.tooltip": "Les heures effectives sont calculées directement à partir de la saisie des temps et comprennent toutes les entrées de temps qui ont été comptabilisées pour cette personne au cours des dates de début et de fin sélectionnées pour la période.",
   "view.employee.work_period_subform.effort_until_today.tooltip": "Heures comptabilisées au cours de la période jusqu'à aujourd'hui (ou jusqu'à la date de fin si celle-ci est antérieure à aujourd'hui).",
@@ -244,6 +256,8 @@
   "view.invoice.form.description": "Description",
 
   "view.invoice.position_renderer.position": "Articles de facturation",
+
+  "view.invoice.schema.cost_group_required": "Une facture nécessite au moins un centre de coûts attribué.",
 
   "view.invoice.update.edit_invoice": "Modifier une facture",
 
@@ -363,6 +377,9 @@
   "view.project.projects_with_potential_invoices_overview.days": "Jours",
   "view.project.projects_with_potential_invoices_overview.title": "Projets non facturés",
 
+  "view.project.schema.category_required": "Un projet nécessite au moins un domaine d'activité attribué.",
+  "view.project.schema.cost_group_required": "Un projet nécessite au moins un centre de coûts attribué.",
+
   "view.project.stat_table.remaining_budget": "Budget résiduel",
   "view.project.stat_table.stats": "Projet Statistiques",
   "view.project.stat_table.money_budget": "Budget d'argent",
@@ -409,15 +426,25 @@
   "view.timetrack.timetrack": "Saisie de temps",
   "view.timetrack.record_comment": "Saisir un commentaire",
   "view.timetrack.record_effort": "Saisir l'effort",
+
   "view.timetrack.comment_form_dialog.edit_comment": "Modifier le commentaire du projet",
   "view.timetrack.comment_form_dialog.record_comment": "Saisir un commentaire de projet",
+
+  "view.timetrack.effort_move_dialog.effort": "Effort",
+  "view.timetrack.effort_move_dialog.effort.plural": "Efforts",
+  "view.timetrack.effort_move_dialog.comment": "Commentaire",
+  "view.timetrack.effort_move_dialog.comment.plural": "Commentaires",
+  "view.timetrack.effort_move_dialog.comment.spaced_and": " et ",
+
   "view.timetrack.filter_form.title": "Filtre",
   "view.timetrack.filter_form.show_empty": "Afficher les groupes vides",
   "view.timetrack.filter_form.show_comments": "Afficher les commentaires du projet",
   "view.timetrack.filter_form.refresh": "Actualiser",
+
   "view.timetrack.form_dialog.record_effort": "Saisir l'effort",
   "view.timetrack.form_dialog.edit_effort": "Modifier les charges",
   "view.timetrack.form_dialog.comment_label": "Commentaire sur le projet et le jour",
+
   "view.timetrack.service_group.description": "Description",
   "view.timetrack.service_group.recorded_value": "Valeur saisie",
 
