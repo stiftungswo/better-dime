@@ -39,7 +39,7 @@ class RevenueReportService
   def rows
     all_rows = offers.map do |offer|
       offer_price = (offer.breakdown[:fixed_price] || offer.breakdown[:total]) # TODO: Decorator
-      row = ["Offerte", offer.name, nil, offer.customer&.full_name, offer.created_at.strftime("%d.%m.%Y"), offer.accountant&.name, nil, nil, offer_price]
+      row = ["Offerte", pretty_status[offer.status], offer.name, nil, offer.customer&.full_name, offer.created_at.strftime("%d.%m.%Y"), offer.accountant&.name, nil, nil, offer_price]
       row += cost_groups.map { nil }
       row += [nil]
     end
@@ -68,14 +68,14 @@ class RevenueReportService
 
       category_names = project.project_categories.map { |category| category.name }
 
-      row = ["Projekt", project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
+      row = ["Projekt", nil, project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
       row += [no_costgroup_prices]
       row
     end
     all_rows += invoices.map do |invoice|
       invoice_price = (invoice.breakdown[:fixed_price] || invoice.breakdown[:total]) # TODO: Decorator
-      row = ["Rechnung", invoice.name, nil, invoice.customer&.full_name, invoice.created_at.strftime("%d.%m.%Y"), invoice.accountant&.name, nil, invoice_price, nil]
+      row = ["Rechnung", nil, invoice.name, nil, invoice.customer&.full_name, invoice.created_at.strftime("%d.%m.%Y"), invoice.accountant&.name, nil, invoice_price, nil]
       invoice_price_by_costgroup = {}
       total_id_weight = invoice.invoice_costgroup_distributions.inject(0) { |sum, d| sum + d.weight }
       invoice.invoice_costgroup_distributions.each do |distribution|
@@ -92,7 +92,7 @@ class RevenueReportService
       .map { |row| row.map { |column| column.is_a?(Numeric) && column == 0 ? nil : column } }
   end
 
-  HEADER = ["Typ", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
+  HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
   def header
     HEADER + cost_groups.map { |cost_group| "#{cost_group.number}, #{cost_group.name}" } + ["Keine Kostenstelle"]
   end
@@ -107,6 +107,10 @@ class RevenueReportService
     t += rows
     t << footer
     t
+  end
+
+  def pretty_status
+    Hash[nil => "", 1 => "Offeriert", 2 => "Bestätigt", 3 => "Abgelehnt"]
   end
 
   # some love for console developers
