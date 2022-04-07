@@ -35,3 +35,4 @@ export const wrapIntl = (intl: IntlShape, idPrefix?: string) => (idSuffix: strin
   const id = (idPrefix === undefined || skipPrefix) ? idSuffix : idPrefix + '.' + idSuffix;
   return intl.formatMessage({id, ...args});
 };
+export default wrapIntl;

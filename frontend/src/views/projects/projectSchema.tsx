@@ -3,8 +3,7 @@ import { dimeDate, localizeSchema, nullableNumber, requiredNumber, selector, tit
 
 export const projectSchema = localizeSchema(() => {
   const regex = titleRegex();
-  const errorMessage = 'Projekttitel muss folgendes Format haben: Gemeinde, Flurname, Arbeiten, Jahreszahl. Beispiel: \n' +
-    'Dübendorf, Chriesbach, Initialpflege, 2019';
+  const errorMessage = 'general.schema.title_format';
 
   return yup.object({
       name: yup.string().matches(regex, regexData => {
@@ -30,16 +29,16 @@ export const projectSchema = localizeSchema(() => {
       category_distributions: yup.array(
         yup.object({
           category_id: requiredNumber(),
-          weight: requiredNumber().min(1, 'Das Gewicht eines Tätigkeitsbereiches muss grösser als 0 sein.'),
+          weight: requiredNumber().min(1, 'general.schema.category_has_weight'),
         }),
-      ).min(1, 'Ein Projekt benötigt mindestens einen zugewiesenen Tätigkeitsbereich.'),
+      ).min(1, 'view.project.schema.category_required'),
       costgroup_distributions: yup.array(
         yup.object({
           costgroup_number: requiredNumber(),
-          weight: requiredNumber().min(1, 'Das Gewicht einer Kostenstelle muss grösser als 0 sein.'),
+          weight: requiredNumber().min(1, 'general.schema.cost_group_has_weight'),
         }),
       )
-      .min(1, 'Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.'),
+      .min(1, 'view.project.schema.cost_group_required'),
     });
   },
 );

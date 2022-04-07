@@ -2,7 +2,7 @@ import moment from 'moment';
 import * as yup from 'yup';
 import { apiDateFormat } from '../stores/apiStore';
 
-export const requiredMessage = 'Dies ist ein erforderliches Feld.';
+export const requiredMessage = 'validation.schema.field_required';
 
 const initializeLocalization = () => {
   return yup.setLocale({

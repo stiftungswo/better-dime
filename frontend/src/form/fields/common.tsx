@@ -7,6 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 import React, { ReactNode } from 'react';
+import { useIntl } from 'react-intl';
 import {TransformingField, TransformingFieldProps} from './TransformingField';
 
 interface SharedProps {
@@ -52,6 +53,7 @@ export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps
 
 export const DimeFormControl = (props: DimeFormControlProps) => {
   const { label, children, fullWidth = true, margin = 'normal', required, name, errorMessage } = props;
+  const intl = useIntl();
   return (
     <FormControl margin={margin} error={Boolean(errorMessage)} fullWidth={fullWidth}>
       {label && (
@@ -60,7 +62,7 @@ export const DimeFormControl = (props: DimeFormControlProps) => {
         </InputLabel>
       )}
       {children}
-      {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
+      {errorMessage && <FormHelperText error>{errorMessage.includes('schema.') ? intl.formatMessage({id: errorMessage}) : errorMessage}</FormHelperText>}
     </FormControl>
   );
 };

@@ -16,7 +16,7 @@ export const companySchema = localizeSchema(() =>
         zip: yup
           .number()
           .required()
-          .min(1000, 'Die Postleitzahl muss mindestens vier Stellen umfassen.'),
+          .min(1000, 'general.schema.plz_digits'),
         street: yup.string().required(),
         supplement: yup.string().nullable(true),
       }),
@@ -27,6 +27,6 @@ export const companySchema = localizeSchema(() =>
         number: yup.string().required(),
       }),
     ),
-    tags: yup.array(requiredNumber()).min(1, 'Wähle mindestens einen Tag aus.'),
+    tags: yup.array(requiredNumber()).min(1, 'view.company.schema.tag_required'),
   }),
 );

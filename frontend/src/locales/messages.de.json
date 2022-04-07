@@ -62,6 +62,12 @@
   "general.action.logout": "Abmelden",
   "general.action.fetch": "Laden",
   "general.action.download": "Herunterladen",
+  
+  "general.schema.plz_digits": "Die Postleitzahl muss mindestens vier Stellen umfassen.",
+  "general.schema.category_has_weight": "Das Gewicht eines Tätigkeitsbereiches muss grösser als 0 sein.",
+  "general.schema.cost_group_has_weight": "Das Gewicht einer Kostenstelle muss grösser als 0 sein.",
+  "general.schema.title_format": "Offertentitel muss folgendes Format haben: Gemeinde, Flurname, Arbeiten, Jahreszahl. Beispiel: \nDübendorf, Chriesbach, Initialpflege, 2019",
+  "general.schema.tag_required": "Wähle mindestens einen Tag aus.",
 
   "form.failed_to_save": "Die Daten konnten nicht gespeichert werden, da das Formular ungültige Angaben enthält.",
 
@@ -115,7 +121,6 @@
   "form.fields.timetrack.time_effort_value_field.select_error_message": "Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!",
   "form.fields.timetrack.time_effort_value_field.invalid_number_warning": "Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, kann der Eintrag nicht gespeichert werden!",
 
-
   "form.view.warn_discard_changes": "Änderungen verwerfen?",
 
 
@@ -161,6 +166,8 @@
   "layout.overview.show_archived_objects": "Archivierte Objekte einblenden",
   "layout.overview.hide_archived_objects": "Archivierte Objekte ausblenden",
 
+  "validation.schema.required_field": "Dies ist ein erforderliches Feld.",
+
   "view.comment_preset.overview.delete_warning": "Möchtest du diese Kommentarvorlage wirklich löschen?",
   "view.comment_preset.overview.comment_preset": "Kommentarvorlage",
   "view.comment_preset.overview.title": "Kommentarvorlagen",
@@ -177,6 +184,8 @@
   "view.company.overview.plz": "PLZ",
   "view.company.overview.city": "Ort",
   "view.company.overview.delete_warning": "Möchtest du diese Firma wirklich löschen? Dies löscht auch alle angehängten Personen sowie Adressen und Telefonnummern.",
+
+  "view.company.schema.tag_required": "Wähle mindestens einen Tag aus.",
 
   "view.customer.export_form.title": "Daten exportieren",
   "view.customer.export_form.select_tags": "Kundentags auswählen",
@@ -197,6 +206,9 @@
   "view.employee.is_admin": "Benutzer hat Administratorrecht?",
   "view.employee.user_settings": "Benutzereinstellungen",
   "view.employee.general_info": "Allgemeine Informationen",
+
+  "view.employee.schema.invalid_email": "Ungültiges Email Format",
+  "view.employee.schema.nonmachting_password": "Passwort muss mit neuem Passwort übereinstimmen.",
 
   "view.employee.update.update_employee": "Mitarbeiter bearbeiten",
 
@@ -245,6 +257,8 @@
 
   "view.invoice.position_renderer.position": "Rechnungsposten",
 
+  "view.invoice.schema.cost_group_required": "Eine Rechnung benötigt mindestens eine zugewiesene Kostenstelle.",
+
   "view.invoice.update.edit_invoice": "Rechnung bearbeiten",
 
   "view.invoice.overview.description": "Beschreibung",
@@ -276,13 +290,13 @@
   "view.offer.form.fixed_price": "Fixpreis",
   "view.offer.form.vat_rate": "MwSt. Satz",
 
+  "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
+
   "view.offer.position_renderer.note": "Hinweis",
   "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
   "view.offer.position_renderer.rate_unit": "Tariftyp",
   "view.offer.position_renderer.amount": "Menge",
   "view.offer.position_renderer.total": "Total CHF (mit MWSt.)",
-
-  "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
   "view.offer.update.update_offer": "Offerte bearbeiten",
   
@@ -363,6 +377,9 @@
   "view.project.projects_with_potential_invoices_overview.days": "Tage",
   "view.project.projects_with_potential_invoices_overview.title": "Nicht verrechnete Projekte",
 
+  "view.project.schema.category_required": "Ein Projekt benötigt mindestens einen zugewiesenen Tätigkeitsbereich.",
+  "view.project.schema.cost_group_required": "Ein Projekt benötigt mindestens eine zugewiesene Kostenstelle.",
+
   "view.project.stat_table.remaining_budget": "Restbudget",
   "view.project.stat_table.stats": "Projekt Statistik",
   "view.project.stat_table.money_budget": "Geldbudget",
@@ -409,15 +426,25 @@
   "view.timetrack.timetrack": "Zeiterfassung",
   "view.timetrack.record_comment": "Kommentar erfassen",
   "view.timetrack.record_effort": "Aufwand erfassen",
+
   "view.timetrack.comment_form_dialog.edit_comment": "Projekt-Kommentar bearbeiten",
   "view.timetrack.comment_form_dialog.record_comment": "Projekt-Kommentar erfassen",
+
+  "view.timetrack.effort_move_dialog.effort": "Aufwand",
+  "view.timetrack.effort_move_dialog.effort.plural": "Aufwände",
+  "view.timetrack.effort_move_dialog.comment": "Kommentar",
+  "view.timetrack.effort_move_dialog.comment.plural": "Kommentare",
+  "view.timetrack.effort_move_dialog.comment.spaced_and": " und ",
+
   "view.timetrack.filter_form.title": "Filter",
   "view.timetrack.filter_form.show_empty": "Leere Gruppen anzeigen",
   "view.timetrack.filter_form.show_comments": "Projekt-Kommentare anzeigen",
   "view.timetrack.filter_form.refresh": "Aktualisieren",
+
   "view.timetrack.form_dialog.record_effort": "Aufwand erfassen",
   "view.timetrack.form_dialog.edit_effort": "Aufwand bearbeiten",
   "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
+
   "view.timetrack.service_group.description": "Beschreibung",
   "view.timetrack.service_group.recorded_value": "Gebuchter Wert",
 
