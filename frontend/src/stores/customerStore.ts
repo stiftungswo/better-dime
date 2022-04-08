@@ -37,13 +37,13 @@ export class CustomerStore extends AbstractStore<Customer> {
   }
 
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Customer>>('/customers');
-    this.customers = res.data.data;
+    const res = await this.mainStore.apiV2.get<Customer[]>('/customers');
+    this.customers = res.data;
   }
 
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Customer>>('/customers', {params: this.getQueryParams()});
-    this.customers = res.data.data;
+    const res = await this.mainStore.apiV2.get<Customer[]>('/customers', {params: this.getQueryParams()});
+    this.customers = res.data;
   }
 
   protected async doFetchOne(id: number): Promise<Customer> {

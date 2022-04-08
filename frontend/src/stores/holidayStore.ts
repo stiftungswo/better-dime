@@ -63,21 +63,17 @@ export class HolidayStore extends AbstractStore<Holiday> {
   }
 
   @action
-  protected async doFetch() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
-    this.holidays = res.data.data;
-  }
-
-  @action
   protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays');
-    this.holidays = res.data.data;
+    const res = await this.mainStore.apiV2.get<Holiday[]>('/holidays');
+    console.log(res); // tslint:disable-line:no-console
+    this.holidays = res.data;
   }
 
   @action
   protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<PaginatedData<Holiday>>('/holidays', {params: this.getQueryParams()});
-    this.holidays = res.data.data;
+    const res = await this.mainStore.apiV2.get<Holiday[]>('/holidays', {params: this.getQueryParams()});
+    console.log(res); // tslint:disable-line:no-console
+    this.holidays = res.data;
   }
 
   @action
