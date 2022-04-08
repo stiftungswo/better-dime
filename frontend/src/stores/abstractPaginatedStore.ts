@@ -10,7 +10,7 @@ import { MainStore } from './mainStore';
  * This class extends the store to handle paginated data instead of
  * processing and displaying the whole data stream at once.
  */
-export class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedStore<T, OverviewType> {
+export abstract class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedStore<T, OverviewType> {
 
   @observable
   protected pageInfo?: PaginationInfo = undefined;
