@@ -2,16 +2,28 @@ import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
 import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
 import {Cache} from '../utilities/Cache';
-import { AbstractStore } from './abstractStore';
+import { AbstractSimpleStore } from './abstractSimpleStore';
 import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
 
-export class ProjectCommentStore extends AbstractStore<ProjectComment> {
-
-  @observable
-  projectComment?: ProjectComment;
-  @observable
-  projectComments: ProjectCommentListing[] = [];
+export class ProjectCommentStore extends AbstractSimpleStore<ProjectComment, ProjectCommentListing> {
+  protected get entityName(): { singular: string; plural: string } {
+    return {
+      singular: 'Der Projektkommentar',
+      plural: 'Die Projektkommentare',
+    };
+  }
+  protected get entityUrlName(): string {
+    return 'project_comments';
+  }
+  // I didn't feel like changing every .projectComment to .entity
+  @computed
+  get projectComment(): ProjectComment | undefined {
+    return this.entity;
+  }
+  set projectComment(entity: ProjectComment | undefined) {
+    this.entity = entity;
+  }
 
   @observable
   editing: boolean = false;
@@ -24,29 +36,14 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
   };
 
   constructor(mainStore: MainStore) {
-    super(mainStore);
+    super(mainStore, {
+      canArchive: false,
+      canDelete: true,
+      canDuplicate: false,
+      canFetchOne: true,
+      canPostPut: true,
+    });
     makeObservable(this);
-  }
-
-  @computed
-  get entities(): ProjectCommentListing[] {
-    return this.projectComments;
-  }
-
-  @computed
-  get entity(): ProjectComment | undefined {
-    return this.projectComment;
-  }
-
-  set entity(projectComment: ProjectComment | undefined) {
-    this.projectComment = projectComment;
-  }
-
-  protected get entityName(): { singular: string; plural: string } {
-    return {
-      singular: 'Der Projektkommentar',
-      plural: 'Die Projektkommentare',
-    };
   }
 
   @action
@@ -59,7 +56,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
           project_ids: filter.projectIds ? filter.projectIds.join(',') : '',
         },
       });
-      this.projectComments = res.data;
+      this.storedEntities = res.data;
     } catch (e) {
       this.mainStore.displayError('Fehler beim laden der Projektkommentare');
     }
@@ -74,28 +71,5 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
       }),
     );
     Cache.invalidateAllActiveCaches();
-  }
-
-  @action
-  protected async doPost(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity);
-    this.projectComment = res.data;
-  }
-
-  @action
-  protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
-    this.projectComment = res.data;
-  }
-
-  @override
-  protected async doPut(entity: ProjectComment): Promise<void> {
-    const res = await this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity);
-    this.projectComment = res.data;
-  }
-
-  @override
-  protected async doDelete(id: number): Promise<void> {
-    await this.mainStore.apiV2.delete('/project_comments/' + id);
   }
 }

@@ -1,39 +1,28 @@
 import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
-import {Holiday, PaginatedData} from '../types';
-import { AbstractStore } from './abstractStore';
+import { Holiday } from '../types';
+import { AbstractSimpleStore } from './abstractSimpleStore';
 import { MainStore } from './mainStore';
 
-export class HolidayStore extends AbstractStore<Holiday> {
+export class HolidayStore extends AbstractSimpleStore<Holiday> {
   protected get entityName() {
     return {
       singular: 'Der Feiertag',
       plural: 'Die Feiertage',
     };
   }
-
-  @computed
-  get entities(): Holiday[] {
-    return this.holidays;
+  protected get entityUrlName(): string {
+    return 'holidays';
   }
-
-  @computed
-  get entity(): Holiday | undefined {
-    return this.holiday;
-  }
-
-  set entity(holiday: Holiday | undefined) {
-    this.holiday = holiday;
-  }
-
-  @observable
-  holidays: Holiday[] = [];
-
-  @observable
-  holiday?: Holiday;
 
   constructor(mainStore: MainStore) {
-    super(mainStore);
+    super(mainStore, {
+      canArchive: false,
+      canDelete: true,
+      canDuplicate: true,
+      canFetchOne: false,
+      canPostPut: true,
+    });
     makeObservable(this);
   }
 
@@ -51,40 +40,5 @@ export class HolidayStore extends AbstractStore<Holiday> {
     } else {
       return query.toLocaleLowerCase();
     }
-  }
-
-  protected async doDelete(id: number) {
-    await this.mainStore.apiV2.delete('/holidays/' + id);
-    await this.doFetchAll();
-  }
-
-  protected async doDuplicate(id: number) {
-    return this.mainStore.apiV2.post<Holiday>('/holidays/' + id + '/duplicate');
-  }
-
-  @action
-  protected async doFetchAll() {
-    const res = await this.mainStore.apiV2.get<Holiday[]>('/holidays');
-    console.log(res); // tslint:disable-line:no-console
-    this.holidays = res.data;
-  }
-
-  @action
-  protected async doFetchFiltered() {
-    const res = await this.mainStore.apiV2.get<Holiday[]>('/holidays', {params: this.getQueryParams()});
-    console.log(res); // tslint:disable-line:no-console
-    this.holidays = res.data;
-  }
-
-  @action
-  protected async doPost(holiday: Holiday) {
-    await this.mainStore.apiV2.post('/holidays', holiday);
-    await this.doFetchAll();
-  }
-
-  @override
-  protected async doPut(holiday: Holiday) {
-    await this.mainStore.apiV2.put('/holidays/' + holiday.id, holiday);
-    await this.doFetchAll();
   }
 }

@@ -276,6 +276,7 @@ export interface InvoiceDiscount {
 }
 
 export interface Costgroup {
+  id: number;
   number: number;
   name: string;
 }
