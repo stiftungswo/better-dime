@@ -166,7 +166,7 @@
   "layout.overview.show_archived_objects": "Afficher les objets archivés",
   "layout.overview.hide_archived_objects": "Masquer les objets archivés",
 
-  "validation.schema.required_field": "Il s'agit d'un champ obligatoire.",
+  "validation.schema.field_required": "Il s'agit d'un champ obligatoire.",
 
   "view.comment_preset.overview.delete_warning": "Veux-tu vraiment supprimer ce modèle de commentaire?",
   "view.comment_preset.overview.comment_preset": "Modèle de commentaire",

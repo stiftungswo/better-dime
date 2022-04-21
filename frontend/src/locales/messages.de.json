@@ -166,7 +166,7 @@
   "layout.overview.show_archived_objects": "Archivierte Objekte einblenden",
   "layout.overview.hide_archived_objects": "Archivierte Objekte ausblenden",
 
-  "validation.schema.required_field": "Dies ist ein erforderliches Feld.",
+  "validation.schema.field_required": "Dies ist ein erforderliches Feld.",
 
   "view.comment_preset.overview.delete_warning": "Möchtest du diese Kommentarvorlage wirklich löschen?",
   "view.comment_preset.overview.comment_preset": "Kommentarvorlage",
