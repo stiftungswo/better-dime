@@ -1,3 +1,4 @@
+import { makeStyles } from '@material-ui/core/styles';
 import { KeyboardDatePicker as MUIDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import { inject, observer } from 'mobx-react';
 import moment, { Moment } from 'moment';
@@ -60,4 +61,24 @@ export class DatePicker extends React.Component<Props> {
       </MuiPickersUtilsProvider>
     );
   }
+}
+
+// Remove date picker button padding.
+// Useful in cases where the year would be cut off.
+const useStyles = makeStyles({
+  // https://stackoverflow.com/questions/60505479/how-to-override-style-of-nested-material-ui-component-from-the-ancestors
+  root: {
+    '& .MuiIconButton-root': {
+      padding: 0,
+    },
+  },
+});
+
+export function DatePickerUnpadded(props: Props) {
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <DatePicker {...props}/>
+    </div>
+  );
 }
