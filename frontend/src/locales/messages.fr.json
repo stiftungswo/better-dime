@@ -42,6 +42,7 @@
   "general.accountant": "Employé responsable",
   "general.is_archived": "Archivé?",
   "general.vat": "TVA",
+  "general.number": "Numéro",
 
   "general.action.save": "Enregistrer",
   "general.action.save_and_continue": "Enregistrer et continuer",

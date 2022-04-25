@@ -42,6 +42,7 @@
   "general.accountant": "Verantwortlicher Mitarbeiter",
   "general.is_archived": "Archiviert?",
   "general.vat": "MwSt.",
+  "general.number": "Nummer",
 
   "general.action.save": "Speichern",
   "general.action.save_and_continue": "Speichern und weiter",

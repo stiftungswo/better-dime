@@ -7,6 +7,7 @@ import CommentPresetOverview from './views/comment_presets/CommentPresetOverview
 import CompanyCreate from './views/companies/CompanyCreate';
 import CompanyOverview from './views/companies/CompanyOverview';
 import CompanyUpdate from './views/companies/CompanyUpdate';
+import CostgroupOverview from './views/costgroups/CostgroupOverview';
 import CustomerTagOverview from './views/customer_tags/CustomerTagOverview';
 import { CustomerImportExportOverview } from './views/customers/CustomerImportExportOverview';
 import EmployeeGroupOverview from './views/EmployeeGroupOverview';
@@ -75,6 +76,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/services" component={ServiceOverview} />
             <ProtectedRoute exact path="/services/new" component={ServiceCreate} />
             <ProtectedRoute exact path="/services/:id" component={ServiceUpdate} />
+            <ProtectedRoute exact path="/cost_groups" component={CostgroupOverview} />
             <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
             <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />
             <ProtectedRoute exact path="/timetrack" component={Timetrack} />
