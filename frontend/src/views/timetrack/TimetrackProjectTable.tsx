@@ -100,7 +100,7 @@ export class TimetrackProjectTable extends React.Component<Props> {
 
     const dates = this.props.efforts.map(e => e.date);
     const noEmployeeSelected = this.props.timetrackFilterStore!.selectedEmployees.length === 0;
-    const comments = this.props.projectCommentStore!.projectComments
+    const comments = this.props.projectCommentStore!.entities
       .filter((comment: ProjectCommentListing) => comment.project_id === this.props.entityId)
       .filter((comment: ProjectCommentListing) => dates.includes(comment.date) || noEmployeeSelected);
 

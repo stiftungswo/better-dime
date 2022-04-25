@@ -6,7 +6,7 @@ import {MainStore} from './mainStore';
 /**
  * This class extends the AbstractStore to cache its data
  */
-export class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
+export abstract class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
 
   // a simple cache for for fetchAll results with a single cache line
   @observable

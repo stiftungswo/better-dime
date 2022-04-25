@@ -135,7 +135,7 @@ export default class ServiceForm extends React.Component<Props> {
                               <TableBody>
                                 {props.values.service_rates.map((r: ServiceRate, index: number) => {
                                   const rateGroupId = props.values.service_rates[index].rate_group_id;
-                                  const rateGroup = this.props.rateGroupStore!.rateGroups.find(g => g.id === rateGroupId);
+                                  const rateGroup = this.props.rateGroupStore!.entities.find(g => g.id === rateGroupId);
                                   return (
                                     <TableRow key={index}>
                                       <DimeTableCell>{rateGroup ? rateGroup.name : rateGroupId}</DimeTableCell>

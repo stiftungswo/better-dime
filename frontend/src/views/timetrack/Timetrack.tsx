@@ -107,7 +107,7 @@ export default class Timetrack extends React.Component<Props> {
 }
 
   handleEffortAdd = () => {
-    this.props.effortStore!.effort = undefined;
+    this.props.effortStore!.entity = undefined;
     this.props.effortStore!.editing = true;
   }
 

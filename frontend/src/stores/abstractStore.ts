@@ -17,7 +17,7 @@ export interface QueryParam {
  * This class wraps all common store functions with success/error popups.
  * The desired methods that start with "do" should be overriden in the specific stores.
  */
-export class AbstractStore<T, OverviewType = T> {
+export abstract class AbstractStore<T, OverviewType = T> {
 
   protected get entityName() {
     return { singular: 'Die Entität', plural: 'Die Entitäten' };

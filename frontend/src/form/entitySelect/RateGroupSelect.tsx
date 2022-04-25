@@ -15,7 +15,7 @@ interface Props extends DimeCustomFieldProps<number | null> {
 )
 export class RateGroupSelect extends React.Component<Props> {
   get options() {
-    return this.props.rateGroupStore!.rateGroups.map(e => ({
+    return this.props.rateGroupStore!.entities.map(e => ({
       value: e.id,
       label: e.name,
     }));

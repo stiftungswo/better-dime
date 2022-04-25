@@ -66,6 +66,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
         {isAdmin && <NavItem nested to={'/comment_presets'} label={intlText('data.comment_presets')} icon={AddCommentIcon} />}
         <NavItem nested to={'/holidays'} label={intlText('data.holidays')} icon={HolidayIcon} />
         <NavItem nested to={'/project_categories'} label={intlText('data.project_categories')} icon={ProjectCategoryIcon} />
+        <NavItem nested to={'/cost_groups'} label={intlText('general.cost_group.plural', true)} icon={ProjectCategoryIcon} />
         {isAdmin && <NavItem nested to={'/global_settings'} label={intlText('data.global_settings')} icon={SettingsIcon} />}
       </Collapsible>
     </>

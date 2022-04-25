@@ -109,7 +109,7 @@ class ProjectForm extends React.Component<Props> {
   handleCustomerChange: OnChange<Project> = (current, next, formik) => {
     if (current.values.customer_id !== next.values.customer_id) {
       if (!current.values.customer_id && !current.values.rate_group_id) {
-        const customer = this.props.customerStore!.customers.find(a => a.id === next.values.customer_id);
+        const customer = this.props.customerStore!.entities.find(a => a.id === next.values.customer_id);
         if (customer) {
           formik.setFieldValue('rate_group_id', customer.rate_group_id);
         }
