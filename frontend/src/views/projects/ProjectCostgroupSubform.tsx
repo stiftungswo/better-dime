@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
-import { NumberField } from '../../form/fields/common';
+import { NumberField, possiblyIntlError } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -66,7 +66,7 @@ export class ProjectCostgroupSubform extends React.Component<Props> {
                 {typeof currentError === 'string' && (
                   <TableRow>
                     <DimeTableCell colSpan={4}>
-                      <ErrorText>{currentError}</ErrorText>
+                      <ErrorText>{possiblyIntlError(intl, currentError)}</ErrorText>
                     </DimeTableCell>
                   </TableRow>
                 )}
