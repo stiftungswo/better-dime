@@ -3,6 +3,7 @@ import {Company, PositionGroup} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
+// this has a weird subset of functionality, hence didn't rewrite it with AbstractSimpleStore
 export class PositionGroupStore extends AbstractStore<PositionGroup> {
 
   protected get entityName(): { singular: string; plural: string } {

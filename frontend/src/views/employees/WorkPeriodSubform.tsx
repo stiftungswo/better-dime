@@ -7,7 +7,7 @@ import moment from 'moment';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { NumberField, SwitchField } from '../../form/fields/common';
-import { DatePicker } from '../../form/fields/DatePicker';
+import { DatePicker, DatePickerUnpadded } from '../../form/fields/DatePicker';
 import { DurationField } from '../../form/fields/DurationField';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
@@ -163,11 +163,11 @@ export class WorkPeriodSubform extends React.Component<Props> {
                           )}
                           {!w.overlapping_periods && (
                             <DimeTableCell>
-                              <DimeDatePickerField component={DatePicker} name={fieldName('beginning')} />
+                              <DimeDatePickerField component={DatePickerUnpadded} name={fieldName('beginning')} />
                             </DimeTableCell>
                           )}
                           <DimeTableCell>
-                            <DimeDatePickerField component={DatePicker} name={fieldName('ending')} />
+                            <DimeDatePickerField component={DatePickerUnpadded} name={fieldName('ending')} />
                           </DimeTableCell>
                           <DimeTableCell>
                             <DimeField delayed component={NumberField} name={fieldName('pensum')} endAdornment={'%'} />

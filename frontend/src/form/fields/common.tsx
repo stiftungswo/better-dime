@@ -7,7 +7,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import Switch from '@material-ui/core/Switch';
 import React, { ReactNode } from 'react';
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import {TransformingField, TransformingFieldProps} from './TransformingField';
 
 interface SharedProps {
@@ -50,6 +50,11 @@ export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps
   value: T;
   onChange: (value: OutputValue) => void;
 }
+// If errorMessage is an identifier like view.project.schema.cost_group_required,
+// use intl, otherwise just display the errorMessage.
+export const possiblyIntlError = (intl: IntlShape, errorMessage: string) => {
+  return errorMessage.includes('schema.') ? intl.formatMessage({id: errorMessage}) : errorMessage;
+};
 
 export const DimeFormControl = (props: DimeFormControlProps) => {
   const { label, children, fullWidth = true, margin = 'normal', required, name, errorMessage } = props;
@@ -62,7 +67,7 @@ export const DimeFormControl = (props: DimeFormControlProps) => {
         </InputLabel>
       )}
       {children}
-      {errorMessage && <FormHelperText error>{errorMessage.includes('schema.') ? intl.formatMessage({id: errorMessage}) : errorMessage}</FormHelperText>}
+      {errorMessage && <FormHelperText error>{possiblyIntlError(intl, errorMessage)}</FormHelperText>}
     </FormControl>
   );
 };

@@ -42,6 +42,7 @@
   "general.accountant": "Verantwortlicher Mitarbeiter",
   "general.is_archived": "Archiviert?",
   "general.vat": "MwSt.",
+  "general.number": "Nummer",
 
   "general.action.save": "Speichern",
   "general.action.save_and_continue": "Speichern und weiter",
@@ -150,9 +151,9 @@
   "layout.navigation.reports.daily": "Wochenrapport",
   "layout.navigation.reports.service": "Service-Rapporte",
   "layout.navigation.reports.revenue": "Umsatzrapport",
-  "layout.navigation.reports.employees": "Mitarbeiterraport",
+  "layout.navigation.reports.employees": "Mitarbeiterrapport",
   "layout.navigation.reports.project": "Projektrapport",
-  "layout.navigation.reports.costgroup": "Kostenstellenraport",
+  "layout.navigation.reports.costgroup": "Kostenstellenrapport",
   "layout.navigation.data": "Stammdaten",
   "layout.navigation.data.services": "Services",
   "layout.navigation.data.rate_groups": "Tarif-Gruppen",
@@ -166,7 +167,7 @@
   "layout.overview.show_archived_objects": "Archivierte Objekte einblenden",
   "layout.overview.hide_archived_objects": "Archivierte Objekte ausblenden",
 
-  "validation.schema.required_field": "Dies ist ein erforderliches Feld.",
+  "validation.schema.field_required": "Dies ist ein erforderliches Feld.",
 
   "view.comment_preset.overview.delete_warning": "Möchtest du diese Kommentarvorlage wirklich löschen?",
   "view.comment_preset.overview.comment_preset": "Kommentarvorlage",
