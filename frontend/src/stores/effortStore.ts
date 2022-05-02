@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import {Cache} from '../utilities/Cache';
@@ -73,7 +73,9 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
           combine_times: filter.combineTimes,
         },
       });
-      this.efforts = res.data;
+      runInAction(() => {
+        this.efforts = res.data;
+      });
     } catch (e) {
       this.mainStore.displayError('Fehler beim Laden der Aufwände');
     }
