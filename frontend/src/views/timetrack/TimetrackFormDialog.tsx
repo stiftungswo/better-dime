@@ -100,7 +100,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     const filter = this.props.timetrackFilterStore!.filter;
     const effortStore = this.props.effortStore!;
 
-    if (effortStore.entity && 'employee_id' in entity) {
+    if (effortStore.effort && 'employee_id' in entity) {
       await effortStore.put(soloSchema.cast(entity));
     } else if ('employee_ids' in entity) {
       await Promise.all([

@@ -39,7 +39,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
   }
 
   onEffortAdd = () => {
-    this.props.effortStore!.entity = undefined;
+    this.props.effortStore!.effort = undefined;
     this.props.effortStore!.effortTemplate!.employee_ids = [this.props.entity.id];
     this.props.effortStore!.editing = true;
   }

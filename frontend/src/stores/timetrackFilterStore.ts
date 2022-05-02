@@ -77,7 +77,7 @@ export class TimetrackFilterStore {
   @computed
   get comments(): ProjectCommentListing[] {
     const projectIds = this.projectEffortFilter.projectIds;
-    return this.projectCommentStore.entities.filter(c => projectIds.includes(c.project_id!));
+    return this.projectCommentStore.projectComments.filter(c => projectIds.includes(c.project_id!));
   }
 
   @computed
@@ -117,11 +117,11 @@ export class TimetrackFilterStore {
         if (p.efforts.length > 0) {
           return true;
         }
-        return this.projectCommentStore.entities.filter(c => c.project_id === p.id).length > 0;
+        return this.projectCommentStore.projectComments.filter(c => c.project_id === p.id).length > 0;
       });
     }
   }
 
   private appendEfforts = <T extends Listing>(filterKey: keyof ProjectEffortListing) => (entities: T[]): Array<T & WithEfforts> =>
-    entities.map(e => ({...(e as any), efforts: this.effortStore.entities.filter(effort => effort[filterKey] === e.id)}))
+    entities.map(e => ({...(e as any), efforts: this.effortStore.efforts.filter(effort => effort[filterKey] === e.id)}))
 }
