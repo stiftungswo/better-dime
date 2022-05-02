@@ -2,28 +2,15 @@ import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
 import { Project, ProjectEffort, ProjectEffortFilter, ProjectEffortListing, ProjectEffortTemplate } from '../types';
 import {Cache} from '../utilities/Cache';
-import { AbstractSimpleStore } from './abstractSimpleStore';
+import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
 
-export class EffortStore extends AbstractSimpleStore<ProjectEffort, ProjectEffortListing> {
-  protected get entityName(): { singular: string; plural: string } {
-    return {
-      singular: 'Der Aufwand',
-      plural: 'Die Aufwände',
-    };
-  }
-  protected get entityUrlName(): string {
-    return 'project_efforts';
-  }
-  // I didn't feel like changing every .effort to .entity
-  @computed
-  get effort(): ProjectEffort | undefined {
-    return this.entity;
-  }
-  set effort(entity: ProjectEffort | undefined) {
-    this.entity = entity;
-  }
+export class EffortStore extends AbstractStore<ProjectEffort> {
+  @observable
+  effort?: ProjectEffort = undefined;
+  @observable
+  efforts: ProjectEffortListing[] = [];
 
   @observable
   editing: boolean = false;
@@ -52,14 +39,24 @@ export class EffortStore extends AbstractSimpleStore<ProjectEffort, ProjectEffor
   lastMovePosition?: number;
 
   constructor(mainStore: MainStore) {
-    super(mainStore, {
-      canArchive: false,
-      canDelete: true,
-      canDuplicate: false,
-      canFetchOne: true,
-      canPostPut: true,
-    });
+    super(mainStore);
     makeObservable(this);
+  }
+
+  @computed
+  get entity(): ProjectEffort | undefined {
+    return this.effort;
+  }
+
+  set entity(effort: ProjectEffort | undefined) {
+    this.effort = effort;
+  }
+
+  protected get entityName(): { singular: string; plural: string } {
+    return {
+      singular: 'Der Aufwand',
+      plural: 'Die Aufwände',
+    };
   }
 
   @action
@@ -76,7 +73,7 @@ export class EffortStore extends AbstractSimpleStore<ProjectEffort, ProjectEffor
           combine_times: filter.combineTimes,
         },
       });
-      this.storedEntities = res.data;
+      this.efforts = res.data;
     } catch (e) {
       this.mainStore.displayError('Fehler beim Laden der Aufwände');
     }
@@ -95,5 +92,31 @@ export class EffortStore extends AbstractSimpleStore<ProjectEffort, ProjectEffor
     this.lastMoveProject = targetProject;
     this.lastMovePosition = targetPosition || undefined;
     Cache.invalidateAllActiveCaches();
+  }
+
+  @action
+  protected async doPost(entity: ProjectEffort): Promise<void> {
+    this.loading = true;
+    await this.mainStore.apiV2.post<ProjectEffort>('/project_efforts', entity);
+    this.loading = false;
+  }
+
+  @override
+  protected async doPut(entity: ProjectEffort): Promise<void> {
+    this.loading = true;
+    const res = await this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
+    this.effort = res.data;
+    this.loading = false;
+  }
+
+  @action
+  protected async doFetchOne(id: number) {
+    const res = await this.mainStore.apiV2.get<ProjectEffort>('/project_efforts/' + id);
+    this.effort = res.data;
+  }
+
+  @override
+  protected async doDelete(id: number): Promise<void> {
+    await this.mainStore.apiV2.delete('/project_efforts/' + id);
   }
 }
