@@ -38,6 +38,8 @@ import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
+import { OfferCategorySubform } from '../shared_opi/CategorySubform';
+import { OfferCostgroupSubform } from '../shared_opi/CostgroupSubform';
 import AddCCDialog from './AddCCDialog';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import Navigator from './OfferNavigator';
@@ -227,6 +229,21 @@ class OfferForm extends React.Component<Props> {
                           </Grid>
                         </Grid>
                       </DimePaper>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} lg={5}>
+                          <DimePaper>
+                            <OfferCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                          </DimePaper>
+                        </Grid>
+                        <Grid item xs={12} lg={5}>
+                          <DimePaper>
+                            <OfferCategorySubform formikProps={props} name={'costgroup_distributions'} />
+                          </DimePaper>
+                        </Grid>
+                      </Grid>
                     </Grid>
 
                     <Grid item xs={12}>

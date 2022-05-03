@@ -14,7 +14,7 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { ErrorText } from '../../layout/ErrorText';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { Project, ProjectCostgroup } from '../../types';
+import { Invoice, Offer, OPICostgroup, Project } from '../../types';
 import compose from '../../utilities/compose';
 
 const template = () => ({
@@ -23,10 +23,10 @@ const template = () => ({
   weight: 100,
 });
 
-export interface Props {
+export interface Props<OPI extends Offer | Project | Invoice> {
   mainStore?: MainStore;
   intl?: IntlShape;
-  formikProps: FormikProps<Project>;
+  formikProps: FormikProps<OPI>;
   name: string;
   disabled?: boolean;
 }
@@ -35,11 +35,13 @@ export interface Props {
   injectIntl,
   observer,
 )
-export class ProjectCostgroupSubform extends React.Component<Props> {
+class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Component<Props<OPI>> {
   render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
-    const weightSum = values.costgroup_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
+    // avoid triggering https://github.com/microsoft/TypeScript/issues/33591
+    const costgroup_distributions: OPICostgroup[] = values.costgroup_distributions;
+    const weightSum = costgroup_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
     const idPrefix = 'view.project.costgroup_subform';
     const intl = this.props.intl!;
@@ -70,7 +72,7 @@ export class ProjectCostgroupSubform extends React.Component<Props> {
                     </DimeTableCell>
                   </TableRow>
                 )}
-                {values.costgroup_distributions.map((p: ProjectCostgroup & { formikKey?: number }, index: number) => {
+                {costgroup_distributions.map((p: OPICostgroup & { formikKey?: number }, index: number) => {
                   const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
                   const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
@@ -96,3 +98,7 @@ export class ProjectCostgroupSubform extends React.Component<Props> {
     );
   }
 }
+// tslint:disable:max-classes-per-file
+export class OfferCostgroupSubform extends CostgroupSubform<Offer> {}
+export class ProjectCostgroupSubform extends CostgroupSubform<Project> {}
+export class InvoiceCostgroupSubform extends CostgroupSubform<Invoice> {}
