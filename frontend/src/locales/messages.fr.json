@@ -299,6 +299,9 @@
   "view.offer.position_renderer.amount": "Quantité",
   "view.offer.position_renderer.total": "Total CHF (avec TVA)",
 
+  "view.offer.schema.category_required": "Une Offre nécessite au moins un domaine d'activité attribué.",
+  "view.offer.schema.cost_group_required": "Une Offre nécessite au moins un centre de coûts attribué.",
+
   "view.offer.update.update_offer": "Modifier une offre",
   
   "view.person.addresses_subform_inline.street": "Rue",
