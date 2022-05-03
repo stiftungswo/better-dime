@@ -22,6 +22,9 @@ module V2
       ParamsModifier.destroy_missing(params, @offer.offer_positions, :positions)
       # destroy discounts which were not passed along to the params
       ParamsModifier.destroy_missing(params, @offer.offer_discounts, :discounts)
+      # destroy costgroup distributions which were not passed along to the params
+      ParamsModifier.destroy_missing params, @offer.offer_costgroup_distributions, :costgroup_distributions
+      ParamsModifier.destroy_missing params, @offer.offer_category_distributions, :category_distributions
 
       PositionGroupUpdater.update_all(groupings_params[:position_groupings])
 
@@ -48,7 +51,7 @@ module V2
     end
 
     def duplicate
-      @offer = Offer.find(params[:id]).deep_clone include: [:offer_positions, :offer_discounts]
+      @offer = Offer.find(params[:id]).deep_clone include: [:offer_positions, :offer_discounts, :offer_costgroup_distributions, :offer_category_distributions]
       # create new position groups
       PositionGroupRemapper.remap_all_groups(@offer.position_groupings, @offer.offer_positions)
       # update any rate units which might be archived (if possible) when
@@ -105,12 +108,16 @@ module V2
     def update_params
       ParamsModifier.copy_attributes params, :positions, :offer_positions_attributes
       ParamsModifier.copy_attributes params, :discounts, :offer_discounts_attributes
+      ParamsModifier.copy_attributes params, :costgroup_distributions, :offer_costgroup_distributions_attributes
+      ParamsModifier.copy_attributes params, :category_distributions, :offer_category_distributions_attributes
 
       params.permit(
         :accountant_id, :address_id, :customer_id, :description, :fixed_price,
         :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
         offer_positions_attributes: [:id, :amount, :vat, :price_per_rate, :description, :order, :position_group_id, :service_id, :rate_unit_id, :_destroy],
-        offer_discounts_attributes: [:id, :name, :percentage, :value, :_destroy]
+        offer_discounts_attributes: [:id, :name, :percentage, :value, :_destroy],
+        offer_category_distributions_attributes: [:id, :weight, :category_id, :_destroy],
+        offer_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
       )
     end
     

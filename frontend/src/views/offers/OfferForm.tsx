@@ -101,8 +101,21 @@ class OfferForm extends React.Component<Props> {
     this.props.offerStore!.creatingProject = false;
   }
 
+  doCreateProject = (offer: Offer, costgroup: number | null, category: number | null) => {
+      this.props.offerStore!.createProject(offer.id!, costgroup, category).then((p: Project) => this.props.history.push(`/projects/${p.id}`));
+  }
+
   handleConfirm = (offer: Offer, costgroup: number, category: number) => {
-    this.props.offerStore!.createProject(offer.id!, costgroup, category).then((p: Project) => this.props.history.push(`/projects/${p.id}`));
+    this.doCreateProject(offer, costgroup, category);
+  }
+
+  tryCreateProject = (offer: Offer) => {
+    if (offer.costgroup_distributions && offer.category_distributions) {
+        this.doCreateProject(offer, null, null);
+    } else {
+      // for legacy projects, open the popup asking for costgroup & category.
+      this.props.offerStore!.creatingProject = true;
+    }
   }
 
   render() {
@@ -131,7 +144,7 @@ class OfferForm extends React.Component<Props> {
                 <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
                 {!offer.project_id && (
                   <ActionButton
-                    action={() => this.props.offerStore!.creatingProject = true}
+                    action={() => this.tryCreateProject(offer)}
                     color={'inherit'}
                     icon={ProjectIcon}
                     secondaryIcon={AddIcon}

@@ -17,7 +17,7 @@ class Offer < ApplicationRecord
   has_many :costgroups, through: :offer_costgroup_distributions, dependent: :restrict_with_exception
   has_many :project_categories, through: :offer_category_distributions, dependent: :restrict_with_exception
 
-  accepts_nested_attributes_for :offer_positions, :offer_discounts, allow_destroy: true
+  accepts_nested_attributes_for :offer_positions, :offer_discounts, :offer_costgroup_distributions, :offer_category_distributions, allow_destroy: true
 
   validates :accountant, :customer, :address,
             :description, :name, :rate_group,

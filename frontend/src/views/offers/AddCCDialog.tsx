@@ -13,6 +13,7 @@ import {ProjectStore} from '../../stores/projectStore';
 import {TimetrackFilterStore} from '../../stores/timetrackFilterStore';
 import compose from '../../utilities/compose';
 import {localizeSchema, nullableNumber, selector} from '../../utilities/validation';
+import wrapIntl from '../../utilities/wrapIntl';
 
 const schema = localizeSchema(() =>
   yup.object({
@@ -49,27 +50,28 @@ export default class AddCCDialog extends React.Component<Props> {
 
   render() {
     const intl = this.props.intl!;
+    const intlText = wrapIntl(intl, 'view.offer.addcc_dialog');
 
     return (
       <FormDialog
         open
         onClose={this.props.onClose}
-        title={intl.formatMessage({id: 'view.offer.addcc_dialog.title'})}
+        title={intlText('title')}
         initialValues={{
           costgroup: '',
           category: '',
         }}
         validationSchema={schema}
         onSubmit={this.handleSubmit}
-        confirmText={intl.formatMessage({id: 'view.offer.addcc_dialog.confirm_text'})}
+        confirmText={intlText('confirm_text')}
         render={(formikProps: FormikProps<Values>) => (
           <>
             <p>
               Bevor ein Projekt erstellt werden kann, muss zuerst eine Kostenstelle und ein Tätigkeitsbereich
               angegeben werden.
             </p>
-            <DimeField component={CostgroupSelect} name={'costgroup'} label={intl.formatMessage({id: 'view.offer.addcc_dialog.cost_group'})} />
-            <DimeField component={ProjectCategorySelect} name="category" label={intl.formatMessage({id: 'view.offer.addcc_dialog.category'})} />
+            <DimeField component={CostgroupSelect} name={'costgroup'} label={intlText('cost_group')} />
+            <DimeField component={ProjectCategorySelect} name="category" label={intlText('category')} />
           </>
         )}
       />
