@@ -8,9 +8,14 @@ class Offer < ApplicationRecord
   belongs_to :address
   belongs_to :rate_group
 
+  has_one :project, dependent: :restrict_with_exception
+  has_many :offer_costgroup_distributions, dependent: :destroy
+  has_many :offer_category_distributions, dependent: :destroy
   has_many :offer_discounts, dependent: :destroy
   has_many :offer_positions, dependent: :destroy
-  has_one :project, dependent: :restrict_with_exception
+
+  has_many :costgroups, through: :offer_costgroup_distributions, dependent: :restrict_with_exception
+  has_many :project_categories, through: :offer_category_distributions, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :offer_positions, :offer_discounts, allow_destroy: true
 
