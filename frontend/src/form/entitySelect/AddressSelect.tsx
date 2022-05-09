@@ -24,7 +24,7 @@ export class AddressSelect extends React.Component<Props> {
 
   @computed
   get options() {
-    const customer = this.props.customerStore!.entity;
+    const customer = this.props.customerStore!.customer;
     return customer
       ? customer.addresses!
         .filter(a => this.props.value === a.id || !a.hidden)
@@ -48,7 +48,7 @@ export class AddressSelect extends React.Component<Props> {
   render() {
     const intlText = wrapIntl(this.props.intl!, 'form.entity_select.address_select');
     if (this.props.customerId) {
-      if (this.props.customerStore!.entity) {
+      if (this.props.customerStore!.customer) {
         return <Select options={this.options} {...this.props} />;
       } else {
         return <Select options={[]} isDisabled isLoading placeholder={intlText('wait_fetching')} {...this.props} />;
