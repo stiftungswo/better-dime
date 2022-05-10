@@ -41,23 +41,27 @@ class ProjectCreator
   end
 
   def self.create_categories_from_offer(project, offer)
-    offer.offer_category_distributions.map do |category|
+    new_categories = offer.offer_category_distributions.map do |category|
       project_category = ProjectCategoryDistribution.new
       project_category.project = project
       project_category.project_category = category.project_category
       project_category.weight = category.weight
       project_category
     end || []
+    # return nil instead of [] to make || work later.
+    new_categories.any? ? new_categories : nil
   end
 
   def self.create_costgroups_from_offer(project, offer)
-    offer.offer_costgroup_distributions.map do |costgroup|
+    new_costgroups = offer.offer_costgroup_distributions.map do |costgroup|
       project_costgroup = ProjectCostgroupDistribution.new
       project_costgroup.project = project
       project_costgroup.costgroup = costgroup.costgroup
       project_costgroup.weight = costgroup.weight
       project_costgroup
     end || []
+    # return nil instead of [] to make || work later.
+    new_costgroups.any? ? new_costgroups : nil
   end
 
   def self.create_positions_from_offer(project, offer)

@@ -110,7 +110,8 @@ class OfferForm extends React.Component<Props> {
   }
 
   tryCreateProject = (offer: Offer) => {
-    if (offer.costgroup_distributions && offer.category_distributions) {
+    if (offer.costgroup_distributions && offer.costgroup_distributions.length > 0
+       && offer.category_distributions && offer.category_distributions.length > 0) {
         this.doCreateProject(offer, null, null);
     } else {
       // for legacy projects, open the popup asking for costgroup & category.
