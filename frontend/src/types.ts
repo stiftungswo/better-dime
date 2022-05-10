@@ -10,6 +10,8 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   accountant_id: number;
   address_id: number;
   customer_id: number;
+  costgroup_distributions: OfferCostgroup[];
+  category_distributions: OfferCategory[];
   description: string;
   fixed_price: number | null;
   fixed_price_vat: null | number;
@@ -22,6 +24,10 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   invoice_ids: number[];
   project_id?: number;
   discounts: OfferDiscount[];
+}
+
+export interface OfferCostgroup extends OPICostgroup {
+  offer_id: number;
 }
 
 export interface Breakdown {
@@ -146,14 +152,8 @@ export interface PositionGroup {
   shared?: boolean;
 }
 
-export interface ProjectCostgroup {
-  id: number;
-  costgroup_number: number;
+export interface ProjectCostgroup extends OPICostgroup {
   project_id: number;
-  weight: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface Service {
@@ -237,14 +237,8 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   sibling_invoice_ids: number[];
 }
 
-export interface InvoiceCostgroup {
-  id: number;
-  costgroup_number: number;
+export interface InvoiceCostgroup extends OPICostgroup {
   invoice_id: number;
-  weight: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface InvoicePosition {
@@ -529,10 +523,15 @@ export interface Category {
   name: string;
 }
 
-export interface ProjectCategory {
+export interface OPCategory {
   category_id: number;
-  project_id: number;
   weight: number;
+}
+export interface ProjectCategory extends OPCategory {
+  project_id: number;
+}
+export interface OfferCategory extends OPCategory {
+  offer_id: number;
 }
 
 export interface RateUnit {
@@ -552,6 +551,16 @@ export interface RateUnitListing extends RateUnit {
 export interface EmployeeGroup {
   name: string;
   id: number;
+}
+
+export interface OPICostgroup {
+  id: number;
+  costgroup_number: number;
+  weight: number;
+  deleted_at: null;
+  created_at: string;
+  updated_at: string;
+  // subtypes have either offer_id or project_id or invoice_id
 }
 
 export type Locale = 'de' | 'fr'; // | 'en';

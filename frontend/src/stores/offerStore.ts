@@ -50,7 +50,7 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     this.offers = e;
   }
 
-  async createProject(id: number, costgroup: number, category: number): Promise<Project> {
+  async createProject(id: number, costgroup: number | null, category: number | null): Promise<Project> {
     try {
       this.displayInProgress();
       const res = await this.mainStore.apiV2.post<Project>(`/offers/${id}/create_project`, {costgroup, category});
