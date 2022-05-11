@@ -36,6 +36,19 @@ export const offerSchema = localizeSchema(() => {
           vat: requiredNumber(),
         }),
       ),
+      category_distributions: yup.array(
+        yup.object({
+          category_id: requiredNumber(),
+          weight: requiredNumber().min(1, 'general.schema.category_has_weight'),
+        }),
+      ).min(1, 'view.offer.schema.category_required'),
+      costgroup_distributions: yup.array(
+        yup.object({
+          costgroup_number: requiredNumber(),
+          weight: requiredNumber().min(1, 'general.schema.cost_group_has_weight'),
+        }),
+      )
+      .min(1, 'view.offer.schema.cost_group_required'),
     });
   },
 );

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_144937) do
+ActiveRecord::Schema.define(version: 2022_04_28_150007) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -226,6 +226,31 @@ ActiveRecord::Schema.define(version: 2021_12_31_144937) do
   create_table "migrations", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "migration", null: false
     t.integer "batch", null: false
+  end
+
+  create_table "offer_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "category_id", null: false, unsigned: true
+    t.integer "weight", default: 100, null: false
+    t.integer "offer_id", null: false, unsigned: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.timestamp "deleted_at"
+    t.index ["category_id"], name: "fk_rails_6c9b6a4033"
+    t.index ["offer_id"], name: "fk_rails_462bd91ec2"
+  end
+
+  create_table "offer_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "costgroup_number", null: false, unsigned: true
+    t.integer "weight", default: 100, null: false
+    t.integer "offer_id", null: false, unsigned: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.timestamp "deleted_at"
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.integer "deleted_by"
+    t.index ["costgroup_number"], name: "fk_rails_839da2e81c"
+    t.index ["offer_id"], name: "fk_rails_fab8c874f8"
   end
 
   create_table "offer_discounts", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -538,6 +563,10 @@ ActiveRecord::Schema.define(version: 2021_12_31_144937) do
   add_foreign_key "invoices", "customers", name: "invoices_customer_id_foreign", on_delete: :nullify
   add_foreign_key "invoices", "employees", column: "accountant_id", name: "invoices_accountant_id_foreign", on_delete: :nullify
   add_foreign_key "invoices", "projects", name: "invoices_project_id_foreign", on_delete: :nullify
+  add_foreign_key "offer_category_distributions", "offers"
+  add_foreign_key "offer_category_distributions", "project_categories", column: "category_id"
+  add_foreign_key "offer_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number"
+  add_foreign_key "offer_costgroup_distributions", "offers"
   add_foreign_key "offer_discounts", "offers", name: "offer_discounts_offer_id_foreign", on_delete: :cascade
   add_foreign_key "offer_positions", "offers", name: "offer_positions_offer_id_foreign", on_delete: :cascade
   add_foreign_key "offer_positions", "position_groups", name: "offer_positions_position_group_id_foreign", on_delete: :nullify

@@ -18,7 +18,7 @@ export class CustomerSelect extends React.Component<Props> {
 
   get options() {
     return this.props
-      .customerStore!.entities.filter((c: Customer) => !c.hidden || this.props.value === c.id)
+      .customerStore!.customers.filter((c: Customer) => !c.hidden || this.props.value === c.id)
       .map(c => ({
         value: c.id,
         label: c.type === 'person' ? this.renderPersonName(c).trim() : c.name,
@@ -33,7 +33,7 @@ export class CustomerSelect extends React.Component<Props> {
     let baseName: string = `${person.salutation} ${person.first_name} ${person.last_name}`;
 
     if (person.company_id) {
-      company = this.props.customerStore!.entities.find((c: Customer) => c.id === person.company_id);
+      company = this.props.customerStore!.customers.find((c: Customer) => c.id === person.company_id);
     }
 
     if (company && company.type === 'company') {

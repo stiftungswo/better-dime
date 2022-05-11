@@ -14,7 +14,7 @@ import { DimeTableCell } from '../../layout/DimeTableCell';
 import { ErrorText } from '../../layout/ErrorText';
 import TableToolbar from '../../layout/TableToolbar';
 import { MainStore } from '../../stores/mainStore';
-import { Project, ProjectCategory } from '../../types';
+import { Offer, OPCategory, Project, ProjectCategory } from '../../types';
 import compose from '../../utilities/compose';
 
 const template = () => ({
@@ -23,10 +23,10 @@ const template = () => ({
   weight: 100,
 });
 
-export interface Props {
+export interface Props<OP extends Offer | Project> {
   mainStore?: MainStore;
   intl?: IntlShape;
-  formikProps: FormikProps<Project>;
+  formikProps: FormikProps<OP>;
   name: string;
   disabled?: boolean;
 }
@@ -35,11 +35,12 @@ export interface Props {
   injectIntl,
   observer,
 )
-export class ProjectCategorySubform extends React.Component<Props> {
+export class CategorySubform<OP extends Offer | Project> extends React.Component<Props<OP> > {
   render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
-    const weightSum = values.category_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
+    const category_distributions: OPCategory[] = values.category_distributions;
+    const weightSum = category_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
     const intl = this.props.intl!;
     const idPrefix = 'view.project.category_subform';
@@ -70,7 +71,7 @@ export class ProjectCategorySubform extends React.Component<Props> {
                     </DimeTableCell>
                   </TableRow>
                 )}
-                {values.category_distributions.map((p: ProjectCategory & { formikKey?: number }, index: number) => {
+                {category_distributions.map((p: ProjectCategory & { formikKey?: number }, index: number) => {
                   const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
                   const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
@@ -96,3 +97,7 @@ export class ProjectCategorySubform extends React.Component<Props> {
     );
   }
 }
+
+// tslint:disable:max-classes-per-file
+export class OfferCategorySubform extends CategorySubform<Offer> {}
+export class ProjectCategorySubform extends CategorySubform<Project> {}

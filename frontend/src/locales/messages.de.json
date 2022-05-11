@@ -299,6 +299,9 @@
   "view.offer.position_renderer.amount": "Menge",
   "view.offer.position_renderer.total": "Total CHF (mit MWSt.)",
 
+  "view.offer.schema.category_required": "Eine Offerte benötigt mindestens einen zugewiesenen Tätigkeitsbereich.",
+  "view.offer.schema.cost_group_required": "Eine Offerte benötigt mindestens eine zugewiesene Kostenstelle.",
+
   "view.offer.update.update_offer": "Offerte bearbeiten",
   
   "view.person.addresses_subform_inline.street": "Strasse",

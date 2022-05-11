@@ -19,6 +19,9 @@ end
 json.invoice_ids offer.invoice_ids
 json.project_id offer.project&.id
 json.discounts offer.offer_discounts
+
+json.category_distributions offer.offer_category_distributions
+json.costgroup_distributions offer.offer_costgroup_distributions
 json.positions offer.offer_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :amount, :description, :price_per_rate, :rate_unit_id, :service_id,
                 :vat, :order, :position_group_id, :service, :rate_unit_archived

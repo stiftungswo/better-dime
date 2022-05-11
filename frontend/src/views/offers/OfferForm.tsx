@@ -38,6 +38,8 @@ import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
 import PositionSubformInline from '../PositionSubformInline';
+import { OfferCategorySubform } from '../shared_opi/CategorySubform';
+import { OfferCostgroupSubform } from '../shared_opi/CostgroupSubform';
 import AddCCDialog from './AddCCDialog';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import Navigator from './OfferNavigator';
@@ -99,8 +101,22 @@ class OfferForm extends React.Component<Props> {
     this.props.offerStore!.creatingProject = false;
   }
 
+  doCreateProject = (offer: Offer, costgroup: number | null, category: number | null) => {
+      this.props.offerStore!.createProject(offer.id!, costgroup, category).then((p: Project) => this.props.history.push(`/projects/${p.id}`));
+  }
+
   handleConfirm = (offer: Offer, costgroup: number, category: number) => {
-    this.props.offerStore!.createProject(offer.id!, costgroup, category).then((p: Project) => this.props.history.push(`/projects/${p.id}`));
+    this.doCreateProject(offer, costgroup, category);
+  }
+
+  tryCreateProject = (offer: Offer) => {
+    if (offer.costgroup_distributions && offer.costgroup_distributions.length > 0
+       && offer.category_distributions && offer.category_distributions.length > 0) {
+        this.doCreateProject(offer, null, null);
+    } else {
+      // for legacy projects, open the popup asking for costgroup & category.
+      this.props.offerStore!.creatingProject = true;
+    }
   }
 
   render() {
@@ -129,7 +145,7 @@ class OfferForm extends React.Component<Props> {
                 <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
                 {!offer.project_id && (
                   <ActionButton
-                    action={() => this.props.offerStore!.creatingProject = true}
+                    action={() => this.tryCreateProject(offer)}
                     color={'inherit'}
                     icon={ProjectIcon}
                     secondaryIcon={AddIcon}
@@ -227,6 +243,21 @@ class OfferForm extends React.Component<Props> {
                           </Grid>
                         </Grid>
                       </DimePaper>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} lg={5}>
+                          <DimePaper>
+                            <OfferCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                          </DimePaper>
+                        </Grid>
+                        <Grid item xs={12} lg={5}>
+                          <DimePaper>
+                            <OfferCategorySubform formikProps={props} name={'category_distributions'} />
+                          </DimePaper>
+                        </Grid>
+                      </Grid>
                     </Grid>
 
                     <Grid item xs={12}>
