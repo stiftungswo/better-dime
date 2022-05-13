@@ -93,6 +93,10 @@ Rails.application.routes.draw do
     resources :customer_tags do
       put "archive", on: :member
     end
+
+    resources :locations do
+      put "archive", on: :member
+    end
   end
 
   scope :v2 do
