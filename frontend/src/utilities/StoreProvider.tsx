@@ -16,6 +16,7 @@ import { EmployeeStore } from '../stores/employeeStore';
 import { GlobalSettingStore } from '../stores/globalSettingStore';
 import { HolidayStore } from '../stores/holidayStore';
 import { InvoiceStore } from '../stores/invoiceStore';
+import { LocationStore } from '../stores/locationStore';
 import { MainStore } from '../stores/mainStore';
 import { OfferStore } from '../stores/offerStore';
 import { PositionGroupStore } from '../stores/positionGroupStore';
@@ -65,6 +66,7 @@ export class StoreProvider extends React.Component<Props> {
     dailyReportStore: DailyReportStore;
     globalSettingStore: GlobalSettingStore;
     employeeGroupStore: EmployeeGroupStore;
+    locationStore: LocationStore;
   };
   private disposeAuthChangeReaction: IReactionDisposer;
 
@@ -140,6 +142,7 @@ export class StoreProvider extends React.Component<Props> {
       dailyReportStore: new DailyReportStore(mainStore),
       globalSettingStore: new GlobalSettingStore(mainStore),
       employeeGroupStore: new EmployeeGroupStore(mainStore),
+      locationStore: new LocationStore(mainStore),
     };
   }
 

@@ -77,6 +77,8 @@ export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined'
 export { default as ReportIcon } from '@material-ui/icons/ShowChart';
 export { default as SettingsIcon } from '@material-ui/icons/Settings';
 export { default as NowIcon } from '@material-ui/icons/MyLocation';
+export { default as CostgroupIcon } from '@material-ui/icons/AccountBalance';
+export { default as LocationIcon } from '@material-ui/icons/Home';
 
 const icon = (path: React.ReactNode, viewBox = 512) => {
   return (props: SvgIconProps) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);

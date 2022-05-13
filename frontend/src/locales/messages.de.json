@@ -30,6 +30,8 @@
   "general.project_category.plural": "Tätigkeitsbereiche",
   "general.cost_group": "Kostenstelle",
   "general.cost_group.plural": "Kostenstellen",
+  "general.location": "Standort",
+  "general.location.plural": "Standorte",
   "general.no": "Nein",
   "general.yes": "Ja",
   "general.first_name": "Vorname",

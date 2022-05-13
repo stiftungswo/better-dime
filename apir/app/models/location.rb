@@ -2,5 +2,6 @@
 
 # a buisness location, used in the date / location / signature field.
 class Location < ApplicationRecord
-  validates :name, :url, presence: true
+  validates :name, presence: true
+  validates :url, format: { with: /\A[a-zA-Z]{0,20}\z/, message: "only 0-20 letters" }
 end

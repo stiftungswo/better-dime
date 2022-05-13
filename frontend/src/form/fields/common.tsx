@@ -53,7 +53,11 @@ export interface DimeCustomFieldProps<T, OutputValue = T> extends DimeFieldProps
 // If errorMessage is an identifier like view.project.schema.cost_group_required,
 // use intl, otherwise just display the errorMessage.
 export const possiblyIntlError = (intl: IntlShape, errorMessage: string) => {
+  if (!(errorMessage && errorMessage.charAt)) { // ensure errorMessage is a string
+    return '';
+  }
   return errorMessage.includes('schema.') ? intl.formatMessage({id: errorMessage}) : errorMessage;
+
 };
 
 export const DimeFormControl = (props: DimeFormControlProps) => {

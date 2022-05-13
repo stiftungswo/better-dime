@@ -30,6 +30,8 @@
   "general.project_category.plural": "Domaines d'activité",
   "general.cost_group": "Centre de coûts",
   "general.cost_group.plural": "Centres de coûts",
+  "general.location": "Site",
+  "general.location.plural": "Sites",
   "general.no": "Non",
   "general.yes": "Oui",
   "general.first_name": "Prenom",

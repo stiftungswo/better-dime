@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CustomerTagDecorator < ApplicationDecorator
+class LocationDecorator < ApplicationDecorator
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through

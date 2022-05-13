@@ -19,6 +19,7 @@ import HolidayOverview from './views/holidays/HolidayOverview';
 import InvoiceCreate from './views/invoices/InvoiceCreate';
 import InvoiceOverview from './views/invoices/InvoiceOverview';
 import InvoiceUpdate from './views/invoices/InvoiceUpdate';
+import LocationOverview from './views/locations/LocationOverview';
 import Login from './views/Login';
 import NotFound from './views/NotFound';
 import OfferCreate from './views/offers/OfferCreate';
@@ -79,6 +80,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/cost_groups" component={CostgroupOverview} />
             <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
             <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />
+            <ProtectedRoute exact path="/locations" component={LocationOverview} />
             <ProtectedRoute exact path="/timetrack" component={Timetrack} />
             <ProtectedRoute exact path="/persons" component={PersonOverview} />
             <ProtectedRoute exact path="/persons/new" component={PersonCreate} />

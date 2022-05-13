@@ -563,6 +563,13 @@ export interface OPICostgroup {
   // subtypes have either offer_id or project_id or invoice_id
 }
 
+export interface Location {
+  id: number;
+  archived: boolean;
+  name: string;
+  url: string;
+}
+
 export type Locale = 'de' | 'fr'; // | 'en';
 
 // --
