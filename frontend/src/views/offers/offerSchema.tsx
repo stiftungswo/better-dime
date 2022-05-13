@@ -67,4 +67,6 @@ export const offerTemplate = () => ({
   customer_id: undefined,
   address_id: undefined,
   rate_group_id: undefined,
+  costgroup_distributions: [],
+  category_distributions: [],
 });
