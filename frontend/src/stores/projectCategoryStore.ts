@@ -22,6 +22,5 @@ export class ProjectCategoryStore extends AbstractSimpleStore<Category> {
       canFetchOne: false,
       canPostPut: true,
     });
-    makeObservable(this);
   }
 }

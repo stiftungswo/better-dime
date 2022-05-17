@@ -24,12 +24,10 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     return '/' + this.entityUrlName;
   }
 
-  @computed
   get entities(): OverviewType[] {
     return this.storedEntities;
   }
 
-  @computed
   get entity(): EntityType | undefined {
     return this.storedEntity;
   }
@@ -42,17 +40,28 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     return this.config.canArchive;
   }
 
-  @observable
   storedEntities: OverviewType[] = [];
 
-  @observable
-  storedEntity?: EntityType;
+  storedEntity?: EntityType = undefined;
 
   config: SimpleStoreConfig;
 
   constructor(mainStore: MainStore, config: SimpleStoreConfig) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<AbstractSimpleStore<EntityType, OverviewType>, 'doFetchOne' | 'doFetchAll' | 'doFetchFiltered' | 'doPost' | 'doPut' | 'doDelete' | 'doDuplicate' | 'doArchive'>(this, {
+      entities: computed,
+      entity: computed,
+      storedEntities: observable,
+      storedEntity: observable,
+      doFetchOne: action,
+      doFetchAll: action,
+      doFetchFiltered: action,
+      doPost: override,
+      doPut: override,
+      doDelete: override,
+      doDuplicate: override,
+      doArchive: override,
+    });
     this.config = config;
   }
 
@@ -67,7 +76,6 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     return this.mainStore.apiV2.post<EntityType>(this.entityUrl + '/' + id + '/duplicate');
   }
 
-  @action
   protected async doFetchOne(id: number) {
     if (!this.config.canFetchOne) { throw new Error('Not implemented'); }
     const res = await this.mainStore.apiV2.get<EntityType>(this.entityUrl + '/' + id);
@@ -75,19 +83,16 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     return res.data;
   }
 
-  @action
   protected async doFetchAll() {
     const res = await this.mainStore.apiV2.get<OverviewType[]>(this.entityUrl);
     this.storedEntities = res.data;
   }
 
-  @action
   protected async doFetchFiltered() {
     const res = await this.mainStore.apiV2.get<OverviewType[]>(this.entityUrl, {params: this.getQueryParams()});
     this.storedEntities = res.data;
   }
 
-  @action
   protected async doPost(entity: EntityType) {
     if (!this.config.canPostPut) { throw new Error('Not implemented'); }
     await this.mainStore.apiV2.post(this.entityUrl, entity);
@@ -95,7 +100,6 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     await this.doFetchFiltered();
   }
 
-  @override
   protected async doPut(entity: EntityType) {
     if (!this.config.canPostPut) { throw new Error('Not implemented'); }
     await this.mainStore.apiV2.put(this.entityUrl + '/' + entity.id, entity);

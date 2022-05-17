@@ -22,6 +22,5 @@ export class LocationStore extends AbstractSimpleStore<Location> {
       canFetchOne: true,
       canPostPut: true,
     });
-    makeObservable(this);
   }
 }

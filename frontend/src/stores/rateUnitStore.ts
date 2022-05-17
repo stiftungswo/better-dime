@@ -12,7 +12,6 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     };
   }
 
-  @computed
   get entity(): RateUnit | undefined {
     return this.rateUnit;
   }
@@ -21,7 +20,6 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     this.rateUnit = rateUnit;
   }
 
-  @computed
   get entities(): RateUnitListing[] {
     return this.rateUnits;
   }
@@ -30,15 +28,23 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     return true;
   }
 
-  @observable
   rateUnits: RateUnitListing[] = [];
 
-  @observable
-  rateUnit?: RateUnit;
+  rateUnit?: RateUnit = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<RateUnitStore, 'doFetchOne'>(this, {
+      entity: computed,
+      entities: computed,
+      rateUnits: observable,
+      rateUnit: observable,
+      doFetchFiltered: action,
+      doFetchAll: action,
+      doPost: override,
+      doPut: override,
+      doFetchOne: action,
+    });
   }
 
   setEntities(e: RateUnitListing[]) {
@@ -52,25 +58,21 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     this.pageInfo = _.omit(page, 'data');
   }
 
-  @action
   async doFetchFiltered() {
     const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units', {params: this.getQueryParams()});
     this.rateUnits = res.data.data;
   }
 
-  @action
   async doFetchAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<RateUnitListing>>('/rate_units');
     this.rateUnits = res.data.data;
   }
 
-  @action
   async doPost(rateUnit: RateUnit) {
     await this.mainStore.apiV2.post('/rate_units', rateUnit);
     await this.doFetchAll();
   }
 
-  @override
   async doPut(rateUnit: RateUnit) {
     await this.mainStore.apiV2.put('/rate_units/' + rateUnit.id, rateUnit);
     await this.doFetchAll();
@@ -81,7 +83,6 @@ export class RateUnitStore extends AbstractPaginatedStore<RateUnit, RateUnitList
     this.doFetchAll();
   }
 
-  @action
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<RateUnit>('/rate_units/' + id);
     this.rateUnit = res.data;

@@ -22,6 +22,5 @@ export class CustomerTagStore extends AbstractSimpleStore<CustomerTag> {
       canFetchOne: true,
       canPostPut: true,
     });
-    makeObservable(this);
   }
 }

@@ -12,7 +12,6 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
     };
   }
 
-  @computed
   get entity(): Service | undefined {
     return this.service;
   }
@@ -21,7 +20,6 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
     this.service = service;
   }
 
-  @computed
   get entities() {
     return this.services;
   }
@@ -30,14 +28,17 @@ export class ServiceStore extends AbstractPaginatedStore<Service, ServiceListing
     return true;
   }
 
-  @observable
   services: ServiceListing[] = [];
-  @observable
   service?: Service = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      services: observable,
+      service: observable,
+    });
   }
 
   setEntities(e: ServiceListing[]) {

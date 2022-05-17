@@ -21,6 +21,5 @@ export class EmployeeGroupStore extends AbstractSimpleStore<EmployeeGroup> {
       canFetchOne: true,
       canPostPut: true,
     });
-    makeObservable(this);
   }
 }

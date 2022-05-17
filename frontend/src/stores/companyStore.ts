@@ -13,7 +13,6 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     };
   }
 
-  @computed
   get entity(): Company | undefined {
     return this.company;
   }
@@ -22,7 +21,6 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     this.company = company;
   }
 
-  @computed
   get entities() {
     return this.companies;
   }
@@ -31,51 +29,54 @@ export class CompanyStore extends AbstractPaginatedStore<Company> {
     return true;
   }
 
-  @observable
   companies: Company[] = [];
-  @observable
   company?: Company = undefined;
-  @observable
   customerFilter: CustomerOverviewFilter = { tags: [] as number[] };
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<CompanyStore, 'doArchive' | 'doDelete' | 'doDuplicate'>(this, {
+      entity: computed,
+      entities: computed,
+      companies: observable,
+      company: observable,
+      customerFilter: observable,
+      doFetchOne: action,
+      doPost: override,
+      doPut: override,
+      doArchive: override,
+      doDelete: override,
+      doDuplicate: override,
+    });
   }
 
   setEntities(e: Company[]) {
     this.companies = e;
   }
 
-  @action
   async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<Company>('/companies/' + id);
     this.company = res.data;
   }
 
-  @action
   async doPost(company: Company) {
     const res = await this.mainStore.apiV2.post('/companies', company);
     this.company = res.data;
   }
 
-  @override
   async doPut(company: Company) {
     const res = await this.mainStore.apiV2.put('/companies/' + company.id, company);
     this.company = res.data;
   }
 
-  @override
   protected async doArchive(id: number, archived: boolean) {
     await this.mainStore.apiV2.put('/companies/' + id, { archived });
   }
 
-  @override
   protected async doDelete(id: number) {
     await this.mainStore.apiV2.delete('/companies/' + id);
   }
 
-  @override
   protected async doDuplicate(id: number) {
     return this.mainStore.apiV2.post<Company>('/companies/' + id + '/duplicate');
   }

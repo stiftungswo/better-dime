@@ -13,7 +13,6 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     };
   }
 
-  @computed
   get entity(): Person | undefined {
     return this.person;
   }
@@ -22,7 +21,6 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     this.person = person;
   }
 
-  @computed
   get entities(): Person[] {
     return this.people;
   }
@@ -31,57 +29,60 @@ export class PeopleStore extends AbstractPaginatedStore<Person> {
     return true;
   }
 
-  @observable
   people: Person[] = [];
-  @observable
   person?: Person = undefined;
 
-  @override
   selectedIds = new ObservableMap<number, boolean>();
 
-  @observable
   customerFilter: CustomerOverviewFilter = { tags: [] as number[] };
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      people: observable,
+      person: observable,
+      selectedIds: observable,
+      customerFilter: observable,
+      doFetchAll: action,
+      doReturnAll: action,
+      doFetchFiltered: action,
+      doFetchOne: action,
+      doPost: override,
+      doPut: override,
+    });
   }
 
   setEntities(e: Person[]) {
     this.people = e;
   }
 
-  @action
   async doFetchAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
     this.people = res.data.data;
   }
 
-  @action
   async doReturnAll() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people');
     return res.data.data;
   }
 
-  @action
   async doFetchFiltered() {
     const res = await this.mainStore.apiV2.get<PaginatedData<Person>>('/people', {params: this.getQueryParams()});
     this.people = res.data.data;
   }
 
-  @action
   async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<Person>('/people/' + id);
     this.person = res.data;
   }
 
-  @action
   async doPost(person: Person) {
     const res = await this.mainStore.apiV2.post('/people', person);
     this.entity = res.data;
   }
 
-  @override
   async doPut(person: Person) {
     this.mainStore.apiV2.put('/people/' + person.id, person).then(res => {
       this.person = res.data;

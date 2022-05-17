@@ -12,7 +12,6 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
     };
   }
 
-  @computed
   get entity(): Invoice | undefined {
     return this.invoice;
   }
@@ -25,14 +24,17 @@ export class InvoiceStore extends AbstractPaginatedStore<Invoice, InvoiceListing
     return this.invoices;
   }
 
-  @observable
   invoices: InvoiceListing[] = [];
-  @observable
   invoice?: Invoice = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      invoices: observable,
+      invoice: observable,
+    });
   }
 
   setEntities(e: InvoiceListing[]) {

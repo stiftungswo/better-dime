@@ -21,7 +21,6 @@ export class ProjectWithPotentialInvoicesStore extends AbstractPaginatedStore<Pr
     };
   }
 
-  @computed
   get entity(): Project | undefined {
     return this.project;
   }
@@ -30,7 +29,6 @@ export class ProjectWithPotentialInvoicesStore extends AbstractPaginatedStore<Pr
     this.project = project;
   }
 
-  @computed
   get entities(): ProjectWithPotentialInvoices[] {
     return this.projects;
   }
@@ -39,14 +37,17 @@ export class ProjectWithPotentialInvoicesStore extends AbstractPaginatedStore<Pr
     return false;
   }
 
-  @observable
   projects: ProjectWithPotentialInvoices[] = [];
-  @observable
   project?: Project = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      projects: observable,
+      project: observable,
+    });
   }
 
   setEntities(e: ProjectWithPotentialInvoices[]) {

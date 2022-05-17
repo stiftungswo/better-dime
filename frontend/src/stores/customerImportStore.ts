@@ -36,25 +36,27 @@ export interface NonPersistedImportCustomer {
 }
 
 export class CustomerImportStore extends AbstractStore<NonPersistedImportCustomer> {
-  @observable
   customersToImport?: NonPersistedImportCustomer[] = [];
 
-  @observable
   importSettings?: CustomerImportSettings = {
     customer_tags: [],
     hidden: false,
     rate_group_id: 1,
   };
 
-  @observable
   importIsLoading?: boolean = false;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      customersToImport: observable,
+      importSettings: observable,
+      importIsLoading: observable,
+      verifyImportFile: action,
+      doImport: action,
+    });
   }
 
-  @action
   async verifyImportFile(file: File, name: string) {
     try {
       this.importIsLoading = true;
@@ -77,7 +79,6 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
     }
   }
 
-  @action
   async doImport(importSettings: CustomerImportSettings | undefined) {
     try {
       this.displayInProgress();

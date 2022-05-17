@@ -26,7 +26,6 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
     };
   }
 
-  @computed
   get entity(): GlobalSettings | undefined {
     return this.settings;
   }
@@ -35,12 +34,14 @@ export class GlobalSettingStore extends AbstractStore<GlobalSettings> {
     this.settings = settings;
   }
 
-  @observable
   settings?: GlobalSettings = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      settings: observable,
+    });
   }
 
   protected async doPut(entity: GlobalSettings): Promise<void> {
