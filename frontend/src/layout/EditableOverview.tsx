@@ -42,6 +42,8 @@ export class EditableOverview<T extends Listing> extends React.Component<Props<T
     if (this.props.paginated) {
       const paginatedStore = this.props.store! as AbstractPaginatedStore<any, T>;
       paginatedStore.fetchAllPaginated().then(this.handleClose);
+    } else {
+      this.handleClose();
     }
   }
 
