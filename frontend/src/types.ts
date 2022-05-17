@@ -565,6 +565,7 @@ export interface OPICostgroup {
 
 export interface Location {
   id: number;
+  order: number;
   archived: boolean;
   name: string;
   url: string;

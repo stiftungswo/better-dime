@@ -4,4 +4,5 @@
 class Location < ApplicationRecord
   validates :name, presence: true
   validates :url, format: { with: /\A[a-zA-Z]{0,20}\z/, message: "only 0-20 letters" }
+  validates :order, presence: true
 end

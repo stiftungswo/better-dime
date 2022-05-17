@@ -65,7 +65,7 @@ module V2
     private
 
     def location_params
-      params.require(:location).permit(:id, :name, :url, :archived)
+      params.require(:location).permit(:id, :name, :url, :archived, :order)
     end
 
     def legacy_params

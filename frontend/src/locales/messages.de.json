@@ -268,6 +268,8 @@
   "view.invoice.overview.start": "Start",
   "view.invoice.overview.end": "Ende",
 
+  "view.location.overview.sorting_order": "Reihenfolge",
+
   "view.offer.addcc_dialog.title": "Kostenstelle und Tätigkeitsbereich hinzufügen",
   "view.offer.addcc_dialog.confirm_text": "Projekt erstellen",
   "view.offer.addcc_dialog.cost_group": "Kostenstelle",

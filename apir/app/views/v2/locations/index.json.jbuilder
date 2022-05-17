@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 json.array! @locations do |location|
-  json.extract! location.decorate, :id, :name, :url, :archived
+  json.extract! location.decorate, :id, :name, :url, :archived, :order
 end

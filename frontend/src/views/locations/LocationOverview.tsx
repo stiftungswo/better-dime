@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { SwitchField, TextField } from '../../form/fields/common';
+import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ActionButtons } from '../../layout/ActionButtons';
 import { EditableOverview } from '../../layout/EditableOverview';
@@ -26,13 +26,14 @@ interface Props {
 )
 export default class LocationOverview extends React.Component<Props> {
   render() {
-    const intlText = wrapIntl(this.props.intl!, 'view.project_category.overview');
+    const intlText = wrapIntl(this.props.intl!, 'view.location.overview');
     const locationStore = this.props.locationStore;
     const columns: Array<Column<Location>> = [
       {
-        id: 'id',
+        id: 'order',
         numeric: false,
-        label: intlText('general.number', true),
+        label: intlText('sorting_order'),
+        defaultSort: 'asc',
       },
       {
         id: 'name',
@@ -63,8 +64,9 @@ export default class LocationOverview extends React.Component<Props> {
         )}
         renderForm={() => (
           <>
-            <DimeField component={TextField} name={'name'} label={intlText('general.name', true)} />
+            <DimeField component={TextField} required name={'name'} label={intlText('general.name', true)} />
             <DimeField component={TextField} name={'url'} label={'url'} />
+            <DimeField component={NumberField} required name={'order'} label={intlText('sorting_order')} />
             <DimeField component={SwitchField} name={'archived'} label={intlText('general.is_archived', true)} />
           </>
         )}

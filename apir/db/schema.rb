@@ -225,6 +225,7 @@ ActiveRecord::Schema.define(version: 2022_05_13_064530) do
 
   create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.boolean "archived", null: false
+    t.integer "order", default: 9999, null: false
     t.string "name", null: false
     t.string "url", null: false
     t.datetime "created_at", precision: 6, null: false
