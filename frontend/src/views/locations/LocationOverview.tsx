@@ -39,6 +39,7 @@ export default class LocationOverview extends React.Component<Props> {
         id: 'name',
         numeric: false,
         label: intlText('general.name', true),
+        format: e => e.name + (e.archived ? ' [A]' : ''),
       },
       {
         id: 'url',

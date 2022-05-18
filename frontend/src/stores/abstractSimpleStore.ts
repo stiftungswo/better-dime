@@ -65,6 +65,11 @@ export abstract class AbstractSimpleStore<EntityType extends {id?: number}, Over
     this.config = config;
   }
 
+  protected async doArchive(id: number, archived: boolean) {
+    await this.mainStore.apiV2.put(this.entityUrl + '/' + id, { id, archived });
+    await this.doFetchFiltered();
+  }
+
   protected async doDelete(id: number) {
     if (!this.config.canDelete) { return super.doDelete(id); }
     await this.mainStore.apiV2.delete(this.entityUrl + '/' + id);
