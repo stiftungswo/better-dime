@@ -24,6 +24,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   invoice_ids: number[];
   project_id?: number;
   discounts: OfferDiscount[];
+  location_id: number | null;
 }
 
 export interface OfferCostgroup extends OPICostgroup {
@@ -143,6 +144,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   current_time: number;
   offer: Offer;
   invoice_ids: number[];
+  location_id: number | null;
 }
 
 export interface PositionGroup {

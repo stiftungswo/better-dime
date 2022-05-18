@@ -294,6 +294,7 @@
   "view.offer.form.breakdown": "Berechnung",
   "view.offer.form.fixed_price": "Fixpreis",
   "view.offer.form.vat_rate": "MwSt. Satz",
+  "view.offer.form.location": "Ort (für Unterschrift)",
 
   "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
