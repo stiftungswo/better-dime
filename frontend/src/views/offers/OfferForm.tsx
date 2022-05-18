@@ -146,7 +146,7 @@ class OfferForm extends React.Component<Props> {
           appBarButtons={
             offer && offer.id ? (dirty: boolean) => (
               <>
-                <PrintButton hasCitySelection={!offer.location_id} path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
+                <PrintButton hasCitySelection={!offer.location_id} path={`offers/${offer.id}/print`} urlParams={{date: this.state.date, city: offer.location_id || undefined}} color={'inherit'} />
                 {!offer.project_id && (
                   <ActionButton
                     action={() => this.tryCreateProject(offer)}
