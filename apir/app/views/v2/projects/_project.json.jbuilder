@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.extract! project, :id, :accountant_id, :address_id, :customer_id, :archived, :description,
-              :fixed_price, :name, :rate_group_id,
+              :fixed_price, :name, :rate_group_id, :location_id,
               :created_at, :chargeable, :deadline, :vacation_project, :budget_price, :budget_time,
               :current_price, :current_time
 

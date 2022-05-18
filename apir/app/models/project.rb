@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   belongs_to :address
   belongs_to :offer, optional: true
   belongs_to :rate_group
+  belongs_to :location, optional: true
 
   has_many :invoices, dependent: :restrict_with_exception
   has_many :project_comments, dependent: :destroy

@@ -7,6 +7,7 @@ class Offer < ApplicationRecord
   belongs_to :customer
   belongs_to :address
   belongs_to :rate_group
+  belongs_to :location, optional: true
 
   has_one :project, dependent: :restrict_with_exception
   has_many :offer_costgroup_distributions, dependent: :destroy

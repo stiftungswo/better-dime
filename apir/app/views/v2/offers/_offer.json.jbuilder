@@ -2,7 +2,7 @@
 
 json.extract! offer, :id, :accountant_id, :address_id, :customer_id, :description,
               :fixed_price, :fixed_price_vat, :name, :rate_group_id, :short_description, :status,
-              :created_at
+              :created_at, :location_id
 
 json.project_id offer.project.id if offer.project
 
