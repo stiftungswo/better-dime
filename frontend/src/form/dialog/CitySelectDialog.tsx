@@ -15,6 +15,7 @@ import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import UnstyledBackendLink from '../../layout/UnstyledBackendLink';
 import { AbstractStore } from '../../stores/abstractStore';
+import { LocationStore } from '../../stores/locationStore';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { PositionGroupings, Service } from '../../types';
@@ -28,6 +29,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   mainStore?: MainStore;
+  locationStore?: LocationStore;
   intl?: IntlShape;
   path: string;
 }
@@ -35,17 +37,14 @@ interface Props {
 @compose(
   injectIntl,
   inject('mainStore'),
+  inject('locationStore'),
   observer,
 )
 export default class CitySelectDialog extends React.Component<Props> {
   render() {
     const { onClose, open } = this.props;
     const intlText = wrapIntl(this.props.intl!, 'form.dialog.city_select');
-    const cities = [
-      {id: 'basel', url: 'Basel'},
-      {id: 'schwerzenbach', url: 'Schwerzenbach'},
-      {id: 'wallis', url: 'Sierre'},
-    ];
+    const cities = this.props.locationStore!.entities_sorted;
     const buildUrl = (cityId: string) => this.props.mainStore!.apiV2URL_localized(this.props.path, {city: cityId});
 
     return (
@@ -57,15 +56,10 @@ export default class CitySelectDialog extends React.Component<Props> {
         </DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
           <List>
-            <UnstyledBackendLink url={buildUrl('')}>
-              <ListItem button key="" onClick={onClose}>
-                <ListItemText primary={intlText('none')}/>
-              </ListItem>
-            </UnstyledBackendLink>
             {cities.map(city => (
               <UnstyledBackendLink url={buildUrl(city.url)}>
-                <ListItem button key={city.id} onClick={onClose} >
-                  <ListItemText primary={intlText(city.id)}/>
+                <ListItem button key={city.name} onClick={onClose} >
+                  <ListItemText primary={city.name}/>
                 </ListItem>
               </UnstyledBackendLink>
             ))}

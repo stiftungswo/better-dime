@@ -11,6 +11,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { LocationSelect } from '../../form/entitySelect/LocationSelect';
 import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -24,6 +25,7 @@ import PrintButton from '../../layout/PrintButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
+import { LocationStore } from '../../stores/locationStore';
 import { MainStore } from '../../stores/mainStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { ProjectStore } from '../../stores/projectStore';
@@ -81,6 +83,7 @@ export type Props = {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
+  locationStore?: LocationStore;
   intl?: IntlShape;
 } & RouteComponentProps &
   FormViewProps<Project>;
@@ -97,6 +100,7 @@ export type Props = {
     'rateGroupStore',
     'rateUnitStore',
     'serviceStore',
+    'locationStore',
   ),
   observer,
 )
@@ -126,6 +130,7 @@ class ProjectForm extends React.Component<Props> {
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
       this.props.serviceStore!.fetchAll(),
+      this.props.locationStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
   }
 
@@ -152,11 +157,12 @@ class ProjectForm extends React.Component<Props> {
           project && project.id ? (dirty: boolean) => (
             <>
               <PrintButton
-                hasCitySelection
+                hasCitySelection={!project.location_id}
                 path={`projects/${project.id}/effort_report`}
                 color={'inherit'}
                 title={intlText('print_effort_report')}
                 icon={StatisticsIcon}
+                urlParams={{city: project.location_id || undefined}}
               />
               <ActionButton
                 action={() => projectStore!.createInvoice(project.id!).then((i: Invoice) => this.props.history.push(`/invoices/${i.id}`))}
@@ -178,11 +184,18 @@ class ProjectForm extends React.Component<Props> {
                     {project.id && <Navigator project={project} />}
                     <DimePaper>
                       <Grid container spacing={3}>
-                        <Grid item xs={12} lg={8}>
+                        <Grid item xs={12} lg={6}>
                           <DimeField delayed required component={TextField} name={'name'} label={intlText('general.name', true)} />
                         </Grid>
-                        <Grid item xs={12} lg={4}>
+                        <Grid item xs={12} lg={3}>
                           <DimeField required component={EmployeeSelect} name={'accountant_id'} label={intlText('general.accountant', true)} />
+                        </Grid>
+                        <Grid item xs={12} lg={3}>
+                          <DimeField
+                            component={LocationSelect}
+                            name={'location_id'}
+                            label={intlText('location')}
+                          />
                         </Grid>
                         <Grid item xs={12} lg={4}>
                           <Effect onChange={this.handleCustomerChange} />

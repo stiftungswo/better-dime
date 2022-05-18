@@ -17,9 +17,7 @@ interface Props<T = number> extends DimeSelectFieldProps<T> {
 export class LocationSelect<T> extends React.Component<Props<T>> {
   get options() {
     const locations = this.props
-      .locationStore!.entities.filter((e: Location) => !e.archived)
-      // put employees before zivis, as the former are used way more in timetrack.
-      .sort((e, f) => e.order - f.order)
+      .locationStore!.entities_sorted
       .map(e => ({
         value: e.id,
         label: e.name,

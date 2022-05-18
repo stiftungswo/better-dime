@@ -14,6 +14,12 @@ export class LocationStore extends AbstractSimpleStore<Location> {
     return 'locations';
   }
 
+  get entities_sorted(): Location[] {
+    return this.entities
+      .filter((e: Location) => !e.archived)
+      .sort((e, f) => e.order - f.order);
+  }
+
   constructor(mainStore: MainStore) {
     super(mainStore, {
       canArchive: true,
@@ -21,6 +27,9 @@ export class LocationStore extends AbstractSimpleStore<Location> {
       canDuplicate: false,
       canFetchOne: true,
       canPostPut: true,
+    });
+    makeObservable(this, {
+      entities_sorted: computed,
     });
   }
 }

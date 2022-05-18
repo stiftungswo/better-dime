@@ -368,6 +368,7 @@
   "view.project.form.chargeable": "Facturable",
   "view.project.form.archived_rate_units_warning": "Services avec unités archivées disponibles!",
   "view.project.form.fixed_price": "Prix fixe",
+  "view.project.form.location": "Lieu (pour signature)",
 
   "view.project.overview.delete_warning": "Voulez-vous vraiment supprimer ce projet?",
   "view.project.overview.description": "Description",

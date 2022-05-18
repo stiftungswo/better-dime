@@ -368,6 +368,7 @@
   "view.project.form.chargeable": "Verrechenbar",
   "view.project.form.archived_rate_units_warning": "Services mit archivierten Einheiten vorhanden!",
   "view.project.form.fixed_price": "Fixpreis",
+  "view.project.form.location": "Ort (für Unterschrift)",
 
   "view.project.overview.delete_warning": "Möchtest du dieses Projekt wirklich löschen?",
   "view.project.overview.description": "Beschreibung",
