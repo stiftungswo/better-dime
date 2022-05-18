@@ -11,8 +11,9 @@ class ProjectCreator
     project.rate_group = offer.rate_group
     project.fixed_price = offer.fixed_price
     project.description = offer.short_description
+    project.location_id = offer.location_id
     # new offers should already come with costgroups and categories, but
-    # there might be some old ones that use the costgroup and category argument
+    # there might be some old offers that use the costgroup and category argument
     project.project_costgroup_distributions = create_costgroups_from_offer(project, offer) || create_costgroups(project, costgroup)
     project.project_category_distributions = create_categories_from_offer(project, offer) || create_categories(project, category)
 
