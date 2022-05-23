@@ -237,6 +237,7 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   costgroup_distributions: InvoiceCostgroup[];
   discounts: InvoiceDiscount[];
   sibling_invoice_ids: number[];
+  location_id: number | null;
 }
 
 export interface InvoiceCostgroup extends OPICostgroup {

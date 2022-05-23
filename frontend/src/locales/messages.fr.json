@@ -254,6 +254,7 @@
   "view.invoice.form.update_time_span": "Actualiser la période",
   "view.invoice.form.update_time_span_warning": "Veux-tu vraiment recharger toutes les charges dans la période choisie? Les modifications effectuées manuellement auparavant sur la facture sont alors perdues.",
   "view.invoice.form.description": "Description",
+  "view.invoice.form.location": "Lieu (pour signature)",
 
   "view.invoice.position_renderer.position": "Articles de facturation",
 

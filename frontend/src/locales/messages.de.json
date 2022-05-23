@@ -254,6 +254,7 @@
   "view.invoice.form.update_time_span": "Zeitspanne aktualisieren",
   "view.invoice.form.update_time_span_warning": "Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.",
   "view.invoice.form.description": "Beschreibung",
+  "view.invoice.form.location": "Ort (für Unterschrift)",
 
   "view.invoice.position_renderer.position": "Rechnungsposten",
 

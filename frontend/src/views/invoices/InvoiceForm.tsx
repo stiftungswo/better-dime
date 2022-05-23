@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { LocationSelect } from '../../form/entitySelect/LocationSelect';
 import { VatSelect } from '../../form/entitySelect/VatSelect';
 import { TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
@@ -26,8 +27,9 @@ import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
 import { InvoiceStore } from '../../stores/invoiceStore';
+import { LocationStore } from '../../stores/locationStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
-import { Invoice } from '../../types';
+import { Invoice, Location } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
 import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
@@ -46,12 +48,13 @@ export interface Props extends FormViewProps<Invoice> {
   invoiceStore?: InvoiceStore;
   invoice: Invoice;
   rateUnitStore?: RateUnitStore;
+  locationStore?: LocationStore;
   intl?: IntlShape;
 }
 
 @compose(
   injectIntl,
-  inject('costgroupStore', 'customerStore', 'employeeStore', 'invoiceStore', 'rateUnitStore'),
+  inject('costgroupStore', 'customerStore', 'employeeStore', 'invoiceStore', 'rateUnitStore', 'locationStore'),
   observer,
 )
 export default class InvoiceForm extends React.Component<Props> {
@@ -61,12 +64,19 @@ export default class InvoiceForm extends React.Component<Props> {
     dateRangeDirty: false,
   };
 
+  handleLocationSelection = (newLocation: Location) => {
+    const { invoice, onSubmit } = this.props;
+    invoice.location_id = newLocation.id;
+    onSubmit(invoice);
+  }
+
   componentWillMount() {
     Promise.all([
       this.props.costgroupStore!.fetchAll(),
       this.props.customerStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
+      this.props.locationStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
   }
 
@@ -110,7 +120,6 @@ export default class InvoiceForm extends React.Component<Props> {
           invoice && invoice.id ? (dirty: boolean) => (
             <>
               <PrintButton
-                hasCitySelection
                 path={`invoices/${invoice.id}/effort_report`}
                 color={'inherit'}
                 title={
@@ -120,6 +129,9 @@ export default class InvoiceForm extends React.Component<Props> {
                 }
                 icon={StatisticsIcon}
                 disabled={!invoice.project_id}
+                urlParams={{city: invoice.location_id || undefined}}
+                hasCitySelection={!invoice.location_id}
+                citySelectionSaveCallback={this.handleLocationSelection}
               />
               <PrintButton
                 path={`invoices/${invoice.id}/print_qr_bill`}
@@ -174,12 +186,19 @@ export default class InvoiceForm extends React.Component<Props> {
                                 label={intlText('address')}
                               />
                             </Grid>
-                            <Grid item xs={12} lg={8}>
+                            <Grid item xs={12} lg={4}>
                               <DimeField
                                 required
                                 component={EmployeeSelect}
                                 name={'accountant_id'}
                                 label={intlText('general.accountant', true)}
+                              />
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                              <DimeField
+                                component={LocationSelect}
+                                name={'location_id'}
+                                label={intlText('location')}
                               />
                             </Grid>
                             <Grid item xs={12} lg={4} style={{paddingTop: '24px'}}>
