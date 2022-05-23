@@ -19,9 +19,9 @@ export interface Props extends RouteComponentProps<PersonDetailRouterProps> {
 }
 
 @compose(
+  injectIntl,
   inject('peopleStore'),
   observer,
-  injectIntl,
 )
 export default class PersonUpdate extends React.Component<Props> {
   constructor(props: Props) {
