@@ -78,10 +78,7 @@
   "form.dialog.service_select.title": "Ajouter un service",
 
   "form.dialog.city_select.title": "Choisir le lieu pour la signature",
-  "form.dialog.city_select.none": "<pas de lieu>",
-  "form.dialog.city_select.basel": "Bâle",
-  "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
-  "form.dialog.city_select.wallis": "Sierre (Valais)",
+  "form.dialog.city_select.save_selection": "Enregistrer la sélection?",
 
   "form.dialog.form.confirm_close": "Les modifications n'ont pas encore été enregistrées. Les rejeter?",
 

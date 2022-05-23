@@ -5,6 +5,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import CitySelectDialog from '../form/dialog/CitySelectDialog';
 import { MainStore } from '../stores/mainStore';
+import { Location } from '../types';
 import compose from '../utilities/compose';
 import { ActionButton } from './ActionButton';
 import { PrintIcon } from './icons';
@@ -16,6 +17,7 @@ interface Props {
   path: string;
   disabled?: boolean;
   hasCitySelection?: boolean;
+  citySelectionSaveCallback?: (city: Location) => void;
   color?: PropTypes.Color;
   mainStore?: MainStore;
   title?: string;
@@ -51,7 +53,7 @@ export default class PrintButton extends React.Component<Props> {
             disabled={false}
           />
           {this.state.cityDialogOpen && (
-            <CitySelectDialog open path={this.props.path} onClose={() => this.setState({ cityDialogOpen: false })}/>
+            <CitySelectDialog open path={this.props.path} onClose={() => this.setState({ cityDialogOpen: false })} saveCallback={this.props.citySelectionSaveCallback}/>
           )}
        </>
       );

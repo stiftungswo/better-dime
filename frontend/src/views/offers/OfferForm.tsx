@@ -34,7 +34,7 @@ import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Offer, Project } from '../../types';
+import { Location, Offer, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
@@ -86,6 +86,12 @@ class OfferForm extends React.Component<Props> {
         }
       }
     }
+  }
+
+  handleLocationSelection = (newLocation: Location) => {
+    const { offer, onSubmit } = this.props;
+    offer.location_id = newLocation.id;
+    onSubmit(offer);
   }
 
   componentWillMount() {
@@ -146,7 +152,13 @@ class OfferForm extends React.Component<Props> {
           appBarButtons={
             offer && offer.id ? (dirty: boolean) => (
               <>
-                <PrintButton hasCitySelection={!offer.location_id} path={`offers/${offer.id}/print`} urlParams={{date: this.state.date, city: offer.location_id || undefined}} color={'inherit'} />
+                <PrintButton
+                  path={`offers/${offer.id}/print`}
+                  urlParams={{date: this.state.date, city: offer.location_id || undefined}}
+                  color={'inherit'}
+                  hasCitySelection={!offer.location_id}
+                  citySelectionSaveCallback={this.handleLocationSelection}
+                />
                 {!offer.project_id && (
                   <ActionButton
                     action={() => this.tryCreateProject(offer)}

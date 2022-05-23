@@ -78,10 +78,7 @@
   "form.dialog.service_select.title": "Service hinzufügen",
 
   "form.dialog.city_select.title": "Ort für Unterschrift auswählen",
-  "form.dialog.city_select.none": "<kein Ort>",
-  "form.dialog.city_select.basel": "Basel",
-  "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
-  "form.dialog.city_select.wallis": "Sierre (Wallis)",
+  "form.dialog.city_select.save_selection": "Auswahl speichern?",
 
   "form.dialog.form.confirm_close": "Die Änderungen wurden noch nicht gespeichert. Verwerfen?",
 

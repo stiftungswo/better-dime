@@ -32,7 +32,7 @@ import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Invoice, Project } from '../../types';
+import { Invoice, Location, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
@@ -121,6 +121,12 @@ class ProjectForm extends React.Component<Props> {
     }
   }
 
+  handleLocationSelection = (newLocation: Location) => {
+    const { project, onSubmit } = this.props;
+    project.location_id = newLocation.id;
+    onSubmit(project);
+  }
+
   componentWillMount() {
     Promise.all([
       this.props.costgroupStore!.fetchAll(),
@@ -157,12 +163,13 @@ class ProjectForm extends React.Component<Props> {
           project && project.id ? (dirty: boolean) => (
             <>
               <PrintButton
-                hasCitySelection={!project.location_id}
                 path={`projects/${project.id}/effort_report`}
                 color={'inherit'}
                 title={intlText('print_effort_report')}
                 icon={StatisticsIcon}
                 urlParams={{city: project.location_id || undefined}}
+                hasCitySelection={!project.location_id}
+                citySelectionSaveCallback={this.handleLocationSelection}
               />
               <ActionButton
                 action={() => projectStore!.createInvoice(project.id!).then((i: Invoice) => this.props.history.push(`/invoices/${i.id}`))}
