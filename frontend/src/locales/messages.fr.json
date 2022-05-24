@@ -30,6 +30,8 @@
   "general.project_category.plural": "Domaines d'activité",
   "general.cost_group": "Centre de coûts",
   "general.cost_group.plural": "Centres de coûts",
+  "general.location": "Site",
+  "general.location.plural": "Sites",
   "general.no": "Non",
   "general.yes": "Oui",
   "general.first_name": "Prenom",
@@ -76,10 +78,7 @@
   "form.dialog.service_select.title": "Ajouter un service",
 
   "form.dialog.city_select.title": "Choisir le lieu pour la signature",
-  "form.dialog.city_select.none": "<pas de lieu>",
-  "form.dialog.city_select.basel": "Bâle",
-  "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
-  "form.dialog.city_select.wallis": "Sierre (Valais)",
+  "form.dialog.city_select.save_selection": "Enregistrer la sélection?",
 
   "form.dialog.form.confirm_close": "Les modifications n'ont pas encore été enregistrées. Les rejeter?",
 
@@ -255,6 +254,7 @@
   "view.invoice.form.update_time_span": "Actualiser la période",
   "view.invoice.form.update_time_span_warning": "Veux-tu vraiment recharger toutes les charges dans la période choisie? Les modifications effectuées manuellement auparavant sur la facture sont alors perdues.",
   "view.invoice.form.description": "Description",
+  "view.invoice.form.location": "Lieu (pour signature)",
 
   "view.invoice.position_renderer.position": "Articles de facturation",
 
@@ -265,6 +265,8 @@
   "view.invoice.overview.description": "Description",
   "view.invoice.overview.start": "Début",
   "view.invoice.overview.end": "Fin",
+
+  "view.location.overview.sorting_order": "Ordre",
 
   "view.offer.addcc_dialog.title": "Ajouter un centre de coûts et une activité",
   "view.offer.addcc_dialog.confirm_text": "Créer un projet",
@@ -290,6 +292,7 @@
   "view.offer.form.breakdown": "Calcul",
   "view.offer.form.fixed_price": "Prix fixe",
   "view.offer.form.vat_rate": "Taux de TVA.",
+  "view.offer.form.location": "Lieu (pour signature)",
 
   "view.offer.overview.delete_warning": "Voulez-vous vraiment supprimer cette offre? Si un projet a été créé à partir de l'offre, son budget restant ne peut plus être calculé. De plus, les déductions ne sont plus automatiquement placées lors de la création d'une facture.",
 
@@ -363,6 +366,7 @@
   "view.project.form.chargeable": "Facturable",
   "view.project.form.archived_rate_units_warning": "Services avec unités archivées disponibles!",
   "view.project.form.fixed_price": "Prix fixe",
+  "view.project.form.location": "Lieu (pour signature)",
 
   "view.project.overview.delete_warning": "Voulez-vous vraiment supprimer ce projet?",
   "view.project.overview.description": "Description",

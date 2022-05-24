@@ -12,23 +12,25 @@ import { MainStore } from './mainStore';
  */
 export abstract class AbstractPaginatedStore<T, OverviewType = T> extends AbstractCachedStore<T, OverviewType> {
 
-  @observable
   protected pageInfo?: PaginationInfo = undefined;
-  @observable
   protected requestedPage: number = 1;
-  @observable
   protected requestedPageSize: number = 10;
-  @observable
   protected requestedPageOrderTag: string = 'id';
-  @observable
   protected requestedPageOrderDir: string = 'desc';
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<AbstractPaginatedStore<T, OverviewType>, 'pageInfo' | 'requestedPage' | 'requestedPageSize' | 'requestedPageOrderTag' | 'requestedPageOrderDir'>(this, {
+      pageInfo: observable,
+      requestedPage: observable,
+      requestedPageSize: observable,
+      requestedPageOrderTag: observable,
+      requestedPageOrderDir: observable,
+      paginationInfo: computed,
+      fetchAllPaginated: action,
+    });
   }
 
-  @computed
   get paginationInfo(): PaginationInfo | undefined {
     return this.pageInfo;
   }
@@ -52,7 +54,6 @@ export abstract class AbstractPaginatedStore<T, OverviewType = T> extends Abstra
     this.fetchAllPaginated();
   }
 
-  @action
   async fetchAllPaginated() {
     try {
       await this.doFetchAllPaginated();

@@ -4,7 +4,7 @@ interface Props {
   url: string;
   children: React.ReactNode;
 }
-// use UnstyledBackendLink for relative frontend links,
+// use UnstyledLink for relative frontend links,
 // and use UnstyledBackendLink for links to the backend, e.g. for PDF generation.
 export default function UnstyledBackendLink({url, children}: Props) {
   return (

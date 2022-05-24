@@ -51,16 +51,29 @@ export abstract class AbstractStore<T, OverviewType = T> {
     return false;
   }
 
-  @observable
   selectedIds = new ObservableMap<number, boolean>();
 
-  @observable
   // tslint:disable-next-line:variable-name
   private _searchQuery: string = '';
 
   constructor(protected mainStore: MainStore) {
     this.resetSelected();
-    makeObservable(this);
+    // private / protected stuff has to be specified explicitly.
+    makeObservable<AbstractStore<T, OverviewType>, '_searchQuery' | 'doPost' | 'doPut' | 'doDelete' | 'doDuplicate' | 'doArchive'>(this, {
+      _searchQuery: observable,
+      fetchAll: action,
+      fetchFiltered: action,
+      fetchOne: action,
+      post: action,
+      put: action,
+      delete: action,
+      duplicate: action,
+      doPost: action,
+      doPut: action,
+      doDelete: action,
+      doDuplicate: action,
+      doArchive: action,
+    });
   }
 
   resetSelected() {
@@ -88,7 +101,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     console.log(error);
   }
 
-  @action
   async fetchAll() {
     try {
       await this.doFetchAll();
@@ -99,7 +111,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async fetchFiltered() {
     try {
       await this.doFetchFiltered();
@@ -110,7 +121,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async fetchOne(id: number) {
     try {
       this.entity = undefined;
@@ -122,7 +132,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async post(entity: T) {
     try {
       this.displayInProgress();
@@ -136,7 +145,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async put(entity: T) {
     try {
       this.displayInProgress();
@@ -150,7 +158,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async delete(id: number) {
     try {
       this.displayInProgress();
@@ -164,7 +171,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async duplicate(id: number): Promise<T> {
     Cache.invalidateAllActiveCaches();
     try {
@@ -179,7 +185,6 @@ export abstract class AbstractStore<T, OverviewType = T> {
     }
   }
 
-  @action
   async archive(id: number, archived: boolean) {
     Cache.invalidateAllActiveCaches();
     try {
@@ -234,22 +239,18 @@ export abstract class AbstractStore<T, OverviewType = T> {
     throw new Error('Not implemented');
   }
 
-  @action
   protected async doPut(entity: T) {
     throw new Error('Not implemented');
   }
 
-  @action
   protected async doDelete(id: number) {
     throw new Error('Not implemented');
   }
 
-  @action
   protected async doDuplicate(id: number): Promise<AxiosResponse> {
     throw new Error('Not implemented');
   }
 
-  @action
   protected async doArchive(id: number, archived: boolean) {
     throw new Error('Not implemented');
   }

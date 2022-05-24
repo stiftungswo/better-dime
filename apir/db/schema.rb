@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_28_150007) do
+ActiveRecord::Schema.define(version: 2022_05_23_131900) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -217,10 +217,20 @@ ActiveRecord::Schema.define(version: 2022_04_28_150007) do
     t.integer "updated_by"
     t.integer "deleted_by"
     t.decimal "fixed_price_vat", precision: 4, scale: 3
+    t.bigint "location_id"
     t.index ["accountant_id"], name: "invoices_accountant_id_foreign"
     t.index ["address_id"], name: "invoices_address_id_foreign"
     t.index ["customer_id"], name: "invoices_customer_id_foreign"
     t.index ["project_id"], name: "invoices_project_id_foreign"
+  end
+
+  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.boolean "archived", null: false
+    t.integer "order", default: 9999, null: false
+    t.string "name", null: false
+    t.string "url", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "migrations", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -306,6 +316,7 @@ ActiveRecord::Schema.define(version: 2022_04_28_150007) do
     t.integer "updated_by"
     t.integer "deleted_by"
     t.decimal "fixed_price_vat", precision: 4, scale: 3
+    t.bigint "location_id"
     t.index ["accountant_id"], name: "offers_accountant_id_foreign"
     t.index ["address_id"], name: "offers_address_id_foreign"
     t.index ["customer_id"], name: "offers_customer_id_foreign"
@@ -453,6 +464,7 @@ ActiveRecord::Schema.define(version: 2022_04_28_150007) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
+    t.bigint "location_id"
     t.index ["accountant_id"], name: "projects_accountant_id_foreign"
     t.index ["address_id"], name: "projects_address_id_foreign"
     t.index ["customer_id"], name: "projects_customer_id_foreign"

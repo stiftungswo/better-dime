@@ -24,6 +24,7 @@ class InvoiceCreator
     invoice.description = project.description
     invoice.name = project.name
     invoice.fixed_price = project.fixed_price
+    invoice.location = project.location
 
     invoice.invoice_costgroup_distributions = create_costgroups_from_project(invoice, project)
     invoice.invoice_discounts = create_discounts_from_project(invoice, project)

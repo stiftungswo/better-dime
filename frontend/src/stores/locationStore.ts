@@ -1,17 +1,23 @@
 import { action, computed, makeObservable, observable, override } from 'mobx';
-import { CustomerTag } from '../types';
+import { Location } from '../types';
 import { AbstractSimpleStore } from './abstractSimpleStore';
 import { MainStore } from './mainStore';
 
-export class CustomerTagStore extends AbstractSimpleStore<CustomerTag> {
+export class LocationStore extends AbstractSimpleStore<Location> {
   protected get entityName() {
     return {
-      singular: 'Der Tag',
-      plural: 'Die Tags',
+      singular: 'Der Standort',
+      plural: 'Die Standorte',
     };
   }
   protected get entityUrlName(): string {
-    return 'customer_tags';
+    return 'locations';
+  }
+
+  get entities_sorted(): Location[] {
+    return this.entities
+      .filter((e: Location) => !e.archived)
+      .sort((e, f) => e.order - f.order);
   }
 
   constructor(mainStore: MainStore) {
@@ -21,6 +27,9 @@ export class CustomerTagStore extends AbstractSimpleStore<CustomerTag> {
       canDuplicate: false,
       canFetchOne: true,
       canPostPut: true,
+    });
+    makeObservable(this, {
+      entities_sorted: computed,
     });
   }
 }

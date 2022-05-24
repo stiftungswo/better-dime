@@ -9,19 +9,20 @@ import {MainStore} from './mainStore';
 export abstract class AbstractCachedStore<T, OverviewType = T> extends AbstractStore<T, OverviewType> {
 
   // a simple cache for for fetchAll results with a single cache line
-  @observable
   private fetchAllCache: Cache = new Cache(1, this.constructor.name + 'fAllCache');
   // a fully associative cache for for fetchOne results with 20 cache lines
-  @observable
   private fetchOneCache: Cache = new Cache(20, this.constructor.name + 'fOneCache');
 
   constructor(protected mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<AbstractCachedStore<T, OverviewType>, 'fetchAllCache' | 'fetchOneCache'>(this, {
+      fetchAllCache: observable,
+      fetchOneCache: observable,
+      fetchAll: override,
+      fetchOne: override,
+    });
   }
 
-  // We don't need to re-decorate methods of subclasses, so no @action here.
-  @override
   async fetchAll() {
     const cached = this.fetchAllCache.fetchAll();
 
@@ -35,7 +36,6 @@ export abstract class AbstractCachedStore<T, OverviewType = T> extends AbstractS
     }
   }
 
-  @override
   async fetchOne(id: number) {
     const cached = this.fetchOneCache.fetchOne(id);
 
@@ -47,30 +47,5 @@ export abstract class AbstractCachedStore<T, OverviewType = T> extends AbstractS
         this.fetchOneCache.put(this.entity);
       });
     }
-  }
-
-  @override
-  async post(entity: T) {
-    return super.post(entity);
-  }
-
-  @override
-  async put(entity: T) {
-    return super.put(entity);
-  }
-
-  @override
-  async delete(id: number) {
-    return super.delete(id);
-  }
-
-  @override
-  async duplicate(id: number): Promise<T> {
-    return super.duplicate(id);
-  }
-
-  @override
-  async archive(id: number, archived: boolean) {
-    return super.archive(id, archived);
   }
 }

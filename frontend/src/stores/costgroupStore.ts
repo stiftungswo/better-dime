@@ -21,6 +21,5 @@ export class CostgroupStore extends AbstractSimpleStore<Costgroup> {
       canFetchOne: false,
       canPostPut: false,
     });
-    makeObservable(this);
   }
 }

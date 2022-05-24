@@ -7,18 +7,13 @@ import { apiDateFormat } from './apiStore';
 import { MainStore } from './mainStore';
 
 export class EffortStore extends AbstractStore<ProjectEffort> {
-  @observable
   effort?: ProjectEffort = undefined;
-  @observable
   efforts: ProjectEffortListing[] = [];
 
-  @observable
   editing: boolean = false;
 
-  @observable
   moving: boolean = false;
 
-  @observable
   effortTemplate: ProjectEffortTemplate = {
     comment: '',
     date: moment(),
@@ -27,23 +22,35 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     project_id: null,
     value: 1,
   };
-  @observable
   loading: boolean = false;
-  @observable
   selectedProject?: Project = undefined;
 
-  @observable
-  lastMoveProject?: number;
+  lastMoveProject?: number = undefined;
 
-  @observable
-  lastMovePosition?: number;
+  lastMovePosition?: number = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<EffortStore, 'doPost' | 'doPut' | 'doFetchOne' | 'doDelete'>(this, {
+      effort: observable,
+      efforts: observable,
+      editing: observable,
+      moving: observable,
+      effortTemplate: observable,
+      loading: observable,
+      selectedProject: observable,
+      lastMoveProject: observable,
+      lastMovePosition: observable,
+      entity: computed,
+      fetchWithProjectEffortFilter: action,
+      move: action,
+      doPost: override,
+      doPut: override,
+      doFetchOne: action,
+      doDelete: override,
+    });
   }
 
-  @computed
   get entity(): ProjectEffort | undefined {
     return this.effort;
   }
@@ -59,7 +66,6 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     };
   }
 
-  @action
   async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     this.loading = true;
     try {
@@ -82,7 +88,6 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     this.loading = false;
   }
 
-  @action
   async move(effortIds: number[], targetProject: number, targetPosition: number | null) {
     await this.notifyProgress(() =>
       this.mainStore.apiV2.put('project_efforts/move', {
@@ -96,14 +101,12 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     Cache.invalidateAllActiveCaches();
   }
 
-  @action
   protected async doPost(entity: ProjectEffort): Promise<void> {
     this.loading = true;
     await this.mainStore.apiV2.post<ProjectEffort>('/project_efforts', entity);
     this.loading = false;
   }
 
-  @override
   protected async doPut(entity: ProjectEffort): Promise<void> {
     this.loading = true;
     const res = await this.mainStore.apiV2.put<ProjectEffort>('/project_efforts/' + entity.id, entity);
@@ -111,13 +114,11 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     this.loading = false;
   }
 
-  @action
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<ProjectEffort>('/project_efforts/' + id);
     this.effort = res.data;
   }
 
-  @override
   protected async doDelete(id: number): Promise<void> {
     await this.mainStore.apiV2.delete('/project_efforts/' + id);
   }

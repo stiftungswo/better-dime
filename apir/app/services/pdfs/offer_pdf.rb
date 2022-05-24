@@ -8,7 +8,7 @@ module Pdfs
       @global_setting = global_setting
       @offer = offer
       @date = date
-      super(city)
+      super(city || data_holder.location_id)
     end
 
     def project

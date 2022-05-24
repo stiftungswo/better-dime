@@ -13,7 +13,6 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     };
   }
 
-  @computed
   get entity(): Project | undefined {
     return this.project;
   }
@@ -22,7 +21,6 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     this.project = project;
   }
 
-  @computed
   get entities(): ProjectListing[] {
     return this.projects;
   }
@@ -31,14 +29,17 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
     return true;
   }
 
-  @observable
   projects: ProjectListing[] = [];
-  @observable
   project?: Project = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      projects: observable,
+      project: observable,
+    });
   }
 
   setEntities(e: ProjectListing[]) {

@@ -7,6 +7,7 @@ class Invoice < ApplicationRecord
   belongs_to :customer
   belongs_to :address
   belongs_to :project
+  belongs_to :location, optional: true
 
   has_many :invoice_discounts, dependent: :destroy
   has_many :invoice_positions, dependent: :destroy

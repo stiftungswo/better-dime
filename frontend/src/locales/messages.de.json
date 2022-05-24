@@ -30,6 +30,8 @@
   "general.project_category.plural": "Tätigkeitsbereiche",
   "general.cost_group": "Kostenstelle",
   "general.cost_group.plural": "Kostenstellen",
+  "general.location": "Standort",
+  "general.location.plural": "Standorte",
   "general.no": "Nein",
   "general.yes": "Ja",
   "general.first_name": "Vorname",
@@ -76,10 +78,7 @@
   "form.dialog.service_select.title": "Service hinzufügen",
 
   "form.dialog.city_select.title": "Ort für Unterschrift auswählen",
-  "form.dialog.city_select.none": "<kein Ort>",
-  "form.dialog.city_select.basel": "Basel",
-  "form.dialog.city_select.schwerzenbach": "Schwerzenbach",
-  "form.dialog.city_select.wallis": "Sierre (Wallis)",
+  "form.dialog.city_select.save_selection": "Auswahl speichern?",
 
   "form.dialog.form.confirm_close": "Die Änderungen wurden noch nicht gespeichert. Verwerfen?",
 
@@ -255,6 +254,7 @@
   "view.invoice.form.update_time_span": "Zeitspanne aktualisieren",
   "view.invoice.form.update_time_span_warning": "Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.",
   "view.invoice.form.description": "Beschreibung",
+  "view.invoice.form.location": "Ort (für Unterschrift)",
 
   "view.invoice.position_renderer.position": "Rechnungsposten",
 
@@ -265,6 +265,8 @@
   "view.invoice.overview.description": "Beschreibung",
   "view.invoice.overview.start": "Start",
   "view.invoice.overview.end": "Ende",
+
+  "view.location.overview.sorting_order": "Reihenfolge",
 
   "view.offer.addcc_dialog.title": "Kostenstelle und Tätigkeitsbereich hinzufügen",
   "view.offer.addcc_dialog.confirm_text": "Projekt erstellen",
@@ -290,6 +292,7 @@
   "view.offer.form.breakdown": "Berechnung",
   "view.offer.form.fixed_price": "Fixpreis",
   "view.offer.form.vat_rate": "MwSt. Satz",
+  "view.offer.form.location": "Ort (für Unterschrift)",
 
   "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
@@ -363,6 +366,7 @@
   "view.project.form.chargeable": "Verrechenbar",
   "view.project.form.archived_rate_units_warning": "Services mit archivierten Einheiten vorhanden!",
   "view.project.form.fixed_price": "Fixpreis",
+  "view.project.form.location": "Ort (für Unterschrift)",
 
   "view.project.overview.delete_warning": "Möchtest du dieses Projekt wirklich löschen?",
   "view.project.overview.description": "Beschreibung",

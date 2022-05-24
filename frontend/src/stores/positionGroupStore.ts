@@ -13,7 +13,6 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
     };
   }
 
-  @computed
   get entity(): PositionGroup | undefined {
     return this.positionGroup;
   }
@@ -22,38 +21,40 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
     this.positionGroup = positionGroup;
   }
 
-  @computed
   get entities(): PositionGroup[] {
     return this.positionGroups;
   }
 
-  @observable
   positionGroups: PositionGroup[] = [];
-  @observable
   positionGroup?: PositionGroup = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      positionGroups: observable,
+      positionGroup: observable,
+      doFetchAll: action,
+      doFetchOne: action,
+      doPost: override,
+      doPut: override,
+    });
   }
 
-  @action
   async doFetchAll() {
     throw new Error('Not implemented, position group are never accessed directly');
   }
 
-  @action
   async doFetchOne(id: number) {
     throw new Error('Not implemented, position group are never accessed directly');
   }
 
-  @action
   async doPost(positionGroup: PositionGroup) {
     const res = await this.mainStore.apiV2.post('/position_groups', positionGroup);
     this.positionGroup = res.data;
   }
 
-  @override
   async doPut(positionGroup: PositionGroup) {
     throw new Error('Not implemented, position group are never edited');
   }
