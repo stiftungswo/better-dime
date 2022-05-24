@@ -23,7 +23,6 @@ export class HolidayStore extends AbstractSimpleStore<Holiday> {
       canFetchOne: false,
       canPostPut: true,
     });
-    makeObservable(this);
   }
 
   protected processSearchQuery(query: string) {

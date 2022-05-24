@@ -9,7 +9,7 @@ module Pdfs
       @data_holder = data_holder
       @swo_blue = '007DC2'
       @border_color = '81827e'
-      super(city)
+      super(city || data_holder.location_id)
     end
 
     def filename

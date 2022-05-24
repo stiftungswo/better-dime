@@ -8,15 +8,11 @@ import { MainStore } from './mainStore';
 
 export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
-  @observable
-  projectComment?: ProjectComment;
-  @observable
+  projectComment?: ProjectComment = undefined;
   projectComments: ProjectCommentListing[] = [];
 
-  @observable
   editing: boolean = false;
 
-  @observable
   projectCommentTemplate: ProjectComment = {
     comment: '',
     date: moment(),
@@ -25,15 +21,26 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<ProjectCommentStore, 'doPost' | 'doFetchOne' | 'doPut' | 'doDelete'>(this, {
+      projectComment: observable,
+      projectComments: observable,
+      editing: observable,
+      projectCommentTemplate: observable,
+      entities: computed,
+      entity: computed,
+      fetchWithProjectEffortFilter: action,
+      move: action,
+      doPost: override,
+      doFetchOne: action,
+      doPut: override,
+      doDelete: override,
+    });
   }
 
-  @computed
   get entities(): ProjectCommentListing[] {
     return this.projectComments;
   }
 
-  @computed
   get entity(): ProjectComment | undefined {
     return this.projectComment;
   }
@@ -49,7 +56,6 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     };
   }
 
-  @action
   async fetchWithProjectEffortFilter(filter: ProjectEffortFilter) {
     try {
       const res = await this.mainStore.apiV2.get<ProjectCommentListing[]>('/project_comments', {
@@ -65,7 +71,6 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     }
   }
 
-  @action
   async move(commentIds: number[], targetProject: number) {
     await this.notifyProgress(() =>
       this.mainStore.apiV2.put('project_comments/move', {
@@ -76,25 +81,21 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
     Cache.invalidateAllActiveCaches();
   }
 
-  @action
   protected async doPost(entity: ProjectComment): Promise<void> {
     const res = await this.mainStore.apiV2.post<ProjectComment>('/project_comments', entity);
     this.projectComment = res.data;
   }
 
-  @action
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<ProjectComment>('/project_comments/' + id);
     this.projectComment = res.data;
   }
 
-  @override
   protected async doPut(entity: ProjectComment): Promise<void> {
     const res = await this.mainStore.apiV2.put<ProjectComment>('/project_comments/' + entity.id, entity);
     this.projectComment = res.data;
   }
 
-  @override
   protected async doDelete(id: number): Promise<void> {
     await this.mainStore.apiV2.delete('/project_comments/' + id);
   }

@@ -18,7 +18,6 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
     };
   }
 
-  @computed
   get entity(): Employee | undefined {
     return this.employee;
   }
@@ -27,7 +26,6 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
     this.employee = employee;
   }
 
-  @computed
   get entities(): Employee[] {
     return this.employees;
   }
@@ -35,14 +33,17 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
   get archivable() {
     return true;
   }
-  @observable
   employees: Employee[] = [];
-  @observable
   employee?: Employee = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      employees: observable,
+      employee: observable,
+    });
   }
 
   setEntities(e: Employee[]) {

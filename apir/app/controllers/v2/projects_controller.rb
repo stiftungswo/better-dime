@@ -122,7 +122,7 @@ module V2
       ParamsModifier.copy_attributes params, :category_distributions, :project_category_distributions_attributes
 
       params.permit(
-        :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id,
+        :accountant_id, :address_id, :customer_id, :description, :name, :rate_group_id, :location_id,
         :deadline, :archived, :chargeable, :vacation_project, :fixed_price, :category_id,
         project_positions_attributes: [:id, :vat, :price_per_rate, :rate_unit_id, :service_id, :description, :order, :position_group_id, :_destroy],
         project_category_distributions_attributes: [:id, :weight, :category_id, :_destroy],

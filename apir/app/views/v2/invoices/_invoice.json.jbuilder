@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.extract! invoice, :id, :accountant_id, :address_id, :customer_id, :description,
-              :fixed_price, :fixed_price_vat, :name, :beginning, :ending, :sibling_invoice_ids, :created_at
+              :fixed_price, :fixed_price_vat, :name, :beginning, :ending, :sibling_invoice_ids, :created_at, :location_id
 
 json.project_id invoice.project.id if invoice.project
 json.offer_id invoice.project.offer.id unless invoice.project.nil? || invoice.project.offer.nil?

@@ -22,7 +22,6 @@ export class RateGroupStore extends AbstractSimpleStore<RateGroup> {
       canFetchOne: true,
       canPostPut: false,
     });
-    makeObservable(this);
   }
 
   filter = (r: RateGroup) =>

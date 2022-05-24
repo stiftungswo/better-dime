@@ -24,6 +24,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   invoice_ids: number[];
   project_id?: number;
   discounts: OfferDiscount[];
+  location_id: number | null;
 }
 
 export interface OfferCostgroup extends OPICostgroup {
@@ -143,6 +144,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   current_time: number;
   offer: Offer;
   invoice_ids: number[];
+  location_id: number | null;
 }
 
 export interface PositionGroup {
@@ -235,6 +237,7 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   costgroup_distributions: InvoiceCostgroup[];
   discounts: InvoiceDiscount[];
   sibling_invoice_ids: number[];
+  location_id: number | null;
 }
 
 export interface InvoiceCostgroup extends OPICostgroup {
@@ -561,6 +564,14 @@ export interface OPICostgroup {
   created_at: string;
   updated_at: string;
   // subtypes have either offer_id or project_id or invoice_id
+}
+
+export interface Location {
+  id: number;
+  order: number;
+  archived: boolean;
+  name: string;
+  url: string;
 }
 
 export type Locale = 'de' | 'fr'; // | 'en';

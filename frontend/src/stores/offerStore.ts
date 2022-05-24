@@ -19,7 +19,6 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     };
   }
 
-  @computed
   get entity(): Offer | undefined {
     return this.offer;
   }
@@ -28,22 +27,24 @@ export class OfferStore extends AbstractPaginatedStore<Offer, OfferListing> {
     this.offer = offer;
   }
 
-  @computed
   get entities(): OfferListing[] {
     return this.offers;
   }
 
-  @observable
   creatingProject: boolean = false;
 
-  @observable
   offers: OfferListing[] = [];
-  @observable
   offer?: Offer = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable(this, {
+      entity: computed,
+      entities: computed,
+      creatingProject: observable,
+      offers: observable,
+      offer: observable,
+    });
   }
 
   setEntities(e: OfferListing[]) {

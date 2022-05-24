@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { Customer, PaginatedData } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -11,12 +11,10 @@ export class CustomerStore extends AbstractStore<Customer> {
     };
   }
 
-  @computed
   get entities() {
     return this.customers;
   }
 
-  @computed
   get entity() {
     return this.customer;
   }
@@ -25,15 +23,21 @@ export class CustomerStore extends AbstractStore<Customer> {
     this.customer = customer;
   }
 
-  @observable
   customers: Customer[] = [];
 
-  @observable
   customer?: Customer = undefined;
 
   constructor(mainStore: MainStore) {
     super(mainStore);
-    makeObservable(this);
+    makeObservable<CustomerStore, 'doFetchAll' | 'doFetchFiltered' | 'doFetchOne'>(this, {
+      entities: computed,
+      entity: computed,
+      customers: observable,
+      customer: observable,
+      doFetchAll: action,
+      doFetchFiltered: action,
+      doFetchOne: action,
+    });
   }
 
   protected async doFetchAll() {

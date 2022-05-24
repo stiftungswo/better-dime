@@ -8,6 +8,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { AddressSelect } from '../../form/entitySelect/AddressSelect';
 import { CustomerSelect } from '../../form/entitySelect/CustomerSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import { LocationSelect } from '../../form/entitySelect/LocationSelect';
 import { RateGroupSelect } from '../../form/entitySelect/RateGroupSelect';
 import { StatusSelect } from '../../form/entitySelect/StatusSelect';
 import { VatSelect } from '../../form/entitySelect/VatSelect';
@@ -26,13 +27,14 @@ import PrintButton from '../../layout/PrintButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
 import { EmployeeStore } from '../../stores/employeeStore';
+import { LocationStore } from '../../stores/locationStore';
 import { OfferStore } from '../../stores/offerStore';
 import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { Offer, Project } from '../../types';
+import { Location, Offer, Project } from '../../types';
 import compose from '../../utilities/compose';
 import Effect, { OnChange } from '../../utilities/Effect';
 import { empty } from '../../utilities/helpers';
@@ -58,13 +60,14 @@ export type Props = {
   serviceStore?: ServiceStore;
   costgroupStore?: CostgroupStore;
   projectCategoryStore?: ProjectCategoryStore;
+  locationStore?: LocationStore;
   intl?: IntlShape;
 } & FormViewProps<Offer> &
   RouteComponentProps;
 
 @compose(
   injectIntl,
-  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore'),
+  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore', 'locationStore'),
   observer,
 )
 class OfferForm extends React.Component<Props> {
@@ -85,6 +88,12 @@ class OfferForm extends React.Component<Props> {
     }
   }
 
+  handleLocationSelection = (newLocation: Location) => {
+    const { offer, onSubmit } = this.props;
+    offer.location_id = newLocation.id;
+    onSubmit(offer);
+  }
+
   componentWillMount() {
     Promise.all([
       this.props.customerStore!.fetchAll(),
@@ -94,6 +103,7 @@ class OfferForm extends React.Component<Props> {
       this.props.serviceStore!.fetchAll(),
       this.props.costgroupStore!.fetchAll(),
       this.props.projectCategoryStore!.fetchAll(),
+      this.props.locationStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
   }
 
@@ -142,7 +152,13 @@ class OfferForm extends React.Component<Props> {
           appBarButtons={
             offer && offer.id ? (dirty: boolean) => (
               <>
-                <PrintButton hasCitySelection path={`offers/${offer.id}/print`} urlParams={{date: this.state.date}} color={'inherit'} />
+                <PrintButton
+                  path={`offers/${offer.id}/print`}
+                  urlParams={{date: this.state.date, city: offer.location_id || undefined}}
+                  color={'inherit'}
+                  hasCitySelection={!offer.location_id}
+                  citySelectionSaveCallback={this.handleLocationSelection}
+                />
                 {!offer.project_id && (
                   <ActionButton
                     action={() => this.tryCreateProject(offer)}
@@ -195,12 +211,20 @@ class OfferForm extends React.Component<Props> {
                               <Grid item xs={12} lg={4}>
                                 <DimeField required component={RateGroupSelect} name={'rate_group_id'} label={intl.formatMessage({id: 'general.rate'})} disabled={locked} />
                               </Grid>
-                              <Grid item xs={12} lg={8}>
+                              <Grid item xs={12} lg={4}>
                                 <DimeField
                                   required
                                   component={EmployeeSelect}
                                   name={'accountant_id'}
                                   label={intl.formatMessage({id: 'general.accountant'})}
+                                  disabled={locked}
+                                />
+                              </Grid>
+                              <Grid item xs={12} lg={4}>
+                                <DimeField
+                                  component={LocationSelect}
+                                  name={'location_id'}
+                                  label={intl.formatMessage({id: 'view.offer.form.location'})}
                                   disabled={locked}
                                 />
                               </Grid>

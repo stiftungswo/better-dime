@@ -1,8 +1,10 @@
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,9 +17,10 @@ import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import UnstyledBackendLink from '../../layout/UnstyledBackendLink';
 import { AbstractStore } from '../../stores/abstractStore';
+import { LocationStore } from '../../stores/locationStore';
 import { MainStore } from '../../stores/mainStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { PositionGroupings, Service } from '../../types';
+import { Location, PositionGroupings, Service } from '../../types';
 import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
@@ -27,7 +30,9 @@ import { ServiceSelect } from '../entitySelect/ServiceSelect';
 interface Props {
   open: boolean;
   onClose: () => void;
+  saveCallback?: (city: Location) => void;
   mainStore?: MainStore;
+  locationStore?: LocationStore;
   intl?: IntlShape;
   path: string;
 }
@@ -35,17 +40,24 @@ interface Props {
 @compose(
   injectIntl,
   inject('mainStore'),
+  inject('locationStore'),
   observer,
 )
 export default class CitySelectDialog extends React.Component<Props> {
+  state = {
+    save: false,
+  };
+  onClick = (city: Location) => () => {
+    if (this.state.save) {
+       this.props.saveCallback!(city);
+    }
+    this.props.onClose();
+  }
+
   render() {
-    const { onClose, open } = this.props;
+    const { onClose, open, saveCallback } = this.props;
     const intlText = wrapIntl(this.props.intl!, 'form.dialog.city_select');
-    const cities = [
-      {id: 'basel', url: 'Basel'},
-      {id: 'schwerzenbach', url: 'Schwerzenbach'},
-      {id: 'wallis', url: 'Sierre'},
-    ];
+    const cities = this.props.locationStore!.entities_sorted;
     const buildUrl = (cityId: string) => this.props.mainStore!.apiV2URL_localized(this.props.path, {city: cityId});
 
     return (
@@ -57,19 +69,20 @@ export default class CitySelectDialog extends React.Component<Props> {
         </DialogTitle>
         <DialogContent style={{ minWidth: '400px' }}>
           <List>
-            <UnstyledBackendLink url={buildUrl('')}>
-              <ListItem button key="" onClick={onClose}>
-                <ListItemText primary={intlText('none')}/>
-              </ListItem>
-            </UnstyledBackendLink>
             {cities.map(city => (
               <UnstyledBackendLink url={buildUrl(city.url)}>
-                <ListItem button key={city.id} onClick={onClose} >
-                  <ListItemText primary={intlText(city.id)}/>
+                <ListItem button key={city.name} onClick={this.onClick(city)} >
+                  <ListItemText primary={city.name}/>
                 </ListItem>
               </UnstyledBackendLink>
             ))}
           </List>
+          { saveCallback && (
+            <FormControlLabel
+              control={<Checkbox checked={this.state.save} onChange={e => this.setState({save: e.target.checked})} />}
+              label={intlText('save_selection')}
+            />
+          )}
         </DialogContent>
       </Dialog>
     );
