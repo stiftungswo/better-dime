@@ -5,6 +5,7 @@ import Select from '../fields/Select';
 type Props = DimeCustomFieldProps<number>;
 
 const statuses = {
+  0: 'Entwurf',
   1: 'Offeriert',
   2: 'Bestätigt',
   3: 'Abgelehnt',

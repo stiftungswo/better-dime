@@ -296,6 +296,9 @@
 
   "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
+  "view.offer.prending_warning_dialog.title": "Offerte ist noch ausstehend!",
+  "view.offer.prending_warning_dialog.warning": "Diese Offerte ist ein Entwurf oder noch ausstehend. Sollte der Offertenstatus auf \"Bestätigt\" gesetzt werden? (Wurde die Offerte bereits vom Kunden unterschrieben?)",
+
   "view.offer.position_renderer.note": "Hinweis",
   "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
   "view.offer.position_renderer.rate_unit": "Tariftyp",
