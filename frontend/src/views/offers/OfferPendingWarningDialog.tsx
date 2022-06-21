@@ -39,7 +39,7 @@ interface Props {
 export default class OfferPendingWarningDialog extends React.Component<Props> {
   render() {
     const { onClose, onYes, onNo, open } = this.props;
-    const idPrefix = 'view.offer.prending_warning_dialog';
+    const idPrefix = 'view.offer.pending_warning_dialog';
     const intlText = wrapIntl(this.props.intl!, idPrefix);
 
     return (

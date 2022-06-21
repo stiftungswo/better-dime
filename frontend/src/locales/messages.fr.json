@@ -121,6 +121,11 @@
   "form.fields.timetrack.time_effort_value_field.select_error_message": "Le champ Select renvoie une valeur qui n'était pas présente dans les options initiales !",
   "form.fields.timetrack.time_effort_value_field.invalid_number_warning": "Attention : seuls des nombres entiers (par ex. 8) ou des nombres séparés par un point décimal (par ex. 8.5) peuvent être saisis! Si aucun nombre valide n'est saisi, l'entrée ne peut pas être enregistrée!",
 
+  "form.select.status.draft": "Brouillon",
+  "form.select.status.offered": "Offert",
+  "form.select.status.confirmed": "Confirmée",
+  "form.select.status.rejected": "Rejetée",
+
   "form.view.warn_discard_changes": "Rejeter les modifications?",
 
 
@@ -281,7 +286,7 @@
 
   "view.offer.form.save_first": "Enregistrer en premier!",
   "view.offer.form.create_project_from_offer": "Créer un projet à partir d'une offre",
-  "view.offer.form.locked_offer": "L'offre est à l'état \"Bestbestätigt\" et ne peut donc plus être modifiée. Pour adapter l'offre, changez d'abord le statut",
+  "view.offer.form.locked_offer": "L'offre est à l'état \"Confirmé\" et ne peut donc plus être modifiée. Pour adapter l'offre, changez d'abord le statut.",
   "view.offer.form.customer": "Client",
   "view.offer.form.address": "Adresse",
   "view.offer.form.status": "Statut",
@@ -301,6 +306,9 @@
   "view.offer.position_renderer.rate_unit": "Type de tarif",
   "view.offer.position_renderer.amount": "Quantité",
   "view.offer.position_renderer.total": "Total CHF (avec TVA)",
+
+  "view.offer.pending_warning_dialog.title": "L'offre est en attente!",
+  "view.offer.pending_warning_dialog.warning": "Cette offre est un brouillon ou est encore en attente. Le statut de l'offre doit-il être réglé sur \"Confirmé\"? (L'offre a-t-elle déjà été signée par le client?)",
 
   "view.offer.schema.category_required": "Une Offre nécessite au moins un domaine d'activité attribué.",
   "view.offer.schema.cost_group_required": "Une Offre nécessite au moins un centre de coûts attribué.",
