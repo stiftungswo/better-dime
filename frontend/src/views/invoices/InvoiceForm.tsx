@@ -161,6 +161,10 @@ export default class InvoiceForm extends React.Component<Props> {
           )
         }
         render={(props: FormikProps<Invoice>) => {
+          // reset dateRangeDirty when switching between invoices.
+          if (this.state.dateRangeDirty && !props.dirty) {
+            this.setState({dateRangeDirty: false});
+          }
           return (
             <React.Fragment>
               <form onSubmit={props.handleSubmit}>
