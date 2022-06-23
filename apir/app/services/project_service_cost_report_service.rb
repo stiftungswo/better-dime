@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class ProjectServiceCostReportService
-  attr_accessor :range
+  attr_accessor :range, :with_vat
   attr_accessor :projects, :project_efforts, :project_positions, :services, :effort_costs, :effort_costs_by_service
 
   def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year), selected_services, with_vat)
     raise StandardError, "Non-integer service IDs." unless selected_services.all? {|i| i =~ /^[0-9]+$/ }
     self.range = range
+    self.with_vat = with_vat
     # turn [] into nil
     service_filter = selected_services.present? ? selected_services : nil
     self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service)
@@ -15,7 +16,7 @@ class ProjectServiceCostReportService
     self.projects = Project.where(id: project_positions.select("projects.id"))
     self.services = Service.where(id: service_filter || project_positions.select("services.id")).order(name: :asc)
     charge = "price_per_rate * project_efforts.value / rate_units.factor"
-    if with_vat
+    if self.with_vat
       charge = charge + " * (1 + project_positions.vat)"
     end
     self.effort_costs = project_positions.group("project_id", "services.id").sum(charge)
@@ -59,18 +60,21 @@ class ProjectServiceCostReportService
     ["Projekt ID", "Projekt", "Tätigkeitsbereich IDs", "Tätigkeitsbereiche"] + services.map(&:name) + ["Total"]
   end
 
-  def footer
+  def footers
     total_costs = services.map do |service|
       (effort_costs_by_service[service.id] || 0.0)
     end
-    ["", "", "", "Total"] + total_costs.map { |cost| to_francs(cost) } + [to_francs(total_costs.sum())]
+    [
+      ["", "", "", "Total"] + total_costs.map { |cost| to_francs(cost) } + [to_francs(total_costs.sum())],
+      ["", "", "", "(Alles in CHF, " + (self.with_vat ? "mit" : "ohne") + " MWSt.)"]
+    ]
   end
 
   def table
     t = []
     t << header
     t += rows
-    t << footer
+    t += footers
     t
   end
 

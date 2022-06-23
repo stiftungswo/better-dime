@@ -12,7 +12,9 @@ module V2
     end
 
     def project
-      @report = ProjectServiceCostReportService.new(timerange, report_params[:services], report_params[:with_vat])
+      # turn "false" into false, so that  if with_vat ... end  does the right thing
+      with_vat = ActiveRecord::Type::Boolean.new.deserialize(report_params[:with_vat])
+      @report = ProjectServiceCostReportService.new(timerange, report_params[:services], with_vat)
     end
 
     private
