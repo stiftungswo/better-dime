@@ -40,7 +40,7 @@ class DimeSnackbarInner extends React.Component<Props> {
         open={notifier.open}
         autoHideDuration={messageInfo.autoHideDuration as any} // tslint:disable-line:no-any ; null is valid according to docs
         onClose={notifier.handleClose}
-        onExited={notifier.handleExited}
+        TransitionProps={{onExited: notifier.handleExited}}
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
