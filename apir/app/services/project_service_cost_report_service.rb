@@ -12,7 +12,7 @@ class ProjectServiceCostReportService
     service_filter = selected_services.present? ? selected_services : nil
     self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service)
       # if service_filter is nil, we don't want it as an argument -> use compact
-      .where({"rate_units.is_time" => true, "project_efforts.date" => range, "service_id" => service_filter}.compact)
+      .where({"project_efforts.date" => range, "service_id" => service_filter}.compact)
     self.projects = Project.where(id: project_positions.select("projects.id"))
     self.services = Service.where(id: service_filter || project_positions.select("services.id")).order(name: :asc)
     charge = "price_per_rate * project_efforts.value / rate_units.factor"

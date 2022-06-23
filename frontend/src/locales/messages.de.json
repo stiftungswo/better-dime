@@ -424,7 +424,7 @@
 
   "view.report.service_cost.grouping": "Gruppierung",
   "view.report.service_cost.title": "Geldbetrag pro Service",
-  "view.report.service_cost.include_vat": "Inklusive MWSt.?",
+  "view.report.service_cost.with_vat": "Inklusive MWSt.?",
 
   "view.report.service_hour.grouping": "Gruppierung",
   "view.report.service_hour.title": "Stunden pro Service",
