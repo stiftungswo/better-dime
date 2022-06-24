@@ -65,7 +65,7 @@
   "general.action.logout": "Abmelden",
   "general.action.fetch": "Laden",
   "general.action.download": "Herunterladen",
-  
+
   "general.schema.plz_digits": "Die Postleitzahl muss mindestens vier Stellen umfassen.",
   "general.schema.category_has_weight": "Das Gewicht eines Tätigkeitsbereiches muss grösser als 0 sein.",
   "general.schema.cost_group_has_weight": "Das Gewicht einer Kostenstelle muss grösser als 0 sein.",
@@ -121,6 +121,11 @@
   "form.fields.timetrack.time_effort_value_field.select_error_message": "Das Select-Field liefert einen Wert zurück, welcher nicht vorhanden war in den ursprünglichen Optionen!",
   "form.fields.timetrack.time_effort_value_field.invalid_number_warning": "Achtung: Es können nur ganze Zahlen (z.B. 8) oder Zahlen, welche mit einem Dezimalpunkt getrennt sind (z.B. 8.5), eingegeben werden! Falls keine gültige Zahl eingegeben wird, kann der Eintrag nicht gespeichert werden!",
 
+  "form.select.status.draft": "Entwurf",
+  "form.select.status.offered": "Offeriert",
+  "form.select.status.confirmed": "Bestätigt",
+  "form.select.status.rejected": "Abgelehnt",
+
   "form.view.warn_discard_changes": "Änderungen verwerfen?",
 
 
@@ -148,7 +153,8 @@
   "layout.navigation.customers.transfer": "Import / Export",
   "layout.navigation.reports": "Rapporte",
   "layout.navigation.reports.daily": "Wochenrapport",
-  "layout.navigation.reports.service": "Service-Rapporte",
+  "layout.navigation.reports.service_hour": "Servicestunden-Rapport",
+  "layout.navigation.reports.service_cost": "Servicekosten-Rapport",
   "layout.navigation.reports.revenue": "Umsatzrapport",
   "layout.navigation.reports.employees": "Mitarbeiterrapport",
   "layout.navigation.reports.project": "Projektrapport",
@@ -233,7 +239,7 @@
   "view.employee.work_period_subform.hourly_pay": "Stundenlohn",
 
   "view.employee_group.overview.title": "Mitarbeiter Gruppen",
-  
+
   "view.holiday.overview.title": "Feiertage",
   "view.holiday.overview.delete_warning": "Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!",
   "view.holiday.overview.duration": "Dauer",
@@ -296,6 +302,9 @@
 
   "view.offer.overview.delete_warning": "Willst du diese Offerte wirklich löschen? Falls ein Projekt aus der Offerte erstellt wurde, kann dessen Restbudget nicht mehr berechnet werden. Zusätzlich werden die Abzüge bei der Erstellung einer Rechnung nicht mehr automatisch gesetzt.",
 
+  "view.offer.pending_warning_dialog.title": "Offerte ist noch ausstehend!",
+  "view.offer.pending_warning_dialog.warning": "Diese Offerte ist ein Entwurf oder noch ausstehend. Sollte der Offertenstatus auf \"Bestätigt\" gesetzt werden? (Wurde die Offerte bereits vom Kunden unterschrieben?)",
+
   "view.offer.position_renderer.note": "Hinweis",
   "view.offer.position_renderer.note_body": "Es muss zuerst eine Tarif-Gruppe ausgewählt sein, bevor neue Positionen zur Offerte hinzugefügt werden können.",
   "view.offer.position_renderer.rate_unit": "Tariftyp",
@@ -306,7 +315,7 @@
   "view.offer.schema.cost_group_required": "Eine Offerte benötigt mindestens eine zugewiesene Kostenstelle.",
 
   "view.offer.update.update_offer": "Offerte bearbeiten",
-  
+
   "view.person.addresses_subform_inline.street": "Strasse",
   "view.person.addresses_subform_inline.supplement": "Addresszusatz",
   "view.person.addresses_subform_inline.zip": "PLZ",
@@ -318,7 +327,7 @@
   "view.person.addresses_subform_inline.addresses": "Adressen",
 
   "view.person.create.title": "Kunde erfassen",
-  
+
   "view.person.form.solutation": "Anrede",
   "view.person.form.department": "Abteilung",
   "view.person.form.use_department_address": "Adressrelevant?",
@@ -413,8 +422,12 @@
   "view.report.project.price": "Preis",
   "view.report.project.additional_costs": "Zusätzliche Kosten",
 
-  "view.report.service.grouping": "Gruppierung",
-  "view.report.service.title": "Stunden pro Service",
+  "view.report.service_cost.grouping": "Gruppierung",
+  "view.report.service_cost.title": "Geldbetrag pro Service",
+  "view.report.service_cost.with_vat": "Inklusive MWSt.?",
+
+  "view.report.service_hour.grouping": "Gruppierung",
+  "view.report.service_hour.title": "Stunden pro Service",
 
   "view.service.create.title": "Service erstellen",
 

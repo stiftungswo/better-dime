@@ -40,7 +40,8 @@ import { EmployeesReport } from './views/reports/EmployeesReport';
 import { PercentageReport } from './views/reports/PercentageReport';
 import { ProjectReport } from './views/reports/ProjectReport';
 import { RevenueReport } from './views/reports/RevenueReport';
-import { ServiceReports } from './views/reports/ServiceReports';
+import { ServiceCostReports } from './views/reports/ServiceCostReports';
+import { ServiceHourReports } from './views/reports/ServiceHourReports';
 import ServiceCreate from './views/services/ServiceCreate';
 import ServiceOverview from './views/services/ServiceOverview';
 import ServiceUpdate from './views/services/ServiceUpdate';
@@ -90,7 +91,8 @@ class App extends React.Component {
             <ProtectedRoute exact path="/companies/:id" component={CompanyUpdate} />
             <ProtectedRoute exact path="/customers/transfer" component={CustomerImportExportOverview} />
             <ProtectedRoute exact path="/reports/daily" component={DailyReport} />
-            <ProtectedRoute exact path="/reports/service" component={ServiceReports} />
+            <ProtectedRoute exact path="/reports/service-hours" component={ServiceHourReports} />
+            <ProtectedRoute exact path="/reports/service-costs" component={ServiceCostReports} />
             <ProtectedRoute exact path="/reports/revenue" component={RevenueReport} />
             <ProtectedRoute exact path="/reports/employees" component={EmployeesReport} />
             <ProtectedRoute exact path="/reports/project" component={ProjectReport} />

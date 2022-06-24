@@ -56,7 +56,7 @@ export const offerSchema = localizeSchema(() => {
 export const offerTemplate = () => ({
   id: undefined,
   name: '',
-  status: 1,
+  status: 0,
   short_description: '',
   description: '',
   positions: [],

@@ -45,6 +45,7 @@ import { OfferCostgroupSubform } from '../shared_opi/CostgroupSubform';
 import AddCCDialog from './AddCCDialog';
 import OfferDiscountSubform from './OfferDiscountSubform';
 import Navigator from './OfferNavigator';
+import OfferPendingWarningDialog from './OfferPendingWarningDialog';
 import OfferPositionRenderer from './OfferPositionRenderer';
 import { offerSchema } from './offerSchema';
 
@@ -75,6 +76,7 @@ class OfferForm extends React.Component<Props> {
   state = {
     loading: true,
     date: undefined,
+    pendingWarningOpen: false,
   };
   // set rateGroup based on selected customer.
   handleCustomerChange: OnChange<Offer> = (current, next, formik) => {
@@ -118,7 +120,6 @@ class OfferForm extends React.Component<Props> {
   handleConfirm = (offer: Offer, costgroup: number, category: number) => {
     this.doCreateProject(offer, costgroup, category);
   }
-
   tryCreateProject = (offer: Offer) => {
     if (offer.costgroup_distributions && offer.costgroup_distributions.length > 0
        && offer.category_distributions && offer.category_distributions.length > 0) {
@@ -126,6 +127,20 @@ class OfferForm extends React.Component<Props> {
     } else {
       // for legacy projects, open the popup asking for costgroup & category.
       this.props.offerStore!.creatingProject = true;
+    }
+  }
+  acceptThenCreate = (offer: Offer) => {
+    // set offer status to accepted
+    offer.status = 2;
+    this.props.onSubmit(offer);
+    this.tryCreateProject(offer);
+  }
+  handleCreateProject = (offer: Offer) => {
+    // status = Entwurf / Ausstehend -> show warning
+    if (offer.status === 0 || offer.status === 1) {
+      this.setState({...this.state, pendingWarningOpen: true});
+    } else {
+      this.tryCreateProject(offer);
     }
   }
 
@@ -160,14 +175,24 @@ class OfferForm extends React.Component<Props> {
                   citySelectionSaveCallback={this.handleLocationSelection}
                 />
                 {!offer.project_id && (
-                  <ActionButton
-                    action={() => this.tryCreateProject(offer)}
-                    color={'inherit'}
-                    icon={ProjectIcon}
-                    secondaryIcon={AddIcon}
-                    disabled={dirty}
-                    title={dirty ? intl.formatMessage({id: 'view.offer.form.save_first'}) : intl.formatMessage({id: 'view.offer.form.create_project_from_offer'})}
-                  />
+                  <>
+                    <ActionButton
+                      action={() => this.handleCreateProject(offer)}
+                      color={'inherit'}
+                      icon={ProjectIcon}
+                      secondaryIcon={AddIcon}
+                      disabled={dirty}
+                      title={dirty ? intl.formatMessage({id: 'view.offer.form.save_first'}) : intl.formatMessage({id: 'view.offer.form.create_project_from_offer'})}
+                    />
+                    {this.state.pendingWarningOpen && (
+                      <OfferPendingWarningDialog
+                        open
+                        onYes={() => this.acceptThenCreate(offer)}
+                        onNo={() => this.tryCreateProject(offer)}
+                        onClose={() => this.setState({...this.state, pendingWarningOpen: false})}
+                      />
+                    )}
+                  </>
                 )}
               </>
             ) : undefined

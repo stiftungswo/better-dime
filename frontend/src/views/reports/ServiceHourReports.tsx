@@ -24,7 +24,7 @@ interface Props {
   inject('mainStore'),
   observer,
 )
-export class ServiceReports extends React.Component<Props> {
+export class ServiceHourReports extends React.Component<Props> {
   state = {
     start: moment().startOf('year'),
     end: moment().endOf('year'),
@@ -32,11 +32,11 @@ export class ServiceReports extends React.Component<Props> {
   };
 
   render() {
-    const idPrefix = 'view.report.service';
+    const idPrefix = 'view.report.service_hour';
     const intlText = wrapIntl(this.props.intl!, idPrefix);
     return (
       <>
-        <DimeAppBar title={intlText('layout.navigation.reports.service', true)} />
+        <DimeAppBar title={intlText('layout.navigation.reports.service_hour', true)} />
 
         <DimeContent loading={false}>
           <Typography variant={'h5'}> <FormattedMessage id={idPrefix + '.title'} /> </Typography>
