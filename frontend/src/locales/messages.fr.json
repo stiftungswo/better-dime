@@ -153,7 +153,8 @@
   "layout.navigation.customers.transfer": "Import / Export",
   "layout.navigation.reports": "Rapports",
   "layout.navigation.reports.daily": "Rapport hebdomadaire",
-  "layout.navigation.reports.service": "Rapport de service",
+  "layout.navigation.reports.service_hour": "Rapport des heures par service",
+  "layout.navigation.reports.service_cost": "Rapport des coûts par service",
   "layout.navigation.reports.revenue": "Rapport de ventes",
   "layout.navigation.reports.employees": "Rapport des employés",
   "layout.navigation.reports.project": "Rapport de projet",
@@ -421,8 +422,13 @@
   "view.report.project.price": "Prix",
   "view.report.project.additional_costs": "Frais supplémentaires",
 
-  "view.report.service.grouping": "Regroupement",
-  "view.report.service.title": "Heures par service",
+  "view.report.service_cost.grouping": "Regroupement",
+  "view.report.service_cost.title": "Argent par service",
+  "view.report.service_cost.with_vat": "Avec TVA?",
+
+  "view.report.service_hour.grouping": "Regroupement",
+  "view.report.service_hour.title": "Heures par service",
+
 
   "view.service.create.title": "Créer un service",
 

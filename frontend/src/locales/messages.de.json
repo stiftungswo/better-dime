@@ -153,7 +153,8 @@
   "layout.navigation.customers.transfer": "Import / Export",
   "layout.navigation.reports": "Rapporte",
   "layout.navigation.reports.daily": "Wochenrapport",
-  "layout.navigation.reports.service": "Service-Rapporte",
+  "layout.navigation.reports.service_hour": "Servicestunden-Rapport",
+  "layout.navigation.reports.service_cost": "Servicekosten-Rapport",
   "layout.navigation.reports.revenue": "Umsatzrapport",
   "layout.navigation.reports.employees": "Mitarbeiterrapport",
   "layout.navigation.reports.project": "Projektrapport",
@@ -421,8 +422,12 @@
   "view.report.project.price": "Preis",
   "view.report.project.additional_costs": "Zusätzliche Kosten",
 
-  "view.report.service.grouping": "Gruppierung",
-  "view.report.service.title": "Stunden pro Service",
+  "view.report.service_cost.grouping": "Gruppierung",
+  "view.report.service_cost.title": "Geldbetrag pro Service",
+  "view.report.service_cost.with_vat": "Inklusive MWSt.?",
+
+  "view.report.service_hour.grouping": "Gruppierung",
+  "view.report.service_hour.title": "Stunden pro Service",
 
   "view.service.create.title": "Service erstellen",
 
