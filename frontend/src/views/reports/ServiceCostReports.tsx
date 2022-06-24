@@ -41,7 +41,6 @@ export class ServiceCostReports extends React.Component<Props> {
   }
 
   render() {
-    console.log(this.state); // tslint:disable-line:no-console
     const idPrefix = 'view.report.service_cost';
     const intl = this.props.intl!;
     const intlText = wrapIntl(intl, idPrefix);
