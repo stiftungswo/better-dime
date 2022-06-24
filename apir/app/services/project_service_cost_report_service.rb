@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#:nocov:
 class ProjectServiceCostReportService
   attr_accessor :range, :with_vat
   attr_accessor :projects, :project_efforts, :project_positions, :services, :effort_costs, :effort_costs_by_service
@@ -83,3 +84,4 @@ class ProjectServiceCostReportService
     puts TTY::Table.new rows: rows
   end
 end
+#:nocov:

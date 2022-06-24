@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+#:nocov:
 class ProjectServiceHourReportService
   attr_accessor :range
   attr_accessor :projects, :project_efforts, :project_positions, :services, :effort_minutes, :effort_minutes_by_service
@@ -67,3 +68,4 @@ class ProjectServiceHourReportService
     puts TTY::Table.new rows: rows
   end
 end
+#:nocov:
