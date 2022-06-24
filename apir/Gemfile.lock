@@ -278,7 +278,7 @@ GEM
       i18n (>= 1.8.3, < 2)
       rqrcode (>= 1.1.2, < 2)
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-test (1.1.0)
