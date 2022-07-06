@@ -168,6 +168,20 @@ export interface Service {
   service_rates: ServiceRate[];
   order: number;
 }
+export interface ServiceCategoryStub {
+  id?: number;
+  name: string;
+  // two digits, use to build this.order and the order of services.
+  number: number;
+}
+export interface ServiceCategory extends ServiceCategoryStub {
+  // used for post / put requests. otherwise the same as parent.id
+  parent_category_id: number | null;
+  // used for rendering in the frontend
+  parent: ServiceCategoryStub | null;
+  // order is a 4-digit integer based on this.number and parent.number
+  order: number;
+}
 
 export interface ServiceRate {
   id?: number;

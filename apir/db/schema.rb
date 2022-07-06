@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_23_131900) do
+ActiveRecord::Schema.define(version: 2022_07_05_073649) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -492,6 +492,17 @@ ActiveRecord::Schema.define(version: 2022_05_23_131900) do
     t.integer "deleted_by"
   end
 
+  create_table "service_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "parent_category_id"
+    t.string "name", null: false
+    t.integer "number", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_service_categories_on_deleted_at"
+    t.index ["parent_category_id"], name: "index_service_categories_on_parent_category_id"
+  end
+
   create_table "service_rates", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "rate_group_id", null: false, unsigned: true
     t.integer "service_id", null: false, unsigned: true
@@ -520,6 +531,8 @@ ActiveRecord::Schema.define(version: 2022_05_23_131900) do
     t.integer "updated_by"
     t.integer "deleted_by"
     t.integer "order", default: 0, null: false
+    t.bigint "service_category_id"
+    t.index ["service_category_id"], name: "index_services_on_service_category_id"
   end
 
   create_table "versions", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -605,9 +618,11 @@ ActiveRecord::Schema.define(version: 2022_05_23_131900) do
   add_foreign_key "projects", "employees", column: "accountant_id", name: "projects_accountant_id_foreign", on_delete: :nullify
   add_foreign_key "projects", "offers", name: "projects_offer_id_foreign", on_delete: :nullify
   add_foreign_key "projects", "rate_groups", name: "projects_rate_group_id_foreign"
+  add_foreign_key "service_categories", "service_categories", column: "parent_category_id"
   add_foreign_key "service_rates", "rate_groups", name: "service_rates_rate_group_id_foreign"
   add_foreign_key "service_rates", "rate_units", name: "service_rates_rate_unit_id_foreign", on_delete: :cascade
   add_foreign_key "service_rates", "services", name: "service_rates_service_id_foreign", on_delete: :cascade
+  add_foreign_key "services", "service_categories"
   add_foreign_key "whitelisted_jwts", "employees", name: "whitelisted_jwts_employee_id_foreign", on_delete: :nullify
   add_foreign_key "work_periods", "employees", name: "work_periods_employee_id_foreign", on_delete: :cascade
 end

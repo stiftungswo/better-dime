@@ -67,6 +67,7 @@ Rails.application.routes.draw do
     resources :services do
       post "duplicate", on: :member
     end
+    resources :service_categories
 
     resources :project_categories do
       put "archive", on: :member
