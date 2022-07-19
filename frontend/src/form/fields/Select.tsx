@@ -201,6 +201,15 @@ class IntegrationReactSelectInner extends React.Component<any> {
   get value() {
     if (this.props.isMulti) {
       return this.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
+    } else if (this.props.isGrouped) {
+      for (const group of this.options) {
+        for (const e of group.options) {
+          if (e.value === this.props.value) {
+            return e;
+          }
+        }
+      }
+      return '';
     } else {
       return this.options.find((e: any) => e.value === this.props.value) || '';
     }
@@ -348,5 +357,6 @@ type ValueType<T> = T extends number[] ? Multi : T extends Single ? Single : nev
 
 export interface DimeSelectFieldProps<T> extends DimeCustomFieldProps<ValueType<T>> {
   isMulti?: boolean;
+  isGrouped?: boolean;
   fullWidth?: boolean;
 }

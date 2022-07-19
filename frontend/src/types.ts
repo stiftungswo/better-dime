@@ -167,6 +167,7 @@ export interface Service {
   archived: boolean;
   service_rates: ServiceRate[];
   order: number;
+  service_category_id: number | null;
 }
 export interface ServiceCategoryStub {
   id?: number;

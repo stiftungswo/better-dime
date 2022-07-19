@@ -63,7 +63,7 @@ export const Navigation = ({ drawerOpen, handleDrawerOpen, isAdmin }: Navigation
       </Collapsible>
       <Collapsible icon={MasterDataIcon} label={intlText('data')} handleDrawerOpen={handleDrawerOpen} drawerOpen={drawerOpen}>
         <NavItem nested to={'/services'} label={intlText('data.services')} icon={ServiceIcon} />
-        <NavItem nested to={'/service_categories'} label={intlText('data.services')} icon={ServiceIcon} />
+        <NavItem nested to={'/service_categories'} label={intlText('data.service_categories')} icon={ServiceIcon} />
         <NavItem nested to={'/rate_groups'} label={intlText('data.rate_groups')} icon={RateGroupIcon} />
         {isAdmin && <NavItem nested to={'/rate_units'} label={intlText('data.rate_units')} icon={RateUnitIcon} />}
         {isAdmin && <NavItem nested to={'/employee_groups'} label={intlText('data.employee_groups')} icon={EmployeeIcon} />}

@@ -27,7 +27,7 @@ interface Props {
 )
 export default class ServiceCategoryOverview extends React.Component<Props> {
   render() {
-    const intlText = wrapIntl(this.props.intl!, 'view.location.overview');
+    const intlText = wrapIntl(this.props.intl!, 'view.service_category.overview');
     const serviceCategoryStore = this.props.serviceCategoryStore;
     const columns: Array<Column<ServiceCategory>> = [
       {
@@ -37,20 +37,20 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
         defaultSort: 'asc',
       },
       {
-        id: 'number',
-        numeric: false,
-        label: 'Nummer',
-        defaultSort: 'asc',
-      },
-      {
         id: 'name',
         numeric: false,
         label: intlText('general.name', true),
       },
       {
+        id: 'number',
+        numeric: false,
+        label: intlText('number'),
+        defaultSort: 'asc',
+      },
+      {
         id: 'parent',
         numeric: false,
-        label: 'url',
+        label: intlText('parent'),
         format: e => (e.parent ? e.parent.name : '<root>'),
       },
     ];
@@ -58,7 +58,7 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
     return (
       <EditableOverview
         searchable
-        title={intlText('general.location.plural', true)}
+        title={intlText('general.service_category.plural', true)}
         store={serviceCategoryStore!}
         columns={columns}
         schema={serviceCategorySchema}
@@ -66,8 +66,8 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
         renderForm={() => (
           <>
             <DimeField component={TextField} required name={'name'} label={intlText('general.name', true)} />
-            <DimeField component={NumberField} required name={'number'} label={intlText('sorting_order')} />
-            <DimeField component={ServiceCategorySelect} topLevelOnly nullable name={'parent_category_id'} label={'parent'} />
+            <DimeField component={NumberField} required name={'number'} label={intlText('number')} />
+            <DimeField component={ServiceCategorySelect} topLevelOnly nullable name={'parent_category_id'} label={intlText('parent')} />
           </>
         )}
       />

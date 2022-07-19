@@ -19,6 +19,8 @@
   "general.invoice.plural": "Rechnungen",
   "general.service": "Service",
   "general.service.plural": "Services",
+  "general.service_category": "Service-Kategorie",
+  "general.service_category.plural": "Services-Kategorien",
   "general.tag": "Tag",
   "general.tag.plural": "Tags",
   "general.comment": "Kommentar",
@@ -161,6 +163,7 @@
   "layout.navigation.reports.costgroup": "Kostenstellenrapport",
   "layout.navigation.data": "Stammdaten",
   "layout.navigation.data.services": "Services",
+  "layout.navigation.data.service_categories": "Service-Kategorien",
   "layout.navigation.data.rate_groups": "Tarif-Gruppen",
   "layout.navigation.data.rate_units": "Tarif-Typen",
   "layout.navigation.data.employee_groups": "Mitarbeiter-Gruppen",
@@ -437,10 +440,17 @@
   "view.service.form.sorting_order": "Sortierreihenfolge",
   "view.service.form.sorting_order_details": "Erläuterung Sortierreihenfolge",
   "view.service.form.unit": "Einheit",
+  "view.service.form.service_category": "Kategorie",
+  "view.service.form.service_number": "Position innerhalb der Kategorie",
+  "view.service.form.computed_order": "Berechnete Sortierreihenfolge",
 
   "view.service.overview.order": "Reihenf.",
 
   "view.service.update.edit_service": "Service bearbeiten",
+
+  "view.service_category.overview.sorting_order": "Reihenfolge",
+  "view.service_category.overview.number": "Kategorienzahl",
+  "view.service_category.overview.parent": "Überkategorie",
 
   "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
   "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",

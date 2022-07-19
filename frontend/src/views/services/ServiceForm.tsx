@@ -9,7 +9,9 @@ import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
+import { ServiceCategoryStore } from 'src/stores/serviceCategoryStore';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
+import { ServiceCategorySelect } from '../../form/entitySelect/ServiceCategorySelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
 import CurrencyField from '../../form/fields/CurrencyField';
 import { DimeField } from '../../form/fields/formik';
@@ -32,6 +34,7 @@ export interface Props extends FormViewProps<Service> {
   rateUnitSelectDisabled: boolean;
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
+  serviceCategoryStore?: ServiceCategoryStore;
   globalSettingStore?: GlobalSettingStore;
   intl?: IntlShape;
   service: Service | undefined;
@@ -39,7 +42,7 @@ export interface Props extends FormViewProps<Service> {
 
 @compose(
   injectIntl,
-  inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore'),
+  inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore', 'serviceCategoryStore'),
   observer,
 )
 export default class ServiceForm extends React.Component<Props> {
@@ -51,8 +54,15 @@ export default class ServiceForm extends React.Component<Props> {
     Promise.all([
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
+      this.props.serviceCategoryStore!.fetchAll(),
       this.props.globalSettingStore!.fetchOne(0),
     ]).then(() => this.setState({ loading: false }));
+  }
+
+  computeOrder(props: FormikProps<Service>) {
+    const groupNumber = this.props.serviceCategoryStore!.entities
+      .find(e => e.id === props.values.service_category_id)?.order || 0;
+    return groupNumber * 100 + props.values.order; // TODO: use number instead of order
   }
 
   render() {
@@ -96,12 +106,22 @@ export default class ServiceForm extends React.Component<Props> {
                       </Grid>
                       <Grid item xs={12} lg={6}>
                         <Grid item xs={12}>
-                          {/*FIXME this field doesn't exist on the backend?*/}
+                          {/*FIXME this field doesn't exist on the backend?
                           <DimeField component={SwitchField} name={'chargeable'} label={intlText('chargeable')} />
+                          */}
                         </Grid>
                         <Grid item xs={12}>
                           <DimeField component={SwitchField} name={'archived'} label={intlText('archived')} fullWidth={true} />
                         </Grid>
+                      </Grid>
+                      <Grid item xs={12} lg={4}>
+                        <DimeField component={ServiceCategorySelect} nullable required name={'service_category_id'} label={intlText('service_category')} />
+                      </Grid>
+                      <Grid item xs={12} lg={4}>
+                        <DimeField component={NumberField} required name={'number'} label={intlText('service_number')} />
+                      </Grid>
+                      <Grid item xs={12} lg={4}>
+                        <NumberField disabled value={this.computeOrder(props)} label={intlText('computed_order')} onChange={() => undefined} />
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>
