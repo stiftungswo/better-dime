@@ -166,7 +166,8 @@ export interface Service {
   chargeable: boolean;
   archived: boolean;
   service_rates: ServiceRate[];
-  order: number;
+  local_order: number; // order inside category
+  order: number; // computed based on local order + service_category_id
   service_category_id: number | null;
 }
 export interface ServiceCategoryStub {
@@ -197,6 +198,7 @@ export interface ServiceListing {
   name: string;
   description: string;
   archived: boolean;
+  service_category_id: number;
   order: number;
 }
 

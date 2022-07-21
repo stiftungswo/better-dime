@@ -444,6 +444,7 @@
   "view.service.form.service_category": "Catégorie",
   "view.service.form.service_number": "Position dans la catégorie",
   "view.service.form.computed_order": "Ordre de tri calculé",
+  "view.service.form.similar_services": "Services dans cette catégorie",
 
   "view.service.overview.order": "Ordre",
 

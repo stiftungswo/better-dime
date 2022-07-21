@@ -1,4 +1,8 @@
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
@@ -10,6 +14,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RateGroupStore } from 'src/stores/rateGroupStore';
 import { ServiceCategoryStore } from 'src/stores/serviceCategoryStore';
+import { ServiceStore } from 'src/stores/serviceStore';
 import { RateUnitSelect } from '../../form/entitySelect/RateUnitSelect';
 import { ServiceCategorySelect } from '../../form/entitySelect/ServiceCategorySelect';
 import { NumberField, SwitchField, TextField } from '../../form/fields/common';
@@ -35,6 +40,7 @@ export interface Props extends FormViewProps<Service> {
   rateGroupStore?: RateGroupStore;
   rateUnitStore?: RateUnitStore;
   serviceCategoryStore?: ServiceCategoryStore;
+  serviceStore?: ServiceStore;
   globalSettingStore?: GlobalSettingStore;
   intl?: IntlShape;
   service: Service | undefined;
@@ -42,7 +48,7 @@ export interface Props extends FormViewProps<Service> {
 
 @compose(
   injectIntl,
-  inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore', 'serviceCategoryStore'),
+  inject('rateGroupStore', 'rateUnitStore', 'globalSettingStore', 'serviceCategoryStore', 'serviceStore'),
   observer,
 )
 export default class ServiceForm extends React.Component<Props> {
@@ -55,6 +61,7 @@ export default class ServiceForm extends React.Component<Props> {
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
       this.props.serviceCategoryStore!.fetchAll(),
+      this.props.serviceStore!.fetchAll(),
       this.props.globalSettingStore!.fetchOne(0),
     ]).then(() => this.setState({ loading: false }));
   }
@@ -62,13 +69,14 @@ export default class ServiceForm extends React.Component<Props> {
   computeOrder(props: FormikProps<Service>) {
     const groupNumber = this.props.serviceCategoryStore!.entities
       .find(e => e.id === props.values.service_category_id)?.order || 0;
-    return groupNumber * 100 + props.values.order; // TODO: use number instead of order
+    return groupNumber * 100 + props.values.local_order;
   }
 
   render() {
     const idPrefix = 'view.service.form';
     const intlText = wrapIntl(this.props.intl!, idPrefix);
     const service = this.props.service ?? {
+      id: undefined,
       name: '',
       description: '',
       vat: 0,
@@ -77,6 +85,10 @@ export default class ServiceForm extends React.Component<Props> {
       service_rates: [],
       order: 0,
     };
+    const otherServicesInCategory = (category: number | null) => this.props.serviceStore!.entities
+      .filter(e => e.service_category_id === category)
+      .filter(e => e.id !== service.id)
+      .sort((e, f) => e.order - f.order);
 
     return (
       <FormView
@@ -118,10 +130,21 @@ export default class ServiceForm extends React.Component<Props> {
                         <DimeField component={ServiceCategorySelect} nullable required name={'service_category_id'} label={intlText('service_category')} />
                       </Grid>
                       <Grid item xs={12} lg={4}>
-                        <DimeField component={NumberField} required name={'number'} label={intlText('service_number')} />
+                        <DimeField component={NumberField} required name={'local_order'} label={intlText('service_number')} />
                       </Grid>
                       <Grid item xs={12} lg={4}>
                         <NumberField disabled value={this.computeOrder(props)} label={intlText('computed_order')} onChange={() => undefined} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <List subheader={<ListSubheader>{intlText('similar_services')}</ListSubheader>}>
+                          {otherServicesInCategory(props.values.service_category_id).map(e =>
+                            <ListItem key={e.id}>
+                              <ListItemText
+                                primary={e.order + ' ' + e.name}
+                              />
+                            </ListItem>,
+                          )}
+                        </List>
                       </Grid>
                       <Grid item xs={12}>
                         <Grid container spacing={1}>

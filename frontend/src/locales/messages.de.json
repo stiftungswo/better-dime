@@ -443,6 +443,7 @@
   "view.service.form.service_category": "Kategorie",
   "view.service.form.service_number": "Position innerhalb der Kategorie",
   "view.service.form.computed_order": "Berechnete Sortierreihenfolge",
+  "view.service.form.similar_services": "Services in dieser Kategorie",
 
   "view.service.overview.order": "Reihenf.",
 
