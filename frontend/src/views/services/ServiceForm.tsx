@@ -127,7 +127,7 @@ export default class ServiceForm extends React.Component<Props> {
                         </Grid>
                       </Grid>
                       <Grid item xs={12} lg={4}>
-                        <DimeField component={ServiceCategorySelect} nullable required name={'service_category_id'} label={intlText('service_category')} />
+                        <DimeField component={ServiceCategorySelect} mode="grouped" nullable required name={'service_category_id'} label={intlText('service_category')} />
                       </Grid>
                       <Grid item xs={12} lg={4}>
                         <DimeField component={NumberField} required name={'local_order'} label={intlText('service_number')} />

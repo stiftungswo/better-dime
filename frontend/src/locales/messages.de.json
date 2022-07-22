@@ -78,6 +78,7 @@
 
   "form.dialog.service_select.service_group": "Service Gruppe",
   "form.dialog.service_select.title": "Service hinzufügen",
+  "form.dialog.service_select.service_category_optional": "(optional) Service-Kategorie",
 
   "form.dialog.city_select.title": "Ort für Unterschrift auswählen",
   "form.dialog.city_select.save_selection": "Auswahl speichern?",

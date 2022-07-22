@@ -67,7 +67,7 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
           <>
             <DimeField component={TextField} required name={'name'} label={intlText('general.name', true)} />
             <DimeField component={NumberField} required name={'number'} label={intlText('number')} />
-            <DimeField component={ServiceCategorySelect} topLevelOnly nullable name={'parent_category_id'} label={intlText('parent')} />
+            <DimeField component={ServiceCategorySelect} mode="toplevel" nullable name={'parent_category_id'} label={intlText('parent')} />
           </>
         )}
       />

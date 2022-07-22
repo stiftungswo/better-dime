@@ -33,6 +33,7 @@ import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceCategoryStore } from '../../stores/serviceCategoryStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Location, Offer, Project } from '../../types';
 import compose from '../../utilities/compose';
@@ -62,13 +63,14 @@ export type Props = {
   costgroupStore?: CostgroupStore;
   projectCategoryStore?: ProjectCategoryStore;
   locationStore?: LocationStore;
+  serviceCategoryStore?: ServiceCategoryStore;
   intl?: IntlShape;
 } & FormViewProps<Offer> &
   RouteComponentProps;
 
 @compose(
   injectIntl,
-  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore', 'locationStore'),
+  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore', 'locationStore', 'serviceCategoryStore'),
   observer,
 )
 class OfferForm extends React.Component<Props> {
@@ -106,6 +108,7 @@ class OfferForm extends React.Component<Props> {
       this.props.costgroupStore!.fetchAll(),
       this.props.projectCategoryStore!.fetchAll(),
       this.props.locationStore!.fetchAll(),
+      this.props.serviceCategoryStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
   }
 

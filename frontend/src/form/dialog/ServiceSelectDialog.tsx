@@ -7,12 +7,14 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { AbstractStore } from '../../stores/abstractStore';
+import { ServiceCategoryStore } from '../../stores/serviceCategoryStore';
 import { ServiceStore } from '../../stores/serviceStore';
-import { PositionGroupings, Service } from '../../types';
+import { PositionGroupings, Service, ServiceCategory } from '../../types';
 import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
+import { ServiceCategorySelect } from '../entitySelect/ServiceCategorySelect';
 import { ServiceSelect } from '../entitySelect/ServiceSelect';
 
 interface Props {
@@ -34,6 +36,7 @@ interface Props {
 export class ServiceSelectDialog extends React.Component<Props> {
   state = {
     serviceId: null,
+    serviceCategoryId: null,
     positionGroupName: defaultPositionGroup().name,
   };
 
@@ -71,7 +74,18 @@ export class ServiceSelectDialog extends React.Component<Props> {
               onChange={positionGroupName => this.setState({ positionGroupName })}
             />
           )}
-          <ServiceSelect<number> label={intlText('general.service', true)} value={this.state.serviceId} onChange={serviceId => this.setState({ serviceId })} />
+          <ServiceCategorySelect<number>
+            label={intlText('service_category_optional')}
+            mode="all"
+            value={this.state.serviceCategoryId}
+            onChange={serviceCategoryId => this.setState({ serviceCategoryId })}
+          />
+          <ServiceSelect<number>
+            label={intlText('general.service', true)}
+            value={this.state.serviceId}
+            onChange={serviceId => this.setState({ serviceId })}
+            categoryFilter={this.state.serviceCategoryId}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleSubmit} disabled={!this.state.serviceId}>

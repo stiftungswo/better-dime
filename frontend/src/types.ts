@@ -168,6 +168,8 @@ export interface Service {
   service_rates: ServiceRate[];
   local_order: number; // order inside category
   order: number; // computed based on local order + service_category_id
+  service_category: ServiceCategoryStub;
+  // used for post / put, otherwise the same as service_category.id
   service_category_id: number | null;
 }
 export interface ServiceCategoryStub {
@@ -175,14 +177,15 @@ export interface ServiceCategoryStub {
   name: string;
   // two digits, use to build this.order and the order of services.
   number: number;
-}
-export interface ServiceCategory extends ServiceCategoryStub {
+  // order is a 4-digit integer based on this.number and parent_category.number
+  // number*100 for top-level categories | parent_category.number*100 + number for subcategories
+  order: number;
   // used for post / put requests. otherwise the same as parent.id
   parent_category_id: number | null;
+}
+export interface ServiceCategory extends ServiceCategoryStub {
   // used for rendering in the frontend
   parent: ServiceCategoryStub | null;
-  // order is a 4-digit integer based on this.number and parent.number
-  order: number;
 }
 
 export interface ServiceRate {
@@ -199,6 +202,7 @@ export interface ServiceListing {
   description: string;
   archived: boolean;
   service_category_id: number;
+  service_category: ServiceCategoryStub;
   order: number;
 }
 
