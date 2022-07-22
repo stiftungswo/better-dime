@@ -175,6 +175,7 @@ export interface Service {
 export interface ServiceCategoryStub {
   id?: number;
   name: string;
+  french_name: string;
   // two digits, use to build this.order and the order of services.
   number: number;
   // order is a 4-digit integer based on this.number and parent_category.number

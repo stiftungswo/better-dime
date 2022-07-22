@@ -453,6 +453,8 @@
   "view.service_category.overview.sorting_order": "Reihenfolge",
   "view.service_category.overview.number": "Kategorienzahl",
   "view.service_category.overview.parent": "Überkategorie",
+  "view.service_category.overview.german_name": "Deutscher Name",
+  "view.service_category.overview.french_name": "Französischer Name",
 
   "view.timetrack.no_entries_found": "Mit den aktuellen Filtern wurden keine Einträge gefunden",
   "view.timetrack.show_empty_groups": "Leere Gruppen anzeigen",

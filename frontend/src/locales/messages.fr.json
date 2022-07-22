@@ -454,6 +454,8 @@
   "view.service_category.overview.sorting_order": "Ordre",
   "view.service_category.overview.number": "Numéro de catégorie",
   "view.service_category.overview.parent": "Surcatégorie",
+  "view.service_category.overview.german_name": "Nom allemand",
+  "view.service_category.overview.french_name": "Nom français",
 
 
   "view.timetrack.no_entries_found": "Aucune entrée n'a été trouvée avec les filtres actuels",

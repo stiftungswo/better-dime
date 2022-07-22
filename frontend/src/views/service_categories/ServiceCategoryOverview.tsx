@@ -11,6 +11,7 @@ import { MainStore } from '../../stores/mainStore';
 import { ServiceCategoryStore } from '../../stores/serviceCategoryStore';
 import { ServiceCategory } from '../../types';
 import compose from '../../utilities/compose';
+import { detectFrench } from '../../utilities/detectFrench';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import { serviceCategorySchema, serviceCategoryTemplate } from './serviceCategorySchema';
 
@@ -28,6 +29,7 @@ interface Props {
 export default class ServiceCategoryOverview extends React.Component<Props> {
   render() {
     const intlText = wrapIntl(this.props.intl!, 'view.service_category.overview');
+    const isFrench = detectFrench(this.props.intl!);
     const serviceCategoryStore = this.props.serviceCategoryStore;
     const columns: Array<Column<ServiceCategory>> = [
       {
@@ -37,21 +39,26 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
         defaultSort: 'asc',
       },
       {
-        id: 'name',
-        numeric: false,
-        label: intlText('general.name', true),
-      },
-      {
         id: 'number',
         numeric: false,
         label: intlText('number'),
         defaultSort: 'asc',
       },
       {
+        id: 'name',
+        numeric: false,
+        label: intlText('german_name'),
+      },
+      {
+        id: 'french_name',
+        numeric: false,
+        label: intlText('french_name'),
+      },
+      {
         id: 'parent',
         numeric: false,
         label: intlText('parent'),
-        format: e => (e.parent ? e.parent.name : '<root>'),
+        format: e => (e.parent ? (isFrench ? e.parent.french_name : e.parent.name) : '---'),
       },
     ];
 
@@ -65,7 +72,8 @@ export default class ServiceCategoryOverview extends React.Component<Props> {
         defaultValues={serviceCategoryTemplate}
         renderForm={() => (
           <>
-            <DimeField component={TextField} required name={'name'} label={intlText('general.name', true)} />
+            <DimeField component={TextField} required name={'name'} label={intlText('german_name')} />
+            <DimeField component={TextField} required name={'french_name'} label={intlText('french_name')} />
             <DimeField component={NumberField} required name={'number'} label={intlText('number')} />
             <DimeField component={ServiceCategorySelect} mode="toplevel" nullable name={'parent_category_id'} label={intlText('parent')} />
           </>
