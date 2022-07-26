@@ -31,6 +31,7 @@ import { ProjectCategoryStore } from '../../stores/projectCategoryStore';
 import { ProjectStore } from '../../stores/projectStore';
 import { RateGroupStore } from '../../stores/rateGroupStore';
 import { RateUnitStore } from '../../stores/rateUnitStore';
+import { ServiceCategoryStore } from '../../stores/serviceCategoryStore';
 import { ServiceStore } from '../../stores/serviceStore';
 import { Invoice, Location, Project } from '../../types';
 import compose from '../../utilities/compose';
@@ -84,6 +85,7 @@ export type Props = {
   rateUnitStore?: RateUnitStore;
   serviceStore?: ServiceStore;
   locationStore?: LocationStore;
+  serviceCategoryStore?: ServiceCategoryStore;
   intl?: IntlShape;
 } & RouteComponentProps &
   FormViewProps<Project>;
@@ -100,6 +102,7 @@ export type Props = {
     'rateGroupStore',
     'rateUnitStore',
     'serviceStore',
+    'serviceCategoryStore',
     'locationStore',
   ),
   observer,

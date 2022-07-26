@@ -42,7 +42,6 @@ export class ServiceCategorySelect<T> extends React.Component<Props<T>> {
       .map(e => ({
         value: e.id,
         label: prettyName(e, this.isFrench),
-        // TODO: fetch store for projects too?
         // indent subcategories for pretty menu
         margin: e.parent === null ?  undefined : '15px',
       }));

@@ -70,7 +70,19 @@ export type Props = {
 
 @compose(
   injectIntl,
-  inject('customerStore', 'employeeStore', 'offerStore', 'projectStore', 'rateGroupStore', 'rateUnitStore', 'serviceStore', 'costgroupStore', 'projectCategoryStore', 'locationStore', 'serviceCategoryStore'),
+  inject(
+    'customerStore',
+    'employeeStore',
+    'offerStore',
+    'projectStore',
+    'rateGroupStore',
+    'rateUnitStore',
+    'serviceStore',
+    'costgroupStore',
+    'projectCategoryStore',
+    'locationStore',
+    'serviceCategoryStore',
+  ),
   observer,
 )
 class OfferForm extends React.Component<Props> {
