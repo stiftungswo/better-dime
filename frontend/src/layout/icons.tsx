@@ -64,6 +64,7 @@ export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
 export { default as EmployeeIcon } from '@material-ui/icons/Person';
 export { default as OfferIcon } from '@material-ui/icons/Description';
 export { default as ServiceIcon } from '@material-ui/icons/RoomService';
+export { default as ServiceCategoryIcon } from '@material-ui/icons/AccountTree';
 export { default as RateGroupIcon } from '@material-ui/icons/Domain';
 export { default as RateUnitIcon } from '@material-ui/icons/AttachMoney';
 export { default as HolidayIcon } from '@material-ui/icons/Weekend';

@@ -16,6 +16,6 @@ class Service < ApplicationRecord
   validates :local_order, numericality: { greater_than_or_equal_to: 0, only_integer: true, less_than_or_equal_to: 100 }
 
   def order
-    100*(service_category.present?  ? service_category.order : 0) + local_order
+    100*(service_category.present?  ? service_category.order : 9999) + local_order
   end
 end

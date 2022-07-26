@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_121641) do
+ActiveRecord::Schema.define(version: 2022_07_22_122027) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -499,6 +499,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_121641) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
+    t.string "french_name", null: false
     t.index ["deleted_at"], name: "index_service_categories_on_deleted_at"
     t.index ["parent_category_id"], name: "index_service_categories_on_parent_category_id"
   end

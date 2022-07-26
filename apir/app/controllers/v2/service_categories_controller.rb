@@ -52,7 +52,7 @@ module V2
     private
 
     def service_category_params
-      params.require(:service_category).permit(:id, :name, :number, :parent_category_id, :deleted_at, :created_at, :updated_at)
+      params.require(:service_category).permit(:id, :name, :french_name, :number, :parent_category_id, :deleted_at, :created_at, :updated_at)
     end
 
     def legacy_params
