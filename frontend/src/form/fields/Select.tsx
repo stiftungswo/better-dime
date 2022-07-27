@@ -111,6 +111,9 @@ function Control(props: any) {
 }
 
 function Option(props: any) {
+  // a slightly hacky way of indenting individual items
+  // used by the ServiceCategory Select in "all" mode.
+  const margin = props.data.margin;
   return (
     <MenuItem
       ref={props.innerRef}
@@ -120,6 +123,7 @@ function Option(props: any) {
         fontWeight: props.isSelected ? 500 : 400,
         whiteSpace: 'unset',
         height: 'auto',
+        ...(margin && { marginLeft: margin}),
       }}
       {...props.innerProps}
     >
@@ -198,7 +202,31 @@ class IntegrationReactSelectInner extends React.Component<any> {
     this.select = React.createRef();
   }
 
+  get groupedValue() {
+    if (this.props.isMulti) {
+      const ret = [];
+      for (const group of this.options) {
+        for (const e of group.options) {
+          if (this.props.value && this.props.value.includes(e.value)) {
+            ret.push(e);
+          }
+        }
+      }
+      return ret;
+    } else {
+      for (const group of this.options) {
+        for (const e of group.options) {
+          if (e.value === this.props.value) {
+            return e;
+          }
+        }
+      }
+      return '';
+    }
+  }
+
   get value() {
+    if (this.props.isGrouped) { return this.groupedValue; }
     if (this.props.isMulti) {
       return this.options.filter((e: any) => this.props.value && this.props.value.includes(e.value));
     } else {
@@ -270,7 +298,7 @@ class IntegrationReactSelectInner extends React.Component<any> {
       : undefined;
 
     const selectStyles = {
-      input: (base: any) => ({
+      input: (base: any, { data, isDisabled, isFocused, isSelected }: any) => ({
         ...base,
         'color': theme.palette.text.primary,
         '& input': {
@@ -348,5 +376,6 @@ type ValueType<T> = T extends number[] ? Multi : T extends Single ? Single : nev
 
 export interface DimeSelectFieldProps<T> extends DimeCustomFieldProps<ValueType<T>> {
   isMulti?: boolean;
+  isGrouped?: boolean;
   fullWidth?: boolean;
 }

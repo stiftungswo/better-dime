@@ -13,7 +13,6 @@ import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
-import { ServiceSelect } from '../entitySelect/ServiceSelect';
 
 interface Props {
   open: boolean;

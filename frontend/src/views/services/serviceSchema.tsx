@@ -16,6 +16,7 @@ export const serviceSchema = localizeSchema(() =>
         value: requiredNumber(),
       }),
     ),
+    local_order: requiredNumber().min(1).max(100),
     order: requiredNumber(),
   }),
 );
@@ -28,5 +29,6 @@ export const serviceTemplate = {
   chargeable: true,
   archived: false,
   service_rates: [],
+  local_order: null, // requre user to set this
   order: null,
 };

@@ -42,6 +42,7 @@ import { ProjectReport } from './views/reports/ProjectReport';
 import { RevenueReport } from './views/reports/RevenueReport';
 import { ServiceCostReports } from './views/reports/ServiceCostReports';
 import { ServiceHourReports } from './views/reports/ServiceHourReports';
+import ServiceCategoryOverview from './views/service_categories/ServiceCategoryOverview';
 import ServiceCreate from './views/services/ServiceCreate';
 import ServiceOverview from './views/services/ServiceOverview';
 import ServiceUpdate from './views/services/ServiceUpdate';
@@ -78,6 +79,7 @@ class App extends React.Component {
             <ProtectedRoute exact path="/services" component={ServiceOverview} />
             <ProtectedRoute exact path="/services/new" component={ServiceCreate} />
             <ProtectedRoute exact path="/services/:id" component={ServiceUpdate} />
+            <ProtectedRoute exact path="/service_categories" component={ServiceCategoryOverview} />
             <ProtectedRoute exact path="/cost_groups" component={CostgroupOverview} />
             <ProtectedRoute exact path="/project_categories" component={ProjectCategoryOverview} />
             <ProtectedRoute exact path="/customer_tags" component={CustomerTagOverview} />

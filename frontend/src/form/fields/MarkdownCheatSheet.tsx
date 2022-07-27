@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useIntl } from 'react-intl';
+import { detectFrench } from '../../utilities/detectFrench';
 
 export default function MarkdownCheatSheet() {
-  const intl = useIntl();
-  const isFrench = (intl.formatMessage({id: 'language.display_name'}).startsWith('F'));
+  const isFrench = detectFrench(useIntl());
 
   return isFrench ? (
     <div style={{fontSize: '13px', lineHeight: '15px'}}>

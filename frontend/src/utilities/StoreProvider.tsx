@@ -27,6 +27,7 @@ import { ProjectStore } from '../stores/projectStore';
 import { ProjectWithPotentialInvoicesStore } from '../stores/projectWithPotentialInvoicesStore';
 import { RateGroupStore } from '../stores/rateGroupStore';
 import { RateUnitStore } from '../stores/rateUnitStore';
+import { ServiceCategoryStore } from '../stores/serviceCategoryStore';
 import { ServiceStore } from '../stores/serviceStore';
 import { TimetrackFilterStore } from '../stores/timetrackFilterStore';
 import { Formatter } from './formatter';
@@ -67,6 +68,7 @@ export class StoreProvider extends React.Component<Props> {
     globalSettingStore: GlobalSettingStore;
     employeeGroupStore: EmployeeGroupStore;
     locationStore: LocationStore;
+    serviceCategoryStore: ServiceCategoryStore;
   };
   private disposeAuthChangeReaction: IReactionDisposer;
 
@@ -143,6 +145,7 @@ export class StoreProvider extends React.Component<Props> {
       globalSettingStore: new GlobalSettingStore(mainStore),
       employeeGroupStore: new EmployeeGroupStore(mainStore),
       locationStore: new LocationStore(mainStore),
+      serviceCategoryStore: new ServiceCategoryStore(mainStore),
     };
   }
 
