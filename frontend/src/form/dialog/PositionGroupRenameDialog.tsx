@@ -16,7 +16,6 @@ import { defaultPositionGroup } from '../../utilities/helpers';
 import { localizeSchema } from '../../utilities/validation';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
-import { ServiceSelect } from '../entitySelect/ServiceSelect';
 import { TextField } from '../fields/common';
 import { DimeField } from '../fields/formik';
 import { FormDialog } from './FormDialog';

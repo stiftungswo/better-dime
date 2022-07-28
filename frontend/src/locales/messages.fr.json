@@ -19,6 +19,8 @@
   "general.invoice.plural": "Factures",
   "general.service": "Service",
   "general.service.plural": "Services",
+  "general.service_category": "Catégorie de services",
+  "general.service_category.plural": "Catégories de services",
   "general.tag": "Balise",
   "general.tag.plural": "Balises",
   "general.comment": "Commentaire",
@@ -76,6 +78,7 @@
 
   "form.dialog.service_select.service_group": "Groupe de services",
   "form.dialog.service_select.title": "Ajouter un service",
+  "form.dialog.service_select.service_category_optional": "(facultatif) Catégorie de service",
 
   "form.dialog.city_select.title": "Choisir le lieu pour la signature",
   "form.dialog.city_select.save_selection": "Enregistrer la sélection?",
@@ -161,6 +164,7 @@
   "layout.navigation.reports.costgroup": "Rapport de centre de coûts",
   "layout.navigation.data": "Données de base",
   "layout.navigation.data.services": "Services",
+  "layout.navigation.data.service_categories": "Catégories de services",
   "layout.navigation.data.rate_groups": "Groupes de tarifs",
   "layout.navigation.data.rate_units": "Types de tarifs",
   "layout.navigation.data.employee_groups": "Catégories d'employés",
@@ -438,10 +442,21 @@
   "view.service.form.sorting_order": "Ordre de tri",
   "view.service.form.sorting_order_details": "Explication de l'ordre de tri",
   "view.service.form.unit": "Unité",
+  "view.service.form.service_category": "Catégorie",
+  "view.service.form.service_number": "Position dans la catégorie",
+  "view.service.form.computed_order": "Ordre de tri calculé",
+  "view.service.form.similar_services": "Services dans cette catégorie",
 
   "view.service.overview.order": "Ordre",
 
   "view.service.update.edit_service": "Service bearbeiten",
+
+  "view.service_category.overview.sorting_order": "Ordre",
+  "view.service_category.overview.number": "Numéro de catégorie",
+  "view.service_category.overview.parent": "Surcatégorie",
+  "view.service_category.overview.german_name": "Nom allemand",
+  "view.service_category.overview.french_name": "Nom français",
+
 
   "view.timetrack.no_entries_found": "Aucune entrée n'a été trouvée avec les filtres actuels",
   "view.timetrack.show_empty_groups": "Afficher les groupes vides",

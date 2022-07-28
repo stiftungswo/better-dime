@@ -58,7 +58,7 @@ module V2
       ParamsModifier.copy_attributes params, :service_rates, :service_rates_attributes
 
       params.permit(
-        :name, :description, :vat, :archived, :order,
+        :name, :description, :vat, :archived, :local_order, :service_category_id,
         service_rates_attributes: [:id, :rate_group_id, :service_id, :rate_unit_id, :value]
       )
     end
