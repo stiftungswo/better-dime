@@ -49,8 +49,7 @@ Fürs frontend wird Yarn verwendet. Installiert Yarn gemäss der Installationsan
 6. ``bundle install``
 7. ``bundle exec rails db:create``
 8. ``bundle exec rails db:migrate``
-
-Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 gem verursacht wird sollte das mysql2 gem wie folt installiert werden: ``gem install mysql2 -v '0.5.2' -- --with-ldflags=-L/usr/local/opt/openssl/lib --with-cppflags=-I/usr/local/opt/openssl/include``. Zuerst ist sicherzustellen dass OpenSSL am speizifizierten Pfad (/usr/local/opt/openssl) installiert ist.
+ 
 
 #### Frontend
 1. ``cd dime-clone-directory && cd frontend``
@@ -63,5 +62,14 @@ Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 ge
 3. Neues Terminal aufmachen
 4. ``cd dime-clone-directory && cd frontend``
 5. ``yarn start``
+
+### Probleme unter MacOS
+Info: Falls auf Mac beim Installieren des Backends ein Problem mit dem mysql2 gem verursacht wird sollte das mysql2 gem wie folt installiert werden: ``gem install mysql2 -v '0.5.2' -- --with-ldflags=-L/usr/local/opt/openssl/lib --with-cppflags=-I/usr/local/opt/openssl/include``. Zuerst ist sicherzustellen dass OpenSSL am speizifizierten Pfad (/usr/local/opt/openssl) installiert ist.
+
+Beim Aufsetzen mit Apple-Silicon (M1-Prozessor usw.) muss im "docker-compose.yml"-File die Plattform beim ``apir`` und  ``mysql`` Container wie folgt definiert werden:
+- ``platform: linux/x86_64``
+
+Zudem muss im "development.rb"-File die folgende Zeiele unter Umständen mit einem ``#`` auskommentiert werden:
+- ``config.file_watcher = ActiveSupport::EventedFileUpdateChecker``
 
 26.05.2020 14:50

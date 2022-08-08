@@ -20,7 +20,7 @@
   "general.service": "Service",
   "general.service.plural": "Services",
   "general.service_category": "Service-Kategorie",
-  "general.service_category.plural": "Services-Kategorien",
+  "general.service_category.plural": "Service-Kategorien",
   "general.tag": "Tag",
   "general.tag.plural": "Tags",
   "general.comment": "Kommentar",
@@ -263,6 +263,7 @@
   "view.invoice.form.end_date": "Enddatum",
   "view.invoice.form.update_time_span": "Zeitspanne aktualisieren",
   "view.invoice.form.update_time_span_warning": "Möchtest du wirklich alle Aufwände in der ausgewählten Zeitspanne neu laden? Zuvor manuell getätigte Änderungen an der Rechnung gehen dabei verloren.",
+  "view.invoice.form.update_time_help": "In der Rechnung werden NUR die Aufwände des eingestellten Zeitraums berücksichtigt. Nach dem Ändern des Zeitraums können die Aufwände über den \"Zeitraum aktualisieren\"-Button neu abgerufen werden. \n ACHTUNG: Manuelle Änderungen an der Rechnung werden dabei überschrieben.",
   "view.invoice.form.description": "Beschreibung",
   "view.invoice.form.location": "Ort (für Unterschrift)",
 
