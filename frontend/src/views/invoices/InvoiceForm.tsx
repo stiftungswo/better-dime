@@ -1,5 +1,6 @@
+import { IconButton, Tooltip } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import {Warning} from '@material-ui/icons';
+import { Warning } from '@material-ui/icons';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -14,14 +15,12 @@ import CurrencyField from '../../form/fields/CurrencyField';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { MarkdownField } from '../../form/fields/MarkdownField';
-import PercentageField from '../../form/fields/PercentageField';
 import { FormView, FormViewProps } from '../../form/FormView';
-import { ActionButton } from '../../layout/ActionButton';
 import { BreakdownTable } from '../../layout/BreakdownTable';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
-import { ESRIcon, InvoiceIcon, Renew, StatisticsIcon } from '../../layout/icons';
+import { ESRIcon, HelpIcon, InvoiceIcon, Renew, StatisticsIcon } from '../../layout/icons';
 import PrintButton from '../../layout/PrintButton';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import { CustomerStore } from '../../stores/customerStore';
@@ -32,7 +31,7 @@ import { RateUnitStore } from '../../stores/rateUnitStore';
 import { Invoice, Location } from '../../types';
 import compose from '../../utilities/compose';
 import { empty } from '../../utilities/helpers';
-import {isAfterArchivedUnitsCutoff} from '../../utilities/validation';
+import { isAfterArchivedUnitsCutoff } from '../../utilities/validation';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import PositionSubformInline from '../PositionSubformInline';
 import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
@@ -208,7 +207,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             <Grid item xs={12} lg={4} style={{paddingTop: '24px'}}>
                               <DatePicker label={intlText('print_date')} value={this.state.date} onChange={(v: moment.Moment) => this.setState({['date']: v})} />
                             </Grid>
-                            <Grid item xs={12} lg={5}>
+                            <Grid item xs={12} lg={4}>
                               <DimeDatePickerField
                                 required
                                 component={DatePicker}
@@ -219,7 +218,7 @@ export default class InvoiceForm extends React.Component<Props> {
                                 }}
                               />
                             </Grid>
-                            <Grid item xs={12} lg={6}>
+                            <Grid item xs={12} lg={4}>
                               <DimeDatePickerField
                                 required
                                 component={DatePicker}
@@ -230,7 +229,12 @@ export default class InvoiceForm extends React.Component<Props> {
                                 }}
                               />
                             </Grid>
-                            <Grid item xs={12} lg={1}>
+                            <Grid item xs={12} lg={2}>
+                            <Tooltip title={intlText('update_time_help')}>
+                                <IconButton>
+                                  <HelpIcon/>
+                                </IconButton>
+                              </Tooltip>
                               <ConfirmationButton
                                 {...(this.state.dateRangeDirty ? {style: {boxShadow: '0 0 1px 3px red'}} : {})}
                                 onConfirm={() => this.handleTimeSpan(props.values)}
