@@ -87,6 +87,7 @@ export default class ServiceForm extends React.Component<Props> {
     };
     const otherServicesInCategory = (category: number | null) => this.props.serviceStore!.entities
       .filter(e => e.service_category_id === category)
+      .filter(e => !e.archived)
       .filter(e => e.id !== service.id)
       .sort((e, f) => e.order - f.order);
 
@@ -145,16 +146,6 @@ export default class ServiceForm extends React.Component<Props> {
                             </ListItem>,
                           )}
                         </List>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Grid container spacing={1}>
-                          <Grid item xs={12} lg={4}>
-                            <DimeField component={NumberField} required name={'order'} label={intlText('sorting_order')} />
-                          </Grid>
-                          <Grid item xs={12} lg={8} container direction="column" justifyContent="center">
-                            <MarkdownAccordion title={intlText('sorting_order_details')} globalSettingStore={this.props.globalSettingStore} />
-                          </Grid>
-                        </Grid>
                       </Grid>
                     </Grid>
                   </DimePaper>
