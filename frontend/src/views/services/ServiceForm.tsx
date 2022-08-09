@@ -56,7 +56,7 @@ export default class ServiceForm extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),

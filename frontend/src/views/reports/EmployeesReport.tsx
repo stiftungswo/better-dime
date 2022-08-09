@@ -49,9 +49,9 @@ export class EmployeesReport extends React.Component<Props, State> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.employeeStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    this.props.employeeStore!.fetchAll()
+      .then(() => this.setState({ loading: false }));
   }
 
   render() {

@@ -32,7 +32,7 @@ type Props = {
   withRouter,
 )
 export default class PersonOverview extends React.Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.props.peopleStore!.selectedIds.clear();
   }
 

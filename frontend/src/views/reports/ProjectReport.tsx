@@ -81,10 +81,11 @@ export class ProjectReport extends React.Component<Props, State> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.projectStore!.fetchAll();
-    await this.props.employeeStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    Promise.all([
+      this.props.projectStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
   }
 
   handleAdd(arrayHelpers: ArrayHelpers) {

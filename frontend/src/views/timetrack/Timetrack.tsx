@@ -59,7 +59,7 @@ export default class Timetrack extends React.Component<Props> {
       .map(([id]) => id);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const filter = this.props.timetrackFilterStore!.filter;
     this.props.timetrackFilterStore!.selectedEffortIds.clear();
     this.props.timetrackFilterStore!.selectedCommentIds.clear();

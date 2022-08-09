@@ -43,7 +43,7 @@ export default class PersonForm extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const person = this.props.person;
     const loadCompany = new Promise(res => {
       if (person && person.company_id) {
