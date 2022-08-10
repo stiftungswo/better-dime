@@ -14,7 +14,7 @@
     "@types/classnames": "^2.2.6",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "^4.14.119",
-    "@types/react-beautiful-dnd": "^10.0.1",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-select": "^2.0.6",
     "@types/showdown": "^1.7.5",
     "axios": "^0.21.2",
