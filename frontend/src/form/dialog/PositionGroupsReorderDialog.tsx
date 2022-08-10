@@ -11,7 +11,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { ArrayHelpers, FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
-import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { DimeTableCell } from '../../layout/DimeTableCell';
