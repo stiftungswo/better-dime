@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { FormikActions, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
@@ -91,7 +91,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
     return (
       <FormDialog
         initialValues={this.state.lastEntry || this.props.projectCommentStore!.projectComment || this.props.projectCommentStore!.projectCommentTemplate!}
-        isInitialValid={true}
+        validateOnMount={false}
         validationSchema={schema}
         enableReinitialize
         title={'invisible pink elephants'}

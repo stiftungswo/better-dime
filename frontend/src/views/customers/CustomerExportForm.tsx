@@ -44,7 +44,8 @@ export class CustomerExportForm extends React.Component<Props> {
           <Formik
             initialValues={initialValues}
             onSubmit={() => {}} // tslint:disable-line:no-empty
-            render={formikProps => (
+          >
+            {formikProps => (
               <Grid container alignItems={'center'} spacing={3}>
                 <Grid item xs={12} md={4}>
                   <DimeField delayed component={CustomerTagSelect} label={intlText('select_tags')} name={'customer_tags'} />
@@ -74,7 +75,7 @@ export class CustomerExportForm extends React.Component<Props> {
                 </Grid>
               </Grid>
             )}
-          />
+          </Formik>
         </DimePaper>
       </Grid>
     );

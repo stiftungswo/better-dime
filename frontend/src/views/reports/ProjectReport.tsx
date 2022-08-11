@@ -137,7 +137,8 @@ export class ProjectReport extends React.Component<Props, State> {
               // do nothing, user clicks a GET link for the backend instead
             }}
             validationSchema={schema}
-            render={formikProps => {
+          >
+            {formikProps => {
               const values = formikProps.values;
               return (
                 <FormikSubmitDetector {...formikProps}>
@@ -231,7 +232,7 @@ export class ProjectReport extends React.Component<Props, State> {
               );
               }
             }
-          />
+          </Formik>
         </DimeContent>
       </>
     );

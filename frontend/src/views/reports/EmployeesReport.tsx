@@ -66,7 +66,8 @@ export class EmployeesReport extends React.Component<Props, State> {
               // do nothing, user clicks a GET link for the backend instead
             }}
             validationSchema={schema}
-            render={formikProps => (
+          >
+            {formikProps => (
               <Grid container alignItems={'center'} spacing={3}>
                 <Grid item xs={12} md={12}>
                   <DateSpanPicker
@@ -94,7 +95,7 @@ export class EmployeesReport extends React.Component<Props, State> {
                 </Grid>
               </Grid>
             )}
-          />
+          </Formik>
         </DimeContent>
       </>
     );
