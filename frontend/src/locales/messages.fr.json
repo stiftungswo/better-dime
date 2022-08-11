@@ -218,6 +218,7 @@
   "view.employee.general_info": "Informations générales",
 
   "view.employee.schema.invalid_email": "Format d'e-mail non valide",
+  "view.employee.schema.short_password": "Mot de passe trop court.",
   "view.employee.schema.nonmachting_password": "Le mot de passe doit correspondre au nouveau mot de passe.",
 
   "view.employee.update.update_employee": "Modifier un employé",
