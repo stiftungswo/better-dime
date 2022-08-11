@@ -21,7 +21,7 @@
     "classnames": "^2.2.6",
     "formik": "^2.2.9",
     "history": "^4.7.2",
-    "jwt-decode": "^2.2.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mobx": "^6.6.1",
     "mobx-react": "^7.5.2",
