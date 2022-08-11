@@ -10,7 +10,7 @@ export const editEmployeeSchema = localizeSchema(() =>
     is_admin: yup.boolean().required(),
     first_name: yup.string().required(),
     last_name: yup.string().required(),
-    password: yup.string(),
+    password: yup.string().min(6, 'view.employee.schema.short_password'),
     password_repeat: yup.string().oneOf([yup.ref('password'), null], 'view.employee.schema.nonmachting_password'),
     locale: yup.string(),
     work_periods: yup.array(

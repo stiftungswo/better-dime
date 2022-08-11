@@ -218,6 +218,7 @@
   "view.employee.general_info": "Allgemeine Informationen",
 
   "view.employee.schema.invalid_email": "Ungültiges Email Format",
+  "view.employee.schema.short_password": "Passwort zu kurz.",
   "view.employee.schema.nonmachting_password": "Passwort muss mit neuem Passwort übereinstimmen.",
 
   "view.employee.update.update_employee": "Mitarbeiter bearbeiten",
