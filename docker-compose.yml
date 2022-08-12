@@ -58,7 +58,7 @@ services:
       - 38080:80
 
   frontend:
-    image: node:10
+    image: node:12
     container_name: dime_frontend
     volumes:
       - ./frontend:/var/frontend
