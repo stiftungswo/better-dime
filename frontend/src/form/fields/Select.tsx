@@ -375,6 +375,7 @@ type Multi = number[] | [];
 type ValueType<T> = T extends number[] ? Multi : T extends Single ? Single : never;
 
 export interface DimeSelectFieldProps<T> extends DimeCustomFieldProps<ValueType<T>> {
+  isClearable?: boolean;
   isMulti?: boolean;
   isGrouped?: boolean;
   fullWidth?: boolean;

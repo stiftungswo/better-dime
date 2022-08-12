@@ -76,6 +76,7 @@ export class ServiceSelectDialog extends React.Component<Props> {
           )}
           <ServiceCategorySelect<number>
             label={intlText('service_category_optional')}
+            isClearable
             mode="all"
             value={this.state.serviceCategoryId}
             onChange={serviceCategoryId => this.setState({ serviceCategoryId })}
