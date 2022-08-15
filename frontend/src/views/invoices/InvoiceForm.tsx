@@ -231,7 +231,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             </Grid>
                             <Grid item xs={12} lg={2}>
                             <Tooltip title={intlText('update_time_help')}>
-                                <IconButton>
+                                <IconButton size="large">
                                   <HelpIcon/>
                                 </IconButton>
                               </Tooltip>

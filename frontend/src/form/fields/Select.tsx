@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     chip: {
-      margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
+      margin: `${theme.spacing(0.5)} ${theme.spacing(0.25)}`,
       maxWidth: '170px',
     },
     label: {
@@ -43,7 +43,7 @@ const styles = (theme: Theme) =>
       textOverflow: 'ellipsis',
     },
     chipFocused: {
-      backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
+      backgroundColor: emphasize(theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
     },
     noOptionsMessage: {
       padding: `${theme.spacing(1)} ${theme.spacing(2)}`,

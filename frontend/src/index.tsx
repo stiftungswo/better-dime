@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 import '@babel/polyfill';
 import MomentUtils from '@date-io/moment';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, Theme, StyledEngineProvider } from '@mui/material/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
@@ -18,6 +18,14 @@ import { StoreProvider } from './utilities/StoreProvider';
 import moment from 'moment';
 import 'moment/locale/de-ch';
 import 'moment/locale/fr';
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+
 moment.locale('de-ch');
 
 const browserHistory = createBrowserHistory();
@@ -36,14 +44,16 @@ const mode = url.includes('localhost') || url.includes('test') ? 'dev' : 'prod';
 ReactDOM.render(
   <StoreProvider history={browserHistory}>
     <StoreConnectedIntlProvider>
-      <ThemeProvider theme={DimeTheme(mode)}>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          <DimeSnackbar />
-          <Router history={browserHistory}>
-            <App />
-          </Router>
-        </MuiPickersUtilsProvider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={DimeTheme(mode)}>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DimeSnackbar />
+            <Router history={browserHistory}>
+              <App />
+            </Router>
+          </MuiPickersUtilsProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </StoreConnectedIntlProvider>
   </StoreProvider>,
   document.getElementById('root') as HTMLElement,

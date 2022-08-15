@@ -9,7 +9,7 @@ import React from 'react';
 export const withFullScreen = (Component: any) => {
   return (props: any) => {
     const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return <Component fullScreen={fullScreen} {...props} />;
   };

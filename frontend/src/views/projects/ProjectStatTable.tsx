@@ -18,7 +18,7 @@ interface Props {
   timeUsed: number;
 }
 const PaddedTableCell = styled(TableCell)(({theme}) => ({
-  padding: `${theme.spacing(0.5)}px ${theme.spacing(7)}px ${theme.spacing(0.5)}px ${theme.spacing(3)}px`,
+  padding: `${theme.spacing(0.5)} ${theme.spacing(7)} ${theme.spacing(0.5)} ${theme.spacing(3)}`,
 }), {withTheme: true});
 
 export const ProjectStatTable = compose(

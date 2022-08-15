@@ -19,7 +19,7 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
     const InputComponent = this.props.InputComponent || DelayedInput;
     const previewToggle = (
       <Tooltip title={'Vorschau'}>
-        <IconButton onClick={this.togglePreview}>{this.state.preview ? <VisibilityOffIcon /> : <VisibilityIcon />}</IconButton>
+        <IconButton onClick={this.togglePreview} size="large">{this.state.preview ? <VisibilityOffIcon /> : <VisibilityIcon />}</IconButton>
       </Tooltip>
     );
     return (

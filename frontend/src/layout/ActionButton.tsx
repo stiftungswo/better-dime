@@ -56,7 +56,12 @@ export class ActionButton extends React.Component<ButtonProps> {
       withLink(this.route),
       withTooltip(this.props.title),
     )(
-      <IconButton onClick={this.onClick} disabled={this.props.disabled} color={this.props.color} style={this.props.style}>
+      <IconButton
+        onClick={this.onClick}
+        disabled={this.props.disabled}
+        color={this.props.color}
+        style={this.props.style}
+        size="large">
         {withSecondaryIcon(this.props.secondaryIcon)(<Icon />)}
       </IconButton>,
     );

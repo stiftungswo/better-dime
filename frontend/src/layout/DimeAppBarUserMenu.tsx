@@ -43,7 +43,12 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
 
     return (
       <div>
-        <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={action(this.handleMenu)} color="inherit">
+        <IconButton
+          aria-owns={open ? 'menu-appbar' : undefined}
+          aria-haspopup="true"
+          onClick={action(this.handleMenu)}
+          color="inherit"
+          size="large">
           <Avatar>{shortName}</Avatar>
         </IconButton>
         <Menu

@@ -132,7 +132,7 @@ class DimeLayout extends React.Component<Props> {
           >
             <List component={'nav'} disablePadding>
               <div className={classes.toolbar}>
-                <IconButton onClick={this.handleDrawerClose}>
+                <IconButton onClick={this.handleDrawerClose} size="large">
                   <ChevronLeftIcon />
                 </IconButton>
               </div>

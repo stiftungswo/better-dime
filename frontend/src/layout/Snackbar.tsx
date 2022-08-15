@@ -49,7 +49,12 @@ class DimeSnackbarInner extends React.Component<Props> {
           className={this.props.classes[messageInfo.variant]}
           message={<span id="message-id">{messageInfo.message}</span>}
           action={[
-            <IconButton key="close" aria-label="Close" color="inherit" onClick={notifier.handleClose}>
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={notifier.handleClose}
+              size="large">
               <CloseIcon />
             </IconButton>,
           ]}

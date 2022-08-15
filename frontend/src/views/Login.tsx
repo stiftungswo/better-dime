@@ -37,7 +37,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing(2)}px ${spacing(3)}px ${spacing(6)}px`,
+      padding: `${spacing(2)} ${spacing(3)} ${spacing(6)}`,
     },
     avatar: {
       margin: spacing(1),

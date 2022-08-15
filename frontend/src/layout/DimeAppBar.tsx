@@ -94,7 +94,7 @@ class DimeAppBarInner extends React.Component<Props> {
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
             className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
-          >
+            size="large">
             <MenuIcon />
           </IconButton>
 

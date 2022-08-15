@@ -20,7 +20,7 @@ const styles = (theme: Theme) =>
     },
     input: {
       flexGrow: 1,
-      margin: `0 ${theme.spacing(0.5)}px`,
+      margin: `0 ${theme.spacing(0.5)}`,
     },
   });
 

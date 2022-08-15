@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+import { adaptV4Theme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
 type Mode = 'dev' | 'prod';
@@ -23,7 +24,7 @@ const colors = {
 };
 
 export default (mode: Mode | 'prod') =>
-  createTheme({
+  createTheme(adaptV4Theme({
     palette: {
       ...colors[mode],
       error: red,
@@ -76,4 +77,4 @@ export default (mode: Mode | 'prod') =>
         },
       },
     },
-  });
+  }));
