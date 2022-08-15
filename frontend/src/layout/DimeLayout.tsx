@@ -1,4 +1,4 @@
-import { Theme, withWidth } from '@mui/material';
+import { Theme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -11,6 +11,7 @@ import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
+import { withWidth } from '../utilities/withWidth';
 import { ChevronLeftIcon } from './icons';
 import { Navigation } from './Navigation';
 
@@ -94,7 +95,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 @compose(
-  withWidth(),
   inject('mainStore'),
   observer,
 )

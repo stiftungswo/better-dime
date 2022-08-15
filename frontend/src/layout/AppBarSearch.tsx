@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material';
 import InputBase from '@mui/material/InputBase';
 import { createStyles, makeStyles, WithStyles } from '@mui/material/styles';
-import { alpha } from '@mui/material/styles/colorManipulator';
+import { alpha } from '@mui/material/styles';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import * as React from 'react';

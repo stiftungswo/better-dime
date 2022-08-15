@@ -5,7 +5,7 @@ import Chip from '@mui/material/Chip';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@mui/material/styles';
-import { emphasize } from '@mui/material/styles/colorManipulator';
+import { emphasize } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames';

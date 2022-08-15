@@ -1,4 +1,3 @@
-import { PropTypes } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -21,7 +20,7 @@ export interface WidthToggle {
 }
 
 export interface DimeFormControlProps extends SharedProps, WidthToggle {
-  margin?: PropTypes.Margin;
+  margin?: 'dense' | 'none' | 'normal';
   children: ReactNode;
   errorMessage?: string;
 }

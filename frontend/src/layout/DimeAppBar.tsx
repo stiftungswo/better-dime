@@ -1,4 +1,4 @@
-import { Theme, withWidth } from '@mui/material';
+import { Theme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
@@ -11,6 +11,7 @@ import * as React from 'react';
 import { EmployeeStore } from '../stores/employeeStore';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
+import { withWidth } from '../utilities/withWidth';
 import { ActionButton, ButtonProps } from './ActionButton';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { drawerWidth } from './DimeLayout';
@@ -58,7 +59,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 @compose(
-  withWidth(),
+  withWidth,
   inject('mainStore', 'employeeStore'),
   observer,
 )
