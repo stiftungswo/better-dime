@@ -1,6 +1,7 @@
 import { Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { createStyles, Theme, WithStyles, withStyles } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, WithStyles, withStyles } from '@mui/styles';
 import React from 'react';
 import { NonPersistedImportCustomer } from '../../stores/customerImportStore';
 import compose from '../../utilities/compose';

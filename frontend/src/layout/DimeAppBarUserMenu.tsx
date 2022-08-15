@@ -48,7 +48,8 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
           aria-haspopup="true"
           onClick={action(this.handleMenu)}
           color="inherit"
-          size="large">
+          size="large"
+        >
           <Avatar>{shortName}</Avatar>
         </IconButton>
         <Menu

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { ThemeProvider, useTheme, createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import * as React from 'react';
 
 // https://mui.com/material-ui/react-use-media-query/#migrating-from-withwidth
 
@@ -22,7 +22,7 @@ function useWidth() {
 }
 
 // Wrapper HOC, recreation of the withWidth HOC from MUI v4.
-// Basically a workaround for being unable to 
+// Basically a workaround for being unable to
 // call the useWidth hook in a class component.
 
 export const withWidth = (Component: any) => {

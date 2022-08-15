@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { withStyles, WithStyles } from '@mui/material/styles';
+import { withStyles, WithStyles } from '@mui/styles';
 import * as React from 'react';
 import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
 import { styles } from './NavItem';
@@ -13,6 +13,7 @@ interface CollapsibleProps extends WithStyles<typeof styles> {
   drawerOpen: boolean;
   label: string;
   icon: React.ComponentType;
+  children: React.ReactNode;
 }
 
 interface CollapsibleState {

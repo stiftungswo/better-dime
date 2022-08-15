@@ -1,10 +1,10 @@
 import { Theme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
-import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
-import { Breakpoint } from '@mui/material/styles/createBreakpoints';
+import { Breakpoint } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -95,7 +95,8 @@ class DimeAppBarInner extends React.Component<Props> {
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
             className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
-            size="large">
+            size="large"
+          >
             <MenuIcon />
           </IconButton>
 

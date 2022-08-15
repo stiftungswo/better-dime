@@ -3,8 +3,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Paper from '@mui/material/Paper';
-import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -26,7 +26,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       display: 'block', // Fix IE11 issue.
       marginLeft: spacing(3),
       marginRight: spacing(3),
-      [breakpoints.up(400 + spacing(3 * 2))]: {
+      [breakpoints.up(400 + parseInt(spacing(3 * 2), 10))]: {
         width: 400,
         marginLeft: 'auto',
         marginRight: 'auto',

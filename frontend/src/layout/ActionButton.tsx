@@ -61,7 +61,8 @@ export class ActionButton extends React.Component<ButtonProps> {
         disabled={this.props.disabled}
         color={this.props.color}
         style={this.props.style}
-        size="large">
+        size="large"
+      >
         {withSecondaryIcon(this.props.secondaryIcon)(<Icon />)}
       </IconButton>,
     );

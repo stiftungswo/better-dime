@@ -2,7 +2,7 @@ import { IconButton, Theme } from '@mui/material';
 import { green } from '@mui/material/colors';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
-import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Notifier } from '../utilities/notifier';
@@ -54,7 +54,8 @@ class DimeSnackbarInner extends React.Component<Props> {
               aria-label="Close"
               color="inherit"
               onClick={notifier.handleClose}
-              size="large">
+              size="large"
+            >
               <CloseIcon />
             </IconButton>,
           ]}

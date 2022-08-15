@@ -1,5 +1,5 @@
 import { CircularProgress, Theme } from '@mui/material';
-import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import * as React from 'react';
 
 const styles = (theme: Theme) =>

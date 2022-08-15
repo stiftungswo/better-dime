@@ -2,7 +2,7 @@ import { Theme } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { withStyles, WithStyles } from '@mui/material/styles';
+import { withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router';

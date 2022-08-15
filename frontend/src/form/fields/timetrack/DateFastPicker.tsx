@@ -1,6 +1,7 @@
 import Badge from '@mui/material/Badge';
 import Button, { ButtonProps } from '@mui/material/Button';
-import { createStyles, Theme, withStyles, WithStyles } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
 import { BackIcon, ForwardIcon } from '../../../layout/icons';

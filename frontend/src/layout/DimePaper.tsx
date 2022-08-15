@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper';
-import { withStyles, WithStyles } from '@mui/material/styles';
+import { withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import * as React from 'react';
 import { styles } from './DimeLayout';

@@ -1,8 +1,8 @@
 import { Theme } from '@mui/material';
-import { withStyles, WithStyles } from '@mui/material/styles';
 import { lighten } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';

@@ -1,5 +1,5 @@
-import { withStyles, WithStyles } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { withStyles, WithStyles } from '@mui/styles';
 import * as React from 'react';
 import { styles } from './DimeLayout';
 

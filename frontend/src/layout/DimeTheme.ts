@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material';
-import { adaptV4Theme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+import { adaptV4Theme } from '@mui/material/styles';
 
 type Mode = 'dev' | 'prod';
 
@@ -53,7 +53,7 @@ export default (mode: Mode | 'prod') =>
         },
       },
       MuiTablePagination: {
-        caption: {
+        selectLabel: {
           'font-size': '0.75rem',
           'font-weight': '500',
           'color': 'rgba(0, 0, 0, 0.54)',

@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material';
-import { createStyles, WithStyles, withStyles } from '@mui/material/styles';
+import { createStyles, WithStyles, withStyles } from '@mui/styles';
 import * as React from 'react';
 import { Converter } from 'showdown';
 

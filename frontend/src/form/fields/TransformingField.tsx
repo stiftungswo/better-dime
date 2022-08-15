@@ -1,5 +1,5 @@
 // tslint:disable:max-classes-per-file
-import { withStyles, WithStyles } from '@mui/material/styles';
+import { withStyles, WithStyles } from '@mui/styles';
 import * as React from 'react';
 import { DimeCustomFieldProps, DimeInputField } from './common';
 

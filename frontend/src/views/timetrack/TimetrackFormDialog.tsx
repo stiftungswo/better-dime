@@ -1,4 +1,4 @@
-import { DialogContent, DialogTitle, withMobileDialog } from '@mui/material';
+import { DialogContent, DialogTitle } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
