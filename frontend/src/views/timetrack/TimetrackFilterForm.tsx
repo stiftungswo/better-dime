@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import { inject, observer } from 'mobx-react';
 import React, { ChangeEvent } from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

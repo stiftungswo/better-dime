@@ -1,5 +1,5 @@
-import {Button} from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import {Button} from '@mui/material';
+import Grid from '@mui/material/Grid';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';

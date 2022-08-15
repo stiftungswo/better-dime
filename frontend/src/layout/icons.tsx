@@ -6,81 +6,81 @@ From https://material-ui.com/style/icons/#svg-icons :
 
     If your environment doesn't support tree-shaking, the recommended way to import the icons is the following:
 
-    import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-    import ThreeDRotation from '@material-ui/icons/ThreeDRotation';
+    import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+    import ThreeDRotation from '@mui/icons-material/ThreeDRotation';
 
     If your environment support tree-shaking you can also import the icons this way:
 
-    import { AccessAlarm, ThreeDRotation } from '@material-ui/icons';
+    import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
 
     Note: Importing named exports in this way will result in the code for every icon being included in your project,
     so is not recommended unless you configure tree-shaking. It may also impact Hot Module Reload performance.
  */
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
+import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import * as React from 'react';
 
 // UI
-export { default as MenuIcon } from '@material-ui/icons/Menu';
-export { default as PrintIcon } from '@material-ui/icons/Print';
-export { default as AccountIcon } from '@material-ui/icons/AccountCircle';
-export { default as LogoutIcon } from '@material-ui/icons/ExitToApp';
-export { default as SearchIcon } from '@material-ui/icons/Search';
-export { default as VisibilityIcon } from '@material-ui/icons/Visibility';
-export { default as VisibilityOffIcon } from '@material-ui/icons/VisibilityOff';
-export { default as AddIcon } from '@material-ui/icons/Add';
-export { default as RefreshIcon } from '@material-ui/icons/Refresh';
-export { default as ChevronLeftIcon } from '@material-ui/icons/ChevronLeft';
-export { default as DeleteIcon } from '@material-ui/icons/Delete';
-export { default as ArrowRightIcon } from '@material-ui/icons/ArrowRight';
-export { default as ExpandLessIcon } from '@material-ui/icons/ExpandLess';
-export { default as ExpandMoreIcon } from '@material-ui/icons/ExpandMore';
-export { default as CopyIcon } from '@material-ui/icons/FileCopy';
-export { default as EditIcon } from '@material-ui/icons/Edit';
-export { default as MoveIcon } from '@material-ui/icons/ArrowForward';
-export { default as ArchiveIcon } from '@material-ui/icons/Archive';
-export { default as RestoreIcon } from '@material-ui/icons/Unarchive';
-export { default as CancelIcon } from '@material-ui/icons/Cancel';
-export { default as SaveIcon } from '@material-ui/icons/Save';
-export { default as AddCommentIcon } from '@material-ui/icons/AddCommentOutlined';
-export { default as ESRIcon } from '@material-ui/icons/AttachMoney';
-export { default as StatisticsIcon } from '@material-ui/icons/Equalizer';
-export { default as AddEffortIcon } from '@material-ui/icons/AddAlarm';
-export { default as VisibleIcon } from '@material-ui/icons/Visibility';
-export { default as InvisibleIcon } from '@material-ui/icons/VisibilityOff';
-export { default as ImportExportIcon } from '@material-ui/icons/Sync';
-export { default as DragHandle } from '@material-ui/icons/DragHandle';
-export { default as CloseIcon } from '@material-ui/icons/Close';
-export { default as ForwardIcon } from '@material-ui/icons/ArrowForwardIos';
-export { default as BackIcon } from '@material-ui/icons/ArrowBackIos';
-export { default as MailIcon } from '@material-ui/icons/Mail';
-export { default as Renew } from '@material-ui/icons/Autorenew';
-export { default as SortIcon } from '@material-ui/icons/Sort';
-export { default as RenameIcon } from '@material-ui/icons/Create';
-export { default as ReorderIcon } from '@material-ui/icons/SwapVert';
-export { default as LanguageIcon } from '@material-ui/icons/Translate';
-export { default as HelpIcon } from '@material-ui/icons/Help';
+export { default as MenuIcon } from '@mui/icons-material/Menu';
+export { default as PrintIcon } from '@mui/icons-material/Print';
+export { default as AccountIcon } from '@mui/icons-material/AccountCircle';
+export { default as LogoutIcon } from '@mui/icons-material/ExitToApp';
+export { default as SearchIcon } from '@mui/icons-material/Search';
+export { default as VisibilityIcon } from '@mui/icons-material/Visibility';
+export { default as VisibilityOffIcon } from '@mui/icons-material/VisibilityOff';
+export { default as AddIcon } from '@mui/icons-material/Add';
+export { default as RefreshIcon } from '@mui/icons-material/Refresh';
+export { default as ChevronLeftIcon } from '@mui/icons-material/ChevronLeft';
+export { default as DeleteIcon } from '@mui/icons-material/Delete';
+export { default as ArrowRightIcon } from '@mui/icons-material/ArrowRight';
+export { default as ExpandLessIcon } from '@mui/icons-material/ExpandLess';
+export { default as ExpandMoreIcon } from '@mui/icons-material/ExpandMore';
+export { default as CopyIcon } from '@mui/icons-material/FileCopy';
+export { default as EditIcon } from '@mui/icons-material/Edit';
+export { default as MoveIcon } from '@mui/icons-material/ArrowForward';
+export { default as ArchiveIcon } from '@mui/icons-material/Archive';
+export { default as RestoreIcon } from '@mui/icons-material/Unarchive';
+export { default as CancelIcon } from '@mui/icons-material/Cancel';
+export { default as SaveIcon } from '@mui/icons-material/Save';
+export { default as AddCommentIcon } from '@mui/icons-material/AddCommentOutlined';
+export { default as ESRIcon } from '@mui/icons-material/AttachMoney';
+export { default as StatisticsIcon } from '@mui/icons-material/Equalizer';
+export { default as AddEffortIcon } from '@mui/icons-material/AddAlarm';
+export { default as VisibleIcon } from '@mui/icons-material/Visibility';
+export { default as InvisibleIcon } from '@mui/icons-material/VisibilityOff';
+export { default as ImportExportIcon } from '@mui/icons-material/Sync';
+export { default as DragHandle } from '@mui/icons-material/DragHandle';
+export { default as CloseIcon } from '@mui/icons-material/Close';
+export { default as ForwardIcon } from '@mui/icons-material/ArrowForwardIos';
+export { default as BackIcon } from '@mui/icons-material/ArrowBackIos';
+export { default as MailIcon } from '@mui/icons-material/Mail';
+export { default as Renew } from '@mui/icons-material/Autorenew';
+export { default as SortIcon } from '@mui/icons-material/Sort';
+export { default as RenameIcon } from '@mui/icons-material/Create';
+export { default as ReorderIcon } from '@mui/icons-material/SwapVert';
+export { default as LanguageIcon } from '@mui/icons-material/Translate';
+export { default as HelpIcon } from '@mui/icons-material/Help';
 
 // Domain
-export { default as LogoIcon } from '@material-ui/icons/BeachAccess';
-export { default as EmployeeIcon } from '@material-ui/icons/Person';
-export { default as OfferIcon } from '@material-ui/icons/Description';
-export { default as ServiceIcon } from '@material-ui/icons/RoomService';
-export { default as ServiceCategoryIcon } from '@material-ui/icons/AccountTree';
-export { default as RateGroupIcon } from '@material-ui/icons/Domain';
-export { default as RateUnitIcon } from '@material-ui/icons/AttachMoney';
-export { default as HolidayIcon } from '@material-ui/icons/Weekend';
-export { default as ProjectCategoryIcon } from '@material-ui/icons/Work';
-export { default as MasterDataIcon } from '@material-ui/icons/Storage';
-export { default as TagsIcon } from '@material-ui/icons/Style';
-export { default as TimetrackIcon } from '@material-ui/icons/AccessTime';
-export { default as CustomersIcon } from '@material-ui/icons/People';
-export { default as PersonIcon } from '@material-ui/icons/PersonOutline';
-export { default as CompanyIcon } from '@material-ui/icons/LocationCityOutlined';
-export { default as ReportIcon } from '@material-ui/icons/ShowChart';
-export { default as SettingsIcon } from '@material-ui/icons/Settings';
-export { default as NowIcon } from '@material-ui/icons/MyLocation';
-export { default as CostgroupIcon } from '@material-ui/icons/AccountBalance';
-export { default as LocationIcon } from '@material-ui/icons/Home';
+export { default as LogoIcon } from '@mui/icons-material/BeachAccess';
+export { default as EmployeeIcon } from '@mui/icons-material/Person';
+export { default as OfferIcon } from '@mui/icons-material/Description';
+export { default as ServiceIcon } from '@mui/icons-material/RoomService';
+export { default as ServiceCategoryIcon } from '@mui/icons-material/AccountTree';
+export { default as RateGroupIcon } from '@mui/icons-material/Domain';
+export { default as RateUnitIcon } from '@mui/icons-material/AttachMoney';
+export { default as HolidayIcon } from '@mui/icons-material/Weekend';
+export { default as ProjectCategoryIcon } from '@mui/icons-material/Work';
+export { default as MasterDataIcon } from '@mui/icons-material/Storage';
+export { default as TagsIcon } from '@mui/icons-material/Style';
+export { default as TimetrackIcon } from '@mui/icons-material/AccessTime';
+export { default as CustomersIcon } from '@mui/icons-material/People';
+export { default as PersonIcon } from '@mui/icons-material/PersonOutline';
+export { default as CompanyIcon } from '@mui/icons-material/LocationCityOutlined';
+export { default as ReportIcon } from '@mui/icons-material/ShowChart';
+export { default as SettingsIcon } from '@mui/icons-material/Settings';
+export { default as NowIcon } from '@mui/icons-material/MyLocation';
+export { default as CostgroupIcon } from '@mui/icons-material/AccountBalance';
+export { default as LocationIcon } from '@mui/icons-material/Home';
 
 const icon = (path: React.ReactNode, viewBox = 512) => {
   return (props: SvgIconProps) => React.createElement(SvgIcon, { viewBox: `0 0 ${viewBox} ${viewBox}`, ...props }, path);

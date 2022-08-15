@@ -1,7 +1,7 @@
-import { createStyles, Theme, WithStyles } from '@material-ui/core';
-import Badge from '@material-ui/core/Badge';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, WithStyles } from '@mui/material';
+import Badge from '@mui/material/Badge';
+import Button, { ButtonProps } from '@mui/material/Button';
+import { withStyles } from '@mui/material/styles';
 import moment, { Moment, unitOfTime } from 'moment';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

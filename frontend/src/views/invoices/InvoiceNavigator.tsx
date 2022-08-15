@@ -1,5 +1,5 @@
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';

@@ -1,9 +1,9 @@
-import { Divider, Typography } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { Warning } from '@material-ui/icons';
+import { Divider, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { Warning } from '@mui/icons-material';
 import { FieldArrayRenderProps } from 'formik';
 import { inject } from 'mobx-react';
 import * as React from 'react';

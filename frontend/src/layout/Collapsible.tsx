@@ -1,9 +1,9 @@
-import Collapse from '@material-ui/core/Collapse';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Collapse from '@mui/material/Collapse';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { withStyles, WithStyles } from '@mui/material/styles';
 import * as React from 'react';
 import { ArrowRightIcon, ExpandLessIcon, ExpandMoreIcon } from './icons';
 import { styles } from './NavItem';

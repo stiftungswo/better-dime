@@ -1,6 +1,6 @@
-import { RootRef } from '@material-ui/core';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
+import { RootRef } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
 import { FieldArrayRenderProps } from 'formik';
 import * as React from 'react';
 import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';

@@ -1,10 +1,10 @@
-import { Theme, withWidth } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Theme, withWidth } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import { createStyles, withStyles, WithStyles } from '@mui/material/styles';
+import { Breakpoint } from '@mui/material/styles/createBreakpoints';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';

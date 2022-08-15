@@ -1,8 +1,8 @@
-import { Theme } from '@material-ui/core';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Theme } from '@mui/material';
+import { withStyles, WithStyles } from '@mui/material/styles';
+import { lighten } from '@mui/material/styles/colorManipulator';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';

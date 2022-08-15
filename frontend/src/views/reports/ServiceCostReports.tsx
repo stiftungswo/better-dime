@@ -1,6 +1,6 @@
-import { Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import { Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';

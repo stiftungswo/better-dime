@@ -1,13 +1,13 @@
 // https://material-ui.com/demos/autocomplete/#react-select
 // tslint:disable:no-any ; This is adapted from the above example and should work as is; however, we should probably add types some time.
 
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@material-ui/core/styles';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import Chip from '@mui/material/Chip';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@mui/material/styles';
+import { emphasize } from '@mui/material/styles/colorManipulator';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
 import React from 'react';
 import { useIntl } from 'react-intl';

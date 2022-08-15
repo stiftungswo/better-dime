@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';

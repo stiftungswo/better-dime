@@ -1,5 +1,5 @@
-import { PropTypes } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { PropTypes } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
 // fix issue where PropTypes.Color also contains 'default'.

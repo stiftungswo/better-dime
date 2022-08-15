@@ -1,7 +1,7 @@
 // tslint:disable:no-console
 import '@babel/polyfill';
 import MomentUtils from '@date-io/moment';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
@@ -36,14 +36,14 @@ const mode = url.includes('localhost') || url.includes('test') ? 'dev' : 'prod';
 ReactDOM.render(
   <StoreProvider history={browserHistory}>
     <StoreConnectedIntlProvider>
-      <MuiThemeProvider theme={DimeTheme(mode)}>
+      <ThemeProvider theme={DimeTheme(mode)}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DimeSnackbar />
           <Router history={browserHistory}>
             <App />
           </Router>
         </MuiPickersUtilsProvider>
-      </MuiThemeProvider>
+      </ThemeProvider>
     </StoreConnectedIntlProvider>
   </StoreProvider>,
   document.getElementById('root') as HTMLElement,

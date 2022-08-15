@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { styled, Theme } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { styled, Theme } from '@mui/material/styles';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

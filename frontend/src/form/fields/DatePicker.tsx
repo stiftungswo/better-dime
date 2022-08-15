@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import { KeyboardDatePicker as MUIDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import { inject, observer } from 'mobx-react';
 import moment, { Moment } from 'moment';

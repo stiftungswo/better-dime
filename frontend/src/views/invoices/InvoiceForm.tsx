@@ -1,6 +1,6 @@
-import { IconButton, Tooltip } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import { Warning } from '@material-ui/icons';
+import { IconButton, Tooltip } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { Warning } from '@mui/icons-material';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';

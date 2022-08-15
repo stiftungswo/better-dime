@@ -1,10 +1,10 @@
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import * as React from 'react';
 
-import { PropTypes } from '@material-ui/core';
-import Badge from '@material-ui/core/Badge';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import { PropTypes } from '@mui/material';
+import Badge from '@mui/material/Badge';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 import compose from '../utilities/compose';
 import UnstyledLink from './UnstyledLink';
 

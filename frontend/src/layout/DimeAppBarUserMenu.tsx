@@ -1,4 +1,4 @@
-import { Avatar, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { Avatar, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';

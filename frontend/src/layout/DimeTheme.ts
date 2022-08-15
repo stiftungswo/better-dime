@@ -1,5 +1,5 @@
-import { createTheme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { createTheme } from '@mui/material';
+import { red } from '@mui/material/colors';
 
 type Mode = 'dev' | 'prod';
 

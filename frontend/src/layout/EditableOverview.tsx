@@ -1,4 +1,4 @@
-import { Omit } from '@material-ui/core';
+import { Omit } from '@mui/material';
 import { FormikBag, FormikProps } from 'formik';
 import * as React from 'react';
 import { Schema } from 'yup';
