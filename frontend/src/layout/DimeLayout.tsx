@@ -89,6 +89,16 @@ export const styles = (theme: Theme) =>
     },
   });
 
+// override bg color of the selected navigation item.
+const sxSelectedColorOverride = {
+  '&& .Mui-selected': {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+  },
+  '&& .Mui-selected:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+  },
+};
+
 interface Props extends WithStyles<typeof styles> {
   children?: React.ReactNode;
   mainStore?: MainStore;
@@ -131,7 +141,7 @@ class DimeLayout extends React.Component<Props> {
             open={open}
             anchor={'left'}
           >
-            <List component={'nav'} disablePadding>
+            <List component={'nav'} disablePadding sx={sxSelectedColorOverride}>
               <div className={classes.toolbar}>
                 <IconButton onClick={this.handleDrawerClose} size="large">
                   <ChevronLeftIcon />
