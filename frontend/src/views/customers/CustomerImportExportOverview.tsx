@@ -27,7 +27,7 @@ export class CustomerImportExportOverview extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount(): void {
+  componentDidMount() {
     Promise.all([this.props.customerTagStore!.fetchAll(), this.props.rateGroupStore!.fetchAll()]).then(() =>
       this.setState({ loading: false }),
     );

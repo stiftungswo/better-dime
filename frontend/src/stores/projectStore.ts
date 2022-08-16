@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { computed, makeObservable, observable } from 'mobx';
+import { computed, makeObservable, observable, runInAction } from 'mobx';
 import { Invoice, PaginatedData, Project, ProjectListing } from '../types';
 import { Cache } from '../utilities/Cache';
 import { AbstractPaginatedStore } from './abstractPaginatedStore';
@@ -89,22 +89,24 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   protected async doFetchAllPaginated(): Promise<void> {
     const res = await this.mainStore.apiV2.get<PaginatedData<ProjectListing>>('/projects', {params: this.getPaginatedQueryParams()});
     const page = res.data;
-    this.projects = page.data;
-    this.pageInfo = _.omit(page, 'data');
+    runInAction(() => {
+      this.projects = page.data;
+      this.pageInfo = _.omit(page, 'data');
+    });
   }
 
   protected async doFetchOne(id: number) {
     const res = await this.mainStore.apiV2.get<Project>('/projects/' + id);
-    this.project = res.data;
+    runInAction(() => { this.project = res.data; });
   }
 
   protected async doPost(entity: Project): Promise<void> {
     const res = await this.mainStore.apiV2.post<Project>('/projects', entity);
-    this.project = res.data;
+    runInAction(() => { this.project = res.data; });
   }
 
   protected async doPut(entity: Project): Promise<void> {
     const res = await this.mainStore.apiV2.put<Project>('/projects/' + entity.id, entity);
-    this.project = res.data;
+    runInAction(() => { this.project = res.data; });
   }
 }

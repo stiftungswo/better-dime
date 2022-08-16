@@ -27,7 +27,7 @@ export default class PersonFilterForm extends React.Component<Props> {
     filterTags: [] as number[],
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.customerTagStore!.fetchAll();
     this.setState({filterTags: this.props.store!.customerFilter.tags});
   }

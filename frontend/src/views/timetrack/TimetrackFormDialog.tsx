@@ -152,11 +152,12 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
-        isInitialValid={true}
+        validateOnMount={false}
         enableReinitialize
         onSubmit={this.handleSubmitAndErrors}
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
-        render={(formikProps: FormikProps<ProjectEffort>) => (
+      >
+        {(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open onClose={this.handleClose(formikProps)} fullScreen={this.props.fullScreen!} maxWidth="lg">
               <DialogTitle>
@@ -209,7 +210,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
             </Dialog>
           </FormikSubmitDetector>
         )}
-      />
+      </Formik>
     );
   }
 

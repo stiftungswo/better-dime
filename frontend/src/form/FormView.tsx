@@ -30,7 +30,7 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
 
   render() {
     // tslint:disable-next-line:no-any ; need this so we can spread into ...rest
-    const { appBarButtons, intl, ...rest } = this.props as any;
+    const { appBarButtons, intl, render, ...rest } = this.props as any;
     return this.props.loading ? (
       <React.Fragment>
         <DimeAppBar title={this.props.title} />
@@ -41,18 +41,19 @@ export class FormView<Values = object, ExtraProps = {}> extends React.Component<
         {...rest}
         enableReinitialize
         onSubmit={this.handleSubmit}
-        isInitialValid={true}
-        render={(formikProps: FormikProps<Values>) => (
+        validateOnMount={false}
+      >
+        {(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={!this.props.submitted && formikProps.dirty} message={() => intl.formatMessage({id: 'form.view.warn_discard_changes'})} />
             <DimeAppBar title={this.props.title}>
               {appBarButtons && appBarButtons(formikProps.dirty)}
               <DimeAppBarButton icon={SaveIcon} title={intl.formatMessage({id: 'general.action.save'})} action={formikProps.handleSubmit} disabled={formikProps.isSubmitting} />
             </DimeAppBar>
-            <DimeContent paper={this.props.paper}>{this.props.render(formikProps)}</DimeContent>
+            <DimeContent paper={this.props.paper}>{render(formikProps)}</DimeContent>
           </FormikSubmitDetector>
         )}
-      />
+      </Formik>
     );
   }
   private handleSubmit: HandleFormikSubmit<Values> = async (values, formikBag) => {

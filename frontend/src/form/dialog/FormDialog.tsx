@@ -53,7 +53,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   }
 
   render() {
-    const { fullScreen, ...rest } = this.props as any;
+    const { fullScreen, render, ...rest } = this.props as any;
     const intlText = wrapIntl(this.props.intl!, 'form.dialog.form');
 
     return this.props.loading ? (
@@ -64,13 +64,14 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
       <Formik
         {...rest}
         onSubmit={this.handleSubmit}
-        isInitialValid={true}
-        render={(formikProps: FormikProps<Values>) => (
+        validateOnMount={false}
+      >
+        {(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => intlText('confirm_close')} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps, intlText('confirm_close'))} fullScreen={fullScreen!} maxWidth="lg">
               <DialogTitle>{this.props.title}</DialogTitle>
-              <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
+              <DialogContent style={{minWidth: '300px'}}>{render(formikProps)}</DialogContent>
               <DialogActions>
                 <Button onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
                   <FormattedMessage id="general.action.cancel" />
@@ -82,7 +83,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
             </Dialog>
           </FormikSubmitDetector>
         )}
-      />
+      </Formik>
     );
   }
 }

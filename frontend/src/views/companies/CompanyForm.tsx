@@ -55,7 +55,7 @@ export default class CompanyForm extends React.Component<Props> {
     return people;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.customerTagStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),

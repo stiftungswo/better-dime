@@ -121,7 +121,8 @@ class Login extends React.Component<Props> {
                 password: '',
               }}
               onSubmit={this.handleSubmit}
-              render={props => (
+            >
+              {props => (
                 <form className={classes.form} onSubmit={props.handleSubmit}>
                   <DimeField component={EmailField} name="email" label="E-Mail" />
                   <DimeField component={PasswordField} name="password" label="Passwort" />
@@ -138,7 +139,7 @@ class Login extends React.Component<Props> {
                   </Button>
                 </form>
               )}
-            />
+            </Formik>
           </Paper>
         </main>
         <footer className={classes.attributions}>

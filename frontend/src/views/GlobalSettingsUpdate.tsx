@@ -46,7 +46,7 @@ const settingsSchema = localizeSchema(() =>
   observer,
 )
 export class GlobalSettingsUpdate extends React.Component<Props> {
-  componentWillMount = () => {
+  componentDidMount() {
     this.props.globalSettingStore!.fetchOne(0);
   }
 

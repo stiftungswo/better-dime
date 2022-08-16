@@ -33,7 +33,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
     faqOpen: false,
   };
 
-  handleSubmit = (importSettings: CustomerImportSettings | undefined) => {
+  handleSubmit = (importSettings: CustomerImportSettings) => {
     this.props.customerImportStore!.doImport(importSettings).then(() => {
       this.props.customerImportStore!.customersToImport = [];
     });
@@ -75,7 +75,8 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
             <Formik
               initialValues={customerImportStore!.importSettings}
               onSubmit={e => this.handleSubmit(e)}
-              render={formikProps => (
+            >
+              {formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
                   <Grid container alignItems={'center'} spacing={3}>
                     <Grid item xs={12} md={4}>
@@ -128,7 +129,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                   </Grid>
                 </form>
               )}
-            />
+            </Formik>
           </DimePaper>
         </Grid>
 

@@ -35,9 +35,9 @@ export default class EmployeeForm extends React.Component<Props> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.employeeGroupStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    this.props.employeeGroupStore!.fetchAll()
+      .then(() => this.setState({ loading: false }));
   }
 
   getLocaleOptions() {
