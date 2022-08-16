@@ -61,14 +61,14 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number; 
       <Droppable droppableId={'table'}>
         {(dropProvided, dropSnapshot) => (
           <>
-            <TableBody>
+            <TableBody ref={dropProvided.innerRef}>
               {filteredArray.map((row: T, index: number) => {
                 const key = row.id || row.formikKey;
                 return (
                   <Draggable key={key} draggableId={String(key)} index={index}>
                     {(provided, snapshot) => (
                       <>
-                        <TableRow key={key} {...provided.draggableProps}>
+                        <TableRow key={key} ref={provided.innerRef} {...provided.draggableProps}>
                           {renderRow({ row, index, provided, snapshot })}
                         </TableRow>
                       </>
