@@ -62,9 +62,10 @@ export const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
+      // theme.spacing(...) returns "123px"
+      width: `${parseInt(theme.spacing(7), 10) + 1}px`,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: `${parseInt(theme.spacing(9), 10) + 1}px`,
       },
     },
     toolbar: {
