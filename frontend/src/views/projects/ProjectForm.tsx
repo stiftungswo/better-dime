@@ -56,7 +56,7 @@ interface InfoFieldProps {
 }
 
 const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldProps) => (
-  <MuiFormControl margin={'normal'} error={error} fullWidth={fullWidth}>
+  <MuiFormControl variant="standard" margin={'normal'} error={error} fullWidth={fullWidth}>
     <MuiTextField
       disabled
       variant={'outlined'}

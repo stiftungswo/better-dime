@@ -38,10 +38,10 @@ export class EffortValueField extends React.Component<Props> {
           return <FlatEffortValueField {...this.props} rateUnitId={selectedPosition.rate_unit_id} />;
         }
       } else {
-        return <TextField label={intlText('position_not_found')} disabled />;
+        return <TextField variant="standard" label={intlText('position_not_found')} disabled />;
       }
     } else {
-      return <TextField label={intlText('placeholder')} disabled />;
+      return <TextField variant="standard" label={intlText('placeholder')} disabled />;
     }
   }
 }

@@ -63,7 +63,12 @@ export const DimeFormControl = (props: DimeFormControlProps) => {
   const { label, children, fullWidth = true, margin = 'normal', required, name, errorMessage } = props;
   const intl = useIntl();
   return (
-    <FormControl margin={margin} error={Boolean(errorMessage)} fullWidth={fullWidth}>
+    <FormControl
+      variant="standard"
+      margin={margin}
+      error={Boolean(errorMessage)}
+      fullWidth={fullWidth}
+    >
       {label && (
         <InputLabel required={required} htmlFor={name}>
           {label}

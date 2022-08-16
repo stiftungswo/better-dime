@@ -92,6 +92,7 @@ function inputComponent({ inputRef, ...props }: any) {
 function Control(props: any) {
   return (
     <TextField
+      variant="standard"
       margin={props.selectProps.margin}
       error={props.selectProps.error}
       fullWidth={props.selectProps.fullWidth}
