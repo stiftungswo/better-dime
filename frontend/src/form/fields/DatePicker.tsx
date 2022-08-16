@@ -1,5 +1,7 @@
-import { KeyboardDatePicker as MUIDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import TextField from '@mui/material/TextField';
 import { makeStyles } from '@mui/styles';
+import { DatePicker as MUIDatePicker, LocalizationProvider } from '@mui/x-date-pickers/';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { inject, observer } from 'mobx-react';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
@@ -38,27 +40,19 @@ export class DatePicker extends React.Component<Props> {
     const { value, onChange, required, formatter, errorMessage, onError, fullWidth = true, ...rest } = this.props;
     const userDateFormat = formatter!.userDateFormat;
     return (
-    <MuiPickersUtilsProvider utils={MomentUtcUtils} libInstance={moment}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
         <MUIDatePicker
-          allowKeyboardControl
-          autoOk
-          format={userDateFormat.format}
-          placeholder={moment().format(userDateFormat.format)}
           value={castValue(value)}
           onChange={onChange}
-          animateYearScrolling={false}
-          clearable={!required}
-          error={Boolean(errorMessage)}
-          helperText={errorMessage}
           onError={(_, message: string) => {
             if (onError) {
               onError(message);
             }
           }}
-          fullWidth={fullWidth}
+          renderInput={(params) => <TextField {...params} />}
           {...rest}
         />
-      </MuiPickersUtilsProvider>
+      </LocalizationProvider >
     );
   }
 }

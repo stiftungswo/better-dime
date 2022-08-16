@@ -1,8 +1,8 @@
 // tslint:disable:no-console
 import '@babel/polyfill';
-import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { StyledEngineProvider, Theme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import * as Sentry from '@sentry/browser';
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
@@ -44,12 +44,12 @@ ReactDOM.render(
     <StoreConnectedIntlProvider>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={DimeTheme(mode)}>
-          <MuiPickersUtilsProvider utils={MomentUtils}>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
             <DimeSnackbar />
             <Router history={browserHistory}>
               <App />
             </Router>
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     </StoreConnectedIntlProvider>
