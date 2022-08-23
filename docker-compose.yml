@@ -18,8 +18,8 @@ services:
         - DATABASE_HOST=mysql
         - DATABASE_USERNAME=root
         - DATABASE_PASSWORD=
-        - DEVISE_JWT_SECRET_KEY=76561b6fe0a07360dadd731719089ef30441262d54ddf121b869801f9ffb1e2d53027703c02092d9276ca7fc3b69025f0724c85d55da29f0be0fde32853ab1e7
-        - DEVISE_SECRET_KEY=8475131d4b4b3633b20e585e1f9006cf51a229d4b27342d53e2cbbba6b0937d88daf0c2b7613bc41a28dcb64e825455d4afd9b54b4d57db5b48046f99f0145e9
+        - DEVISE_JWT_SECRET_KEY=verysecret
+        - DEVISE_SECRET_KEY=verysecret
 
   guard:
     build:
@@ -28,7 +28,7 @@ services:
     volumes:
         - ./apir:/apir
     working_dir: /apir
-    command: bash -c "bundle && bundle exec guard --no-interactions"
+    command: bash -c "bundle update guard guard-rspec guard-rubocop guard-brakeman && bundle exec guard --no-interactions"
     depends_on:
         - mysql
     environment:
