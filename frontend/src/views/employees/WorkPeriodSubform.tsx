@@ -1,4 +1,3 @@
-import { Warning } from '@mui/icons-material';
 import { Table, TableBody, TableHead, TableRow, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { FieldArray, FormikProps, getIn } from 'formik';
@@ -12,6 +11,7 @@ import { DurationField } from '../../form/fields/DurationField';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
+import { Warning } from '../../layout/icons';
 import TableToolbar from '../../layout/TableToolbar';
 import { Employee, WorkPeriod } from '../../types';
 import compose from '../../utilities/compose';

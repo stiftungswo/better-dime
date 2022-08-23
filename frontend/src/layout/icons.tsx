@@ -59,6 +59,7 @@ export { default as RenameIcon } from '@mui/icons-material/Create';
 export { default as ReorderIcon } from '@mui/icons-material/SwapVert';
 export { default as LanguageIcon } from '@mui/icons-material/Translate';
 export { default as HelpIcon } from '@mui/icons-material/Help';
+export { default as Warning } from '@mui/icons-material/Warning';
 
 // Domain
 export { default as LogoIcon } from '@mui/icons-material/BeachAccess';

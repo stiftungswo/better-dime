@@ -20,10 +20,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",

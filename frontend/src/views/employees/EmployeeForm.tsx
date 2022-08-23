@@ -1,4 +1,3 @@
-import {Warning} from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
@@ -11,6 +10,7 @@ import Select from '../../form/fields/Select';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
+import { Warning } from '../../layout/icons';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 import {Employee, WorkPeriod} from '../../types';
 import compose from '../../utilities/compose';

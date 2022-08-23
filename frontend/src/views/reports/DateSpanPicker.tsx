@@ -17,6 +17,7 @@ const styles = (theme: Theme) =>
     },
     button: {
       minWidth: '3rem',
+      color: 'rgba(0, 0, 0, 0.87)',
     },
     input: {
       flexGrow: 1,
