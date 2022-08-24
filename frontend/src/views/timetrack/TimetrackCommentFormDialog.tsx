@@ -12,6 +12,7 @@ import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectComment
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
+import StyledButton from '../../layout/StyledButton';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
@@ -112,9 +113,9 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose()}>
+                <StyledButton onClick={this.handleClose()}>
                   <FormattedMessage id={'general.action.cancel'} />
-                </Button>
+                </StyledButton>
                 <Button
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}

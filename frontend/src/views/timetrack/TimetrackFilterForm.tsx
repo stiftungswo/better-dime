@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import {inject, observer} from 'mobx-react';
 import React, {ChangeEvent} from 'react';
@@ -9,6 +8,7 @@ import {EmployeeSelect} from '../../form/entitySelect/EmployeeSelect';
 import {ProjectSelect} from '../../form/entitySelect/ProjectSelect';
 import {ServiceSelect} from '../../form/entitySelect/ServiceSelect';
 import {SwitchField} from '../../form/fields/common';
+import StyledTab from '../../layout/StyledTab';
 import {EffortStore} from '../../stores/effortStore';
 import {EmployeeStore} from '../../stores/employeeStore';
 import {ProjectCommentStore} from '../../stores/projectCommentStore';
@@ -53,17 +53,9 @@ export class TimetrackFilterForm extends React.Component<Props> {
             value={this.props.timetrackFilterStore!.grouping}
             onChange={this.changeGroupBy}
           >
-            <Tab
-              value={'employee'}
-              label={intl.formatMessage({id: 'general.employee'})}
-              sx={{
-                '&.Mui-selected': {
-                  color: 'black',
-                },
-              }}
-            />
-            <Tab value={'project'} label={intl.formatMessage({id: 'general.project'})}/>
-            <Tab value={'service'} label={intl.formatMessage({id: 'general.service'})}/>
+            <StyledTab value={'employee'} label={intl.formatMessage({id: 'general.employee'})}/>
+            <StyledTab value={'project'} label={intl.formatMessage({id: 'general.project'})}/>
+            <StyledTab value={'service'} label={intl.formatMessage({id: 'general.service'})}/>
           </Tabs>
         </Grid>
 

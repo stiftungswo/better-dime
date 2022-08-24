@@ -1,8 +1,8 @@
-import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
+import StyledTab from '../../layout/StyledTab';
 import { Invoice } from '../../types';
 import { wrapIntl } from '../../utilities/wrapIntl';
 
@@ -17,14 +17,14 @@ export default withRouter(({ invoice: { project_id, offer_id, sibling_invoice_id
   return (
     <Tabs variant={'scrollable'} value={offers.length + projects.length}>
       {offers.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={intlText('offer') + ` ${pId}`} />
+        <StyledTab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={intlText('offer') + ` ${pId}`} />
       ))}
       {projects.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={intlText('project') + ` ${pId}`} />
+        <StyledTab key={pId} onClick={() => history.push(`/projects/${pId}`)} label={intlText('project') + ` ${pId}`} />
       ))}
-      <Tab label={intlText('invoice') + ` ${id}`} />
+      <StyledTab label={intlText('invoice') + ` ${id}`} />
       {sibling_invoice_ids.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('invoice') + ` ${pId}`} />
+        <StyledTab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('invoice') + ` ${pId}`} />
       ))}
     </Tabs>
   );
