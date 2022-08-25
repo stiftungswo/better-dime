@@ -12,7 +12,7 @@ import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectComment
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
-import StyledButton from '../../layout/StyledButton';
+import BlackButton from '../../layout/BlackButton';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
@@ -113,22 +113,22 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
               </DialogContent>
 
               <DialogActions>
-                <StyledButton onClick={this.handleClose()}>
+                <BlackButton onClick={this.handleClose()}>
                   <FormattedMessage id={'general.action.cancel'} />
-                </StyledButton>
-                <Button
+                </BlackButton>
+                <BlackButton
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
                   <FormattedMessage id={'general.action.save'} />
-                </Button>
+                </BlackButton>
                 {!formikProps.values.id && (
-                  <Button
+                  <BlackButton
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
                     <FormattedMessage id={'general.action.save_and_continue'} />
-                  </Button>
+                  </BlackButton>
                 )}
               </DialogActions>
             </Dialog>

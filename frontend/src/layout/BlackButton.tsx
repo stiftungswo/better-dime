@@ -2,7 +2,7 @@ import {ButtonProps} from '@mui/material';
 import Button from '@mui/material/Button';
 import * as React from 'react';
 
-const StyledButton = (props: ButtonProps) =>
+const BlackButton = (props: ButtonProps) =>
   (
     <Button
       {...props}
@@ -12,4 +12,4 @@ const StyledButton = (props: ButtonProps) =>
     />
   );
 
-export default StyledButton;
+export default BlackButton;

@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,10 +5,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { AbstractStore } from '../../stores/abstractStore';
-import { ServiceCategoryStore } from '../../stores/serviceCategoryStore';
+import BlackButton from '../../layout/BlackButton';
 import { ServiceStore } from '../../stores/serviceStore';
-import { PositionGroupings, Service, ServiceCategory } from '../../types';
+import { PositionGroupings, Service } from '../../types';
 import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
@@ -89,9 +87,9 @@ export class ServiceSelectDialog extends React.Component<Props> {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleSubmit} disabled={!this.state.serviceId}>
+          <BlackButton onClick={this.handleSubmit} disabled={!this.state.serviceId}>
             <FormattedMessage id="general.action.add" />
-          </Button>
+          </BlackButton>
         </DialogActions>
       </Dialog>
     );

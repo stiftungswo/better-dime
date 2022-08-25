@@ -1,6 +1,5 @@
 // tslint:disable:max-classes-per-file
 import {PropTypes} from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,6 +8,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import compose from '../utilities/compose';
 import { ActionButton } from './ActionButton';
+import BlackButton from './BlackButton';
 import { DeleteIcon } from './icons';
 
 interface ConfirmDialogProps {
@@ -42,12 +42,12 @@ export class ConfirmationDialog extends React.Component<ConfirmDialogProps> {
         {title && <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>}
         <DialogContent>{children}</DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <BlackButton onClick={this.handleClose} color="primary">
             <FormattedMessage id={'general.action.cancel'} />
-          </Button>
-          <Button onClick={this.handleOk} color="primary">
+          </BlackButton>
+          <BlackButton onClick={this.handleOk} color="primary">
             <FormattedMessage id={'general.action.ok'} />
-          </Button>
+          </BlackButton>
         </DialogActions>
       </Dialog>
     );

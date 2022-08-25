@@ -7,6 +7,8 @@ const StyledTab = (props: TabProps) =>
     <Tab
       {...props}
       sx={{
+        'padding': '6px 12px',
+        'min-width': '160px',
         '&.Mui-selected': {
           color: 'black',
         },

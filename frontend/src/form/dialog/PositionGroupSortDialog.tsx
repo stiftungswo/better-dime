@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,9 +5,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { AbstractStore } from '../../stores/abstractStore';
+import BlackButton from '../../layout/BlackButton';
 import { ServiceStore } from '../../stores/serviceStore';
-import { PositionGroupings, Service } from '../../types';
+import { PositionGroupings } from '../../types';
 import compose from '../../utilities/compose';
 import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
@@ -70,9 +69,9 @@ export class PositionGroupSortDialog extends React.Component<Props> {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleSubmit}>
+          <BlackButton onClick={this.handleSubmit}>
             <FormattedMessage id="form.dialog.position_group_sort.confirm" />
-          </Button>
+          </BlackButton>
         </DialogActions>
       </Dialog>
     );

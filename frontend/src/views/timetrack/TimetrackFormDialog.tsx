@@ -17,6 +17,7 @@ import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
@@ -189,22 +190,22 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps)}>
+                <BlackButton onClick={this.handleClose(formikProps)}>
                   <FormattedMessage id={'general.action.cancel'} />
-                </Button>
-                <Button
+                </BlackButton>
+                <BlackButton
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
                   <FormattedMessage id={'general.action.save'} />
-                </Button>
+                </BlackButton>
                 {!formikProps.values.id && (
-                  <Button
+                  <BlackButton
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
                     <FormattedMessage id={'general.action.save_and_continue'} />
-                  </Button>
+                  </BlackButton>
                 )}
               </DialogActions>
             </Dialog>

@@ -1,15 +1,13 @@
 import {DialogTitle} from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
+import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
+import BlackButton from '../../layout/BlackButton';
 import { LoadingSpinner } from '../../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../../types';
 import compose from '../../utilities/compose';
@@ -73,12 +71,12 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
               <DialogTitle>{this.props.title}</DialogTitle>
               <DialogContent style={{minWidth: '300px'}}>{render(formikProps)}</DialogContent>
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
+                <BlackButton onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
                   <FormattedMessage id="general.action.cancel" />
-                </Button>
-                <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
+                </BlackButton>
+                <BlackButton onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
                   {this.props.confirmText || intlText('general.action.save', true)}
-                </Button>
+                </BlackButton>
               </DialogActions>
             </Dialog>
           </FormikSubmitDetector>
