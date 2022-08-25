@@ -7,6 +7,7 @@ import * as React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
 import { DatePicker } from '../../form/fields/DatePicker';
 import BlackButton from '../../layout/BlackButton';
+import DateMoveButton from '../../layout/DateMoveButton';
 import { BackIcon, ForwardIcon } from '../../layout/icons';
 import compose from '../../utilities/compose';
 import { wrapIntl } from '../../utilities/wrapIntl';
@@ -65,30 +66,14 @@ class DateSpanPickerInner extends React.Component<Props> {
     };
     return (
       <span className={classes.container}>
-        <BlackButton className={classes.button} onClick={this.backMonth} {...buttonProps}>
-          <Badge badgeContent={30}>
-            <BackIcon />
-          </Badge>
-        </BlackButton>
-        <BlackButton className={classes.button} onClick={this.backWeek} {...buttonProps}>
-          <Badge badgeContent={7}>
-            <BackIcon />
-          </Badge>
-        </BlackButton>
+        <DateMoveButton onClick={this.backMonth} buttonProps={{...buttonProps, className: classes.button}} amount={-30}/>
+        <DateMoveButton onClick={this.backWeek} buttonProps={{...buttonProps, className: classes.button}} amount={-7}/>
         <DatePicker className={classes.input} label={intlText('from')} value={this.props.fromValue} onChange={this.props.onChangeFrom} />
         <DatePicker className={classes.input} label={intlText('to')} value={this.props.toValue} onChange={this.props.onChangeTo} />
         {/*<Button onClick={()=>this.current('week')}{...buttonProps}><Badge badgeContent={7}><NowIcon/></Badge></Button>*/}
         {/*<Button onClick={()=>this.current('month')}{...buttonProps}><Badge badgeContent={30}><NowIcon/></Badge></Button>*/}
-        <BlackButton className={classes.button} onClick={this.forwardWeek} {...buttonProps}>
-          <Badge badgeContent={7}>
-            <ForwardIcon />
-          </Badge>
-        </BlackButton>
-        <BlackButton className={classes.button} onClick={this.forwardMonth} {...buttonProps}>
-          <Badge badgeContent={30}>
-            <ForwardIcon />
-          </Badge>
-        </BlackButton>
+        <DateMoveButton onClick={this.forwardWeek} buttonProps={{...buttonProps, className: classes.button}} amount={7}/>
+        <DateMoveButton onClick={this.forwardMonth} buttonProps={{...buttonProps, className: classes.button}} amount={30}/>
       </span>
     );
   }
