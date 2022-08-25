@@ -83,18 +83,17 @@ class DimeAppBarInner extends React.Component<Props> {
     const { children, classes, alternativeColor } = this.props;
     const { drawerOpen } = this.props.mainStore!;
 
+    const barClassName = classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift);
+    const iconClassName = classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden);
+
     return (
-      <AppBar
-        position={'fixed'}
-        className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}
-        color={alternativeColor ? 'secondary' : 'primary'}
-      >
+      <AppBar position={'fixed'} className={barClassName} color={alternativeColor ? 'secondary' : 'primary'}>
         <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
           <IconButton
             color={'inherit'}
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
-            className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
+            className={iconClassName}
             size="large"
           >
             <MenuIcon />
