@@ -106,7 +106,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         id={'contained-button-file'}
                       />
                       <label htmlFor="contained-button-file">
-                        <Button fullWidth variant="contained" component="span">
+                        <Button fullWidth variant="contained" component="span" sx={{ backgroundColor: '#e0e0e0' }}>
                           Import überprüfen
                         </Button>
                       </label>
