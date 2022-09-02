@@ -62,6 +62,6 @@ class ProjectCategoryServiceHourReportService
   end
 
   def tty
-    puts TTY::Table.new rows: rows
+    Rails.logger.debug TTY::Table.new rows: rows
   end
 end

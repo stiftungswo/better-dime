@@ -35,7 +35,7 @@ module Pdfs
       end
 
       def render(header)
-        if @breakdown[:grouped_positions].length > 0
+        if @breakdown[:grouped_positions].length.positive?
           if @breakdown[:grouped_positions].length > 1
             @breakdown[:grouped_positions].each do |group|
               @document.move_down 30
@@ -80,7 +80,7 @@ module Pdfs
               format_money(position.price_per_rate),
               position.rate_unit.billing_unit,
               position.amount,
-              (position.vat * 100.0).round(2).to_s + "%",
+              "#{(position.vat * 100.0).round(2)}%",
               format_money(position.calculated_total)
             ],
             style: {
@@ -120,7 +120,7 @@ module Pdfs
         discounts = @breakdown[:discounts]
         data = []
 
-        unless fixed_price && fixed_price > 0
+        unless fixed_price&.positive?
 
           unless discounts.empty?
 
@@ -157,7 +157,7 @@ module Pdfs
           )
         end
 
-        if fixed_price && fixed_price > 0
+        if fixed_price&.positive?
           data.push(
             data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (1 + @breakdown[:fixed_price_vat]))],
             style: {
@@ -181,7 +181,7 @@ module Pdfs
       def render_total
         padding = [6, 10, 6, 0]
         fixed_price = @breakdown[:fixed_price]
-        has_fixed_price = fixed_price && fixed_price > 0
+        has_fixed_price = fixed_price&.positive?
 
         data = [
           {
@@ -196,7 +196,7 @@ module Pdfs
         unless has_fixed_price
           @breakdown[:vats].each do |vat|
             data.push(
-              data: [(vat[:vat].to_f * 100.0).round(2).to_s + "%", format_money(vat[:value])],
+              data: ["#{(vat[:vat].to_f * 100.0).round(2)}%", format_money(vat[:value])],
               style: {
                 padding: padding
               }
@@ -209,7 +209,7 @@ module Pdfs
 
         if has_fixed_price
           data.push(
-            data: [(@breakdown[:fixed_price_vat] * 100).to_s + "%", format_money(vat_total)],
+            data: ["#{@breakdown[:fixed_price_vat] * 100}%", format_money(vat_total)],
             style: {
               padding: padding
             }

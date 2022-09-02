@@ -46,7 +46,7 @@ class ProjectServiceCostReportService
 
   def rows
     effort.map do |project, service_effort|
-      names = project.project_categories.map { |category| category.name }
+      names = project.project_categories.map(&:name)
       row = [project.id || 0, project.name, project.project_categories&.ids&.join(", "), names.join(", ")]
       row_costs = services.map { |service| service_effort[service] || 0.0 }
       row += row_costs.map { |cost| to_francs(cost) }
@@ -65,7 +65,7 @@ class ProjectServiceCostReportService
     end
     [
       ["", "", "", "Total"] + total_costs.map { |cost| to_francs(cost) } + [to_francs(total_costs.sum)],
-      ["", "", "", "(Alles in CHF, " + (with_vat ? "mit" : "ohne") + " MWSt.)"]
+      ["", "", "", "(Alles in CHF, #{with_vat ? "mit" : "ohne"} MWSt.)"]
     ]
   end
 
@@ -79,7 +79,7 @@ class ProjectServiceCostReportService
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: rows
+    Rails.logger.debug TTY::Table.new rows: rows
   end
 end
 # :nocov:

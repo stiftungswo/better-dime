@@ -37,7 +37,7 @@ class ProjectServiceHourReportService
 
   def rows
     effort.map do |project, service_effort|
-      names = project.project_categories.map { |category| category.name }
+      names = project.project_categories.map(&:name)
       row = [project.id || 0, project.name, project.project_categories&.ids&.join(", "), names.join(", ")]
       row += services.map { |service| service_effort[service] || 0.0 }
       row
@@ -64,7 +64,7 @@ class ProjectServiceHourReportService
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: rows
+    Rails.logger.debug TTY::Table.new rows: rows
   end
 end
 # :nocov:

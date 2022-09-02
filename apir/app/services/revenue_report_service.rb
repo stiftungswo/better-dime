@@ -64,7 +64,7 @@ class RevenueReportService
         end
       end
 
-      category_names = project.project_categories.map { |category| category.name }
+      category_names = project.project_categories.map(&:name)
 
       row = ["Projekt", nil, project.name, category_names.join(", "), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
@@ -87,7 +87,7 @@ class RevenueReportService
 
     all_rows
       .map { |row| row.map { |column| column.is_a?(Numeric) ? (column / 100).round : column } }
-      .map { |row| row.map { |column| column.is_a?(Numeric) && column == 0 ? nil : column } }
+      .map { |row| row.map { |column| column.is_a?(Numeric) && column.zero? ? nil : column } }
   end
 
   HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
@@ -113,6 +113,6 @@ class RevenueReportService
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: table
+    Rails.logger.debug TTY::Table.new rows: table
   end
 end

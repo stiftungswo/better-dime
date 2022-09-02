@@ -26,7 +26,7 @@ class ProjectCreator
 
     project_category = ProjectCategoryDistribution.new
     project_category.project = project
-    project_category.project_category = ProjectCategory.find_by_id(category)
+    project_category.project_category = ProjectCategory.find_by(id: category)
     project_category.weight = 100
     [project_category]
   end
@@ -36,7 +36,7 @@ class ProjectCreator
 
     project_costgroup = ProjectCostgroupDistribution.new
     project_costgroup.project = project
-    project_costgroup.costgroup = Costgroup.find_by_number(costgroup)
+    project_costgroup.costgroup = Costgroup.find_by(number: costgroup)
     project_costgroup.weight = 100
     [project_costgroup]
   end

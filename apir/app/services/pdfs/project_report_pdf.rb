@@ -21,11 +21,11 @@ module Pdfs
     end
 
     def filename
-      "ProjektRaport_" + @project.id.to_s
+      "ProjektRaport_#{@project.id}"
     end
 
     def subtitle
-      "Projekt Nr. " + @project.id.to_s
+      "Projekt Nr. #{@project.id}"
     end
 
     def format_money(amount)
@@ -84,7 +84,7 @@ module Pdfs
     def draw_description
       move_up 6
       text subtitle, @default_text_settings.merge(leading: 6)
-      text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(leading: 6)
+      text "#{@global_setting.sender_city}, #{Time.current.to_date.strftime("%d.%m.%Y")}", @default_text_settings.merge(leading: 6)
     end
 
     def draw_efforts
@@ -167,14 +167,14 @@ module Pdfs
           @total += (total_amount * effort.project_position.price_per_rate / 100)
 
           rate_unit = effort.project_position.rate_unit
-          amount_string = total_amount.to_s + " " + rate_unit.effort_unit.to_s
-          unit_string = (effort.project_position.price_per_rate / 100.00).to_s + " " + rate_unit.billing_unit.to_s
+          amount_string = "#{total_amount} #{rate_unit.effort_unit}"
+          unit_string = "#{effort.project_position.price_per_rate / 100.00} #{rate_unit.billing_unit}"
 
           table_data.push(
             data: [
               employee.full_name,
               effort.project_position.service.name,
-              amount_string + " * " + unit_string,
+              "#{amount_string} * #{unit_string}",
               format_money(total_amount * effort.project_position.price_per_rate / 100)
             ],
             style: {
@@ -284,7 +284,7 @@ module Pdfs
       table_data.push(
         data: [
           "MwSt.",
-          (@vat * 100).to_s + "% * " + format_money(final_total),
+          "#{@vat * 100}% * #{format_money(final_total)}",
           format_money(@vat * final_total)
         ],
         style: {

@@ -27,7 +27,7 @@ class CostGroupReportService
         total_weight += d.weight
       end
 
-      total_weight = 1.0 if total_weight == 0
+      total_weight = 1.0 if total_weight.zero?
 
       weight = project.project_costgroup_distributions.find do |cg|
         cg.costgroup_number == cost_group_id
@@ -95,6 +95,6 @@ class CostGroupReportService
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: table
+    Rails.logger.debug TTY::Table.new rows: table
   end
 end

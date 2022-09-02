@@ -7,6 +7,6 @@ class Person < Customer
   validates :email, length: { maximum: 255 }
 
   def full_name
-    first_name + " " + last_name
+    "#{first_name} #{last_name}"
   end
 end

@@ -24,7 +24,7 @@ module Pdfs
     end
 
     def filename
-      "QR-Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%m_%d")
+      "QR-Rechnung_#{@invoice.id}_#{@invoice.name.split(",")[0].split(";")[0]}_#{@date.strftime("%Y_%m_%d")}"
     end
 
     def document
@@ -112,17 +112,17 @@ module Pdfs
           text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
           text @global_setting.sender_street, size: font_size, leading: leading
-          text @global_setting.sender_zip + " " + @global_setting.sender_city, size: font_size, leading: leading
+          text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
           move_down 9
 
-          supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+          supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
           text I18n.t(:payable_by), size: 6, style: :bold, leading: 3
           text @invoice.customer.company.name, size: font_size, leading: leading if @invoice.customer.company
           text @invoice.customer.full_name, size: font_size, leading: leading
           text @invoice.address.street + supplement, size: font_size, leading: leading
-          text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, leading: leading
+          text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, leading: leading
           text @invoice.address.country, size: font_size, leading: leading
         end
 
@@ -183,7 +183,7 @@ module Pdfs
           text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
           text @global_setting.sender_street, size: font_size, leading: leading
-          text @global_setting.sender_zip + " " + @global_setting.sender_city, size: font_size, leading: leading
+          text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
           move_down 11
 
@@ -192,13 +192,13 @@ module Pdfs
 
           move_down 11
 
-          supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+          supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
           text I18n.t(:payable_by), size: h_font_size, style: :bold, leading: h_leading
           text @invoice.customer.company.name, size: font_size, leading: leading if @invoice.customer.company
           text @invoice.customer.full_name, size: font_size, leading: leading
           text @invoice.address.street + supplement, size: font_size, leading: leading
-          text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, leading: leading
+          text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, leading: leading
           text @invoice.address.country, size: font_size, leading: leading
         end
       end
@@ -234,12 +234,11 @@ module Pdfs
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
-          text @global_setting.sender_name + ", " + @global_setting.sender_street +
-               ", " + @global_setting.sender_zip + " " + @global_setting.sender_city, size: info_size, character_spacing: @spacing, leading: leading
-          text I18n.t(:invoice_nr) + " " + @invoice.id.to_s, size: info_size, character_spacing: @spacing, leading: leading
+          text "#{@global_setting.sender_name}, #{@global_setting.sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
+          text "#{I18n.t(:invoice_nr)} #{@invoice.id}", size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_iban, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_bic, size: info_size, character_spacing: @spacing, leading: leading
-          text "CHF " + total_formated, size: info_size, character_spacing: @spacing, leading: leading
+          text "CHF #{total_formated}", size: info_size, character_spacing: @spacing, leading: leading
         end
       end
     end

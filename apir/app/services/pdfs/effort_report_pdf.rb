@@ -13,7 +13,7 @@ module Pdfs
     end
 
     def filename
-      "Aufwandsrapport_Projekt_" + efforts_holder.id.to_s + "_" + efforts_holder.name.split(",")[0].split(";")[0]
+      "Aufwandsrapport_Projekt_#{efforts_holder.id}_#{efforts_holder.name.split(",")[0].split(";")[0]}"
     end
 
     def efforts_holder
@@ -21,7 +21,7 @@ module Pdfs
     end
 
     def invoice
-      @invoice = Invoice.find_by_project_id(efforts_holder.id)
+      @invoice = Invoice.find_by(project_id: efforts_holder.id)
     end
 
     def is_in_range?(_date)
@@ -64,7 +64,7 @@ module Pdfs
 
       header.draw_misc(invoice, efforts_holder, efforts_holder.offer, efforts_holder.accountant, nil, :effort_report, efforts_holder.name)
 
-      text I18n.t(:summary) + ":", @default_text_settings.merge(style: :bold)
+      text "#{I18n.t(:summary)}:", @default_text_settings.merge(style: :bold)
       text @data_holder.description, @default_text_settings
     end
 
@@ -121,7 +121,7 @@ module Pdfs
           rows(0..date_data.length - 1).padding = [3, 6, 3, 6]
           row(0).padding_top = 6
 
-          rows(0..num_comments - 1).font_style = :italic if num_comments > 0
+          rows(0..num_comments - 1).font_style = :italic if num_comments.positive?
         end
 
         table_data.push(

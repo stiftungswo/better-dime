@@ -28,8 +28,8 @@ module Pdfs
       end
 
       def draw_misc(invoice, project, offer, accountant, costgroups, title_symbol, name, timespan = nil)
-        @document.text I18n.t(:date_name) + " " + @date.strftime("%d.%m.%Y"), @default_text_settings.merge(size: 8)
-        @document.text I18n.t(:vat) + " Nr. " + @global_setting.sender_vat, @default_text_settings.merge(size: 8) if costgroups
+        @document.text "#{I18n.t(:date_name)} #{@date.strftime("%d.%m.%Y")}", @default_text_settings.merge(size: 8)
+        @document.text "#{I18n.t(:vat)} Nr. #{@global_setting.sender_vat}", @default_text_settings.merge(size: 8) if costgroups
         # @document.draw_text 'Schwerzenbach, ' + @date.strftime("%d.%m.%Y"), @default_text_settings.merge(at: [@document.bounds.width - 145, @document.cursor], size: 8)
         @document.move_down 11
         @document.text name, @default_text_settings.merge(size: 12, style: :bold, color: @swo_blue)
@@ -37,9 +37,9 @@ module Pdfs
 
         unless title_symbol === :project_report
           space = 72
-          @document.draw_text I18n.t(:offer) + " Nr.", @default_text_settings.merge(at: [0, @document.cursor])
-          @document.draw_text I18n.t(:project) + " Nr.", @default_text_settings.merge(at: [space, @document.cursor]) unless title_symbol === :offer
-          @document.draw_text I18n.t(:invoice) + " Nr.", @default_text_settings.merge(at: [space * 2, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text "#{I18n.t(:offer)} Nr.", @default_text_settings.merge(at: [0, @document.cursor])
+          @document.draw_text "#{I18n.t(:project)} Nr.", @default_text_settings.merge(at: [space, @document.cursor]) unless title_symbol === :offer
+          @document.draw_text "#{I18n.t(:invoice)} Nr.", @default_text_settings.merge(at: [space * 2, @document.cursor]) unless title_symbol === :offer
           @document.draw_text I18n.t(:cost_groups), @default_text_settings.merge(at: [space * 3 + 10, @document.cursor]) if costgroups
           @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
 
@@ -98,11 +98,11 @@ module Pdfs
 
             @document.transparent(0.5) do
               @document.draw_text @global_setting.sender_street, @default_text_settings.merge(at: [0, 94])
-              @document.draw_text "CH-" + @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(at: [0, 81])
+              @document.draw_text "CH-#{@global_setting.sender_zip} #{@global_setting.sender_city}", @default_text_settings.merge(at: [0, 81])
               @document.fill_color "007DC2"
               @document.draw_text "T ", @default_text_settings.merge(at: [0, 68], style: :bold)
               @document.fill_color "000000"
-              @document.draw_text @global_setting.sender_phone + " ", @default_text_settings.merge(at: [9, 68])
+              @document.draw_text "#{@global_setting.sender_phone} ", @default_text_settings.merge(at: [9, 68])
               @document.draw_text "|", at: [71, 70], size: 7
               @document.fill_color "007DC2"
               @document.draw_text " E ", @default_text_settings.merge(at: [76, 68], style: :bold)
@@ -119,10 +119,10 @@ module Pdfs
 
           @document.text @global_setting.sender_name, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_street, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @global_setting.sender_zip + " " + @global_setting.sender_city, @default_text_settings.merge(size: 10, leading: 6)
+          @document.text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_phone, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 20) if @accountant && @accountant.email
-          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 20) unless @accountant && @accountant.email
+          @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 20) if @accountant&.email
+          @document.text @global_setting.sender_mail, @default_text_settings.merge(size: 10, leading: 20) unless @accountant&.email
         end
       end
 
@@ -133,12 +133,12 @@ module Pdfs
 
           @document.text @data.customer.company.name, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.company.present?
           @document.text @data.customer.department, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.department.present?
-          @document.text (@data.customer.salutation || "") + " " + @data.customer.full_name, @default_text_settings.merge(size: 10, leading: 6)
+          @document.text "#{@data.customer.salutation || ""} #{@data.customer.full_name}", @default_text_settings.merge(size: 10, leading: 6)
           # use text_box to avoid line-wrapping long addresses
           @document.text_box @data.address.street, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
           @document.move_down 16
           @document.text @data.address.supplement, @default_text_settings.merge(size: 10, leading: 6) if @data.address.supplement.present?
-          @document.text_box @data.address.zip.to_s + " " + @data.address.city, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
+          @document.text_box "#{@data.address.zip} #{@data.address.city}", @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
         end
       end
     end

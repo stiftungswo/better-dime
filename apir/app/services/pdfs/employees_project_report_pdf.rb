@@ -16,7 +16,7 @@ module Pdfs
 
     def filename
       if @employees.length == 1
-        "Mitarbeiter_" + @employees[0].full_name + "_Aufwandsrapport"
+        "Mitarbeiter_#{@employees[0].full_name}_Aufwandsrapport"
       else
         "Mitarbeiter_Projekt_Aufwandsrapport"
       end
@@ -52,12 +52,12 @@ module Pdfs
 
     def draw_description
       move_down 40
-      text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
+      text "#{@global_setting.sender_city}, #{Time.current.to_date.strftime("%d.%m.%Y")}", @default_text_settings
 
       move_down 5
       text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
-      text "Aufwände von " + @employees.map(&:full_name).join(", "), @default_text_settings
-      text "Aufwände vom " + @from_date.strftime("%d.%m.%Y") + " bis " + @to_date.strftime("%d.%m.%Y"), @default_text_settings
+      text "Aufwände von #{@employees.map(&:full_name).join(", ")}", @default_text_settings
+      text "Aufwände vom #{@from_date.strftime("%d.%m.%Y")} bis #{@to_date.strftime("%d.%m.%Y")}", @default_text_settings
     end
 
     def get_total_hours(employee)
@@ -101,7 +101,7 @@ module Pdfs
                   date.strftime("%d.%m.%Y"),
                   (same_positions.inject(0) { |sum, e| sum + e.value } / 60).round(1),
                   trim_text_if_needed(effort.project_position.service.name, 25),
-                  effort.project_position.project.id.to_s + " - " + trim_text_if_needed(effort.project_position.project.name, 27)
+                  "#{effort.project_position.project.id} - #{trim_text_if_needed(effort.project_position.project.name, 27)}"
                 ],
                 style: {
                   borders: [],
@@ -112,7 +112,7 @@ module Pdfs
           end
 
           move_down 25
-          text "<b>" + employee.full_name + " | </b><font size='9'>Total Stunden: " + get_total_hours(employee).to_s + "</font>", @default_text_settings.merge(inline_format: true, size: 11)
+          text "<b>#{employee.full_name} | </b><font size='9'>Total Stunden: #{get_total_hours(employee)}</font>", @default_text_settings.merge(inline_format: true, size: 11)
           move_up 5
           indent(10, 0) do
             Pdfs::Generators::TableGenerator.new(@document).render(

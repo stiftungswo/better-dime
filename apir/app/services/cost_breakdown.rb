@@ -56,7 +56,7 @@ class CostBreakdown
 
   # return the list of groups with their respective positions
   def get_grouped_positions(positions, groups)
-    default_positions = positions.select { |p| p.position_group_id.nil? && p.amount > 0 }
+    default_positions = positions.select { |p| p.position_group_id.nil? && p.amount.positive? }
     default_group = [{
       group_name: "",
       order: 0,
@@ -65,7 +65,7 @@ class CostBreakdown
     }]
 
     grouped_positions = groups.map do |group|
-      filtered_positions = positions.select { |p| p.position_group_id == group.id && p.amount > 0 }
+      filtered_positions = positions.select { |p| p.position_group_id == group.id && p.amount.positive? }
 
       {
         group_name: group.name,
@@ -100,7 +100,7 @@ class CostBreakdown
     vat_subtotals = vat_groups.transform_values { |vat_positions| calculate_subtotal(vat_positions) }
     vat_total = vat_subtotals.inject(0) { |sum, (_vat, vat_subtotal)| sum + vat_subtotal }
     # calculate the vat distribution by dividing each subtotal by the total
-    vat_subtotals.transform_values { |subtotal| vat_total == 0 ? 0 : subtotal / vat_total }
+    vat_subtotals.transform_values { |subtotal| vat_total.zero? ? 0 : subtotal / vat_total }
   end
 
   def group_by_vat(positions)

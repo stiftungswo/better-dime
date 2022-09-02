@@ -18,7 +18,7 @@ module Pdfs
     end
 
     def filename
-      "Einzahlungsschein_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @invoice.ending.strftime("%Y_%m_%d")
+      "Einzahlungsschein_#{@invoice.id}_#{@invoice.name.split(",")[0].split(";")[0]}_#{@invoice.ending.strftime("%Y_%m_%d")}"
     end
 
     def document
@@ -55,7 +55,7 @@ module Pdfs
 
         text @global_setting.sender_name, size: 9, style: :bold, character_spacing: @spacing
         text @global_setting.sender_street, size: 10, character_spacing: @spacing
-        text @global_setting.sender_zip + " " + @global_setting.sender_city, size: 10, character_spacing: @spacing
+        text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: 10, character_spacing: @spacing
       end
     end
 
@@ -66,21 +66,19 @@ module Pdfs
         font_size = 9
         leading = 16.5 - font_size
 
-        supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+        supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
         text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
+        text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, character_spacing: @spacing, leading: leading
       end
     end
 
     def draw_price(left_offset)
-      1.times do |i|
-        bounding_box([left_offset + 0.05.cm + i * 0.55.cm, 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
-          # uncomment the next line to see a debug view of the boxes provided by the esr
-        end
+      bounding_box([left_offset + 0.05.cm + 0 * 0.55.cm, 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
+        # uncomment the next line to see a debug view of the boxes provided by the esr
       end
 
       11.times do |i|
@@ -115,7 +113,7 @@ module Pdfs
 
         text @global_setting.sender_name, size: 9, style: :bold, character_spacing: @spacing
         text @global_setting.sender_street, size: 10, character_spacing: @spacing
-        text @global_setting.sender_zip + " " + @global_setting.sender_city, size: 10, character_spacing: @spacing
+        text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: 10, character_spacing: @spacing
       end
     end
 
@@ -159,13 +157,13 @@ module Pdfs
         font_size = 9
         leading = 16.5 - font_size
 
-        supplement = @invoice.address.supplement.blank? ? "" : ", " + @invoice.address.supplement
+        supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
         text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.zip.to_s + " " + @invoice.address.city, size: font_size, character_spacing: @spacing, leading: leading
+        text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, character_spacing: @spacing, leading: leading
       end
     end
 
@@ -199,12 +197,11 @@ module Pdfs
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
-          text @global_setting.sender_name + ", " + @global_setting.sender_street +
-               ", " + @global_setting.sender_zip + " " + @global_setting.sender_city, size: info_size, character_spacing: @spacing, leading: leading
-          text I18n.t(:invoice_nr) + " " + @invoice.id.to_s, size: info_size, character_spacing: @spacing, leading: leading
+          text "#{@global_setting.sender_name}, #{@global_setting.sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
+          text "#{I18n.t(:invoice_nr)} #{@invoice.id}", size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_iban, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_bic, size: info_size, character_spacing: @spacing, leading: leading
-          text "CHF " + total_formated, size: info_size, character_spacing: @spacing, leading: leading
+          text "CHF #{total_formated}", size: info_size, character_spacing: @spacing, leading: leading
         end
       end
     end

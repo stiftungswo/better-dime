@@ -33,11 +33,11 @@ module Pdfs
       end
 
       def emphasis(text)
-        "<i>" + text + "</i>"
+        "<i>#{text}</i>"
       end
 
       def double_emphasis(text)
-        "<b>" + text + "</b>"
+        "<b>#{text}</b>"
       end
 
       def triple_emphasis(text)
@@ -55,7 +55,7 @@ module Pdfs
           ordered_list = content.split("[step]").select(&:present?)
           label_width = ordered_list.length > 9 ? 17 : 12
           ordered_list.each_with_index do |text, index|
-            list_item_render text, (index + 1).to_s + ".", label_width if text.present?
+            list_item_render text, "#{index + 1}.", label_width if text.present?
           end
         when :unordered
           content.split("[step]").each do |text|

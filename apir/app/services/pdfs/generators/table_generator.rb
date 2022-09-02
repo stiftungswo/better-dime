@@ -24,7 +24,7 @@ module Pdfs
             next if styles.nil?
 
             styles.each do |style_key, style_value|
-              row(index).send(style_key.to_s + "=", style_value) if style_key
+              row(index).send("#{style_key}=", style_value) if style_key
             end
           end
 

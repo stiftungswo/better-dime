@@ -44,7 +44,7 @@ module Pdfs
     end
 
     def draw_page_numbers
-      number_pages I18n.t(:page) + " <page> von <total>",
+      number_pages "#{I18n.t(:page)} <page> von <total>",
                    start_count_at: 1,
                    at: [bounds.right - 80, bounds.bottom - 37],
                    align: :right,

@@ -11,7 +11,7 @@ class PositionGroupRemapper
   # old offers / project / invoices share a lot of position groups,
   # while new ones each have their own separate groups.
   def self.remap_shared_groups(position_groupings, positions)
-    group_mapping = create_group_mapping(position_groupings) { |group| !!group.shared }
+    group_mapping = create_group_mapping(position_groupings, &:shared)
     apply_group_mapping(positions, group_mapping)
     group_mapping.any?
   end
@@ -27,8 +27,8 @@ class PositionGroupRemapper
   end
 
   def self.apply_group_mapping(positions, group_mapping)
-    for position in positions do
-      position.position_group = group_mapping[position.position_group] if group_mapping.has_key?(position.position_group)
+    positions.each do |position|
+      position.position_group = group_mapping[position.position_group] if group_mapping.key?(position.position_group)
     end
   end
 end

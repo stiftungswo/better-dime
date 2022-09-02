@@ -11,7 +11,7 @@ class EffortMover
       efforts.each do |effort|
         service = effort.project_position.service
 
-        raise StandardError, "Position " + effort.project_position.id + " has no service assigned" unless service
+        raise StandardError, "Position #{effort.project_position.id} has no service assigned" unless service
 
         if to_position
           effort.position_id = to_position
