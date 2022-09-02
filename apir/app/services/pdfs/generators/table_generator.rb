@@ -8,13 +8,9 @@ module Pdfs
       end
 
       def render(data, column_widths, column_alignments = {}, padSides = false, isTotal = false)
-        table_data = data.map do |row|
-          row[:data]
-        end
+        table_data = data.pluck(:data)
 
-        table_style = data.map do |row|
-          row[:style]
-        end
+        table_style = data.pluck(:style)
 
         @document.table(table_data, header: true, column_widths: column_widths) do
           # Apply passed styles

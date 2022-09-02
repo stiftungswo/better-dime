@@ -28,8 +28,8 @@ module V2
 
     def update
       @customer = Customer.find(params[:id])
-      @customer.phones.where.not(id: (customer_params[:phones_attributes] || []).map { |phone| phone[:id] }).discard_all
-      @customer.addresses.where.not(id: (customer_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @customer.phones.where.not(id: (customer_params[:phones_attributes] || []).pluck(:id)).discard_all
+      @customer.addresses.where.not(id: (customer_params[:addresses_attributes] || []).pluck(:id)).discard_all
       @customer.customer_tag_ids = customer_params[:customer_tag_ids]
 
       respond_to do |format|

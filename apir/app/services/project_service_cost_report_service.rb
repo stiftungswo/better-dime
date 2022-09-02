@@ -4,7 +4,7 @@
 class ProjectServiceCostReportService
   attr_accessor :range, :with_vat, :projects, :project_efforts, :project_positions, :services, :effort_costs, :effort_costs_by_service
 
-  def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year), selected_services, with_vat)
+  def initialize(range = Date.today.all_year, selected_services, with_vat)
     raise StandardError, "Non-integer service IDs." unless selected_services.all? { |i| i =~ /^[0-9]+$/ }
 
     self.range = range

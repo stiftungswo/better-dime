@@ -31,8 +31,8 @@ module V2
 
     def update
       @employee = Employee.find(params[:id])
-      @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).map { |work_period| work_period[:id] }).discard_all
-      @employee.addresses.where.not(id: (employee_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).pluck(:id)).discard_all
+      @employee.addresses.where.not(id: (employee_params[:addresses_attributes] || []).pluck(:id)).discard_all
 
       respond_to do |format|
         if @employee.update(employee_params)

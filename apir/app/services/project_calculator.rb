@@ -53,7 +53,7 @@ class ProjectCalculator
       if p.rate_unit.nil? || !p.rate_unit.is_time
         sum
       else
-        sum + p.efforts_value * p.rate_unit.factor
+        sum + (p.efforts_value * p.rate_unit.factor)
       end
     end
   end

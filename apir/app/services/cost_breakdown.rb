@@ -13,10 +13,10 @@ class CostBreakdown
     positions = @positions.sort_by { |p| p.order.to_i }
     subtotal = calculate_subtotal positions
     discounts = @discounts.map { |discount| apply_discount subtotal, discount }
-    discounts_total = discounts.inject(0) { |sum, d| sum + (d[:value] / 5.0).floor * 5 }
+    discounts_total = discounts.inject(0) { |sum, d| sum + ((d[:value] / 5.0).floor * 5) }
     total_with_discounts = subtotal + discounts_total
     vats = calculate_vats positions, total_with_discounts
-    vats_total = vats.inject(0) { |sum, v| sum + (v[:value] / 5.0).round * 5 }
+    vats_total = vats.inject(0) { |sum, v| sum + ((v[:value] / 5.0).round * 5) }
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
 
@@ -81,7 +81,7 @@ class CostBreakdown
   end
 
   def calculate_subtotal(positions)
-    positions.inject(0) { |sum, p| sum + (p.calculated_total / 5.0).round * 5.0 }
+    positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5.0) }
   end
 
   def calculate_vats(positions, total_with_discounts)

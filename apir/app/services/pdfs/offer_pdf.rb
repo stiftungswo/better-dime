@@ -53,7 +53,7 @@ module Pdfs
       )
 
       move_down 20
-      text "#{I18n.t(:return_signed_until)} #{(Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y")}", @default_text_settings.merge(style: :bold)
+      text "#{I18n.t(:return_signed_until)} #{(1.month.from_now + 1.day).to_date.strftime("%d.%m.%Y")}", @default_text_settings.merge(style: :bold)
     end
   end
 end

@@ -205,7 +205,7 @@ module Pdfs
         end
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
-        vat_total = has_fixed_price ? (total - fixed_price / (1 + @breakdown[:fixed_price_vat])) : @breakdown[:vat_total]
+        vat_total = has_fixed_price ? (total - (fixed_price / (1 + @breakdown[:fixed_price_vat]))) : @breakdown[:vat_total]
 
         if has_fixed_price
           data.push(

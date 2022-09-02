@@ -225,7 +225,7 @@ module Pdfs
         }
       ]
       additional_costs = @additional_cost_names.zip(@additional_cost_prices)
-      additional_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 }
+      additional_total = @additional_cost_prices.inject(0) { |sum, p| sum + (p.to_f / 100.0) }
 
       additional_costs.each do |cost|
         table_data.push(
@@ -270,7 +270,7 @@ module Pdfs
     def draw_total
       padding = [8, 2, 8, 2]
 
-      final_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 } + @total
+      final_total = @additional_cost_prices.inject(0) { |sum, p| sum + (p.to_f / 100.0) } + @total
       table_data = [{
         data: ["", "Berechnung", "Total CHF"],
         style: {

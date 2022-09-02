@@ -104,7 +104,7 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
         put :archive, format: :json, params: { id: customer_tag.id, archived: true, customer_tag: customer_tag.as_json }
         customer_tag.reload
 
-        expect(customer_tag.archived).to eq(true)
+        expect(customer_tag.archived).to be(true)
       end
     end
 

@@ -36,6 +36,6 @@ class ProjectPosition < ApplicationRecord
   end
 
   def charge
-    price_per_rate * efforts_value + calculated_vat
+    (price_per_rate * efforts_value) + calculated_vat
   end
 end

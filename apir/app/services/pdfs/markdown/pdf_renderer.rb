@@ -74,7 +74,7 @@ module Pdfs
         settings = {
           character_spacing: @spacing,
           leading: @leading,
-          inline_format: TRUE
+          inline_format: true
         }
 
         @document.float do
@@ -90,7 +90,7 @@ module Pdfs
         settings = {
           character_spacing: @spacing,
           leading: @leading,
-          inline_format: TRUE
+          inline_format: true
         }
 
         # since we pad by 10, the next header will only have top pad for 10 more to reach
@@ -110,7 +110,7 @@ module Pdfs
             character_spacing: @spacing,
             leading: 5,
             size: 10,
-            inline_format: TRUE
+            inline_format: true
           }
           @document.start_new_page if @document.cursor < 50
           @document.text text, settings

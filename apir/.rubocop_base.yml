@@ -71,6 +71,7 @@ Style/HashTransformValues:
   Enabled: true
 
 AllCops:
+  NewCops: enable
   Exclude:
     - 'bin/**/*'
     - 'log/**/*'
@@ -79,4 +80,3 @@ AllCops:
     - 'db/migrate/*'
     - 'db/schema.rb'
     - 'vendor/**/*'
-

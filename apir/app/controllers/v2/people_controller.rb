@@ -30,8 +30,8 @@ module V2
 
     def update
       @person = Person.find(params[:id])
-      @person.phones.where.not(id: (person_params[:phones_attributes] || []).map { |phone| phone[:id] }).discard_all
-      @person.addresses.where.not(id: (person_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @person.phones.where.not(id: (person_params[:phones_attributes] || []).pluck(:id)).discard_all
+      @person.addresses.where.not(id: (person_params[:addresses_attributes] || []).pluck(:id)).discard_all
       @person.customer_tag_ids = person_params[:customer_tag_ids]
 
       respond_to do |format|

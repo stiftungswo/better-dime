@@ -77,12 +77,12 @@ module Pdfs
     end
 
     def draw_price(left_offset)
-      bounding_box([left_offset + 0.05.cm + 0 * 0.55.cm, 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
+      bounding_box([left_offset + 0.05.cm + (0 * 0.55.cm), 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
         # uncomment the next line to see a debug view of the boxes provided by the esr
       end
 
       11.times do |i|
-        bounding_box([left_offset + 0.05.cm + i * 0.51.cm, 5.55.cm], width: 0.4.cm, height: 0.5.cm) do
+        bounding_box([left_offset + 0.05.cm + (i * 0.51.cm), 5.55.cm], width: 0.4.cm, height: 0.5.cm) do
           # uncomment the next line to see a debug view of the boxes provided by the esr
           # stroke_bounds
         end
@@ -93,7 +93,7 @@ module Pdfs
       col = 11 - price_text.length
       price_text.each_char do |c|
         float do
-          draw_text c, size: 13, at: [left_offset + 0.25.cm - width_of(c) / 2 + col * 0.51.cm, 5.15.cm]
+          draw_text c, size: 13, at: [left_offset + 0.25.cm - (width_of(c) / 2) + (col * 0.51.cm), 5.15.cm]
         end
         col += 1
       end
@@ -128,7 +128,7 @@ module Pdfs
     def draw_ref_number
       10.times do |i|
         3.times do |j|
-          bounding_box([12.45.cm + i * 0.51.cm, 9.8.cm - j * 0.6.cm], width: 0.4.cm, height: 0.5.cm) do
+          bounding_box([12.45.cm + (i * 0.51.cm), 9.8.cm - (j * 0.6.cm)], width: 0.4.cm, height: 0.5.cm) do
             # uncomment the next line to see a debug view of the boxes provided by the esr
             # stroke_bounds
           end
@@ -139,7 +139,7 @@ module Pdfs
       col = 0
       (I18n.t(:invoice_nr_esr) + @invoice.id.to_s).each_char do |c|
         float do
-          draw_text c, size: 11, character_spacing: 8.1, leading: 6, at: [12.65.cm - width_of(c) / 2 + col * 0.51.cm, 9.4.cm - row * 0.6.cm]
+          draw_text c, size: 11, character_spacing: 8.1, leading: 6, at: [12.65.cm - (width_of(c) / 2) + (col * 0.51.cm), 9.4.cm - (row * 0.6.cm)]
         end
         col += 1
 

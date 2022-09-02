@@ -4,7 +4,7 @@
 class ProjectServiceHourReportService
   attr_accessor :range, :projects, :project_efforts, :project_positions, :services, :effort_minutes, :effort_minutes_by_service
 
-  def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year))
+  def initialize(range = Date.today.all_year)
     self.range = range
     self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service)
                                             .where("rate_units.is_time" => true, "project_efforts.date" => range)

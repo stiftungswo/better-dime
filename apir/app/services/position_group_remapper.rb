@@ -19,11 +19,11 @@ class PositionGroupRemapper
   # duplicate all groups for which should_duplicate returns true,
   # and return a mapping old_group -> new_group for those groups
   def self.create_group_mapping(position_groupings, &should_duplicate)
-    Hash[position_groupings.select(&should_duplicate).map do |old_group|
+    position_groupings.select(&should_duplicate).map do |old_group|
       new_group = old_group.dup
       new_group.shared = false
       [old_group, new_group]
-    end]
+    end.to_h
   end
 
   def self.apply_group_mapping(positions, group_mapping)

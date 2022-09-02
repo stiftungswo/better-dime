@@ -9,7 +9,7 @@ class RevenueReportService
   # - I am not proud of any of this code
   # - write a offer breakdown decorator
   # - write a invoice breakdown decorator
-  def initialize(daterange = (Date.today.beginning_of_year..Date.today.end_of_year))
+  def initialize(daterange = Date.today.all_year)
     self.daterange = daterange
     self.offers = Offer.where(created_at: daterange)
                        .where.not(id: Project.where.not(offer_id: nil).select(:offer_id))
@@ -108,7 +108,7 @@ class RevenueReportService
   end
 
   def pretty_status
-    Hash[nil => "", 1 => "Offeriert", 2 => "Bestätigt", 3 => "Abgelehnt"]
+    { nil => "", 1 => "Offeriert", 2 => "Bestätigt", 3 => "Abgelehnt" }
   end
 
   # some love for console developers

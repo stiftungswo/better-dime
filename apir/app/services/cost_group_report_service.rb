@@ -3,7 +3,7 @@
 class CostGroupReportService
   attr_accessor :daterange, :employees, :projects, :project_efforts, :project_positions, :efforts_by_project, :effort_minutes_weighted, :cost_groups
 
-  def initialize(daterange = (Date.today.beginning_of_year..Date.today.end_of_year), employee_group_name: "SWO Angestellte")
+  def initialize(daterange = Date.today.all_year, employee_group_name: "SWO Angestellte")
     self.daterange = daterange
     self.project_positions = ProjectPosition.joins(:project, :rate_unit, project: :costgroups, project_efforts: { employee: :employee_group })
                                             .where("rate_units.is_time" => true, "project_efforts.date" => daterange)

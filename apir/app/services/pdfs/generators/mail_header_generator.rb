@@ -40,7 +40,7 @@ module Pdfs
           @document.draw_text "#{I18n.t(:offer)} Nr.", @default_text_settings.merge(at: [0, @document.cursor])
           @document.draw_text "#{I18n.t(:project)} Nr.", @default_text_settings.merge(at: [space, @document.cursor]) unless title_symbol === :offer
           @document.draw_text "#{I18n.t(:invoice)} Nr.", @default_text_settings.merge(at: [space * 2, @document.cursor]) unless title_symbol === :offer
-          @document.draw_text I18n.t(:cost_groups), @default_text_settings.merge(at: [space * 3 + 10, @document.cursor]) if costgroups
+          @document.draw_text I18n.t(:cost_groups), @default_text_settings.merge(at: [(space * 3) + 10, @document.cursor]) if costgroups
           @document.draw_text I18n.t(:clerk), @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor])
 
           @document.move_down 16
@@ -48,7 +48,7 @@ module Pdfs
           @document.draw_text offer.id.to_s, @default_text_settings.merge(at: [0, @document.cursor]) if offer
           @document.draw_text project.id.to_s, @default_text_settings.merge(at: [space, @document.cursor]) if project
           @document.draw_text invoice.id.to_s, @default_text_settings.merge(at: [space * 2, @document.cursor]) if invoice
-          @document.draw_text costgroups, @default_text_settings.merge(at: [space * 3 + 10, @document.cursor]) if costgroups
+          @document.draw_text costgroups, @default_text_settings.merge(at: [(space * 3) + 10, @document.cursor]) if costgroups
           @document.draw_text accountant.full_name, @default_text_settings.merge(at: [@document.bounds.width - 175, @document.cursor]) if accountant
 
           @document.move_down 26

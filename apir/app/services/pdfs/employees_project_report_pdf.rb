@@ -77,7 +77,15 @@ module Pdfs
         efforts = efforts_in_range(employee).sort_by { |e| [e.date, e.project_position.project.id] }
         effort_dates = efforts.map(&:date).uniq.sort
 
-        if !efforts.empty?
+        if efforts.empty?
+          move_down 25
+          text employee.full_name, @default_text_settings.merge(size: 11, style: :bold)
+          line_width 0.65
+          dash(1, space: 2)
+          stroke_horizontal_rule
+          undash
+          move_up 15
+        else
           table_data = [
             {
               data: ["Datum", "Stunden", "Arbeit", "Projekt"],
@@ -120,14 +128,6 @@ module Pdfs
               [bounds.width - 400, 400 - 200 - 150, 165, 185]
             )
           end
-        else
-          move_down 25
-          text employee.full_name, @default_text_settings.merge(size: 11, style: :bold)
-          line_width 0.65
-          dash(1, space: 2)
-          stroke_horizontal_rule
-          undash
-          move_up 15
         end
       end
     end
