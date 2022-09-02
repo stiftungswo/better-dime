@@ -5,7 +5,7 @@ class CommentMover
     ProjectComment.transaction do
       comments = ProjectComment.find(params[:comment_ids])
       target_project = Project.find(params[:project_id])
-      
+
       comments.each do |comment|
         comment.project = target_project
 

@@ -12,7 +12,7 @@ module Pdfs
       @leading = 3
       @page_width = 520
       @page_height = 650
-      @swo_blue = '007DC2'
+      @swo_blue = "007DC2"
       @default_text_settings = {
         character_spacing: @spacing,
         leading: @leading
@@ -45,11 +45,11 @@ module Pdfs
 
     def draw_page_numbers
       number_pages I18n.t(:page) + " <page> von <total>",
-                  start_count_at: 1,
-                  at: [bounds.right - 80, bounds.bottom - 37],
-                  align: :right,
-                  size: 10,
-                  color: '909090'
+                   start_count_at: 1,
+                   at: [bounds.right - 80, bounds.bottom - 37],
+                   align: :right,
+                   size: 10,
+                   color: "909090"
     end
 
     def document

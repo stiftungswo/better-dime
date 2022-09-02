@@ -2,11 +2,11 @@
 
 require "prawn"
 require "prawn/measurement_extensions"
-require 'qr-bills'
-require 'qr-bills/qr-exceptions'
-require 'qr-bills/qr-params'
-require 'qr-bills/qr-html-layout'
-require 'qr-bills/qr-creditor-reference'
+require "qr-bills"
+require "qr-bills/qr-exceptions"
+require "qr-bills/qr-params"
+require "qr-bills/qr-html-layout"
+require "qr-bills/qr-creditor-reference"
 
 module Pdfs
   class InvoiceQrBillPdf
@@ -55,7 +55,7 @@ module Pdfs
       params = QRBills.get_qr_params
 
       params[:bill_type]                                      = "red_without_reference"
-      params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id.to_s}.png"
+      params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
       params[:bill_params][:creditor][:address][:type]        = "S"
@@ -85,27 +85,26 @@ module Pdfs
     end
 
     def get_country_abbr(country)
-      abbreviation = case country
-                       when "CH", "Schweiz", "Suisse" then "CH"
-                       when "DE", "Deutschland" then "DE"
-                       when "FR", "Frankreich", "France" then "FR"
-                       else "CH"
-                     end
-      return abbreviation
+      case country
+      when "CH", "Schweiz", "Suisse" then "CH"
+      when "DE", "Deutschland" then "DE"
+      when "FR", "Frankreich", "France" then "FR"
+      else "CH"
+      end
     end
 
     def draw_receipt
       bounding_box([0.cm, 10.5.cm], width: 6.2.cm, height: 10.5.cm) do
-        #Uncomment next line if regular paper is used or the bill is sent digitally
-        #stroke_bounds
+        # Uncomment next line if regular paper is used or the bill is sent digitally
+        # stroke_bounds
 
         bounding_box([0.5.cm, 10.cm], width: 5.2.cm, height: 0.7.cm) do
-          #Title section
+          # Title section
           text I18n.t(:receipt), size: 11, style: :bold
         end
 
         bounding_box([0.5.cm, 9.3.cm], width: 5.2.cm, height: 5.6.cm) do
-          #Information section
+          # Information section
           font_size = 8
           leading = 9 - font_size
 
@@ -128,7 +127,7 @@ module Pdfs
         end
 
         bounding_box([0.5.cm, 3.7.cm], width: 5.0.cm, height: 1.4.cm) do
-          #Amount section
+          # Amount section
           bounding_box([0.cm, 1.4.cm], width: 2.6.cm, height: 1.4.cm) do
             text I18n.t(:currency), size: 6, style: :bold, leading: 3
             text "CHF", size: font_size, leading: 3
@@ -140,7 +139,7 @@ module Pdfs
         end
 
         bounding_box([0.5.cm, 2.3.cm], width: 5.0.cm, height: 1.8.cm) do
-          #Acceptance point section
+          # Acceptance point section
           text I18n.t(:acceptance_point), size: 6, style: :bold, leading: 2, align: :right
         end
       end
@@ -148,26 +147,26 @@ module Pdfs
 
     def draw_payment_part
       font_size = 10
-      leading = 11- font_size
+      leading = 11 - font_size
       h_font_size = 8
       h_leading = 11 - h_font_size
 
       bounding_box([6.2.cm, 10.5.cm], width: 14.8.cm, height: 10.5.cm) do
-        #Uncomment next line if regular paper is used or the bill is sent digitally
-        #stroke_bounds
+        # Uncomment next line if regular paper is used or the bill is sent digitally
+        # stroke_bounds
 
         bounding_box([0.5.cm, 10.cm], width: 5.1.cm, height: 0.7.cm) do
-          #Title section
+          # Title section
           text I18n.t(:payment_part), size: 11, style: :bold
         end
 
         bounding_box([0.5.cm, 8.8.cm], width: 4.6.cm, height: 4.6.cm) do
-          #Swiss QR Code section
+          # Swiss QR Code section
           image @bill[:params][:qrcode_filepath], width: 4.6.cm
         end
 
         bounding_box([0.5.cm, 3.7.cm], width: 5.1.cm, height: 2.2.cm) do
-          #Amount section
+          # Amount section
           bounding_box([0.cm, 2.2.cm], width: 2.5.cm, height: 2.2.cm) do
             text I18n.t(:currency), size: h_font_size, style: :bold, leading: h_leading
             text "CHF", size: 10, leading: 3
@@ -179,7 +178,7 @@ module Pdfs
         end
 
         bounding_box([5.6.cm, 10.cm], width: 8.7.cm, height: 8.5.cm) do
-          #Information section
+          # Information section
           text I18n.t(:payable_to), size: h_font_size, style: :bold, leading: h_leading
           text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
@@ -207,7 +206,7 @@ module Pdfs
 
     def draw_info
       bounding_box([0.5.cm, 16.5.cm], width: 19.0.cm, height: 6.cm) do
-        #stroke_bounds
+        # stroke_bounds
         leading = 6
 
         text I18n.t(:bank_payment), size: 11, character_spacing: @spacing
@@ -216,7 +215,7 @@ module Pdfs
         info_label_width = 4
 
         bounding_box([0.0.cm, 4.4.cm], width: info_label_width.cm, height: 4.cm) do
-          #stroke_bounds
+          # stroke_bounds
 
           text I18n.t(:finance_institute), size: 9, character_spacing: @spacing, leading: leading
           text I18n.t(:in_favor_of), size: 9, character_spacing: @spacing, leading: leading
@@ -229,7 +228,7 @@ module Pdfs
         info_size = 8.7
 
         bounding_box([info_label_width.cm, 4.4.cm], width: (13.5.cm + (5.cm - info_label_width.cm)), height: 4.cm) do
-          #stroke_bounds
+          # stroke_bounds
 
           total = (@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0
           total_formated = format_money(total)

@@ -17,7 +17,6 @@ module Pdfs
         end
 
         @document.table(table_data, header: true, column_widths: column_widths) do
-
           # Apply passed styles
           cells.borders = []
 
@@ -32,11 +31,11 @@ module Pdfs
           column_alignments.each do |key, value|
             columns(key).align = value
           end
-          
+
           if isTotal
-            rows(table_data.length-1).columns(0).text_color = '007DC2'
-            rows(table_data.length-1).columns(1).text_color = 'ffffff'
-            rows(table_data.length-1).columns(1).background_color = '007DC2'
+            rows(table_data.length - 1).columns(0).text_color = "007DC2"
+            rows(table_data.length - 1).columns(1).text_color = "ffffff"
+            rows(table_data.length - 1).columns(1).background_color = "007DC2"
           end
 
           if padSides

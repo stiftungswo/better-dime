@@ -23,7 +23,6 @@ module V2
     end
 
     def switch_locale(&action)
-
       locale = locale_params[:locale]
 
       locale = current_employee.try(:locale) if locale.blank?

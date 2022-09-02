@@ -77,13 +77,13 @@ module Pdfs
     end
 
     def draw_price(left_offset)
-      (0..0).each do |i|
+      1.times do |i|
         bounding_box([left_offset + 0.05.cm + i * 0.55.cm, 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
           # uncomment the next line to see a debug view of the boxes provided by the esr
         end
       end
 
-      (0..10).each do |i|
+      11.times do |i|
         bounding_box([left_offset + 0.05.cm + i * 0.51.cm, 5.55.cm], width: 0.4.cm, height: 0.5.cm) do
           # uncomment the next line to see a debug view of the boxes provided by the esr
           # stroke_bounds
@@ -128,8 +128,8 @@ module Pdfs
     end
 
     def draw_ref_number
-      (0..9).each do |i|
-        (0..2).each do |j|
+      10.times do |i|
+        3.times do |j|
           bounding_box([12.45.cm + i * 0.51.cm, 9.8.cm - j * 0.6.cm], width: 0.4.cm, height: 0.5.cm) do
             # uncomment the next line to see a debug view of the boxes provided by the esr
             # stroke_bounds

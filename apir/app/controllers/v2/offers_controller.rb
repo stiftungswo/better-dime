@@ -31,9 +31,7 @@ module V2
       raise ValidationError, @offer.errors unless @offer.update(update_params)
 
       # replace shared position groups by new ones to enable modification in the frontend
-      if PositionGroupRemapper.remap_shared_groups(@offer.position_groupings, @offer.offer_positions) then
-        raise ValidationError, @offer.errors unless @offer.save
-      end
+      raise ValidationError, @offer.errors if PositionGroupRemapper.remap_shared_groups(@offer.position_groupings, @offer.offer_positions) && !@offer.save
 
       render :show
     end
@@ -72,7 +70,7 @@ module V2
     end
 
     def print
-      date = params[:date].blank? ? DateTime.now : (DateTime.parse(params[:date]))
+      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
       pdf = Pdfs::OfferPdf.new GlobalSetting.first, @offer, date, params[:city]
 
       respond_to do |format|
@@ -120,6 +118,5 @@ module V2
         offer_costgroup_distributions_attributes: [:id, :weight, :costgroup_number, :_destroy]
       )
     end
-    
   end
 end

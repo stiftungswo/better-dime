@@ -20,7 +20,6 @@ class CustomerXlsxDecorator < ApplicationDecorator
     end
   end
 
-
   def phones
     object.phones.map(&:number).join(", ")
   end

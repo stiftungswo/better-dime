@@ -5,7 +5,7 @@ class ServiceCategory < ApplicationRecord
 
   has_many :services, dependent: :restrict_with_exception
 
-  belongs_to :parent_category, class_name: 'ServiceCategory', optional: true
+  belongs_to :parent_category, class_name: "ServiceCategory", optional: true
   has_many :service_categories, foreign_key: :parent_category_id, dependent: :restrict_with_exception
 
   validates :name, presence: true
@@ -15,10 +15,10 @@ class ServiceCategory < ApplicationRecord
   def order
     if parent_category.present?
       ## PPnn
-      parent_category.number*100 + number
+      parent_category.number * 100 + number
     else
       # we are a parent category -> nn00
-      number*100
+      number * 100
     end
   end
 end

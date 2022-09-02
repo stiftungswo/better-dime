@@ -37,7 +37,7 @@ module Pdfs
       text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings
 
       total_effort_hours = @employee.project_efforts.select do |e|
-        (@from..@to) === e.date && e.project_position.rate_unit.is_time
+        (@from..@to).include?(e.date) && e.project_position.rate_unit.is_time
       end.inject(0) { |sum, e| sum + e.value }
 
       move_down 5
@@ -49,7 +49,7 @@ module Pdfs
     def draw_efforts
       move_down 20
 
-      efforts = @employee.project_efforts.select { |e| (@from..@to) === e.date }
+      efforts = @employee.project_efforts.select { |e| (@from..@to).include?(e.date) }
       effort_dates = efforts.map(&:date).uniq
 
       table_data = [

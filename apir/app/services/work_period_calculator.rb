@@ -80,7 +80,7 @@ class WorkPeriodCalculator
   end
 
   def calculate_booked_minutes(period, efforts)
-    period[:booked_minutes] = efforts.select { |e| (period[:beginning]..period[:ending]) === e.date }.inject(0) do |sum, e|
+    period[:booked_minutes] = efforts.select { |e| (period[:beginning]..period[:ending]).include?(e.date) }.inject(0) do |sum, e|
       sum + e.value
     end.to_f
   end
@@ -123,7 +123,7 @@ class WorkPeriodCalculator
   end
 
   def calculate_remaining_vacation_budget(period, efforts)
-    holiday_efforts = efforts.select { |e| (period[:beginning]..period[:ending]) === e.date && e.vacation_project == 1 }
+    holiday_efforts = efforts.select { |e| (period[:beginning]..period[:ending]).include?(e.date) && e.vacation_project == 1 }
     booked_holiday = holiday_efforts.inject(0) do |sum, e|
       sum + e.value
     end.to_f
@@ -136,7 +136,7 @@ class WorkPeriodCalculator
 
   def calculate_overlapping_periods(periods, period)
     period[:overlapping_periods] = periods.any? do |p|
-      overlap = (period[:beginning]..period[:ending]) === p[:beginning] || (period[:beginning]..period[:ending]) === p[:ending]
+      overlap = (period[:beginning]..period[:ending]).include?(p[:beginning]) || (period[:beginning]..period[:ending]).include?(p[:ending])
       overlap && p != period
     end
   end

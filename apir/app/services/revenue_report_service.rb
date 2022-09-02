@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class RevenueReportService
-  attr_accessor :daterange
-  attr_accessor :offers, :projects, :invoices
-  attr_accessor :employees, :projects, :effort_minutes, :effort_minutes_by_cost_group, :cost_groups
+  attr_accessor :daterange, :offers, :projects, :invoices, :employees, :effort_minutes, :effort_minutes_by_cost_group, :cost_groups
 
   # TODO
   # - I have no idea by which definitions offers or projects are included here
@@ -25,7 +23,7 @@ class RevenueReportService
                              :accountant, :customer, :project_costgroup_distributions,
                              project_positions: [:project_efforts, :position_group, :rate_unit],
                              offer: [:accountant, :customer, :offer_positions, :offer_discounts],
-                             invoices: [:invoice_costgroup_distributions, :invoice_discounts, invoice_positions: [:position_group]]
+                             invoices: [:invoice_costgroup_distributions, :invoice_discounts, { invoice_positions: [:position_group] }]
                            ).order(name: :asc)
     self.invoices = Invoice.where(created_at: daterange)
                            .where(project_id: nil)
@@ -68,7 +66,7 @@ class RevenueReportService
 
       category_names = project.project_categories.map { |category| category.name }
 
-      row = ["Projekt", nil, project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
+      row = ["Projekt", nil, project.name, category_names.join(", "), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
       row += [no_costgroup_prices]
       row

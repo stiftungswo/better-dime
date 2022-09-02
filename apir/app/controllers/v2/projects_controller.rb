@@ -29,9 +29,7 @@ module V2
       raise ValidationError, @project.errors unless @project.update(update_params)
 
       # replace shared position groups by new ones to enable modification in the frontend
-      if PositionGroupRemapper.remap_shared_groups(@project.position_groupings, @project.project_positions) then
-        raise ValidationError, @project.errors unless @project.save
-      end
+      raise ValidationError, @project.errors if PositionGroupRemapper.remap_shared_groups(@project.position_groupings, @project.project_positions) && !@project.save
 
       render :show
     end
@@ -74,7 +72,7 @@ module V2
     def potential_invoices
       @q = Project.left_joins(:invoices, project_positions: :project_efforts).select(
         "projects.id, projects.name, MAX(date) as last_effort_date, MAX(ending) as last_invoice_date"
-      ).group(:id).order(id: :desc).having('last_invoice_date IS NULL OR (last_effort_date AND (last_effort_date > last_invoice_date))')
+      ).group(:id).order(id: :desc).having("last_invoice_date IS NULL OR (last_effort_date AND (last_effort_date > last_invoice_date))")
       @q2 = @q.ransack(search_params).result.order(search_params[:s])
       @projects_wp_invoices = @q2.page(legacy_params[:page]).per(legacy_params[:pageSize])
     end

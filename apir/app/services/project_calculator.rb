@@ -2,7 +2,7 @@
 
 class ProjectCalculator
   # the following two methods are just helpers to increase the api's response speed, no need to test
-  #:nocov:
+  # :nocov:
   def self.invoices_counts(projects)
     projects.joins(:invoices).group(:id).count
   end
@@ -10,7 +10,7 @@ class ProjectCalculator
   def self.positions_counts(projects)
     projects.left_joins(project_positions: :project_efforts).group(:id).sum(:value)
   end
-  #:nocov:
+  # :nocov:
 
   def self.days_since_last_invoice(project)
     (project.last_effort_date - project.last_invoice_date).days / 86_400 unless project.last_effort_date.nil? || project.last_invoice_date.nil?
@@ -23,18 +23,16 @@ class ProjectCalculator
   def budget_price
     if @project.offer.nil?
       nil
+    elsif @project.offer.fixed_price.nil?
+      CostBreakdown.new(
+        @project.offer.offer_positions,
+        @project.offer.offer_discounts,
+        @project.offer.position_groupings,
+        @project.offer.fixed_price,
+        @project.offer.fixed_price_vat || 0.077
+      ).calculate[:total]
     else
-      if @project.offer.fixed_price.nil?
-        CostBreakdown.new(
-          @project.offer.offer_positions,
-          @project.offer.offer_discounts,
-          @project.offer.position_groupings,
-          @project.offer.fixed_price,
-          @project.offer.fixed_price_vat || 0.077
-        ).calculate[:total]
-      else
-        @project.offer.fixed_price
-      end
+      @project.offer.fixed_price
     end
   end
 

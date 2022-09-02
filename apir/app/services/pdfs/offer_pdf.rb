@@ -40,22 +40,20 @@ module Pdfs
 
     def draw_description(header)
       move_down 90
-      
+
       header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@offer.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
+                         .render((@offer.description[0] == "#" ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
     end
 
     def draw_breakdown
-
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
 
       move_down 20
       text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
-
     end
   end
 end

@@ -3,7 +3,7 @@
 class Project < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", inverse_of: :projects
+  belongs_to :accountant, class_name: "Employee", inverse_of: :projects
   belongs_to :customer
   belongs_to :address
   belongs_to :offer, optional: true
@@ -39,6 +39,6 @@ class Project < ApplicationRecord
   end
 
   def invoice_ids
-    invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
+    invoices&.select { |i| i.deleted_at.nil? }& .map(&:id) || []
   end
 end

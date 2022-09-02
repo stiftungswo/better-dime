@@ -21,10 +21,9 @@ class ProjectCreator
     project
   end
 
-  private
-
   def self.create_categories(project, category)
-    raise ValidationError, "project is missing a category" if category == nil
+    raise ValidationError, "project is missing a category" if category.nil?
+
     project_category = ProjectCategoryDistribution.new
     project_category.project = project
     project_category.project_category = ProjectCategory.find_by_id(category)
@@ -33,7 +32,8 @@ class ProjectCreator
   end
 
   def self.create_costgroups(project, costgroup)
-    raise ValidationError, "project is missing a costgroup" if costgroup == nil
+    raise ValidationError, "project is missing a costgroup" if costgroup.nil?
+
     project_costgroup = ProjectCostgroupDistribution.new
     project_costgroup.project = project
     project_costgroup.costgroup = Costgroup.find_by_number(costgroup)

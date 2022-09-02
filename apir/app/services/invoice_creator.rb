@@ -14,8 +14,6 @@ class InvoiceCreator
     create_invoice(invoice, invoice.project)
   end
 
-  private
-
   def self.create_invoice(invoice, project)
     invoice.accountant = project.accountant
     invoice.project = project
@@ -87,9 +85,7 @@ class InvoiceCreator
 
   def self.get_invoice_ending_date(project, beginning)
     ending = project.project_efforts.max_by(&:date)&.date || DateTime.now
-    if (ending < beginning) 
-      ending = beginning
-    end
+    ending = beginning if ending < beginning
     ending
   end
 end

@@ -5,7 +5,7 @@ require "prawn"
 module Pdfs
   class SignaturePdf < BasePdf
     def initialize(city)
-      @signature_city = city if city and city.match? /\A[a-zA-Z]{1,20}\z/
+      @signature_city = city if city and city.match?(/\A[a-zA-Z]{1,20}\z/)
       # if city is an integer string, use it as an id instead.
       city_id = Integer(city, exception: false)
       @signature_city = Location.find(city_id).url if city_id
@@ -29,7 +29,7 @@ module Pdfs
         move_down 10
 
         bounding_box([10, cursor], width: bounds.width / 2.0 - 75, height: 60) do
-          if @signature_city.present? then
+          if @signature_city.present?
             text @signature_city + ", " + Time.now.to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(size: 12)
           else
             move_down 16

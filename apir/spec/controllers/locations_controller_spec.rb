@@ -60,7 +60,7 @@ RSpec.describe V2::LocationsController, type: :controller do
           :location,
           name: "location A",
           url: "URLA",
-          order: 42,
+          order: 42
         )
       end
       let(:location_invalid) do
@@ -68,7 +68,7 @@ RSpec.describe V2::LocationsController, type: :controller do
           :location,
           name: "Location A",
           url: "this is invalid!",
-          order: 32,
+          order: 32
         )
       end
 

@@ -7,9 +7,7 @@ class ApplicationRecord < ActiveRecord::Base
   # https://github.com/stiftungswo/better-dime/issues/277
   def normalize_unicode
     attributes.each do |name, value|
-      if value.respond_to?("encoding") && value.encoding == Encoding::UTF_8
-        self[name] = value.unicode_normalize
-      end
+      self[name] = value.unicode_normalize if value.respond_to?("encoding") && value.encoding == Encoding::UTF_8
     end
     self
   end

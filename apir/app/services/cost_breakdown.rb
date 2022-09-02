@@ -20,7 +20,6 @@ class CostBreakdown
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
 
-
     # Did not understand the following calculations and fixed_price_vats wasn't used in rest of the code.
     # Also, it leaded to errors in invoices with a fixed price, so I commented it out for now.
     #
@@ -105,7 +104,7 @@ class CostBreakdown
   end
 
   def group_by_vat(positions)
-    positions.map { |p| p.vat.round(4).to_s }.uniq.map { |vat_key| [vat_key, positions.select { |p| p.vat.round(4).to_s == vat_key }] }.to_h
+    positions.map { |p| p.vat.round(4).to_s }.uniq.index_with { |vat_key| positions.select { |p| p.vat.round(4).to_s == vat_key } }
   end
 
   def apply_discount(subtotal, discount)

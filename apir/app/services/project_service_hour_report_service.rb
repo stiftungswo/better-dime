@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-#:nocov:
+# :nocov:
 class ProjectServiceHourReportService
-  attr_accessor :range
-  attr_accessor :projects, :project_efforts, :project_positions, :services, :effort_minutes, :effort_minutes_by_service
+  attr_accessor :range, :projects, :project_efforts, :project_positions, :services, :effort_minutes, :effort_minutes_by_service
 
   def initialize(range = (Date.today.beginning_of_year..Date.today.end_of_year))
     self.range = range
     self.project_positions = ProjectPosition.joins(:project_efforts, :rate_unit, :service)
-      .where("rate_units.is_time" => true, "project_efforts.date" => range)
+                                            .where("rate_units.is_time" => true, "project_efforts.date" => range)
     self.projects = Project.where(id: project_positions.select("projects.id"))
     self.services = Service.where(id: project_positions.select("services.id")).order(name: :asc)
     self.effort_minutes = project_positions.group("project_id", "services.id").sum("project_efforts.value")
@@ -39,7 +38,7 @@ class ProjectServiceHourReportService
   def rows
     effort.map do |project, service_effort|
       names = project.project_categories.map { |category| category.name }
-      row = [project.id || 0, project.name, project.project_categories&.ids.join(', '), names.join(', ')]
+      row = [project.id || 0, project.name, project.project_categories&.ids&.join(", "), names.join(", ")]
       row += services.map { |service| service_effort[service] || 0.0 }
       row
     end
@@ -68,4 +67,4 @@ class ProjectServiceHourReportService
     puts TTY::Table.new rows: rows
   end
 end
-#:nocov:
+# :nocov:

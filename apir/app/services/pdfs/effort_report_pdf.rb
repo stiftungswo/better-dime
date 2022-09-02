@@ -7,8 +7,8 @@ module Pdfs
     def initialize(global_setting, data_holder, city)
       @global_setting = global_setting
       @data_holder = data_holder
-      @swo_blue = '007DC2'
-      @border_color = '81827e'
+      @swo_blue = "007DC2"
+      @border_color = "81827e"
       super(city || data_holder.location_id)
     end
 
@@ -24,7 +24,7 @@ module Pdfs
       @invoice = Invoice.find_by_project_id(efforts_holder.id)
     end
 
-    def is_in_range?(date)
+    def is_in_range?(_date)
       # overwritten in invoice_effort_report_pdf.rb
       true
     end
@@ -38,12 +38,12 @@ module Pdfs
       transparent(1) do
         fill_rectangle [0, cursor], bounds.width, 20
       end
-      fill_color 'ffffff'
+      fill_color "ffffff"
       move_down 6
-      indent(4,0) do
+      indent(4, 0) do
         text title, style: :bold
       end
-      fill_color '000000'
+      fill_color "000000"
       move_down 6
     end
 
@@ -74,7 +74,7 @@ module Pdfs
 
       effort_dates = efforts_holder.project_efforts.map(&:date).uniq
       comment_dates = efforts_holder.project_comments.map(&:date).uniq
-      uniq_dates = (effort_dates + comment_dates).uniq.select{ |date| is_in_range?(date) }.sort
+      uniq_dates = (effort_dates + comment_dates).uniq.select { |date| is_in_range?(date) }.sort
 
       (earliest_effort, latest_effort) = effort_date_range(uniq_dates)
 
@@ -102,7 +102,7 @@ module Pdfs
         num_comments = efforts_holder.project_comments.count { |e| e.date == date }
 
         efforts_holder.project_comments.select { |e| e.date == date }.each do |comment|
-          date_data.push([comment.comment,"",""])
+          date_data.push([comment.comment, "", ""])
         end
 
         efforts_holder.project_efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|

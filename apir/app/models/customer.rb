@@ -10,8 +10,8 @@ class Customer < ApplicationRecord
   has_many :offers, dependent: :restrict_with_exception
   has_many :projects, dependent: :restrict_with_exception
 
-  belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", optional: true, inverse_of: :customers
-  belongs_to :company, class_name: "Company", foreign_key: :company_id, optional: true, inverse_of: :people
+  belongs_to :accountant, class_name: "Employee", optional: true, inverse_of: :customers
+  belongs_to :company, class_name: "Company", optional: true, inverse_of: :people
   has_many :people,
            class_name: "Person",
            inverse_of: :company,
@@ -56,8 +56,6 @@ class Customer < ApplicationRecord
   def down_case_type
     self.type = type.downcase
   end
-
-  private
 
   # PHP single table inheritance is inherently incomaptible with rails single table inheritance
   # PHP requires the type content to be lowercase

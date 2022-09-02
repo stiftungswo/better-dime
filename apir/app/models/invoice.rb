@@ -3,7 +3,7 @@
 class Invoice < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :accountant, class_name: "Employee", foreign_key: "accountant_id", inverse_of: :invoices
+  belongs_to :accountant, class_name: "Employee", inverse_of: :invoices
   belongs_to :customer
   belongs_to :address
   belongs_to :project

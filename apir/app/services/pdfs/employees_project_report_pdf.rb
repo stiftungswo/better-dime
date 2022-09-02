@@ -40,7 +40,7 @@ module Pdfs
           :project,
           :service
         ]
-      ).select { |e| ((@from_date..@to_date) === e.date) && e.project_position.rate_unit.is_time && e }
+      ).select { |e| (@from_date..@to_date).include?(e.date) && e.project_position.rate_unit.is_time && e }
     end
 
     def trim_text_if_needed(text, max_length)

@@ -7,7 +7,7 @@ module V2
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
-    #:nocov:
+    # :nocov:
     def project_report
       from_date = params[:from].blank? ? DateTime.now - 1.month : DateTime.parse(params[:from])
       to_date = params[:to].blank? ? DateTime.now : DateTime.parse(params[:to])
@@ -46,6 +46,6 @@ module V2
         end
       end
     end
-    #:nocov:
+    # :nocov:
   end
 end

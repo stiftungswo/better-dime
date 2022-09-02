@@ -8,8 +8,8 @@ module Pdfs
       def initialize(document, breakdown, report = false)
         @document = document
         @breakdown = breakdown
-        @swo_blue = '007DC2'
-        @border_color = '81827e'
+        @swo_blue = "007DC2"
+        @border_color = "81827e"
         @report = report
       end
 
@@ -25,12 +25,12 @@ module Pdfs
         @document.transparent(1) do
           @document.fill_rectangle [0, @document.cursor], @document.bounds.width, 20
         end
-        @document.fill_color 'ffffff'
+        @document.fill_color "ffffff"
         @document.move_down 6
-        @document.indent(4,0) do
+        @document.indent(4, 0) do
           @document.text title, style: :bold
         end
-        @document.fill_color '000000'
+        @document.fill_color "000000"
         @document.move_down 6
       end
 
@@ -43,7 +43,8 @@ module Pdfs
               table_title(group[:group_name])
               render_positions_table header, group[:positions], group[:subtotal]
             end
-          else @breakdown[:grouped_positions].length === 1
+          else
+            @breakdown[:grouped_positions].length === 1
             @document.move_down 30
             @document.start_new_page if @document.cursor < 100
             table_title(@breakdown[:grouped_positions][0][:group_name])
@@ -75,13 +76,13 @@ module Pdfs
         positions.sort_by(&:order).each do |position|
           data.push(
             data: [
-                    position.description.blank? ? position.try(:service).try(:name) : position.description,
-                    format_money(position.price_per_rate),
-                    position.rate_unit.billing_unit,
-                    position.amount,
-                    (position.vat * 100.0).round(2).to_s + "%",
-                    format_money(position.calculated_total)
-                  ],
+              position.description.presence || position.try(:service).try(:name),
+              format_money(position.price_per_rate),
+              position.rate_unit.billing_unit,
+              position.amount,
+              (position.vat * 100.0).round(2).to_s + "%",
+              format_money(position.calculated_total)
+            ],
             style: {
               padding: [6, 0, 6, 0],
               border_color: @border_color,
@@ -114,13 +115,12 @@ module Pdfs
       end
 
       def render_subtotal
-
         padding = [6, 10, 6, 0]
         fixed_price = @breakdown[:fixed_price]
         discounts = @breakdown[:discounts]
         data = []
 
-        unless (fixed_price && fixed_price > 0)
+        unless fixed_price && fixed_price > 0
 
           unless discounts.empty?
 
@@ -159,10 +159,10 @@ module Pdfs
 
         if fixed_price && fixed_price > 0
           data.push(
-            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (1+@breakdown[:fixed_price_vat]))],
+            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (1 + @breakdown[:fixed_price_vat]))],
             style: {
               font_style: :bold,
-              padding: padding,
+              padding: padding
             }
           )
         end
@@ -179,7 +179,6 @@ module Pdfs
       end
 
       def render_total
-
         padding = [6, 10, 6, 0]
         fixed_price = @breakdown[:fixed_price]
         has_fixed_price = fixed_price && fixed_price > 0
@@ -206,17 +205,17 @@ module Pdfs
         end
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
-        vat_total = has_fixed_price ? (total - fixed_price / (1+@breakdown[:fixed_price_vat])) : @breakdown[:vat_total]
+        vat_total = has_fixed_price ? (total - fixed_price / (1 + @breakdown[:fixed_price_vat])) : @breakdown[:vat_total]
 
         if has_fixed_price
           data.push(
-            data: [(@breakdown[:fixed_price_vat]*100).to_s + '%', format_money(vat_total)],
+            data: [(@breakdown[:fixed_price_vat] * 100).to_s + "%", format_money(vat_total)],
             style: {
               padding: padding
             }
           )
         end
-          
+
         data.push(
           data: [(I18n.t :total_vat), format_money(vat_total)],
           style: {

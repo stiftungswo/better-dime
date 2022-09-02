@@ -6,10 +6,10 @@ module V2
 
     def index
       @q = Person
-        .left_outer_joins(:company, :addresses, :phones, :customer_tags)
-        .includes(:phones, :addresses, :company, :customer_tags)
-        .order(created_at: :desc)
-        .ransack(search_params)
+           .left_outer_joins(:company, :addresses, :phones, :customer_tags)
+           .includes(:phones, :addresses, :company, :customer_tags)
+           .order(created_at: :desc)
+           .ransack(search_params)
       @people = @q.result.page(legacy_params[:page]).per(legacy_params[:pageSize]).distinct
     end
 

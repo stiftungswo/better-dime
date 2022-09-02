@@ -32,8 +32,8 @@ gem "validates_timeliness"
 
 group :production do
   gem "lograge"
-  gem "sentry-ruby"
   gem "sentry-rails"
+  gem "sentry-ruby"
 end
 
 group :development, :test do
@@ -72,3 +72,5 @@ end
 
 gem "tty-table"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem "rubocop-rails", "~> 2.15", groups: [:development, :test]

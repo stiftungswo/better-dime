@@ -83,7 +83,7 @@ module V2
       end
     end
 
-    #:nocov:
+    # :nocov:
     def effort_report
       @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
       @from = params[:start].blank? ? DateTime.now - 1.month : DateTime.parse(params[:start])
@@ -96,7 +96,7 @@ module V2
         end
       end
     end
-    #:nocov:
+    # :nocov:
 
     private
 
@@ -104,7 +104,7 @@ module V2
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:addresses_attributes] = params[:addresses]
-      params[:employee][:employee_group_id] = params[:employee_group_id] unless params[:employee_group_id].nil?
+      params[:employee][:employee_group_id] = params[:employee_group_id] if params[:employee_group_id]
       params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
         :id,
