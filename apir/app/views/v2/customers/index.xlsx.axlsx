@@ -4,7 +4,7 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "Kunden") do |sheet|
   sheet.add_row ["Typ", "Anrede", "Name", "Firma", "Strasse + Nr", "Plz + Ort", "Abteilung", "Email", "Telefonnummern", "Kommentar"]
   CustomerXlsxDecorator.decorate_collection(@customers).each do |customer|
-    customer.addresses.each do |street,city|
+    customer.addresses.each do |street, city|
       sheet.add_row [
         customer.type,
         customer.salutation,

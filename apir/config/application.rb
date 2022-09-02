@@ -17,10 +17,10 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-if defined?(Sentry) then
+if defined?(Sentry)
   # configure sentry-rails
   Sentry.init do |config|
-    config.dsn = ENV['SENTRY_DSN']
+    config.dsn = ENV.fetch("SENTRY_DSN", nil)
     config.breadcrumbs_logger = [:active_support_logger, :http_logger]
     config.send_default_pii = true
   end
@@ -42,8 +42,8 @@ module Api
     config.api_only = true
 
     config.action_mailer.default_url_options = {
-      host: ENV.fetch("APP_HOST") { "localhost" },
-      port: ENV.fetch("APP_POST") { 3000 }
+      host: ENV.fetch("APP_HOST", "localhost"),
+      port: ENV.fetch("APP_POST", 3000)
     }
 
     config.i18n.default_locale = :de

@@ -41,7 +41,7 @@ RSpec.describe ProjectCreator do
                                  p_position.vat == offer_position.vat
       end
 
-      expect(has_project_position).to eq(true)
+      expect(has_project_position).to be(true)
     end
   end
 end

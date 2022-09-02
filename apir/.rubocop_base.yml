@@ -1,5 +1,6 @@
 require:
   - rubocop-rspec
+  - rubocop-rails
 
 Rails:
   Enabled: true
@@ -70,6 +71,8 @@ Style/HashTransformValues:
   Enabled: true
 
 AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.7
   Exclude:
     - 'bin/**/*'
     - 'log/**/*'
@@ -78,4 +81,3 @@ AllCops:
     - 'db/migrate/*'
     - 'db/schema.rb'
     - 'vendor/**/*'
-

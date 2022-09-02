@@ -26,7 +26,7 @@ class ProjectPosition < ApplicationRecord
   end
 
   def efforts_value_with_unit
-    efforts_value.to_s + " " + rate_unit.effort_unit.to_s
+    "#{efforts_value} #{rate_unit.effort_unit}"
   end
 
   delegate :archived, to: :rate_unit, prefix: true
@@ -36,6 +36,6 @@ class ProjectPosition < ApplicationRecord
   end
 
   def charge
-    price_per_rate * efforts_value + calculated_vat
+    (price_per_rate * efforts_value) + calculated_vat
   end
 end

@@ -15,17 +15,17 @@ module Pdfs
       @exclude_employee_ids = exclude_employee_ids
       @additional_cost_names = additional_cost_names
       @additional_cost_prices = additional_cost_prices
-      @swo_blue = '007DC2'
+      @swo_blue = "007DC2"
       @total = 0
       super()
     end
 
     def filename
-      "ProjektRaport_" + @project.id.to_s
+      "ProjektRaport_#{@project.id}"
     end
 
     def subtitle
-      "Projekt Nr. " + @project.id.to_s
+      "Projekt Nr. #{@project.id}"
     end
 
     def format_money(amount)
@@ -37,12 +37,12 @@ module Pdfs
       transparent(1) do
         fill_rectangle [0, cursor], bounds.width, 20
       end
-      fill_color 'ffffff'
+      fill_color "ffffff"
       move_down 6
-      indent(4,0) do
+      indent(4, 0) do
         text title, style: :bold
       end
-      fill_color '000000'
+      fill_color "000000"
       move_down 6
     end
 
@@ -54,7 +54,7 @@ module Pdfs
           :service
         ]
       ).select do |e|
-        (@from_date..@to_date) === e.date &&
+        (@from_date..@to_date).include?(e.date) &&
           !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i))
       end
     end
@@ -84,7 +84,7 @@ module Pdfs
     def draw_description
       move_up 6
       text subtitle, @default_text_settings.merge(leading: 6)
-      text @global_setting.sender_city + ", " + Time.current.to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(leading: 6)
+      text "#{@global_setting.sender_city}, #{Time.current.to_date.strftime("%d.%m.%Y")}", @default_text_settings.merge(leading: 6)
     end
 
     def draw_efforts
@@ -97,7 +97,7 @@ module Pdfs
           data: ["Datum", "Anzahl", "Einheit", "Arbeit", "Mitarbeiter"],
           style: {
             padding: [12, 10, 5, 0],
-            font_style: :bold,
+            font_style: :bold
           }
         }
       ]
@@ -112,7 +112,7 @@ module Pdfs
             data: [
               date.strftime("%d.%m.%Y"),
               (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1),
-              #(effort.project_position.price_per_rate / 100).to_s + " " + effort.project_position.rate_unit.billing_unit.to_s,
+              # (effort.project_position.price_per_rate / 100).to_s + " " + effort.project_position.rate_unit.billing_unit.to_s,
               effort.project_position.rate_unit.name,
               effort.project_position.service.name,
               effort.employee.full_name
@@ -143,11 +143,11 @@ module Pdfs
           data: ["Mitarbeiter", "Service", "Berechnung", "Total CHF"],
           style: {
             padding: [12, 10, 9, 0],
-            font_style: :bold,
+            font_style: :bold
           }
         }
       ]
-      
+
       padding = [0, 2, 8, 2]
 
       effort_employees = efforts_in_range.map(&:employee).uniq.sort
@@ -159,29 +159,29 @@ module Pdfs
             e.employee == employee && e.position_id == effort.position_id
           end
 
-          unless used_position_ids.include? effort.position_id
-            used_position_ids.push(effort.position_id)
-            total_amount = (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1)
+          next if used_position_ids.include? effort.position_id
 
-            @total = @total + (total_amount * effort.project_position.price_per_rate / 100)
+          used_position_ids.push(effort.position_id)
+          total_amount = (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(1)
 
-            rate_unit = effort.project_position.rate_unit
-            amount_string = total_amount.to_s + " " + rate_unit.effort_unit.to_s
-            unit_string = (effort.project_position.price_per_rate / 100.00 ).to_s + " " + rate_unit.billing_unit.to_s
+          @total += (total_amount * effort.project_position.price_per_rate / 100)
 
-            table_data.push(
-              data: [
-                employee.full_name,
-                effort.project_position.service.name,
-                amount_string + " * " + unit_string,
-                format_money(total_amount * effort.project_position.price_per_rate / 100)
-              ],
-              style: {
-                borders: [],
-                padding: padding
-              }
-            )
-          end
+          rate_unit = effort.project_position.rate_unit
+          amount_string = "#{total_amount} #{rate_unit.effort_unit}"
+          unit_string = "#{effort.project_position.price_per_rate / 100.00} #{rate_unit.billing_unit}"
+
+          table_data.push(
+            data: [
+              employee.full_name,
+              effort.project_position.service.name,
+              "#{amount_string} * #{unit_string}",
+              format_money(total_amount * effort.project_position.price_per_rate / 100)
+            ],
+            style: {
+              borders: [],
+              padding: padding
+            }
+          )
         end
       end
 
@@ -213,7 +213,6 @@ module Pdfs
     end
 
     def draw_additional_cost
-
       padding = [0, 2, 8, 2]
 
       table_data = [
@@ -221,12 +220,12 @@ module Pdfs
           data: ["Beschreibung", "Total CHF"],
           style: {
             padding: [12, 10, 9, 0],
-            font_style: :bold,
+            font_style: :bold
           }
         }
       ]
       additional_costs = @additional_cost_names.zip(@additional_cost_prices)
-      additional_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 }
+      additional_total = @additional_cost_prices.inject(0) { |sum, p| sum + (p.to_f / 100.0) }
 
       additional_costs.each do |cost|
         table_data.push(
@@ -270,8 +269,8 @@ module Pdfs
 
     def draw_total
       padding = [8, 2, 8, 2]
-    
-      final_total = @additional_cost_prices.inject(0) { |sum, p| sum + p.to_f / 100.0 } + @total
+
+      final_total = @additional_cost_prices.inject(0) { |sum, p| sum + (p.to_f / 100.0) } + @total
       table_data = [{
         data: ["", "Berechnung", "Total CHF"],
         style: {
@@ -285,7 +284,7 @@ module Pdfs
       table_data.push(
         data: [
           "MwSt.",
-          (@vat * 100).to_s + "% * " + format_money(final_total),
+          "#{@vat * 100}% * #{format_money(final_total)}",
           format_money(@vat * final_total)
         ],
         style: {

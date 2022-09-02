@@ -57,8 +57,6 @@ class Customer < ApplicationRecord
     self.type = type.downcase
   end
 
-  private
-
   # PHP single table inheritance is inherently incomaptible with rails single table inheritance
   # PHP requires the type content to be lowercase
   # Rails requires the type content to be capitalized

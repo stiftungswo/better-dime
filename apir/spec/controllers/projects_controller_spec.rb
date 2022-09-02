@@ -62,7 +62,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
           accountant: project_template.accountant,
           customer: project_template.customer,
           address: project_template.address,
-          rate_group: project_template.rate_group,
+          rate_group: project_template.rate_group
         )
       end
       let(:project_invalid) do
@@ -72,7 +72,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
           accountant: nil,
           customer: project_template.customer,
           address: project_template.address,
-          rate_group: project_template.rate_group,
+          rate_group: project_template.rate_group
         )
       end
 

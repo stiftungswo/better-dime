@@ -25,15 +25,15 @@ gem "prawn-table"
 gem "puma", "~> 4.3"
 gem "qr-bills"
 gem "rack-cors", require: "rack/cors"
-gem "rails", "~> 6.0.1"
+gem "rails", "~> 6.0.3"
 gem "ransack"
 gem "redcarpet"
 gem "validates_timeliness"
 
 group :production do
   gem "lograge"
-  gem "sentry-ruby"
   gem "sentry-rails"
+  gem "sentry-ruby"
 end
 
 group :development, :test do
@@ -48,6 +48,7 @@ group :development, :test do
   gem "rspec-rails", "4.0.0.beta3"
   gem "rubocop", require: false
   gem "rubocop-performance", require: false
+  gem "rubocop-rails", "~> 2.15", require: false
   gem "rubocop-rspec", require: false
   gem "ruby-debug-ide"
 end

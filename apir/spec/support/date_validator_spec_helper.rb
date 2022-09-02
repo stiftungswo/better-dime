@@ -14,7 +14,7 @@ RSpec.shared_examples_for "ending is after beginning" do
       let(:ending) { beginning - 1.day }
 
       it "is invalid" do
-        expect(added_error).to eq true
+        expect(added_error).to be true
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.shared_examples_for "ending is after beginning" do
       let(:ending) { beginning + 1.day }
 
       it "is valid" do
-        expect(added_error).to eq false
+        expect(added_error).to be false
       end
     end
 
@@ -30,7 +30,7 @@ RSpec.shared_examples_for "ending is after beginning" do
       let(:ending) { beginning }
 
       it "is valid" do
-        expect(added_error).to eq false
+        expect(added_error).to be false
       end
     end
   end
@@ -45,7 +45,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { Time.zone.today }
 
     it "is valid" do
-      expect(added_error).to eq false
+      expect(added_error).to be false
     end
   end
 
@@ -53,7 +53,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "invalid" }
 
     it "is invalid" do
-      expect(added_error).to eq true
+      expect(added_error).to be true
     end
   end
 
@@ -61,7 +61,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "28454" }
 
     it "is invalid" do
-      expect(added_error).to eq true
+      expect(added_error).to be true
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "true" }
 
     it "is invalid" do
-      expect(added_error).to eq true
+      expect(added_error).to be true
     end
   end
 end

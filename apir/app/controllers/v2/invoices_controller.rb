@@ -30,9 +30,7 @@ module V2
       raise ValidationError, @invoice.errors unless @invoice.update(update_params)
 
       # replace shared position groups by new ones to enable modification in the frontend
-      if PositionGroupRemapper.remap_shared_groups(@invoice.position_groupings, @invoice.invoice_positions) then
-        raise ValidationError, @invoice.errors unless @invoice.save
-      end
+      raise ValidationError, @invoice.errors if PositionGroupRemapper.remap_shared_groups(@invoice.position_groupings, @invoice.invoice_positions) && !@invoice.save
 
       render :show
     end
@@ -64,7 +62,6 @@ module V2
       # create new position groups
       PositionGroupRemapper.remap_all_groups(@invoice.position_groupings, @invoice.invoice_positions)
 
-
       raise ValidationError, @invoice.errors unless @invoice.save
 
       render :show
@@ -82,7 +79,7 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end
@@ -99,7 +96,7 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end
@@ -109,7 +106,7 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end

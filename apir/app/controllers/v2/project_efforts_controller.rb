@@ -14,7 +14,7 @@ module V2
               position_groups.name as group_name, project_positions.description as p_desc")
       @ambiguity_count = @filtered.group(:service_id, :project_id)
                                   .select("project_positions.project_id, project_positions.service_id, COUNT(DISTINCT(IFNULL(project_positions.position_group_id, -1))) as ambi_count")
-                                  .map { |item| [[item.project_id, item.service_id], item.ambi_count] }.to_h
+                                  .to_h { |item| [[item.project_id, item.service_id], item.ambi_count] }
     end
 
     def show

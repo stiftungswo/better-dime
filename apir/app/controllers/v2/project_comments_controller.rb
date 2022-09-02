@@ -33,7 +33,7 @@ module V2
 
     def move
       CommentMover.move params
-      
+
       render plain: "Successfully moved comments"
     end
 

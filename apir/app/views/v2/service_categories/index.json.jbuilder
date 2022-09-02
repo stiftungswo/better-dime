@@ -6,8 +6,8 @@ json.array! @service_categories do |service_category|
   json.parent do
     if service_category.parent_category.present?
       json.partial! "v2/service_categories/service_category", category: service_category.parent_category.decorate
-	else
-	  json.null!
-	end
+    else
+      json.null!
+    end
   end
 end

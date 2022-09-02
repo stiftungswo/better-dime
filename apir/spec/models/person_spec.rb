@@ -16,7 +16,7 @@ RSpec.describe Person, type: :model do
   it { is_expected.to validate_presence_of :rate_group }
   it { is_expected.to validate_length_of(:email).is_at_most(255) }
 
-  it " has the correct full name" do
+  it "has the correct full name" do
     person = create(:person, first_name: "Johnny", last_name: "Silverhand")
 
     expect(person.full_name).to eq("Johnny Silverhand")

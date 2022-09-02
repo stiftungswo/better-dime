@@ -41,7 +41,7 @@ RSpec.describe InvoiceCreator do
                                  i_position.vat == project_position.vat
       end
 
-      expect(has_invoice_position).to eq(true)
+      expect(has_invoice_position).to be(true)
     end
   end
 end
