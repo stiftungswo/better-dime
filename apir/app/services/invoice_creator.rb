@@ -54,10 +54,10 @@ class InvoiceCreator
   end
 
   def self.create_positions_from_project(invoice, project)
-    group_mapping = project.position_groupings.map do |old_group|
+    group_mapping = project.position_groupings.to_h do |old_group|
       new_group = old_group.dup
       [old_group, new_group]
-    end.to_h
+    end
     group_mapping[nil] = nil
 
     new_positions = project.project_positions.map do |position|
