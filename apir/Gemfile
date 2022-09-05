@@ -10,7 +10,7 @@ gem "bootsnap", ">= 1.1.0", require: false
 gem "caxlsx_rails"
 gem "creek"
 gem "deep_cloneable", "~> 3.2.0"
-gem "devise-jwt", ">= 0.6"
+gem "devise-jwt", "~> 0.6"
 gem "discard"
 gem "dotenv-rails"
 gem "draper"
