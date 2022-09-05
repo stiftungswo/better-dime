@@ -4,7 +4,7 @@ json.array! @efforts do |effort|
   json.extract! effort, :id, :date, :position_id
   json.effort_value effort.value
   json.effort_employee_id effort.employee_id
-  json.employee_full_name effort.e_first_name + " " + effort.e_last_name
+  json.employee_full_name "#{effort.e_first_name} #{effort.e_last_name}"
   json.position_description effort.p_desc
   json.project_name effort.p_name
   json.project_id effort.p_id

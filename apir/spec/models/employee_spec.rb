@@ -25,7 +25,7 @@ RSpec.describe Employee, type: :model do
   end
 
   it "can log-in" do
-    expect(employee_model.active_for_authentication?).to eq(true)
+    expect(employee_model.active_for_authentication?).to be(true)
   end
 
   it "has a correct full name" do

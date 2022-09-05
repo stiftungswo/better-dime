@@ -62,7 +62,7 @@ RSpec.describe V2::InvoicesController, type: :controller do
           name: "Invoice A",
           accountant: nil,
           customer: invoice_template.customer,
-          address: invoice_template.address,
+          address: invoice_template.address
         )
       end
 

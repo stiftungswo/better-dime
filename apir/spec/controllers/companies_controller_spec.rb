@@ -149,7 +149,7 @@ RSpec.describe V2::CompaniesController, type: :controller do
       end
 
       it "updates the company's hidden status" do
-        expect(company.hidden).to eq(true)
+        expect(company.hidden).to be(true)
       end
     end
 

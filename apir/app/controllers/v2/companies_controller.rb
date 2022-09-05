@@ -27,8 +27,8 @@ module V2
 
     def update
       @company = Company.find(params[:id])
-      @company.phones.where.not(id: (company_params[:phones_attributes] || []).map { |phone| phone[:id] }).discard_all
-      @company.addresses.where.not(id: (company_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @company.phones.where.not(id: (company_params[:phones_attributes] || []).pluck(:id)).discard_all
+      @company.addresses.where.not(id: (company_params[:addresses_attributes] || []).pluck(:id)).discard_all
       @company.customer_tag_ids = (company_params[:customer_tag_ids] || [])
 
       respond_to do |format|

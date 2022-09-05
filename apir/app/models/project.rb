@@ -22,7 +22,9 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :project_positions, :project_costgroup_distributions, :project_category_distributions, allow_destroy: true
 
   validates :fixed_price, numericality: { only_integer: true }, allow_nil: true
+  # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo
   validates :accountant, :address, :name, :rate_group, presence: true
+  # rubocop:enable Rails/RedundantPresenceValidationOnBelongsTo
 
   delegate :budget_price, :budget_time, :current_price, :current_time, to: :project_calculator
 
@@ -39,6 +41,6 @@ class Project < ApplicationRecord
   end
 
   def invoice_ids
-    invoices&.select { |i| i.deleted_at.nil? } .map(&:id) || []
+    invoices&.select { |i| i.deleted_at.nil? }&.map(&:id) || []
   end
 end

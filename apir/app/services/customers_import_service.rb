@@ -2,6 +2,7 @@
 
 class CustomersImportService
   attr_accessor :import_params, :rate_groups
+
   def initialize(import_params:)
     self.import_params = import_params
     self.rate_groups = RateGroup.all

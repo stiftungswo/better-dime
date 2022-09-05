@@ -8,16 +8,11 @@ module Pdfs
       end
 
       def render(data, column_widths, column_alignments = {}, padSides = false, isTotal = false)
-        table_data = data.map do |row|
-          row[:data]
-        end
+        table_data = data.pluck(:data)
 
-        table_style = data.map do |row|
-          row[:style]
-        end
+        table_style = data.pluck(:style)
 
         @document.table(table_data, header: true, column_widths: column_widths) do
-
           # Apply passed styles
           cells.borders = []
 
@@ -25,18 +20,18 @@ module Pdfs
             next if styles.nil?
 
             styles.each do |style_key, style_value|
-              row(index).send(style_key.to_s + "=", style_value) if style_key
+              row(index).send("#{style_key}=", style_value) if style_key
             end
           end
 
           column_alignments.each do |key, value|
             columns(key).align = value
           end
-          
+
           if isTotal
-            rows(table_data.length-1).columns(0).text_color = '007DC2'
-            rows(table_data.length-1).columns(1).text_color = 'ffffff'
-            rows(table_data.length-1).columns(1).background_color = '007DC2'
+            rows(table_data.length - 1).columns(0).text_color = "007DC2"
+            rows(table_data.length - 1).columns(1).text_color = "ffffff"
+            rows(table_data.length - 1).columns(1).background_color = "007DC2"
           end
 
           if padSides
