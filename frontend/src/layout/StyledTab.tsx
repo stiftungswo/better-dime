@@ -2,7 +2,7 @@ import {TabProps} from '@mui/material';
 import Tab from '@mui/material/Tab';
 import * as React from 'react';
 
-const StyledTab = (props: TabProps) =>
+const StyledTab: React.FC<TabProps> = (props: TabProps) =>
   (
     <Tab
       {...props}
