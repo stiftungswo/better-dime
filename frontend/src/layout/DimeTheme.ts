@@ -40,28 +40,33 @@ export default (mode: Mode | 'prod') =>
       // make text in table headers small and gray.
       MuiTableSortLabel: {
         root: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       MuiTableCell: {
         head: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       MuiTablePagination: {
         selectLabel: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
         select: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
+        },
+        displayedRows: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       // minmum table height, this was the default in MUI v3.

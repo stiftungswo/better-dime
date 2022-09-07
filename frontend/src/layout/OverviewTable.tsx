@@ -30,8 +30,8 @@ const styles = createStyles({
     cursor: 'pointer',
   },
   headrow: {
-      'font-size': '0.75rem !important',
-      'font-weight': '500 !important',
+      fontSize: '0.75rem !important',
+      fontWeight: '500 !important',
   },
 });
 

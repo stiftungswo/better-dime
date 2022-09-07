@@ -2,18 +2,23 @@ import {TabProps} from '@mui/material';
 import Tab from '@mui/material/Tab';
 import * as React from 'react';
 
-const StyledTab: React.FC<TabProps> = (props: TabProps) =>
-  (
-    <Tab
-      {...props}
-      sx={{
-        'padding': '6px 12px',
-        'min-width': '160px',
-        '&.Mui-selected': {
-          color: 'black',
-        },
-      }}
-    />
-  );
+class StyledTab extends React.Component<TabProps> {
+  render() {
+    const props = this.props;
+
+    return (
+      <Tab
+        {...props}
+        sx={{
+          'padding': '6px 12px',
+          'minWidth': '160px',
+          '&.Mui-selected': {
+            color: 'black',
+          },
+        }}
+      />
+    );
+  }
+}
 
 export default StyledTab;

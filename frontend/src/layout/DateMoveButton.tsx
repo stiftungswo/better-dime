@@ -10,17 +10,22 @@ interface Props {
   amount: number;
 }
 
-const DateMoveButton: React.FC<Props> = ({onClick, buttonProps, amount}) =>
-  (
-    <BlackButton onClick={onClick} {...buttonProps}>
-      <Badge badgeContent={Math.abs(amount)}>
-        {
-          amount < 0
-            ? <BackIcon/>
-            : <ForwardIcon/>
-        }
-      </Badge>
-    </BlackButton>
-  );
+class DateMoveButton extends React.Component<Props> {
+  render() {
+    const {onClick, buttonProps, amount} = this.props;
+
+    return (
+      <BlackButton onClick={onClick} {...buttonProps}>
+        <Badge badgeContent={Math.abs(amount)}>
+          {
+            amount < 0
+              ? <BackIcon/>
+              : <ForwardIcon/>
+          }
+        </Badge>
+      </BlackButton>
+    );
+  }
+}
 
 export default DateMoveButton;
