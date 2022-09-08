@@ -106,7 +106,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
               <DialogTitle>
                 <FormattedMessage id={'view.timetrack.comment_form_dialog.' + (formikProps.values.id ? 'edit_comment' : 'record_comment')} />
               </DialogTitle>
-              <DialogContent>
+              <DialogContent sx={{ '&.MuiDialogContent-root': { paddingTop: '5px' }}}>
                 <DimeDatePickerField component={DatePicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
                 <DimeField component={ProjectSelect} name={'project_id'} label={intl.formatMessage({id: 'general.project'})} />
                 <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'general.comment'})} />

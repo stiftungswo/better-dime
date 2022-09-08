@@ -1,5 +1,6 @@
 import {Button} from '@mui/material';
 import Grid from '@mui/material/Grid';
+import {runInAction} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import * as React from 'react';
 import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
@@ -92,8 +93,10 @@ export default class Timetrack extends React.Component<Props> {
   }
 
   handleDelete = async () => {
-    this.handleDeleteEfforts();
-    this.handleDeleteComments();
+    await Promise.all([
+      this.handleDeleteEfforts(),
+      this.handleDeleteComments(),
+    ]);
   }
 
   handleMoveEfforts = async () => {
@@ -107,23 +110,29 @@ export default class Timetrack extends React.Component<Props> {
 }
 
   handleEffortAdd = () => {
-    this.props.effortStore!.effort = undefined;
-    this.props.effortStore!.editing = true;
+    runInAction(() => {
+      this.props.effortStore!.effort = undefined;
+      this.props.effortStore!.editing = true;
+    });
   }
 
   handleCommentAdd = () => {
-    this.props.projectCommentStore!.projectComment = undefined;
-    this.props.projectCommentStore!.editing = true;
+    runInAction(() => {
+      this.props.projectCommentStore!.projectComment = undefined;
+      this.props.projectCommentStore!.editing = true;
+    });
   }
 
   handleClose = () => {
-    this.props.projectCommentStore!.editing = false;
-    this.props.effortStore!.editing = false;
+    runInAction(() => {
+      this.props.projectCommentStore!.editing = false;
+      this.props.effortStore!.editing = false;
+    });
   }
 
   onClickRow = async (entity: ProjectEffortListing) => {
     await this.props.effortStore!.fetchOne(entity.id);
-    this.props.effortStore!.editing = true;
+    runInAction(() => this.props.effortStore!.editing = true);
   }
 
   NoResults = () => (
