@@ -1,5 +1,5 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -49,9 +49,9 @@ export class EmployeesReport extends React.Component<Props, State> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.employeeStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    this.props.employeeStore!.fetchAll()
+      .then(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -66,7 +66,8 @@ export class EmployeesReport extends React.Component<Props, State> {
               // do nothing, user clicks a GET link for the backend instead
             }}
             validationSchema={schema}
-            render={formikProps => (
+          >
+            {formikProps => (
               <Grid container alignItems={'center'} spacing={3}>
                 <Grid item xs={12} md={12}>
                   <DateSpanPicker
@@ -94,7 +95,7 @@ export class EmployeesReport extends React.Component<Props, State> {
                 </Grid>
               </Grid>
             )}
-          />
+          </Formik>
         </DimeContent>
       </>
     );

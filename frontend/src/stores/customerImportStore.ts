@@ -38,7 +38,7 @@ export interface NonPersistedImportCustomer {
 export class CustomerImportStore extends AbstractStore<NonPersistedImportCustomer> {
   customersToImport?: NonPersistedImportCustomer[] = [];
 
-  importSettings?: CustomerImportSettings = {
+  importSettings: CustomerImportSettings = {
     customer_tags: [],
     hidden: false,
     rate_group_id: 1,
@@ -79,7 +79,7 @@ export class CustomerImportStore extends AbstractStore<NonPersistedImportCustome
     }
   }
 
-  async doImport(importSettings: CustomerImportSettings | undefined) {
+  async doImport(importSettings: CustomerImportSettings) {
     try {
       this.displayInProgress();
       this.importIsLoading = true;

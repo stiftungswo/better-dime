@@ -1,30 +1,21 @@
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Checkbox from '@mui/material/Checkbox';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
 import UnstyledBackendLink from '../../layout/UnstyledBackendLink';
-import { AbstractStore } from '../../stores/abstractStore';
 import { LocationStore } from '../../stores/locationStore';
 import { MainStore } from '../../stores/mainStore';
-import { ServiceStore } from '../../stores/serviceStore';
 import { Location, PositionGroupings, Service } from '../../types';
 import compose from '../../utilities/compose';
-import { defaultPositionGroup } from '../../utilities/helpers';
 import { wrapIntl } from '../../utilities/wrapIntl';
-import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
 
 interface Props {
   open: boolean;

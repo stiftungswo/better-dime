@@ -1,4 +1,8 @@
+inherit_from:
+  - .rubocop_base.yml
+  - .rubocop_todo.yml
+
 require:
   - rubocop-performance
 
-inherit_from: .rubocop_base.yml
+

@@ -63,7 +63,7 @@ RSpec.describe V2::OffersController, type: :controller do
           accountant: offer_template.accountant,
           customer: offer_template.customer,
           address: offer_template.address,
-          rate_group: offer_template.rate_group,
+          rate_group: offer_template.rate_group
         )
       end
       let(:offer_invalid) do
@@ -73,7 +73,7 @@ RSpec.describe V2::OffersController, type: :controller do
           accountant: nil,
           customer: offer_template.customer,
           address: offer_template.address,
-          rate_group: offer_template.rate_group,
+          rate_group: offer_template.rate_group
         )
       end
 

@@ -1,5 +1,5 @@
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import React from 'react';
 
 // Wrapper HOC used to figure out whether we should show a dialog
@@ -9,7 +9,7 @@ import React from 'react';
 export const withFullScreen = (Component: any) => {
   return (props: any) => {
     const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return <Component fullScreen={fullScreen} {...props} />;
   };

@@ -7,7 +7,7 @@ module V2
     before_action :authenticate_employee!, unless: -> { request.format.pdf? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? }
 
-    #:nocov:
+    # :nocov:
     def project_report
       from_date = params[:from].blank? ? DateTime.now - 1.month : DateTime.parse(params[:from])
       to_date = params[:to].blank? ? DateTime.now : DateTime.parse(params[:to])
@@ -29,7 +29,7 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end
@@ -42,10 +42,10 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end
-    #:nocov:
+    # :nocov:
   end
 end

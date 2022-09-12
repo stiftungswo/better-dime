@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 class CostGroupReportService
-  attr_accessor :daterange
-  attr_accessor :employees, :projects, :project_efforts, :project_positions, :efforts_by_project, :effort_minutes_weighted, :cost_groups
+  attr_accessor :daterange, :employees, :projects, :project_efforts, :project_positions, :efforts_by_project, :effort_minutes_weighted, :cost_groups
 
-  def initialize(daterange = (Date.today.beginning_of_year..Date.today.end_of_year), employee_group_name: "SWO Angestellte")
+  def initialize(daterange = Date.today.all_year, employee_group_name: "SWO Angestellte")
     self.daterange = daterange
     self.project_positions = ProjectPosition.joins(:project, :rate_unit, project: :costgroups, project_efforts: { employee: :employee_group })
-                               .where("rate_units.is_time" => true, "project_efforts.date" => daterange)
-                               .where("employee_groups.name" => employee_group_name)
-                               #.where(:project => Project.where(vacation_project: 0)) Uncomment if vacation projects should not be considered
+                                            .where("rate_units.is_time" => true, "project_efforts.date" => daterange)
+                                            .where("employee_groups.name" => employee_group_name)
+    # .where(:project => Project.where(vacation_project: 0)) Uncomment if vacation projects should not be considered
     self.projects = Project.where(id: project_positions.select("project_id"))
     self.employees = Employee.where(id: project_positions.select("employees.id")).order(first_name: :asc, last_name: :asc)
     self.cost_groups = Costgroup.where(number: project_positions.select("costgroups.number")).order(number: :asc, name: :asc)
@@ -28,13 +27,11 @@ class CostGroupReportService
         total_weight += d.weight
       end
 
-      if total_weight == 0
-        total_weight = 1.0
-      end
+      total_weight = 1.0 if total_weight.zero?
 
       weight = project.project_costgroup_distributions.find do |cg|
         cg.costgroup_number == cost_group_id
-      end.weight/total_weight
+      end.weight / total_weight
 
       effort_minutes[[employee_id, cost_group_id]] ||= 0
       effort_minutes[[employee_id, cost_group_id]] += minutes * weight
@@ -78,7 +75,7 @@ class CostGroupReportService
 
   def footer
     effort_minutes_by_cost_group = {}
-    effort_minutes_weighted.each do |(employee_id, cost_group_id), minutes|
+    effort_minutes_weighted.each do |(_employee_id, cost_group_id), minutes|
       effort_minutes_by_cost_group[cost_group_id] ||= 0
       effort_minutes_by_cost_group[cost_group_id] += minutes
     end
@@ -98,6 +95,6 @@ class CostGroupReportService
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: table
+    Rails.logger.debug TTY::Table.new rows: table
   end
 end

@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -55,7 +55,7 @@ export default class CompanyForm extends React.Component<Props> {
     return people;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.customerTagStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),

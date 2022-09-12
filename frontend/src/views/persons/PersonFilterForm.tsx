@@ -1,8 +1,8 @@
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { CustomerTagSelect } from '../../form/entitySelect/CustomerTagSelect';
@@ -27,7 +27,7 @@ export default class PersonFilterForm extends React.Component<Props> {
     filterTags: [] as number[],
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.customerTagStore!.fetchAll();
     this.setState({filterTags: this.props.store!.customerFilter.tags});
   }

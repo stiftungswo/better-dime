@@ -26,7 +26,7 @@ RSpec.describe WorkPeriodCalculator do
     # define some work that can be done
     position = create(:project_position)
 
-    work_date_range = ("2019-05-14".to_datetime.."2020-04-16".to_datetime)
+    work_date_range = (("2019-05-14".to_datetime)..("2020-04-16".to_datetime))
     # create a date range for the work period (but only use every third day to spice the test up)
     work_range = work_date_range.each_slice(3).map(&:first)
 

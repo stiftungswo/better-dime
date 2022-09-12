@@ -1,5 +1,6 @@
-import { createTheme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { createTheme } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { adaptV4Theme } from '@mui/material/styles';
 
 type Mode = 'dev' | 'prod';
 
@@ -23,7 +24,7 @@ const colors = {
 };
 
 export default (mode: Mode | 'prod') =>
-  createTheme({
+  createTheme(adaptV4Theme({
     palette: {
       ...colors[mode],
       error: red,
@@ -39,28 +40,33 @@ export default (mode: Mode | 'prod') =>
       // make text in table headers small and gray.
       MuiTableSortLabel: {
         root: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       MuiTableCell: {
         head: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       MuiTablePagination: {
-        caption: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+        selectLabel: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
         select: {
-          'font-size': '0.75rem',
-          'font-weight': '500',
-          'color': 'rgba(0, 0, 0, 0.54)',
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
+        },
+        displayedRows: {
+          fontSize: '0.75rem',
+          fontWeight: '500',
+          color: 'rgba(0, 0, 0, 0.54)',
         },
       },
       // minmum table height, this was the default in MUI v3.
@@ -76,4 +82,4 @@ export default (mode: Mode | 'prod') =>
         },
       },
     },
-  });
+  }));

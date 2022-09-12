@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { styled, Theme } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+import { styled, Theme } from '@mui/material/styles';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
@@ -18,7 +18,7 @@ interface Props {
   timeUsed: number;
 }
 const PaddedTableCell = styled(TableCell)(({theme}) => ({
-  padding: `${theme.spacing(0.5)}px ${theme.spacing(7)}px ${theme.spacing(0.5)}px ${theme.spacing(3)}px`,
+  padding: `${theme.spacing(0.5)} ${theme.spacing(7)} ${theme.spacing(0.5)} ${theme.spacing(3)}`,
 }), {withTheme: true});
 
 export const ProjectStatTable = compose(

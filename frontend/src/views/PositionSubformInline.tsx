@@ -1,5 +1,5 @@
-import { Grid } from '@material-ui/core';
-import { Warning } from '@material-ui/icons';
+import { Warning } from '@mui/icons-material';
+import { Grid } from '@mui/material';
 import { ArrayHelpers, FieldArray, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';

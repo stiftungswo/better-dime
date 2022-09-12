@@ -1,8 +1,8 @@
-import { DialogContent, DialogTitle, withMobileDialog } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import { useTheme } from '@material-ui/core/styles';
+import { DialogContent, DialogTitle } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import { useTheme } from '@mui/material/styles';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -17,6 +17,7 @@ import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
 import { DateFastPicker } from '../../form/fields/timetrack/DateFastPicker';
 import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
+import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
@@ -152,11 +153,12 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     return (
       <Formik
         initialValues={this.state.lastEntry || this.props.effortStore!.effort || this.props.effortStore!.effortTemplate!}
-        isInitialValid={true}
+        validateOnMount={false}
         enableReinitialize
         onSubmit={this.handleSubmitAndErrors}
         validationSchema={this.mode === 'edit' ? soloSchema : multiSchema}
-        render={(formikProps: FormikProps<ProjectEffort>) => (
+      >
+        {(formikProps: FormikProps<ProjectEffort>) => (
           <FormikSubmitDetector {...formikProps}>
             <Dialog open onClose={this.handleClose(formikProps)} fullScreen={this.props.fullScreen!} maxWidth="lg">
               <DialogTitle>
@@ -188,28 +190,28 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps)}>
+                <BlackButton onClick={this.handleClose(formikProps)}>
                   <FormattedMessage id={'general.action.cancel'} />
-                </Button>
-                <Button
+                </BlackButton>
+                <BlackButton
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
                   <FormattedMessage id={'general.action.save'} />
-                </Button>
+                </BlackButton>
                 {!formikProps.values.id && (
-                  <Button
+                  <BlackButton
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
                     <FormattedMessage id={'general.action.save_and_continue'} />
-                  </Button>
+                  </BlackButton>
                 )}
               </DialogActions>
             </Dialog>
           </FormikSubmitDetector>
         )}
-      />
+      </Formik>
     );
   }
 

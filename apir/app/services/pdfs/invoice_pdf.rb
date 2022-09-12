@@ -12,7 +12,7 @@ module Pdfs
     end
 
     def filename
-      "Rechnung_" + @invoice.id.to_s + "_" + @invoice.name.split(",")[0].split(";")[0] + "_" + @date.strftime("%Y_%m_%d")
+      "Rechnung_#{@invoice.id}_#{@invoice.name.split(",")[0].split(";")[0]}_#{@date.strftime("%Y_%m_%d")}"
     end
 
     def draw
@@ -29,15 +29,15 @@ module Pdfs
       move_down 90
 
       costgroups = @invoice.invoice_costgroup_distributions.map do |costgroup|
-        costgroup.weight_percent.round.to_s + "% " + costgroup.costgroup_number.to_s
+        "#{costgroup.weight_percent.round}% #{costgroup.costgroup_number}"
       end.join(", ")
 
       header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name,
-        @invoice.beginning.strftime("%d.%m.%Y") + " - " + @invoice.ending.strftime("%d.%m.%Y"))
+                       "#{@invoice.beginning.strftime("%d.%m.%Y")} - #{@invoice.ending.strftime("%d.%m.%Y")}")
 
       move_down 25
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@invoice.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @invoice.description)
+                         .render((@invoice.description[0] == "#" ? "" : "##{I18n.t(:project_description)}\n") + @invoice.description)
     end
 
     def draw_breakdown

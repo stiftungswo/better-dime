@@ -1,4 +1,4 @@
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { DimeAppBar } from '../layout/DimeAppBar';
 import { DimeContent } from '../layout/DimeContent';

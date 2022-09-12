@@ -1,5 +1,4 @@
-import Grid from '@material-ui/core/Grid';
-import {Warning} from '@material-ui/icons';
+import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -11,6 +10,7 @@ import Select from '../../form/fields/Select';
 import { FormView, FormViewProps } from '../../form/FormView';
 import { DimePaper } from '../../layout/DimePaper';
 import { FormHeader } from '../../layout/FormHeader';
+import { Warning } from '../../layout/icons';
 import { EmployeeGroupStore } from '../../stores/employeeGroupStore';
 import {Employee, WorkPeriod} from '../../types';
 import compose from '../../utilities/compose';
@@ -35,9 +35,9 @@ export default class EmployeeForm extends React.Component<Props> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.employeeGroupStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    this.props.employeeGroupStore!.fetchAll()
+      .then(() => this.setState({ loading: false }));
   }
 
   getLocaleOptions() {

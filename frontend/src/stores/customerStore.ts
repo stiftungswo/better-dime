@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { Customer, PaginatedData } from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
@@ -52,7 +52,7 @@ export class CustomerStore extends AbstractStore<Customer> {
 
   protected async doFetchOne(id: number): Promise<Customer> {
     const res = await this.mainStore.apiV2.get<Customer>('/customers/' + id);
-    this.customer = res.data;
+    runInAction(() => { this.customer = res.data; });
     return res.data;
   }
 }

@@ -19,7 +19,7 @@ interface Props<T> {
 }
 
 class Effect<T> extends React.Component<Props<T>> {
-  componentWillReceiveProps(nextProps: any) {
+  UNSAFE_componentWillReceiveProps(nextProps: any) {
     const { values, touched, errors, isSubmitting }: any = this.props.formik;
     const { values: nextValues, touched: nextTouched, errors: nextErrors, isSubmitting: nextIsSubmitting } = nextProps.formik;
 

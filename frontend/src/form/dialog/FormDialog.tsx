@@ -1,15 +1,13 @@
-import {DialogTitle} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { Formik, FormikBag, FormikConfig, FormikProps } from 'formik';
+import {DialogTitle} from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { Formik, FormikConfig, FormikProps } from 'formik';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { Prompt } from 'react-router';
 import { Schema } from 'yup';
+import BlackButton from '../../layout/BlackButton';
 import { LoadingSpinner } from '../../layout/LoadingSpinner';
 import { HandleFormikSubmit } from '../../types';
 import compose from '../../utilities/compose';
@@ -53,7 +51,7 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
   }
 
   render() {
-    const { fullScreen, ...rest } = this.props as any;
+    const { fullScreen, render, ...rest } = this.props as any;
     const intlText = wrapIntl(this.props.intl!, 'form.dialog.form');
 
     return this.props.loading ? (
@@ -64,25 +62,26 @@ export class FormDialog<Values = object, ExtraProps = {}> extends React.Componen
       <Formik
         {...rest}
         onSubmit={this.handleSubmit}
-        isInitialValid={true}
-        render={(formikProps: FormikProps<Values>) => (
+        validateOnMount={false}
+      >
+        {(formikProps: FormikProps<Values>) => (
           <FormikSubmitDetector {...formikProps}>
             <Prompt when={formikProps.dirty} message={() => intlText('confirm_close')} />
             <Dialog open={this.props.open} onClose={this.handleClose(formikProps, intlText('confirm_close'))} fullScreen={fullScreen!} maxWidth="lg">
               <DialogTitle>{this.props.title}</DialogTitle>
-              <DialogContent style={{minWidth: '300px'}}>{this.props.render(formikProps)}</DialogContent>
+              <DialogContent style={{minWidth: '300px'}}>{render(formikProps)}</DialogContent>
               <DialogActions>
-                <Button onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
+                <BlackButton onClick={this.handleClose(formikProps, intlText('confirm_close'))}>
                   <FormattedMessage id="general.action.cancel" />
-                </Button>
-                <Button onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
+                </BlackButton>
+                <BlackButton onClick={formikProps.submitForm} disabled={formikProps.isSubmitting}>
                   {this.props.confirmText || intlText('general.action.save', true)}
-                </Button>
+                </BlackButton>
               </DialogActions>
             </Dialog>
           </FormikSubmitDetector>
         )}
-      />
+      </Formik>
     );
   }
 }

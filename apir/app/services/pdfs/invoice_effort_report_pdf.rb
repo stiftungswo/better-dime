@@ -13,7 +13,7 @@ module Pdfs
       date.between?(@data_holder.beginning, @data_holder.ending)
     end
 
-    def effort_date_range(uniq_dates)
+    def effort_date_range(_uniq_dates)
       # match the dates specified in the invoice
       # this is mainly relevant if uniq_dates is empty
       [@data_holder.beginning, @data_holder.ending]

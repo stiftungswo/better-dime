@@ -1,11 +1,10 @@
-import { PropTypes } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Input, { InputProps } from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import Switch from '@material-ui/core/Switch';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Input, { InputProps } from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import Switch from '@mui/material/Switch';
 import React, { ReactNode } from 'react';
 import { IntlShape, useIntl } from 'react-intl';
 import {TransformingField, TransformingFieldProps} from './TransformingField';
@@ -21,7 +20,7 @@ export interface WidthToggle {
 }
 
 export interface DimeFormControlProps extends SharedProps, WidthToggle {
-  margin?: PropTypes.Margin;
+  margin?: 'dense' | 'none' | 'normal';
   children: ReactNode;
   errorMessage?: string;
 }
@@ -64,7 +63,12 @@ export const DimeFormControl = (props: DimeFormControlProps) => {
   const { label, children, fullWidth = true, margin = 'normal', required, name, errorMessage } = props;
   const intl = useIntl();
   return (
-    <FormControl margin={margin} error={Boolean(errorMessage)} fullWidth={fullWidth}>
+    <FormControl
+      variant="standard"
+      margin={margin}
+      error={Boolean(errorMessage)}
+      fullWidth={fullWidth}
+    >
       {label && (
         <InputLabel required={required} htmlFor={name}>
           {label}

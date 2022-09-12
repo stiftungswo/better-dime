@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class RevenueReportService
-  attr_accessor :daterange
-  attr_accessor :offers, :projects, :invoices
-  attr_accessor :employees, :projects, :effort_minutes, :effort_minutes_by_cost_group, :cost_groups
+  attr_accessor :daterange, :offers, :projects, :invoices, :employees, :effort_minutes, :effort_minutes_by_cost_group, :cost_groups
 
   # TODO
   # - I have no idea by which definitions offers or projects are included here
@@ -11,7 +9,7 @@ class RevenueReportService
   # - I am not proud of any of this code
   # - write a offer breakdown decorator
   # - write a invoice breakdown decorator
-  def initialize(daterange = (Date.today.beginning_of_year..Date.today.end_of_year))
+  def initialize(daterange = Date.today.all_year)
     self.daterange = daterange
     self.offers = Offer.where(created_at: daterange)
                        .where.not(id: Project.where.not(offer_id: nil).select(:offer_id))
@@ -25,7 +23,7 @@ class RevenueReportService
                              :accountant, :customer, :project_costgroup_distributions,
                              project_positions: [:project_efforts, :position_group, :rate_unit],
                              offer: [:accountant, :customer, :offer_positions, :offer_discounts],
-                             invoices: [:invoice_costgroup_distributions, :invoice_discounts, invoice_positions: [:position_group]]
+                             invoices: [:invoice_costgroup_distributions, :invoice_discounts, { invoice_positions: [:position_group] }]
                            ).order(name: :asc)
     self.invoices = Invoice.where(created_at: daterange)
                            .where(project_id: nil)
@@ -66,9 +64,9 @@ class RevenueReportService
         end
       end
 
-      category_names = project.project_categories.map { |category| category.name }
+      category_names = project.project_categories.map(&:name)
 
-      row = ["Projekt", nil, project.name, category_names.join(', '), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
+      row = ["Projekt", nil, project.name, category_names.join(", "), project.customer&.full_name, project.created_at.strftime("%d.%m.%Y"), project.accountant&.name, project.current_price, invoice_price, offer_price]
       row += cost_groups.map { |cost_group| invoice_price_by_costgroup[cost_group.number] }
       row += [no_costgroup_prices]
       row
@@ -89,7 +87,7 @@ class RevenueReportService
 
     all_rows
       .map { |row| row.map { |column| column.is_a?(Numeric) ? (column / 100).round : column } }
-      .map { |row| row.map { |column| column.is_a?(Numeric) && column == 0 ? nil : column } }
+      .map { |row| row.map { |column| column.is_a?(Numeric) && column.zero? ? nil : column } }
   end
 
   HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
@@ -110,11 +108,11 @@ class RevenueReportService
   end
 
   def pretty_status
-    Hash[nil => "", 1 => "Offeriert", 2 => "Bestätigt", 3 => "Abgelehnt"]
+    { nil => "", 1 => "Offeriert", 2 => "Bestätigt", 3 => "Abgelehnt" }
   end
 
   # some love for console developers
   def tty
-    puts TTY::Table.new rows: table
+    Rails.logger.debug TTY::Table.new rows: table
   end
 end

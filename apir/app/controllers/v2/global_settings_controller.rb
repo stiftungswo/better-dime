@@ -23,7 +23,8 @@ module V2
     private
 
     def global_setting_params
-      params.require(:global_setting).permit(:id, :sender_name, :sender_street, :sender_zip, :sender_city, :sender_phone, :sender_mail, :sender_vat, :sender_bank, :sender_web, :service_order_comment, :sender_bank_detail, :sender_bank_iban, :sender_bank_bic)
+      params.require(:global_setting).permit(:id, :sender_name, :sender_street, :sender_zip, :sender_city, :sender_phone, :sender_mail, :sender_vat, :sender_bank, :sender_web, :service_order_comment, :sender_bank_detail, :sender_bank_iban,
+                                             :sender_bank_bic)
     end
   end
 end

@@ -141,7 +141,7 @@ RSpec.describe V2::PeopleController, type: :controller do
       end
 
       it "updates the person's hidden status" do
-        expect(person.hidden).to eq(true)
+        expect(person.hidden).to be(true)
       end
     end
 

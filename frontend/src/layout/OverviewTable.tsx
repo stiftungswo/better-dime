@@ -1,11 +1,11 @@
-import Checkbox from '@material-ui/core/Checkbox';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -30,8 +30,8 @@ const styles = createStyles({
     cursor: 'pointer',
   },
   headrow: {
-      'font-size': '0.75rem !important',
-      'font-weight': '500 !important',
+      fontSize: '0.75rem !important',
+      fontWeight: '500 !important',
   },
 });
 

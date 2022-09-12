@@ -1,9 +1,9 @@
-import {TableBody} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import {TableBody} from '@mui/material';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import {ArrayHelpers, FieldArray, Formik, FormikProps} from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -81,10 +81,11 @@ export class ProjectReport extends React.Component<Props, State> {
     loading: true,
   };
 
-  async componentWillMount() {
-    await this.props.projectStore!.fetchAll();
-    await this.props.employeeStore!.fetchAll();
-    this.setState({ loading: false });
+  componentDidMount() {
+    Promise.all([
+      this.props.projectStore!.fetchAll(),
+      this.props.employeeStore!.fetchAll(),
+    ]).then(() => this.setState({ loading: false }));
   }
 
   handleAdd(arrayHelpers: ArrayHelpers) {
@@ -136,7 +137,8 @@ export class ProjectReport extends React.Component<Props, State> {
               // do nothing, user clicks a GET link for the backend instead
             }}
             validationSchema={schema}
-            render={formikProps => {
+          >
+            {formikProps => {
               const values = formikProps.values;
               return (
                 <FormikSubmitDetector {...formikProps}>
@@ -230,7 +232,7 @@ export class ProjectReport extends React.Component<Props, State> {
               );
               }
             }
-          />
+          </Formik>
         </DimeContent>
       </>
     );

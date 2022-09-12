@@ -1,4 +1,4 @@
-import { withStyles, WithStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles } from '@mui/styles';
 import * as React from 'react';
 import { ErrorBoundary } from '../utilities/ErrorBoundary';
 import { styles } from './DimeLayout';

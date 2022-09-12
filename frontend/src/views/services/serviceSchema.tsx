@@ -18,6 +18,7 @@ export const serviceSchema = localizeSchema(() =>
     ),
     local_order: requiredNumber().min(1).max(100),
     order: requiredNumber(),
+    service_category_id: requiredNumber(),
   }),
 );
 

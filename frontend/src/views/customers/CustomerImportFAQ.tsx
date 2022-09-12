@@ -1,4 +1,4 @@
-import { Collapse, Typography } from '@material-ui/core';
+import { Collapse, Typography } from '@mui/material';
 import React from 'react';
 
 interface TitleWithBodyProps {

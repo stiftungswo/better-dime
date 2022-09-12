@@ -12,15 +12,15 @@ module Pdfs
     end
 
     def project
-      @project = Project.find_by_offer_id(data.id)
+      @project = Project.find_by(offer_id: data.id)
     end
 
     def invoice
-      @invoice = Invoice.find_by_project_id(project.id) if project
+      @invoice = Invoice.find_by(project_id: project.id) if project
     end
 
     def filename
-      "Offerte_" + @offer.id.to_s + "_" + @offer.name.split(",")[0].split(";")[0] + "_" + @offer.created_at.strftime("%Y_%m_%d")
+      "Offerte_#{@offer.id}_#{@offer.name.split(",")[0].split(";")[0]}_#{@offer.created_at.strftime("%Y_%m_%d")}"
     end
 
     def data
@@ -40,22 +40,20 @@ module Pdfs
 
     def draw_description(header)
       move_down 90
-      
+
       header.draw_misc(nil, nil, data, data.accountant, nil, :offer, data.name)
 
       Redcarpet::Markdown.new(Pdfs::Markdown::PdfRenderer.new(document, @spacing, @leading))
-        .render((@offer.description[0] == '#' ? "" : "#" + I18n.t(:project_description) + "\n") + @offer.description)
+                         .render((@offer.description[0] == "#" ? "" : "##{I18n.t(:project_description)}\n") + @offer.description)
     end
 
     def draw_breakdown
-
       Pdfs::Generators::BreakdownTableGenerator.new(document, @offer.breakdown).render(
         [I18n.t(:position), I18n.t(:price_per_unit_chf), I18n.t(:unit), I18n.t(:quantity), I18n.t(:vat), I18n.t(:subtotal_chf_excl_vat)]
       )
 
       move_down 20
-      text I18n.t(:return_signed_until) + " " + (Time.current + 1.month + 1.day).to_date.strftime("%d.%m.%Y"), @default_text_settings.merge(style: :bold)
-
+      text "#{I18n.t(:return_signed_until)} #{(1.month.from_now + 1.day).to_date.strftime("%d.%m.%Y")}", @default_text_settings.merge(style: :bold)
     end
   end
 end

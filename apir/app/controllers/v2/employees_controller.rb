@@ -31,8 +31,8 @@ module V2
 
     def update
       @employee = Employee.find(params[:id])
-      @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).map { |work_period| work_period[:id] }).discard_all
-      @employee.addresses.where.not(id: (employee_params[:addresses_attributes] || []).map { |address| address[:id] }).discard_all
+      @employee.work_periods.where.not(id: (employee_params[:work_periods_attributes] || []).pluck(:id)).discard_all
+      @employee.addresses.where.not(id: (employee_params[:addresses_attributes] || []).pluck(:id)).discard_all
 
       respond_to do |format|
         if @employee.update(employee_params)
@@ -83,7 +83,7 @@ module V2
       end
     end
 
-    #:nocov:
+    # :nocov:
     def effort_report
       @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
       @from = params[:start].blank? ? DateTime.now - 1.month : DateTime.parse(params[:start])
@@ -92,11 +92,11 @@ module V2
 
       respond_to do |format|
         format.pdf do
-          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: pdf.filename + ".pdf"
+          send_data pdf.render, type: "application/pdf", disposition: "inline", filename: "#{pdf.filename}.pdf"
         end
       end
     end
-    #:nocov:
+    # :nocov:
 
     private
 
@@ -104,7 +104,7 @@ module V2
       params.require(:employee)
       params[:employee][:work_periods_attributes] = params[:work_periods]
       params[:employee][:addresses_attributes] = params[:addresses]
-      params[:employee][:employee_group_id] = params[:employee_group_id] unless params[:employee_group_id].nil?
+      params[:employee][:employee_group_id] = params[:employee_group_id] if params[:employee_group_id]
       params[:employee][:password] = params[:password] if params[:password].present?
       params.require(:employee).permit(
         :id,

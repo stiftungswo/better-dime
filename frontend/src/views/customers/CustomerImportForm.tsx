@@ -1,5 +1,5 @@
-import { Grid, Input, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Grid, Input, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -33,7 +33,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
     faqOpen: false,
   };
 
-  handleSubmit = (importSettings: CustomerImportSettings | undefined) => {
+  handleSubmit = (importSettings: CustomerImportSettings) => {
     this.props.customerImportStore!.doImport(importSettings).then(() => {
       this.props.customerImportStore!.customersToImport = [];
     });
@@ -75,7 +75,8 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
             <Formik
               initialValues={customerImportStore!.importSettings}
               onSubmit={e => this.handleSubmit(e)}
-              render={formikProps => (
+            >
+              {formikProps => (
                 <form onSubmit={formikProps.handleSubmit}>
                   <Grid container alignItems={'center'} spacing={3}>
                     <Grid item xs={12} md={4}>
@@ -105,7 +106,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         id={'contained-button-file'}
                       />
                       <label htmlFor="contained-button-file">
-                        <Button fullWidth variant="contained" component="span">
+                        <Button fullWidth variant="contained" component="span" sx={{ backgroundColor: '#e0e0e0' }}>
                           Import überprüfen
                         </Button>
                       </label>
@@ -128,7 +129,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                   </Grid>
                 </form>
               )}
-            />
+            </Formik>
           </DimePaper>
         </Grid>
 

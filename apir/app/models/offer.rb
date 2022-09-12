@@ -37,6 +37,6 @@ class Offer < ApplicationRecord
   end
 
   def invoice_ids
-    project&.invoices&.map { |i| i.id } || []
+    project&.invoices&.map(&:id) || []
   end
 end

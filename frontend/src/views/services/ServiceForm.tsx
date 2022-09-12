@@ -1,13 +1,13 @@
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 import { FieldArray, FormikProps } from 'formik';
 import { inject, Observer, observer } from 'mobx-react';
 import * as React from 'react';
@@ -56,7 +56,7 @@ export default class ServiceForm extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     Promise.all([
       this.props.rateGroupStore!.fetchAll(),
       this.props.rateUnitStore!.fetchAll(),
@@ -128,7 +128,7 @@ export default class ServiceForm extends React.Component<Props> {
                         </Grid>
                       </Grid>
                       <Grid item xs={12} lg={4}>
-                        <DimeField component={ServiceCategorySelect} mode="grouped" nullable required name={'service_category_id'} label={intlText('service_category')} />
+                        <DimeField component={ServiceCategorySelect} mode="grouped" required name={'service_category_id'} label={intlText('service_category')} />
                       </Grid>
                       <Grid item xs={12} lg={4}>
                         <DimeField component={NumberField} required name={'local_order'} label={intlText('service_number')} />

@@ -50,7 +50,7 @@ class Employee < ApplicationRecord
 
   def duplicate
     duped = dup
-    duped.email = duped.email.sub "@", rand(10_000).to_s + "@"
+    duped.email = duped.email.sub "@", "#{rand(10_000)}@"
     duped.password = SecureRandom.hex(10)
     duped
   end

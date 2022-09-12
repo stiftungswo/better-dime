@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -43,7 +43,7 @@ export default class PersonForm extends React.Component<Props> {
     loading: true,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const person = this.props.person;
     const loadCompany = new Promise(res => {
       if (person && person.company_id) {

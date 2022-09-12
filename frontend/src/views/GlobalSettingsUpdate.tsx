@@ -1,4 +1,4 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -46,7 +46,7 @@ const settingsSchema = localizeSchema(() =>
   observer,
 )
 export class GlobalSettingsUpdate extends React.Component<Props> {
-  componentWillMount = () => {
+  componentDidMount() {
     this.props.globalSettingStore!.fetchOne(0);
   }
 
