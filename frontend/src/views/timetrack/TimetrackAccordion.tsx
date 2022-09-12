@@ -1,10 +1,10 @@
-import { Theme } from '@material-ui/core';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Grid from '@material-ui/core/Grid';
-import { createStyles, withStyles, WithStyles} from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Theme } from '@mui/material';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { createStyles, withStyles, WithStyles} from '@mui/styles';
 import classNames from 'classnames';
 import React from 'react';
 import { ExpandMoreIcon } from '../../layout/icons';

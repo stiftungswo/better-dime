@@ -1,5 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -12,6 +12,7 @@ import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectComment
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
 import { DatePicker } from '../../form/fields/DatePicker';
 import { DimeDatePickerField, DimeField } from '../../form/fields/formik';
+import BlackButton from '../../layout/BlackButton';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
@@ -105,29 +106,29 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
               <DialogTitle>
                 <FormattedMessage id={'view.timetrack.comment_form_dialog.' + (formikProps.values.id ? 'edit_comment' : 'record_comment')} />
               </DialogTitle>
-              <DialogContent>
+              <DialogContent sx={{ '&.MuiDialogContent-root': { paddingTop: '5px' }}}>
                 <DimeDatePickerField component={DatePicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
                 <DimeField component={ProjectSelect} name={'project_id'} label={intl.formatMessage({id: 'general.project'})} />
                 <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'general.comment'})} />
               </DialogContent>
 
               <DialogActions>
-                <Button onClick={this.handleClose()}>
+                <BlackButton onClick={this.handleClose()}>
                   <FormattedMessage id={'general.action.cancel'} />
-                </Button>
-                <Button
+                </BlackButton>
+                <BlackButton
                   onClick={() => this.setState({ closeAfterSubmit: true }, formikProps.submitForm)}
                   disabled={formikProps.isSubmitting}
                 >
                   <FormattedMessage id={'general.action.save'} />
-                </Button>
+                </BlackButton>
                 {!formikProps.values.id && (
-                  <Button
+                  <BlackButton
                     onClick={() => this.setState({ closeAfterSubmit: false }, formikProps.submitForm)}
                     disabled={formikProps.isSubmitting}
                   >
                     <FormattedMessage id={'general.action.save_and_continue'} />
-                  </Button>
+                  </BlackButton>
                 )}
               </DialogActions>
             </Dialog>

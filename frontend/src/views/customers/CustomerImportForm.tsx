@@ -1,5 +1,5 @@
-import { Grid, Input, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Grid, Input, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -106,7 +106,7 @@ export class CustomerImportForm extends React.Component<Props, CustomerImportFor
                         id={'contained-button-file'}
                       />
                       <label htmlFor="contained-button-file">
-                        <Button fullWidth variant="contained" component="span">
+                        <Button fullWidth variant="contained" component="span" sx={{ backgroundColor: '#e0e0e0' }}>
                           Import überprüfen
                         </Button>
                       </label>

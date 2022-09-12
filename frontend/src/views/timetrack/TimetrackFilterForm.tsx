@@ -1,22 +1,21 @@
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import { inject, observer } from 'mobx-react';
-import React, { ChangeEvent } from 'react';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
-import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
-import { ServiceSelect } from '../../form/entitySelect/ServiceSelect';
-import { SwitchField } from '../../form/fields/common';
-import { DatePicker } from '../../form/fields/DatePicker';
-import { EffortStore } from '../../stores/effortStore';
-import { EmployeeStore } from '../../stores/employeeStore';
-import { ProjectCommentStore } from '../../stores/projectCommentStore';
-import { Grouping, TimetrackFilterStore } from '../../stores/timetrackFilterStore';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Tabs from '@mui/material/Tabs';
+import {inject, observer} from 'mobx-react';
+import React, {ChangeEvent} from 'react';
+import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
+import {EmployeeSelect} from '../../form/entitySelect/EmployeeSelect';
+import {ProjectSelect} from '../../form/entitySelect/ProjectSelect';
+import {ServiceSelect} from '../../form/entitySelect/ServiceSelect';
+import {SwitchField} from '../../form/fields/common';
+import StyledTab from '../../layout/StyledTab';
+import {EffortStore} from '../../stores/effortStore';
+import {EmployeeStore} from '../../stores/employeeStore';
+import {ProjectCommentStore} from '../../stores/projectCommentStore';
+import {Grouping, TimetrackFilterStore} from '../../stores/timetrackFilterStore';
 import compose from '../../utilities/compose';
-import { DateSpanPicker } from '../reports/DateSpanPicker';
-import { TimetrackAccordion } from './TimetrackAccordion';
+import {DateSpanPicker} from '../reports/DateSpanPicker';
+import {TimetrackAccordion} from './TimetrackAccordion';
 
 interface Props {
   effortStore?: EffortStore;
@@ -50,10 +49,13 @@ export class TimetrackFilterForm extends React.Component<Props> {
     return (
       <>
         <Grid item xs={12}>
-          <Tabs value={this.props.timetrackFilterStore!.grouping} onChange={this.changeGroupBy}>
-            <Tab value={'employee'} label={intl.formatMessage({id: 'general.employee'})} />
-            <Tab value={'project'} label={intl.formatMessage({id: 'general.project'})} />
-            <Tab value={'service'} label={intl.formatMessage({id: 'general.service'})} />
+          <Tabs
+            value={this.props.timetrackFilterStore!.grouping}
+            onChange={this.changeGroupBy}
+          >
+            <StyledTab value={'employee'} label={intl.formatMessage({id: 'general.employee'})}/>
+            <StyledTab value={'project'} label={intl.formatMessage({id: 'general.project'})}/>
+            <StyledTab value={'service'} label={intl.formatMessage({id: 'general.service'})}/>
           </Tabs>
         </Grid>
 
@@ -97,16 +99,26 @@ export class TimetrackFilterForm extends React.Component<Props> {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ProjectSelect<number[]> isMulti label={intl.formatMessage({id: 'general.project.plural'})} value={filter.projectIds} onChange={v => (filter.projectIds = v)} />
+                <ProjectSelect<number[]>
+                  isMulti
+                  label={intl.formatMessage({id: 'general.project.plural'})}
+                  value={filter.projectIds}
+                  onChange={v => (filter.projectIds = v)}
+                />
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <ServiceSelect<number[]> isMulti label={intl.formatMessage({id: 'general.service.plural'})} value={filter.serviceIds} onChange={v => (filter.serviceIds = v)} />
+                <ServiceSelect<number[]>
+                  isMulti
+                  label={intl.formatMessage({id: 'general.service.plural'})}
+                  value={filter.serviceIds}
+                  onChange={v => (filter.serviceIds = v)}
+                />
               </Grid>
 
               <Grid item xs={12} md={4}>
                 <Button onClick={this.handleSubmit} color={'primary'} variant="contained">
-                  <FormattedMessage id="view.timetrack.filter_form.refresh" />
+                  <FormattedMessage id="view.timetrack.filter_form.refresh"/>
                 </Button>
               </Grid>
             </Grid>

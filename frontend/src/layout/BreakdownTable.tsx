@@ -1,6 +1,6 @@
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

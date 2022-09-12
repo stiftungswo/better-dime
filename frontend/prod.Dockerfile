@@ -1,4 +1,4 @@
-FROM node:10.15.3-alpine as building-stage
+FROM node:12.13.0-alpine as building-stage
 
 WORKDIR 'frontend'
 

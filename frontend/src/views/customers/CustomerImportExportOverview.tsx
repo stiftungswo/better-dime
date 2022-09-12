@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

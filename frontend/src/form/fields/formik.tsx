@@ -1,4 +1,4 @@
-import Input, { InputProps } from '@material-ui/core/Input';
+import Input, { InputProps } from '@mui/material/Input';
 import { Field, FieldProps, getIn } from 'formik';
 import React from 'react';
 import { DimeFormControlProps, DimeInputFieldProps } from './common';

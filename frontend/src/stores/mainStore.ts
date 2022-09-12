@@ -1,5 +1,5 @@
 import { History } from 'history';
-import { action, autorun, computed, makeObservable, observable } from 'mobx';
+import {action, autorun, computed, makeObservable, observable, runInAction} from 'mobx';
 import moment from 'moment';
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl';
 import messagesDe from '../locales/messages.de.json';
@@ -126,8 +126,9 @@ export class MainStore {
       const result = await this.apiV2.get<Employee>('/employees/' + myId!);
       const myLocale = result.data.locale;
       if (isValidLocale(myLocale)) {
+        runInAction(() => {
           this.currentLocale = myLocale as Locale;
+        });
       }
-      console.log(myLocale); // tslint:disable-line:no-console
   }
 }

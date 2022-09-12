@@ -1,10 +1,10 @@
-import { Theme } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Theme } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import { Formik } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -26,7 +26,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       display: 'block', // Fix IE11 issue.
       marginLeft: spacing(3),
       marginRight: spacing(3),
-      [breakpoints.up(400 + spacing(3 * 2))]: {
+      [breakpoints.up(400 + parseInt(spacing(3 * 2), 10))]: {
         width: 400,
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -37,7 +37,7 @@ const styles = ({ palette, spacing, breakpoints }: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: `${spacing(2)}px ${spacing(3)}px ${spacing(6)}px`,
+      padding: `${spacing(2)} ${spacing(3)} ${spacing(6)}`,
     },
     avatar: {
       margin: spacing(1),

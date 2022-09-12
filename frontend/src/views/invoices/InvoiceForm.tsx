@@ -1,6 +1,6 @@
-import { IconButton, Tooltip } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import { Warning } from '@material-ui/icons';
+import { Warning } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -231,7 +231,7 @@ export default class InvoiceForm extends React.Component<Props> {
                             </Grid>
                             <Grid item xs={12} lg={2}>
                             <Tooltip title={intlText('update_time_help')}>
-                                <IconButton>
+                                <IconButton size="large">
                                   <HelpIcon/>
                                 </IconButton>
                               </Tooltip>

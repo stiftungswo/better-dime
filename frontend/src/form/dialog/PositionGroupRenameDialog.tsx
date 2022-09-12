@@ -1,9 +1,4 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Box from '@mui/material/Box';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';

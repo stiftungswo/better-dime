@@ -1,8 +1,8 @@
-import { IconButton, Theme } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
+import { IconButton, Theme } from '@mui/material';
+import { green } from '@mui/material/colors';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { Notifier } from '../utilities/notifier';
@@ -49,7 +49,13 @@ class DimeSnackbarInner extends React.Component<Props> {
           className={this.props.classes[messageInfo.variant]}
           message={<span id="message-id">{messageInfo.message}</span>}
           action={[
-            <IconButton key="close" aria-label="Close" color="inherit" onClick={notifier.handleClose}>
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={notifier.handleClose}
+              size="large"
+            >
               <CloseIcon />
             </IconButton>,
           ]}

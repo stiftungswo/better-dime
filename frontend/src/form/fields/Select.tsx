@@ -1,13 +1,13 @@
 // https://material-ui.com/demos/autocomplete/#react-select
 // tslint:disable:no-any ; This is adapted from the above example and should work as is; however, we should probably add types some time.
 
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@material-ui/core/styles';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import Chip from '@mui/material/Chip';
+import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
+import { emphasize, Theme, useTheme } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { createStyles, makeStyles, withStyles } from '@mui/styles';
 import classNames from 'classnames';
 import React from 'react';
 import { useIntl } from 'react-intl';
@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     chip: {
-      margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
+      margin: `${theme.spacing(0.5)} ${theme.spacing(0.25)}`,
       maxWidth: '170px',
     },
     label: {
@@ -43,7 +43,7 @@ const styles = (theme: Theme) =>
       textOverflow: 'ellipsis',
     },
     chipFocused: {
-      backgroundColor: emphasize(theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
+      backgroundColor: emphasize(theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700], 0.08),
     },
     noOptionsMessage: {
       padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
@@ -92,6 +92,7 @@ function inputComponent({ inputRef, ...props }: any) {
 function Control(props: any) {
   return (
     <TextField
+      variant="standard"
       margin={props.selectProps.margin}
       error={props.selectProps.error}
       fullWidth={props.selectProps.fullWidth}

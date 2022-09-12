@@ -1,8 +1,8 @@
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+import Tabs from '@mui/material/Tabs';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
+import StyledTab from '../../layout/StyledTab';
 import { Project } from '../../types';
 import { wrapIntl } from '../../utilities/wrapIntl';
 
@@ -16,11 +16,11 @@ export default withRouter(({ project: { offer_id, invoice_ids, id }, history }: 
   return (
     <Tabs value={offers.length} variant={'scrollable'}>
       {offers.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={intlText('offer') + ` ${pId}`} />
+        <StyledTab key={pId} onClick={() => history.push(`/offers/${pId}`)} label={intlText('offer') + ` ${pId}`} />
       ))}
-      <Tab label={intlText('project') + ` ${id}`} />
+      <StyledTab label={intlText('project') + ` ${id}`} />
       {invoice_ids.map(pId => (
-        <Tab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('invoice') + ` ${pId}`} />
+        <StyledTab key={pId} onClick={() => history.push(`/invoices/${pId}`)} label={intlText('invoice') + ` ${pId}`} />
       ))}
     </Tabs>
   );

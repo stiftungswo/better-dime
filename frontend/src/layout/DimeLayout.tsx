@@ -1,16 +1,17 @@
-import { Theme, withWidth } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { Theme } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import { Breakpoint } from '@mui/material/styles';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
+import { withWidth } from '../utilities/withWidth';
 import { ChevronLeftIcon } from './icons';
 import { Navigation } from './Navigation';
 
@@ -61,9 +62,10 @@ export const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: theme.spacing(7) + 1,
+      // theme.spacing(...) returns "123px"
+      width: `${parseInt(theme.spacing(7), 10) + 1}px`,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: `${parseInt(theme.spacing(9), 10) + 1}px`,
       },
     },
     toolbar: {
@@ -87,6 +89,16 @@ export const styles = (theme: Theme) =>
     },
   });
 
+// override bg color of the selected navigation item.
+const sxSelectedColorOverride = {
+  '&& .Mui-selected': {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+  },
+  '&& .Mui-selected:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+  },
+};
+
 interface Props extends WithStyles<typeof styles> {
   children?: React.ReactNode;
   mainStore?: MainStore;
@@ -94,7 +106,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 @compose(
-  withWidth(),
   inject('mainStore'),
   observer,
 )
@@ -130,9 +141,9 @@ class DimeLayout extends React.Component<Props> {
             open={open}
             anchor={'left'}
           >
-            <List component={'nav'} disablePadding>
+            <List component={'nav'} disablePadding sx={sxSelectedColorOverride}>
               <div className={classes.toolbar}>
-                <IconButton onClick={this.handleDrawerClose}>
+                <IconButton onClick={this.handleDrawerClose} size="large">
                   <ChevronLeftIcon />
                 </IconButton>
               </div>

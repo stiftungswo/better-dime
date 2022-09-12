@@ -1,5 +1,5 @@
-import { IconButton, InputAdornment, Tooltip } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import { IconButton, InputAdornment, Tooltip } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import * as React from 'react';
 import { VisibilityIcon, VisibilityOffIcon } from '../../layout/icons';
 import { MarkdownRender } from '../../layout/MarkdownRender';
@@ -19,7 +19,7 @@ export class MarkdownField extends React.Component<DimeInputFieldProps> {
     const InputComponent = this.props.InputComponent || DelayedInput;
     const previewToggle = (
       <Tooltip title={'Vorschau'}>
-        <IconButton onClick={this.togglePreview}>{this.state.preview ? <VisibilityOffIcon /> : <VisibilityIcon />}</IconButton>
+        <IconButton onClick={this.togglePreview} size="large">{this.state.preview ? <VisibilityOffIcon /> : <VisibilityIcon />}</IconButton>
       </Tooltip>
     );
     return (

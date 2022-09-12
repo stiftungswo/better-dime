@@ -1,4 +1,4 @@
-import { Avatar, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { Avatar, IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -43,7 +43,13 @@ export class DimeAppBarUserMenu extends React.Component<DimeAppBarUserMenuProps>
 
     return (
       <div>
-        <IconButton aria-owns={open ? 'menu-appbar' : undefined} aria-haspopup="true" onClick={action(this.handleMenu)} color="inherit">
+        <IconButton
+          aria-owns={open ? 'menu-appbar' : undefined}
+          aria-haspopup="true"
+          onClick={action(this.handleMenu)}
+          color="inherit"
+          size="large"
+        >
           <Avatar>{shortName}</Avatar>
         </IconButton>
         <Menu

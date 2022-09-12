@@ -1,5 +1,5 @@
-import { PropTypes } from '@material-ui/core';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import { PropTypes } from '@mui/material';
+import { SvgIconProps } from '@mui/material/SvgIcon';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';

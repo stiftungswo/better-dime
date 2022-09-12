@@ -1,16 +1,17 @@
-import { Theme, withWidth } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Theme } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import { Breakpoint } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { createStyles, withStyles, WithStyles } from '@mui/styles';
 import classNames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { EmployeeStore } from '../stores/employeeStore';
 import { MainStore } from '../stores/mainStore';
 import compose from '../utilities/compose';
+import { withWidth } from '../utilities/withWidth';
 import { ActionButton, ButtonProps } from './ActionButton';
 import { DimeAppBarUserMenu } from './DimeAppBarUserMenu';
 import { drawerWidth } from './DimeLayout';
@@ -58,7 +59,7 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 @compose(
-  withWidth(),
+  withWidth,
   inject('mainStore', 'employeeStore'),
   observer,
 )
@@ -82,18 +83,18 @@ class DimeAppBarInner extends React.Component<Props> {
     const { children, classes, alternativeColor } = this.props;
     const { drawerOpen } = this.props.mainStore!;
 
+    const barClassName = classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift);
+    const iconClassName = classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden);
+
     return (
-      <AppBar
-        position={'fixed'}
-        className={classNames(classes.appBar, drawerOpen && this.props.width !== 'xs' && classes.appBarShift)}
-        color={alternativeColor ? 'secondary' : 'primary'}
-      >
+      <AppBar position={'fixed'} className={barClassName} color={alternativeColor ? 'secondary' : 'primary'}>
         <Toolbar disableGutters={!drawerOpen} className={classes.toolbar}>
           <IconButton
             color={'inherit'}
             aria-label={'Menü öffnen'}
             onClick={() => (this.props.mainStore!.drawerOpen = true)}
-            className={classNames(classes.menuButton, drawerOpen && classes.menuButtonHidden)}
+            className={iconClassName}
+            size="large"
           >
             <MenuIcon />
           </IconButton>

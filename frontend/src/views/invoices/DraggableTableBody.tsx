@@ -1,6 +1,6 @@
-import { RootRef } from '@material-ui/core';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
+import {  } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
 import { FieldArrayRenderProps } from 'formik';
 import * as React from 'react';
 import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -60,25 +60,25 @@ export const DraggableTableBody = <T extends { id?: number; formikKey?: number; 
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={'table'}>
         {(dropProvided, dropSnapshot) => (
-          <RootRef rootRef={dropProvided.innerRef}>
-            <TableBody>
+          <>
+            <TableBody ref={dropProvided.innerRef}>
               {filteredArray.map((row: T, index: number) => {
                 const key = row.id || row.formikKey;
                 return (
                   <Draggable key={key} draggableId={String(key)} index={index}>
                     {(provided, snapshot) => (
-                      <RootRef rootRef={provided.innerRef}>
-                        <TableRow key={key} {...provided.draggableProps}>
+                      <>
+                        <TableRow key={key} ref={provided.innerRef} {...provided.draggableProps}>
                           {renderRow({ row, index, provided, snapshot })}
                         </TableRow>
-                      </RootRef>
+                      </>
                     )}
                   </Draggable>
                 );
               })}
             </TableBody>
             {dropProvided.placeholder}
-          </RootRef>
+          </>
         )}
       </Droppable>
     </DragDropContext>

@@ -1,8 +1,8 @@
-import MuiFormControl from '@material-ui/core/FormControl';
-import Grid from '@material-ui/core/Grid';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MuiTextField from '@material-ui/core/TextField';
-import {Warning} from '@material-ui/icons';
+import {Warning} from '@mui/icons-material';
+import MuiFormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import InputAdornment from '@mui/material/InputAdornment';
+import MuiTextField from '@mui/material/TextField';
 import { FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
@@ -56,7 +56,7 @@ interface InfoFieldProps {
 }
 
 const InfoField = ({ value, label, unit, error, fullWidth = true }: InfoFieldProps) => (
-  <MuiFormControl margin={'normal'} error={error} fullWidth={fullWidth}>
+  <MuiFormControl variant="standard" margin={'normal'} error={error} fullWidth={fullWidth}>
     <MuiTextField
       disabled
       variant={'outlined'}

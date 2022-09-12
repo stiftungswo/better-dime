@@ -1,14 +1,7 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { ArrayHelpers, FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { FieldArray, FieldArrayRenderProps, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
@@ -16,17 +9,14 @@ import * as yup from 'yup';
 import { DimeTableCell } from '../../layout/DimeTableCell';
 import { DragHandle } from '../../layout/icons';
 import { PositionGroupStore } from '../../stores/positionGroupStore';
-import { PositionGroup, PositionGroupings, Service } from '../../types';
+import { PositionGroup } from '../../types';
 import compose from '../../utilities/compose';
-import { defaultPositionGroup } from '../../utilities/helpers';
 import { localizeSchema } from '../../utilities/validation';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import { DraggableTableBody } from '../../views/invoices/DraggableTableBody';
-import { PositionGroupSelect } from '../entitySelect/PositionGroupSelect';
 import { TextField } from '../fields/common';
 import { DimeField } from '../fields/formik';
 import { FormDialog } from './FormDialog';
-import { resolveNewGroupName } from './PositionMoveDialog';
 
 const schema = localizeSchema(() =>
   yup.object({

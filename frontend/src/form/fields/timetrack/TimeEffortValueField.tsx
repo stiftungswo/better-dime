@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { injectIntl, IntlShape } from 'react-intl';
@@ -65,6 +65,7 @@ export class TimeEffortValueField extends React.Component<Props> {
         <Grid container alignItems="center" spacing={1}>
           <Grid item xs={9}>
             <TextField
+              variant="standard"
               fullWidth
               label={intlText('general.value', true)}
               value={this.state.value}
