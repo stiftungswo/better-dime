@@ -15,7 +15,7 @@
     "@sentry/browser": "^4.3.0",
     "@typed/compose": "^1.0.0",
     "@types/classnames": "^2.2.6",
-    "@types/jwt-decode": "^2.2.1",
+    "@types/jwt-decode": "^3.1.0",
     "@types/lodash": "^4.14.119",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-select": "^2.0.6",
