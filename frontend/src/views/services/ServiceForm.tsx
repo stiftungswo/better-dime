@@ -69,6 +69,7 @@ export default class ServiceForm extends React.Component<Props> {
   computeOrder(props: FormikProps<Service>) {
     const groupNumber = this.props.serviceCategoryStore!.entities
       .find(e => e.id === props.values.service_category_id)?.order || 0;
+    props.values.order = groupNumber; // Added due to fix issue #594
     return groupNumber * 100 + props.values.local_order;
   }
 
