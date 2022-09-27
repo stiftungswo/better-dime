@@ -5,7 +5,7 @@ require "prawn"
 module Pdfs
   class SignaturePdf < BasePdf
     def initialize(city)
-      @signature_city = city if city&.match?(/\A[a-zA-Z]{1,20}\z/)
+      @signature_city = city if (city.instance_of? String) && city&.match?(/\A[a-zA-Z]{1,20}\z/)
       # if city is an integer string, use it as an id instead.
       city_id = Integer(city, exception: false)
       @signature_city = Location.find(city_id).url if city_id
