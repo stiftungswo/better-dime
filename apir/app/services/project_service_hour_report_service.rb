@@ -38,6 +38,12 @@ class ProjectServiceHourReportService
   def rows
     effort.map do |project, service_effort|
       names = project.project_categories.map(&:name)
+      project.project_categories.map do |category|
+        if project.project_categories.length > 1 then category.name << (" (#{((project.project_category_distributions.find do |i|
+                                                                                 i.category_id == category.id
+                                                                               end.weight.to_f / project.project_category_distributions.sum(&:weight)) * 100).round }%)")
+        end
+      end
       row = [project.id || 0, project.name, project.project_categories&.ids&.join(", "), names.join(", ")]
       row += services.map { |service| service_effort[service] || 0.0 }
       row
