@@ -16,6 +16,7 @@ SimpleCov.start "rails" do
   add_filter "app/services/revenue_report_service.rb"
   add_filter "app/services/project_service_hour_report_service.rb"
   add_filter "app/services/project_category_service_hour_report_service.rb"
+  add_filter "app/services/project_service_hour_report_service_split.rb"
   add_filter "app/services/project_comment_filter.rb"
   add_filter "app/services/project_effort_filter.rb"
   add_filter ".semaphore-cache"

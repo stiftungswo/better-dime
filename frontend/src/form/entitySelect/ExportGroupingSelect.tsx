@@ -15,6 +15,10 @@ export function ExportGroupingSelect(props: DimeCustomFieldProps<'project' | 'ca
       label: intlText('by_category'),
       value: 'category',
     },
+    {
+      label: intlText('by_project_split'),
+      value: 'project_split',
+    },
   ];
   return <Select options={options} {...props} />;
 }

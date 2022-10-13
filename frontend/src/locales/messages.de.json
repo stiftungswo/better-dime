@@ -111,6 +111,7 @@
 
   "form.entity_select.export_grouping.by_project": "Nach Projekt gruppiert",
   "form.entity_select.export_grouping.by_category": "Nach Projekt-Kategorie gruppiert",
+  "form.entity_select.export_grouping.by_project_split": "Nach Projekt gruppiert gesplittet",
 
   "form.entity_select.position_group": "Kein Subjekt wurde übergeben",
 
