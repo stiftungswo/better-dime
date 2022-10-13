@@ -139,6 +139,7 @@ Metrics/AbcSize:
     - 'app/services/project_effort_filter.rb'
     - 'app/services/project_service_cost_report_service.rb'
     - 'app/services/project_service_hour_report_service.rb'
+    - 'app/services/project_service_hour_report_service_split.rb'
     - 'app/services/revenue_report_service.rb'
     - 'app/services/work_period_calculator.rb'
 
@@ -180,6 +181,7 @@ Metrics/CyclomaticComplexity:
     - 'app/services/project_category_service_hour_report_service.rb'
     - 'app/services/project_service_cost_report_service.rb'
     - 'app/services/project_service_hour_report_service.rb'
+    - 'app/services/project_service_hour_report_service_split.rb'
     - 'app/services/revenue_report_service.rb'
 
 # Offense count: 49
@@ -214,6 +216,7 @@ Metrics/MethodLength:
     - 'app/services/project_creator.rb'
     - 'app/services/project_service_cost_report_service.rb'
     - 'app/services/project_service_hour_report_service.rb'
+    - 'app/services/project_service_hour_report_service_split.rb'
     - 'app/services/revenue_report_service.rb'
     - 'app/services/work_period_calculator.rb'
 
@@ -242,6 +245,7 @@ Metrics/PerceivedComplexity:
     - 'app/services/project_category_service_hour_report_service.rb'
     - 'app/services/project_service_cost_report_service.rb'
     - 'app/services/project_service_hour_report_service.rb'
+    - 'app/services/project_service_hour_report_service_split.rb'
     - 'app/services/revenue_report_service.rb'
 
 # Offense count: 1
@@ -412,6 +416,7 @@ Rails/Date:
     - 'app/services/project_category_service_hour_report_service.rb'
     - 'app/services/project_service_cost_report_service.rb'
     - 'app/services/project_service_hour_report_service.rb'
+    - 'app/services/project_service_hour_report_service_split.rb'
     - 'app/services/revenue_report_service.rb'
     - 'app/services/work_period_calculator.rb'
 
