@@ -4,8 +4,8 @@ module V2
   class ServiceHourReportsController < APIController
     include V2::Concerns::ParamsAuthenticatable
 
-    before_action :authenticate_employee!, except: [:index, :project, :project_category]
-    before_action :authenticate_from_params!, only: [:index, :project, :project_category]
+    before_action :authenticate_employee!, except: [:index, :project, :project_category, :project_split]
+    before_action :authenticate_from_params!, only: [:index, :project, :project_category, :project_split]
 
     def index
       case report_params["group_by"]
@@ -13,6 +13,8 @@ module V2
         redirect_to report_params.to_h.merge(action: "project", format: "xlsx")
       when "category"
         redirect_to report_params.to_h.merge(action: "project_category", format: "xlsx")
+      when "project_split"
+        redirect_to report_params.to_h.merge(action: "project_split", format: "xlsx")
       end
     end
 
@@ -22,6 +24,10 @@ module V2
 
     def project_category
       @report = ProjectCategoryServiceHourReportService.new(timerange)
+    end
+
+    def project_split
+      @report = ProjectServiceHourReportServiceSplit.new(timerange)
     end
 
     private

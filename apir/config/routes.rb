@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     get "reports/service_hours", to: "service_hour_reports#index"
     get "reports/service_hours/project", to: "service_hour_reports#project"
     get "reports/service_hours/project_category", to: "service_hour_reports#project_category"
+    get "reports/service_hours/project_split", to: "service_hour_reports#project_split"
     get "reports/service_costs", to: "service_cost_reports#index"
     get "reports/service_costs/project", to: "service_cost_reports#project"
     get "reports/costgroup", to: "cost_group_reports#index"
