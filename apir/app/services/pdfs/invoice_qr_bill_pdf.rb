@@ -68,12 +68,12 @@ module Pdfs
       params[:bill_params][:currency]                         = "CHF"
       params[:bill_params][:debtor][:address][:type]          = "S"
       if @invoice.customer.company
-        params[:bill_params][:debtor][:address][:name]          = @invoice.customer.company.name
-        params[:bill_params][:debtor][:address][:line1]         = @invoice.customer.full_name
+        params[:bill_params][:debtor][:address][:name]          = @invoice.customer.company.name + ", " + @invoice.customer.full_name
+        #params[:bill_params][:debtor][:address][:line1]         = @invoice.customer.full_name
       else
         params[:bill_params][:debtor][:address][:name]          = @invoice.customer.full_name
       end
-      params[:bill_params][:debtor][:address][:line2]         = @invoice.address.street
+      params[:bill_params][:debtor][:address][:line1]         = @invoice.address.street
       params[:bill_params][:debtor][:address][:postal_code]   = @invoice.address.zip.to_s
       params[:bill_params][:debtor][:address][:town]          = @invoice.address.city
       params[:bill_params][:debtor][:address][:country]       = get_country_abbr(@invoice.address.country)
