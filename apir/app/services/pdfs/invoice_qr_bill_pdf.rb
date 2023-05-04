@@ -197,8 +197,11 @@ module Pdfs
           supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
           text I18n.t(:payable_by), size: h_font_size, style: :bold, leading: h_leading
-          text @invoice.customer.company.name, size: font_size, leading: leading if @invoice.customer.company
-          text @invoice.customer.full_name, size: font_size, leading: leading
+          if @invoice.customer.company
+            text @invoice.customer.company.name, size: font_size, leading: leading
+          else
+            text @invoice.customer.full_name, size: font_size, leading: leading
+          end
           text @invoice.address.street + supplement, size: font_size, leading: leading
           text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, leading: leading
           text @invoice.address.country, size: font_size, leading: leading
