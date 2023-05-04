@@ -68,10 +68,10 @@ module Pdfs
       params[:bill_params][:currency]                         = "CHF"
       params[:bill_params][:debtor][:address][:type]          = "S"
       if @invoice.customer.company
-        name = @invoice.customer.company.name
-        name.concat(", ")
-        name.concat(@invoice.customer.full_name)
-        params[:bill_params][:debtor][:address][:name]          = name
+        printname = @invoice.customer.company.name
+        printname.concat(", ")
+        printname.concat(@invoice.customer.full_name)
+        params[:bill_params][:debtor][:address][:name]          = printname
       else
         params[:bill_params][:debtor][:address][:name]          = @invoice.customer.full_name
       end
