@@ -64,7 +64,7 @@ module Pdfs
       params[:bill_params][:creditor][:address][:postal_code] = @global_setting.sender_zip.to_s
       params[:bill_params][:creditor][:address][:town]        = @global_setting.sender_city
       params[:bill_params][:creditor][:address][:country]     = "CH"
-      params[:bill_params][:amount]                           = (@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0
+      params[:bill_params][:amount]                           = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, format: "%n")
       params[:bill_params][:currency]                         = "CHF"
       params[:bill_params][:debtor][:address][:type]          = "S"
       if @invoice.customer.company
@@ -238,7 +238,7 @@ module Pdfs
         bounding_box([info_label_width.cm, 4.4.cm], width: (13.5.cm + (5.cm - info_label_width.cm)), height: 4.cm) do
           # stroke_bounds
 
-          total = (@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0
+          total = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, format: "%n")
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
