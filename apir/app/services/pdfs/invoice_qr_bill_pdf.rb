@@ -64,7 +64,7 @@ module Pdfs
       params[:bill_params][:creditor][:address][:postal_code] = @global_setting.sender_zip.to_s
       params[:bill_params][:creditor][:address][:town]        = @global_setting.sender_city
       params[:bill_params][:creditor][:address][:country]     = "CH"
-      params[:bill_params][:amount]                           = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, unit: "", separator: ".", delimiter: ""))
+      params[:bill_params][:amount]                           = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, unit: "", separator: ".", delimiter: "")
       params[:bill_params][:currency]                         = "CHF"
       params[:bill_params][:debtor][:address][:type]          = "S"
       if @invoice.customer.company
