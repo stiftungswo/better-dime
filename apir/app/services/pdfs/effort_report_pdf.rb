@@ -108,7 +108,7 @@ module Pdfs
         efforts_holder.project_efforts.select { |e| e.date == date }.uniq(&:position_id).each do |effort|
           same_positions = efforts_holder.project_efforts.select { |e| e.date == date && e.position_id == effort.position_id }
           date_data.push [
-            effort.project_position.description.presence || effort.project_position.service.name,
+            effort.project_position.description.empty? || effort.project_position.service.name,
             (same_positions.inject(0) { |sum, e| sum + e.value } / effort.project_position.rate_unit.factor).round(2),
             effort.project_position.rate_unit.name
           ]
