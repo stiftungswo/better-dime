@@ -1,9 +1,7 @@
 version: "3.2"
 services:
   apir:
-    build:
-      context: ./apir
-      dockerfile: dev.Dockerfile
+    image: localhost:5000/swo/dime-apir:latest
     container_name: dime_apir
     working_dir: /var/apir
     volumes:
