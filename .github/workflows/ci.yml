@@ -1,0 +1,68 @@
+name: "Better-Dime CI"
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+
+  
+jobs:
+  frontend-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Frontend Build
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" node:12 bash -c "yarn install && yarn run lint"
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Frontend Build
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" node:12 bash -c "yarn install && yarn run build"
+
+  backend:
+    runs-on: ubuntu-latest
+
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+  
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+          
+      - name: Build docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: apir
+          file: "apir/dev.Dockerfile"
+          push: true
+          tags: localhost:5000/swo/dime-apir:latest
+          cache-from: type=gha,ignore-error=true
+          cache-to: type=gha,mode=max
+
+      - name: Migrate DB
+        run: docker-compose -f docker-compose.semaphore.yml run -T apir /tmp/wait-for-it.sh mysql:3306 -s -t 50 -- bin/rails db:create db:schema:load
+
+      - name: Run Tests
+        run: docker-compose -f docker-compose.semaphore.yml run -T apir bin/test
+
+      - name: Lint
+        run: docker-compose -f docker-compose.semaphore.yml run --no-deps --rm -T apir bin/lint
+        
+
+      
