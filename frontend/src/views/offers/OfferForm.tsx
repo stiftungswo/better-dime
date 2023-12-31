@@ -375,7 +375,7 @@ class OfferForm extends React.Component<Props> {
                                 component={VatSelect}
                                 name={'fixed_price_vat'}
                                 label={intl.formatMessage({id: 'view.offer.form.vat_rate'})}
-                                placeholder={'7.7%'}
+                                placeholder={'8.1%'}
                                 disabled={!offer.fixed_price || locked}
                               />
                             </Grid>
