@@ -7,7 +7,9 @@ type Props = DimeCustomFieldProps<number>;
 const vats = {
   1: '0.0',
   2: '0.025',
-  3: '0.077',
+  3: '0.026',
+  4: '0.077',
+  5: '0.081',
 };
 
 export class VatSelect extends React.Component<Props> {
