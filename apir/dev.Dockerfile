@@ -1,5 +1,8 @@
 FROM ruby:2.7.5
 
+ARG UID
+ARG GID
+
 ENV BUNDLER_VERSION=2.1.4
 #ENV RAILS_ENV=development test
 #ENV RACK_ENV=development test
@@ -15,8 +18,8 @@ RUN apt-get update && apt-get install -y mariadb-client
 WORKDIR /apir
 COPY Gemfile* ./
 COPY . /apir
-RUN chown -R 1000:1000 /apir /usr/local/bundle
-USER 1000:1000
+RUN chown -R $UID:$GID /apir /usr/local/bundle
+USER $UID:$GID
 
 RUN bundle install --jobs=8
 
