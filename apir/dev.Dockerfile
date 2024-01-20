@@ -4,6 +4,8 @@ ENV BUNDLER_VERSION=2.1.4
 #ENV RAILS_ENV=development test
 #ENV RACK_ENV=development test
 
+RUN useradd -ms /bin/bash rails
+
 RUN wget -O /tmp/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
 RUN chmod +x /tmp/wait-for-it.sh
 
@@ -13,6 +15,8 @@ RUN apt-get update && apt-get install -y mariadb-client
 WORKDIR /apir
 COPY Gemfile* ./
 COPY . /apir
+RUN chown -R 1000:1000 /apir /usr/local/bundle
+USER 1000:1000
 
 RUN bundle install --jobs=8
 

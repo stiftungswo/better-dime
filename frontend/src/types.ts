@@ -309,6 +309,7 @@ export interface ProjectEffort {
   employee_id: number;
   position_id: number;
   project_id?: number;
+  project_category_id?: number;
   value: number;
 }
 
@@ -331,6 +332,8 @@ export interface ProjectEffortListing {
   position_description: string;
   project_id: number;
   project_name: string;
+  project_category_id: number;
+  project_category_name: string;
   service_id: number;
   service_name: string;
   employee_full_name: string;
@@ -347,6 +350,7 @@ export interface ProjectEffortTemplate {
   employee_ids: number[];
   position_id: number | null;
   project_id: number | null;
+  project_category_id: number | null;
   value: number;
 }
 

@@ -39,7 +39,7 @@ services:
         - DEVISE_SECRET_KEY=verysecret
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8.1
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
     container_name: dime_db
     environment:

@@ -6,7 +6,7 @@ module V2
     before_action :authenticate_employee!
 
     def index
-      @filtered = ProjectEffortFilter.new(params).filter ProjectEffort.left_joins(:employee, project_position: [:service, :project, :rate_unit, :position_group])
+      @filtered = ProjectEffortFilter.new(params).filter ProjectEffort.left_joins(:employee, :project_category, project_position: [:service, :project, :rate_unit, :position_group])
       @efforts = @filtered.select("project_efforts.*, projects.id as p_id, projects.name as p_name,
               services.name as s_name, services.id as s_id, employees.first_name as e_first_name,
               employees.last_name as e_last_name, rate_units.factor as rate_unit_factor,
@@ -52,7 +52,7 @@ module V2
     end
 
     def update_params
-      params.permit(:date, :value, :employee_id, :position_id)
+      params.permit(:date, :value, :employee_id, :position_id, :project_category_id)
     end
   end
 end

@@ -10,6 +10,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
+import {ProjectCategorySelect} from '../../form/entitySelect/ProjectCategorySelect';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
@@ -21,6 +22,7 @@ import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
+import {ProjectCategoryStore} from '../../stores/projectCategoryStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { ProjectStore } from '../../stores/projectStore';
@@ -35,6 +37,7 @@ interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
+  projectCategoryStore?: ProjectCategoryStore;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
@@ -52,6 +55,7 @@ const baseEffortFields = {
   comment: yup.string().nullable(true),
   project_id: selector(),
   position_id: selector(),
+  project_category_id: selector(),
   date: dimeDate().required(),
   value: requiredNumber(),
 };
@@ -77,7 +81,7 @@ const multiSchema = localizeSchema(() =>
 
 @compose(
   injectIntl,
-  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
+  inject('effortStore', 'projectStore', 'projectCategoryStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
   withFullScreen,
 )
@@ -94,6 +98,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   componentDidMount(): void {
     Promise.all([
       this.props.projectCommentPresetStore!.fetchAll(),
+      this.props.projectCategoryStore!.fetchAll(),
     ]);
   }
 
@@ -178,6 +183,14 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   label={intl.formatMessage({id: 'general.service'})}
                   maxMenuHeight={200}
                 />
+                {formikProps.values.project_id && (
+                  <DimeField
+                    component={ProjectCategorySelect}
+                    name={'project_category_id'}
+                    label={intl.formatMessage({id: 'general.project_category'})}
+                    maxMenuHeight={200}
+                  />
+                )}
                 <DimeDatePickerField component={DateFastPicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
