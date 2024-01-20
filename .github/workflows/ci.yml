@@ -54,9 +54,9 @@ jobs:
           tags: localhost:5000/swo/dime-apir:latest
           cache-from: type=gha,ignore-error=true
           cache-to: type=gha,mode=max
-          build-args:
-            UID: 1001
-            GID: 1001
+          build-args: |
+            UID=1001
+            GID=1001
 
       - name: Migrate DB
         run: docker-compose -f docker-compose.semaphore.yml run -T apir /tmp/wait-for-it.sh mysql:3306 -s -t 50 -- bin/rails db:create db:schema:load
