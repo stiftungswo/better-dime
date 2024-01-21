@@ -68,6 +68,11 @@ export class TimetrackProjectSoloTable extends React.Component<Props> {
             : projectEffortListing.service_name,
       },
       {
+        id: 'project_category_name',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.project_category'}),
+      },
+      {
         id: 'effort_value',
         numeric: true,
         label: intl.formatMessage({id: 'general.effort_value'}),

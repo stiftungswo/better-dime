@@ -18,7 +18,7 @@ class InvoicePosition < ApplicationRecord
   end
 
   def calculated_total_excl_vat
-    price_per_rate * amount / (1.0 + vat)
+    price_per_rate * amount / (vat + 1.0)
   end
 
   delegate :archived, to: :rate_unit, prefix: true

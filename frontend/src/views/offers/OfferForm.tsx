@@ -318,7 +318,7 @@ class OfferForm extends React.Component<Props> {
                         </Grid>
                         <Grid item xs={12} lg={5}>
                           <DimePaper>
-                            <OfferCategorySubform formikProps={props} name={'category_distributions'} />
+                            <OfferCategorySubform formikProps={props} name={'category_distributions'} type={'Offer'} />
                           </DimePaper>
                         </Grid>
                       </Grid>

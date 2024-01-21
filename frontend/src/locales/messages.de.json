@@ -100,6 +100,8 @@
   "form.dialog.position_move.title": "Service verschieben",
   "form.dialog.position_move.confirm_text": "Verschieben",
 
+  "form.entity_select.project_category_select.wait_fetching": "Projekt-Tätigkeitsbereiche werden abgerufen ...",
+
   "form.entity_select.project_position_select.wait_fetching": "Projekt-Positionen werden abgerufen ...",
   "form.entity_select.project_position_select.missing_project": "Zuerst Projekt auswählen",
 

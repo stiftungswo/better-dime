@@ -259,7 +259,7 @@ class ProjectForm extends React.Component<Props> {
                       </Grid>
                       <Grid item xs={12} lg={5}>
                         <DimePaper>
-                          <ProjectCategorySubform formikProps={props} name={'category_distributions'} />
+                          <ProjectCategorySubform formikProps={props} name={'category_distributions'} type={'Project'} />
                         </DimePaper>
                       </Grid>
 

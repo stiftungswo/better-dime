@@ -298,7 +298,7 @@ module Pdfs
         data: [
           "Total",
           "",
-          format_money((1 + @vat) * final_total)
+          format_money((@vat + 1) * final_total)
         ],
         style: {
           borders: [:top],

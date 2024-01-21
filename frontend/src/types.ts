@@ -12,6 +12,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   customer_id: number;
   costgroup_distributions: OfferCostgroup[];
   category_distributions: OfferCategory[];
+  uncategorized_distribution: null;
   description: string;
   fixed_price: number | null;
   fixed_price_vat: null | number;
@@ -127,6 +128,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
   category_distributions: ProjectCategory[];
+  uncategorized_distribution: number | null;
   deadline: null;
   description: string | null;
   fixed_price: null | number;
@@ -554,7 +556,7 @@ export interface Category {
 
 export interface OPCategory {
   category_id: number;
-  weight: number;
+  distribution: number;
 }
 export interface ProjectCategory extends OPCategory {
   project_id: number;

@@ -77,7 +77,7 @@ module Pdfs
     end
 
     def draw_price(left_offset)
-      bounding_box([left_offset + 0.05.cm + (0 * 0.55.cm), 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
+      bounding_box([left_offset + 0.05.cm + (0.55.cm * 0), 5.7.cm], width: 5.5.cm, height: 0.5.cm) do
         # uncomment the next line to see a debug view of the boxes provided by the esr
       end
 

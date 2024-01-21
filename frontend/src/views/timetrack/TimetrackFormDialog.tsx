@@ -1,8 +1,6 @@
 import { DialogContent, DialogTitle } from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import { useTheme } from '@mui/material/styles';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
@@ -185,6 +183,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 />
                 {formikProps.values.project_id && (
                   <DimeField
+                    projectId={formikProps.values.project_id}
                     component={ProjectCategorySelect}
                     name={'project_category_id'}
                     label={intl.formatMessage({id: 'general.project_category'})}
