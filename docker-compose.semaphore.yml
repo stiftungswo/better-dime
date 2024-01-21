@@ -9,7 +9,7 @@ services:
       - ./bundle:/bundle
     depends_on:
         - mysql
-    env_file: 'apir/.env.semaphore'
+    env_file: 'apir/.env.ci'
   mysql:
     image: mysql:5.7
     command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION"
