@@ -6,7 +6,7 @@ services:
     working_dir: /var/apir
     volumes:
       - ./apir:/var/apir
-      - ${SEMAPHORE_CACHE_DIR}/bundle:/bundle
+      - ./bundle:/bundle
     depends_on:
         - mysql
     env_file: 'apir/.env.semaphore'
