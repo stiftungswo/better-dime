@@ -26,7 +26,7 @@ json.costgroup_distributions invoice.invoice_costgroup_distributions.map do |ic|
     0.00.to_f
   end
 end
-json.costgroup_uncategorized_distribution invoice.project.missing_costgroup_distribution if invoice.project.is_costgroup_dist_incomplete?
+json.costgroup_uncategorized_distribution invoice.project.missing_costgroup_distribution if invoice.project.costgroup_dist_incomplete?
 
 json.project_id invoice.project&.id
 json.discounts invoice.invoice_discounts

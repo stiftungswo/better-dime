@@ -59,12 +59,12 @@ class Project < ApplicationRecord
   end
 
   def missing_costgroup_distribution
-    return 0.0.to_f if !is_costgroup_dist_incomplete? || costgroups_sum.nil?
+    return 0.0.to_f if !costgroup_dist_incomplete? || costgroups_sum.nil?
 
     ((costgroup_sums[nil] / costgroups_sum) * 100).to_f
   end
 
-  def is_costgroup_dist_incomplete?
+  def costgroup_dist_incomplete?
     costgroup_sums.key?(nil)
   end
 end

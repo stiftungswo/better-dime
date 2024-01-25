@@ -20,7 +20,7 @@ json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
     0.00.to_f
   end
 end
-json.costgroup_uncategorized_distribution project.missing_costgroup_distribution if project.is_costgroup_dist_incomplete?
+json.costgroup_uncategorized_distribution project.missing_costgroup_distribution if project.costgroup_dist_incomplete?
 
 json.positions project.project_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
