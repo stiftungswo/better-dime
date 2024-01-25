@@ -18,7 +18,7 @@ import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
-import { CostgroupStore} from "../../stores/costgroupStore";
+import { CostgroupStore} from '../../stores/costgroupStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';

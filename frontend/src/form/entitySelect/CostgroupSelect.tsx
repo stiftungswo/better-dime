@@ -4,7 +4,7 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { CostgroupStore } from '../../stores/costgroupStore';
 import {EffortStore} from '../../stores/effortStore';
 import {ProjectStore} from '../../stores/projectStore';
-import {Costgroup} from "../../types";
+import {Costgroup} from '../../types';
 import compose from '../../utilities/compose';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import {DimeCustomFieldProps} from '../fields/common';
