@@ -5,7 +5,7 @@ FactoryBot.define do
     date { "2019-05-14" }
     value { 3.141593 }
     project_position
-    project_category
+    costgroup
     employee
   end
 end

@@ -353,7 +353,7 @@ export interface ProjectEffortTemplate {
   employee_ids: number[];
   position_id: number | null;
   project_id: number | null;
-  project_category_id: number | null;
+  costgroup_number: number | null;
   value: number;
 }
 
