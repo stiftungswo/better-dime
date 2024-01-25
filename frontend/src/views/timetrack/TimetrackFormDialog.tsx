@@ -7,8 +7,8 @@ import moment from 'moment';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
+import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
-import {ProjectCategorySelect} from '../../form/entitySelect/ProjectCategorySelect';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
 import { ProjectSelect } from '../../form/entitySelect/ProjectSelect';
@@ -18,9 +18,9 @@ import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
+import { CostgroupStore} from "../../stores/costgroupStore";
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
-import {ProjectCategoryStore} from '../../stores/projectCategoryStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
 import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { ProjectStore } from '../../stores/projectStore';
@@ -35,7 +35,7 @@ interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
-  projectCategoryStore?: ProjectCategoryStore;
+  costgroupStore?: CostgroupStore;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
@@ -53,7 +53,7 @@ const baseEffortFields = {
   comment: yup.string().nullable(true),
   project_id: selector(),
   position_id: selector(),
-  project_category_id: selector(),
+  costgroup_number: selector(),
   date: dimeDate().required(),
   value: requiredNumber(),
 };
@@ -79,7 +79,7 @@ const multiSchema = localizeSchema(() =>
 
 @compose(
   injectIntl,
-  inject('effortStore', 'projectStore', 'projectCategoryStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
+  inject('effortStore', 'projectStore', 'costgroupStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
   withFullScreen,
 )
@@ -96,7 +96,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   componentDidMount(): void {
     Promise.all([
       this.props.projectCommentPresetStore!.fetchAll(),
-      this.props.projectCategoryStore!.fetchAll(),
+      this.props.costgroupStore!.fetchAll(),
     ]);
   }
 
@@ -184,9 +184,9 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 {formikProps.values.project_id && (
                   <DimeField
                     projectId={formikProps.values.project_id}
-                    component={ProjectCategorySelect}
-                    name={'project_category_id'}
-                    label={intl.formatMessage({id: 'general.project_category'})}
+                    component={CostgroupSelect}
+                    name={'costgroup_number'}
+                    label={intl.formatMessage({id: 'general.cost_group'})}
                     maxMenuHeight={200}
                   />
                 )}

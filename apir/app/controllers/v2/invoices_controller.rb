@@ -114,7 +114,7 @@ module V2
     private
 
     def set_invoice
-      @invoice = Invoice.find(params[:id])
+      @invoice = Invoice.includes({ project: [:project_efforts]}).find(params[:id])
     end
 
     def legacy_params

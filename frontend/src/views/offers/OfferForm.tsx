@@ -313,12 +313,12 @@ class OfferForm extends React.Component<Props> {
                       <Grid container spacing={3}>
                         <Grid item xs={12} lg={5}>
                           <DimePaper>
-                            <OfferCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                            <OfferCostgroupSubform formikProps={props} name={'costgroup_distributions'} type={'Offer'} />
                           </DimePaper>
                         </Grid>
                         <Grid item xs={12} lg={5}>
                           <DimePaper>
-                            <OfferCategorySubform formikProps={props} name={'category_distributions'} type={'Offer'} />
+                            <OfferCategorySubform formikProps={props} name={'category_distributions'} />
                           </DimePaper>
                         </Grid>
                       </Grid>

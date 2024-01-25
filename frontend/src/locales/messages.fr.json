@@ -100,6 +100,8 @@
   "form.dialog.position_move.title": "Déplacer le service",
   "form.dialog.position_move.confirm_text": "Déplacer",
 
+  "form.entity_select.costgroup_select.wait_fetching": "Les groupes de coûts du projet sont récupérés ...",
+
   "form.entity_select.project_position_select.wait_fetching": "Les positions du projet sont récupérées ...",
   "form.entity_select.project_position_select.missing_project": "Sélectionner d'abord le projet",
 
@@ -321,7 +323,7 @@
   "view.offer.schema.cost_group_required": "Une Offre nécessite au moins un centre de coûts attribué.",
 
   "view.offer.update.update_offer": "Modifier une offre",
-  
+
   "view.person.addresses_subform_inline.street": "Rue",
   "view.person.addresses_subform_inline.supplement": "Complément d'adresse",
   "view.person.addresses_subform_inline.zip": "Code Postal",
@@ -370,6 +372,7 @@
 
   "view.project.costgroup_subform.weight": "Pondération",
   "view.project.costgroup_subform.fraction": "Part",
+  "view.project.costgroup_subform.effors_without_cost_group": "Charges sans groupe de coûts",
 
   "view.project.create.title": "Saisir un projet",
 

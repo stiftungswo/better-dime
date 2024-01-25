@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { ProjectCategorySelect } from '../../form/entitySelect/ProjectCategorySelect';
-import {NumberField, possiblyIntlError, TextField} from '../../form/fields/common';
+import { NumberField, possiblyIntlError } from '../../form/fields/common';
 import { DimeField } from '../../form/fields/formik';
 import { ConfirmationButton } from '../../layout/ConfirmationDialog';
 import { DimeTableCell } from '../../layout/DimeTableCell';
@@ -23,32 +23,27 @@ const template = () => ({
   weight: 100,
 });
 
-export interface Props<OP extends Offer | Project, TYPE extends string> {
+export interface Props<OP extends Offer | Project> {
   mainStore?: MainStore;
   intl?: IntlShape;
   formikProps: FormikProps<OP>;
   name: string;
   disabled?: boolean;
-  type: TYPE;
 }
 
 @compose(
   injectIntl,
   observer,
 )
-export class CategorySubform<OP extends Offer | Project, TYPE extends string> extends React.Component<Props<OP, TYPE> > {
+export class CategorySubform<OP extends Offer | Project> extends React.Component<Props<OP> > {
   render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     const category_distributions: OPCategory[] = values.category_distributions;
+    const weightSum = category_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
     const intl = this.props.intl!;
     const idPrefix = 'view.project.category_subform';
-
-    const showFraction = this.props.type === 'Project';
-    const uncategorizedDistribution = showFraction ? values.uncategorized_distribution : null;
-    const widths = showFraction ? { fraction: '25%', category: '60%', actions: '15%' } : { fraction: '0%', category: '75%', actions: '25%' };
-
     return (
       <FieldArray
         name={name}
@@ -62,9 +57,10 @@ export class CategorySubform<OP extends Offer | Project, TYPE extends string> ex
             <Table>
               <TableHead>
                 <TableRow>
-                  {widths.fraction !== '0%' && <DimeTableCell style={{ width: widths.fraction }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>}
-                  <DimeTableCell style={{ width: widths.category }}> <FormattedMessage id={'general.project_category'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: widths.actions }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '50%' }}> <FormattedMessage id={'general.project_category'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -77,9 +73,13 @@ export class CategorySubform<OP extends Offer | Project, TYPE extends string> ex
                 )}
                 {category_distributions.map((p: ProjectCategory & { formikKey?: number }, index: number) => {
                   const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
+                  const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
                     <TableRow key={p.category_id || p.formikKey}>
-                      {widths.fraction !== '0%' && <DimeTableCell>{p?.distribution?.toFixed(2) ?? 0}%</DimeTableCell>}
+                      <DimeTableCell>
+                        <DimeField delayed component={NumberField} name={fieldName('weight')} />
+                      </DimeTableCell>
+                      <DimeTableCell>{distribution}%</DimeTableCell>
                       <DimeTableCell>
                         <DimeField component={ProjectCategorySelect} name={fieldName('category_id')} />
                       </DimeTableCell>
@@ -89,15 +89,6 @@ export class CategorySubform<OP extends Offer | Project, TYPE extends string> ex
                     </TableRow>
                   );
                 })}
-                {uncategorizedDistribution !== undefined && uncategorizedDistribution !== null && <>
-                  <TableRow key={'uncategorized_distribution'}>
-                    {widths.fraction !== '0%' && <DimeTableCell>{uncategorizedDistribution.toFixed(2) ?? 0}%</DimeTableCell>}
-                    <DimeTableCell>
-                      <p>Aufwände ohne Tätigkeitsbereiche</p>
-                    </DimeTableCell>
-                    <DimeTableCell/>
-                  </TableRow>
-                </>}
               </TableBody>
             </Table>
           </>
@@ -108,5 +99,5 @@ export class CategorySubform<OP extends Offer | Project, TYPE extends string> ex
 }
 
 // tslint:disable:max-classes-per-file
-export class OfferCategorySubform extends CategorySubform<Offer, 'Offer'> {}
-export class ProjectCategorySubform extends CategorySubform<Project, 'Project'> {}
+export class OfferCategorySubform extends CategorySubform<Offer> {}
+export class ProjectCategorySubform extends CategorySubform<Project> {}

@@ -420,10 +420,10 @@ ActiveRecord::Schema.define(version: 2024_01_20_094937) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
-    t.integer "project_category_id", unsigned: true
+    t.integer "costgroup_number", unsigned: true
+    t.index ["costgroup_number"], name: "index_project_efforts_on_costgroup_number"
     t.index ["employee_id"], name: "project_efforts_employee_id_foreign"
     t.index ["position_id"], name: "project_efforts_position_id_foreign"
-    t.index ["project_category_id"], name: "index_project_efforts_on_project_category_id"
   end
 
   create_table "project_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -611,8 +611,8 @@ ActiveRecord::Schema.define(version: 2024_01_20_094937) do
   add_foreign_key "project_comments", "projects", name: "project_comments_project_id_foreign", on_delete: :cascade
   add_foreign_key "project_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number", name: "project_costgroup_distributions_costgroup_number_foreign", on_delete: :nullify
   add_foreign_key "project_costgroup_distributions", "projects", name: "project_costgroup_distributions_project_id_foreign", on_delete: :cascade
+  add_foreign_key "project_efforts", "costgroups", column: "costgroup_number", primary_key: "number"
   add_foreign_key "project_efforts", "employees", name: "project_efforts_employee_id_foreign", on_delete: :cascade
-  add_foreign_key "project_efforts", "project_categories"
   add_foreign_key "project_efforts", "project_positions", column: "position_id", name: "project_efforts_position_id_foreign", on_delete: :cascade
   add_foreign_key "project_positions", "position_groups", name: "project_positions_position_group_id_foreign", on_delete: :nullify
   add_foreign_key "project_positions", "projects", name: "project_positions_project_id_foreign", on_delete: :cascade

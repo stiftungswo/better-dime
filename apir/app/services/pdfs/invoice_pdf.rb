@@ -28,9 +28,15 @@ module Pdfs
     def draw_description(header)
       move_down 90
 
+      project = @invoice.project
+      costgroup_sums = @invoice.project.costgroup_sums
+      costgroups_sum = @invoice.project.costgroups_sum
+
       costgroups = @invoice.invoice_costgroup_distributions.map do |costgroup|
-        "#{costgroup.weight_percent.round}% #{costgroup.costgroup_number}"
-      end.join(", ")
+        "#{project.costgroup_distribution(costgroup.costgroup_number).round}% #{costgroup.costgroup_number}"
+      end
+      costgroups << "#{project.missing_costgroup_distribution.round} % -" if project.is_costgroup_dist_incomplete?
+      costgroups = costgroups.join(", ")
 
       header.draw_misc(@invoice, @invoice.project, @invoice.project.offer, @invoice.accountant, costgroups, :invoice, @invoice.name,
                        "#{@invoice.beginning.strftime("%d.%m.%Y")} - #{@invoice.ending.strftime("%d.%m.%Y")}")

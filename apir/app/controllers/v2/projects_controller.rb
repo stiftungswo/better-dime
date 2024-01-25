@@ -91,12 +91,6 @@ module V2
 
     def set_project
       @project = Project.find(params[:id])
-      category_sums
-    end
-
-    def category_sums
-      @category_sums = @project.project_efforts.group_by(&:project_category_id).transform_values { |pegs| pegs.sum(&:value) }
-      @categories_sum = @category_sums.values.sum
     end
 
     def legacy_params

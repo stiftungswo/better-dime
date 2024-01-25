@@ -24,4 +24,4 @@ USER $UID:$GID
 RUN bundle install --jobs=8
 
 EXPOSE 3000
-CMD ["bin/rails", "server", "-p", "3000", "-b", "0.0.0.0"]
+CMD bin/rails server -p 8000 -b 0.0.0.0

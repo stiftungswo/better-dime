@@ -1,6 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "defaultSeverity": "error",
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": "src",
