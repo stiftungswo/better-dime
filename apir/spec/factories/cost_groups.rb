@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :costgroup do
-    number { 100 }
+    sequence(:number) { |n| 100 + n }
     name { "MyString" }
   end
 end
