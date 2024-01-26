@@ -100,7 +100,7 @@
   "form.dialog.position_move.title": "Service verschieben",
   "form.dialog.position_move.confirm_text": "Verschieben",
 
-  "form.entity_select.costgroup_select.wait_fetching": "Projekt-Kostengruppen werden abgerufen ...",
+  "form.entity_select.costgroup_select.wait_fetching": "Projekt-Kostenstellen werden abgerufen ...",
 
   "form.entity_select.project_position_select.wait_fetching": "Projekt-Positionen werden abgerufen ...",
   "form.entity_select.project_position_select.missing_project": "Zuerst Projekt auswählen",
@@ -373,7 +373,7 @@
 
   "view.project.costgroup_subform.weight": "Gewicht",
   "view.project.costgroup_subform.fraction": "Anteil",
-  "view.project.costgroup_subform.effors_without_cost_group": "Aufwände ohne Kostengruppe",
+  "view.project.costgroup_subform.effors_without_cost_group": "Aufwände ohne Kostenstelle",
 
   "view.project.create.title": "Projekt erstellen",
 
