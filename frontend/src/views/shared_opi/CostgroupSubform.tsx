@@ -48,7 +48,17 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice, TYPE extends 'Offe
 
     const showFraction = this.props.type === 'Project' || this.props.type === 'Invoice';
     const uncategorizedDistribution = showFraction ? values.costgroup_uncategorized_distribution : null;
-    const widths = showFraction ? { fraction: '25%', category: '60%', actions: '15%' } : { fraction: '0%', category: '75%', actions: '25%' };
+
+    const showWeightInput = this.props.type === 'Invoice';
+
+    let widths = {fraction: '0%', input: '0%', category: '75%', actions: '25%'};
+    if (showFraction) {
+      if (showWeightInput) {
+        widths = {fraction: '15%', input: '20%', category: '50%', actions: '15%'};
+      } else {
+        widths = {fraction: '25%', input: '0%', category: '60%', actions: '15%'};
+      }
+    }
 
     return (
       <FieldArray
@@ -64,6 +74,7 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice, TYPE extends 'Offe
               <TableHead>
                 <TableRow>
                   {widths.fraction !== '0%' && <DimeTableCell style={{ width: widths.fraction }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>}
+                  {widths.input !== '0%' && <DimeTableCell style={{ width: widths.input }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>}
                   <DimeTableCell style={{ width: widths.category }}> <FormattedMessage id={'general.cost_group'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: widths.actions }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
@@ -81,6 +92,12 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice, TYPE extends 'Offe
                   return (
                     <TableRow key={p.id || p.formikKey}>
                       {widths.fraction !== '0%' && <DimeTableCell>{p?.distribution?.toFixed(2) ?? 0}%</DimeTableCell>}
+                      {showWeightInput && (
+                          <DimeTableCell>
+                            <DimeField delayed component={NumberField} name={fieldName('weight')} />
+                          </DimeTableCell>
+                        )
+                      }
                       <DimeTableCell>
                         <DimeField component={CostgroupSelect} name={fieldName('costgroup_number')} />
                       </DimeTableCell>

@@ -9,7 +9,7 @@ services:
     volumes:
         - ./apir:/apir
     working_dir: /apir
-#    command: "bundle exec rails server -p 8000 -b 0.0.0.0"
+    command: "bash -c 'bundle install && bundle exec rails server -p 8000 -b 0.0.0.0'"
     depends_on:
         - mysql
     ports:

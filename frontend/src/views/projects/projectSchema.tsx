@@ -35,7 +35,6 @@ export const projectSchema = localizeSchema(() => {
       costgroup_distributions: yup.array(
         yup.object({
           costgroup_number: requiredNumber(),
-          weight: requiredNumber().min(1, 'general.schema.cost_group_has_weight'),
         }),
       )
       .min(1, 'view.project.schema.cost_group_required'),

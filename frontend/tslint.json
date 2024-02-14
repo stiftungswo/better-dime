@@ -22,7 +22,8 @@
     "no-console": {
       "severity": "warning",
       "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
-    }
+    },
+    "prefer-conditional-expression": false
   },
   "linterOptions": {
     "exclude": [
