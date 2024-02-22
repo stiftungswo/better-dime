@@ -20,6 +20,7 @@ export class EffortStore extends AbstractStore<ProjectEffort> {
     employee_ids: this.mainStore.userId ? [this.mainStore.userId] : [],
     position_id: null,
     project_id: null,
+    costgroup_number: null,
     value: 1,
   };
   loading: boolean = false;

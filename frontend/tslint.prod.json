@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "./tslint.json"
+  ],
+  "rules": {
+    "quotemark": {
+      "severity": "error",
+      "options": ["single", "avoid-escape", "avoid-template", "jsx-double"]
+    },
+    "no-console": {
+      "severity": "error",
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
+    }
+  },
+  "linterOptions": {
+    "exclude": [
+      "*.json",
+      "**/*.json"
+    ]
+  }
+}

@@ -12,6 +12,7 @@ export interface Offer extends PositionGroupings<OfferPosition> {
   customer_id: number;
   costgroup_distributions: OfferCostgroup[];
   category_distributions: OfferCategory[];
+  costgroup_uncategorized_distribution: null;
   description: string;
   fixed_price: number | null;
   fixed_price_vat: null | number;
@@ -127,6 +128,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   chargeable: boolean;
   costgroup_distributions: ProjectCostgroup[];
   category_distributions: ProjectCategory[];
+  costgroup_uncategorized_distribution: number | null;
   deadline: null;
   description: string | null;
   fixed_price: null | number;
@@ -257,6 +259,7 @@ export interface Invoice extends PositionGroupings<InvoicePosition> {
   created_at: string;
   updated_at: string;
   costgroup_distributions: InvoiceCostgroup[];
+  costgroup_uncategorized_distribution: number | null;
   discounts: InvoiceDiscount[];
   sibling_invoice_ids: number[];
   location_id: number | null;
@@ -309,6 +312,7 @@ export interface ProjectEffort {
   employee_id: number;
   position_id: number;
   project_id?: number;
+  costgroup_number?: number;
   value: number;
 }
 
@@ -331,6 +335,8 @@ export interface ProjectEffortListing {
   position_description: string;
   project_id: number;
   project_name: string;
+  costgroup_number: number;
+  costgroup_name: string;
   service_id: number;
   service_name: string;
   employee_full_name: string;
@@ -347,6 +353,7 @@ export interface ProjectEffortTemplate {
   employee_ids: number[];
   position_id: number | null;
   project_id: number | null;
+  costgroup_number: number | null;
   value: number;
 }
 
@@ -581,7 +588,7 @@ export interface EmployeeGroup {
 export interface OPICostgroup {
   id: number;
   costgroup_number: number;
-  weight: number;
+  distribution: number;
   deleted_at: null;
   created_at: string;
   updated_at: string;

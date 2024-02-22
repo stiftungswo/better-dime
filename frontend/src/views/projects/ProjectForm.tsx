@@ -254,7 +254,7 @@ class ProjectForm extends React.Component<Props> {
                     <Grid container spacing={3}>
                       <Grid item xs={12} lg={5}>
                         <DimePaper>
-                          <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                          <ProjectCostgroupSubform formikProps={props} name={'costgroup_distributions'} type={'Project'} />
                         </DimePaper>
                       </Grid>
                       <Grid item xs={12} lg={5}>

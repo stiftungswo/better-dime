@@ -23,28 +23,43 @@ const template = () => ({
   weight: 100,
 });
 
-export interface Props<OPI extends Offer | Project | Invoice> {
+export interface Props<OPI extends Offer | Project | Invoice, TYPE extends 'Offer' | 'Project' | 'Invoice'> {
   mainStore?: MainStore;
   intl?: IntlShape;
   formikProps: FormikProps<OPI>;
   name: string;
   disabled?: boolean;
+  type: TYPE;
 }
 
 @compose(
   injectIntl,
   observer,
 )
-class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Component<Props<OPI>> {
+class CostgroupSubform<OPI extends Offer | Project | Invoice, TYPE extends 'Offer' | 'Project' | 'Invoice'> extends React.Component<Props<OPI, TYPE>> {
   render() {
     const { values, errors, touched } = this.props.formikProps;
     const { disabled, name } = this.props;
     // avoid triggering https://github.com/microsoft/TypeScript/issues/33591
     const costgroup_distributions: OPICostgroup[] = values.costgroup_distributions;
-    const weightSum = costgroup_distributions.map(d => d.weight).reduce((a: number, b: number) => a + b, 0);
     const currentError = getIn(touched, name) && getIn(errors, name);
     const idPrefix = 'view.project.costgroup_subform';
     const intl = this.props.intl!;
+
+    const showFraction = this.props.type === 'Project' || this.props.type === 'Invoice';
+    const uncategorizedDistribution = showFraction ? values.costgroup_uncategorized_distribution : null;
+
+    const showWeightInput = this.props.type === 'Invoice';
+
+    let widths = {fraction: '0%', input: '0%', category: '75%', actions: '25%'};
+    if (showFraction) {
+      if (showWeightInput) {
+        widths = {fraction: '15%', input: '20%', category: '50%', actions: '15%'};
+      } else {
+        widths = {fraction: '25%', input: '0%', category: '60%', actions: '15%'};
+      }
+    }
+
     return (
       <FieldArray
         name={name}
@@ -58,10 +73,10 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Comp
             <Table>
               <TableHead>
                 <TableRow>
-                  <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '50%' }}> <FormattedMessage id={'general.cost_group'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
+                  {widths.fraction !== '0%' && <DimeTableCell style={{ width: widths.fraction }}> <FormattedMessage id={idPrefix + '.fraction'} /> </DimeTableCell>}
+                  {widths.input !== '0%' && <DimeTableCell style={{ width: widths.input }}> <FormattedMessage id={idPrefix + '.weight'} /> </DimeTableCell>}
+                  <DimeTableCell style={{ width: widths.category }}> <FormattedMessage id={'general.cost_group'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: widths.actions }}> <FormattedMessage id={'general.actions'} /> </DimeTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -74,13 +89,15 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Comp
                 )}
                 {costgroup_distributions.map((p: OPICostgroup & { formikKey?: number }, index: number) => {
                   const fieldName = (field: string) => `${this.props.name}.${index}.${field}`;
-                  const distribution = ((p.weight / weightSum) * 100).toFixed(0);
                   return (
                     <TableRow key={p.id || p.formikKey}>
-                      <DimeTableCell>
-                        <DimeField delayed component={NumberField} name={fieldName('weight')} />
-                      </DimeTableCell>
-                      <DimeTableCell>{distribution}%</DimeTableCell>
+                      {widths.fraction !== '0%' && <DimeTableCell>{p?.distribution?.toFixed(2) ?? 0}%</DimeTableCell>}
+                      {showWeightInput && (
+                          <DimeTableCell>
+                            <DimeField delayed component={NumberField} name={fieldName('weight')} />
+                          </DimeTableCell>
+                        )
+                      }
                       <DimeTableCell>
                         <DimeField component={CostgroupSelect} name={fieldName('costgroup_number')} />
                       </DimeTableCell>
@@ -90,6 +107,15 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Comp
                     </TableRow>
                   );
                 })}
+                {uncategorizedDistribution !== undefined && uncategorizedDistribution !== null && <>
+                  <TableRow key={'uncategorized_distribution'}>
+                    {widths.fraction !== '0%' && <DimeTableCell>{uncategorizedDistribution.toFixed(2) ?? 0}%</DimeTableCell>}
+                    <DimeTableCell>
+                      <p><FormattedMessage id={'view.project.costgroup_subform.effors_without_cost_group'} /></p>
+                    </DimeTableCell>
+                    <DimeTableCell/>
+                  </TableRow>
+                </>}
               </TableBody>
             </Table>
           </>
@@ -99,6 +125,6 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice> extends React.Comp
   }
 }
 // tslint:disable:max-classes-per-file
-export class OfferCostgroupSubform extends CostgroupSubform<Offer> {}
-export class ProjectCostgroupSubform extends CostgroupSubform<Project> {}
-export class InvoiceCostgroupSubform extends CostgroupSubform<Invoice> {}
+export class OfferCostgroupSubform extends CostgroupSubform<Offer, 'Offer'> {}
+export class ProjectCostgroupSubform extends CostgroupSubform<Project, 'Project'> {}
+export class InvoiceCostgroupSubform extends CostgroupSubform<Invoice, 'Invoice'> {}

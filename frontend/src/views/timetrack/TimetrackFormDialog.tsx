@@ -1,14 +1,13 @@
 import { DialogContent, DialogTitle } from '@mui/material';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import { useTheme } from '@mui/material/styles';
 import { Formik, FormikProps } from 'formik';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import * as yup from 'yup';
+import CostgroupSelect from '../../form/entitySelect/CostgroupSelect';
 import { EmployeeSelect } from '../../form/entitySelect/EmployeeSelect';
 import {ProjectCommentPresetSelect} from '../../form/entitySelect/ProjectCommentPresetSelect';
 import { ProjectPositionSelect } from '../../form/entitySelect/ProjectPositionSelect';
@@ -19,6 +18,7 @@ import { EffortValueField } from '../../form/fields/timetrack/EffortValueField';
 import { FormikSubmitDetector } from '../../form/FormikSubmitDetector';
 import BlackButton from '../../layout/BlackButton';
 import { apiDateFormat } from '../../stores/apiStore';
+import { CostgroupStore} from '../../stores/costgroupStore';
 import { EffortStore } from '../../stores/effortStore';
 import { MainStore } from '../../stores/mainStore';
 import {ProjectCommentPresetStore} from '../../stores/projectCommentPresetStore';
@@ -35,6 +35,7 @@ interface Props {
   onClose: () => void;
   effortStore?: EffortStore;
   mainStore?: MainStore;
+  costgroupStore?: CostgroupStore;
   projectCommentStore?: ProjectCommentStore;
   projectCommentPresetStore?: ProjectCommentPresetStore;
   timetrackFilterStore?: TimetrackFilterStore;
@@ -52,6 +53,7 @@ const baseEffortFields = {
   comment: yup.string().nullable(true),
   project_id: selector(),
   position_id: selector(),
+  costgroup_number: selector(),
   date: dimeDate().required(),
   value: requiredNumber(),
 };
@@ -77,7 +79,7 @@ const multiSchema = localizeSchema(() =>
 
 @compose(
   injectIntl,
-  inject('effortStore', 'projectStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
+  inject('effortStore', 'projectStore', 'costgroupStore', 'mainStore', 'projectCommentStore', 'projectCommentPresetStore', 'timetrackFilterStore'),
   observer,
   withFullScreen,
 )
@@ -94,6 +96,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
   componentDidMount(): void {
     Promise.all([
       this.props.projectCommentPresetStore!.fetchAll(),
+      this.props.costgroupStore!.fetchAll(),
     ]);
   }
 
@@ -178,6 +181,15 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                   label={intl.formatMessage({id: 'general.service'})}
                   maxMenuHeight={200}
                 />
+                {formikProps.values.project_id && (
+                  <DimeField
+                    projectId={formikProps.values.project_id}
+                    component={CostgroupSelect}
+                    name={'costgroup_number'}
+                    label={intl.formatMessage({id: 'general.cost_group'})}
+                    maxMenuHeight={200}
+                  />
+                )}
                 <DimeDatePickerField component={DateFastPicker} name={'date'} label={intl.formatMessage({id: 'general.date'})} />
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>

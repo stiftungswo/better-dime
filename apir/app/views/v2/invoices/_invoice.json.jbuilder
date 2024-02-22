@@ -17,7 +17,18 @@ json.breakdown do
   json.vatTotal invoice.breakdown[:vat_total]
 end
 
-json.costgroup_distributions invoice.invoice_costgroup_distributions
+json.costgroup_distributions invoice.invoice_costgroup_distributions.map do |ic|
+  json.costgroup_number ic.costgroup_number
+  json.invoice_id ic.invoice_id
+  json.weight ic.weight
+  if invoice.project.costgroup_sums.key?(ic.costgroup_number)
+    json.distribution invoice.project.costgroup_distribution(ic.costgroup_number)
+  else
+    0.00.to_f
+  end
+end
+json.costgroup_uncategorized_distribution invoice.project.missing_costgroup_distribution if invoice.project.costgroup_dist_incomplete?
+
 json.project_id invoice.project&.id
 json.discounts invoice.invoice_discounts
 json.positions invoice.invoice_positions.sort_by { |p| p.order.to_i } do |position|

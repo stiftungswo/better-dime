@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_22_122027) do
+ActiveRecord::Schema.define(version: 2024_02_14_193505) do
 
   create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.index ["project_id"], name: "invoices_project_id_foreign"
   end
 
-  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.boolean "archived", null: false
     t.integer "order", default: 9999, null: false
     t.string "name", null: false
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.integer "batch", null: false
   end
 
-  create_table "offer_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "offer_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "category_id", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
     t.integer "offer_id", null: false, unsigned: true
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.index ["offer_id"], name: "fk_rails_462bd91ec2"
   end
 
-  create_table "offer_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "offer_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.integer "costgroup_number", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
     t.integer "offer_id", null: false, unsigned: true
@@ -359,10 +359,10 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.integer "deleted_by"
   end
 
-  create_table "project_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "category_id", unsigned: true
+  create_table "project_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.integer "category_id", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
-    t.integer "project_id", unsigned: true
+    t.integer "project_id", null: false, unsigned: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deleted_at"
@@ -398,7 +398,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
   create_table "project_costgroup_distributions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "costgroup_number", unsigned: true
     t.integer "project_id", null: false, unsigned: true
-    t.integer "weight", null: false
+    t.integer "weight"
     t.timestamp "deleted_at"
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -420,6 +420,8 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
+    t.integer "costgroup_number", unsigned: true
+    t.index ["costgroup_number"], name: "index_project_efforts_on_costgroup_number"
     t.index ["employee_id"], name: "project_efforts_employee_id_foreign"
     t.index ["position_id"], name: "project_efforts_position_id_foreign"
   end
@@ -492,7 +494,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
     t.integer "deleted_by"
   end
 
-  create_table "service_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "service_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.bigint "parent_category_id"
     t.string "name", null: false
     t.integer "number", null: false
@@ -609,6 +611,7 @@ ActiveRecord::Schema.define(version: 2022_07_22_122027) do
   add_foreign_key "project_comments", "projects", name: "project_comments_project_id_foreign", on_delete: :cascade
   add_foreign_key "project_costgroup_distributions", "costgroups", column: "costgroup_number", primary_key: "number", name: "project_costgroup_distributions_costgroup_number_foreign", on_delete: :nullify
   add_foreign_key "project_costgroup_distributions", "projects", name: "project_costgroup_distributions_project_id_foreign", on_delete: :cascade
+  add_foreign_key "project_efforts", "costgroups", column: "costgroup_number", primary_key: "number"
   add_foreign_key "project_efforts", "employees", name: "project_efforts_employee_id_foreign", on_delete: :cascade
   add_foreign_key "project_efforts", "project_positions", column: "position_id", name: "project_efforts_position_id_foreign", on_delete: :cascade
   add_foreign_key "project_positions", "position_groups", name: "project_positions_position_group_id_foreign", on_delete: :nullify

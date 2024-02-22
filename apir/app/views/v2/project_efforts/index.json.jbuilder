@@ -9,6 +9,8 @@ json.array! @efforts do |effort|
   json.project_name effort.p_name
   json.project_id effort.p_id
   json.service_id effort.s_id
+  json.costgroup_number effort.costgroup_number
+  json.costgroup_name effort.costgroup&.name
   json.service_name effort.s_name
   json.effort_unit effort.effort_unit
   json.rate_unit_factor effort.rate_unit_factor if effort.rate_unit_factor.present?

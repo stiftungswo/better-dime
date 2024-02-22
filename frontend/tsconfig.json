@@ -20,8 +20,9 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
+  "defaultSeverity": "warning",
   "exclude": [
     "node_modules",
     "build",

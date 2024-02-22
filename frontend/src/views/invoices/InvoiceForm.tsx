@@ -34,7 +34,7 @@ import { empty } from '../../utilities/helpers';
 import { isAfterArchivedUnitsCutoff } from '../../utilities/validation';
 import { wrapIntl } from '../../utilities/wrapIntl';
 import PositionSubformInline from '../PositionSubformInline';
-import InvoiceCostgroupSubform from './InvoiceCostgroupSubform';
+import { InvoiceCostgroupSubform } from '../shared_opi/CostgroupSubform';
 import InvoiceDiscountSubform from './InvoiceDiscountSubform';
 import Navigator from './InvoiceNavigator';
 import InvoicePositionRenderer from './InvoicePositionRenderer';
@@ -274,13 +274,13 @@ export default class InvoiceForm extends React.Component<Props> {
                       </>
                     )}
                     <DimePaper>
-                      <PositionSubformInline tag={InvoicePositionRenderer} formikProps={props} name={'positions'} />
+                      <PositionSubformInline tag={InvoicePositionRenderer} formikProps={props} name={'positions'}/>
                     </DimePaper>
                   </Grid>
 
                   <Grid item xs={12} lg={6}>
                     <DimePaper>
-                      <InvoiceCostgroupSubform formikProps={props} name={'costgroup_distributions'} />
+                      <InvoiceCostgroupSubform formikProps={props} name={'costgroup_distributions'} type={'Invoice'} />
                     </DimePaper>
                   </Grid>
 

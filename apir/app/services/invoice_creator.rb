@@ -35,7 +35,7 @@ class InvoiceCreator
       invoice_costgroup = InvoiceCostgroupDistribution.new
       invoice_costgroup.invoice = invoice
       invoice_costgroup.costgroup = costgroup.costgroup
-      invoice_costgroup.weight = costgroup.weight
+      invoice_costgroup.weight = costgroup.weight || 0
       invoice_costgroup
     end || []
   end

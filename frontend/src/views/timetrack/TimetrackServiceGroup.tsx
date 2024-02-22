@@ -44,6 +44,11 @@ export default class TimetrackServiceGroup extends React.Component<Props> {
         label: intl.formatMessage({id: 'general.project'}),
       },
       {
+        id: 'costgroup_name',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.cost_group'}),
+      },
+      {
         id: 'position_description',
         numeric: false,
         label: intl.formatMessage({id: 'general.description'}),

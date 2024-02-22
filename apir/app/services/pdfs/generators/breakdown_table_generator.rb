@@ -159,7 +159,7 @@ module Pdfs
 
         if fixed_price&.positive?
           data.push(
-            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (1 + @breakdown[:fixed_price_vat]))],
+            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (@breakdown[:fixed_price_vat] + 1))],
             style: {
               font_style: :bold,
               padding: padding
@@ -205,7 +205,7 @@ module Pdfs
         end
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
-        vat_total = has_fixed_price ? (total - (fixed_price / (1 + @breakdown[:fixed_price_vat]))) : @breakdown[:vat_total]
+        vat_total = has_fixed_price ? (total - (fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
 
         if has_fixed_price
           data.push(

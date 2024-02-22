@@ -79,6 +79,11 @@ export class TimetrackProjectTable extends React.Component<Props> {
         format: (e: any) => 'comment' in e ? '' : (e.position_description ? e.service_name + ' (' + e.position_description + ')' : e.service_name),
       },
       {
+        id: 'costgroup_name',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.cost_group'}),
+      },
+      {
         id: 'effort_value',
         numeric: true,
         noSort: true,

@@ -78,6 +78,11 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         },
       },
       {
+        id: 'costgroup_name',
+        numeric: false,
+        label: intl.formatMessage({id: 'general.cost_group'}),
+      },
+      {
         id: 'effort_value',
         numeric: true,
         label: intl.formatMessage({id: 'general.effort_value'}),
