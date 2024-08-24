@@ -86,8 +86,8 @@ class RevenueReportService
     end
 
     all_rows
-      .map { |row| row.map { |column| column.is_a?(Numeric) ? (column / 100).round : column } }
-      .map { |row| row.map { |column| column.is_a?(Numeric) && column.zero? ? nil : column } }
+      .map { |row| row.map { |column| column.is_a?(Numeric) && !column.nan? ? (column / 100).round : column } }
+      .map { |row| row.map { |column| column.is_a?(Numeric) && (column.zero? || column.nan?) ? nil : column } }
   end
 
   HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
