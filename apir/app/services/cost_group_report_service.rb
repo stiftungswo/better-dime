@@ -18,7 +18,7 @@ class CostGroupReportService
   end
 
   def effort
-    @effort ||= efforts_by_project.reduce({}) do |memo, (ids, minutes)|
+    @effort ||= efforts_by_project.each_with_object({}) do |memo, (ids, minutes)|
       employee_id, costgroup_number = *ids
 
       employee = employees.find { |employee| employee.id == employee_id } || Employee.new(first_name: "Unbekannt", last_name: "")
@@ -71,12 +71,12 @@ class CostGroupReportService
       cost_groups.map { "" }
   end
 
-  def define_styles(wb)
-    percent(wb)
+  def define_styles(workbook)
+    percent(workbook)
   end
 
-  def percent(wb)
-    @percent ||= wb.styles.add_style(format_code: "0.00%")
+  def percent(workbook)
+    @percent ||= workbook.styles.add_style(format_code: "0.00%")
   end
 
   def table

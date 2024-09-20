@@ -2,9 +2,7 @@
 
 wb = xlsx_package.workbook
 
-if @report.respond_to?(:define_styles)
-  @report.define_styles(wb)
-end
+@report.define_styles(wb) if @report.respond_to?(:define_styles)
 
 wb.add_worksheet(name: "Kostenstellenraport") do |sheet|
   sheet.add_row @report.header

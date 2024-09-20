@@ -27,6 +27,7 @@ class Project < ApplicationRecord
   # rubocop:enable Rails/RedundantPresenceValidationOnBelongsTo
 
   delegate :budget_price, :budget_time, :current_price, :current_time, to: :project_calculator
+  delegate :costgroup_distribution, :costgroup_sums, :missing_costgroup_distribution, :costgroup_dist_incomplete?, to: :cost_group_breakdown
 
   def listing_name
     name + (archived ? " [A]" : "")
@@ -36,35 +37,15 @@ class Project < ApplicationRecord
     @project_calculator ||= ProjectCalculator.new self
   end
 
+  def cost_group_breakdown
+    @cost_group_breakdown ||= CostGroupBreakdownService.new self
+  end
+
   def position_groupings
     project_positions.uniq { |p| p.position_group&.id }.map(&:position_group).select { |g| g }
   end
 
   def invoice_ids
     invoices&.select { |i| i.deleted_at.nil? }&.map(&:id) || []
-  end
-
-  def costgroup_sums
-    @costgroup_sums ||= project_efforts.group_by(&:costgroup_number).transform_values { |pegs| pegs.sum(&:price) }
-  end
-
-  def costgroups_sum
-    @costgroups_sum ||= costgroup_sums.values.sum
-  end
-
-  def costgroup_distribution(costgroup_number)
-    return 0.0.to_f if !costgroup_sums.key?(costgroup_number) || costgroups_sum.nil?
-
-    ((costgroup_sums[costgroup_number] / costgroups_sum) * 100).to_f
-  end
-
-  def missing_costgroup_distribution
-    return 0.0.to_f if !costgroup_dist_incomplete? || costgroups_sum.nil?
-
-    ((costgroup_sums[nil] / costgroups_sum) * 100).to_f
-  end
-
-  def costgroup_dist_incomplete?
-    costgroup_sums.key?(nil)
   end
 end
