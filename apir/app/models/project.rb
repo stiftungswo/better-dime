@@ -44,13 +44,8 @@ class Project < ApplicationRecord
     invoices&.select { |i| i.deleted_at.nil? }&.map(&:id) || []
   end
 
-  def time_project_efforts
-    loaded_project_efforts = project_efforts.includes(project_position: [:rate_unit])
-    loaded_project_efforts.filter { |pf| pf.project_position.rate_unit.is_time? }
-  end
-
   def costgroup_sums
-    @costgroup_sums ||= time_project_efforts.group_by(&:costgroup_number).transform_values { |pegs| pegs.sum(&:value) }
+    @costgroup_sums ||= project_efforts.group_by(&:costgroup_number).transform_values { |pegs| pegs.sum(&:price) }
   end
 
   def costgroups_sum
