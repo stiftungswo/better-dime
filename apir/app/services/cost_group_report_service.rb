@@ -34,16 +34,9 @@ class CostGroupReportService
   def rows
     effort.map do |employee, cost_group_efforts|
       row = [employee.name]
-      row += cost_groups.map { |cost_group| ((cost_group_efforts[cost_group] || 0.0) / 60.0).round(2) }
+      row += employee_cost_groups_hours(cost_group_efforts)
       row += [(employee_sums[employee.id] / 60.0).round(2)]
-      row += cost_groups.map do |cost_group|
-        employee_sum = employee_sums[employee.id]
-        cost_group_effort = cost_group_efforts[cost_group]
-
-        next 0.0 if employee_sum.nil? || cost_group_effort.nil?
-
-        (cost_group_effort / employee_sum)
-      end
+      row += employee_cost_groups_percentages(cost_group_efforts, employee)
       row
     end
   end
@@ -90,5 +83,22 @@ class CostGroupReportService
   # some love for console developers
   def tty
     Rails.logger.debug TTY::Table.new rows: table
+  end
+
+  private
+
+  def employee_cost_groups_percentages(cost_group_efforts, employee)
+    cost_groups.map do |cost_group|
+      employee_sum = employee_sums[employee.id]
+      cost_group_effort = cost_group_efforts[cost_group]
+
+      next 0.0 if employee_sum.nil? || cost_group_effort.nil?
+
+      (cost_group_effort / employee_sum)
+    end
+  end
+
+  def employee_cost_groups_hours(cost_group_efforts)
+    cost_groups.map { |cost_group| ((cost_group_efforts[cost_group] || 0.0) / 60.0).round(2) }
   end
 end

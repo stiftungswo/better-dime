@@ -29,7 +29,7 @@ class Invoice < ApplicationRecord
   end
 
   def cost_group_breakdown
-    @cost_group_breakdown ||= CostGroupBreakdownService.new self.project, beginning..ending
+    @cost_group_breakdown ||= CostGroupBreakdownService.new project, beginning..ending
   end
 
   def position_groupings
