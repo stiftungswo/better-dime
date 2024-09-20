@@ -11,7 +11,6 @@ class ProjectEffort < ApplicationRecord
   validates :date, timeliness: { type: :date }
 
   def price
-    logger.debug [value, project_position.rate_unit]
-    value / project_position.rate_unit.factor
+    project_position.price_per_rate * value / project_position.rate_unit.factor
   end
 end
