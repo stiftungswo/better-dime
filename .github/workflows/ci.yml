@@ -59,13 +59,13 @@ jobs:
             GID=1001
 
       - name: Migrate DB
-        run: docker-compose -f docker-compose.semaphore.yml run -T apir /tmp/wait-for-it.sh mysql:3306 -s -t 50 -- bin/rails db:create db:schema:load
+        run: docker compose -f docker-compose.semaphore.yml run -T apir /tmp/wait-for-it.sh mysql:3306 -s -t 50 -- bin/rails db:create db:schema:load
 
       - name: Run Tests
-        run: docker-compose -f docker-compose.semaphore.yml run -T apir bin/test
+        run: docker compose -f docker-compose.semaphore.yml run -T apir bin/test
 
       - name: Lint
-        run: docker-compose -f docker-compose.semaphore.yml run --no-deps --rm -T apir bin/lint
+        run: docker compose -f docker-compose.semaphore.yml run --no-deps --rm -T apir bin/lint
         
 
       
