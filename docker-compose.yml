@@ -10,6 +10,8 @@ services:
         - ./apir:/apir
     working_dir: /apir
     command: "bash -c 'bundle install && bundle exec rails server -p 8000 -b 0.0.0.0'"
+    stdin_open: true
+    tty: true
     depends_on:
         - mysql
     ports:

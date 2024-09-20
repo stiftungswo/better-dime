@@ -9,4 +9,8 @@ class ProjectEffort < ApplicationRecord
   validates :date, :value, presence: true
   validates :value, numericality: { greater_than_or_equal_to: 0 }
   validates :date, timeliness: { type: :date }
+
+  def price
+    project_position.price_per_rate * value / project_position.rate_unit.factor
+  end
 end

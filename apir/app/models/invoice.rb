@@ -22,8 +22,14 @@ class Invoice < ApplicationRecord
   validates :fixed_price, numericality: { only_integer: true }, if: -> { fixed_price.present? }
   validates :fixed_price_vat, numericality: { greater_than_or_equal_to: 0 }, if: -> { fixed_price_vat.present? }
 
+  delegate :costgroup_distribution, :costgroup_sums, :missing_costgroup_distribution, :costgroup_dist_incomplete?, to: :cost_group_breakdown
+
   def breakdown
     @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
+  end
+
+  def cost_group_breakdown
+    @cost_group_breakdown ||= CostGroupBreakdownService.new project, beginning..ending
   end
 
   def position_groupings
