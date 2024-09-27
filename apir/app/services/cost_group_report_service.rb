@@ -11,20 +11,20 @@ class CostGroupReportService
     # .where(:project => Project.where(vacation_project: 0)) Uncomment if vacation projects should not be considered
     self.projects = Project.where(id: project_efforts.select("project_position.project_id"))
     self.employees = Employee.where(id: project_efforts.select("employees.id")).order(first_name: :asc, last_name: :asc) + [Employee.new(first_name: "Unbekannt", last_name: "")]
-    self.cost_groups = Costgroup.where(number: project_efforts.select("costgroup_number")).order(number: :asc, name: :asc) + [Costgroup.new(name: "???", number: 0)]
+    self.cost_groups = Costgroup.where(number: project_efforts.select("costgroup_number")).order(number: :asc, name: :asc) + [Costgroup.new(name: "???", number: nil)]
     self.efforts_by_project = project_efforts.group("employees.id", "costgroup_number").sum("value")
     self.employee_sums = project_efforts.group("employees.id").sum("value")
     self.cost_group_sums = project_efforts.group("costgroup_number").sum("value")
   end
 
   def effort
-    @effort ||= efforts_by_project.each_with_object({}) do |memo, (ids, minutes)|
+    @effort ||= efforts_by_project.each_with_object({}) do |(ids, minutes), memo|
       employee_id, costgroup_number = *ids
 
       employee = employees.find { |employee| employee.id == employee_id } || Employee.new(first_name: "Unbekannt", last_name: "")
       employee_values = memo[employee] || {}
 
-      employee_values[cost_groups.find { |cost_group| cost_group.number == costgroup_number } || Costgroup.new(name: "???", number: 0)] = minutes
+      employee_values[cost_groups.find { |cost_group| cost_group.number == costgroup_number } || Costgroup.new(name: "???", number: nil)] = minutes
       memo[employee] = employee_values
 
       memo
