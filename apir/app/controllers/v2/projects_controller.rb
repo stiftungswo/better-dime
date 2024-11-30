@@ -14,6 +14,7 @@ module V2
     end
 
     def show
+      @calculate_costgroup_distributions = params[:calculate_costgroup_distributions] == 'true'
       @project
     end
 

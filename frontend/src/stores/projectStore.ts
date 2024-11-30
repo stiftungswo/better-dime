@@ -32,6 +32,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   projects: ProjectListing[] = [];
   project?: Project = undefined;
 
+  includeCostgroupDistribution: boolean = false;
+
   constructor(mainStore: MainStore) {
     super(mainStore);
     makeObservable(this, {
@@ -39,6 +41,7 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
       entities: computed,
       projects: observable,
       project: observable,
+      includeCostgroupDistribution: observable,
     });
   }
 
@@ -96,7 +99,8 @@ export class ProjectStore extends AbstractPaginatedStore<Project, ProjectListing
   }
 
   protected async doFetchOne(id: number) {
-    const res = await this.mainStore.apiV2.get<Project>('/projects/' + id);
+    const includeCostgroupDistribution = this.includeCostgroupDistribution ? '?calculate_costgroup_distributions=true' : '';
+    const res = await this.mainStore.apiV2.get<Project>(`/projects/${id}${includeCostgroupDistribution}`);
     runInAction(() => { this.project = res.data; });
   }
 

@@ -14,13 +14,15 @@ json.category_distributions project.project_category_distributions
 json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
   json.costgroup_number pc.costgroup_number
   json.project_id pc.project_id
-  if project.costgroup_sums.key?(pc.costgroup_number)
+  if calculate_costgroup_distributions && project.costgroup_sums.key?(pc.costgroup_number)
     json.distribution project.costgroup_distribution(pc.costgroup_number)
   else
     0.00.to_f
   end
 end
-json.costgroup_uncategorized_distribution project.missing_costgroup_distribution if project.costgroup_dist_incomplete?
+if calculate_costgroup_distributions
+  json.costgroup_uncategorized_distribution project.missing_costgroup_distribution if project.costgroup_dist_incomplete?
+end
 
 json.positions project.project_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
