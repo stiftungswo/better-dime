@@ -54,6 +54,7 @@ module Pdfs
         end
         @document.start_new_page if @document.cursor < 140
         render_subtotal
+        render_vat_subtotals # New method for VAT subtotals
         render_total
       end
 
@@ -173,6 +174,46 @@ module Pdfs
           {
             [0, 1] => :right
           },
+          true
+        )
+        @document.move_down 10
+      end
+
+      def render_vat_subtotals
+        padding = [6, 10, 6, 0]
+        vat_categories = @breakdown[:vats] || [] # Assuming VAT data is grouped in @breakdown[:vats]
+        data = []
+
+        # Title/header row for VAT breakdown
+        data.push(
+          data: [
+            (I18n.t :vat_rate).capitalize,
+            (I18n.t :subtotal).capitalize,
+            (I18n.t :vat_amount).capitalize
+          ],
+          style: {
+            font_style: :bold,
+            padding: padding
+          }
+        )
+
+        # Dynamically generate rows for each VAT category
+        vat_categories.each do |vat|
+          vat_rate = "#{(vat[:vat].to_f * 100).round(2)}%" # e.g., "7.5%"
+          subtotal = format_money(vat[:subtotal])          # Assuming subtotal exists per VAT category
+          vat_amount = format_money(vat[:value])          # The actual VAT value for this category
+
+          data.push(
+            data: [vat_rate, subtotal, vat_amount],
+            style: { padding: padding }
+          )
+        end
+
+        # Render the VAT subtotals table
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          data,
+          [@document.bounds.width - 140, 70, 70], # Layout for VAT rate, subtotal, VAT amount
+          { [0, 1, 2] => :right },
           true
         )
         @document.move_down 10

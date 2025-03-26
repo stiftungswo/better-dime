@@ -39,6 +39,7 @@ class CostBreakdown
     #   end
     # end
 
+    debugger
     {
       discounts: discounts,
       discount_total: discounts_total,
