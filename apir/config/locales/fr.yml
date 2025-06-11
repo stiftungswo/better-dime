@@ -55,6 +55,8 @@ fr:
   signature: "Signature"
   place: "Lieu"
   date_name: "Date"
+  cost_group: "Centre de coûts"
+  cost_group_short: "CdC"
   cost_groups: "Centres de coûts"
   invoice: "Facture"
   project: "Projet"

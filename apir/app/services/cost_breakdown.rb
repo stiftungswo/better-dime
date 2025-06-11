@@ -19,6 +19,7 @@ class CostBreakdown
     vats_total = vats.inject(0) { |sum, v| sum + ((v[:value] / 5.0).round * 5) }
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
+    vats_by_costgroup = calculate_vats_by_costgroup positions
 
     # Did not understand the following calculations and fixed_price_vats wasn't used in rest of the code.
     # Also, it leaded to errors in invoices with a fixed price, so I commented it out for now.
@@ -39,7 +40,6 @@ class CostBreakdown
     #   end
     # end
 
-    debugger
     {
       discounts: discounts,
       discount_total: discounts_total,
@@ -48,6 +48,7 @@ class CostBreakdown
       raw_total: total_with_discounts,
       total: total,
       vats: vats,
+      vats_by_costgroup:
       vat_total: vats_total,
       fixed_price: @fixed_price,
       fixed_price_vat: @fixed_price_vat,
@@ -85,12 +86,36 @@ class CostBreakdown
     positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5.0) }
   end
 
+  def calculate_vats_by_costgroup(positions)
+    vat_distribution = calculate_vat_distribution_by_costgroup positions
+
+  end
+
+  def calculate_vat_distribution_by_costgroup(positions)
+    vat_groups = group_by_vat_and_costgroup positions
+    vat_subtotals = vat_groups.transform_values { |vat_positions| calculate_subtotal(vat_positions) }
+    vat_total = vat_subtotals.inject(0) { |sum, (_vat, vat_subtotal)| sum + vat_subtotal }
+    # calculate the vat distribution by dividing each subtotal by the total
+    vat_subtotals.transform_values { |subtotal| { factor: vat_total.zero? ? 0 : subtotal / vat_total, subtotal: subtotal }  }
+  end
+
+  def group_by_vat_and_costgroup(positions)
+    positions.map do |p|
+      [p.vat.round(4).to_s, p.costgroup_number]
+    end.uniq.index_with do |vat_key|
+      positions.select { |p| p.vat.round(4).to_s == vat_key }
+    end
+  end
+
   def calculate_vats(positions, total_with_discounts)
     vat_distribution = calculate_vat_distribution positions
-    vat_distribution.map do |vat, factor|
+    vat_distribution.map do |vat, details|
+      factor = details[:factor]
+
       {
         factor: factor,
         vat: vat,
+        subtotal: details[:subtotal],
         value: (total_with_discounts.to_i * vat.to_f * factor).to_i
       }
     end
@@ -101,7 +126,7 @@ class CostBreakdown
     vat_subtotals = vat_groups.transform_values { |vat_positions| calculate_subtotal(vat_positions) }
     vat_total = vat_subtotals.inject(0) { |sum, (_vat, vat_subtotal)| sum + vat_subtotal }
     # calculate the vat distribution by dividing each subtotal by the total
-    vat_subtotals.transform_values { |subtotal| vat_total.zero? ? 0 : subtotal / vat_total }
+    vat_subtotals.transform_values { |subtotal| { factor: vat_total.zero? ? 0 : subtotal / vat_total, subtotal: subtotal }  }
   end
 
   def group_by_vat(positions)

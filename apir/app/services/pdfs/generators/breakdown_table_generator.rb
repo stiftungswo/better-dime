@@ -181,15 +181,16 @@ module Pdfs
 
       def render_vat_subtotals
         padding = [6, 10, 6, 0]
-        vat_categories = @breakdown[:vats] || [] # Assuming VAT data is grouped in @breakdown[:vats]
+        vats = @breakdown[:vats_by_costgroup] || []
         data = []
 
         # Title/header row for VAT breakdown
         data.push(
           data: [
             (I18n.t :vat_rate).capitalize,
+            (I18n.t :cost_group_short).capitalize,
             (I18n.t :subtotal).capitalize,
-            (I18n.t :vat_amount).capitalize
+            (I18n.t :vat).capitalize
           ],
           style: {
             font_style: :bold,
@@ -198,13 +199,13 @@ module Pdfs
         )
 
         # Dynamically generate rows for each VAT category
-        vat_categories.each do |vat|
+        vats.each do |vat|
           vat_rate = "#{(vat[:vat].to_f * 100).round(2)}%" # e.g., "7.5%"
           subtotal = format_money(vat[:subtotal])          # Assuming subtotal exists per VAT category
           vat_amount = format_money(vat[:value])          # The actual VAT value for this category
 
           data.push(
-            data: [vat_rate, subtotal, vat_amount],
+            data: [vat_rate, '', subtotal, vat_amount],
             style: { padding: padding }
           )
         end
