@@ -54,7 +54,6 @@ module Pdfs
         end
         @document.start_new_page if @document.cursor < 140
         render_subtotal
-        render_vat_subtotals # New method for VAT subtotals
         render_total
       end
 
@@ -199,22 +198,39 @@ module Pdfs
         )
 
         # Dynamically generate rows for each VAT category
-        vats.each do |vat|
-          vat_rate = "#{(vat[:vat].to_f * 100).round(2)}%" # e.g., "7.5%"
-          subtotal = format_money(vat[:subtotal])          # Assuming subtotal exists per VAT category
-          vat_amount = format_money(vat[:value])          # The actual VAT value for this category
+        vats.each do |vat_group|
+          vat, positions = vat_group
+
+          vat_rate = "#{(vat.to_f * 100).round(2)}%" # e.g., "7.5%"
+
+          first_position, *other_positions = positions.to_a
 
           data.push(
-            data: [vat_rate, '', subtotal, vat_amount],
+            data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
             style: { padding: padding }
           )
+
+          other_positions.each do |position|
+            data.push(
+              data: ['', position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
+              style: { padding: padding }
+            )
+          end
+          #
+          # subtotal = format_money(vat[1][:subtotal])          # Assuming subtotal exists per VAT category
+          # vat_amount = format_money(vat[1][:factor])          # The actual VAT value for this category
+
+          # data.push(
+          #   data: [vat_rate, '', subtotal, vat_amount],
+          #   style: { padding: padding }
+          # )
         end
 
         # Render the VAT subtotals table
         Pdfs::Generators::TableGenerator.new(@document).render(
           data,
-          [@document.bounds.width - 140, 70, 70], # Layout for VAT rate, subtotal, VAT amount
-          { [0, 1, 2] => :right },
+          [@document.bounds.width - 210, 70, 70, 70], # Layout for VAT rate, subtotal, VAT amount
+          { [0, 1, 2, 3] => :right },
           true
         )
         @document.move_down 10
@@ -236,14 +252,7 @@ module Pdfs
         ]
 
         unless has_fixed_price
-          @breakdown[:vats].each do |vat|
-            data.push(
-              data: ["#{(vat[:vat].to_f * 100.0).round(2)}%", format_money(vat[:value])],
-              style: {
-                padding: padding
-              }
-            )
-          end
+          render_vat_subtotals
         end
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
