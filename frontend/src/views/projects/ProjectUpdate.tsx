@@ -26,7 +26,10 @@ export interface Props extends RouteComponentProps<ProjectDetailRouterProps> {
 export default class ProjectUpdate extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
+    const before = props.projectStore!.includeCostgroupDistribution;
+    props.projectStore!.includeCostgroupDistribution = true;
     props.projectStore!.fetchOne(Number(props.match.params.id));
+    props.projectStore!.includeCostgroupDistribution = before;
   }
 
   handleSubmit = (project: Project) => {
