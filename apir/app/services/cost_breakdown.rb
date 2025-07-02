@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class CostBreakdown
-  def initialize(positions, discounts, costgroups_override, costgroups_calc, position_groupings, fixed_price, fixed_price_vat)
+  def initialize(positions, discounts, costgroups, position_groupings, fixed_price, fixed_price_vat)
     @positions = positions
     @discounts = discounts
-    @costgroups = costgroups_calc.map { |cg| [cg[0], costgroups_override[cg[0]] ? costgroups_override[cg[0]] : cg] }.to_h
+    @costgroups = costgroups
     @position_groupings = position_groupings
     @fixed_price = fixed_price
     @fixed_price_vat = fixed_price_vat
@@ -16,30 +16,10 @@ class CostBreakdown
     discounts = @discounts.map { |discount| apply_discount subtotal, discount }
     discounts_total = discounts.inject(0) { |sum, d| sum + ((d[:value] / 5.0).floor * 5) }
     total_with_discounts = subtotal + discounts_total
-    vats = calculate_vats positions, total_with_discounts
-    vats_total = vats.inject(0) { |sum, v| sum + ((v[:value] / 5.0).round * 5) }
+    vats_by_costgroup = calculate_vats_by_costgroup positions, total_with_discounts
+    vats_total = calculate_vat_total positions, total_with_discounts
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
-    vats_by_costgroup = calculate_vats_by_costgroup positions, total_with_discounts
-
-    # Did not understand the following calculations and fixed_price_vats wasn't used in rest of the code.
-    # Also, it leaded to errors in invoices with a fixed price, so I commented it out for now.
-    #
-    # if @fixed_price
-    #   vats.each do |vat|
-    #     unless subtotal === 0
-    #       ratio = vat[:value].to_f * (1.0 / vat[:vat].to_f) / subtotal
-    #       fixed_price_times_ratio = @fixed_price.to_f * ratio
-    #       fixed_price_vats_val = (fixed_price_times_ratio - (fixed_price_times_ratio / (1 + vat[:vat].to_f))).round
-    #       fixed_price_vats_sum += fixed_price_vats_val
-    #     end
-
-    #     fixed_price_vats.push(
-    #       vat: vat[:vat],
-    #       value: fixed_price_vats_val.to_s || 0
-    #     )
-    #   end
-    # end
 
     {
       discounts: discounts,
@@ -48,7 +28,6 @@ class CostBreakdown
       subtotal: subtotal,
       raw_total: total_with_discounts,
       total: total,
-      vats: vats,
       vats_by_costgroup: vats_by_costgroup,
       vat_total: vats_total,
       fixed_price: @fixed_price,
@@ -61,11 +40,11 @@ class CostBreakdown
   def get_grouped_positions(positions, groups)
     default_positions = positions.select { |p| p.position_group_id.nil? && p.amount.positive? }
     default_group = [{
-                       group_name: "",
-                       order: 0,
-                       positions: default_positions,
-                       subtotal: calculate_subtotal(default_positions)
-                     }]
+      group_name: "",
+      order: 0,
+      positions: default_positions,
+      subtotal: calculate_subtotal(default_positions)
+    }]
 
     grouped_positions = groups.map do |group|
       filtered_positions = positions.select { |p| p.position_group_id == group.id && p.amount.positive? }
@@ -91,44 +70,32 @@ class CostBreakdown
     vat_costgroups = {}
     used_total = 0
 
-    calculate_vat_distribution(positions).each do |vat_pos|
-      vat, details = vat_pos
-      factor = details[:factor]
-      vat_costgroups[vat] = []
-
-      @costgroups.each do |cg_id, percentage|
-        value = round_vat_to_fit(total_with_discounts, used_total, vat, factor, (percentage / 100.0))
-
-        vat_costgroups[vat].push(
-          {
-            cg: cg_id,
-            subtotal: details[:subtotal] * (percentage / 100.0),
-            factor: factor,
-            value: value
-          }
-        )
+    calculate_vat_distribution(positions).each do |vat, details|
+      vat_costgroups[vat] = @costgroups.map do |cg_id, percentage|
+        {
+          cg: cg_id,
+          subtotal: details[:subtotal] * (percentage / 100.0),
+          factor: details[:factor],
+          value: round_vat_to_fit(total_with_discounts, used_total, vat, details[:factor], percentage / 100.0)
+        }
       end
     end
 
     vat_costgroups
   end
 
-  def round_vat_to_fit(total_with_discounts, used_total, vat, factor, cg_percentage)
+  def round_vat_to_fit(total_with_discounts, _used_total, vat, factor, cg_percentage)
     (total_with_discounts.to_i * vat.to_f * factor * cg_percentage).to_i
   end
 
-  def calculate_vats(positions, total_with_discounts)
-    vat_distribution = calculate_vat_distribution positions
-    vat_distribution.map do |vat, details|
-      factor = details[:factor]
-
-      {
-        factor: factor,
-        vat: vat,
-        subtotal: details[:subtotal],
-        value: (total_with_discounts.to_i * vat.to_f * factor).to_i
-      }
+  def calculate_vat_total(positions, total_with_discounts)
+    calculate_vat_distribution(positions).reduce(0) do |vat, details|
+      (total_with_discounts.to_i * vat.to_f * details[:factor]).to_i
     end
+  end
+
+  def vat_distributions(positions)
+    @vat_distributions ||= calculate_vat_distribution positions
   end
 
   def calculate_vat_distribution(positions)
@@ -144,24 +111,14 @@ class CostBreakdown
   end
 
   def apply_discount(subtotal, discount)
-    if discount.percentage
-      apply_discount_factor subtotal, discount
-    else
-      apply_discount_fixed discount
-    end
+    discount.percentage ? apply_discount_factor(subtotal, discount) : apply_discount_fixed(discount)
   end
 
   def apply_discount_factor(subtotal, discount)
-    {
-      name: "#{discount.name} (#{discount.value * 100}%)",
-      value: (subtotal * discount.value * -1).to_i
-    }
+    { name: "#{discount.name} (#{discount.value * 100}%)", value: (subtotal * discount.value * -1).to_i }
   end
 
   def apply_discount_fixed(discount)
-    {
-      name: discount.name.to_s,
-      value: (discount.value * -1).to_i
-    }
+    { name: discount.name.to_s, value: (discount.value * -1).to_i }
   end
 end

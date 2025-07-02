@@ -25,7 +25,19 @@ class Invoice < ApplicationRecord
   delegate :costgroup_distribution, :costgroup_sums, :missing_costgroup_distribution, :costgroup_dist_incomplete?, to: :cost_group_breakdown
 
   def breakdown
-    @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, invoice_costgroup_distributions.map{ |icd| [ icd[:costgroup_number], icd.weight_percent] }.to_h, cost_group_breakdown.costgroup_sums, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
+    @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, final_cost_group_distribution, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
+  end
+
+  def final_cost_group_distribution
+    @final_cost_group_distribution ||= calculate_final_cost_group_distribution
+  end
+
+  def calculate_final_cost_group_distribution
+    costgroups_override = invoice_costgroup_distributions.to_h do |icd|
+      [icd[:costgroup_number], icd.weight_percent]
+    end
+
+    cost_group_breakdown.costgroup_sums.to_h { |cg| [cg[0], costgroups_override[cg[0]] || cg] }
   end
 
   def cost_group_breakdown

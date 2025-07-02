@@ -212,7 +212,7 @@ module Pdfs
 
           other_positions.each do |position|
             data.push(
-              data: ['', position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
+              data: ["", position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
               style: { padding: padding }
             )
           end
@@ -251,9 +251,7 @@ module Pdfs
           }
         ]
 
-        unless has_fixed_price
-          render_vat_subtotals
-        end
+        render_vat_subtotals unless has_fixed_price
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
         vat_total = has_fixed_price ? (total - (fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
