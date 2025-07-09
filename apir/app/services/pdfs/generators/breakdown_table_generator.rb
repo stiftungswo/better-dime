@@ -182,7 +182,7 @@ module Pdfs
         data.push(
           data: [
             (I18n.t :vat_rate).capitalize,
-            (I18n.t :cost_group_short).capitalize,
+            (I18n.t :cost_group).capitalize,
             (I18n.t :subtotal).capitalize,
             (I18n.t :vat).capitalize
           ],
