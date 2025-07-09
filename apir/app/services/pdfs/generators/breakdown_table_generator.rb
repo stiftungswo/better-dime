@@ -200,35 +200,7 @@ module Pdfs
         )
 
         # Dynamically generate rows for each VAT category
-        vats.each do |vat_group|
-          vat, positions = vat_group
-
-          vat_rate = "#{(vat.to_f * 100).round(2)}%" # e.g., "7.5%"
-
-          first_position, *other_positions = positions.to_a
-
-          if first_position.present?
-            data.push(
-              data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
-              style: { padding: padding }
-            )
-          end
-
-          other_positions.each do |position|
-            data.push(
-              data: ["", position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
-              style: { padding: padding }
-            )
-          end
-          #
-          # subtotal = format_money(vat[1][:subtotal])          # Assuming subtotal exists per VAT category
-          # vat_amount = format_money(vat[1][:factor])          # The actual VAT value for this category
-
-          # data.push(
-          #   data: [vat_rate, '', subtotal, vat_amount],
-          #   style: { padding: padding }
-          # )
-        end
+        build_costgroup_vat_rows(data, padding, vats)
 
         # Render the VAT subtotals table
         Pdfs::Generators::TableGenerator.new(@document).render(
@@ -294,6 +266,32 @@ module Pdfs
           true,
           true
         )
+      end
+
+      private
+
+      def build_costgroup_vat_rows(data, padding, vats)
+        vats.each do |vat_group|
+          vat, positions = vat_group
+
+          vat_rate = "#{(vat.to_f * 100).round(2)}%" # e.g., "7.5%"
+
+          first_position, *other_positions = positions.to_a
+
+          if first_position.present?
+            data.push(
+              data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
+              style: { padding: padding }
+            )
+          end
+
+          other_positions.each do |position|
+            data.push(
+              data: ["", position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
+              style: { padding: padding }
+            )
+          end
+        end
       end
     end
   end
