@@ -36,19 +36,12 @@ module Pdfs
 
       def render(header)
         if @breakdown[:grouped_positions].length.positive?
-          if @breakdown[:grouped_positions].length > 1
-            @breakdown[:grouped_positions].each do |group|
-              @document.move_down 30
-              @document.start_new_page if @document.cursor < 100
-              table_title(group[:group_name])
-              render_positions_table header, group[:positions], group[:subtotal]
-            end
-          else
-            @breakdown[:grouped_positions].length === 1
+          @breakdown[:grouped_positions].each do |group|
             @document.move_down 30
             @document.start_new_page if @document.cursor < 100
-            table_title(@breakdown[:grouped_positions][0][:group_name])
-            render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
+            table_title(group[:group_name])
+            render_positions_table header, group[:positions],
+                                   @breakdown[:grouped_positions].length == 1 ? @breakdown[:subtotal] : group[:subtotal]
           end
           @document.move_down 20
         end
