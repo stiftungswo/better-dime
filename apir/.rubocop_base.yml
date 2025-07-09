@@ -32,6 +32,12 @@ Metrics/MethodLength:
   Exclude:
     - 'db/seeds.rb'
 
+Metrics/ParameterLists:
+  Exclude:
+    - 'app/services/cost_breakdown.rb'
+    - 'app/services/pdfs/generators/mail_header_generator.rb'
+    - 'app/services/pdfs/project_report_pdf.rb'
+
 RSpec/MultipleExpectations:
   Enabled: false
 
