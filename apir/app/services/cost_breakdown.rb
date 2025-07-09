@@ -68,7 +68,6 @@ class CostBreakdown
 
   def calculate_vats_by_costgroup(positions, total_with_discounts)
     vat_costgroups = {}
-    used_total = 0
 
     calculate_vat_distribution(positions).each do |vat, details|
       vat_costgroups[vat] = @costgroups.map do |cg_id, percentage|
@@ -76,7 +75,7 @@ class CostBreakdown
           cg: cg_id,
           subtotal: details[:subtotal] * (percentage / 100.0),
           factor: details[:factor],
-          value: round_vat_to_fit(total_with_discounts, used_total, vat, details[:factor], percentage / 100.0)
+          value: (total_with_discounts.to_i * vat.to_f * details[:factor] * (percentage / 100.0)).to_i
         }
       end
     end
@@ -84,13 +83,10 @@ class CostBreakdown
     vat_costgroups
   end
 
-  def round_vat_to_fit(total_with_discounts, _used_total, vat, factor, cg_percentage)
-    (total_with_discounts.to_i * vat.to_f * factor * cg_percentage).to_i
-  end
-
   def calculate_vat_total(positions, total_with_discounts)
-    calculate_vat_distribution(positions).reduce(0) do |vat, details|
-      (total_with_discounts.to_i * vat.to_f * details[:factor]).to_i
+    calculate_vat_distribution(positions).reduce(0) do |sum, position|
+      vat, details = position
+      sum + (total_with_discounts.to_i * vat.to_f * details[:factor]).to_i
     end
   end
 

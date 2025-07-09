@@ -37,7 +37,7 @@ class Invoice < ApplicationRecord
       [icd[:costgroup_number], icd.weight_percent]
     end
 
-    cost_group_breakdown.costgroup_sums.to_h { |cg| [cg[0], costgroups_override[cg[0]] || cg] }
+    cost_group_breakdown.costgroup_sums.to_h { |cg, weight| [cg, costgroups_override[cg] || weight] }
   end
 
   def cost_group_breakdown

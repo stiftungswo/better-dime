@@ -183,6 +183,8 @@ module Pdfs
         vats = @breakdown[:vats_by_costgroup] || []
         data = []
 
+        return if vats.reduce(0) { |sum, vat_group| sum + vat_group[1].length }.zero?
+
         # Title/header row for VAT breakdown
         data.push(
           data: [
@@ -205,10 +207,12 @@ module Pdfs
 
           first_position, *other_positions = positions.to_a
 
-          data.push(
-            data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
-            style: { padding: padding }
-          )
+          if first_position.present?
+            data.push(
+              data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
+              style: { padding: padding }
+            )
+          end
 
           other_positions.each do |position|
             data.push(
