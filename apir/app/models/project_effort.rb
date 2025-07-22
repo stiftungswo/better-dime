@@ -6,6 +6,8 @@ class ProjectEffort < ApplicationRecord
   belongs_to :project_position, foreign_key: :position_id
   belongs_to :costgroup, foreign_key: :costgroup_number
 
+  scope :with_price_dependencies, -> { includes(project_position: :rate_unit) }
+
   validates :date, :value, presence: true
   validates :value, numericality: { greater_than_or_equal_to: 0 }
   validates :date, timeliness: { type: :date }

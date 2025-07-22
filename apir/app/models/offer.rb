@@ -29,7 +29,15 @@ class Offer < ApplicationRecord
   validates :fixed_price_vat, numericality: { greater_than_or_equal_to: 0 }, if: -> { fixed_price_vat.present? }
 
   def breakdown
-    CostBreakdown.new(offer_positions, offer_discounts, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
+    CostBreakdown.new(offer_positions, offer_discounts, costgroup_distribution, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
+  end
+
+  def costgroup_distribution
+    count = offer_costgroup_distributions.count
+
+    offer_costgroup_distributions.to_h do |ocd|
+      [ocd.costgroup_number, 100 / count]
+    end
   end
 
   def position_groupings

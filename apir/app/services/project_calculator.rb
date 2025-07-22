@@ -27,6 +27,7 @@ class ProjectCalculator
       CostBreakdown.new(
         @project.offer.offer_positions,
         @project.offer.offer_discounts,
+        final_cost_group_distribution,
         @project.offer.position_groupings,
         @project.offer.fixed_price,
         @project.offer.fixed_price_vat || 0.077
@@ -34,6 +35,24 @@ class ProjectCalculator
     else
       @project.offer.fixed_price
     end
+  end
+
+  def final_cost_group_distribution
+    @final_cost_group_distribution ||= calculate_final_cost_group_distribution
+  end
+
+  def calculate_final_cost_group_distribution
+    count = @project.project_costgroup_distributions.count
+
+    costgroups_override = @project.project_costgroup_distributions.to_h do |icd|
+      [icd[:costgroup_number], 100 / count]
+    end
+
+    cost_group_breakdown.costgroup_sums.to_h { |cg, weight| [cg, costgroups_override[cg] || weight] }
+  end
+
+  def cost_group_breakdown
+    @cost_group_breakdown ||= CostGroupBreakdownService.new @project
   end
 
   def budget_time
