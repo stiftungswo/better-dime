@@ -71,11 +71,14 @@ class CostBreakdown
 
     calculate_vat_distribution(positions).each do |vat, details|
       vat_costgroups[vat] = @costgroups.map do |cg_id, percentage|
+        pct = percentage.to_f
+        factor = details[:factor].to_f
+        v = total_with_discounts.to_i * vat.to_f * factor * (pct / 100.0)
         {
           cg: cg_id,
-          subtotal: details[:subtotal] * (percentage / 100.0),
+          subtotal: details[:subtotal] * (pct / 100.0),
           factor: details[:factor],
-          value: (total_with_discounts.to_i * vat.to_f * details[:factor] * (percentage / 100.0)).to_i
+          value: v.finite? ? v.to_i : 0
         }
       end
     end
