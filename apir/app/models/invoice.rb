@@ -33,11 +33,14 @@ class Invoice < ApplicationRecord
   end
 
   def calculate_final_cost_group_distribution
-    costgroups_override = invoice_costgroup_distributions.to_h do |icd|
-      [icd[:costgroup_number], icd.weight_percent]
+    costgroups_override = invoice_costgroup_distributions.each_with_object({}) do |icd, h|
+      h[icd[:costgroup_number]] = icd.weight_percent
     end
 
-    cost_group_breakdown.costgroup_sums.to_h { |cg, weight| [cg, costgroups_override[cg] || weight] }
+    sums = cost_group_breakdown.costgroup_sums
+    (sums.keys | costgroups_override.keys).index_with do |cg|
+      costgroups_override.key?(cg) ? costgroups_override[cg] : sums[cg]
+    end
   end
 
   def cost_group_breakdown
