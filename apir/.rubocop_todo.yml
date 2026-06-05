@@ -220,13 +220,6 @@ Metrics/MethodLength:
     - 'app/services/revenue_report_service.rb'
     - 'app/services/work_period_calculator.rb'
 
-# Offense count: 2
-# Configuration parameters: Max, CountKeywordArgs, MaxOptionalParameters.
-Metrics/ParameterLists:
-  Exclude:
-    - 'app/services/pdfs/generators/mail_header_generator.rb'
-    - 'app/services/pdfs/project_report_pdf.rb'
-
 # Offense count: 17
 # Configuration parameters: AllowedMethods, AllowedPatterns, IgnoredMethods, Max.
 Metrics/PerceivedComplexity:

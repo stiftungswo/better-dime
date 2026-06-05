@@ -36,19 +36,12 @@ module Pdfs
 
       def render(header)
         if @breakdown[:grouped_positions].length.positive?
-          if @breakdown[:grouped_positions].length > 1
-            @breakdown[:grouped_positions].each do |group|
-              @document.move_down 30
-              @document.start_new_page if @document.cursor < 100
-              table_title(group[:group_name])
-              render_positions_table header, group[:positions], group[:subtotal]
-            end
-          else
-            @breakdown[:grouped_positions].length === 1
+          @breakdown[:grouped_positions].each do |group|
             @document.move_down 30
             @document.start_new_page if @document.cursor < 100
-            table_title(@breakdown[:grouped_positions][0][:group_name])
-            render_positions_table header, @breakdown[:grouped_positions][0][:positions], @breakdown[:subtotal]
+            table_title(group[:group_name])
+            render_positions_table header, group[:positions],
+                                   @breakdown[:grouped_positions].length == 1 ? @breakdown[:subtotal] : group[:subtotal]
           end
           @document.move_down 20
         end
@@ -178,6 +171,40 @@ module Pdfs
         @document.move_down 10
       end
 
+      def render_vat_subtotals
+        padding = [6, 10, 6, 0]
+        vats = @breakdown[:vats_by_costgroup] || []
+        data = []
+
+        return if vats.reduce(0) { |sum, vat_group| sum + vat_group[1].length }.zero?
+
+        # Title/header row for VAT breakdown
+        data.push(
+          data: [
+            (I18n.t :vat_rate).capitalize,
+            (I18n.t :cost_group).capitalize,
+            (I18n.t :subtotal).capitalize,
+            (I18n.t :vat).capitalize
+          ],
+          style: {
+            font_style: :bold,
+            padding: padding
+          }
+        )
+
+        # Dynamically generate rows for each VAT category
+        build_costgroup_vat_rows(data, padding, vats)
+
+        # Render the VAT subtotals table
+        Pdfs::Generators::TableGenerator.new(@document).render(
+          data,
+          [@document.bounds.width - 210, 70, 70, 70], # Layout for VAT rate, subtotal, VAT amount
+          { [0, 1, 2, 3] => :right },
+          true
+        )
+        @document.move_down 10
+      end
+
       def render_total
         padding = [6, 10, 6, 0]
         fixed_price = @breakdown[:fixed_price]
@@ -193,16 +220,7 @@ module Pdfs
           }
         ]
 
-        unless has_fixed_price
-          @breakdown[:vats].each do |vat|
-            data.push(
-              data: ["#{(vat[:vat].to_f * 100.0).round(2)}%", format_money(vat[:value])],
-              style: {
-                padding: padding
-              }
-            )
-          end
-        end
+        render_vat_subtotals unless has_fixed_price
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
         vat_total = has_fixed_price ? (total - (fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
@@ -241,6 +259,32 @@ module Pdfs
           true,
           true
         )
+      end
+
+      private
+
+      def build_costgroup_vat_rows(data, padding, vats)
+        vats.each do |vat_group|
+          vat, positions = vat_group
+
+          vat_rate = "#{(vat.to_f * 100).round(2)}%" # e.g., "7.5%"
+
+          first_position, *other_positions = positions.to_a
+
+          if first_position.present?
+            data.push(
+              data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
+              style: { padding: padding }
+            )
+          end
+
+          other_positions.each do |position|
+            data.push(
+              data: ["", position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
+              style: { padding: padding }
+            )
+          end
+        end
       end
     end
   end

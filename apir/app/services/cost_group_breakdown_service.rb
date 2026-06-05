@@ -2,7 +2,7 @@
 
 class CostGroupBreakdownService
   def initialize(project, daterange = nil)
-    @project_efforts = daterange.nil? ? project.project_efforts : project.project_efforts.where(date: daterange)
+    @project_efforts = (daterange.nil? ? project.project_efforts : project.project_efforts.where(date: daterange)).with_price_dependencies
   end
 
   def costgroup_sums
