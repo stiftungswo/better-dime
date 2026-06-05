@@ -43,8 +43,11 @@ module Api
 
     config.action_mailer.default_url_options = {
       host: ENV.fetch("APP_HOST", "localhost"),
-      port: ENV.fetch("APP_POST", 3000)
+      port: ENV.fetch("APP_PORT", 3000),
+      protocol: ENV.fetch("APP_PROTOCOL", "http")
     }
+    config.action_controller.default_url_options = config.action_mailer.default_url_options
+    config.relative_url_root = ENV.fetch("RAILS_RELATIVE_URL_ROOT", nil)
 
     config.i18n.default_locale = :de
     config.i18n.fallbacks = true
