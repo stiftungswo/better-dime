@@ -46,8 +46,13 @@ module Api
       port: ENV.fetch("APP_PORT", 3000),
       protocol: ENV.fetch("APP_PROTOCOL", "http")
     }
-    config.action_controller.default_url_options = config.action_mailer.default_url_options
     config.relative_url_root = ENV.fetch("RAILS_RELATIVE_URL_ROOT", nil)
+
+    if config.relative_url_root.present?
+      config.middleware.use Rack::Config do |env|
+        env["SCRIPT_NAME"] = config.relative_url_root
+      end
+    end
 
     config.i18n.default_locale = :de
     config.i18n.fallbacks = true
