@@ -12,7 +12,7 @@ module V2
       from_date = params[:from].blank? ? DateTime.now - 1.month : DateTime.parse(params[:from])
       to_date = params[:to].blank? ? DateTime.now : DateTime.parse(params[:to])
       vat = params[:vat].to_f || 0.077
-      exclude_employee_ids = params[:exclude_employee_ids]&.split(",") || []
+      employee_ids = params[:employee_ids]&.split(",") || []
       additional_cost_names = params[:additional_costs_names]&.split(",") || []
       additional_cost_prices = params[:additional_costs_prices]&.split(",") || []
 
@@ -22,7 +22,7 @@ module V2
         from_date,
         to_date,
         vat,
-        exclude_employee_ids,
+        employee_ids,
         additional_cost_names,
         additional_cost_prices
       )

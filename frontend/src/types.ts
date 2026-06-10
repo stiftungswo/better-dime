@@ -145,6 +145,7 @@ export interface Project extends PositionGroupings<ProjectPosition> {
   current_price: number;
   current_time: number;
   offer: Offer;
+  employee_ids: number[];
   invoice_ids: number[];
   location_id: number | null;
 }

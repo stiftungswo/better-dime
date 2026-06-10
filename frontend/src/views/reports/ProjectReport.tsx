@@ -39,6 +39,7 @@ interface Props {
 
 interface State {
   loading: boolean;
+  projectEmployeeIds: number[];
 }
 
 const costTemplate = () => ({
@@ -51,7 +52,7 @@ const template = () => ({
   from: moment().startOf('month'),
   to: moment().endOf('month'),
   project_id: null,
-  exclude_employee_ids: null,
+  employee_ids: [] as number[],
   vat: 0.077,
   additional_costs: [],
 });
@@ -66,7 +67,7 @@ const schema = yup.object({
   from: dimeDate(),
   to: dimeDate(),
   project_id: selector(),
-  exclude_employee_ids: yup.array().of(selector()).nullable(true),
+  employee_ids: yup.array().of(selector()).nullable(true),
   vat: requiredNumber(),
   additional_costs: yup.array().of(additionalCostSchema),
 });
@@ -79,6 +80,7 @@ const schema = yup.object({
 export class ProjectReport extends React.Component<Props, State> {
   state = {
     loading: true,
+    projectEmployeeIds: [] as number[],
   };
 
   componentDidMount() {
@@ -86,6 +88,18 @@ export class ProjectReport extends React.Component<Props, State> {
       this.props.projectStore!.fetchAll(),
       this.props.employeeStore!.fetchAll(),
     ]).then(() => this.setState({ loading: false }));
+  }
+
+  async onProjectChange(projectId: number | null, setFieldValue: (field: string, value: any) => void) {
+    if (!projectId) {
+      this.setState({ projectEmployeeIds: [] });
+      setFieldValue('employee_ids', []);
+      return;
+    }
+    await this.props.projectStore!.fetchOne(projectId);
+    const ids = this.props.projectStore!.entity?.employee_ids ?? [];
+    this.setState({ projectEmployeeIds: ids });
+    setFieldValue('employee_ids', ids);
   }
 
   handleAdd(arrayHelpers: ArrayHelpers) {
@@ -152,10 +166,22 @@ export class ProjectReport extends React.Component<Props, State> {
                       />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <DimeField required component={ProjectSelect} name="project_id" label={intlText('general.project', true)} />
+                      <DimeField
+                        required
+                        component={ProjectSelect}
+                        name="project_id"
+                        label={intlText('general.project', true)}
+                        onChangeWrapped={(id: number | null) => this.onProjectChange(id, formikProps.setFieldValue)}
+                      />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                      <DimeField isMulti component={EmployeeSelect} name="exclude_employee_ids" label={intlText('excluded_employees')} />
+                      <DimeField
+                        isMulti
+                        component={EmployeeSelect}
+                        name="employee_ids"
+                        label={intlText('general.employee.plural', true)}
+                        filterByIds={this.state.projectEmployeeIds}
+                      />
                     </Grid>
                     <Grid item xs={12} md={2}>
                       <DimeField component={VatField} name={'vat'} label={intlText('general.vat', true)} />
@@ -212,7 +238,7 @@ export class ProjectReport extends React.Component<Props, State> {
                             additional_costs_prices: yup.array().of(additionalCostSchema).cast(formikProps.values.additional_costs)?.map((value: any) => {
                               return value.cost.toString();
                             }).join(','),
-                            exclude_employee_ids: yup.array().of(selector()).cast(formikProps.values.exclude_employee_ids || [])?.map((value: any) => {
+                            employee_ids: yup.array().of(selector()).cast(formikProps.values.employee_ids || [])?.map((value: any) => {
                               return value.toString();
                             }).join(','),
                             from: dimeDate().cast(formikProps.values.from),

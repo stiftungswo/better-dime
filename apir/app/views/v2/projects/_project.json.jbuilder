@@ -29,6 +29,8 @@ else
   end
 end
 
+json.employee_ids project.project_efforts.pluck(:employee_id).uniq
+
 json.positions project.project_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
                 :vat, :order, :position_group_id, :efforts_value_with_unit, :charge,

@@ -6,13 +6,13 @@ module Pdfs
   class ProjectReportPdf < BasePdf
     include ActionView::Helpers::NumberHelper
 
-    def initialize(global_setting, project, from_date, to_date, vat, exclude_employee_ids, additional_cost_names, additional_cost_prices)
+    def initialize(global_setting, project, from_date, to_date, vat, employee_ids, additional_cost_names, additional_cost_prices)
       @global_setting = global_setting
       @project = project
       @from_date = from_date
       @to_date = to_date
       @vat = vat
-      @exclude_employee_ids = exclude_employee_ids
+      @employee_ids = employee_ids
       @additional_cost_names = additional_cost_names
       @additional_cost_prices = additional_cost_prices
       @swo_blue = "007DC2"
@@ -55,7 +55,7 @@ module Pdfs
         ]
       ).select do |e|
         (@from_date..@to_date).include?(e.date) &&
-          !e.employee.id.to_i.in?(@exclude_employee_ids.map(&:to_i))
+          @employee_ids.empty? || e.employee.id.to_i.in?(@employee_ids.map(&:to_i))
       end
     end
 
