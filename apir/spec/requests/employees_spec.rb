@@ -18,6 +18,8 @@ RSpec.describe 'V2::Employees', type: :request do
   describe 'GET /v2/employees/:id' do
     it 'returns an employee' do
       target = create(:employee)
+      create(:work_period, employee: target)
+      create(:address, employee: target, customer: nil)
       get "/v2/employees/#{target.id}"
       expect(response).to have_http_status(:ok)
     end

@@ -17,7 +17,13 @@ RSpec.describe 'V2::Invoices', type: :request do
 
   describe 'GET /v2/invoices/:id' do
     it 'returns an invoice' do
-      invoice = create(:invoice)
+      location = create(:location)
+      invoice = create(:invoice, :with_fixed_price, location: location)
+      create(:invoice, project: invoice.project)
+      position_group = create(:position_group)
+      create(:invoice_position, invoice: invoice, position_group: position_group)
+      create(:invoice_costgroup_distribution, invoice: invoice)
+      create(:invoice_discount, invoice: invoice)
       get "/v2/invoices/#{invoice.id}"
       expect(response).to have_http_status(:ok)
     end

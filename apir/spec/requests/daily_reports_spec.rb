@@ -9,6 +9,7 @@ RSpec.describe 'V2::DailyReports', type: :request do
 
   describe 'GET /v2/reports/daily' do
     it 'returns daily report data' do
+      effort = create(:project_effort, date: '2024-01-15', employee: employee)
       get '/v2/reports/daily', params: { from: '2024-01-01', to: '2024-01-31' }
       expect(response).to have_http_status(:ok)
     end

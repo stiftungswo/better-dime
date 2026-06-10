@@ -17,7 +17,12 @@ RSpec.describe 'V2::People', type: :request do
 
   describe 'GET /v2/people/:id' do
     it 'returns a person' do
-      person = create(:person)
+      company = create(:company)
+      person = create(:person, company: company, accountant: employee)
+      create(:address, customer: person, description: 'c/o Someone')
+      Phone.create!(number: '0433555844', category: 1, customer_id: person.id)
+      tag = create(:customer_tag)
+      person.customer_tags << tag
       get "/v2/people/#{person.id}"
       expect(response).to have_http_status(:ok)
     end

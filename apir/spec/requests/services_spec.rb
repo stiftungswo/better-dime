@@ -9,7 +9,9 @@ RSpec.describe 'V2::Services', type: :request do
 
   describe 'GET /v2/services' do
     it 'returns a list of services' do
-      create(:service)
+      parent = create(:service_category)
+      sub = create(:service_category, parent_category: parent, number: 1)
+      create(:service, service_category: sub)
       get '/v2/services'
       expect(response).to have_http_status(:ok)
     end
@@ -17,7 +19,10 @@ RSpec.describe 'V2::Services', type: :request do
 
   describe 'GET /v2/services/:id' do
     it 'returns a service' do
-      service = create(:service)
+      parent = create(:service_category)
+      sub = create(:service_category, parent_category: parent, number: 1)
+      service = create(:service, service_category: sub)
+      create(:service_rate, service: service)
       get "/v2/services/#{service.id}"
       expect(response).to have_http_status(:ok)
     end

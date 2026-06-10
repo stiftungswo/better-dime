@@ -42,7 +42,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 1894,
+                         *           "id": 2494,
                          *           "type": "company",
                          *           "comment": "test comment",
                          *           "company_id": null,
@@ -55,15 +55,81 @@ export interface paths {
                          *           "archived": false,
                          *           "name": "Test GmbH",
                          *           "accountant_id": null,
-                         *           "rate_group_id": 2541,
+                         *           "rate_group_id": 3374,
                          *           "salutation": null,
-                         *           "created_at": "2026-06-10 11:23:50",
-                         *           "updated_at": "2026-06-10 11:23:50",
+                         *           "created_at": "2026-06-10 15:42:19",
+                         *           "updated_at": "2026-06-10 15:42:19",
                          *           "deleted_at": null,
-                         *           "addresses": [],
-                         *           "people": [],
-                         *           "persons": [],
-                         *           "phone_numbers": []
+                         *           "addresses": [
+                         *             {
+                         *               "id": 1014,
+                         *               "city": "Winterthur",
+                         *               "country": "Schweiz",
+                         *               "customer_id": 2494,
+                         *               "description": null,
+                         *               "zip": 8400,
+                         *               "street": "Bahnhofstrasse 12",
+                         *               "supplement": "Postfach 1230",
+                         *               "deleted_at": null,
+                         *               "created_at": "2026-06-10T15:42:19.000Z",
+                         *               "updated_at": "2026-06-10T15:42:19.000Z"
+                         *             }
+                         *           ],
+                         *           "people": [
+                         *             {
+                         *               "id": 2495,
+                         *               "type": "person",
+                         *               "comment": "9ü|_ 4 3\\/3.-",
+                         *               "company_id": 2494,
+                         *               "department": "MyDepartment",
+                         *               "department_in_address": false,
+                         *               "email": "mail@example.com",
+                         *               "first_name": "Philipp",
+                         *               "last_name": "Saurer",
+                         *               "hidden": false,
+                         *               "archived": false,
+                         *               "name": null,
+                         *               "accountant_id": null,
+                         *               "rate_group_id": 3375,
+                         *               "salutation": "LGBTQQIP2SAA+",
+                         *               "created_at": "2026-06-10T15:42:19.000Z",
+                         *               "updated_at": "2026-06-10T15:42:19.000Z",
+                         *               "deleted_at": null
+                         *             }
+                         *           ],
+                         *           "persons": [
+                         *             {
+                         *               "id": 2495,
+                         *               "type": "person",
+                         *               "comment": "9ü|_ 4 3\\/3.-",
+                         *               "company_id": 2494,
+                         *               "department": "MyDepartment",
+                         *               "department_in_address": false,
+                         *               "email": "mail@example.com",
+                         *               "first_name": "Philipp",
+                         *               "last_name": "Saurer",
+                         *               "hidden": false,
+                         *               "archived": false,
+                         *               "name": null,
+                         *               "accountant_id": null,
+                         *               "rate_group_id": 3375,
+                         *               "salutation": "LGBTQQIP2SAA+",
+                         *               "created_at": "2026-06-10T15:42:19.000Z",
+                         *               "updated_at": "2026-06-10T15:42:19.000Z",
+                         *               "deleted_at": null
+                         *             }
+                         *           ],
+                         *           "phone_numbers": [
+                         *             {
+                         *               "id": 25,
+                         *               "category": 1,
+                         *               "customer_id": 2494,
+                         *               "number": "043 355 58 44",
+                         *               "deleted_at": null,
+                         *               "created_at": "2026-06-10T15:42:19.000Z",
+                         *               "updated_at": "2026-06-10T15:42:19.000Z"
+                         *             }
+                         *           ]
                          *         }
                          *       ]
                          *     }
@@ -99,10 +165,68 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 deleted_at: unknown;
-                                addresses: unknown[];
-                                people: unknown[];
-                                persons: unknown[];
-                                phone_numbers: unknown[];
+                                addresses: {
+                                    id: number;
+                                    city: string;
+                                    country: string;
+                                    customer_id: number;
+                                    description: unknown;
+                                    zip: number;
+                                    street: string;
+                                    supplement: string;
+                                    deleted_at: unknown;
+                                    created_at: string;
+                                    updated_at: string;
+                                }[];
+                                people: {
+                                    id: number;
+                                    type: string;
+                                    comment: string;
+                                    company_id: number;
+                                    department: string;
+                                    department_in_address: boolean;
+                                    email: string;
+                                    first_name: string;
+                                    last_name: string;
+                                    hidden: boolean;
+                                    archived: boolean;
+                                    name: unknown;
+                                    accountant_id: unknown;
+                                    rate_group_id: number;
+                                    salutation: string;
+                                    created_at: string;
+                                    updated_at: string;
+                                    deleted_at: unknown;
+                                }[];
+                                persons: {
+                                    id: number;
+                                    type: string;
+                                    comment: string;
+                                    company_id: number;
+                                    department: string;
+                                    department_in_address: boolean;
+                                    email: string;
+                                    first_name: string;
+                                    last_name: string;
+                                    hidden: boolean;
+                                    archived: boolean;
+                                    name: unknown;
+                                    accountant_id: unknown;
+                                    rate_group_id: number;
+                                    salutation: string;
+                                    created_at: string;
+                                    updated_at: string;
+                                    deleted_at: unknown;
+                                }[];
+                                phone_numbers: {
+                                    id: number;
+                                    category: number;
+                                    customer_id: number;
+                                    number: string;
+                                    deleted_at: unknown;
+                                    created_at: string;
+                                    updated_at: string;
+                                }[];
                             }[];
                         };
                     };
@@ -130,7 +254,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 1893 */
+                    /** @example 2492 */
                     id: number;
                 };
                 cookie?: never;
@@ -145,7 +269,7 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 1893,
+                         *       "id": 2492,
                          *       "type": "company",
                          *       "comment": "test comment",
                          *       "company_id": null,
@@ -158,16 +282,66 @@ export interface paths {
                          *       "archived": false,
                          *       "name": "Test GmbH",
                          *       "accountant_id": null,
-                         *       "rate_group_id": 2540,
+                         *       "rate_group_id": 3372,
                          *       "salutation": null,
-                         *       "created_at": "2026-06-10 11:23:50",
-                         *       "updated_at": "2026-06-10 11:23:50",
+                         *       "created_at": "2026-06-10 15:42:19",
+                         *       "updated_at": "2026-06-10 15:42:19",
                          *       "deleted_at": null,
-                         *       "addresses": [],
-                         *       "phone_numbers": [],
-                         *       "people": [],
-                         *       "persons": [],
-                         *       "tags": []
+                         *       "addresses": [
+                         *         {
+                         *           "id": 1013,
+                         *           "city": "Winterthur",
+                         *           "country": "Schweiz",
+                         *           "customer_id": 2492,
+                         *           "description": null,
+                         *           "zip": 8400,
+                         *           "street": "Bahnhofstrasse 12",
+                         *           "supplement": "Postfach 1230",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:19.000Z",
+                         *           "updated_at": "2026-06-10T15:42:19.000Z",
+                         *           "hidden": false
+                         *         }
+                         *       ],
+                         *       "phone_numbers": [
+                         *         {
+                         *           "id": 24,
+                         *           "category": 1,
+                         *           "customer_id": 2492,
+                         *           "number": "043 355 58 44",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:19.000Z",
+                         *           "updated_at": "2026-06-10T15:42:19.000Z"
+                         *         }
+                         *       ],
+                         *       "people": [
+                         *         {
+                         *           "id": 2493,
+                         *           "type": "person",
+                         *           "comment": "9ü|_ 4 3\\/3.-",
+                         *           "company_id": 2492,
+                         *           "department": "MyDepartment",
+                         *           "department_in_address": false,
+                         *           "email": "mail@example.com",
+                         *           "first_name": "Philipp",
+                         *           "last_name": "Saurer",
+                         *           "hidden": false,
+                         *           "archived": false,
+                         *           "name": null,
+                         *           "accountant_id": null,
+                         *           "rate_group_id": 3373,
+                         *           "salutation": "LGBTQQIP2SAA+",
+                         *           "created_at": "2026-06-10T15:42:19.000Z",
+                         *           "updated_at": "2026-06-10T15:42:19.000Z",
+                         *           "deleted_at": null
+                         *         }
+                         *       ],
+                         *       "persons": [
+                         *         2493
+                         *       ],
+                         *       "tags": [
+                         *         123
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -189,11 +363,51 @@ export interface paths {
                             created_at: string;
                             updated_at: string;
                             deleted_at: unknown;
-                            addresses: unknown[];
-                            phone_numbers: unknown[];
-                            people: unknown[];
-                            persons: unknown[];
-                            tags: unknown[];
+                            addresses: {
+                                id: number;
+                                city: string;
+                                country: string;
+                                customer_id: number;
+                                description: unknown;
+                                zip: number;
+                                street: string;
+                                supplement: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                                hidden: boolean;
+                            }[];
+                            phone_numbers: {
+                                id: number;
+                                category: number;
+                                customer_id: number;
+                                number: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                            }[];
+                            people: {
+                                id: number;
+                                type: string;
+                                comment: string;
+                                company_id: number;
+                                department: string;
+                                department_in_address: boolean;
+                                email: string;
+                                first_name: string;
+                                last_name: string;
+                                hidden: boolean;
+                                archived: boolean;
+                                name: unknown;
+                                accountant_id: unknown;
+                                rate_group_id: number;
+                                salutation: string;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                            }[];
+                            persons: number[];
+                            tags: number[];
                         };
                     };
                 };
@@ -233,7 +447,7 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "number": 101,
+                         *         "number": 107,
                          *         "name": "MyString"
                          *       }
                          *     ]
@@ -280,11 +494,11 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 83,
+                         *         "id": 122,
                          *         "archived": false,
                          *         "name": "MyString",
-                         *         "created_at": "2026-06-10 11:23:51",
-                         *         "updated_at": "2026-06-10 11:23:51",
+                         *         "created_at": "2026-06-10 15:42:19",
+                         *         "updated_at": "2026-06-10 15:42:19",
                          *         "deleted_at": null
                          *       }
                          *     ]
@@ -322,7 +536,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 82 */
+                    /** @example 121 */
                     id: number;
                 };
                 cookie?: never;
@@ -337,11 +551,11 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 82,
+                         *       "id": 121,
                          *       "archived": false,
                          *       "name": "MyString",
-                         *       "created_at": "2026-06-10 11:23:51",
-                         *       "updated_at": "2026-06-10 11:23:51",
+                         *       "created_at": "2026-06-10 15:42:19",
+                         *       "updated_at": "2026-06-10 15:42:19",
                          *       "deleted_at": null
                          *     }
                          */
@@ -391,7 +605,7 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 1892,
+                         *         "id": 2463,
                          *         "type": "person",
                          *         "comment": "9ü|_ 4 3\\/3.-",
                          *         "company_id": null,
@@ -404,10 +618,10 @@ export interface paths {
                          *         "archived": false,
                          *         "name": null,
                          *         "accountant_id": null,
-                         *         "rate_group_id": 2539,
+                         *         "rate_group_id": 3333,
                          *         "salutation": "LGBTQQIP2SAA+",
-                         *         "created_at": "2026-06-10 11:23:50",
-                         *         "updated_at": "2026-06-10 11:23:50",
+                         *         "created_at": "2026-06-10 15:42:18",
+                         *         "updated_at": "2026-06-10 15:42:18",
                          *         "deleted_at": null
                          *       }
                          *     ]
@@ -457,7 +671,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 1891 */
+                    /** @example 2465 */
                     id: number;
                 };
                 cookie?: never;
@@ -472,10 +686,10 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 1891,
+                         *       "id": 2465,
                          *       "type": "person",
                          *       "comment": "9ü|_ 4 3\\/3.-",
-                         *       "company_id": null,
+                         *       "company_id": 2464,
                          *       "department": "MyDepartment",
                          *       "department_in_address": false,
                          *       "email": "mail@example.com",
@@ -484,22 +698,69 @@ export interface paths {
                          *       "hidden": false,
                          *       "archived": false,
                          *       "name": null,
-                         *       "accountant_id": null,
-                         *       "rate_group_id": 2538,
+                         *       "accountant_id": 2840,
+                         *       "rate_group_id": 3335,
                          *       "salutation": "LGBTQQIP2SAA+",
-                         *       "created_at": "2026-06-10 11:23:50",
-                         *       "updated_at": "2026-06-10 11:23:50",
+                         *       "created_at": "2026-06-10 15:42:18",
+                         *       "updated_at": "2026-06-10 15:42:18",
                          *       "deleted_at": null,
-                         *       "addresses": [],
-                         *       "phone_numbers": [],
-                         *       "tags": []
+                         *       "addresses": [
+                         *         {
+                         *           "id": 999,
+                         *           "city": "Winterthur",
+                         *           "country": "Schweiz",
+                         *           "customer_id": 2465,
+                         *           "description": "c/o Someone",
+                         *           "zip": 8400,
+                         *           "street": "Bahnhofstrasse 12",
+                         *           "supplement": "Postfach 1230",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:18.000Z",
+                         *           "updated_at": "2026-06-10T15:42:18.000Z",
+                         *           "hidden": false
+                         *         }
+                         *       ],
+                         *       "phone_numbers": [
+                         *         {
+                         *           "id": 23,
+                         *           "category": 1,
+                         *           "customer_id": 2465,
+                         *           "number": "043 355 58 44",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:18.000Z",
+                         *           "updated_at": "2026-06-10T15:42:18.000Z"
+                         *         }
+                         *       ],
+                         *       "tags": [
+                         *         120
+                         *       ],
+                         *       "company": {
+                         *         "id": 2465,
+                         *         "type": "person",
+                         *         "comment": "9ü|_ 4 3\\/3.-",
+                         *         "company_id": 2464,
+                         *         "department": "MyDepartment",
+                         *         "email": "mail@example.com",
+                         *         "department_in_address": false,
+                         *         "first_name": "Philipp",
+                         *         "last_name": "Saurer",
+                         *         "hidden": false,
+                         *         "archived": false,
+                         *         "name": null,
+                         *         "accountant_id": 2840,
+                         *         "rate_group_id": 3335,
+                         *         "salutation": "LGBTQQIP2SAA+",
+                         *         "created_at": "2026-06-10 15:42:18",
+                         *         "updated_at": "2026-06-10 15:42:18",
+                         *         "deleted_at": null
+                         *       }
                          *     }
                          */
                         "application/json": {
                             id: number;
                             type: string;
                             comment: string;
-                            company_id: unknown;
+                            company_id: number | null;
                             department: string;
                             department_in_address: boolean;
                             email: string;
@@ -508,15 +769,56 @@ export interface paths {
                             hidden: boolean;
                             archived: boolean;
                             name: unknown;
-                            accountant_id: unknown;
+                            accountant_id: number | null;
                             rate_group_id: number;
                             salutation: string;
                             created_at: string;
                             updated_at: string;
                             deleted_at: unknown;
-                            addresses: unknown[];
-                            phone_numbers: unknown[];
-                            tags: unknown[];
+                            addresses: {
+                                id: number;
+                                city: string;
+                                country: string;
+                                customer_id: number;
+                                description: string | null;
+                                zip: number;
+                                street: string;
+                                supplement: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                                hidden: boolean;
+                            }[];
+                            phone_numbers: {
+                                id: number;
+                                category: number;
+                                customer_id: number;
+                                number: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                            }[];
+                            tags: number[];
+                            company?: {
+                                id: number;
+                                type: string;
+                                comment: string;
+                                company_id: number;
+                                department: string;
+                                email: string;
+                                department_in_address: boolean;
+                                first_name: string;
+                                last_name: string;
+                                hidden: boolean;
+                                archived: boolean;
+                                name: unknown;
+                                accountant_id: number;
+                                rate_group_id: number;
+                                salutation: string;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                            };
                         };
                     };
                 };
@@ -556,17 +858,17 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 2245,
+                         *         "id": 2939,
                          *         "name": "MyString",
-                         *         "created_at": "2026-06-10 11:23:51",
-                         *         "updated_at": "2026-06-10 11:23:51",
+                         *         "created_at": "2026-06-10 15:42:18",
+                         *         "updated_at": "2026-06-10 15:42:18",
                          *         "deleted_at": null
                          *       },
                          *       {
-                         *         "id": 2246,
+                         *         "id": 2940,
                          *         "name": "MyString",
-                         *         "created_at": "2026-06-10 11:23:51",
-                         *         "updated_at": "2026-06-10 11:23:51",
+                         *         "created_at": "2026-06-10 15:42:18",
+                         *         "updated_at": "2026-06-10 15:42:18",
                          *         "deleted_at": null
                          *       }
                          *     ]
@@ -603,7 +905,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 2248 */
+                    /** @example 2938 */
                     id: number;
                 };
                 cookie?: never;
@@ -618,10 +920,10 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 2248,
+                         *       "id": 2938,
                          *       "name": "MyString",
-                         *       "created_at": "2026-06-10 11:23:51",
-                         *       "updated_at": "2026-06-10 11:23:51",
+                         *       "created_at": "2026-06-10 15:42:18",
+                         *       "updated_at": "2026-06-10 15:42:18",
                          *       "deleted_at": null
                          *     }
                          */
@@ -682,50 +984,50 @@ export interface paths {
                          *       "total": 2,
                          *       "data": [
                          *         {
-                         *           "id": 2135,
-                         *           "email": "my11@mail.com",
+                         *           "id": 2872,
+                         *           "email": "my53@mail.com",
                          *           "is_admin": false,
-                         *           "created_at": "2026-06-10 11:23:50",
-                         *           "updated_at": "2026-06-10 11:23:50",
+                         *           "created_at": "2026-06-10 15:42:19",
+                         *           "updated_at": "2026-06-10 15:42:19",
                          *           "first_name": "Peter",
                          *           "last_name": "Pan",
                          *           "can_login": true,
                          *           "archived": false,
                          *           "holidays_per_year": 12,
                          *           "deleted_at": null,
-                         *           "employee_group_id": 2221,
+                         *           "employee_group_id": 2980,
                          *           "first_vacation_takeover": 0,
                          *           "locale": "de",
                          *           "group_name": "MyString",
                          *           "group": {
-                         *             "id": 2221,
+                         *             "id": 2980,
                          *             "name": "MyString",
-                         *             "created_at": "2026-06-10 11:23:50",
-                         *             "updated_at": "2026-06-10 11:23:50",
+                         *             "created_at": "2026-06-10 15:42:19",
+                         *             "updated_at": "2026-06-10 15:42:19",
                          *             "deleted_at": null
                          *           }
                          *         },
                          *         {
-                         *           "id": 2136,
-                         *           "email": "my12@mail.com",
+                         *           "id": 2873,
+                         *           "email": "my54@mail.com",
                          *           "is_admin": false,
-                         *           "created_at": "2026-06-10 11:23:50",
-                         *           "updated_at": "2026-06-10 11:23:50",
+                         *           "created_at": "2026-06-10 15:42:19",
+                         *           "updated_at": "2026-06-10 15:42:19",
                          *           "first_name": "Peter",
                          *           "last_name": "Pan",
                          *           "can_login": true,
                          *           "archived": false,
                          *           "holidays_per_year": 12,
                          *           "deleted_at": null,
-                         *           "employee_group_id": 2222,
+                         *           "employee_group_id": 2981,
                          *           "first_vacation_takeover": 0,
                          *           "locale": "de",
                          *           "group_name": "MyString",
                          *           "group": {
-                         *             "id": 2222,
+                         *             "id": 2981,
                          *             "name": "MyString",
-                         *             "created_at": "2026-06-10 11:23:50",
-                         *             "updated_at": "2026-06-10 11:23:50",
+                         *             "created_at": "2026-06-10 15:42:19",
+                         *             "updated_at": "2026-06-10 15:42:19",
                          *             "deleted_at": null
                          *           }
                          *         }
@@ -795,7 +1097,7 @@ export interface paths {
         post: {
             parameters: {
                 query?: {
-                    /** @example my53@mail.com */
+                    /** @example my59@mail.com */
                     "employee[email]"?: string;
                     /** @example 123456 */
                     "employee[password]"?: number;
@@ -819,18 +1121,18 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 2177,
-                         *       "email": "my53@mail.com",
+                         *       "id": 2878,
+                         *       "email": "my59@mail.com",
                          *       "is_admin": false,
-                         *       "created_at": "2026-06-10T11:23:51.000Z",
-                         *       "updated_at": "2026-06-10T11:23:51.000Z",
+                         *       "created_at": "2026-06-10T15:42:19.000Z",
+                         *       "updated_at": "2026-06-10T15:42:19.000Z",
                          *       "first_name": "Peter",
                          *       "last_name": "Pan",
                          *       "can_login": true,
                          *       "archived": false,
                          *       "holidays_per_year": 12,
                          *       "deleted_at": null,
-                         *       "employee_group_id": 2265,
+                         *       "employee_group_id": 2986,
                          *       "first_vacation_takeover": 0,
                          *       "locale": "de"
                          *     }
@@ -875,7 +1177,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 2138 */
+                    /** @example 2871 */
                     id: number;
                 };
                 cookie?: never;
@@ -890,30 +1192,64 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 2138,
-                         *       "email": "my14@mail.com",
+                         *       "id": 2871,
+                         *       "email": "my52@mail.com",
                          *       "is_admin": false,
-                         *       "created_at": "2026-06-10 11:23:50",
-                         *       "updated_at": "2026-06-10 11:23:50",
+                         *       "created_at": "2026-06-10 15:42:19",
+                         *       "updated_at": "2026-06-10 15:42:19",
                          *       "first_name": "Peter",
                          *       "last_name": "Pan",
                          *       "can_login": true,
                          *       "archived": false,
                          *       "holidays_per_year": 12,
                          *       "deleted_at": null,
-                         *       "employee_group_id": 2224,
+                         *       "employee_group_id": 2979,
                          *       "locale": "de",
                          *       "first_vacation_takeover": 0,
                          *       "group_name": "MyString",
                          *       "group": {
-                         *         "id": 2224,
+                         *         "id": 2979,
                          *         "name": "MyString",
-                         *         "created_at": "2026-06-10 11:23:50",
-                         *         "updated_at": "2026-06-10 11:23:50",
+                         *         "created_at": "2026-06-10 15:42:19",
+                         *         "updated_at": "2026-06-10 15:42:19",
                          *         "deleted_at": null
                          *       },
-                         *       "work_periods": [],
-                         *       "addresses": []
+                         *       "work_periods": [
+                         *         {
+                         *           "id": 10,
+                         *           "employee_id": 2871,
+                         *           "beginning": "2019-05-14",
+                         *           "ending": "2019-06-14",
+                         *           "pensum": 100,
+                         *           "hourly_paid": false,
+                         *           "yearly_vacation_budget": 10080,
+                         *           "overlapping_periods": false,
+                         *           "vacation_takeover": 0,
+                         *           "booked_minutes": 0,
+                         *           "effective_time": 0,
+                         *           "effort_till_today": -12096,
+                         *           "period_vacation_budget": 926.896551724138,
+                         *           "target_time": 12096,
+                         *           "remaining_vacation_budget": 926.896551724138,
+                         *           "target_time_till_today": 12096
+                         *         }
+                         *       ],
+                         *       "addresses": [
+                         *         {
+                         *           "id": 1015,
+                         *           "city": "Winterthur",
+                         *           "country": "Schweiz",
+                         *           "customer_id": null,
+                         *           "description": null,
+                         *           "zip": 8400,
+                         *           "street": "Bahnhofstrasse 12",
+                         *           "supplement": "Postfach 1230",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:19.000Z",
+                         *           "updated_at": "2026-06-10T15:42:19.000Z",
+                         *           "hidden": false
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -939,8 +1275,46 @@ export interface paths {
                                 updated_at: string;
                                 deleted_at: unknown;
                             };
-                            work_periods: unknown[];
-                            addresses: unknown[];
+                            work_periods: {
+                                id: number;
+                                employee_id: number;
+                                beginning: string;
+                                ending: string;
+                                pensum: number;
+                                hourly_paid: boolean;
+                                yearly_vacation_budget: number;
+                                overlapping_periods: boolean;
+                                /** Format: float */
+                                vacation_takeover: number;
+                                /** Format: float */
+                                booked_minutes: number;
+                                /** Format: float */
+                                effective_time: number;
+                                /** Format: float */
+                                effort_till_today: number;
+                                /** Format: float */
+                                period_vacation_budget: number;
+                                /** Format: float */
+                                target_time: number;
+                                /** Format: float */
+                                remaining_vacation_budget: number;
+                                /** Format: float */
+                                target_time_till_today: number;
+                            }[];
+                            addresses: {
+                                id: number;
+                                city: string;
+                                country: string;
+                                customer_id: unknown;
+                                description: unknown;
+                                zip: number;
+                                street: string;
+                                supplement: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                                hidden: boolean;
+                            }[];
                         };
                     };
                 };
@@ -979,7 +1353,7 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 9,
+                         *       "id": 19,
                          *       "sender_name": "MyString",
                          *       "sender_street": "MyString",
                          *       "sender_zip": "8080",
@@ -989,8 +1363,8 @@ export interface paths {
                          *       "sender_vat": "MyString",
                          *       "sender_bank": "MyString",
                          *       "sender_web": "MyString",
-                         *       "created_at": "2026-06-10T11:23:50.000Z",
-                         *       "updated_at": "2026-06-10T11:23:50.000Z",
+                         *       "created_at": "2026-06-10T15:42:20.000Z",
+                         *       "updated_at": "2026-06-10T15:42:20.000Z",
                          *       "service_order_comment": "MyString",
                          *       "sender_bank_detail": "MyString",
                          *       "sender_bank_iban": "MyString",
@@ -1053,7 +1427,7 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 9,
+                         *         "id": 19,
                          *         "name": "MyString",
                          *         "date": "2019-05-13",
                          *         "duration": 1
@@ -1116,7 +1490,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 57,
+                         *           "id": 94,
                          *           "description": "MyDescription",
                          *           "name": "MyName",
                          *           "beginning": "2019-05-13",
@@ -1170,7 +1544,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 58 */
+                    /** @example 95 */
                     id: number;
                 };
                 cookie?: never;
@@ -1185,35 +1559,82 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 58,
-                         *       "accountant_id": 2169,
-                         *       "address_id": 718,
-                         *       "customer_id": 1909,
+                         *       "id": 95,
+                         *       "accountant_id": 2861,
+                         *       "address_id": 1009,
+                         *       "customer_id": 2484,
                          *       "description": "MyDescription",
-                         *       "fixed_price": null,
-                         *       "fixed_price_vat": null,
+                         *       "fixed_price": 12000,
+                         *       "fixed_price_vat": 0.077,
                          *       "name": "MyName",
                          *       "beginning": "2019-05-13",
                          *       "ending": "2019-05-14",
-                         *       "sibling_invoice_ids": [],
-                         *       "created_at": "2026-06-10 11:23:51",
-                         *       "location_id": null,
-                         *       "project_id": 282,
-                         *       "offer_id": 410,
+                         *       "sibling_invoice_ids": [
+                         *         96
+                         *       ],
+                         *       "created_at": "2026-06-10 15:42:19",
+                         *       "location_id": 113,
+                         *       "project_id": 376,
+                         *       "offer_id": 522,
                          *       "breakdown": {
-                         *         "discounts": [],
-                         *         "discountTotal": 0,
+                         *         "discounts": [
+                         *           {
+                         *             "name": "My InvoiceDiscount",
+                         *             "value": -150
+                         *           }
+                         *         ],
+                         *         "discountTotal": -150,
                          *         "positions": null,
                          *         "rawTotal": 0,
-                         *         "subtotal": 0,
+                         *         "subtotal": 150,
                          *         "total": 0,
                          *         "vats": null,
                          *         "vatTotal": 0
                          *       },
-                         *       "costgroup_distributions": [],
-                         *       "discounts": [],
-                         *       "positions": [],
-                         *       "position_groupings": []
+                         *       "costgroup_distributions": [
+                         *         {
+                         *           "costgroup_number": 105,
+                         *           "invoice_id": 95,
+                         *           "weight": 100
+                         *         }
+                         *       ],
+                         *       "discounts": [
+                         *         {
+                         *           "id": 10,
+                         *           "invoice_id": 95,
+                         *           "name": "My InvoiceDiscount",
+                         *           "percentage": false,
+                         *           "value": 150,
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:19.000Z",
+                         *           "updated_at": "2026-06-10T15:42:19.000Z",
+                         *           "created_by": null,
+                         *           "updated_by": null,
+                         *           "deleted_by": null
+                         *         }
+                         *       ],
+                         *       "positions": [
+                         *         {
+                         *           "id": 10,
+                         *           "amount": 9.99,
+                         *           "description": "MyInvoicePosition",
+                         *           "price_per_rate": 15,
+                         *           "rate_unit_id": 153,
+                         *           "vat": 0.077,
+                         *           "order": 1,
+                         *           "position_group_id": 106,
+                         *           "rate_unit_archived": false,
+                         *           "calculated_total": 149.85
+                         *         }
+                         *       ],
+                         *       "position_groupings": [
+                         *         {
+                         *           "id": 106,
+                         *           "name": "MyString",
+                         *           "order": 1,
+                         *           "shared": false
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -1222,30 +1643,73 @@ export interface paths {
                             address_id: number;
                             customer_id: number;
                             description: string;
-                            fixed_price: unknown;
-                            fixed_price_vat: unknown;
+                            fixed_price: number | null;
+                            /** Format: float */
+                            fixed_price_vat: number | null;
                             name: string;
                             beginning: string;
                             ending: string;
-                            sibling_invoice_ids: unknown[];
+                            sibling_invoice_ids: number[];
                             created_at: string;
-                            location_id: unknown;
+                            location_id: number | null;
                             project_id: number;
                             offer_id: number;
                             breakdown: {
-                                discounts: unknown[];
+                                discounts: {
+                                    name: string;
+                                    value: number;
+                                }[];
                                 discountTotal: number;
                                 positions: unknown;
+                                /** Format: float */
                                 rawTotal: number;
+                                /** Format: float */
                                 subtotal: number;
+                                /** Format: float */
                                 total: number;
                                 vats: unknown;
                                 vatTotal: number;
                             };
-                            costgroup_distributions: unknown[];
-                            discounts: unknown[];
-                            positions: unknown[];
-                            position_groupings: unknown[];
+                            costgroup_distributions: {
+                                costgroup_number: number;
+                                invoice_id: number;
+                                weight: number;
+                            }[];
+                            discounts: {
+                                id: number;
+                                invoice_id: number;
+                                name: string;
+                                percentage: boolean;
+                                /** Format: float */
+                                value: number;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                                created_by: unknown;
+                                updated_by: unknown;
+                                deleted_by: unknown;
+                            }[];
+                            positions: {
+                                id: number;
+                                /** Format: float */
+                                amount: number;
+                                description: string;
+                                price_per_rate: number;
+                                rate_unit_id: number;
+                                /** Format: float */
+                                vat: number;
+                                order: number;
+                                position_group_id: number;
+                                rate_unit_archived: boolean;
+                                /** Format: float */
+                                calculated_total: number;
+                            }[];
+                            position_groupings: {
+                                id: number;
+                                name: string;
+                                order: number | null;
+                                shared: boolean;
+                            }[];
                         };
                     };
                 };
@@ -1285,7 +1749,7 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 78,
+                         *         "id": 112,
                          *         "name": "MyName",
                          *         "url": "MyUrl",
                          *         "archived": false,
@@ -1325,7 +1789,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 77 */
+                    /** @example 111 */
                     id: number;
                 };
                 cookie?: never;
@@ -1340,7 +1804,7 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 77,
+                         *       "id": 111,
                          *       "name": "MyName",
                          *       "url": "MyUrl",
                          *       "archived": false,
@@ -1404,7 +1868,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 405,
+                         *           "id": 515,
                          *           "description": "My offers description",
                          *           "short_description": "My offers short description",
                          *           "name": "MyOffer"
@@ -1456,7 +1920,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 406 */
+                    /** @example 514 */
                     id: number;
                 };
                 cookie?: never;
@@ -1471,36 +1935,116 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 406,
-                         *       "accountant_id": 2144,
-                         *       "address_id": 710,
-                         *       "customer_id": 1889,
+                         *       "id": 514,
+                         *       "accountant_id": 2823,
+                         *       "address_id": 991,
+                         *       "customer_id": 2447,
                          *       "description": "My offers description",
-                         *       "fixed_price": null,
-                         *       "fixed_price_vat": null,
+                         *       "fixed_price": 12000,
+                         *       "fixed_price_vat": 7.7,
                          *       "name": "MyOffer",
-                         *       "rate_group_id": 2537,
+                         *       "rate_group_id": 3312,
                          *       "short_description": "My offers short description",
                          *       "status": 1,
-                         *       "created_at": "2026-06-10 11:23:50",
-                         *       "location_id": null,
+                         *       "created_at": "2026-06-10 15:42:17",
+                         *       "location_id": 110,
                          *       "breakdown": {
-                         *         "discounts": [],
-                         *         "discountTotal": 0,
+                         *         "discounts": [
+                         *           {
+                         *             "name": "MyString",
+                         *             "value": -9
+                         *           }
+                         *         ],
+                         *         "discountTotal": -10,
                          *         "positions": null,
-                         *         "rawTotal": 0,
-                         *         "subtotal": 0,
-                         *         "total": 0,
+                         *         "rawTotal": 90,
+                         *         "subtotal": 100,
+                         *         "total": 179,
                          *         "vats": null,
-                         *         "vatTotal": 0
+                         *         "vatTotal": 89
                          *       },
-                         *       "invoice_ids": [],
-                         *       "project_id": null,
-                         *       "discounts": [],
-                         *       "category_distributions": [],
-                         *       "costgroup_distributions": [],
-                         *       "positions": [],
-                         *       "position_groupings": []
+                         *       "invoice_ids": [
+                         *         93
+                         *       ],
+                         *       "project_id": 369,
+                         *       "discounts": [
+                         *         {
+                         *           "id": 11,
+                         *           "name": "MyString",
+                         *           "offer_id": 514,
+                         *           "percentage": false,
+                         *           "value": 9.99,
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:17.000Z",
+                         *           "updated_at": "2026-06-10T15:42:17.000Z",
+                         *           "created_by": null,
+                         *           "updated_by": null,
+                         *           "deleted_by": null
+                         *         }
+                         *       ],
+                         *       "category_distributions": [
+                         *         {
+                         *           "id": 11,
+                         *           "category_id": 126,
+                         *           "weight": 100,
+                         *           "offer_id": 514,
+                         *           "created_at": "2026-06-10T15:42:17.815Z",
+                         *           "updated_at": "2026-06-10T15:42:17.815Z",
+                         *           "deleted_at": null
+                         *         }
+                         *       ],
+                         *       "costgroup_distributions": [
+                         *         {
+                         *           "id": 11,
+                         *           "costgroup_number": 101,
+                         *           "weight": 100,
+                         *           "offer_id": 514,
+                         *           "created_at": "2026-06-10T15:42:17.790Z",
+                         *           "updated_at": "2026-06-10T15:42:17.790Z",
+                         *           "deleted_at": null,
+                         *           "created_by": null,
+                         *           "updated_by": null,
+                         *           "deleted_by": null
+                         *         }
+                         *       ],
+                         *       "positions": [
+                         *         {
+                         *           "id": 11,
+                         *           "amount": 99,
+                         *           "description": "MyString",
+                         *           "price_per_rate": 1,
+                         *           "rate_unit_id": 147,
+                         *           "service_id": 209,
+                         *           "vat": 0.99,
+                         *           "order": 1,
+                         *           "position_group_id": 102,
+                         *           "service": {
+                         *             "id": 209,
+                         *             "name": "My service",
+                         *             "description": "A great service",
+                         *             "vat": 0.077,
+                         *             "archived": false,
+                         *             "created_at": "2026-06-10T15:42:17.000Z",
+                         *             "updated_at": "2026-06-10T15:42:17.000Z",
+                         *             "deleted_at": null,
+                         *             "created_by": null,
+                         *             "updated_by": null,
+                         *             "deleted_by": null,
+                         *             "order": 167,
+                         *             "service_category_id": 127,
+                         *             "local_order": 99
+                         *           },
+                         *           "rate_unit_archived": false
+                         *         }
+                         *       ],
+                         *       "position_groupings": [
+                         *         {
+                         *           "id": 102,
+                         *           "name": "MyString",
+                         *           "order": 1,
+                         *           "shared": false
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -1509,31 +2053,105 @@ export interface paths {
                             address_id: number;
                             customer_id: number;
                             description: string;
-                            fixed_price: unknown;
-                            fixed_price_vat: unknown;
+                            fixed_price: number | null;
+                            /** Format: float */
+                            fixed_price_vat: number | null;
                             name: string;
                             rate_group_id: number;
                             short_description: string;
                             status: number;
                             created_at: string;
-                            location_id: unknown;
+                            location_id: number | null;
                             breakdown: {
-                                discounts: unknown[];
+                                discounts: {
+                                    name: string;
+                                    value: number;
+                                }[];
                                 discountTotal: number;
                                 positions: unknown;
+                                /** Format: float */
                                 rawTotal: number;
+                                /** Format: float */
                                 subtotal: number;
+                                /** Format: float */
                                 total: number;
                                 vats: unknown;
                                 vatTotal: number;
                             };
-                            invoice_ids: unknown[];
-                            project_id: unknown;
-                            discounts: unknown[];
-                            category_distributions: unknown[];
-                            costgroup_distributions: unknown[];
-                            positions: unknown[];
-                            position_groupings: unknown[];
+                            invoice_ids: number[];
+                            project_id: number | null;
+                            discounts: {
+                                id: number;
+                                name: string;
+                                offer_id: number;
+                                percentage: boolean;
+                                /** Format: float */
+                                value: number;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                                created_by: unknown;
+                                updated_by: unknown;
+                                deleted_by: unknown;
+                            }[];
+                            category_distributions: {
+                                id: number;
+                                category_id: number;
+                                weight: number;
+                                offer_id: number;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                            }[];
+                            costgroup_distributions: {
+                                id: number;
+                                costgroup_number: number;
+                                weight: number;
+                                offer_id: number;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                                created_by: unknown;
+                                updated_by: unknown;
+                                deleted_by: unknown;
+                            }[];
+                            positions: {
+                                id: number;
+                                /** Format: float */
+                                amount: number;
+                                description: string;
+                                price_per_rate: number;
+                                rate_unit_id: number;
+                                service_id: number;
+                                /** Format: float */
+                                vat: number;
+                                order: number;
+                                position_group_id: number;
+                                service: {
+                                    id: number;
+                                    name: string;
+                                    description: string;
+                                    /** Format: float */
+                                    vat: number;
+                                    archived: boolean;
+                                    created_at: string;
+                                    updated_at: string;
+                                    deleted_at: unknown;
+                                    created_by: unknown;
+                                    updated_by: unknown;
+                                    deleted_by: unknown;
+                                    order: number;
+                                    service_category_id: number | null;
+                                    local_order: number;
+                                };
+                                rate_unit_archived: boolean;
+                            }[];
+                            position_groupings: {
+                                id: number;
+                                name: string;
+                                order: number | null;
+                                shared: boolean;
+                            }[];
                         };
                     };
                 };
@@ -1585,7 +2203,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 1886,
+                         *           "id": 2508,
                          *           "type": "person",
                          *           "comment": "9ü|_ 4 3\\/3.-",
                          *           "company_id": null,
@@ -1598,10 +2216,10 @@ export interface paths {
                          *           "archived": false,
                          *           "name": null,
                          *           "accountant_id": null,
-                         *           "rate_group_id": 2531,
+                         *           "rate_group_id": 3394,
                          *           "salutation": "LGBTQQIP2SAA+",
-                         *           "created_at": "2026-06-10 11:23:50",
-                         *           "updated_at": "2026-06-10 11:23:50",
+                         *           "created_at": "2026-06-10 15:42:20",
+                         *           "updated_at": "2026-06-10 15:42:20",
                          *           "deleted_at": null
                          *         }
                          *       ]
@@ -1665,7 +2283,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 1885 */
+                    /** @example 2507 */
                     id: number;
                 };
                 cookie?: never;
@@ -1680,10 +2298,10 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 1885,
+                         *       "id": 2507,
                          *       "type": "person",
                          *       "comment": "9ü|_ 4 3\\/3.-",
-                         *       "company_id": null,
+                         *       "company_id": 2506,
                          *       "department": "MyDepartment",
                          *       "department_in_address": false,
                          *       "email": "mail@example.com",
@@ -1692,22 +2310,69 @@ export interface paths {
                          *       "hidden": false,
                          *       "archived": false,
                          *       "name": null,
-                         *       "accountant_id": null,
-                         *       "rate_group_id": 2530,
+                         *       "accountant_id": 2886,
+                         *       "rate_group_id": 3393,
                          *       "salutation": "LGBTQQIP2SAA+",
-                         *       "created_at": "2026-06-10 11:23:50",
-                         *       "updated_at": "2026-06-10 11:23:50",
+                         *       "created_at": "2026-06-10 15:42:20",
+                         *       "updated_at": "2026-06-10 15:42:20",
                          *       "deleted_at": null,
-                         *       "addresses": [],
-                         *       "phone_numbers": [],
-                         *       "tags": []
+                         *       "addresses": [
+                         *         {
+                         *           "id": 1021,
+                         *           "city": "Winterthur",
+                         *           "country": "Schweiz",
+                         *           "customer_id": 2507,
+                         *           "description": "c/o Someone",
+                         *           "zip": 8400,
+                         *           "street": "Bahnhofstrasse 12",
+                         *           "supplement": "Postfach 1230",
+                         *           "hidden": false,
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:20.000Z",
+                         *           "updated_at": "2026-06-10T15:42:20.000Z"
+                         *         }
+                         *       ],
+                         *       "phone_numbers": [
+                         *         {
+                         *           "id": 26,
+                         *           "category": 1,
+                         *           "customer_id": 2507,
+                         *           "number": "043 355 58 44",
+                         *           "deleted_at": null,
+                         *           "created_at": "2026-06-10T15:42:20.000Z",
+                         *           "updated_at": "2026-06-10T15:42:20.000Z"
+                         *         }
+                         *       ],
+                         *       "tags": [
+                         *         124
+                         *       ],
+                         *       "company": {
+                         *         "id": 2507,
+                         *         "type": "person",
+                         *         "comment": "9ü|_ 4 3\\/3.-",
+                         *         "company_id": 2506,
+                         *         "department": "MyDepartment",
+                         *         "department_in_address": false,
+                         *         "email": "mail@example.com",
+                         *         "first_name": "Philipp",
+                         *         "last_name": "Saurer",
+                         *         "hidden": false,
+                         *         "archived": false,
+                         *         "name": null,
+                         *         "accountant_id": 2886,
+                         *         "rate_group_id": 3393,
+                         *         "salutation": "LGBTQQIP2SAA+",
+                         *         "created_at": "2026-06-10 15:42:20",
+                         *         "updated_at": "2026-06-10 15:42:20",
+                         *         "deleted_at": null
+                         *       }
                          *     }
                          */
                         "application/json": {
                             id: number;
                             type: string;
                             comment: string;
-                            company_id: unknown;
+                            company_id: number | null;
                             department: string;
                             department_in_address: boolean;
                             email: string;
@@ -1716,15 +2381,56 @@ export interface paths {
                             hidden: boolean;
                             archived: boolean;
                             name: unknown;
-                            accountant_id: unknown;
+                            accountant_id: number | null;
                             rate_group_id: number;
                             salutation: string;
                             created_at: string;
                             updated_at: string;
                             deleted_at: unknown;
-                            addresses: unknown[];
-                            phone_numbers: unknown[];
-                            tags: unknown[];
+                            addresses: {
+                                id: number;
+                                city: string;
+                                country: string;
+                                customer_id: number;
+                                description: string | null;
+                                zip: number;
+                                street: string;
+                                supplement: string;
+                                hidden: boolean;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                            }[];
+                            phone_numbers: {
+                                id: number;
+                                category: number;
+                                customer_id: number;
+                                number: string;
+                                deleted_at: unknown;
+                                created_at: string;
+                                updated_at: string;
+                            }[];
+                            tags: number[];
+                            company?: {
+                                id: number;
+                                type: string;
+                                comment: string;
+                                company_id: number;
+                                department: string;
+                                department_in_address: boolean;
+                                email: string;
+                                first_name: string;
+                                last_name: string;
+                                hidden: boolean;
+                                archived: boolean;
+                                name: unknown;
+                                accountant_id: number;
+                                rate_group_id: number;
+                                salutation: string;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                            };
                         };
                     };
                 };
@@ -1764,12 +2470,12 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 88,
+                         *         "id": 127,
                          *         "archived": false,
                          *         "name": "MyString",
                          *         "deleted_at": null,
-                         *         "created_at": "2026-06-10 11:23:51",
-                         *         "updated_at": "2026-06-10 11:23:51"
+                         *         "created_at": "2026-06-10 15:42:18",
+                         *         "updated_at": "2026-06-10 15:42:18"
                          *       }
                          *     ]
                          */
@@ -1806,7 +2512,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 87 */
+                    /** @example 128 */
                     id: number;
                 };
                 cookie?: never;
@@ -1821,12 +2527,12 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 87,
+                         *       "id": 128,
                          *       "archived": false,
                          *       "name": "MyString",
                          *       "deleted_at": null,
-                         *       "created_at": "2026-06-10 11:23:51",
-                         *       "updated_at": "2026-06-10 11:23:51"
+                         *       "created_at": "2026-06-10 15:42:18",
+                         *       "updated_at": "2026-06-10 15:42:18"
                          *     }
                          */
                         "application/json": {
@@ -1887,7 +2593,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 18,
+                         *           "id": 38,
                          *           "comment_preset": "MyString"
                          *         }
                          *       ]
@@ -1935,7 +2641,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 17 */
+                    /** @example 37 */
                     id: number;
                 };
                 cookie?: never;
@@ -1950,7 +2656,7 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 17,
+                         *       "id": 37,
                          *       "comment_preset": "MyString"
                          *     }
                          */
@@ -1996,10 +2702,10 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 17,
+                         *         "id": 37,
                          *         "date": "2019-05-14",
                          *         "comment": "MyComment",
-                         *         "project_id": 279
+                         *         "project_id": 370
                          *       }
                          *     ]
                          */
@@ -2034,7 +2740,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 18 */
+                    /** @example 38 */
                     id: number;
                 };
                 cookie?: never;
@@ -2049,10 +2755,10 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 18,
+                         *       "id": 38,
                          *       "date": "2019-05-14",
                          *       "comment": "MyComment",
-                         *       "project_id": 280
+                         *       "project_id": 371
                          *     }
                          */
                         "application/json": {
@@ -2099,17 +2805,17 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 103,
+                         *         "id": 133,
                          *         "date": "2019-05-14",
-                         *         "position_id": 45,
+                         *         "position_id": 84,
                          *         "effort_value": 3.142,
-                         *         "effort_employee_id": 2181,
+                         *         "effort_employee_id": 2849,
                          *         "employee_full_name": "Peter Pan",
                          *         "position_description": "MyDescription",
-                         *         "project_name": "Project #7",
-                         *         "project_id": 283,
-                         *         "service_id": 143,
-                         *         "costgroup_number": 102,
+                         *         "project_name": "Project #5",
+                         *         "project_id": 373,
+                         *         "service_id": 211,
+                         *         "costgroup_number": 103,
                          *         "costgroup_name": "MyString",
                          *         "service_name": "My service",
                          *         "effort_unit": "zt",
@@ -2166,7 +2872,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 104 */
+                    /** @example 134 */
                     id: number;
                 };
                 cookie?: never;
@@ -2181,13 +2887,13 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 104,
+                         *       "id": 134,
                          *       "date": "2019-05-14",
-                         *       "position_id": 46,
-                         *       "employee_id": 2185,
+                         *       "position_id": 85,
+                         *       "employee_id": 2853,
                          *       "value": 3.142,
-                         *       "costgroup_number": 103,
-                         *       "project_id": 284
+                         *       "costgroup_number": 104,
+                         *       "project_id": 374
                          *     }
                          */
                         "application/json": {
@@ -2250,12 +2956,12 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 277,
+                         *           "id": 377,
                          *           "archived": false,
                          *           "description": "my description",
-                         *           "name": "Project #1",
-                         *           "listing_name": "Project #1",
-                         *           "updated_at": "2026-06-10 11:23:49",
+                         *           "name": "Project #9",
+                         *           "listing_name": "Project #9",
+                         *           "updated_at": "2026-06-10 15:42:19",
                          *           "deletable": true
                          *         }
                          *       ]
@@ -2308,7 +3014,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 278 */
+                    /** @example 378 */
                     id: number;
                 };
                 cookie?: never;
@@ -2323,17 +3029,17 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 278,
-                         *       "accountant_id": 2129,
-                         *       "address_id": 707,
-                         *       "customer_id": 1881,
+                         *       "id": 378,
+                         *       "accountant_id": 2883,
+                         *       "address_id": 1018,
+                         *       "customer_id": 2500,
                          *       "archived": false,
                          *       "description": "my description",
-                         *       "fixed_price": null,
-                         *       "name": "Project #2",
-                         *       "rate_group_id": 2529,
-                         *       "location_id": null,
-                         *       "created_at": "2026-06-10 11:23:49",
+                         *       "fixed_price": 12000,
+                         *       "name": "Project #10",
+                         *       "rate_group_id": 3389,
+                         *       "location_id": 114,
+                         *       "created_at": "2026-06-10 15:42:19",
                          *       "chargeable": false,
                          *       "deadline": "2026-06-24",
                          *       "vacation_project": false,
@@ -2341,12 +3047,68 @@ export interface paths {
                          *       "budget_time": 0,
                          *       "current_price": 0,
                          *       "current_time": 0,
-                         *       "offer_id": 404,
-                         *       "invoice_ids": [],
-                         *       "category_distributions": [],
-                         *       "costgroup_distributions": [],
-                         *       "positions": [],
-                         *       "position_groupings": []
+                         *       "offer_id": 524,
+                         *       "invoice_ids": [
+                         *         97
+                         *       ],
+                         *       "category_distributions": [
+                         *         {
+                         *           "id": 10,
+                         *           "category_id": 129,
+                         *           "weight": 100,
+                         *           "project_id": 378,
+                         *           "created_at": "2026-06-10T15:42:20.051Z",
+                         *           "updated_at": "2026-06-10T15:42:20.051Z",
+                         *           "deleted_at": null
+                         *         }
+                         *       ],
+                         *       "costgroup_distributions": [
+                         *         {
+                         *           "costgroup_number": 106,
+                         *           "project_id": 378
+                         *         }
+                         *       ],
+                         *       "positions": [
+                         *         {
+                         *           "id": 86,
+                         *           "description": "MyDescription",
+                         *           "price_per_rate": 9200,
+                         *           "rate_unit_id": 155,
+                         *           "service_id": 215,
+                         *           "vat": 0.077,
+                         *           "order": 1,
+                         *           "position_group_id": 107,
+                         *           "efforts_value_with_unit": "0 zt",
+                         *           "charge": 0,
+                         *           "rate_unit_archived": false,
+                         *           "deletable": true,
+                         *           "service": {
+                         *             "id": 215,
+                         *             "name": "My service",
+                         *             "description": "A great service",
+                         *             "vat": 0.077,
+                         *             "archived": false,
+                         *             "created_at": "2026-06-10T15:42:20.000Z",
+                         *             "updated_at": "2026-06-10T15:42:20.000Z",
+                         *             "deleted_at": null,
+                         *             "created_by": null,
+                         *             "updated_by": null,
+                         *             "deleted_by": null,
+                         *             "order": 167,
+                         *             "service_category_id": 137,
+                         *             "local_order": 99
+                         *           },
+                         *           "is_time": true
+                         *         }
+                         *       ],
+                         *       "position_groupings": [
+                         *         {
+                         *           "id": 107,
+                         *           "name": "MyString",
+                         *           "order": 1,
+                         *           "shared": false
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -2356,24 +3118,74 @@ export interface paths {
                             customer_id: number;
                             archived: boolean;
                             description: string;
-                            fixed_price: unknown;
+                            fixed_price: number | null;
                             name: string;
                             rate_group_id: number;
-                            location_id: unknown;
+                            location_id: number | null;
                             created_at: string;
                             chargeable: boolean;
                             deadline: string;
                             vacation_project: boolean;
                             budget_price: number;
                             budget_time: number;
+                            /** Format: float */
                             current_price: number;
                             current_time: number;
                             offer_id: number;
-                            invoice_ids: unknown[];
-                            category_distributions: unknown[];
-                            costgroup_distributions: unknown[];
-                            positions: unknown[];
-                            position_groupings: unknown[];
+                            invoice_ids: number[];
+                            category_distributions: {
+                                id: number;
+                                category_id: number;
+                                weight: number;
+                                project_id: number;
+                                created_at: string;
+                                updated_at: string;
+                                deleted_at: unknown;
+                            }[];
+                            costgroup_distributions: {
+                                costgroup_number: number;
+                                project_id: number;
+                            }[];
+                            positions: {
+                                id: number;
+                                description: string;
+                                price_per_rate: number;
+                                rate_unit_id: number;
+                                service_id: number;
+                                /** Format: float */
+                                vat: number;
+                                order: number;
+                                position_group_id: number;
+                                efforts_value_with_unit: string;
+                                /** Format: float */
+                                charge: number;
+                                rate_unit_archived: boolean;
+                                deletable: boolean;
+                                service: {
+                                    id: number;
+                                    name: string;
+                                    description: string;
+                                    /** Format: float */
+                                    vat: number;
+                                    archived: boolean;
+                                    created_at: string;
+                                    updated_at: string;
+                                    deleted_at: unknown;
+                                    created_by: unknown;
+                                    updated_by: unknown;
+                                    deleted_by: unknown;
+                                    order: number;
+                                    service_category_id: number | null;
+                                    local_order: number;
+                                };
+                                is_time: boolean;
+                            }[];
+                            position_groupings: {
+                                id: number;
+                                name: string;
+                                order: number | null;
+                                shared: boolean;
+                            }[];
                         };
                     };
                 };
@@ -2413,8 +3225,8 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 2554,
-                         *         "name": "My rate group 37",
+                         *         "id": 3376,
+                         *         "name": "My rate group 67",
                          *         "description": "My rate group description"
                          *       }
                          *     ]
@@ -2474,7 +3286,7 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 62,
+                         *           "id": 152,
                          *           "listing_name": "Zivitage",
                          *           "billing_unit": "CHF/d",
                          *           "effort_unit": "zt",
@@ -2534,7 +3346,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 61 */
+                    /** @example 151 */
                     id: number;
                 };
                 cookie?: never;
@@ -2549,7 +3361,7 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 61,
+                         *       "id": 151,
                          *       "billing_unit": "CHF/d",
                          *       "effort_unit": "zt",
                          *       "is_time": true,
@@ -2642,12 +3454,39 @@ export interface paths {
                          *         "2024-01-30",
                          *         "2024-01-31"
                          *       ],
-                         *       "employees": []
+                         *       "employees": [
+                         *         {
+                         *           "employee_id": 2841,
+                         *           "name": "Peter Pan",
+                         *           "efforts": {
+                         *             "2024-01-15": [
+                         *               {
+                         *                 "date": "2024-01-15",
+                         *                 "value": 3.142,
+                         *                 "service_id": 210,
+                         *                 "service_name": "My service"
+                         *               }
+                         *             ]
+                         *           }
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
                             dates: string[];
-                            employees: unknown[];
+                            employees: {
+                                employee_id: number;
+                                name: string;
+                                efforts: {
+                                    "2024-01-15": {
+                                        date: string;
+                                        /** Format: float */
+                                        value: number;
+                                        service_id: number;
+                                        service_name: string;
+                                    }[];
+                                };
+                            }[];
                         };
                     };
                 };
@@ -2687,14 +3526,32 @@ export interface paths {
                         /**
                          * @example [
                          *       {
-                         *         "id": 88,
+                         *         "id": 133,
+                         *         "name": "MyString",
+                         *         "french_name": "MyOtherString",
+                         *         "number": 1,
+                         *         "order": 9301,
+                         *         "parent_category_id": 132,
+                         *         "created_at": "2026-06-10 15:42:19",
+                         *         "updated_at": "2026-06-10 15:42:19",
+                         *         "parent": {
+                         *           "id": 132,
+                         *           "name": "MyString",
+                         *           "french_name": "MyOtherString",
+                         *           "number": 93,
+                         *           "order": 9300,
+                         *           "parent_category_id": null
+                         *         }
+                         *       },
+                         *       {
+                         *         "id": 132,
                          *         "name": "MyString",
                          *         "french_name": "MyOtherString",
                          *         "number": 93,
                          *         "order": 9300,
                          *         "parent_category_id": null,
-                         *         "created_at": "2026-06-10 11:23:51",
-                         *         "updated_at": "2026-06-10 11:23:51",
+                         *         "created_at": "2026-06-10 15:42:19",
+                         *         "updated_at": "2026-06-10 15:42:19",
                          *         "parent": null
                          *       }
                          *     ]
@@ -2705,10 +3562,17 @@ export interface paths {
                             french_name: string;
                             number: number;
                             order: number;
-                            parent_category_id: unknown;
+                            parent_category_id: number | null;
                             created_at: string;
                             updated_at: string;
-                            parent: unknown;
+                            parent: {
+                                id: number;
+                                name: string;
+                                french_name: string;
+                                number: number;
+                                order: number;
+                                parent_category_id: unknown;
+                            } | null;
                         }[];
                     };
                 };
@@ -2735,7 +3599,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 87 */
+                    /** @example 135 */
                     id: number;
                 };
                 cookie?: never;
@@ -2750,12 +3614,12 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 87,
+                         *       "id": 135,
                          *       "name": "MyString",
                          *       "french_name": "MyOtherString",
-                         *       "number": 93,
-                         *       "order": 9300,
-                         *       "parent_category_id": null
+                         *       "number": 1,
+                         *       "order": 9301,
+                         *       "parent_category_id": 134
                          *     }
                          */
                         "application/json": {
@@ -2764,7 +3628,7 @@ export interface paths {
                             french_name: string;
                             number: number;
                             order: number;
-                            parent_category_id: unknown;
+                            parent_category_id: number | null;
                         };
                     };
                 };
@@ -2816,15 +3680,22 @@ export interface paths {
                          *       "total": 1,
                          *       "data": [
                          *         {
-                         *           "id": 142,
+                         *           "id": 213,
                          *           "name": "My service",
                          *           "description": "A great service",
                          *           "vat": 0.077,
                          *           "local_order": 99,
-                         *           "order": 103,
+                         *           "order": 167,
                          *           "archived": false,
-                         *           "service_category_id": null,
-                         *           "service_category": null
+                         *           "service_category_id": 129,
+                         *           "service_category": {
+                         *             "id": 129,
+                         *             "name": "MyString",
+                         *             "french_name": "MyOtherString",
+                         *             "number": 1,
+                         *             "order": 9301,
+                         *             "parent_category_id": 128
+                         *           }
                          *         }
                          *       ]
                          *     }
@@ -2850,8 +3721,15 @@ export interface paths {
                                 local_order: number;
                                 order: number;
                                 archived: boolean;
-                                service_category_id: unknown;
-                                service_category: unknown;
+                                service_category_id: number | null;
+                                service_category: {
+                                    id: number;
+                                    name: string;
+                                    french_name: string;
+                                    number: number;
+                                    order: number;
+                                    parent_category_id: number;
+                                } | null;
                             }[];
                         };
                     };
@@ -2879,7 +3757,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    /** @example 141 */
+                    /** @example 214 */
                     id: number;
                 };
                 cookie?: never;
@@ -2894,16 +3772,31 @@ export interface paths {
                     content: {
                         /**
                          * @example {
-                         *       "id": 141,
+                         *       "id": 214,
                          *       "name": "My service",
                          *       "description": "A great service",
                          *       "vat": 0.077,
                          *       "local_order": 99,
-                         *       "order": 103,
+                         *       "order": 167,
                          *       "archived": false,
-                         *       "service_category_id": null,
-                         *       "service_category": null,
-                         *       "service_rates": []
+                         *       "service_category_id": 131,
+                         *       "service_category": {
+                         *         "id": 131,
+                         *         "name": "MyString",
+                         *         "french_name": "MyOtherString",
+                         *         "number": 1,
+                         *         "order": 9301,
+                         *         "parent_category_id": 130
+                         *       },
+                         *       "service_rates": [
+                         *         {
+                         *           "id": 10,
+                         *           "rate_group_id": 3377,
+                         *           "service_id": 214,
+                         *           "rate_unit_id": 154,
+                         *           "value": 1
+                         *         }
+                         *       ]
                          *     }
                          */
                         "application/json": {
@@ -2915,9 +3808,22 @@ export interface paths {
                             local_order: number;
                             order: number;
                             archived: boolean;
-                            service_category_id: unknown;
-                            service_category: unknown;
-                            service_rates: unknown[];
+                            service_category_id: number | null;
+                            service_category: {
+                                id: number;
+                                name: string;
+                                french_name: string;
+                                number: number;
+                                order: number;
+                                parent_category_id: number | null;
+                            } | null;
+                            service_rates: {
+                                id: number;
+                                rate_group_id: number;
+                                service_id: number;
+                                rate_unit_id: number;
+                                value: number;
+                            }[];
                         };
                     };
                 };

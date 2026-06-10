@@ -9,7 +9,10 @@ RSpec.describe 'V2::Companies', type: :request do
 
   describe 'GET /v2/companies' do
     it 'returns a list of companies' do
-      create(:company)
+      company = create(:company)
+      create(:address, :with_company_customer, customer: company)
+      Phone.create!(number: '0433555844', category: 1, customer_id: company.id)
+      create(:person, company: company)
       get '/v2/companies'
       expect(response).to have_http_status(:ok)
     end
@@ -18,6 +21,11 @@ RSpec.describe 'V2::Companies', type: :request do
   describe 'GET /v2/companies/:id' do
     it 'returns a company' do
       company = create(:company)
+      create(:address, :with_company_customer, customer: company)
+      Phone.create!(number: '0433555844', category: 1, customer_id: company.id)
+      create(:person, company: company)
+      tag = create(:customer_tag)
+      company.customer_tags << tag
       get "/v2/companies/#{company.id}"
       expect(response).to have_http_status(:ok)
     end

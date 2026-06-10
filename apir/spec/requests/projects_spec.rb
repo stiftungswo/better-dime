@@ -17,7 +17,16 @@ RSpec.describe 'V2::Projects', type: :request do
 
   describe 'GET /v2/projects/:id' do
     it 'returns a project' do
-      project = create(:project)
+      location = create(:location)
+      project = create(:project, :with_fixed_price, location: location)
+      position_group = create(:position_group)
+      parent_cat = create(:service_category)
+      sub_cat = create(:service_category, parent_category: parent_cat, number: 1)
+      service = create(:service, service_category: sub_cat)
+      create(:project_position, project: project, position_group: position_group, service: service)
+      create(:project_costgroup_distribution, project: project)
+      create(:project_category_distribution, project: project)
+      create(:invoice, project: project)
       get "/v2/projects/#{project.id}"
       expect(response).to have_http_status(:ok)
     end
