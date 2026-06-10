@@ -30,7 +30,9 @@ end
 json.costgroup_uncategorized_distribution invoice.missing_costgroup_distribution if invoice.costgroup_dist_incomplete?
 
 json.project_id invoice.project&.id
-json.discounts invoice.invoice_discounts
+json.discounts invoice.invoice_discounts do |discount|
+  json.extract! discount, :id, :invoice_id, :name, :percentage, :value, :created_at, :updated_at
+end
 json.positions invoice.invoice_positions.sort_by { |p| p.order.to_i } do |position|
   json.extract! position.decorate, :id, :amount, :description, :price_per_rate, :rate_unit_id,
                 :vat, :order, :position_group_id, :rate_unit_archived, :calculated_total
