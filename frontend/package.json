@@ -47,7 +47,8 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "format": "tslint --project . -t verbose --fix",
-    "lint": "tslint --project . -t verbose --config ./tslint.prod.json"
+    "lint": "tslint --project . -t verbose --config ./tslint.prod.json",
+    "generate:types": "npx --yes openapi-typescript@7 ../apir/doc/openapi.yaml -o src/types/generated.ts"
   },
   "devDependencies": {
     "@sentry/typescript": "^4.0.1",

@@ -66,6 +66,7 @@ group :development do
 end
 
 group :test do
+  gem "rspec-openapi"
   gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "test-prof", require: false
