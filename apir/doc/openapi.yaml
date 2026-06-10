@@ -143,7 +143,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 1851
+                - id: 1894
                   type: company
                   comment: test comment
                   company_id: 
@@ -156,10 +156,10 @@ paths:
                   archived: false
                   name: Test GmbH
                   accountant_id: 
-                  rate_group_id: 2482
+                  rate_group_id: 2541
                   salutation: 
-                  created_at: '2026-06-10 08:09:41'
-                  updated_at: '2026-06-10 08:09:41'
+                  created_at: '2026-06-10 11:23:50'
+                  updated_at: '2026-06-10 11:23:50'
                   deleted_at: 
                   addresses: []
                   people: []
@@ -176,7 +176,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 1852
+        example: 1893
       responses:
         '200':
           description: returns a company
@@ -261,7 +261,7 @@ paths:
                 - persons
                 - tags
               example:
-                id: 1852
+                id: 1893
                 type: company
                 comment: test comment
                 company_id: 
@@ -274,10 +274,10 @@ paths:
                 archived: false
                 name: Test GmbH
                 accountant_id: 
-                rate_group_id: 2483
+                rate_group_id: 2540
                 salutation: 
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:50'
+                updated_at: '2026-06-10 11:23:50'
                 deleted_at: 
                 addresses: []
                 phone_numbers: []
@@ -344,11 +344,11 @@ paths:
                   - updated_at
                   - deleted_at
               example:
-              - id: 80
+              - id: 83
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 deleted_at: 
   "/v2/customer_tags/{id}":
     get:
@@ -361,7 +361,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 81
+        example: 82
       responses:
         '200':
           description: returns a customer tag
@@ -390,11 +390,11 @@ paths:
                 - updated_at
                 - deleted_at
               example:
-                id: 81
+                id: 82
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 deleted_at: 
   "/v2/customers":
     get:
@@ -467,7 +467,7 @@ paths:
                   - updated_at
                   - deleted_at
               example:
-              - id: 1841
+              - id: 1892
                 type: person
                 comment: 9ü|_ 4 3\/3.-
                 company_id: 
@@ -480,10 +480,10 @@ paths:
                 archived: false
                 name: 
                 accountant_id: 
-                rate_group_id: 2467
+                rate_group_id: 2539
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:50'
+                updated_at: '2026-06-10 11:23:50'
                 deleted_at: 
   "/v2/customers/{id}":
     get:
@@ -496,7 +496,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 1842
+        example: 1891
       responses:
         '200':
           description: returns a customer
@@ -573,7 +573,7 @@ paths:
                 - phone_numbers
                 - tags
               example:
-                id: 1842
+                id: 1891
                 type: person
                 comment: 9ü|_ 4 3\/3.-
                 company_id: 
@@ -586,10 +586,10 @@ paths:
                 archived: false
                 name: 
                 accountant_id: 
-                rate_group_id: 2468
+                rate_group_id: 2538
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:50'
+                updated_at: '2026-06-10 11:23:50'
                 deleted_at: 
                 addresses: []
                 phone_numbers: []
@@ -626,15 +626,15 @@ paths:
                   - updated_at
                   - deleted_at
               example:
-              - id: 2184
+              - id: 2245
                 name: MyString
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 deleted_at: 
-              - id: 2185
+              - id: 2246
                 name: MyString
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 deleted_at: 
   "/v2/employee_groups/{id}":
     get:
@@ -647,7 +647,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2183
+        example: 2248
       responses:
         '200':
           description: returns an employee group
@@ -673,10 +673,10 @@ paths:
                 - updated_at
                 - deleted_at
               example:
-                id: 2183
+                id: 2248
                 name: MyString
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 deleted_at: 
   "/v2/employees":
     get:
@@ -743,7 +743,8 @@ paths:
                         employee_group_id:
                           type: integer
                         first_vacation_takeover:
-                          type: string
+                          type: number
+                          format: float
                         locale:
                           type: string
                         group_name:
@@ -810,48 +811,140 @@ paths:
                 to: 2
                 total: 2
                 data:
-                - id: 2077
-                  email: my16@mail.com
+                - id: 2135
+                  email: my11@mail.com
                   is_admin: false
-                  created_at: '2026-06-10 08:09:41'
-                  updated_at: '2026-06-10 08:09:41'
+                  created_at: '2026-06-10 11:23:50'
+                  updated_at: '2026-06-10 11:23:50'
                   first_name: Peter
                   last_name: Pan
                   can_login: true
                   archived: false
                   holidays_per_year: 12
                   deleted_at: 
-                  employee_group_id: 2161
-                  first_vacation_takeover: '0.0'
+                  employee_group_id: 2221
+                  first_vacation_takeover: 0.0
                   locale: de
                   group_name: MyString
                   group:
-                    id: 2161
+                    id: 2221
                     name: MyString
-                    created_at: '2026-06-10 08:09:41'
-                    updated_at: '2026-06-10 08:09:41'
+                    created_at: '2026-06-10 11:23:50'
+                    updated_at: '2026-06-10 11:23:50'
                     deleted_at: 
-                - id: 2078
-                  email: my17@mail.com
+                - id: 2136
+                  email: my12@mail.com
                   is_admin: false
-                  created_at: '2026-06-10 08:09:41'
-                  updated_at: '2026-06-10 08:09:41'
+                  created_at: '2026-06-10 11:23:50'
+                  updated_at: '2026-06-10 11:23:50'
                   first_name: Peter
                   last_name: Pan
                   can_login: true
                   archived: false
                   holidays_per_year: 12
                   deleted_at: 
-                  employee_group_id: 2162
-                  first_vacation_takeover: '0.0'
+                  employee_group_id: 2222
+                  first_vacation_takeover: 0.0
                   locale: de
                   group_name: MyString
                   group:
-                    id: 2162
+                    id: 2222
                     name: MyString
-                    created_at: '2026-06-10 08:09:41'
-                    updated_at: '2026-06-10 08:09:41'
+                    created_at: '2026-06-10 11:23:50'
+                    updated_at: '2026-06-10 11:23:50'
                     deleted_at: 
+  "/v2/employees/sign_in":
+    post:
+      summary: create
+      tags:
+      - Devise::Session
+      parameters:
+      - name: employee[email]
+        in: query
+        required: false
+        schema:
+          type: string
+        example: my53@mail.com
+      - name: employee[password]
+        in: query
+        required: false
+        schema:
+          type: integer
+        example: 123456
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+      responses:
+        '201':
+          description: creates a new user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  is_admin:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  can_login:
+                    type: boolean
+                  archived:
+                    type: boolean
+                  holidays_per_year:
+                    type: integer
+                  deleted_at:
+                    nullable: true
+                  employee_group_id:
+                    type: integer
+                  first_vacation_takeover:
+                    type: number
+                    format: float
+                  locale:
+                    type: string
+                required:
+                - id
+                - email
+                - is_admin
+                - created_at
+                - updated_at
+                - first_name
+                - last_name
+                - can_login
+                - archived
+                - holidays_per_year
+                - deleted_at
+                - employee_group_id
+                - first_vacation_takeover
+                - locale
+              example:
+                id: 2177
+                email: my53@mail.com
+                is_admin: false
+                created_at: '2026-06-10T11:23:51.000Z'
+                updated_at: '2026-06-10T11:23:51.000Z'
+                first_name: Peter
+                last_name: Pan
+                can_login: true
+                archived: false
+                holidays_per_year: 12
+                deleted_at: 
+                employee_group_id: 2265
+                first_vacation_takeover: 0.0
+                locale: de
   "/v2/employees/{id}":
     get:
       summary: show
@@ -863,7 +956,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2080
+        example: 2138
       responses:
         '200':
           description: returns an employee
@@ -947,26 +1040,26 @@ paths:
                 - work_periods
                 - addresses
               example:
-                id: 2080
-                email: my19@mail.com
+                id: 2138
+                email: my14@mail.com
                 is_admin: false
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:50'
+                updated_at: '2026-06-10 11:23:50'
                 first_name: Peter
                 last_name: Pan
                 can_login: true
                 archived: false
                 holidays_per_year: 12
                 deleted_at: 
-                employee_group_id: 2164
+                employee_group_id: 2224
                 locale: de
                 first_vacation_takeover: 0
                 group_name: MyString
                 group:
-                  id: 2164
+                  id: 2224
                   name: MyString
-                  created_at: '2026-06-10 08:09:41'
-                  updated_at: '2026-06-10 08:09:41'
+                  created_at: '2026-06-10 11:23:50'
+                  updated_at: '2026-06-10 11:23:50'
                   deleted_at: 
                 work_periods: []
                 addresses: []
@@ -1033,7 +1126,7 @@ paths:
                 - sender_bank_iban
                 - sender_bank_bic
               example:
-                id: 8
+                id: 9
                 sender_name: MyString
                 sender_street: MyString
                 sender_zip: '8080'
@@ -1043,8 +1136,8 @@ paths:
                 sender_vat: MyString
                 sender_bank: MyString
                 sender_web: MyString
-                created_at: '2026-06-10T08:09:42.000Z'
-                updated_at: '2026-06-10T08:09:42.000Z'
+                created_at: '2026-06-10T11:23:50.000Z'
+                updated_at: '2026-06-10T11:23:50.000Z'
                 service_order_comment: MyString
                 sender_bank_detail: MyString
                 sender_bank_iban: MyString
@@ -1078,7 +1171,7 @@ paths:
                   - date
                   - duration
               example:
-              - id: 8
+              - id: 9
                 name: MyString
                 date: '2019-05-13'
                 duration: 1
@@ -1164,7 +1257,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 56
+                - id: 57
                   description: MyDescription
                   name: MyName
                   beginning: '2019-05-13'
@@ -1180,7 +1273,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 55
+        example: 58
       responses:
         '200':
           description: returns an invoice
@@ -1283,10 +1376,10 @@ paths:
                 - positions
                 - position_groupings
               example:
-                id: 55
-                accountant_id: 2110
-                address_id: 695
-                customer_id: 1857
+                id: 58
+                accountant_id: 2169
+                address_id: 718
+                customer_id: 1909
                 description: MyDescription
                 fixed_price: 
                 fixed_price_vat: 
@@ -1294,10 +1387,10 @@ paths:
                 beginning: '2019-05-13'
                 ending: '2019-05-14'
                 sibling_invoice_ids: []
-                created_at: '2026-06-10 08:09:42'
+                created_at: '2026-06-10 11:23:51'
                 location_id: 
-                project_id: 273
-                offer_id: 399
+                project_id: 282
+                offer_id: 410
                 breakdown:
                   discounts: []
                   discountTotal: 0
@@ -1343,7 +1436,7 @@ paths:
                   - archived
                   - order
               example:
-              - id: 76
+              - id: 78
                 name: MyName
                 url: MyUrl
                 archived: false
@@ -1359,7 +1452,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 75
+        example: 77
       responses:
         '200':
           description: returns a location
@@ -1385,7 +1478,7 @@ paths:
                 - archived
                 - order
               example:
-                id: 75
+                id: 77
                 name: MyName
                 url: MyUrl
                 archived: false
@@ -1469,7 +1562,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 397
+                - id: 405
                   description: My offers description
                   short_description: My offers short description
                   name: MyOffer
@@ -1484,7 +1577,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 398
+        example: 406
       responses:
         '200':
           description: returns an offer
@@ -1591,18 +1684,18 @@ paths:
                 - positions
                 - position_groupings
               example:
-                id: 398
-                accountant_id: 2107
-                address_id: 694
-                customer_id: 1855
+                id: 406
+                accountant_id: 2144
+                address_id: 710
+                customer_id: 1889
                 description: My offers description
                 fixed_price: 
                 fixed_price_vat: 
                 name: MyOffer
-                rate_group_id: 2489
+                rate_group_id: 2537
                 short_description: My offers short description
                 status: 1
-                created_at: '2026-06-10 08:09:42'
+                created_at: '2026-06-10 11:23:50'
                 location_id: 
                 breakdown:
                   discounts: []
@@ -1741,7 +1834,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 1831
+                - id: 1886
                   type: person
                   comment: 9ü|_ 4 3\/3.-
                   company_id: 
@@ -1754,10 +1847,10 @@ paths:
                   archived: false
                   name: 
                   accountant_id: 
-                  rate_group_id: 2453
+                  rate_group_id: 2531
                   salutation: LGBTQQIP2SAA+
-                  created_at: '2026-06-10 08:09:40'
-                  updated_at: '2026-06-10 08:09:40'
+                  created_at: '2026-06-10 11:23:50'
+                  updated_at: '2026-06-10 11:23:50'
                   deleted_at: 
   "/v2/people/{id}":
     get:
@@ -1770,7 +1863,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 1832
+        example: 1885
       responses:
         '200':
           description: returns a person
@@ -1847,7 +1940,7 @@ paths:
                 - phone_numbers
                 - tags
               example:
-                id: 1832
+                id: 1885
                 type: person
                 comment: 9ü|_ 4 3\/3.-
                 company_id: 
@@ -1860,10 +1953,10 @@ paths:
                 archived: false
                 name: 
                 accountant_id: 
-                rate_group_id: 2454
+                rate_group_id: 2530
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 08:09:40'
-                updated_at: '2026-06-10 08:09:40'
+                created_at: '2026-06-10 11:23:50'
+                updated_at: '2026-06-10 11:23:50'
                 deleted_at: 
                 addresses: []
                 phone_numbers: []
@@ -1903,12 +1996,12 @@ paths:
                   - created_at
                   - updated_at
               example:
-              - id: 86
+              - id: 88
                 archived: false
                 name: MyString
                 deleted_at: 
-                created_at: '2026-06-10 08:09:42'
-                updated_at: '2026-06-10 08:09:42'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
   "/v2/project_categories/{id}":
     get:
       summary: show
@@ -1920,7 +2013,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 85
+        example: 87
       responses:
         '200':
           description: returns a project category
@@ -1949,12 +2042,12 @@ paths:
                 - created_at
                 - updated_at
               example:
-                id: 85
+                id: 87
                 archived: false
                 name: MyString
                 deleted_at: 
-                created_at: '2026-06-10 08:09:42'
-                updated_at: '2026-06-10 08:09:42'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
   "/v2/project_comment_presets":
     get:
       summary: index
@@ -2028,7 +2121,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 16
+                - id: 18
                   comment_preset: MyString
   "/v2/project_comment_presets/{id}":
     get:
@@ -2041,7 +2134,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 15
+        example: 17
       responses:
         '200':
           description: returns a project comment preset
@@ -2058,7 +2151,7 @@ paths:
                 - id
                 - comment_preset
               example:
-                id: 15
+                id: 17
                 comment_preset: MyString
   "/v2/project_comments":
     get:
@@ -2089,10 +2182,10 @@ paths:
                   - comment
                   - project_id
               example:
-              - id: 16
+              - id: 17
                 date: '2019-05-14'
                 comment: MyComment
-                project_id: 270
+                project_id: 279
   "/v2/project_comments/{id}":
     get:
       summary: show
@@ -2104,7 +2197,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 15
+        example: 18
       responses:
         '200':
           description: returns a project comment
@@ -2127,10 +2220,10 @@ paths:
                 - comment
                 - project_id
               example:
-                id: 15
+                id: 18
                 date: '2019-05-14'
                 comment: MyComment
-                project_id: 269
+                project_id: 280
   "/v2/project_efforts":
     get:
       summary: index
@@ -2153,7 +2246,8 @@ paths:
                     position_id:
                       type: integer
                     effort_value:
-                      type: string
+                      type: number
+                      format: float
                     effort_employee_id:
                       type: integer
                     employee_full_name:
@@ -2177,7 +2271,7 @@ paths:
                     rate_unit_factor:
                       type: integer
                     rate_unit_is_time:
-                      type: integer
+                      type: boolean
                     group_name:
                       type: string
                     is_ambiguous:
@@ -2202,22 +2296,22 @@ paths:
                   - group_name
                   - is_ambiguous
               example:
-              - id: 101
+              - id: 103
                 date: '2019-05-14'
-                position_id: 43
-                effort_value: '3.142'
-                effort_employee_id: 2120
+                position_id: 45
+                effort_value: 3.142
+                effort_employee_id: 2181
                 employee_full_name: Peter Pan
                 position_description: MyDescription
                 project_name: 'Project #7'
-                project_id: 275
-                service_id: 139
+                project_id: 283
+                service_id: 143
                 costgroup_number: 102
                 costgroup_name: MyString
                 service_name: My service
                 effort_unit: zt
                 rate_unit_factor: 504
-                rate_unit_is_time: 1
+                rate_unit_is_time: true
                 group_name: MyString
                 is_ambiguous: false
   "/v2/project_efforts/{id}":
@@ -2231,7 +2325,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 102
+        example: 104
       responses:
         '200':
           description: returns a project effort
@@ -2249,7 +2343,8 @@ paths:
                   employee_id:
                     type: integer
                   value:
-                    type: string
+                    type: number
+                    format: float
                   costgroup_number:
                     type: integer
                   project_id:
@@ -2263,13 +2358,13 @@ paths:
                 - costgroup_number
                 - project_id
               example:
-                id: 102
+                id: 104
                 date: '2019-05-14'
-                position_id: 44
-                employee_id: 2124
-                value: '3.142'
+                position_id: 46
+                employee_id: 2185
+                value: 3.142
                 costgroup_number: 103
-                project_id: 276
+                project_id: 284
   "/v2/projects":
     get:
       summary: index
@@ -2358,12 +2453,12 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 271
+                - id: 277
                   archived: false
                   description: my description
-                  name: 'Project #3'
-                  listing_name: 'Project #3'
-                  updated_at: '2026-06-10 08:09:41'
+                  name: 'Project #1'
+                  listing_name: 'Project #1'
+                  updated_at: '2026-06-10 11:23:49'
                   deletable: true
   "/v2/projects/{id}":
     get:
@@ -2376,7 +2471,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 272
+        example: 278
       responses:
         '200':
           description: returns a project
@@ -2464,17 +2559,17 @@ paths:
                 - positions
                 - position_groupings
               example:
-                id: 272
-                accountant_id: 2090
-                address_id: 691
-                customer_id: 1847
+                id: 278
+                accountant_id: 2129
+                address_id: 707
+                customer_id: 1881
                 archived: false
                 description: my description
                 fixed_price: 
-                name: 'Project #4'
-                rate_group_id: 2481
+                name: 'Project #2'
+                rate_group_id: 2529
                 location_id: 
-                created_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:49'
                 chargeable: false
                 deadline: '2026-06-24'
                 vacation_project: false
@@ -2482,7 +2577,7 @@ paths:
                 budget_time: 0
                 current_price: 0
                 current_time: 0
-                offer_id: 396
+                offer_id: 404
                 invoice_ids: []
                 category_distributions: []
                 costgroup_distributions: []
@@ -2514,8 +2609,8 @@ paths:
                   - name
                   - description
               example:
-              - id: 2469
-                name: My rate group 17
+              - id: 2554
+                name: My rate group 37
                 description: My rate group description
   "/v2/rate_units":
     get:
@@ -2608,7 +2703,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 58
+                - id: 62
                   listing_name: Zivitage
                   billing_unit: CHF/d
                   effort_unit: zt
@@ -2627,7 +2722,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 57
+        example: 61
       responses:
         '200':
           description: returns a rate unit
@@ -2659,7 +2754,7 @@ paths:
                 - name
                 - archived
               example:
-                id: 57
+                id: 61
                 billing_unit: CHF/d
                 effort_unit: zt
                 is_time: true
@@ -2780,14 +2875,14 @@ paths:
                   - updated_at
                   - parent
               example:
-              - id: 85
+              - id: 88
                 name: MyString
                 french_name: MyOtherString
                 number: 93
                 order: 9300
                 parent_category_id: 
-                created_at: '2026-06-10 08:09:41'
-                updated_at: '2026-06-10 08:09:41'
+                created_at: '2026-06-10 11:23:51'
+                updated_at: '2026-06-10 11:23:51'
                 parent: 
   "/v2/service_categories/{id}":
     get:
@@ -2800,7 +2895,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 86
+        example: 87
       responses:
         '200':
           description: returns a service category
@@ -2829,7 +2924,7 @@ paths:
                 - order
                 - parent_category_id
               example:
-                id: 86
+                id: 87
                 name: MyString
                 french_name: MyOtherString
                 number: 93
@@ -2882,7 +2977,8 @@ paths:
                         description:
                           type: string
                         vat:
-                          type: string
+                          type: number
+                          format: float
                         local_order:
                           type: integer
                         order:
@@ -2929,10 +3025,10 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 137
+                - id: 142
                   name: My service
                   description: A great service
-                  vat: '0.077'
+                  vat: 0.077
                   local_order: 99
                   order: 103
                   archived: false
@@ -2949,7 +3045,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 138
+        example: 141
       responses:
         '200':
           description: returns a service
@@ -2965,7 +3061,8 @@ paths:
                   description:
                     type: string
                   vat:
-                    type: string
+                    type: number
+                    format: float
                   local_order:
                     type: integer
                   order:
@@ -2991,10 +3088,10 @@ paths:
                 - service_category
                 - service_rates
               example:
-                id: 138
+                id: 141
                 name: My service
                 description: A great service
-                vat: '0.077'
+                vat: 0.077
                 local_order: 99
                 order: 103
                 archived: false
