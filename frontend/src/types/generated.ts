@@ -1010,7 +1010,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates an invoice with non-null optional fields */
+                /** @description creates an invoice */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1113,7 +1113,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns an invoice */
+                /** @description returns an invoice with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1459,7 +1459,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates an offer with non-null optional fields */
+                /** @description creates an offer */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2440,7 +2440,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates a project with non-null optional fields */
+                /** @description creates a project */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2535,7 +2535,9 @@ export interface paths {
         /** show */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    calculate_costgroup_distributions?: string;
+                };
                 header?: never;
                 path: {
                     id: number;
@@ -2569,6 +2571,7 @@ export interface paths {
                             budget_time: number;
                             /** Format: float */
                             current_price: number;
+                            /** Format: float */
                             current_time: number;
                             offer_id: number;
                             invoice_ids: number[];
@@ -2619,6 +2622,8 @@ export interface paths {
                                 order: number;
                                 shared: boolean;
                             }[];
+                            /** Format: float */
+                            costgroup_uncategorized_distribution?: number;
                         };
                     };
                 };
@@ -3137,7 +3142,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a service */
+                /** @description returns a service with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;

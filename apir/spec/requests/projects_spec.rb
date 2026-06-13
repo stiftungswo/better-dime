@@ -40,6 +40,15 @@ RSpec.describe 'V2::Projects', type: :request do
       get "/v2/projects/#{project.id}"
       expect(response).to have_http_status(:ok)
     end
+
+    it 'returns a project with costgroup distributions calculated including uncategorized' do
+      project = create(:project)
+      position = create(:project_position, project: project)
+      create(:project_costgroup_distribution, project: project)
+      ProjectEffort.insert({ date: '2019-05-14', value: 60, position_id: position.id, employee_id: employee.id, costgroup_number: nil })
+      get "/v2/projects/#{project.id}", params: { calculate_costgroup_distributions: 'true' }
+      expect(response).to have_http_status(:ok)
+    end
   end
 
   describe 'POST /v2/projects' do

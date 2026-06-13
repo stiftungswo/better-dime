@@ -24,7 +24,7 @@ if calculate_costgroup_distributions
       0.00.to_f
     end
   end
-  json.costgroup_uncategorized_distribution project.missing_costgroup_distribution if project.costgroup_dist_incomplete?
+  json.costgroup_uncategorized_distribution project.costgroup_dist_incomplete? ? project.missing_costgroup_distribution : nil
 else
   json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
     json.costgroup_number pc.costgroup_number
