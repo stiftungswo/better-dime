@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# These specs exist solely to generate the OpenAPI schema via rspec-openapi.
+# They are not regression tests — do not add assertions here.
 require 'rails_helper'
 
 # ServiceHourReports uses token-based (params) authentication and returns XLSX.
