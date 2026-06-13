@@ -38,10 +38,29 @@ RSpec.configure do |config|
 
   config.use_transactional_fixtures = true
 
+  # Reset all auto-increment counters so generated OpenAPI example IDs are stable
+  # across runs. Tables are empty at suite start (transactional fixtures roll back),
+  # but MySQL 8 persists InnoDB counters across runs — TRUNCATE is the only reliable reset.
+  config.before(:suite) do
+    connection = ActiveRecord::Base.connection
+    connection.execute('SET FOREIGN_KEY_CHECKS = 0')
+    connection.tables.each do |table|
+      connection.execute("TRUNCATE TABLE `#{table}`")
+    rescue StandardError
+      nil
+    end
+    connection.execute('SET FOREIGN_KEY_CHECKS = 1')
+  end
+
   config.infer_spec_type_from_file_location!
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include ActiveSupport::Testing::TimeHelpers
+
+  # Freeze time for request specs so rspec-openapi examples have stable timestamps.
+  config.before(:each, type: :request) { travel_to Time.zone.parse('2020-01-01 12:00:00') }
+  config.after(:each, type: :request) { travel_back }
 
   config.filter_rails_from_backtrace!
 end

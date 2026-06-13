@@ -9,11 +9,9 @@ json.offer_id invoice.project.offer.id unless invoice.project.nil? || invoice.pr
 json.breakdown do
   json.discounts invoice.breakdown[:discounts]
   json.discountTotal invoice.breakdown[:discount_total]
-  json.positions invoice.breakdown[:positions]
   json.rawTotal invoice.breakdown[:raw_total]
   json.subtotal invoice.breakdown[:subtotal]
   json.total invoice.breakdown[:total]
-  json.vats invoice.breakdown[:vats]
   json.vatTotal invoice.breakdown[:vat_total]
 end
 

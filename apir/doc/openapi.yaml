@@ -302,7 +302,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 2697
+                - id: 1
                   type: company
                   comment: test comment
                   company_id: 
@@ -315,26 +315,26 @@ paths:
                   archived: false
                   name: Test GmbH
                   accountant_id: 
-                  rate_group_id: 3652
+                  rate_group_id: 1
                   salutation: 
-                  created_at: '2026-06-10 16:45:48'
-                  updated_at: '2026-06-10 16:45:48'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                   addresses:
-                  - id: 1116
+                  - id: 1
                     city: Winterthur
                     country: Schweiz
-                    customer_id: 2697
+                    customer_id: 1
                     description: 
                     zip: 8400
                     street: Bahnhofstrasse 12
                     supplement: Postfach 1230
-                    created_at: '2026-06-10T16:45:48.000Z'
-                    updated_at: '2026-06-10T16:45:48.000Z'
+                    created_at: '2020-01-01T12:00:00.000Z'
+                    updated_at: '2020-01-01T12:00:00.000Z'
                   people:
-                  - id: 2698
+                  - id: 2
                     type: person
                     comment: 9ü|_ 4 3\/3.-
-                    company_id: 2697
+                    company_id: 1
                     department: MyDepartment
                     department_in_address: false
                     email: mail@example.com
@@ -344,15 +344,15 @@ paths:
                     archived: false
                     name: 
                     accountant_id: 
-                    rate_group_id: 3653
+                    rate_group_id: 2
                     salutation: LGBTQQIP2SAA+
-                    created_at: '2026-06-10T16:45:48.000Z'
-                    updated_at: '2026-06-10T16:45:48.000Z'
+                    created_at: '2020-01-01T12:00:00.000Z'
+                    updated_at: '2020-01-01T12:00:00.000Z'
                   persons:
-                  - id: 2698
+                  - id: 2
                     type: person
                     comment: 9ü|_ 4 3\/3.-
-                    company_id: 2697
+                    company_id: 1
                     department: MyDepartment
                     department_in_address: false
                     email: mail@example.com
@@ -362,17 +362,17 @@ paths:
                     archived: false
                     name: 
                     accountant_id: 
-                    rate_group_id: 3653
+                    rate_group_id: 2
                     salutation: LGBTQQIP2SAA+
-                    created_at: '2026-06-10T16:45:48.000Z'
-                    updated_at: '2026-06-10T16:45:48.000Z'
+                    created_at: '2020-01-01T12:00:00.000Z'
+                    updated_at: '2020-01-01T12:00:00.000Z'
                   phone_numbers:
-                  - id: 40
+                  - id: 1
                     category: 1
-                    customer_id: 2697
+                    customer_id: 1
                     number: 043 355 58 44
-                    created_at: '2026-06-10T16:45:48.000Z'
-                    updated_at: '2026-06-10T16:45:48.000Z'
+                    created_at: '2020-01-01T12:00:00.000Z'
+                    updated_at: '2020-01-01T12:00:00.000Z'
   "/v2/companies/{id}":
     get:
       summary: show
@@ -384,7 +384,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2695
+        example: 3
       responses:
         '200':
           description: returns a company
@@ -579,7 +579,7 @@ paths:
                 - persons
                 - tags
               example:
-                id: 2695
+                id: 3
                 type: company
                 comment: test comment
                 company_id: 
@@ -592,34 +592,34 @@ paths:
                 archived: false
                 name: Test GmbH
                 accountant_id: 
-                rate_group_id: 3650
+                rate_group_id: 3
                 salutation: 
-                created_at: '2026-06-10 16:45:48'
-                updated_at: '2026-06-10 16:45:48'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
                 addresses:
-                - id: 1115
+                - id: 2
                   city: Winterthur
                   country: Schweiz
-                  customer_id: 2695
+                  customer_id: 3
                   description: 
                   zip: 8400
                   street: Bahnhofstrasse 12
                   supplement: Postfach 1230
-                  created_at: '2026-06-10T16:45:48.000Z'
-                  updated_at: '2026-06-10T16:45:48.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                   hidden: false
                 phone_numbers:
-                - id: 39
+                - id: 2
                   category: 1
-                  customer_id: 2695
+                  customer_id: 3
                   number: 043 355 58 44
-                  created_at: '2026-06-10T16:45:48.000Z'
-                  updated_at: '2026-06-10T16:45:48.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                 people:
-                - id: 2696
+                - id: 4
                   type: person
                   comment: 9ü|_ 4 3\/3.-
-                  company_id: 2695
+                  company_id: 3
                   department: MyDepartment
                   department_in_address: false
                   email: mail@example.com
@@ -629,14 +629,14 @@ paths:
                   archived: false
                   name: 
                   accountant_id: 
-                  rate_group_id: 3651
+                  rate_group_id: 4
                   salutation: LGBTQQIP2SAA+
-                  created_at: '2026-06-10T16:45:48.000Z'
-                  updated_at: '2026-06-10T16:45:48.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                 persons:
-                - 2696
+                - 4
                 tags:
-                - 140
+                - 1
   "/v2/costgroups":
     get:
       summary: index
@@ -660,7 +660,7 @@ paths:
                   - number
                   - name
               example:
-              - number: 107
+              - number: 101
                 name: MyString
   "/v2/customer_tags":
     get:
@@ -694,11 +694,11 @@ paths:
                   - created_at
                   - updated_at
               example:
-              - id: 143
+              - id: 2
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/customer_tags/{id}":
     get:
       summary: show
@@ -710,7 +710,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 144
+        example: 3
       responses:
         '200':
           description: returns a customer tag
@@ -736,11 +736,11 @@ paths:
                 - created_at
                 - updated_at
               example:
-                id: 144
+                id: 3
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/customers":
     get:
       summary: index
@@ -809,7 +809,7 @@ paths:
                   - created_at
                   - updated_at
               example:
-              - id: 2740
+              - id: 5
                 type: person
                 comment: 9ü|_ 4 3\/3.-
                 company_id: 
@@ -822,10 +822,10 @@ paths:
                 archived: false
                 name: 
                 accountant_id: 
-                rate_group_id: 3714
+                rate_group_id: 5
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/customers/{id}":
     get:
       summary: show
@@ -837,7 +837,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2742
+        example: 7
       responses:
         '200':
           description: returns a customer
@@ -1025,10 +1025,10 @@ paths:
                 - phone_numbers
                 - tags
               example:
-                id: 2742
+                id: 7
                 type: person
                 comment: 9ü|_ 4 3\/3.-
-                company_id: 2741
+                company_id: 6
                 department: MyDepartment
                 department_in_address: false
                 email: mail@example.com
@@ -1037,16 +1037,16 @@ paths:
                 hidden: false
                 archived: false
                 name: 
-                accountant_id: 3147
-                rate_group_id: 3716
+                accountant_id: 7
+                rate_group_id: 7
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
                 company:
-                  id: 2742
+                  id: 7
                   type: person
                   comment: 9ü|_ 4 3\/3.-
-                  company_id: 2741
+                  company_id: 6
                   department: MyDepartment
                   email: mail@example.com
                   department_in_address: false
@@ -1055,32 +1055,32 @@ paths:
                   hidden: false
                   archived: false
                   name: 
-                  accountant_id: 3147
-                  rate_group_id: 3716
+                  accountant_id: 7
+                  rate_group_id: 7
                   salutation: LGBTQQIP2SAA+
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                 addresses:
-                - id: 1137
+                - id: 3
                   city: Winterthur
                   country: Schweiz
-                  customer_id: 2742
+                  customer_id: 7
                   description: c/o Someone
                   zip: 8400
                   street: Bahnhofstrasse 12
                   supplement: Postfach 1230
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                   hidden: false
                 phone_numbers:
-                - id: 42
+                - id: 3
                   category: 1
-                  customer_id: 2742
+                  customer_id: 7
                   number: 043 355 58 44
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                 tags:
-                - 142
+                - 4
   "/v2/employee_groups":
     get:
       summary: index
@@ -1110,14 +1110,14 @@ paths:
                   - created_at
                   - updated_at
               example:
-              - id: 3218
+              - id: 12
                 name: MyString
-                created_at: '2026-06-10 16:45:48'
-                updated_at: '2026-06-10 16:45:48'
-              - id: 3219
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
+              - id: 13
                 name: MyString
-                created_at: '2026-06-10 16:45:48'
-                updated_at: '2026-06-10 16:45:48'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/employee_groups/{id}":
     get:
       summary: show
@@ -1129,7 +1129,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 3221
+        example: 15
       responses:
         '200':
           description: returns an employee group
@@ -1152,10 +1152,10 @@ paths:
                 - created_at
                 - updated_at
               example:
-                id: 3221
+                id: 15
                 name: MyString
-                created_at: '2026-06-10 16:45:48'
-                updated_at: '2026-06-10 16:45:48'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/employees":
     get:
       summary: index
@@ -1283,44 +1283,44 @@ paths:
                 to: 2
                 total: 2
                 data:
-                - id: 3151
-                  email: my52@mail.com
+                - id: 14
+                  email: my14@mail.com
                   is_admin: false
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                   first_name: Peter
                   last_name: Pan
                   can_login: true
                   archived: false
                   holidays_per_year: 12
-                  employee_group_id: 3267
+                  employee_group_id: 16
                   first_vacation_takeover: 0.0
                   locale: de
                   group_name: MyString
                   group:
-                    id: 3267
+                    id: 16
                     name: MyString
-                    created_at: '2026-06-10 16:45:50'
-                    updated_at: '2026-06-10 16:45:50'
-                - id: 3152
-                  email: my53@mail.com
+                    created_at: '2020-01-01 12:00:00'
+                    updated_at: '2020-01-01 12:00:00'
+                - id: 15
+                  email: my15@mail.com
                   is_admin: false
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                   first_name: Peter
                   last_name: Pan
                   can_login: true
                   archived: false
                   holidays_per_year: 12
-                  employee_group_id: 3268
+                  employee_group_id: 17
                   first_vacation_takeover: 0.0
                   locale: de
                   group_name: MyString
                   group:
-                    id: 3268
+                    id: 17
                     name: MyString
-                    created_at: '2026-06-10 16:45:50'
-                    updated_at: '2026-06-10 16:45:50'
+                    created_at: '2020-01-01 12:00:00'
+                    updated_at: '2020-01-01 12:00:00'
   "/v2/employees/sign_in":
     post:
       summary: create
@@ -1332,7 +1332,7 @@ paths:
         required: false
         schema:
           type: string
-        example: my69@mail.com
+        example: my11@mail.com
       - name: employee[password]
         in: query
         required: false
@@ -1399,18 +1399,18 @@ paths:
                 - first_vacation_takeover
                 - locale
               example:
-                id: 3168
-                email: my69@mail.com
+                id: 11
+                email: my11@mail.com
                 is_admin: false
-                created_at: '2026-06-10T16:45:51.000Z'
-                updated_at: '2026-06-10T16:45:51.000Z'
+                created_at: '2020-01-01T12:00:00.000Z'
+                updated_at: '2020-01-01T12:00:00.000Z'
                 first_name: Peter
                 last_name: Pan
                 can_login: true
                 archived: false
                 holidays_per_year: 12
                 deleted_at: 
-                employee_group_id: 3284
+                employee_group_id: 11
                 first_vacation_takeover: 0.0
                 locale: de
   "/v2/employees/{id}":
@@ -1424,7 +1424,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 3154
+        example: 17
       responses:
         '200':
           description: returns an employee
@@ -1597,28 +1597,28 @@ paths:
                 - work_periods
                 - addresses
               example:
-                id: 3154
-                email: my55@mail.com
+                id: 17
+                email: my17@mail.com
                 is_admin: false
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
                 first_name: Peter
                 last_name: Pan
                 can_login: true
                 archived: false
                 holidays_per_year: 12
-                employee_group_id: 3270
+                employee_group_id: 19
                 locale: de
                 first_vacation_takeover: 0
                 group_name: MyString
                 group:
-                  id: 3270
+                  id: 19
                   name: MyString
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                 work_periods:
-                - id: 14
-                  employee_id: 3154
+                - id: 1
+                  employee_id: 17
                   beginning: '2019-05-14'
                   ending: '2019-06-14'
                   pensum: 100
@@ -1634,7 +1634,7 @@ paths:
                   remaining_vacation_budget: 926.896551724138
                   target_time_till_today: 12096.0
                 addresses:
-                - id: 1138
+                - id: 6
                   city: Winterthur
                   country: Schweiz
                   customer_id: 
@@ -1642,8 +1642,8 @@ paths:
                   zip: 8400
                   street: Bahnhofstrasse 12
                   supplement: Postfach 1230
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                   hidden: false
   "/v2/global_settings":
     get:
@@ -1708,7 +1708,7 @@ paths:
                 - sender_bank_iban
                 - sender_bank_bic
               example:
-                id: 23
+                id: 1
                 sender_name: MyString
                 sender_street: MyString
                 sender_zip: '8080'
@@ -1718,8 +1718,8 @@ paths:
                 sender_vat: MyString
                 sender_bank: MyString
                 sender_web: MyString
-                created_at: '2026-06-10T16:45:50.000Z'
-                updated_at: '2026-06-10T16:45:50.000Z'
+                created_at: '2020-01-01T12:00:00.000Z'
+                updated_at: '2020-01-01T12:00:00.000Z'
                 service_order_comment: MyString
                 sender_bank_detail: MyString
                 sender_bank_iban: MyString
@@ -1753,7 +1753,7 @@ paths:
                   - date
                   - duration
               example:
-              - id: 23
+              - id: 1
                 name: MyString
                 date: '2019-05-13'
                 duration: 1
@@ -1839,26 +1839,171 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 117
+                - id: 1
                   description: MyDescription
                   name: MyName
                   beginning: '2019-05-13'
                   ending: '2019-05-14'
-  "/v2/invoices/{id}":
-    get:
-      summary: show
+    post:
+      summary: create
       tags:
       - V2::Invoice
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-        example: 115
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                project_id:
+                  type: integer
+                description:
+                  type: string
+                name:
+                  type: string
+                beginning:
+                  type: string
+                ending:
+                  type: string
+                fixed_price:
+                  nullable: true
+                  type: integer
+                fixed_price_vat:
+                  nullable: true
+                  type: number
+                  format: float
+                location_id:
+                  nullable: true
+                  type: integer
+                positions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      amount:
+                        type: integer
+                      description:
+                        type: string
+                      order:
+                        type: integer
+                      position_group_id:
+                        nullable: true
+                        type: integer
+                      price_per_rate:
+                        type: integer
+                      rate_unit_id:
+                        type: integer
+                      rate_unit_archived:
+                        type: boolean
+                      vat:
+                        type: number
+                        format: float
+                    required:
+                    - amount
+                    - description
+                    - order
+                    - position_group_id
+                    - price_per_rate
+                    - rate_unit_id
+                    - rate_unit_archived
+                    - vat
+                costgroup_distributions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      costgroup_number:
+                        type: integer
+                      weight:
+                        type: integer
+                    required:
+                    - costgroup_number
+                    - weight
+                discounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      percentage:
+                        type: boolean
+                      value:
+                        type: integer
+                    required:
+                    - name
+                    - percentage
+                    - value
+                position_groupings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      order:
+                        type: integer
+                      shared:
+                        type: boolean
+                    required:
+                    - id
+                    - name
+                    - order
+                    - shared
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - project_id
+              - description
+              - name
+              - beginning
+              - ending
+              - fixed_price
+              - fixed_price_vat
+              - location_id
+              - positions
+              - costgroup_distributions
+              - discounts
+              - position_groupings
+            example:
+              accountant_id: 37
+              address_id: 19
+              customer_id: 35
+              project_id: 6
+              description: My description
+              name: My Invoice
+              beginning: '2024-01-01'
+              ending: '2024-01-31'
+              fixed_price: 1200
+              fixed_price_vat: 7.7
+              location_id: 2
+              positions:
+              - amount: 1
+                description: Position
+                order: 1
+                position_group_id: 3
+                price_per_rate: 100
+                rate_unit_id: 5
+                rate_unit_archived: false
+                vat: 0.077
+              costgroup_distributions: []
+              discounts: []
+              position_groupings:
+              - id: 3
+                name: MyString
+                order: 1
+                shared: false
       responses:
         '200':
-          description: returns an invoice
+          description: creates an invoice with non-null optional fields
           content:
             application/json:
               schema:
@@ -1875,8 +2020,10 @@ paths:
                   description:
                     type: string
                   fixed_price:
+                    nullable: true
                     type: integer
                   fixed_price_vat:
+                    nullable: true
                     type: number
                     format: float
                   name:
@@ -1887,11 +2034,11 @@ paths:
                     type: string
                   sibling_invoice_ids:
                     type: array
-                    items:
-                      type: integer
+                    items: {}
                   created_at:
                     type: string
                   location_id:
+                    nullable: true
                     type: integer
                   project_id:
                     type: integer
@@ -1914,8 +2061,6 @@ paths:
                           - value
                       discountTotal:
                         type: integer
-                      positions:
-                        nullable: true
                       rawTotal:
                         type: number
                         format: float
@@ -1925,18 +2070,268 @@ paths:
                       total:
                         type: number
                         format: float
-                      vats:
-                        nullable: true
                       vatTotal:
                         type: integer
                     required:
                     - discounts
                     - discountTotal
-                    - positions
                     - rawTotal
                     - subtotal
                     - total
-                    - vats
+                    - vatTotal
+                  costgroup_distributions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        costgroup_number:
+                          type: integer
+                        invoice_id:
+                          type: integer
+                        weight:
+                          type: integer
+                      required:
+                      - costgroup_number
+                      - invoice_id
+                      - weight
+                  discounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        invoice_id:
+                          type: integer
+                        name:
+                          type: string
+                        percentage:
+                          type: boolean
+                        value:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - invoice_id
+                      - name
+                      - percentage
+                      - value
+                      - created_at
+                      - updated_at
+                  positions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        amount:
+                          type: number
+                          format: float
+                        description:
+                          type: string
+                        price_per_rate:
+                          type: integer
+                        rate_unit_id:
+                          type: integer
+                        vat:
+                          type: number
+                          format: float
+                        order:
+                          type: integer
+                        position_group_id:
+                          nullable: true
+                          type: integer
+                        rate_unit_archived:
+                          type: boolean
+                        calculated_total:
+                          type: number
+                          format: float
+                      required:
+                      - id
+                      - amount
+                      - description
+                      - price_per_rate
+                      - rate_unit_id
+                      - vat
+                      - order
+                      - position_group_id
+                      - rate_unit_archived
+                      - calculated_total
+                  position_groupings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        order:
+                          type: integer
+                        shared:
+                          type: boolean
+                      required:
+                      - id
+                      - name
+                      - order
+                      - shared
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - description
+                - fixed_price
+                - fixed_price_vat
+                - name
+                - beginning
+                - ending
+                - sibling_invoice_ids
+                - created_at
+                - location_id
+                - project_id
+                - offer_id
+                - breakdown
+                - costgroup_distributions
+                - discounts
+                - positions
+                - position_groupings
+              example:
+                id: 6
+                accountant_id: 37
+                address_id: 19
+                customer_id: 35
+                description: My description
+                fixed_price: 1200
+                fixed_price_vat: 7.7
+                name: My Invoice
+                beginning: '2024-01-01'
+                ending: '2024-01-31'
+                sibling_invoice_ids: []
+                created_at: '2020-01-01 12:00:00'
+                location_id: 2
+                project_id: 6
+                offer_id: 6
+                breakdown:
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 100.0
+                  subtotal: 100.0
+                  total: 107.0
+                  vatTotal: 7
+                costgroup_distributions: []
+                discounts: []
+                positions:
+                - id: 4
+                  amount: 1.0
+                  description: Position
+                  price_per_rate: 100
+                  rate_unit_id: 5
+                  vat: 0.077
+                  order: 1
+                  position_group_id: 3
+                  rate_unit_archived: false
+                  calculated_total: 100.0
+                position_groupings:
+                - id: 3
+                  name: MyString
+                  order: 1
+                  shared: false
+  "/v2/invoices/{id}":
+    get:
+      summary: show
+      tags:
+      - V2::Invoice
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 4
+      responses:
+        '200':
+          description: returns an invoice with nullable fields null
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  description:
+                    type: string
+                  fixed_price:
+                    type: integer
+                    nullable: true
+                  fixed_price_vat:
+                    type: number
+                    format: float
+                    nullable: true
+                  name:
+                    type: string
+                  beginning:
+                    type: string
+                  ending:
+                    type: string
+                  sibling_invoice_ids:
+                    type: array
+                    items:
+                      type: integer
+                  created_at:
+                    type: string
+                  location_id:
+                    type: integer
+                    nullable: true
+                  project_id:
+                    type: integer
+                  offer_id:
+                    type: integer
+                  breakdown:
+                    type: object
+                    properties:
+                      discounts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: integer
+                          required:
+                          - name
+                          - value
+                      discountTotal:
+                        type: integer
+                      rawTotal:
+                        type: number
+                        format: float
+                      subtotal:
+                        type: number
+                        format: float
+                      total:
+                        type: number
+                        format: float
+                      vatTotal:
+                        type: integer
+                    required:
+                    - discounts
+                    - discountTotal
+                    - rawTotal
+                    - subtotal
+                    - total
                     - vatTotal
                   costgroup_distributions:
                     type: array
@@ -2004,6 +2399,7 @@ paths:
                           type: integer
                         position_group_id:
                           type: integer
+                          nullable: true
                         rate_unit_archived:
                           type: boolean
                         calculated_total:
@@ -2060,61 +2456,243 @@ paths:
                 - positions
                 - position_groupings
               example:
-                id: 115
-                accountant_id: 3156
-                address_id: 1139
-                customer_id: 2743
+                id: 4
+                accountant_id: 30
+                address_id: 14
+                customer_id: 26
                 description: MyDescription
-                fixed_price: 12000
-                fixed_price_vat: 0.077
+                fixed_price: 
+                fixed_price_vat: 
                 name: MyName
                 beginning: '2019-05-13'
                 ending: '2019-05-14'
-                sibling_invoice_ids:
-                - 116
-                created_at: '2026-06-10 16:45:50'
-                location_id: 134
-                project_id: 417
-                offer_id: 567
+                sibling_invoice_ids: []
+                created_at: '2020-01-01 12:00:00'
+                location_id: 
+                project_id: 4
+                offer_id: 4
                 breakdown:
-                  discounts:
-                  - name: My InvoiceDiscount
-                    value: -150
-                  discountTotal: -150
-                  positions: 
-                  rawTotal: 0.0
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 150.0
                   subtotal: 150.0
-                  total: 0.0
-                  vats: 
-                  vatTotal: 0
-                costgroup_distributions:
-                - costgroup_number: 106
-                  invoice_id: 115
-                  weight: 100
-                discounts:
-                - id: 14
-                  invoice_id: 115
-                  name: My InvoiceDiscount
-                  percentage: false
-                  value: 150.0
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  total: 161.0
+                  vatTotal: 11
+                costgroup_distributions: []
+                discounts: []
                 positions:
-                - id: 14
+                - id: 2
                   amount: 9.99
                   description: MyInvoicePosition
                   price_per_rate: 15
-                  rate_unit_id: 191
+                  rate_unit_id: 3
                   vat: 0.077
                   order: 1
-                  position_group_id: 131
+                  position_group_id: 
                   rate_unit_archived: false
                   calculated_total: 149.85
+                position_groupings: []
+    put:
+      summary: update
+      tags:
+      - V2::Invoice
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 7
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                name:
+                  type: string
+                beginning:
+                  type: string
+                ending:
+                  type: string
+                fixed_price:
+                  nullable: true
+                fixed_price_vat:
+                  nullable: true
+                location_id:
+                  nullable: true
+                positions:
+                  type: array
+                  items: {}
+                costgroup_distributions:
+                  type: array
+                  items: {}
+                discounts:
+                  type: array
+                  items: {}
                 position_groupings:
-                - id: 131
-                  name: MyString
-                  order: 1
-                  shared: false
+                  type: array
+                  items: {}
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - description
+              - name
+              - beginning
+              - ending
+              - fixed_price
+              - fixed_price_vat
+              - location_id
+              - positions
+              - costgroup_distributions
+              - discounts
+              - position_groupings
+            example:
+              accountant_id: 40
+              address_id: 21
+              customer_id: 38
+              description: MyDescription
+              name: Updated Invoice
+              beginning: '2019-05-13'
+              ending: '2019-05-14'
+              fixed_price: 
+              fixed_price_vat: 
+              location_id: 
+              positions: []
+              costgroup_distributions: []
+              discounts: []
+              position_groupings: []
+      responses:
+        '200':
+          description: updates an invoice
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  description:
+                    type: string
+                  fixed_price:
+                    nullable: true
+                  fixed_price_vat:
+                    nullable: true
+                  name:
+                    type: string
+                  beginning:
+                    type: string
+                  ending:
+                    type: string
+                  sibling_invoice_ids:
+                    type: array
+                    items: {}
+                  created_at:
+                    type: string
+                  location_id:
+                    nullable: true
+                  project_id:
+                    type: integer
+                  offer_id:
+                    type: integer
+                  breakdown:
+                    type: object
+                    properties:
+                      discounts:
+                        type: array
+                        items: {}
+                      discountTotal:
+                        type: integer
+                      rawTotal:
+                        type: integer
+                      subtotal:
+                        type: integer
+                      total:
+                        type: integer
+                      vatTotal:
+                        type: integer
+                    required:
+                    - discounts
+                    - discountTotal
+                    - rawTotal
+                    - subtotal
+                    - total
+                    - vatTotal
+                  costgroup_distributions:
+                    type: array
+                    items: {}
+                  discounts:
+                    type: array
+                    items: {}
+                  positions:
+                    type: array
+                    items: {}
+                  position_groupings:
+                    type: array
+                    items: {}
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - description
+                - fixed_price
+                - fixed_price_vat
+                - name
+                - beginning
+                - ending
+                - sibling_invoice_ids
+                - created_at
+                - location_id
+                - project_id
+                - offer_id
+                - breakdown
+                - costgroup_distributions
+                - discounts
+                - positions
+                - position_groupings
+              example:
+                id: 7
+                accountant_id: 40
+                address_id: 21
+                customer_id: 38
+                description: MyDescription
+                fixed_price: 
+                fixed_price_vat: 
+                name: Updated Invoice
+                beginning: '2019-05-13'
+                ending: '2019-05-14'
+                sibling_invoice_ids: []
+                created_at: '2020-01-01 12:00:00'
+                location_id: 
+                project_id: 7
+                offer_id: 7
+                breakdown:
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 0
+                  subtotal: 0
+                  total: 0
+                  vatTotal: 0
+                costgroup_distributions: []
+                discounts: []
+                positions: []
+                position_groupings: []
   "/v2/locations":
     get:
       summary: index
@@ -2147,7 +2725,7 @@ paths:
                   - archived
                   - order
               example:
-              - id: 130
+              - id: 3
                 name: MyName
                 url: MyUrl
                 archived: false
@@ -2163,7 +2741,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 131
+        example: 4
       responses:
         '200':
           description: returns a location
@@ -2189,7 +2767,7 @@ paths:
                 - archived
                 - order
               example:
-                id: 131
+                id: 4
                 name: MyName
                 url: MyUrl
                 archived: false
@@ -2273,25 +2851,188 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 561
+                - id: 8
                   description: My offers description
                   short_description: My offers short description
                   name: MyOffer
-  "/v2/offers/{id}":
-    get:
-      summary: show
+    post:
+      summary: create
       tags:
       - V2::Offer
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-        example: 562
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                fixed_price:
+                  nullable: true
+                  type: integer
+                fixed_price_vat:
+                  nullable: true
+                  type: number
+                  format: float
+                location_id:
+                  nullable: true
+                  type: integer
+                name:
+                  type: string
+                rate_group_id:
+                  type: integer
+                short_description:
+                  type: string
+                status:
+                  type: integer
+                positions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      amount:
+                        type: integer
+                      description:
+                        type: string
+                      order:
+                        type: integer
+                      position_group_id:
+                        nullable: true
+                        type: integer
+                      price_per_rate:
+                        type: integer
+                      rate_unit_id:
+                        type: integer
+                      rate_unit_archived:
+                        type: boolean
+                      service_id:
+                        type: integer
+                      vat:
+                        type: number
+                        format: float
+                    required:
+                    - amount
+                    - description
+                    - order
+                    - position_group_id
+                    - price_per_rate
+                    - rate_unit_id
+                    - rate_unit_archived
+                    - service_id
+                    - vat
+                discounts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      percentage:
+                        type: boolean
+                      value:
+                        type: integer
+                    required:
+                    - name
+                    - percentage
+                    - value
+                costgroup_distributions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      costgroup_number:
+                        type: integer
+                      weight:
+                        type: integer
+                    required:
+                    - costgroup_number
+                    - weight
+                category_distributions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      category_id:
+                        type: integer
+                      weight:
+                        type: integer
+                    required:
+                    - category_id
+                    - weight
+                position_groupings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      order:
+                        type: integer
+                      shared:
+                        type: boolean
+                    required:
+                    - id
+                    - name
+                    - order
+                    - shared
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - description
+              - fixed_price
+              - fixed_price_vat
+              - location_id
+              - name
+              - rate_group_id
+              - short_description
+              - status
+              - positions
+              - discounts
+              - costgroup_distributions
+              - category_distributions
+              - position_groupings
+            example:
+              accountant_id: 56
+              address_id: 30
+              customer_id: 55
+              description: My description
+              fixed_price: 1200
+              fixed_price_vat: 7.7
+              location_id: 6
+              name: My Offer
+              rate_group_id: 75
+              short_description: Short
+              status: 1
+              positions:
+              - amount: 1
+                description: Position
+                order: 1
+                position_group_id: 5
+                price_per_rate: 100
+                rate_unit_id: 9
+                rate_unit_archived: false
+                service_id: 5
+                vat: 0.077
+              discounts: []
+              costgroup_distributions: []
+              category_distributions: []
+              position_groupings:
+              - id: 5
+                name: MyString
+                order: 1
+                shared: false
       responses:
         '200':
-          description: returns an offer
+          description: creates an offer with non-null optional fields
           content:
             application/json:
               schema:
@@ -2308,8 +3049,10 @@ paths:
                   description:
                     type: string
                   fixed_price:
+                    nullable: true
                     type: integer
                   fixed_price_vat:
+                    nullable: true
                     type: number
                     format: float
                   name:
@@ -2323,8 +3066,7 @@ paths:
                   created_at:
                     type: string
                   location_id:
-                    type: integer
-                  project_id:
+                    nullable: true
                     type: integer
                   breakdown:
                     type: object
@@ -2343,8 +3085,6 @@ paths:
                           - value
                       discountTotal:
                         type: integer
-                      positions:
-                        nullable: true
                       rawTotal:
                         type: number
                         format: float
@@ -2354,18 +3094,343 @@ paths:
                       total:
                         type: number
                         format: float
-                      vats:
-                        nullable: true
                       vatTotal:
                         type: integer
                     required:
                     - discounts
                     - discountTotal
-                    - positions
                     - rawTotal
                     - subtotal
                     - total
-                    - vats
+                    - vatTotal
+                  invoice_ids:
+                    type: array
+                    items: {}
+                  project_id:
+                    nullable: true
+                  discounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        offer_id:
+                          type: integer
+                        name:
+                          type: string
+                        percentage:
+                          type: boolean
+                        value:
+                          type: number
+                          format: float
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - offer_id
+                      - name
+                      - percentage
+                      - value
+                      - created_at
+                      - updated_at
+                  category_distributions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        offer_id:
+                          type: integer
+                        category_id:
+                          type: integer
+                        weight:
+                          type: integer
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - offer_id
+                      - category_id
+                      - weight
+                      - created_at
+                      - updated_at
+                  costgroup_distributions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        offer_id:
+                          type: integer
+                        costgroup_number:
+                          type: integer
+                        weight:
+                          type: integer
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - offer_id
+                      - costgroup_number
+                      - weight
+                      - created_at
+                      - updated_at
+                  positions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        amount:
+                          type: number
+                          format: float
+                        description:
+                          type: string
+                        price_per_rate:
+                          type: integer
+                        rate_unit_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        vat:
+                          type: number
+                          format: float
+                        order:
+                          type: integer
+                        position_group_id:
+                          nullable: true
+                          type: integer
+                        rate_unit_archived:
+                          type: boolean
+                        service:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            vat:
+                              type: number
+                              format: float
+                            order:
+                              type: integer
+                            local_order:
+                              type: integer
+                            archived:
+                              type: boolean
+                            service_category_id:
+                              nullable: true
+                          required:
+                          - id
+                          - name
+                          - description
+                          - vat
+                          - order
+                          - local_order
+                          - archived
+                          - service_category_id
+                      required:
+                      - id
+                      - amount
+                      - description
+                      - price_per_rate
+                      - rate_unit_id
+                      - service_id
+                      - vat
+                      - order
+                      - position_group_id
+                      - rate_unit_archived
+                      - service
+                  position_groupings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        order:
+                          type: integer
+                        shared:
+                          type: boolean
+                      required:
+                      - id
+                      - name
+                      - order
+                      - shared
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - description
+                - fixed_price
+                - fixed_price_vat
+                - name
+                - rate_group_id
+                - short_description
+                - status
+                - created_at
+                - location_id
+                - breakdown
+                - invoice_ids
+                - project_id
+                - discounts
+                - category_distributions
+                - costgroup_distributions
+                - positions
+                - position_groupings
+              example:
+                id: 12
+                accountant_id: 56
+                address_id: 30
+                customer_id: 55
+                description: My description
+                fixed_price: 1200
+                fixed_price_vat: 7.7
+                name: My Offer
+                rate_group_id: 75
+                short_description: Short
+                status: 1
+                created_at: '2020-01-01 12:00:00'
+                location_id: 6
+                breakdown:
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 100.0
+                  subtotal: 100.0
+                  total: 107.0
+                  vatTotal: 7
+                invoice_ids: []
+                project_id: 
+                discounts: []
+                category_distributions: []
+                costgroup_distributions: []
+                positions:
+                - id: 4
+                  amount: 1.0
+                  description: Position
+                  price_per_rate: 100
+                  rate_unit_id: 9
+                  service_id: 5
+                  vat: 0.077
+                  order: 1
+                  position_group_id: 5
+                  rate_unit_archived: false
+                  service:
+                    id: 5
+                    name: My service
+                    description: A great service
+                    vat: 0.077
+                    order: 103
+                    local_order: 99
+                    archived: false
+                    service_category_id: 
+                position_groupings:
+                - id: 5
+                  name: MyString
+                  order: 1
+                  shared: false
+  "/v2/offers/{id}":
+    get:
+      summary: show
+      tags:
+      - V2::Offer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 10
+      responses:
+        '200':
+          description: returns an offer with nullable fields null
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  description:
+                    type: string
+                  fixed_price:
+                    type: integer
+                    nullable: true
+                  fixed_price_vat:
+                    type: number
+                    format: float
+                    nullable: true
+                  name:
+                    type: string
+                  rate_group_id:
+                    type: integer
+                  short_description:
+                    type: string
+                  status:
+                    type: integer
+                  created_at:
+                    type: string
+                  location_id:
+                    type: integer
+                    nullable: true
+                  project_id:
+                    type: integer
+                    nullable: true
+                  breakdown:
+                    type: object
+                    properties:
+                      discounts:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: integer
+                          required:
+                          - name
+                          - value
+                      discountTotal:
+                        type: integer
+                      rawTotal:
+                        type: number
+                        format: float
+                      subtotal:
+                        type: number
+                        format: float
+                      total:
+                        type: number
+                        format: float
+                      vatTotal:
+                        type: integer
+                    required:
+                    - discounts
+                    - discountTotal
+                    - rawTotal
+                    - subtotal
+                    - total
                     - vatTotal
                   invoice_ids:
                     type: array
@@ -2472,6 +3537,7 @@ paths:
                           type: integer
                         position_group_id:
                           type: integer
+                          nullable: true
                         rate_unit_archived:
                           type: boolean
                         service:
@@ -2494,6 +3560,7 @@ paths:
                               type: boolean
                             service_category_id:
                               type: integer
+                              nullable: true
                           required:
                           - id
                           - name
@@ -2547,89 +3614,276 @@ paths:
                 - status
                 - created_at
                 - location_id
-                - project_id
                 - breakdown
                 - invoice_ids
+                - project_id
                 - discounts
                 - category_distributions
                 - costgroup_distributions
                 - positions
                 - position_groupings
               example:
-                id: 562
-                accountant_id: 3120
-                address_id: 1124
-                customer_id: 2713
+                id: 10
+                accountant_id: 52
+                address_id: 28
+                customer_id: 52
                 description: My offers description
-                fixed_price: 12000
-                fixed_price_vat: 7.7
+                fixed_price: 
+                fixed_price_vat: 
                 name: MyOffer
-                rate_group_id: 3677
+                rate_group_id: 71
                 short_description: My offers short description
                 status: 1
-                created_at: '2026-06-10 16:45:49'
-                location_id: 132
-                project_id: 412
+                created_at: '2020-01-01 12:00:00'
+                location_id: 
+                project_id: 
                 breakdown:
-                  discounts:
-                  - name: MyString
-                    value: -9
-                  discountTotal: -10
-                  positions: 
-                  rawTotal: 90.0
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 100.0
                   subtotal: 100.0
-                  total: 179.0
-                  vats: 
-                  vatTotal: 89
-                invoice_ids:
-                - 113
-                discounts:
-                - id: 15
-                  offer_id: 562
-                  name: MyString
-                  percentage: false
-                  value: 9.99
-                  created_at: '2026-06-10T16:45:49.000Z'
-                  updated_at: '2026-06-10T16:45:49.000Z'
-                category_distributions:
-                - id: 15
-                  offer_id: 562
-                  category_id: 142
-                  weight: 100
-                  created_at: '2026-06-10T16:45:49.444Z'
-                  updated_at: '2026-06-10T16:45:49.444Z'
-                costgroup_distributions:
-                - id: 15
-                  offer_id: 562
-                  costgroup_number: 104
-                  weight: 100
-                  created_at: '2026-06-10T16:45:49.414Z'
-                  updated_at: '2026-06-10T16:45:49.414Z'
+                  total: 199.0
+                  vatTotal: 99
+                invoice_ids: []
+                discounts: []
+                category_distributions: []
+                costgroup_distributions: []
                 positions:
-                - id: 15
+                - id: 2
                   amount: 99.0
                   description: MyString
                   price_per_rate: 1
-                  rate_unit_id: 186
-                  service_id: 240
+                  rate_unit_id: 7
+                  service_id: 3
                   vat: 0.99
                   order: 1
-                  position_group_id: 129
+                  position_group_id: 
                   rate_unit_archived: false
                   service:
-                    id: 240
+                    id: 3
                     name: My service
                     description: A great service
                     vat: 0.077
-                    order: 167
+                    order: 103
                     local_order: 99
                     archived: false
-                    service_category_id: 175
+                    service_category_id: 
+                position_groupings: []
+    put:
+      summary: update
+      tags:
+      - V2::Offer
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 13
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                fixed_price:
+                  nullable: true
+                fixed_price_vat:
+                  nullable: true
+                location_id:
+                  nullable: true
+                name:
+                  type: string
+                rate_group_id:
+                  type: integer
+                short_description:
+                  type: string
+                status:
+                  type: integer
+                positions:
+                  type: array
+                  items: {}
+                discounts:
+                  type: array
+                  items: {}
+                costgroup_distributions:
+                  type: array
+                  items: {}
+                category_distributions:
+                  type: array
+                  items: {}
                 position_groupings:
-                - id: 129
-                  name: MyString
-                  order: 1
-                  shared: false
+                  type: array
+                  items: {}
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - description
+              - fixed_price
+              - fixed_price_vat
+              - location_id
+              - name
+              - rate_group_id
+              - short_description
+              - status
+              - positions
+              - discounts
+              - costgroup_distributions
+              - category_distributions
+              - position_groupings
+            example:
+              accountant_id: 58
+              address_id: 31
+              customer_id: 56
+              description: My offers description
+              fixed_price: 
+              fixed_price_vat: 
+              location_id: 
+              name: Updated Offer
+              rate_group_id: 78
+              short_description: My offers short description
+              status: 1
+              positions: []
+              discounts: []
+              costgroup_distributions: []
+              category_distributions: []
+              position_groupings: []
+      responses:
+        '200':
+          description: updates an offer
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  description:
+                    type: string
+                  fixed_price:
+                    nullable: true
+                  fixed_price_vat:
+                    nullable: true
+                  name:
+                    type: string
+                  rate_group_id:
+                    type: integer
+                  short_description:
+                    type: string
+                  status:
+                    type: integer
+                  created_at:
+                    type: string
+                  location_id:
+                    nullable: true
+                  breakdown:
+                    type: object
+                    properties:
+                      discounts:
+                        type: array
+                        items: {}
+                      discountTotal:
+                        type: integer
+                      rawTotal:
+                        type: integer
+                      subtotal:
+                        type: integer
+                      total:
+                        type: integer
+                      vatTotal:
+                        type: integer
+                    required:
+                    - discounts
+                    - discountTotal
+                    - rawTotal
+                    - subtotal
+                    - total
+                    - vatTotal
+                  invoice_ids:
+                    type: array
+                    items: {}
+                  project_id:
+                    nullable: true
+                  discounts:
+                    type: array
+                    items: {}
+                  category_distributions:
+                    type: array
+                    items: {}
+                  costgroup_distributions:
+                    type: array
+                    items: {}
+                  positions:
+                    type: array
+                    items: {}
+                  position_groupings:
+                    type: array
+                    items: {}
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - description
+                - fixed_price
+                - fixed_price_vat
+                - name
+                - rate_group_id
+                - short_description
+                - status
+                - created_at
+                - location_id
+                - breakdown
+                - invoice_ids
+                - project_id
+                - discounts
+                - category_distributions
+                - costgroup_distributions
+                - positions
+                - position_groupings
+              example:
+                id: 13
+                accountant_id: 58
+                address_id: 31
+                customer_id: 56
+                description: My offers description
+                fixed_price: 
+                fixed_price_vat: 
+                name: Updated Offer
+                rate_group_id: 78
+                short_description: My offers short description
+                status: 1
+                created_at: '2020-01-01 12:00:00'
+                location_id: 
+                breakdown:
+                  discounts: []
+                  discountTotal: 0
+                  rawTotal: 0
+                  subtotal: 0
+                  total: 0
+                  vatTotal: 0
+                invoice_ids: []
+                project_id: 
+                discounts: []
+                category_distributions: []
+                costgroup_distributions: []
+                positions: []
+                position_groupings: []
   "/v2/people":
     get:
       summary: index
@@ -2748,7 +4002,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 2737
+                - id: 58
                   type: person
                   comment: 9ü|_ 4 3\/3.-
                   company_id: 
@@ -2761,10 +4015,10 @@ paths:
                   archived: false
                   name: 
                   accountant_id: 
-                  rate_group_id: 3711
+                  rate_group_id: 79
                   salutation: LGBTQQIP2SAA+
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
   "/v2/people/{id}":
     get:
       summary: show
@@ -2776,7 +4030,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2739
+        example: 60
       responses:
         '200':
           description: returns a person
@@ -2964,10 +4218,10 @@ paths:
                 - phone_numbers
                 - tags
               example:
-                id: 2739
+                id: 60
                 type: person
                 comment: 9ü|_ 4 3\/3.-
-                company_id: 2738
+                company_id: 59
                 department: MyDepartment
                 department_in_address: false
                 email: mail@example.com
@@ -2976,16 +4230,16 @@ paths:
                 hidden: false
                 archived: false
                 name: 
-                accountant_id: 3145
-                rate_group_id: 3713
+                accountant_id: 60
+                rate_group_id: 81
                 salutation: LGBTQQIP2SAA+
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
                 company:
-                  id: 2739
+                  id: 60
                   type: person
                   comment: 9ü|_ 4 3\/3.-
-                  company_id: 2738
+                  company_id: 59
                   department: MyDepartment
                   department_in_address: false
                   email: mail@example.com
@@ -2994,32 +4248,32 @@ paths:
                   hidden: false
                   archived: false
                   name: 
-                  accountant_id: 3145
-                  rate_group_id: 3713
+                  accountant_id: 60
+                  rate_group_id: 81
                   salutation: LGBTQQIP2SAA+
-                  created_at: '2026-06-10 16:45:50'
-                  updated_at: '2026-06-10 16:45:50'
+                  created_at: '2020-01-01 12:00:00'
+                  updated_at: '2020-01-01 12:00:00'
                 addresses:
-                - id: 1136
+                - id: 32
                   city: Winterthur
                   country: Schweiz
-                  customer_id: 2739
+                  customer_id: 60
                   description: c/o Someone
                   zip: 8400
                   street: Bahnhofstrasse 12
                   supplement: Postfach 1230
                   hidden: false
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                 phone_numbers:
-                - id: 41
+                - id: 4
                   category: 1
-                  customer_id: 2739
+                  customer_id: 60
                   number: 043 355 58 44
-                  created_at: '2026-06-10T16:45:50.000Z'
-                  updated_at: '2026-06-10T16:45:50.000Z'
+                  created_at: '2020-01-01T12:00:00.000Z'
+                  updated_at: '2020-01-01T12:00:00.000Z'
                 tags:
-                - 141
+                - 5
   "/v2/project_categories":
     get:
       summary: index
@@ -3052,11 +4306,11 @@ paths:
                   - created_at
                   - updated_at
               example:
-              - id: 144
+              - id: 3
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/project_categories/{id}":
     get:
       summary: show
@@ -3068,7 +4322,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 145
+        example: 4
       responses:
         '200':
           description: returns a project category
@@ -3094,11 +4348,11 @@ paths:
                 - created_at
                 - updated_at
               example:
-                id: 145
+                id: 4
                 archived: false
                 name: MyString
-                created_at: '2026-06-10 16:45:51'
-                updated_at: '2026-06-10 16:45:51'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
   "/v2/project_comment_presets":
     get:
       summary: index
@@ -3172,7 +4426,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 46
+                - id: 1
                   comment_preset: MyString
   "/v2/project_comment_presets/{id}":
     get:
@@ -3185,7 +4439,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 45
+        example: 2
       responses:
         '200':
           description: returns a project comment preset
@@ -3202,7 +4456,7 @@ paths:
                 - id
                 - comment_preset
               example:
-                id: 45
+                id: 2
                 comment_preset: MyString
   "/v2/project_comments":
     get:
@@ -3233,10 +4487,10 @@ paths:
                   - comment
                   - project_id
               example:
-              - id: 46
+              - id: 1
                 date: '2019-05-14'
                 comment: MyComment
-                project_id: 416
+                project_id: 9
   "/v2/project_comments/{id}":
     get:
       summary: show
@@ -3248,7 +4502,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 45
+        example: 2
       responses:
         '200':
           description: returns a project comment
@@ -3271,10 +4525,10 @@ paths:
                 - comment
                 - project_id
               example:
-                id: 45
+                id: 2
                 date: '2019-05-14'
                 comment: MyComment
-                project_id: 415
+                project_id: 10
   "/v2/project_efforts":
     get:
       summary: index
@@ -3347,17 +4601,17 @@ paths:
                   - group_name
                   - is_ambiguous
               example:
-              - id: 146
+              - id: 2
                 date: '2019-05-14'
-                position_id: 101
+                position_id: 2
                 effort_value: 3.142
-                effort_employee_id: 3116
+                effort_employee_id: 74
                 employee_full_name: Peter Pan
                 position_description: MyDescription
-                project_name: 'Project #3'
-                project_id: 411
-                service_id: 239
-                costgroup_number: 103
+                project_name: 'Project #11'
+                project_id: 11
+                service_id: 6
+                costgroup_number: 107
                 costgroup_name: MyString
                 service_name: My service
                 effort_unit: zt
@@ -3376,7 +4630,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 145
+        example: 3
       responses:
         '200':
           description: returns a project effort
@@ -3409,13 +4663,13 @@ paths:
                 - costgroup_number
                 - project_id
               example:
-                id: 145
+                id: 3
                 date: '2019-05-14'
-                position_id: 100
-                employee_id: 3112
+                position_id: 3
+                employee_id: 78
                 value: 3.142
-                costgroup_number: 102
-                project_id: 410
+                costgroup_number: 108
+                project_id: 12
   "/v2/projects":
     get:
       summary: index
@@ -3504,13 +4758,423 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 413
+                - id: 13
                   archived: false
                   description: my description
-                  name: 'Project #5'
-                  listing_name: 'Project #5'
-                  updated_at: '2026-06-10 16:45:49'
+                  name: 'Project #13'
+                  listing_name: 'Project #13'
+                  updated_at: '2020-01-01 12:00:00'
                   deletable: true
+    post:
+      summary: create
+      tags:
+      - V2::Project
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                name:
+                  type: string
+                rate_group_id:
+                  type: integer
+                location_id:
+                  nullable: true
+                  type: integer
+                deadline:
+                  nullable: true
+                  type: string
+                fixed_price:
+                  nullable: true
+                  type: integer
+                archived:
+                  type: boolean
+                chargeable:
+                  type: boolean
+                vacation_project:
+                  type: boolean
+                positions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                      order:
+                        type: integer
+                      position_group_id:
+                        nullable: true
+                        type: integer
+                      price_per_rate:
+                        type: integer
+                      rate_unit_id:
+                        type: integer
+                      service_id:
+                        type: integer
+                      vat:
+                        type: number
+                        format: float
+                    required:
+                    - description
+                    - order
+                    - position_group_id
+                    - price_per_rate
+                    - rate_unit_id
+                    - service_id
+                    - vat
+                costgroup_distributions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      costgroup_number:
+                        type: integer
+                      weight:
+                        type: integer
+                    required:
+                    - costgroup_number
+                    - weight
+                category_distributions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      category_id:
+                        type: integer
+                      weight:
+                        type: integer
+                    required:
+                    - category_id
+                    - weight
+                position_groupings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      order:
+                        type: integer
+                      shared:
+                        type: boolean
+                    required:
+                    - id
+                    - name
+                    - order
+                    - shared
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - description
+              - name
+              - rate_group_id
+              - location_id
+              - deadline
+              - fixed_price
+              - archived
+              - chargeable
+              - vacation_project
+              - positions
+              - costgroup_distributions
+              - category_distributions
+              - position_groupings
+            example:
+              accountant_id: 92
+              address_id: 49
+              customer_id: 92
+              description: My description
+              name: My Project
+              rate_group_id: 129
+              location_id: 8
+              deadline: '2025-12-31'
+              fixed_price: 5000
+              archived: false
+              chargeable: true
+              vacation_project: false
+              positions:
+              - description: Position
+                order: 1
+                position_group_id: 9
+                price_per_rate: 100
+                rate_unit_id: 15
+                service_id: 11
+                vat: 0.077
+              costgroup_distributions: []
+              category_distributions: []
+              position_groupings:
+              - id: 9
+                name: MyString
+                order: 1
+                shared: false
+      responses:
+        '200':
+          description: creates a project with non-null optional fields
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  archived:
+                    type: boolean
+                  description:
+                    type: string
+                  fixed_price:
+                    nullable: true
+                    type: integer
+                  name:
+                    type: string
+                  rate_group_id:
+                    type: integer
+                  location_id:
+                    nullable: true
+                    type: integer
+                  created_at:
+                    type: string
+                  chargeable:
+                    type: boolean
+                  deadline:
+                    nullable: true
+                    type: string
+                  vacation_project:
+                    type: boolean
+                  budget_price:
+                    nullable: true
+                  budget_time:
+                    nullable: true
+                  current_price:
+                    type: number
+                    format: float
+                  current_time:
+                    type: integer
+                  invoice_ids:
+                    type: array
+                    items: {}
+                  category_distributions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        project_id:
+                          type: integer
+                        category_id:
+                          type: integer
+                        weight:
+                          type: integer
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - project_id
+                      - category_id
+                      - weight
+                      - created_at
+                      - updated_at
+                  costgroup_distributions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        costgroup_number:
+                          type: integer
+                        project_id:
+                          type: integer
+                      required:
+                      - costgroup_number
+                      - project_id
+                  positions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        description:
+                          type: string
+                        price_per_rate:
+                          type: integer
+                        rate_unit_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        vat:
+                          type: number
+                          format: float
+                        order:
+                          type: integer
+                        position_group_id:
+                          nullable: true
+                          type: integer
+                        efforts_value_with_unit:
+                          type: string
+                        charge:
+                          type: number
+                          format: float
+                        rate_unit_archived:
+                          type: boolean
+                        deletable:
+                          type: boolean
+                        is_time:
+                          type: boolean
+                        service:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            vat:
+                              type: number
+                              format: float
+                            order:
+                              type: integer
+                            local_order:
+                              type: integer
+                            archived:
+                              type: boolean
+                            service_category_id:
+                              nullable: true
+                          required:
+                          - id
+                          - name
+                          - description
+                          - vat
+                          - order
+                          - local_order
+                          - archived
+                          - service_category_id
+                      required:
+                      - id
+                      - description
+                      - price_per_rate
+                      - rate_unit_id
+                      - service_id
+                      - vat
+                      - order
+                      - position_group_id
+                      - efforts_value_with_unit
+                      - charge
+                      - rate_unit_archived
+                      - deletable
+                      - is_time
+                      - service
+                  position_groupings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        order:
+                          type: integer
+                        shared:
+                          type: boolean
+                      required:
+                      - id
+                      - name
+                      - order
+                      - shared
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - archived
+                - description
+                - fixed_price
+                - name
+                - rate_group_id
+                - location_id
+                - created_at
+                - chargeable
+                - deadline
+                - vacation_project
+                - budget_price
+                - budget_time
+                - current_price
+                - current_time
+                - invoice_ids
+                - category_distributions
+                - costgroup_distributions
+                - positions
+                - position_groupings
+              example:
+                id: 17
+                accountant_id: 92
+                address_id: 49
+                customer_id: 92
+                archived: false
+                description: My description
+                fixed_price: 5000
+                name: My Project
+                rate_group_id: 129
+                location_id: 8
+                created_at: '2020-01-01 12:00:00'
+                chargeable: true
+                deadline: '2025-12-31'
+                vacation_project: false
+                budget_price: 
+                budget_time: 
+                current_price: 0.0
+                current_time: 0
+                invoice_ids: []
+                category_distributions: []
+                costgroup_distributions: []
+                positions:
+                - id: 7
+                  description: Position
+                  price_per_rate: 100
+                  rate_unit_id: 15
+                  service_id: 11
+                  vat: 0.077
+                  order: 1
+                  position_group_id: 9
+                  efforts_value_with_unit: 0 zt
+                  charge: 0.0
+                  rate_unit_archived: false
+                  deletable: true
+                  is_time: true
+                  service:
+                    id: 11
+                    name: My service
+                    description: A great service
+                    vat: 0.077
+                    order: 103
+                    local_order: 99
+                    archived: false
+                    service_category_id: 
+                position_groupings:
+                - id: 9
+                  name: MyString
+                  order: 1
+                  shared: false
   "/v2/projects/{id}":
     get:
       summary: show
@@ -3522,10 +5186,10 @@ paths:
         required: true
         schema:
           type: integer
-        example: 414
+        example: 15
       responses:
         '200':
-          description: returns a project
+          description: returns a project with nullable fields null
           content:
             application/json:
               schema:
@@ -3545,18 +5209,21 @@ paths:
                     type: string
                   fixed_price:
                     type: integer
+                    nullable: true
                   name:
                     type: string
                   rate_group_id:
                     type: integer
                   location_id:
                     type: integer
+                    nullable: true
                   created_at:
                     type: string
                   chargeable:
                     type: boolean
                   deadline:
                     type: string
+                    nullable: true
                   vacation_project:
                     type: boolean
                   budget_price:
@@ -3632,6 +5299,7 @@ paths:
                           type: integer
                         position_group_id:
                           type: integer
+                          nullable: true
                         efforts_value_with_unit:
                           type: string
                         charge:
@@ -3663,6 +5331,7 @@ paths:
                               type: boolean
                             service_category_id:
                               type: integer
+                              nullable: true
                           required:
                           - id
                           - name
@@ -3731,65 +5400,250 @@ paths:
                 - positions
                 - position_groupings
               example:
-                id: 414
-                accountant_id: 3134
-                address_id: 1129
-                customer_id: 2723
+                id: 15
+                accountant_id: 87
+                address_id: 46
+                customer_id: 87
                 archived: false
                 description: my description
-                fixed_price: 12000
-                name: 'Project #6'
-                rate_group_id: 3696
-                location_id: 133
-                created_at: '2026-06-10 16:45:49'
+                fixed_price: 
+                name: 'Project #15'
+                rate_group_id: 125
+                location_id: 
+                created_at: '2020-01-01 12:00:00'
                 chargeable: false
-                deadline: '2026-06-24'
+                deadline: 
                 vacation_project: false
                 budget_price: 0
                 budget_time: 0
                 current_price: 0.0
                 current_time: 0
-                offer_id: 564
-                invoice_ids:
-                - 114
-                category_distributions:
-                - id: 14
-                  project_id: 414
-                  category_id: 143
-                  weight: 100
-                  created_at: '2026-06-10T16:45:49.953Z'
-                  updated_at: '2026-06-10T16:45:49.953Z'
-                costgroup_distributions:
-                - costgroup_number: 105
-                  project_id: 414
+                offer_id: 20
+                invoice_ids: []
+                category_distributions: []
+                costgroup_distributions: []
                 positions:
-                - id: 102
+                - id: 5
                   description: MyDescription
                   price_per_rate: 9200
-                  rate_unit_id: 190
-                  service_id: 243
+                  rate_unit_id: 13
+                  service_id: 9
                   vat: 0.077
                   order: 1
-                  position_group_id: 130
+                  position_group_id: 
                   efforts_value_with_unit: 0 zt
                   charge: 0.0
                   rate_unit_archived: false
                   deletable: true
                   is_time: true
                   service:
-                    id: 243
+                    id: 9
                     name: My service
                     description: A great service
                     vat: 0.077
-                    order: 167
+                    order: 103
                     local_order: 99
                     archived: false
-                    service_category_id: 181
+                    service_category_id: 
+                position_groupings: []
+    put:
+      summary: update
+      tags:
+      - V2::Project
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 18
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accountant_id:
+                  type: integer
+                address_id:
+                  type: integer
+                customer_id:
+                  type: integer
+                description:
+                  type: string
+                name:
+                  type: string
+                rate_group_id:
+                  type: integer
+                location_id:
+                  nullable: true
+                deadline:
+                  nullable: true
+                fixed_price:
+                  nullable: true
+                archived:
+                  type: boolean
+                chargeable:
+                  type: boolean
+                vacation_project:
+                  type: boolean
+                positions:
+                  type: array
+                  items: {}
+                costgroup_distributions:
+                  type: array
+                  items: {}
+                category_distributions:
+                  type: array
+                  items: {}
                 position_groupings:
-                - id: 130
-                  name: MyString
-                  order: 1
-                  shared: false
+                  type: array
+                  items: {}
+              required:
+              - accountant_id
+              - address_id
+              - customer_id
+              - description
+              - name
+              - rate_group_id
+              - location_id
+              - deadline
+              - fixed_price
+              - archived
+              - chargeable
+              - vacation_project
+              - positions
+              - costgroup_distributions
+              - category_distributions
+              - position_groupings
+            example:
+              accountant_id: 94
+              address_id: 50
+              customer_id: 93
+              description: my description
+              name: Updated Project
+              rate_group_id: 135
+              location_id: 
+              deadline: 
+              fixed_price: 
+              archived: false
+              chargeable: false
+              vacation_project: false
+              positions: []
+              costgroup_distributions: []
+              category_distributions: []
+              position_groupings: []
+      responses:
+        '200':
+          description: updates a project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  accountant_id:
+                    type: integer
+                  address_id:
+                    type: integer
+                  customer_id:
+                    type: integer
+                  archived:
+                    type: boolean
+                  description:
+                    type: string
+                  fixed_price:
+                    nullable: true
+                  name:
+                    type: string
+                  rate_group_id:
+                    type: integer
+                  location_id:
+                    nullable: true
+                  created_at:
+                    type: string
+                  chargeable:
+                    type: boolean
+                  deadline:
+                    nullable: true
+                  vacation_project:
+                    type: boolean
+                  budget_price:
+                    type: integer
+                  budget_time:
+                    type: integer
+                  current_price:
+                    type: integer
+                  current_time:
+                    type: integer
+                  offer_id:
+                    type: integer
+                  invoice_ids:
+                    type: array
+                    items: {}
+                  category_distributions:
+                    type: array
+                    items: {}
+                  costgroup_distributions:
+                    type: array
+                    items: {}
+                  positions:
+                    type: array
+                    items: {}
+                  position_groupings:
+                    type: array
+                    items: {}
+                required:
+                - id
+                - accountant_id
+                - address_id
+                - customer_id
+                - archived
+                - description
+                - fixed_price
+                - name
+                - rate_group_id
+                - location_id
+                - created_at
+                - chargeable
+                - deadline
+                - vacation_project
+                - budget_price
+                - budget_time
+                - current_price
+                - current_time
+                - offer_id
+                - invoice_ids
+                - category_distributions
+                - costgroup_distributions
+                - positions
+                - position_groupings
+              example:
+                id: 18
+                accountant_id: 94
+                address_id: 50
+                customer_id: 93
+                archived: false
+                description: my description
+                fixed_price: 
+                name: Updated Project
+                rate_group_id: 135
+                location_id: 
+                created_at: '2020-01-01 12:00:00'
+                chargeable: false
+                deadline: 
+                vacation_project: false
+                budget_price: 0
+                budget_time: 0
+                current_price: 0
+                current_time: 0
+                offer_id: 21
+                invoice_ids: []
+                category_distributions: []
+                costgroup_distributions: []
+                positions: []
+                position_groupings: []
   "/v2/rate_groups":
     get:
       summary: index
@@ -3816,8 +5670,8 @@ paths:
                   - name
                   - description
               example:
-              - id: 3683
-                name: My rate group 34
+              - id: 136
+                name: My rate group 136
                 description: My rate group description
   "/v2/rate_units":
     get:
@@ -3910,7 +5764,7 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 188
+                - id: 16
                   listing_name: Zivitage
                   billing_unit: CHF/d
                   effort_unit: zt
@@ -3929,7 +5783,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 187
+        example: 17
       responses:
         '200':
           description: returns a rate unit
@@ -3961,7 +5815,7 @@ paths:
                 - name
                 - archived
               example:
-                id: 187
+                id: 17
                 billing_unit: CHF/d
                 effort_unit: zt
                 is_time: true
@@ -4072,13 +5926,13 @@ paths:
                 - '2024-01-30'
                 - '2024-01-31'
                 employees:
-                - employee_id: 3106
+                - employee_id: 8
                   name: Peter Pan
                   efforts:
                     '2024-01-15':
                     - date: '2024-01-15'
                       value: 3.142
-                      service_id: 237
+                      service_id: 1
                       service_name: My service
   "/v2/service_categories":
     get:
@@ -4146,30 +6000,30 @@ paths:
                   - updated_at
                   - parent
               example:
-              - id: 185
-                name: MyString
-                french_name: MyOtherString
-                number: 1
-                order: 9301
-                parent_category_id: 184
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
-                parent:
-                  id: 184
-                  name: MyString
-                  french_name: MyOtherString
-                  number: 93
-                  order: 9300
-                  parent_category_id: 
-              - id: 184
+              - id: 5
                 name: MyString
                 french_name: MyOtherString
                 number: 93
                 order: 9300
                 parent_category_id: 
-                created_at: '2026-06-10 16:45:50'
-                updated_at: '2026-06-10 16:45:50'
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
                 parent: 
+              - id: 6
+                name: MyString
+                french_name: MyOtherString
+                number: 1
+                order: 9301
+                parent_category_id: 5
+                created_at: '2020-01-01 12:00:00'
+                updated_at: '2020-01-01 12:00:00'
+                parent:
+                  id: 5
+                  name: MyString
+                  french_name: MyOtherString
+                  number: 93
+                  order: 9300
+                  parent_category_id: 
   "/v2/service_categories/{id}":
     get:
       summary: show
@@ -4181,7 +6035,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 183
+        example: 8
       responses:
         '200':
           description: returns a service category
@@ -4210,12 +6064,12 @@ paths:
                 - order
                 - parent_category_id
               example:
-                id: 183
+                id: 8
                 name: MyString
                 french_name: MyOtherString
                 number: 1
                 order: 9301
-                parent_category_id: 182
+                parent_category_id: 7
   "/v2/services":
     get:
       summary: index
@@ -4331,36 +6185,81 @@ paths:
                 to: 1
                 total: 1
                 data:
-                - id: 242
+                - id: 12
                   name: My service
                   description: A great service
                   vat: 0.077
                   local_order: 99
                   order: 167
                   archived: false
-                  service_category_id: 179
+                  service_category_id: 10
                   service_category:
-                    id: 179
+                    id: 10
                     name: MyString
                     french_name: MyOtherString
                     number: 1
                     order: 9301
-                    parent_category_id: 178
-  "/v2/services/{id}":
-    get:
-      summary: show
+                    parent_category_id: 9
+    post:
+      summary: create
       tags:
       - V2::Service
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-        example: 241
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                vat:
+                  type: number
+                  format: float
+                archived:
+                  type: boolean
+                local_order:
+                  type: integer
+                service_category_id:
+                  nullable: true
+                service_rates:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      rate_group_id:
+                        type: integer
+                      rate_unit_id:
+                        type: integer
+                      value:
+                        type: integer
+                    required:
+                    - rate_group_id
+                    - rate_unit_id
+                    - value
+              required:
+              - name
+              - description
+              - vat
+              - archived
+              - local_order
+              - service_category_id
+              - service_rates
+            example:
+              name: My Service
+              description: Description
+              vat: 0.077
+              archived: false
+              local_order: 1
+              service_category_id: 
+              service_rates:
+              - rate_group_id: 138
+                rate_unit_id: 19
+                value: 100
       responses:
         '200':
-          description: returns a service
+          description: creates a service
           content:
             application/json:
               schema:
@@ -4382,29 +6281,9 @@ paths:
                   archived:
                     type: boolean
                   service_category_id:
-                    type: integer
+                    nullable: true
                   service_category:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      name:
-                        type: string
-                      french_name:
-                        type: string
-                      number:
-                        type: integer
-                      order:
-                        type: integer
-                      parent_category_id:
-                        type: integer
-                    required:
-                    - id
-                    - name
-                    - french_name
-                    - number
-                    - order
-                    - parent_category_id
+                    nullable: true
                   service_rates:
                     type: array
                     items:
@@ -4438,24 +6317,223 @@ paths:
                 - service_category
                 - service_rates
               example:
-                id: 241
+                id: 15
+                name: My Service
+                description: Description
+                vat: 0.077
+                local_order: 1
+                order: 5
+                archived: false
+                service_category_id: 
+                service_category: 
+                service_rates:
+                - id: 2
+                  rate_group_id: 138
+                  service_id: 15
+                  rate_unit_id: 19
+                  value: 100
+  "/v2/services/{id}":
+    get:
+      summary: show
+      tags:
+      - V2::Service
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 14
+      responses:
+        '200':
+          description: returns a service with nullable fields null
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  vat:
+                    type: number
+                    format: float
+                  local_order:
+                    type: integer
+                  order:
+                    type: integer
+                  archived:
+                    type: boolean
+                  service_category_id:
+                    type: integer
+                    nullable: true
+                  service_category:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      french_name:
+                        type: string
+                      number:
+                        type: integer
+                      order:
+                        type: integer
+                      parent_category_id:
+                        type: integer
+                    required:
+                    - id
+                    - name
+                    - french_name
+                    - number
+                    - order
+                    - parent_category_id
+                    nullable: true
+                  service_rates:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        rate_group_id:
+                          type: integer
+                        service_id:
+                          type: integer
+                        rate_unit_id:
+                          type: integer
+                        value:
+                          type: integer
+                      required:
+                      - id
+                      - rate_group_id
+                      - service_id
+                      - rate_unit_id
+                      - value
+                required:
+                - id
+                - name
+                - description
+                - vat
+                - local_order
+                - order
+                - archived
+                - service_category_id
+                - service_category
+                - service_rates
+              example:
+                id: 14
                 name: My service
                 description: A great service
                 vat: 0.077
                 local_order: 99
-                order: 167
+                order: 103
                 archived: false
-                service_category_id: 177
-                service_category:
-                  id: 177
-                  name: MyString
-                  french_name: MyOtherString
-                  number: 1
-                  order: 9301
-                  parent_category_id: 176
+                service_category_id: 
+                service_category: 
+                service_rates: []
+    put:
+      summary: update
+      tags:
+      - V2::Service
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 16
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                vat:
+                  type: number
+                  format: float
+                archived:
+                  type: boolean
+                local_order:
+                  type: integer
+                service_category_id:
+                  nullable: true
                 service_rates:
-                - id: 14
-                  rate_group_id: 3684
-                  service_id: 241
-                  rate_unit_id: 189
-                  value: 1
+                  type: array
+                  items: {}
+              required:
+              - name
+              - description
+              - vat
+              - archived
+              - local_order
+              - service_category_id
+              - service_rates
+            example:
+              name: Updated Service
+              description: A great service
+              vat: 0.077
+              archived: false
+              local_order: 99
+              service_category_id: 
+              service_rates: []
+      responses:
+        '200':
+          description: updates a service
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  vat:
+                    type: number
+                    format: float
+                  local_order:
+                    type: integer
+                  order:
+                    type: integer
+                  archived:
+                    type: boolean
+                  service_category_id:
+                    nullable: true
+                  service_category:
+                    nullable: true
+                  service_rates:
+                    type: array
+                    items: {}
+                required:
+                - id
+                - name
+                - description
+                - vat
+                - local_order
+                - order
+                - archived
+                - service_category_id
+                - service_category
+                - service_rates
+              example:
+                id: 16
+                name: Updated Service
+                description: A great service
+                vat: 0.077
+                local_order: 99
+                order: 103
+                archived: false
+                service_category_id: 
+                service_category: 
+                service_rates: []
