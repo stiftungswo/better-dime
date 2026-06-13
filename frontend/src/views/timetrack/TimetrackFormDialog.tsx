@@ -105,22 +105,22 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     const effortStore = this.props.effortStore!;
 
     if (effortStore.effort && 'employee_id' in entity) {
-      await effortStore.put(soloSchema.cast(entity));
+      await effortStore.put(soloSchema.cast(entity) as unknown as ProjectEffort);
     } else if ('employee_ids' in entity) {
       await Promise.all([
         this.widenFilterSettings(entity),
         ...entity.employee_ids.map((e: number) => {
-          const newEffort = { employee_id: e, ...entity, date: entity.date.format(apiDateFormat) } as ProjectEffort;
-          return effortStore.post(soloSchema.cast(newEffort));
+          const newEffort = { employee_id: e, ...entity, date: entity.date.format(apiDateFormat) } as unknown as ProjectEffort;
+          return effortStore.post(soloSchema.cast(newEffort) as unknown as ProjectEffort);
         }),
       ]);
     }
 
     if ('comment' in entity && entity.comment != null && entity.comment !== '') {
-      const newProjectComment: ProjectComment = {
+      const newProjectComment = {
         ...entity,
         date: entity.date.format(apiDateFormat),
-      } as ProjectComment;
+      } as unknown as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
       await this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter);
     }

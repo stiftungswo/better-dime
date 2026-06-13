@@ -28,5 +28,11 @@ RSpec.describe 'V2::People', type: :request do
       get "/v2/people/#{person.id}"
       expect(response).to have_http_status(:ok)
     end
+
+    it 'returns a person with nullable fields null' do
+      person = create(:person, company: nil, accountant: nil)
+      get "/v2/people/#{person.id}"
+      expect(response).to have_http_status(:ok)
+    end
   end
 end

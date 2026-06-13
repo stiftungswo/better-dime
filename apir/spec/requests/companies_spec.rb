@@ -23,11 +23,18 @@ RSpec.describe 'V2::Companies', type: :request do
   describe 'GET /v2/companies/:id' do
     it 'returns a company' do
       company = create(:company)
-      create(:address, :with_company_customer, customer: company)
+      create(:address, :with_company_customer, customer: company, description: 'c/o Someone')
       Phone.create!(number: '0433555844', category: 1, customer_id: company.id)
       create(:person, company: company)
       tag = create(:customer_tag)
       company.customer_tags << tag
+      get "/v2/companies/#{company.id}"
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns a company with nullable fields null' do
+      company = create(:company)
+      create(:address, :with_company_customer, customer: company, description: nil)
       get "/v2/companies/#{company.id}"
       expect(response).to have_http_status(:ok)
     end

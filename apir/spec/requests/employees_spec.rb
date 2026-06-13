@@ -25,5 +25,6 @@ RSpec.describe 'V2::Employees', type: :request do
       get "/v2/employees/#{target.id}"
       expect(response).to have_http_status(:ok)
     end
+
   end
 end

@@ -46,7 +46,7 @@ export default class EmployeeCreate extends React.Component<Props> {
       <EmployeeForm
         title={'Mitarbeiter erfassen'}
         onSubmit={this.handleSubmit}
-        employee={employeeTemplate}
+        employee={employeeTemplate as unknown as Employee}
         schema={newEmployeeSchema}
         submitted={this.state.submitted}
       />

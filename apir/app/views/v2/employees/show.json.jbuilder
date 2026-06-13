@@ -4,8 +4,12 @@ json.extract! @employee, :id, :email, :is_admin, :created_at, :updated_at, :firs
               :last_name, :can_login, :archived, :holidays_per_year, :employee_group_id, :locale
 json.set! :first_vacation_takeover, @employee.first_vacation_takeover&.to_i
 json.set! :group_name, @employee.employee_group&.name
-json.group do
-  json.extract! @employee.employee_group.decorate, :id, :name, :created_at, :updated_at
+if @employee.employee_group.present?
+  json.group do
+    json.extract! @employee.employee_group.decorate, :id, :name, :created_at, :updated_at
+  end
+else
+  json.group nil
 end
 json.set! :work_periods do
   json.array! @work_periods

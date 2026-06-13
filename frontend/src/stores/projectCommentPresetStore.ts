@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { action, computed, makeObservable, observable, override } from 'mobx';
-import {PaginatedData, ProjectCommentPreset, ProjectListing} from '../types';
+import {PaginatedData, ProjectCommentPreset, ProjectCommentPresetCreate, ProjectListing} from '../types';
 import {AbstractPaginatedStore} from './abstractPaginatedStore';
 import { MainStore } from './mainStore';
 
@@ -26,7 +26,7 @@ export class ProjectCommentPresetStore extends AbstractPaginatedStore<ProjectCom
 
   editing: boolean = false;
 
-  projectCommentPresetTemplate: ProjectCommentPreset = {
+  projectCommentPresetTemplate: ProjectCommentPresetCreate = {
     comment_preset: '',
   };
 

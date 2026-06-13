@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { Employee } from '../../types';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 
 export const editEmployeeSchema = localizeSchema(() =>
@@ -69,7 +70,8 @@ export const newEmployeeSchema = localizeSchema(() =>
   }),
 );
 
-export const employeeTemplate = {
+// Form initial state — employee_group_id/group/group_name are null until the user selects a group.
+export const employeeTemplate: Omit<Employee, 'employee_group_id' | 'group' | 'group_name'> & { employee_group_id: number | null; group: Employee['group'] | null; group_name: string | null; password?: string } = {
   archived: false,
   email: '',
   can_login: true,
@@ -77,16 +79,15 @@ export const employeeTemplate = {
   id: 0,
   first_name: '',
   last_name: '',
-  createdAt: '',
-  updatedAt: '',
+  created_at: '',
+  updated_at: '',
   holidays_per_year: 20,
-  realTime: 0,
-  targetTime: 0,
-  extendTimetrack: false,
-  first_vacation_takeover: 0.0,
+  first_vacation_takeover: 0,
   work_periods: [],
   password: '',
   locale: 'de',
   employee_group_id: null,
+  group_name: null,
+  group: null,
   addresses: [],
 };

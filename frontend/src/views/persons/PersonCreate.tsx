@@ -31,7 +31,7 @@ export default class PersonCreate extends React.Component<Props> {
   }
 
   render() {
-    const person: Person = {
+    const person = {
       type: 'person',
       id: 0,
       comment: '',
@@ -52,6 +52,6 @@ export default class PersonCreate extends React.Component<Props> {
     };
     const intl = this.props.intl!;
 
-    return <PersonForm title={intl.formatMessage({id: 'view.person.create.title'})} onSubmit={this.handleSubmit} person={person} submitted={this.state.submitted} />;
+    return <PersonForm title={intl.formatMessage({id: 'view.person.create.title'})} onSubmit={this.handleSubmit} person={person as unknown as Person} submitted={this.state.submitted} />;
   }
 }

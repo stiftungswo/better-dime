@@ -64,6 +64,7 @@ export type InvoiceListing = GetResponse<'/v2/invoices'>['data'][number];
 
 // Shared position group (same shape in Offer / Project / Invoice)
 export type PositionGroup = Offer['position_groupings'][number];
+export type PositionGroupCreate = GetRequest<'/v2/position_groups'>;
 
 // Used by position-group dialogs: any entity that carries a position_groupings array.
 // Generic parameter T is unused (always `any` at call sites) — kept for backwards compat.
@@ -78,6 +79,7 @@ export type OPCategory = OfferCategory | ProjectCategory;
 // Shared type for costgroup subforms across Offer/Project/Invoice.
 // distribution is a server-computed percentage field present on project costgroups.
 export interface OPICostgroup {
+  id?: number;
   costgroup_number: number;
   weight: number;
   distribution?: number;

@@ -16,6 +16,7 @@ end
 if calculate_costgroup_distributions
   json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
     json.costgroup_number pc.costgroup_number
+    json.weight pc.weight
     json.project_id pc.project_id
     if project.costgroup_sums.key?(pc.costgroup_number)
       json.distribution project.costgroup_distribution(pc.costgroup_number)
@@ -27,6 +28,7 @@ if calculate_costgroup_distributions
 else
   json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
     json.costgroup_number pc.costgroup_number
+    json.weight pc.weight
     json.project_id pc.project_id
   end
 end

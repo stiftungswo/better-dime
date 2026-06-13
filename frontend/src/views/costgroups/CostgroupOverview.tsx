@@ -22,7 +22,7 @@ interface Props {
 export default class CostGroupOverview extends React.Component<Props> {
   render() {
     const intlText = wrapIntl(this.props.intl!, 'view.cost_group.overview');
-    const columns: Array<Column<Costgroup>> = [
+    const columns: Array<Column<Costgroup & { id?: number }>> = [
       {
         id: 'number',
         numeric: false,

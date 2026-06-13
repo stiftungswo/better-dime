@@ -50,6 +50,8 @@ export async function resolveNewGroupName(newGroupName: string | null, groupingE
       groupingEntity.position_groupings.push({
         id: positionGroupStore!.positionGroup!.id,
         name: positionGroupName,
+        order: groupingEntity.position_groupings.length,
+        shared: false,
       });
       return positionGroupStore!.positionGroup!.id!;
     });

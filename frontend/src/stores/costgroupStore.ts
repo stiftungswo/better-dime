@@ -3,7 +3,7 @@ import { Costgroup } from '../types';
 import { AbstractSimpleStore } from './abstractSimpleStore';
 import { MainStore } from './mainStore';
 
-export class CostgroupStore extends AbstractSimpleStore<Costgroup> {
+export class CostgroupStore extends AbstractSimpleStore<Costgroup & { id?: number }> {
   protected get entityName() {
     return {
       singular: 'Die Kostenstelle',

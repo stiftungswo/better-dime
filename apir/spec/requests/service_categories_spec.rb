@@ -11,8 +11,9 @@ RSpec.describe 'V2::ServiceCategories', type: :request do
 
   describe 'GET /v2/service_categories' do
     it 'returns a list of service categories' do
-      parent = create(:service_category)
-      create(:service_category, parent_category: parent, number: 1)
+      grandparent = create(:service_category)
+      parent = create(:service_category, parent_category: grandparent, number: 1)
+      create(:service_category, parent_category: parent, number: 2)
       get '/v2/service_categories'
       expect(response).to have_http_status(:ok)
     end
