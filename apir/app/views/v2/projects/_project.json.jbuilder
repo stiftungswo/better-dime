@@ -9,7 +9,9 @@ json.offer_id project.offer.id if project.offer
 # add invoice ids
 json.invoice_ids project.invoice_ids
 
-json.category_distributions project.project_category_distributions
+json.category_distributions project.project_category_distributions do |dist|
+  json.extract! dist, :id, :project_id, :category_id, :weight, :created_at, :updated_at
+end
 
 if calculate_costgroup_distributions
   json.costgroup_distributions project.project_costgroup_distributions.map do |pc|
@@ -32,7 +34,12 @@ end
 json.positions project.project_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :description, :price_per_rate, :rate_unit_id, :service_id,
                 :vat, :order, :position_group_id, :efforts_value_with_unit, :charge,
-                :rate_unit_archived, :deletable, :service, :is_time
+                :rate_unit_archived, :deletable, :is_time
+  json.service do
+    if position.service
+      json.extract! position.service, :id, :name, :description, :vat, :order, :local_order, :archived, :service_category_id
+    end
+  end
 end
 json.position_groupings project.position_groupings do |group|
   json.extract! group, :id, :name, :order, :shared

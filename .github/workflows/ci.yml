@@ -64,8 +64,30 @@ jobs:
       - name: Run Tests
         run: docker compose -f docker-compose.semaphore.yml run -T apir bin/test
 
+      - name: Generate OpenAPI schema
+        run: docker compose -f docker-compose.semaphore.yml run -T -e OPENAPI=1 apir bundle exec rspec spec/requests/
+
+      - name: Verify OpenAPI schema is committed
+        run: git diff --exit-code apir/doc/openapi.yaml
+
       - name: Lint
         run: docker compose -f docker-compose.semaphore.yml run --no-deps --rm -T apir bin/lint
+
+  frontend-types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate TypeScript types from OpenAPI schema
+        run: cd frontend && npm run generate:types
+
+      - name: Verify generated types are committed
+        run: git diff --exit-code frontend/src/types/generated.ts
         
 
       

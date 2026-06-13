@@ -1,309 +1,133 @@
 import { FormikBag } from 'formik';
 import { Moment } from 'moment';
+import type { paths } from './types/generated';
+
+// Extracts the GET 200 JSON response type for a given API path.
+type GetResponse<P extends keyof paths> =
+  paths[P] extends { get: { responses: { 200: { content: { 'application/json': infer R } } } } }
+    ? R : never;
+
+// Extracts the POST or PUT request body type for a given API path.
+type GetRequest<P extends keyof paths, M extends 'post' | 'put' = 'post'> =
+  paths[P] extends { [K in M]: { requestBody?: { content: { 'application/json': infer R } } } }
+    ? R : never;
 
 // --
-// Domain Types
+// API response types — all derived from the generated OpenAPI schema.
+// These reflect what the API actually returns; do not add fields here.
 // --
 
-export interface Offer extends PositionGroupings<OfferPosition> {
-  id?: number;
-  accountant_id: number;
-  address_id: number;
-  customer_id: number;
-  costgroup_distributions: OfferCostgroup[];
-  category_distributions: OfferCategory[];
-  costgroup_uncategorized_distribution: null;
-  description: string;
-  fixed_price: number | null;
-  fixed_price_vat: null | number;
-  name: string;
-  rate_group_id: number;
-  short_description: string;
-  status: number;
-  created_at: string;
-  breakdown: Breakdown;
-  invoice_ids: number[];
-  project_id?: number;
-  discounts: OfferDiscount[];
-  location_id: number | null;
-}
+// Simple lookup entities
+export type RateGroup = GetResponse<'/v2/rate_groups'>[number];
+export type Holiday = GetResponse<'/v2/holidays'>[number];
+export type Location = GetResponse<'/v2/locations/{id}'>;
+export type EmployeeGroup = GetResponse<'/v2/employee_groups/{id}'>;
+export type CustomerTag = GetResponse<'/v2/customer_tags/{id}'>;
+export type Category = GetResponse<'/v2/project_categories/{id}'>;
+export type RateUnit = GetResponse<'/v2/rate_units/{id}'>;
+export type RateUnitListing = GetResponse<'/v2/rate_units'>['data'][number];
+export type Costgroup = GetResponse<'/v2/costgroups'>[number];
 
-export interface OfferCostgroup extends OPICostgroup {
-  offer_id: number;
-}
+// Service types
+export type Service = GetResponse<'/v2/services/{id}'>;
+export type ServiceRate = Service['service_rates'][number];
+export type ServiceCategoryStub = Service['service_category'];
+export type ServiceCategory = GetResponse<'/v2/service_categories'>[number];
+export type ServiceListing = GetResponse<'/v2/services'>['data'][number];
 
-export interface Breakdown {
-  discounts: BreakdownDiscount[];
-  discountTotal: number;
-  positions: OfferPosition[];
-  rawTotal: number;
-  subtotal: number;
-  total: number;
-  vats: Vat[];
-  vatTotal: number;
-}
+// Employee
+export type Employee = GetResponse<'/v2/employees/{id}'>;
+export type WorkPeriod = Employee['work_periods'][number];
+export type EmployeeListing = GetResponse<'/v2/employees'>['data'][number];
 
-export interface BreakdownDiscount {
-  name: string;
-  value: number;
-}
+// Offer domain
+export type Offer = GetResponse<'/v2/offers/{id}'>;
+export type OfferPosition = Offer['positions'][number];
+export type OfferDiscount = Offer['discounts'][number];
+export type OfferCategory = Offer['category_distributions'][number];
+export type OfferCostgroup = Offer['costgroup_distributions'][number];
+export type OfferListing = GetResponse<'/v2/offers'>['data'][number];
 
-export interface Vat {
-  factor: number;
-  vat: string;
-  value: number;
-}
+// Project domain
+export type Project = GetResponse<'/v2/projects/{id}'>;
+export type ProjectPosition = Project['positions'][number];
+export type ProjectCategory = Project['category_distributions'][number];
+export type ProjectCostgroup = Project['costgroup_distributions'][number];
+export type ProjectListing = GetResponse<'/v2/projects'>['data'][number];
 
-export interface OfferDiscount {
-  id: number;
-  name: string;
-  offer_id: number;
-  percentage: boolean;
-  value: number;
-}
+// Invoice domain
+export type Invoice = GetResponse<'/v2/invoices/{id}'>;
+export type InvoicePosition = Invoice['positions'][number];
+export type InvoiceDiscount = Invoice['discounts'][number];
+export type InvoiceCostgroup = Invoice['costgroup_distributions'][number];
+export type InvoiceListing = GetResponse<'/v2/invoices'>['data'][number];
 
-export interface OfferPosition {
-  id: number;
-  amount: number;
-  offer_id: number;
-  order: number;
-  price_per_rate: number;
-  rate_unit_id: number;
-  rate_unit_archived: boolean;
-  service_id: number;
-  vat: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-  service: Service;
-  position_group_id: number | null;
-}
+// Shared position group (same shape in Offer / Project / Invoice)
+export type PositionGroup = Offer['position_groupings'][number];
 
-export interface Employee {
-  archived: boolean;
-  email: string;
-  can_login: boolean;
-  is_admin: boolean;
-  id: number;
-  first_name: string;
-  last_name: string;
-  createdAt: string;
-  updatedAt: string;
-  holidays_per_year: number | null;
-  realTime: number;
-  targetTime: number;
-  extendTimetrack: boolean;
-  password: string;
-  first_vacation_takeover: number;
-  work_periods: WorkPeriod[];
-  employee_group_id: number | null;
-  locale: string;
-  group_name?: string;
-  group?: {
-    id: number;
-    name: string;
-  };
-}
-
-export interface PhoneNumber {
-  id: number;
-  category: number;
-  number: string;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-}
-
+// Used by position-group dialogs: any entity that carries a position_groupings array.
+// Generic parameter T is unused (always `any` at call sites) — kept for backwards compat.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface PositionGroupings<T> {
-  positions: T[];
   position_groupings: PositionGroup[];
 }
 
-export interface Project extends PositionGroupings<ProjectPosition> {
-  id?: number;
-  accountant_id: number;
-  customer_id: number;
-  address_id: number;
-  archived: boolean;
-  chargeable: boolean;
-  costgroup_distributions: ProjectCostgroup[];
-  category_distributions: ProjectCategory[];
-  costgroup_uncategorized_distribution: number | null;
-  deadline: null;
-  description: string | null;
-  fixed_price: null | number;
-  fixed_price_vat: null | number;
-  name: string;
-  offer_id?: number;
-  rate_group_id: number;
-  vacation_project: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-  budget_price: number;
-  budget_time: number;
-  current_price: number;
-  current_time: number;
-  offer: Offer;
-  invoice_ids: number[];
-  location_id: number | null;
+// Shared union for category/costgroup subforms that render for Offer and Project.
+export type OPCategory = OfferCategory | ProjectCategory;
+
+// Shared type for costgroup subforms across Offer/Project/Invoice.
+// distribution is a server-computed percentage field present on project costgroups.
+export interface OPICostgroup {
+  costgroup_number: number;
+  weight: number;
+  distribution?: number;
 }
 
-export interface PositionGroup {
-  id?: number;
-  name: string;
-  order?: number;
-  shared?: boolean;
-}
+// Customer STI — generated uses `type: string`; we tighten to a literal discriminator
+export type Company = Omit<GetResponse<'/v2/companies/{id}'>, 'type'> & { type: 'company' };
+export type Person = Omit<GetResponse<'/v2/people/{id}'>, 'type'> & { type: 'person' };
+export type Customer = Company | Person;
+export type Address = GetResponse<'/v2/companies/{id}'>['addresses'][number];
+export type PhoneNumber = GetResponse<'/v2/companies/{id}'>['phone_numbers'][number];
 
-export interface ProjectCostgroup extends OPICostgroup {
-  project_id: number;
-}
+// Project efforts and comments
+export type ProjectEffortListing = GetResponse<'/v2/project_efforts'>[number];
+export type ProjectEffort = GetResponse<'/v2/project_efforts/{id}'>;
+export type ProjectCommentListing = GetResponse<'/v2/project_comments'>[number];
+export type ProjectComment = GetResponse<'/v2/project_comments/{id}'>;
+export type ProjectCommentPreset = GetResponse<'/v2/project_comment_presets'>['data'][number];
 
-export interface Service {
-  id?: number;
-  name: string;
-  description: string;
-  vat: number;
-  chargeable: boolean;
-  archived: boolean;
-  service_rates: ServiceRate[];
-  local_order: number; // order inside category
-  order: number; // computed based on local order + service_category_id
-  service_category: ServiceCategoryStub;
-  // used for post / put, otherwise the same as service_category.id
-  service_category_id: number | null;
-}
-export interface ServiceCategoryStub {
-  id?: number;
-  name: string;
-  french_name: string;
-  // two digits, use to build this.order and the order of services.
-  number: number;
-  // order is a 4-digit integer based on this.number and parent_category.number
-  // number*100 for top-level categories | parent_category.number*100 + number for subcategories
-  order: number;
-  // used for post / put requests. otherwise the same as parent.id
-  parent_category_id: number | null;
-}
-export interface ServiceCategory extends ServiceCategoryStub {
-  // used for rendering in the frontend
-  parent: ServiceCategoryStub | null;
-}
+// --
+// Create / mutation types — POST/PUT payload shapes, derived from the generated spec where possible.
+// Top-level entity types (Offer, Project, Invoice, Service) are derived via GetRequest<P>.
+// Sub-entity join types use Create<T> (strips id/timestamps) or stay manual where the
+// read and write shapes diverge (e.g. ProjectEffortCreate, ProjectCommentCreate).
+// --
 
-export interface ServiceRate {
-  id?: number;
-  rate_group_id: number;
-  service_id: number;
-  rate_unit_id: number;
-  value: number;
-}
+// Derives a POST/PUT payload type from a response type.
+// Makes id optional and strips server-set timestamps.
+// Only works for types whose write shape matches the read shape (simple entities).
+// Top-level types (Offer, Project, Invoice) and types with structural mismatches
+// between read and write (ProjectCostgroup, PositionGroup, positions) stay manual.
+export type Create<T extends { id: number }> =
+  Omit<T, 'id' | 'created_at' | 'updated_at'> & { id?: number };
 
-export interface ServiceListing {
-  id: number;
-  name: string;
-  description: string;
-  archived: boolean;
-  service_category_id: number;
-  service_category: ServiceCategoryStub;
-  order: number;
-}
+export type OfferCreate = GetRequest<'/v2/offers'> & { id?: number };
+export type OfferDiscountCreate = Create<OfferDiscount>;
+export type OfferCategoryCreate = Create<OfferCategory>;
+export type OfferCostgroupCreate = Create<OfferCostgroup>;
 
-export interface ProjectPosition {
-  id?: number;
-  description: string;
-  price_per_rate: number;
-  project_id: number;
-  rate_unit_id: number;
-  rate_unit_archived: boolean;
-  service_archived: boolean;
-  service_id: number;
-  vat: number;
-  deleted_at: null;
-  deletable: boolean;
-  created_at: string;
-  updated_at: string;
-  charge: number;
-  calculated_vat: number;
-  efforts_value_with_unit: string;
-  is_time: boolean;
-  service: Service;
-  // relative order the the list, not to be confused with service.order
-  order: number;
-  position_group_id: number | null;
-}
+export type ProjectCreate = GetRequest<'/v2/projects'> & { id?: number };
+export type ProjectCategoryCreate = Create<ProjectCategory>;
 
-export interface Status {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  text: string;
-  active: boolean;
-}
+export type InvoiceCreate = GetRequest<'/v2/invoices'> & { id?: number };
+export type InvoiceDiscountCreate = Create<InvoiceDiscount>;
 
-export interface Invoice extends PositionGroupings<InvoicePosition> {
-  id?: number;
-  accountant_id: number;
-  customer_id: number;
-  address_id: number;
-  breakdown: Breakdown;
-  description: string;
-  ending: string;
-  fixed_price: null | number;
-  fixed_price_vat: null | number;
-  project_id?: number;
-  offer_id?: number;
-  name: string;
-  beginning: string;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-  costgroup_distributions: InvoiceCostgroup[];
-  costgroup_uncategorized_distribution: number | null;
-  discounts: InvoiceDiscount[];
-  sibling_invoice_ids: number[];
-  location_id: number | null;
-}
+export type ServiceCreate = GetRequest<'/v2/services'> & { id?: number };
 
-export interface InvoiceCostgroup extends OPICostgroup {
-  invoice_id: number;
-}
+export type ServiceRateCreate = Create<ServiceRate>;
 
-export interface InvoicePosition {
-  id: number;
-  amount: number;
-  description: string;
-  invoice_id: number;
-  order: null | number;
-  price_per_rate: number;
-  calculated_total: number;
-  project_position_id: number;
-  rate_unit_id: number;
-  rate_unit_archived: boolean;
-  vat: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface InvoiceDiscount {
-  id: number;
-  invoice_id: number;
-  name: string;
-  percentage: boolean;
-  value: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface Costgroup {
-  id: number;
-  number: number;
-  name: string;
-}
-
-export interface ProjectEffort {
+export interface ProjectEffortCreate {
   id?: number;
   created_at?: string;
   updated_at?: string;
@@ -316,6 +140,26 @@ export interface ProjectEffort {
   value: number;
 }
 
+export interface ProjectCommentCreate {
+  id?: number;
+  comment: string | null;
+  date: Moment | string;
+  project_id?: number;
+}
+
+export type ProjectCommentPresetCreate = Create<ProjectCommentPreset>;
+
+// --
+// Breakdown — derived from the Offer response; Invoice uses the same shape.
+// --
+
+export type Breakdown = Offer['breakdown'];
+export type BreakdownDiscount = Breakdown['discounts'][number];
+
+// --
+// Frontend-only types — no API counterpart
+// --
+
 export interface ProjectEffortFilter {
   start: Moment;
   end: Moment;
@@ -325,26 +169,6 @@ export interface ProjectEffortFilter {
   showEmptyGroups: boolean;
   projectIds: number[];
   showProjectComments: boolean;
-}
-
-export interface ProjectEffortListing {
-  id: number;
-  date: string;
-  effort_value: number;
-  effort_employee_id: number;
-  position_description: string;
-  project_id: number;
-  project_name: string;
-  costgroup_number: number;
-  costgroup_name: string;
-  service_id: number;
-  service_name: string;
-  employee_full_name: string;
-  effort_unit: string;
-  rate_unit_factor?: number;
-  rate_unit_is_time: boolean;
-  group_name?: string;
-  is_ambiguous?: boolean;
 }
 
 export interface ProjectEffortTemplate {
@@ -357,140 +181,14 @@ export interface ProjectEffortTemplate {
   value: number;
 }
 
-export interface ProjectComment {
-  id?: number;
-  comment: string | null;
-  date: Moment | string;
-  project_id?: number;
-}
-
-export interface ProjectCommentListing {
-  id: number;
-  comment: string | null;
-  date: string;
-  project_id: number;
-  project_name: string;
-}
-
-export interface ProjectCommentPreset {
-  id?: number;
-  comment_preset: string;
-  deleted_at?: string;
-  created_at?: string;
-  updated_at?: string;
-}
-
-export interface Company {
-  type: 'company';
-  id: number;
-  comment: string;
-  email: string;
-  hidden: boolean;
-  name: string;
-  accountant_id: number | null;
-  rate_group_id: number;
-  tags?: number[];
-  persons?: number[];
-  addresses?: Address[];
-  phone_numbers?: PhoneNumber[];
-  archived: boolean;
-}
-
-export interface Person {
-  type: 'person';
-  id: number;
-  comment: string;
-  company?: Company;
-  company_id: number | null;
-  department: string | null;
-  department_in_address: boolean;
-  email: string;
-  first_name: string;
-  hidden: boolean;
-  last_name: string;
-  accountant_id: number | null;
-  rate_group_id: number | null;
-  salutation: string;
-  tags: number[];
-  addresses?: Address[];
-  phone_numbers?: PhoneNumber[];
-  archived: boolean;
-}
-
-export type Customer = Person | Company;
-
 export interface CustomerOverviewFilter {
   tags: number[];
-}
-
-export interface Address {
-  id: number;
-  city: string;
-  country: string;
-  customer_id: number;
-  description: string;
-  zip: number;
-  street: string;
-  hidden: boolean;
-  supplement: null | string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface WorkPeriod {
-  id: number;
-  created_at: string;
-  deleted_at: null;
-  effective_time: number;
-  effort_till_today: number;
-  employee_id: number;
-  ending: string;
-  pensum: number;
-  hourly_paid: boolean;
-  period_vacation_budget: number;
-  remaining_vacation_budget: number;
-  target_time: number;
-  beginning: string;
-  updated_at: string;
-  vacation_takeover: number;
-  overlapping_periods: boolean;
-  yearly_vacation_budget: number;
 }
 
 export interface CustomerExportFilter {
   customer_tags: number[];
   export_format: number;
   showArchived: boolean;
-}
-
-export interface EmployeeListing {
-  id: number;
-  archived: boolean;
-  email: string;
-  first_name: string;
-  last_name: string;
-  can_login: boolean;
-}
-
-export interface ProjectListing {
-  id: number;
-  accountant_id: number;
-  customer_id: number | null;
-  address_id: number;
-  archived: boolean;
-  category_id: number;
-  chargeable: boolean;
-  deadline: null | string;
-  description: string;
-  fixed_price: number | null;
-  name: string;
-  listing_name: string;
-  offer_id: number | null;
-  rate_group_id: number;
-  vacation_project: boolean;
-  created_at: string;
-  updated_at: string;
-  deletable: boolean;
 }
 
 export interface PaginationInfo {
@@ -511,96 +209,12 @@ export interface PaginatedData<T> extends PaginationInfo {
   data: T[];
 }
 
-export interface InvoiceListing {
+export interface Status {
   id: number;
-  accountant_id: number;
-  address_id: number;
-  description: string;
-  ending: string;
-  fixed_price: null;
-  fixed_price_vat: null;
-  project_id: number;
-  name: string;
-  beginning: string;
-}
-
-export interface OfferListing {
-  id: number;
-  name: string;
-  short_description: string;
-}
-
-export interface RateGroup {
-  id: number;
-  name: string;
-  description: string;
-}
-
-export interface CustomerTag {
-  id: number;
-  archived: boolean;
-  name: string;
-}
-
-export interface Holiday {
-  id: number;
-  duration: number;
-  date: DimeDate;
-  name: string;
-}
-
-export interface Category {
-  archived: boolean;
-  id: number;
-  name: string;
-}
-
-export interface OPCategory {
-  category_id: number;
-  weight: number;
-}
-export interface ProjectCategory extends OPCategory {
-  project_id: number;
-}
-export interface OfferCategory extends OPCategory {
-  offer_id: number;
-}
-
-export interface RateUnit {
-  id: number;
-  billing_unit: string;
-  effort_unit: string;
-  factor: number;
-  is_time: boolean;
-  name: string;
-  archived: boolean;
-}
-
-export interface RateUnitListing extends RateUnit {
-  listing_name: string;
-}
-
-export interface EmployeeGroup {
-  name: string;
-  id: number;
-}
-
-export interface OPICostgroup {
-  id: number;
-  costgroup_number: number;
-  distribution: number;
-  deleted_at: null;
-  created_at: string;
-  updated_at: string;
-  // subtypes have either offer_id or project_id or invoice_id
-}
-
-export interface Location {
-  id: number;
-  order: number;
-  archived: boolean;
-  name: string;
-  url: string;
+  createdAt: string;
+  updatedAt: string;
+  text: string;
+  active: boolean;
 }
 
 export type Locale = 'de' | 'fr'; // | 'en';
