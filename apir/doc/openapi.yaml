@@ -302,7 +302,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns a company
+          description: returns a company with nullable fields null
           content:
             application/json:
               schema:
@@ -356,8 +356,8 @@ paths:
                         customer_id:
                           type: integer
                         description:
-                          nullable: true
                           type: string
+                          nullable: true
                         zip:
                           type: integer
                         street:
@@ -1462,15 +1462,15 @@ paths:
                 ending:
                   type: string
                 fixed_price:
-                  type: integer
                   nullable: true
+                  type: integer
                 fixed_price_vat:
+                  nullable: true
                   type: number
                   format: float
-                  nullable: true
                 location_id:
-                  type: integer
                   nullable: true
+                  type: integer
                 positions:
                   type: array
                   items:
@@ -1483,8 +1483,8 @@ paths:
                       order:
                         type: integer
                       position_group_id:
-                        type: integer
                         nullable: true
+                        type: integer
                       price_per_rate:
                         type: integer
                       rate_unit_id:
@@ -1566,7 +1566,7 @@ paths:
               - position_groupings
       responses:
         '200':
-          description: creates an invoice
+          description: creates an invoice with non-null optional fields
           content:
             application/json:
               schema:
@@ -1583,12 +1583,12 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    type: integer
                     nullable: true
+                    type: integer
                   fixed_price_vat:
+                    nullable: true
                     type: number
                     format: float
-                    nullable: true
                   name:
                     type: string
                   beginning:
@@ -1601,8 +1601,8 @@ paths:
                   created_at:
                     type: string
                   location_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   project_id:
                     type: integer
                   offer_id:
@@ -1707,8 +1707,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          type: integer
                           nullable: true
+                          type: integer
                         rate_unit_archived:
                           type: boolean
                         calculated_total:
@@ -2285,15 +2285,15 @@ paths:
                 description:
                   type: string
                 fixed_price:
-                  type: integer
                   nullable: true
+                  type: integer
                 fixed_price_vat:
+                  nullable: true
                   type: number
                   format: float
-                  nullable: true
                 location_id:
-                  type: integer
                   nullable: true
+                  type: integer
                 name:
                   type: string
                 rate_group_id:
@@ -2314,8 +2314,8 @@ paths:
                       order:
                         type: integer
                       position_group_id:
-                        type: integer
                         nullable: true
+                        type: integer
                       price_per_rate:
                         type: integer
                       rate_unit_id:
@@ -2413,7 +2413,7 @@ paths:
               - position_groupings
       responses:
         '200':
-          description: creates an offer
+          description: creates an offer with non-null optional fields
           content:
             application/json:
               schema:
@@ -2430,12 +2430,12 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    type: integer
                     nullable: true
+                    type: integer
                   fixed_price_vat:
+                    nullable: true
                     type: number
                     format: float
-                    nullable: true
                   name:
                     type: string
                   rate_group_id:
@@ -2447,8 +2447,8 @@ paths:
                   created_at:
                     type: string
                   location_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   breakdown:
                     type: object
                     properties:
@@ -2589,8 +2589,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          type: integer
                           nullable: true
+                          type: integer
                         rate_unit_archived:
                           type: boolean
                         service:
@@ -3882,14 +3882,14 @@ paths:
                 rate_group_id:
                   type: integer
                 location_id:
-                  type: integer
                   nullable: true
+                  type: integer
                 deadline:
+                  nullable: true
                   type: string
-                  nullable: true
                 fixed_price:
-                  type: integer
                   nullable: true
+                  type: integer
                 archived:
                   type: boolean
                 chargeable:
@@ -3906,8 +3906,8 @@ paths:
                       order:
                         type: integer
                       position_group_id:
-                        type: integer
                         nullable: true
+                        type: integer
                       price_per_rate:
                         type: integer
                       rate_unit_id:
@@ -3986,7 +3986,7 @@ paths:
               - position_groupings
       responses:
         '200':
-          description: creates a project
+          description: creates a project with non-null optional fields
           content:
             application/json:
               schema:
@@ -4005,22 +4005,22 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    type: integer
                     nullable: true
+                    type: integer
                   name:
                     type: string
                   rate_group_id:
                     type: integer
                   location_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   created_at:
                     type: string
                   chargeable:
                     type: boolean
                   deadline:
-                    type: string
                     nullable: true
+                    type: string
                   vacation_project:
                     type: boolean
                   budget_price:
@@ -4095,8 +4095,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          type: integer
                           nullable: true
+                          type: integer
                         efforts_value_with_unit:
                           type: string
                         charge:
@@ -4212,7 +4212,8 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns a project with nullable fields null
+          description: returns a project with costgroup distributions calculated including
+            uncategorized
           content:
             application/json:
               schema:
@@ -4257,7 +4258,7 @@ paths:
                     type: number
                     format: float
                   current_time:
-                    type: integer
+                    type: number
                     format: float
                   offer_id:
                     type: integer

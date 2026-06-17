@@ -65,7 +65,7 @@ jobs:
         run: docker compose -f docker-compose.semaphore.yml run -T apir bin/test
 
       - name: Generate OpenAPI schema
-        run: docker compose -f docker-compose.semaphore.yml run -T -e OPENAPI=1 apir bundle exec rspec spec/requests/
+        run: docker compose -f docker-compose.semaphore.yml run -T -e OPENAPI=1 apir bundle exec rspec spec/requests/ --order defined
 
       - name: Verify OpenAPI schema is committed
         run: git diff --exit-code apir/doc/openapi.yaml

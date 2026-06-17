@@ -148,7 +148,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a company */
+                /** @description returns a company with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1010,7 +1010,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates an invoice */
+                /** @description creates an invoice with non-null optional fields */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1459,7 +1459,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates an offer */
+                /** @description creates an offer with non-null optional fields */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2440,7 +2440,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates a project */
+                /** @description creates a project with non-null optional fields */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2546,7 +2546,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a project with nullable fields null */
+                /** @description returns a project with costgroup distributions calculated including uncategorized */
                 200: {
                     headers: {
                         [name: string]: unknown;
