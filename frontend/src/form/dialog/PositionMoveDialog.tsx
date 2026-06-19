@@ -50,7 +50,7 @@ export async function resolveNewGroupName(newGroupName: string | null, groupingE
       groupingEntity.position_groupings.push({
         id: positionGroupStore!.positionGroup!.id,
         name: positionGroupName,
-        order: groupingEntity.position_groupings.length,
+        order: groupingEntity.position_groupings.length + 1,
         shared: false,
       });
       return positionGroupStore!.positionGroup!.id!;
