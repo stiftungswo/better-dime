@@ -42,18 +42,19 @@
     "yup": "^0.31.1"
   },
   "scripts": {
-    "start": "CHOKIDAR_USEPOLLING=true react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider CHOKIDAR_USEPOLLING=true react-scripts-ts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "format": "tslint --project . -t verbose --fix",
-    "lint": "tslint --project . -t verbose --config ./tslint.prod.json"
+    "lint": "tslint --project . -t verbose --config ./tslint.prod.json",
+    "generate:types": "npx --yes openapi-typescript@7 ../apir/doc/openapi.yaml -o src/types/generated.ts"
   },
   "devDependencies": {
     "@sentry/typescript": "^4.0.1",
     "@types/history": "^4.7.0",
     "@types/jest": "^23.3.4",
-    "@types/node": "^10.11.5",
+    "@types/node": "^20.0.0",
     "@types/react": "^16.4.16",
     "@types/react-dom": "^16.0.9",
     "@types/react-router-dom": "^4.3.1",

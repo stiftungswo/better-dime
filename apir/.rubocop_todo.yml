@@ -344,6 +344,7 @@ RSpec/ExampleLength:
     - 'spec/other/project_calculator_spec.rb'
     - 'spec/other/project_creator_spec.rb'
     - 'spec/other/work_period_calculator_spec.rb'
+    - 'spec/requests/**/*'
 
 # Offense count: 29
 # Configuration parameters: Include, CustomTransform, IgnoreMethods, SpecSuffixOnly.

@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable, override } from 'mobx';
 import moment from 'moment';
-import { ProjectComment, ProjectCommentListing, ProjectEffortFilter } from '../types';
+import { ProjectComment, ProjectCommentCreate, ProjectCommentListing, ProjectEffortFilter } from '../types';
 import {Cache} from '../utilities/Cache';
 import { AbstractStore } from './abstractStore';
 import { apiDateFormat } from './apiStore';
@@ -13,7 +13,7 @@ export class ProjectCommentStore extends AbstractStore<ProjectComment> {
 
   editing: boolean = false;
 
-  projectCommentTemplate: ProjectComment = {
+  projectCommentTemplate: ProjectCommentCreate = {
     comment: '',
     date: moment(),
     project_id: undefined,

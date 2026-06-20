@@ -348,6 +348,10 @@ GEM
     rspec-mocks (3.13.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
+    rspec-openapi (0.28.0)
+      actionpack (>= 5.2.0)
+      rails-dom-testing
+      rspec-core
     rspec-rails (4.0.0.beta3)
       actionpack (>= 4.2)
       activesupport (>= 4.2)
@@ -486,6 +490,7 @@ DEPENDENCIES
   rails-controller-testing
   ransack
   redcarpet
+  rspec-openapi
   rspec-rails (= 4.0.0.beta3)
   rubocop
   rubocop-performance

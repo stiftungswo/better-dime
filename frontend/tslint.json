@@ -28,7 +28,8 @@
   "linterOptions": {
     "exclude": [
       "*.json",
-      "**/*.json"
+      "**/*.json",
+      "src/types/generated.ts"
     ]
   }
 }

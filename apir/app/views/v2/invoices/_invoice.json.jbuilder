@@ -9,11 +9,9 @@ json.offer_id invoice.project.offer.id unless invoice.project.nil? || invoice.pr
 json.breakdown do
   json.discounts invoice.breakdown[:discounts]
   json.discountTotal invoice.breakdown[:discount_total]
-  json.positions invoice.breakdown[:positions]
   json.rawTotal invoice.breakdown[:raw_total]
   json.subtotal invoice.breakdown[:subtotal]
   json.total invoice.breakdown[:total]
-  json.vats invoice.breakdown[:vats]
   json.vatTotal invoice.breakdown[:vat_total]
 end
 
@@ -30,7 +28,9 @@ end
 json.costgroup_uncategorized_distribution invoice.missing_costgroup_distribution if invoice.costgroup_dist_incomplete?
 
 json.project_id invoice.project&.id
-json.discounts invoice.invoice_discounts
+json.discounts invoice.invoice_discounts do |discount|
+  json.extract! discount, :id, :invoice_id, :name, :percentage, :value, :created_at, :updated_at
+end
 json.positions invoice.invoice_positions.sort_by { |p| p.order.to_i } do |position|
   json.extract! position.decorate, :id, :amount, :description, :price_per_rate, :rate_unit_id,
                 :vat, :order, :position_group_id, :rate_unit_archived, :calculated_total

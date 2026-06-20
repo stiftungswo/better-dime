@@ -61,10 +61,10 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
   handleSubmit = async (values: ProjectComment) => {
     const projectCommentStore = this.props.projectCommentStore!;
     if (projectCommentStore.entity && values.id) {
-      await projectCommentStore.put(schema.cast(values));
+      await projectCommentStore.put({ ...schema.cast(values), id: values.id } as ProjectComment);
     } else {
       if (schema.cast(values)?.comment != null) {
-        await projectCommentStore.post(schema.cast(values));
+        await projectCommentStore.post(schema.cast(values) as unknown as ProjectComment);
         await this.widenFilterSettings(values);
       }
     }

@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, override } from 'mobx';
-import {Company, PositionGroup} from '../types';
+import {PositionGroup, PositionGroupCreate} from '../types';
 import { AbstractStore } from './abstractStore';
 import { MainStore } from './mainStore';
 
@@ -50,9 +50,13 @@ export class PositionGroupStore extends AbstractStore<PositionGroup> {
     throw new Error('Not implemented, position group are never accessed directly');
   }
 
-  async doPost(positionGroup: PositionGroup) {
-    const res = await this.mainStore.apiV2.post('/position_groups', positionGroup);
+  async doPost(entity: PositionGroupCreate) {
+    const res = await this.mainStore.apiV2.post('/position_groups', entity);
     this.positionGroup = res.data;
+  }
+
+  post(entity: PositionGroupCreate) {
+    return super.post(entity as unknown as PositionGroup);
   }
 
   async doPut(positionGroup: PositionGroup) {

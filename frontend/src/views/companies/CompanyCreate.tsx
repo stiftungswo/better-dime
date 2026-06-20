@@ -36,7 +36,7 @@ export default class CompanyCreate extends React.Component<Props> {
       type: 'company',
       id: 0,
       comment: '',
-      email: '',
+      email: null,
       name: '',
       accountant_id: null,
       hidden: false,
@@ -44,7 +44,17 @@ export default class CompanyCreate extends React.Component<Props> {
       tags: [],
       addresses: [],
       phone_numbers: [],
+      persons: [],
       archived: false,
+      company_id: null,
+      department: null,
+      department_in_address: false,
+      first_name: null,
+      last_name: null,
+      salutation: null,
+      created_at: '',
+      updated_at: '',
+      people: [],
     };
 
     return <CompanyForm title={intlText('title')} onSubmit={this.handleSubmit} company={company} submitted={this.state.submitted} />;

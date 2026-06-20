@@ -33,6 +33,8 @@ rescue ActiveRecord::PendingMigrationError => error
   exit 1
 end
 
+RSpec::OpenAPI.enable_example = false
+
 RSpec.configure do |config|
   config.fixture_path = "#{Rails.root}/spec/fixtures"
 

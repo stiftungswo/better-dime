@@ -47,7 +47,7 @@ class CostgroupSubform<OPI extends Offer | Project | Invoice, TYPE extends 'Offe
     const intl = this.props.intl!;
 
     const showFraction = this.props.type === 'Project' || this.props.type === 'Invoice';
-    const uncategorizedDistribution = showFraction ? values.costgroup_uncategorized_distribution : null;
+    const uncategorizedDistribution = showFraction ? (values as Project).costgroup_uncategorized_distribution ?? null : null;
 
     const showWeightInput = this.props.type === 'Invoice';
 
