@@ -54,6 +54,8 @@ describe("PDF exports", () => {
       const employees = await apiPaginated<{ id: number }>("/v2/employees");
       const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
       const categories = await apiArray<{ id: number }>("/v2/project_categories");
+      expect(costgroups.length).toBeGreaterThan(0);
+      expect(categories.length).toBeGreaterThan(0);
 
       const personRes = await api("/v2/people", {
         method: "POST",
@@ -92,8 +94,8 @@ describe("PDF exports", () => {
           status: 1,
           fixed_price: null,
           positions: [],
-          costgroup_distributions: costgroups.length > 0 ? [{ costgroup_number: costgroups[0].number, weight: 100 }] : [],
-          category_distributions: categories.length > 0 ? [{ category_id: categories[0].id, weight: 100 }] : [],
+          costgroup_distributions: [{ costgroup_number: costgroups[0].number, weight: 100 }],
+          category_distributions: [{ category_id: categories[0].id, weight: 100 }],
           discounts: [],
           position_groupings: [],
         }),

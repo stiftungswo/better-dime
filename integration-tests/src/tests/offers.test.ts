@@ -17,12 +17,16 @@ describe("Offers", () => {
   beforeAll(async () => {
     token = await getAuthToken();
     const employees = await apiPaginated<{ id: number }>("/v2/employees");
+    expect(employees.data.length).toBeGreaterThan(0);
     employeeId = employees.data[0].id;
     const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+    expect(rateGroups.length).toBeGreaterThan(0);
     rateGroupId = rateGroups[0].id;
     const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    expect(costgroups.length).toBeGreaterThan(0);
     costgroupNumber = costgroups[0].number;
     const categories = await apiArray<{ id: number }>("/v2/project_categories");
+    expect(categories.length).toBeGreaterThan(0);
     categoryId = categories[0].id;
 
     const personRes = await api("/v2/people", {

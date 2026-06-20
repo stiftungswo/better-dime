@@ -111,19 +111,22 @@ describe("Invoices", () => {
   });
 
   it("GET /v2/invoices/:id/print.pdf returns PDF", async () => {
-    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print.pdf?token=${token}`);
+    const freshToken = await getAuthToken();
+    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print.pdf?token=${freshToken}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/pdf");
   });
 
   it("GET /v2/invoices/:id/print_qr_bill.pdf returns PDF", async () => {
-    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print_qr_bill.pdf?token=${token}`);
+    const freshToken = await getAuthToken();
+    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print_qr_bill.pdf?token=${freshToken}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/pdf");
   });
 
   it("GET /v2/invoices/:id/effort_report.pdf returns PDF", async () => {
-    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/effort_report.pdf?token=${token}`);
+    const freshToken = await getAuthToken();
+    const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/effort_report.pdf?token=${freshToken}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/pdf");
   });
