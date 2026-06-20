@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-unless ENV['OPENAPI']
+unless ENV["OPENAPI"]
   require "simplecov"
   SimpleCov.start "rails" do
     add_filter "app/channels/application_cable/channel.rb"

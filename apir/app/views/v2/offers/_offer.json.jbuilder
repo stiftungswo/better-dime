@@ -30,9 +30,7 @@ json.positions offer.offer_positions.sort_by(&:order) do |position|
   json.extract! position, :id, :amount, :description, :price_per_rate, :rate_unit_id, :service_id,
                 :vat, :order, :position_group_id, :rate_unit_archived
   json.service do
-    if position.service
-      json.extract! position.service, :id, :name, :description, :vat, :order, :local_order, :archived, :service_category_id
-    end
+    json.extract! position.service, :id, :name, :description, :vat, :order, :local_order, :archived, :service_category_id if position.service
   end
 end
 json.position_groupings offer.position_groupings do |group|

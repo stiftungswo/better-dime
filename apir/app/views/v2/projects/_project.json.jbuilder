@@ -38,9 +38,7 @@ json.positions project.project_positions.sort_by(&:order) do |position|
                 :vat, :order, :position_group_id, :efforts_value_with_unit, :charge,
                 :rate_unit_archived, :deletable, :is_time
   json.service do
-    if position.service
-      json.extract! position.service, :id, :name, :description, :vat, :order, :local_order, :archived, :service_category_id
-    end
+    json.extract! position.service, :id, :name, :description, :vat, :order, :local_order, :archived, :service_category_id if position.service
   end
 end
 json.position_groupings project.position_groupings do |group|
