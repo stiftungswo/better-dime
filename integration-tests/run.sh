@@ -13,8 +13,15 @@ echo "==> Starting API stack..."
 docker compose up -d mysql apir
 
 echo "==> Waiting for MySQL..."
-until docker compose exec -T mysql mysqladmin ping -s 2>/dev/null; do
+for i in $(seq 1 90); do
+  if docker compose exec -T mysql mysqladmin ping -s 2>/dev/null; then
+    break
+  fi
   sleep 2
+  if [ "$i" -eq 90 ]; then
+    echo "MySQL did not become ready in time" >&2
+    exit 1
+  fi
 done
 
 echo "==> Seeding test data (SQL)..."
@@ -22,8 +29,15 @@ docker compose exec -T mysql mysql -uroot dime < "$SCRIPT_DIR/src/helpers/seed.s
   || echo "    (seed skipped — database may not exist yet; will retry after schema load)"
 
 echo "==> Waiting for API to be healthy..."
-until curl -sf "$API_BASE_URL/health" > /dev/null 2>&1; do
+for i in $(seq 1 90); do
+  if curl -sf "$API_BASE_URL/health" > /dev/null 2>&1; then
+    break
+  fi
   sleep 2
+  if [ "$i" -eq 90 ]; then
+    echo "API did not become healthy in time" >&2
+    exit 1
+  fi
 done
 echo "==> API is healthy."
 

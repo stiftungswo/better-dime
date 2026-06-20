@@ -44,6 +44,8 @@ describe("Invoices", () => {
   });
 
   it("POST /v2/invoices creates an invoice", async () => {
+    const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    expect(costgroups.length).toBeGreaterThan(0);
     const res = await api("/v2/invoices", {
       method: "POST",
       body: JSON.stringify({
@@ -59,7 +61,7 @@ describe("Invoices", () => {
         fixed_price_vat: null,
         positions: [],
         discounts: [],
-        costgroup_distributions: [],
+        costgroup_distributions: [{ costgroup_number: costgroups[0].number, weight: 100 }],
       }),
     });
     expect(res.status).toBe(200);
@@ -108,17 +110,13 @@ describe("Invoices", () => {
     expect(body.id).not.toBe(invoiceId);
   });
 
-  it("GET /v2/invoices/:id/print.pdf returns PDF (if cost groups present)", async () => {
-    const detail = await apiJson<{ costgroup_distributions: unknown[] }>(`/v2/invoices/${invoiceId}`);
-    if ((detail.body.costgroup_distributions ?? []).length === 0) return;
+  it("GET /v2/invoices/:id/print.pdf returns PDF", async () => {
     const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print.pdf?token=${token}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/pdf");
   });
 
-  it("GET /v2/invoices/:id/print_qr_bill.pdf returns PDF (if cost groups present)", async () => {
-    const detail = await apiJson<{ costgroup_distributions: unknown[] }>(`/v2/invoices/${invoiceId}`);
-    if ((detail.body.costgroup_distributions ?? []).length === 0) return;
+  it("GET /v2/invoices/:id/print_qr_bill.pdf returns PDF", async () => {
     const res = await fetch(`${BASE_URL}/v2/invoices/${invoiceId}/print_qr_bill.pdf?token=${token}`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/pdf");

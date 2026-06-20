@@ -20,7 +20,11 @@ export async function signIn(
     throw new Error("No Authorization header in sign-in response");
   }
 
-  const token = authorization.replace(/^Bearer\s+/i, "");
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  if (!match) {
+    throw new Error(`Invalid Authorization header format: ${authorization}`);
+  }
+  const token = match[1];
   const body = (await res.json()) as Record<string, unknown>;
   return { token, body };
 }

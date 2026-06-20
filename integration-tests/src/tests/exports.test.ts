@@ -34,7 +34,7 @@ describe("PDF exports", () => {
   describe("Project effort report", () => {
     it("GET /v2/projects/:id/effort_report.pdf returns a PDF", async () => {
       const projects = await apiPaginated<{ id: number }>("/v2/projects");
-      if (projects.data.length === 0) return;
+      expect(projects.data.length).toBeGreaterThan(0);
       const id = projects.data[0].id;
 
       const res = await fetch(exportUrl(`/v2/projects/${id}/effort_report.pdf`));
@@ -52,6 +52,8 @@ describe("PDF exports", () => {
     beforeAll(async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
       const employees = await apiPaginated<{ id: number }>("/v2/employees");
+      const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+      const categories = await apiArray<{ id: number }>("/v2/project_categories");
 
       const personRes = await api("/v2/people", {
         method: "POST",
@@ -90,8 +92,8 @@ describe("PDF exports", () => {
           status: 1,
           fixed_price: null,
           positions: [],
-          costgroup_distributions: [],
-          category_distributions: [],
+          costgroup_distributions: costgroups.length > 0 ? [{ costgroup_number: costgroups[0].number, weight: 100 }] : [],
+          category_distributions: categories.length > 0 ? [{ category_id: categories[0].id, weight: 100 }] : [],
           discounts: [],
           position_groupings: [],
         }),
@@ -103,15 +105,10 @@ describe("PDF exports", () => {
     });
 
     it("GET /v2/offers/:id/print.pdf endpoint is reachable", async () => {
-      if (!offerId) return;
+      expect(offerId).not.toBeNull();
       const res = await fetch(exportUrl(`/v2/offers/${offerId}/print.pdf`));
-
-      // Offer PDF may fail with 500 if the offer has no positions (known issue).
-      // We verify the endpoint is routable and auth works (not 401/404).
-      expect([200, 500]).toContain(res.status);
-      if (res.status === 200) {
-        expect(res.headers.get("content-type")).toContain("application/pdf");
-      }
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("application/pdf");
     });
   });
 
@@ -127,9 +124,9 @@ describe("PDF exports", () => {
           Array.isArray(inv.costgroup_distributions) &&
           inv.costgroup_distributions.length > 0,
       );
-      if (!printable) return;
+      expect(printable).toBeDefined();
 
-      const res = await fetch(exportUrl(`/v2/invoices/${printable.id}/print.pdf`));
+      const res = await fetch(exportUrl(`/v2/invoices/${printable!.id}/print.pdf`));
 
       expect(res.status).toBe(200);
       expect(res.headers.get("content-type")).toContain("application/pdf");

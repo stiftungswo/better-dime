@@ -70,8 +70,7 @@ describe("JSON/XLSX reports (dual auth)", () => {
 
   it("GET /v2/reports/service_costs/project returns xlsx", async () => {
     const res = await dualAuthFetch("/v2/reports/service_costs/project.xlsx", { start: "2026-01-01", end: "2026-01-31" });
-    // May return 500 with no cost data seeded
-    expect([200, 500]).toContain(res.status);
+    expect(res.status).toBe(200);
   });
 });
 
@@ -86,7 +85,7 @@ describe("PDF reports (token param auth)", () => {
 
   it("GET /v2/reports/project_report/:id.pdf returns a PDF", async () => {
     const projects = await apiPaginated<{ id: number }>("/v2/projects");
-    if (projects.data.length === 0) return;
+    expect(projects.data.length).toBeGreaterThan(0);
     const id = projects.data[0].id;
     const res = await fetch(tokenUrl(`/v2/reports/project_report/${id}.pdf`));
     expect(res.status).toBe(200);
@@ -95,9 +94,9 @@ describe("PDF reports (token param auth)", () => {
 
   it("GET /v2/reports/:id.pdf returns a PDF", async () => {
     const projects = await apiPaginated<{ id: number }>("/v2/projects");
-    if (projects.data.length === 0) return;
+    expect(projects.data.length).toBeGreaterThan(0);
     const id = projects.data[0].id;
     const res = await fetch(tokenUrl(`/v2/reports/${id}.pdf`));
-    expect([200, 404]).toContain(res.status);
+    expect(res.status).toBe(200);
   });
 });

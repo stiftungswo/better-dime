@@ -16,6 +16,7 @@ describe("Customers", () => {
 
     it("POST /v2/customers creates a customer", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const res = await api("/v2/customers", {
         method: "POST",
         body: JSON.stringify({
@@ -81,6 +82,7 @@ describe("Customers", () => {
 
     it("DELETE /v2/customers/:id deletes a customer", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const createRes = await api("/v2/customers", {
         method: "POST",
         body: JSON.stringify({
@@ -118,6 +120,7 @@ describe("Customers", () => {
 
     it("POST /v2/people creates a person", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const res = await api("/v2/people", {
         method: "POST",
         body: JSON.stringify({
@@ -168,6 +171,7 @@ describe("Customers", () => {
 
     it("DELETE /v2/people/:id deletes a person", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const createRes = await api("/v2/people", {
         method: "POST",
         body: JSON.stringify({
@@ -186,6 +190,7 @@ describe("Customers", () => {
 
     it("POST /v2/companies creates a company", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const res = await api("/v2/companies", {
         method: "POST",
         body: JSON.stringify({
@@ -231,6 +236,7 @@ describe("Customers", () => {
 
     it("DELETE /v2/companies/:id deletes a company", async () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      expect(rateGroups.length).toBeGreaterThan(0);
       const createRes = await api("/v2/companies", {
         method: "POST",
         body: JSON.stringify({

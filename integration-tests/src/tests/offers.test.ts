@@ -11,12 +11,19 @@ describe("Offers", () => {
   let addressId: number;
   let token: string;
 
+  let costgroupNumber: number;
+  let categoryId: number;
+
   beforeAll(async () => {
     token = await getAuthToken();
     const employees = await apiPaginated<{ id: number }>("/v2/employees");
     employeeId = employees.data[0].id;
     const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
     rateGroupId = rateGroups[0].id;
+    const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    costgroupNumber = costgroups[0].number;
+    const categories = await apiArray<{ id: number }>("/v2/project_categories");
+    categoryId = categories[0].id;
 
     const personRes = await api("/v2/people", {
       method: "POST",
@@ -45,8 +52,8 @@ describe("Offers", () => {
         fixed_price: null,
         positions: [],
         discounts: [],
-        costgroup_distributions: [],
-        category_distributions: [],
+        costgroup_distributions: [{ costgroup_number: costgroupNumber, weight: 100 }],
+        category_distributions: [{ category_id: categoryId, weight: 100 }],
         position_groupings: [],
       }),
     });
@@ -91,18 +98,16 @@ describe("Offers", () => {
   });
 
   it("POST /v2/offers/:id/create_project creates a project from offer", async () => {
-    // create_project may fail if offer has no costgroup/category distributions (pre-existing limitation)
     const res = await api(`/v2/offers/${offerId}/create_project`, {
       method: "POST",
       body: JSON.stringify({}),
     });
-    // 200 = success, 500 = offer missing required distributions
-    expect([200, 500]).toContain(res.status);
+    expect(res.status).toBe(200);
   });
 
   it("GET /v2/offers/:id/print.pdf endpoint is reachable", async () => {
     const res = await fetch(`${BASE_URL}/v2/offers/${offerId}/print.pdf?token=${token}`);
-    expect([200, 500]).toContain(res.status);
+    expect(res.status).toBe(200);
   });
 
   it("DELETE /v2/offers/:id deletes an offer", async () => {

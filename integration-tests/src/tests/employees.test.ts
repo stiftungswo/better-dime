@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { api, apiJson, apiPaginated } from "../helpers/setup.js";
+import { api, apiJson, apiPaginated, apiArray } from "../helpers/setup.js";
 import { signIn } from "../helpers/auth.js";
 
 const BASE_URL = process.env.API_BASE_URL ?? "http://localhost:38001";
@@ -9,10 +9,12 @@ describe("Employees", () => {
   let groupId: number;
 
   it("GET /v2/employees returns paginated list", async () => {
-    const list = await apiPaginated<{ id: number; employee_group_id: number }>("/v2/employees");
+    const list = await apiPaginated<{ id: number }>("/v2/employees");
     expect(list).toHaveProperty("current_page");
     expect(list.data.length).toBeGreaterThan(0);
-    groupId = list.data[0].employee_group_id;
+    const groups = await apiArray<{ id: number }>("/v2/employee_groups");
+    expect(groups.length).toBeGreaterThan(0);
+    groupId = groups[0].id;
   });
 
   it("POST /v2/employees creates an employee", async () => {

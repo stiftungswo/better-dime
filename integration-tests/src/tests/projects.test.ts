@@ -126,6 +126,7 @@ describe("Projects", () => {
           tags: [], phone_numbers: [], addresses: [{ city: "X", country: "CH", zip: 1000, street: "X" }],
         }),
       });
+      expect(personRes.status).toBe(200);
       const person = (await personRes.json()) as { id: number; addresses: { id: number }[] };
       const createRes = await api("/v2/projects", {
         method: "POST",
@@ -136,6 +137,7 @@ describe("Projects", () => {
           positions: [], costgroup_distributions: [], category_distributions: [], position_groupings: [],
         }),
       });
+      expect(createRes.status).toBe(200);
       const { id } = (await createRes.json()) as { id: number };
       const res = await api(`/v2/projects/${id}`, { method: "DELETE" });
       expect([200, 204]).toContain(res.status);

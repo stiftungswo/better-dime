@@ -23,14 +23,23 @@ export async function api(
   path: string,
   options: RequestInit = {},
 ): Promise<Response> {
-  const token = await getAuthToken();
-  return fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      ...authedHeaders(token),
-      ...(options.headers ?? {}),
-    },
-  });
+  const doFetch = (t: string) =>
+    fetch(`${BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        ...authedHeaders(t),
+        ...(options.headers ?? {}),
+      },
+    });
+
+  let token = await getAuthToken();
+  let res = await doFetch(token);
+  if (res.status === 401) {
+    cachedToken = undefined;
+    token = await getAuthToken();
+    res = await doFetch(token);
+  }
+  return res;
 }
 
 export async function apiJson<T = unknown>(
