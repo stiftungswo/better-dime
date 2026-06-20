@@ -712,29 +712,29 @@ paths:
                       comment:
                         type: string
                       company_id:
-                        type: integer
+                        nullable: true
                       department:
-                        type: string
+                        nullable: true
                       email:
-                        type: string
+                        nullable: true
                       department_in_address:
                         type: boolean
                       first_name:
-                        type: string
+                        nullable: true
                       last_name:
-                        type: string
+                        nullable: true
                       hidden:
                         type: boolean
                       archived:
                         type: boolean
                       name:
-                        nullable: true
+                        type: string
                       accountant_id:
-                        type: integer
+                        nullable: true
                       rate_group_id:
                         type: integer
                       salutation:
-                        type: string
+                        nullable: true
                       created_at:
                         type: string
                       updated_at:
@@ -3290,29 +3290,29 @@ paths:
                       comment:
                         type: string
                       company_id:
-                        type: integer
+                        nullable: true
                       department:
-                        type: string
+                        nullable: true
                       department_in_address:
                         type: boolean
                       email:
-                        type: string
+                        nullable: true
                       first_name:
-                        type: string
+                        nullable: true
                       last_name:
-                        type: string
+                        nullable: true
                       hidden:
                         type: boolean
                       archived:
                         type: boolean
                       name:
-                        nullable: true
+                        type: string
                       accountant_id:
-                        type: integer
+                        nullable: true
                       rate_group_id:
                         type: integer
                       salutation:
-                        type: string
+                        nullable: true
                       created_at:
                         type: string
                       updated_at:
