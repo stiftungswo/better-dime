@@ -51,7 +51,7 @@ RSpec.describe ProjectCalculator do
   describe "#current_price" do
     it "sums charge from all project positions" do
       position = create(:project_position, project: project, service: service, rate_unit: rate_unit, price_per_rate: 10_000)
-      create(:project_effort, project_position: position, value: 60, date: Date.today, costgroup: costgroup)
+      create(:project_effort, project_position: position, value: 60, date: Time.zone.today, costgroup: costgroup)
 
       calc = described_class.new(project)
       expect(calc.current_price).to be > 0
@@ -66,7 +66,7 @@ RSpec.describe ProjectCalculator do
   describe "#current_time" do
     it "sums effort values for time-based rate units" do
       position = create(:project_position, project: project, service: service, rate_unit: rate_unit, price_per_rate: 10_000)
-      create(:project_effort, project_position: position, value: 120, date: Date.today, costgroup: costgroup)
+      create(:project_effort, project_position: position, value: 120, date: Time.zone.today, costgroup: costgroup)
 
       calc = described_class.new(project)
       expect(calc.current_time).to eq(120.0)
@@ -75,7 +75,7 @@ RSpec.describe ProjectCalculator do
     it "ignores non-time rate units" do
       non_time_unit = create(:rate_unit, is_time: false, factor: 1)
       position = create(:project_position, project: project, service: service, rate_unit: non_time_unit, price_per_rate: 10_000)
-      create(:project_effort, project_position: position, value: 100, date: Date.today, costgroup: costgroup)
+      create(:project_effort, project_position: position, value: 100, date: Time.zone.today, costgroup: costgroup)
 
       calc = described_class.new(project)
       expect(calc.current_time).to eq(0)
@@ -84,7 +84,7 @@ RSpec.describe ProjectCalculator do
 
   describe ".days_since_last_invoice" do
     it "returns nil when dates are missing" do
-      expect(described_class.days_since_last_invoice(double(last_effort_date: nil, last_invoice_date: Date.today))).to be_nil
+      expect(described_class.days_since_last_invoice(double(last_effort_date: nil, last_invoice_date: Time.zone.today))).to be_nil
     end
   end
 end

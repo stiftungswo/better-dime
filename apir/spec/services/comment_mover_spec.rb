@@ -22,9 +22,9 @@ RSpec.describe CommentMover do
       allow_any_instance_of(ProjectComment).to receive(:save).and_return(false)
       allow_any_instance_of(ProjectComment).to receive(:errors).and_return(double(messages: { base: ["error"] }, full_messages: ["error"]))
 
-      expect {
+      expect do
         described_class.move(comment_ids: [comment.id], project_id: project_b.id)
-      }.to raise_error(ValidationError)
+      end.to raise_error(ValidationError)
     end
   end
 end

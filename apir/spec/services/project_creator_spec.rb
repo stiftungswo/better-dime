@@ -56,15 +56,15 @@ RSpec.describe ProjectCreator do
       end
 
       it "raises ValidationError when costgroup argument is nil" do
-        expect {
+        expect do
           described_class.create_project_from_offer(offer, nil, category.id)
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
 
       it "raises ValidationError when category argument is nil" do
-        expect {
+        expect do
           described_class.create_project_from_offer(offer, costgroup.number, nil)
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
     end
   end

@@ -35,7 +35,7 @@ RSpec.describe CostGroupBreakdownService do
 
     it "returns 0 for an unknown costgroup" do
       svc = described_class.new(project)
-      expect(svc.costgroup_distribution(99999)).to eq(0.0)
+      expect(svc.costgroup_distribution(99_999)).to eq(0.0)
     end
   end
 

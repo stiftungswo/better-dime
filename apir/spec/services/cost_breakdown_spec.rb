@@ -8,12 +8,12 @@ RSpec.describe CostBreakdown do
 
   def make_position(amount:, price_per_rate:, vat: 0.077, group: nil, order: 1)
     create(:invoice_position,
-      amount: amount,
-      price_per_rate: price_per_rate,
-      vat: vat,
-      position_group: group || position_group,
-      rate_unit: rate_unit,
-      order: order)
+           amount: amount,
+           price_per_rate: price_per_rate,
+           vat: vat,
+           position_group: group || position_group,
+           rate_unit: rate_unit,
+           order: order)
   end
 
   describe "#calculate" do
@@ -79,7 +79,7 @@ RSpec.describe CostBreakdown do
         pos_b = make_position(amount: 3, price_per_rate: 200, group: group_b)
 
         result = described_class.new([pos_a, pos_b], [], {}, [group_a, group_b], nil, nil).calculate
-        group_names = result[:grouped_positions].map { |g| g[:group_name] }
+        group_names = result[:grouped_positions].pluck(:group_name)
         expect(group_names).to include("A", "B")
       end
 

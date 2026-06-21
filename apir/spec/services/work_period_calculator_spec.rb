@@ -14,11 +14,11 @@ RSpec.describe WorkPeriodCalculator do
     context "with a single work period" do
       let(:work_period) do
         create(:work_period,
-          employee: employee,
-          beginning: Date.new(2026, 1, 5),
-          ending: Date.new(2026, 1, 30),
-          pensum: 100,
-          yearly_vacation_budget: 10_080)
+               employee: employee,
+               beginning: Date.new(2026, 1, 5),
+               ending: Date.new(2026, 1, 30),
+               pensum: 100,
+               yearly_vacation_budget: 10_080)
       end
 
       it "returns a result hash with expected keys" do
@@ -49,10 +49,10 @@ RSpec.describe WorkPeriodCalculator do
     context "with holidays" do
       let(:work_period) do
         create(:work_period,
-          employee: employee,
-          beginning: Date.new(2026, 1, 5),
-          ending: Date.new(2026, 1, 9),
-          pensum: 100)
+               employee: employee,
+               beginning: Date.new(2026, 1, 5),
+               ending: Date.new(2026, 1, 9),
+               pensum: 100)
       end
 
       it "reduces target time for holidays within the period" do
@@ -75,10 +75,10 @@ RSpec.describe WorkPeriodCalculator do
       let(:costgroup) { create(:costgroup) }
       let(:work_period) do
         create(:work_period,
-          employee: employee,
-          beginning: Date.new(2026, 1, 5),
-          ending: Date.new(2026, 1, 30),
-          pensum: 100)
+               employee: employee,
+               beginning: Date.new(2026, 1, 5),
+               ending: Date.new(2026, 1, 30),
+               pensum: 100)
       end
 
       it "counts booked minutes from efforts within the period" do
@@ -92,20 +92,20 @@ RSpec.describe WorkPeriodCalculator do
     context "with consecutive periods" do
       let(:period_a) do
         create(:work_period,
-          employee: employee,
-          beginning: Date.new(2026, 1, 1),
-          ending: Date.new(2026, 3, 31),
-          pensum: 100,
-          hourly_paid: false)
+               employee: employee,
+               beginning: Date.new(2026, 1, 1),
+               ending: Date.new(2026, 3, 31),
+               pensum: 100,
+               hourly_paid: false)
       end
 
       let(:period_b) do
         create(:work_period,
-          employee: employee,
-          beginning: Date.new(2026, 4, 1),
-          ending: Date.new(2026, 6, 30),
-          pensum: 100,
-          hourly_paid: false)
+               employee: employee,
+               beginning: Date.new(2026, 4, 1),
+               ending: Date.new(2026, 6, 30),
+               pensum: 100,
+               hourly_paid: false)
       end
 
       it "carries over vacation from previous period" do

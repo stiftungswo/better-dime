@@ -22,9 +22,9 @@ RSpec.describe EffortMover do
     it "creates a new position when target project has no matching service" do
       effort = create(:project_effort, project_position: position_a)
 
-      expect {
+      expect do
         described_class.move(effort_ids: effort.id.to_s, project_id: project_b.id)
-      }.to change { project_b.project_positions.count }.by(1)
+      end.to change { project_b.project_positions.count }.by(1)
 
       expect(effort.reload.project_position.project).to eq(project_b)
     end

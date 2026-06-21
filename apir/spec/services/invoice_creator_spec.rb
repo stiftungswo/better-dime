@@ -35,7 +35,7 @@ RSpec.describe InvoiceCreator do
 
     it "creates positions from project positions with effort amounts" do
       position = create(:project_position, project: project, service: service, rate_unit: rate_unit)
-      create(:project_effort, project_position: position, value: 120, date: Date.today, costgroup: costgroup)
+      create(:project_effort, project_position: position, value: 120, date: Time.zone.today, costgroup: costgroup)
 
       invoice = described_class.create_invoice_from_project(project)
 

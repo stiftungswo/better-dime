@@ -8,6 +8,7 @@ RSpec.describe ProjectServiceCostReportService do
   let(:service_b) { create(:service, name: "Design") }
   let(:project) { create(:project) }
   let(:costgroup) { create(:costgroup) }
+  let(:range) { Date.new(2026, 1, 1)..Date.new(2026, 12, 31) }
 
   before do
     pos_a = create(:project_position, project: project, service: service_a, rate_unit: rate_unit, price_per_rate: 15_000, vat: 0.077)
@@ -15,8 +16,6 @@ RSpec.describe ProjectServiceCostReportService do
     create(:project_effort, project_position: pos_a, value: 120, date: Date.new(2026, 3, 10), costgroup: costgroup)
     create(:project_effort, project_position: pos_b, value: 60, date: Date.new(2026, 3, 15), costgroup: costgroup)
   end
-
-  let(:range) { Date.new(2026, 1, 1)..Date.new(2026, 12, 31) }
 
   describe "#initialize" do
     it "raises on non-integer service IDs" do

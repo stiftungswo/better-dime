@@ -22,35 +22,15 @@ Lint/AmbiguousBlockAssociation:
     - 'app/views/v2/invoices/_invoice.json.jbuilder'
 
 # Offense count: 1
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: enums
-Lint/ConstantDefinitionInBlock:
-  Exclude:
-    - 'spec/other/params_modifier_spec.rb'
-
-# Offense count: 1
 # Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches.
 Lint/DuplicateBranch:
   Exclude:
     - 'app/services/pdfs/invoice_qr_bill_pdf.rb'
 
-# Offense count: 36
+# Offense count: 23
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
   Exclude:
-    - 'spec/controllers/customers_import_controller_spec.rb'
-    - 'spec/controllers/global_settings_controller_spec.rb'
-    - 'spec/controllers/holidays_controller_spec.rb'
-    - 'spec/controllers/position_groups_controller_spec.rb'
-    - 'spec/controllers/project_comment_presets_controller_spec.rb'
-    - 'spec/controllers/project_comments_controller_spec.rb'
-    - 'spec/controllers/project_efforts_controller_spec.rb'
-    - 'spec/controllers/rate_groups_controller_spec.rb'
-    - 'spec/controllers/rate_units_controller_spec.rb'
-    - 'spec/controllers/reports_controller_spec.rb'
-    - 'spec/controllers/revenue_reports_controller_spec.rb'
-    - 'spec/controllers/service_cost_reports_controller_spec.rb'
-    - 'spec/controllers/service_hour_reports_controller_spec.rb'
     - 'spec/decorators/company_decorator_spec.rb'
     - 'spec/decorators/costgroup_decorator_spec.rb'
     - 'spec/decorators/customer_decorator_spec.rb'
@@ -90,11 +70,6 @@ Lint/SuppressedException:
 Lint/UselessAssignment:
   Exclude:
     - 'app/services/revenue_report_service.rb'
-    - 'spec/other/cost_breakdown_spec.rb'
-    - 'spec/other/invoice_creator_spec.rb'
-    - 'spec/other/project_calculator_spec.rb'
-    - 'spec/other/project_creator_spec.rb'
-    - 'spec/other/work_period_calculator_spec.rb'
 
 # Offense count: 1
 # Configuration parameters: CheckForMethodsWithNoSideEffects.
@@ -291,22 +266,9 @@ Performance/RangeInclude:
     - 'app/services/pdfs/project_report_pdf.rb'
     - 'app/services/work_period_calculator.rb'
 
-# Offense count: 36
+# Offense count: 23
 RSpec/EmptyExampleGroup:
   Exclude:
-    - 'spec/controllers/customers_import_controller_spec.rb'
-    - 'spec/controllers/global_settings_controller_spec.rb'
-    - 'spec/controllers/holidays_controller_spec.rb'
-    - 'spec/controllers/position_groups_controller_spec.rb'
-    - 'spec/controllers/project_comment_presets_controller_spec.rb'
-    - 'spec/controllers/project_comments_controller_spec.rb'
-    - 'spec/controllers/project_efforts_controller_spec.rb'
-    - 'spec/controllers/rate_groups_controller_spec.rb'
-    - 'spec/controllers/rate_units_controller_spec.rb'
-    - 'spec/controllers/reports_controller_spec.rb'
-    - 'spec/controllers/revenue_reports_controller_spec.rb'
-    - 'spec/controllers/service_cost_reports_controller_spec.rb'
-    - 'spec/controllers/service_hour_reports_controller_spec.rb'
     - 'spec/decorators/company_decorator_spec.rb'
     - 'spec/decorators/costgroup_decorator_spec.rb'
     - 'spec/decorators/customer_decorator_spec.rb'
@@ -331,25 +293,24 @@ RSpec/EmptyExampleGroup:
     - 'spec/decorators/service_decorator_spec.rb'
     - 'spec/decorators/work_period_decorator_spec.rb'
 
-# Offense count: 15
+# Offense count: 17
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - 'spec/services/**/*'
+
+# Offense count: 6
 # Configuration parameters: Max, CountAsOne.
 RSpec/ExampleLength:
   Exclude:
     - 'spec/controllers/employee_groups_controller_spec.rb'
     - 'spec/controllers/services_controller_spec.rb'
-    - 'spec/other/cost_breakdown_spec.rb'
-    - 'spec/other/effort_mover_spec.rb'
-    - 'spec/other/invoice_creator_spec.rb'
-    - 'spec/other/params_modifier_spec.rb'
-    - 'spec/other/project_calculator_spec.rb'
-    - 'spec/other/project_creator_spec.rb'
-    - 'spec/other/work_period_calculator_spec.rb'
     - 'spec/requests/**/*'
+    - 'spec/services/**/*'
 
 # Offense count: 29
 # Configuration parameters: Include, CustomTransform, IgnoreMethods, SpecSuffixOnly.
 # Include: **/*_spec*rb*, **/spec/**/*
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
   Exclude:
     - 'spec/controllers/companies_controller_spec.rb'
     - 'spec/controllers/cost_group_reports_controller_spec.rb'
@@ -380,11 +341,6 @@ RSpec/FilePath:
     - 'spec/controllers/service_cost_reports_controller_spec.rb'
     - 'spec/controllers/service_hour_reports_controller_spec.rb'
     - 'spec/controllers/services_controller_spec.rb'
-
-# Offense count: 1
-RSpec/LeakyConstantDeclaration:
-  Exclude:
-    - 'spec/other/params_modifier_spec.rb'
 
 # Offense count: 1
 # Configuration parameters: IgnoreSharedExamples.
@@ -479,7 +435,7 @@ Rails/RedundantPresenceValidationOnBelongsTo:
     - 'app/models/offer.rb'
     - 'app/models/offer_position.rb'
 
-# Offense count: 4
+# Offense count: 5
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
 Rails/SkipsModelValidations:
@@ -488,6 +444,11 @@ Rails/SkipsModelValidations:
     - 'app/controllers/v2/offers_controller.rb'
     - 'app/controllers/v2/projects_controller.rb'
     - 'app/services/position_group_updater.rb'
+    - 'spec/services/position_group_updater_spec.rb'
+
+RSpec/AnyInstance:
+  Exclude:
+    - 'spec/services/comment_mover_spec.rb'
 
 # Offense count: 1
 # Configuration parameters: Include.
