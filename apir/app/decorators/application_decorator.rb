@@ -10,14 +10,14 @@ class ApplicationDecorator < Draper::Decorator
 
   # Make React happy
   def created_at
-    model.created_at&.to_formatted_s(:db)
+    model.created_at&.to_fs(:db)
   end
 
   def updated_at
-    model.updated_at&.to_formatted_s(:db)
+    model.updated_at&.to_fs(:db)
   end
 
   def deleted_at
-    model.deleted_at&.to_formatted_s(:db)
+    model.deleted_at&.to_fs(:db)
   end
 end

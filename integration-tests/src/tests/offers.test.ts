@@ -85,8 +85,8 @@ describe("Offers", () => {
         name: "Updated Offer",
         positions: [],
         discounts: [],
-        costgroup_distributions: [],
-        category_distributions: [],
+        costgroup_distributions: [{ costgroup_number: costgroupNumber, weight: 100 }],
+        category_distributions: [{ category_id: categoryId, weight: 100 }],
         position_groupings: [],
       }),
     });

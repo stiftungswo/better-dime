@@ -4,9 +4,14 @@ class ValidationError < StandardError
   attr_reader :validation_errors, :human_readable_descriptions
 
   def initialize(validation_errors, human_readable_descriptions = nil)
-    @validation_errors = validation_errors.try(:messages)&.to_h || validation_errors.to_h
-    @human_readable_descriptions = human_readable_descriptions
-    @human_readable_descriptions ||= validation_errors.full_messages
+    if validation_errors.is_a?(String)
+      @validation_errors = {}
+      @human_readable_descriptions = [validation_errors]
+    else
+      @validation_errors = validation_errors.try(:messages)&.to_h || validation_errors.to_h
+      @human_readable_descriptions = human_readable_descriptions
+      @human_readable_descriptions ||= validation_errors.full_messages
+    end
     super(@human_readable_descriptions)
   end
 

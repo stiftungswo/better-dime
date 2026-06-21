@@ -8,7 +8,7 @@ module V2
 
       def authenticate_from_params!
         employee = Warden::JWTAuth::UserDecoder.new.call(token, :employee, AUD_FIELD)
-        sign_in :employee, employee
+        sign_in :employee, employee, store: false
       rescue JWT::DecodeError
         raise AuthorizationError
       end

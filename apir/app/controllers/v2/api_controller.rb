@@ -5,6 +5,10 @@ module V2
     include V2::Concerns::ParamsExtractableEmployeeLocale
     include V2::Concerns::ParamsAuthenticatable
 
+    rescue_from ActionController::UnknownFormat do
+      head :no_content
+    end
+
     before_action :activate, unless: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
 

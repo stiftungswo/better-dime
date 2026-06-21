@@ -78,7 +78,7 @@ Style/HashTransformValues:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.4
   Exclude:
     - 'bin/**/*'
     - 'log/**/*'
