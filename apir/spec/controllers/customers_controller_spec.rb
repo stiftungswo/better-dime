@@ -25,7 +25,7 @@ RSpec.describe V2::CustomersController, type: :controller do
         company_c = create(:company, name: "Company C")
         company_d = create(:company, name: "Company D")
 
-        expect(assigns(:customers)).to match_array([company_a, company_b, company_c, company_d])
+        expect(assigns(:customers)).to contain_exactly(company_a, company_b, company_c, company_d)
       end
 
       it "renders the :index template" do

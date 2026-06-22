@@ -20,7 +20,7 @@ module V2
         if @service_category.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @service_category.errors, status: :unprocessable_entity }
+          format.json { render json: @service_category.errors, status: :unprocessable_content }
         end
       end
     end
@@ -32,7 +32,7 @@ module V2
         if @service_category.update(service_category_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @service_category.errors, status: :unprocessable_entity }
+          format.json { render json: @service_category.errors, status: :unprocessable_content }
         end
       end
     end
@@ -44,7 +44,7 @@ module V2
         if @service_category.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @service_category.errors, status: :unprocessable_entity }
+          format.json { render json: @service_category.errors, status: :unprocessable_content }
         end
       end
     end

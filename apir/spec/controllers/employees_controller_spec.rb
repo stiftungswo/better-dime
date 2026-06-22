@@ -25,7 +25,7 @@ RSpec.describe V2::EmployeesController, type: :controller do
         employee_a = create(:employee, first_name: "Employee A")
         employee_b = create(:employee, first_name: "Employee B")
 
-        expect(assigns(:employees)).to match_array([subject.current_employee, employee_a, employee_b])
+        expect(assigns(:employees)).to contain_exactly(subject.current_employee, employee_a, employee_b)
       end
 
       it "renders the :index template" do

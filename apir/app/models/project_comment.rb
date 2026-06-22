@@ -2,6 +2,7 @@
 
 class ProjectComment < ApplicationRecord
   include SoftDeletable
+
   belongs_to :project
 
   validates :comment, :date, presence: true

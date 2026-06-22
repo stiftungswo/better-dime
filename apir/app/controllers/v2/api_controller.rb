@@ -26,7 +26,7 @@ module V2
       current_employee&.id
     end
 
-    def switch_locale(&action)
+    def switch_locale(&)
       locale = locale_params[:locale]
 
       locale = current_employee.try(:locale) if locale.blank?
@@ -35,7 +35,7 @@ module V2
 
       locale = I18n.default_locale if locale.blank?
 
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(locale, &)
     end
 
     def locale_params

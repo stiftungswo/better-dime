@@ -21,7 +21,7 @@ if calculate_costgroup_distributions
     if project.costgroup_sums.key?(pc.costgroup_number)
       json.distribution project.costgroup_distribution(pc.costgroup_number)
     else
-      0.00.to_f
+      0.00
     end
   end
   json.costgroup_uncategorized_distribution project.costgroup_dist_incomplete? ? project.missing_costgroup_distribution : nil

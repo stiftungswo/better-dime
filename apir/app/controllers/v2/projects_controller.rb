@@ -18,6 +18,14 @@ module V2
       @project
     end
 
+    def create
+      @project = Project.new(update_params)
+
+      raise ValidationError, @project.errors unless @project.save
+
+      render :show
+    end
+
     def update
       # destroy project positions which were not passed along to the params
       ParamsModifier.destroy_missing params, @project.project_positions, :positions
@@ -31,14 +39,6 @@ module V2
 
       # replace shared position groups by new ones to enable modification in the frontend
       raise ValidationError, @project.errors if PositionGroupRemapper.remap_shared_groups(@project.position_groupings, @project.project_positions) && !@project.save
-
-      render :show
-    end
-
-    def create
-      @project = Project.new(update_params)
-
-      raise ValidationError, @project.errors unless @project.save
 
       render :show
     end

@@ -20,7 +20,7 @@ module V2
         if @customer_tag.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer_tag.errors, status: :unprocessable_entity }
+          format.json { render json: @customer_tag.errors, status: :unprocessable_content }
         end
       end
     end
@@ -32,7 +32,7 @@ module V2
         if @customer_tag.update(customer_tag_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer_tag.errors, status: :unprocessable_entity }
+          format.json { render json: @customer_tag.errors, status: :unprocessable_content }
         end
       end
     end
@@ -44,7 +44,7 @@ module V2
         if @customer_tag.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer_tag.errors, status: :unprocessable_entity }
+          format.json { render json: @customer_tag.errors, status: :unprocessable_content }
         end
       end
     end
@@ -57,7 +57,7 @@ module V2
         if @customer_tag.update(archived: params[:archived])
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer_tag.errors, status: :unprocessable_entity }
+          format.json { render json: @customer_tag.errors, status: :unprocessable_content }
         end
       end
     end

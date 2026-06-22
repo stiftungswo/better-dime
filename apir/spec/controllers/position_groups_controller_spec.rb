@@ -8,9 +8,9 @@ RSpec.describe V2::PositionGroupsController, type: :controller do
 
     describe "#create" do
       it "creates a position group" do
-        expect {
+        expect do
           post :create, format: :json, params: { name: "New Group" }
-        }.to change(PositionGroup, :count).by(1)
+        end.to change(PositionGroup, :count).by(1)
       end
     end
   end

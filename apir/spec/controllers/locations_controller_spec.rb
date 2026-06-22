@@ -25,7 +25,7 @@ RSpec.describe V2::LocationsController, type: :controller do
         location_c = create(:location, name: "Location C", order: 3)
         location_d = create(:location, name: "Location D", order: 4)
 
-        expect(assigns(:locations)).to match_array([location_a, location_b, location_c, location_d])
+        expect(assigns(:locations)).to contain_exactly(location_a, location_b, location_c, location_d)
       end
 
       it "renders the :index template" do

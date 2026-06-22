@@ -2,6 +2,7 @@
 
 class ProjectPosition < ApplicationRecord
   include SoftDeletable
+
   belongs_to :rate_unit
   belongs_to :service
   belongs_to :project

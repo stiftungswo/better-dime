@@ -2,6 +2,7 @@
 
 class ProjectEffort < ApplicationRecord
   include SoftDeletable
+
   belongs_to :employee
   belongs_to :project_position, foreign_key: :position_id
   belongs_to :costgroup, foreign_key: :costgroup_number

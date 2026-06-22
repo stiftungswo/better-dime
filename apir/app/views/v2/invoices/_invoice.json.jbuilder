@@ -22,7 +22,7 @@ json.costgroup_distributions invoice.invoice_costgroup_distributions.map do |ic|
   if invoice.costgroup_sums.key?(ic.costgroup_number)
     json.distribution invoice.costgroup_distribution(ic.costgroup_number)
   else
-    0.00.to_f
+    0.00
   end
 end
 json.costgroup_uncategorized_distribution invoice.missing_costgroup_distribution if invoice.costgroup_dist_incomplete?

@@ -23,7 +23,7 @@ RSpec.describe V2::ProjectCategoriesController, type: :controller do
         project_category_a = create(:project_category, name: "Category A")
         project_category_b = create(:project_category, name: "Category B")
 
-        expect(assigns(:project_categories)).to match_array([project_category_a, project_category_b])
+        expect(assigns(:project_categories)).to contain_exactly(project_category_a, project_category_b)
       end
 
       it "renders the :index template" do

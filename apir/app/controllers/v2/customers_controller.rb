@@ -21,7 +21,7 @@ module V2
         if @customer.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
+          format.json { render json: @customer.errors, status: :unprocessable_content }
         end
       end
     end
@@ -36,7 +36,7 @@ module V2
         if @customer.update(customer_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
+          format.json { render json: @customer.errors, status: :unprocessable_content }
         end
       end
     end
@@ -48,7 +48,7 @@ module V2
         if @customer.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
+          format.json { render json: @customer.errors, status: :unprocessable_content }
         end
       end
     end
@@ -60,7 +60,7 @@ module V2
         if @customer.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @customer.errors, status: :unprocessable_entity }
+          format.json { render json: @customer.errors, status: :unprocessable_content }
         end
       end
     end

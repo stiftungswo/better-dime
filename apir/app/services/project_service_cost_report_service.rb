@@ -61,7 +61,7 @@ class ProjectServiceCostReportService
 
   def footers
     total_costs = services.map do |service|
-      (effort_costs_by_service[service.id] || 0.0)
+      effort_costs_by_service[service.id] || 0.0
     end
     [
       ["", "", "", "Total"] + total_costs.map { |cost| to_francs(cost) } + [to_francs(total_costs.sum)],

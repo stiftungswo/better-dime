@@ -45,7 +45,7 @@ class ProjectServiceHourReportServiceSplit
           category_weight = project.project_category_distributions.find { |i| i.category_id == category.id }.weight.to_f
           weight_sum = project.project_category_distributions.sum(&:weight)
           category_ratio = (category_weight / weight_sum).to_f
-          category.name << (" (#{(category_ratio * 100).round}%)")
+          category.name << " (#{(category_ratio * 100).round}%)"
 
           row += [project.id || 0, project.name, category.id, category.name]
           row += services.map { |service| (service_effort[service].to_f * category_ratio) || 0.0 }

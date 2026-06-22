@@ -23,7 +23,7 @@ RSpec.describe V2::ServicesController, type: :controller do
         service_a = create(:service, name: "Service A")
         service_b = create(:service, name: "Service B")
 
-        expect(assigns(:services)).to match_array([service_a, service_b])
+        expect(assigns(:services)).to contain_exactly(service_a, service_b)
       end
 
       it "renders the :index template" do

@@ -51,11 +51,11 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  gem "letter_opener"
-  gem "listen"
   gem "guard-brakeman"
   gem "guard-rspec"
   gem "guard-rubocop"
+  gem "letter_opener"
+  gem "listen"
 end
 
 group :test do

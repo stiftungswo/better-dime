@@ -13,16 +13,16 @@ module V2
       @comment
     end
 
-    def update
-      raise ValidationError, @comment.errors unless @comment.update(update_params)
-
-      render :show
-    end
-
     def create
       @comment = ProjectComment.new(update_params)
 
       raise ValidationError, @comment.errors unless @comment.save
+
+      render :show
+    end
+
+    def update
+      raise ValidationError, @comment.errors unless @comment.update(update_params)
 
       render :show
     end

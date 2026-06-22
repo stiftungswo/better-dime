@@ -73,7 +73,7 @@ class WorkPeriodCalculator
   end
 
   def get_previous_work_period(periods, period)
-    last = periods.select { |p| p[:ending] <= period[:beginning] }.sort_by { |a| a[:ending] }.reverse.first
+    last = periods.select { |p| p[:ending] <= period[:beginning] }.sort_by { |a| a[:ending] }.last
     # get the longest period which hast the same ending as the last period before the current one
     periods.select { |p| p[:ending] == last[:ending] }.min_by { |a| a[:beginning] } if last
   end

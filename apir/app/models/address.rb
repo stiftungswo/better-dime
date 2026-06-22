@@ -2,6 +2,7 @@
 
 class Address < ApplicationRecord
   include SoftDeletable
+
   belongs_to :customer, optional: true
   belongs_to :employee, optional: true
 

@@ -20,7 +20,7 @@ module V2
         if @employee_group.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee_group.errors, status: :unprocessable_entity }
+          format.json { render json: @employee_group.errors, status: :unprocessable_content }
         end
       end
     end
@@ -32,7 +32,7 @@ module V2
         if @employee_group.update(employee_group_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee_group.errors, status: :unprocessable_entity }
+          format.json { render json: @employee_group.errors, status: :unprocessable_content }
         end
       end
     end
@@ -44,7 +44,7 @@ module V2
         if @employee_group.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee_group.errors, status: :unprocessable_entity }
+          format.json { render json: @employee_group.errors, status: :unprocessable_content }
         end
       end
     end

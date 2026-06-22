@@ -2,6 +2,7 @@
 
 class OfferDiscount < ApplicationRecord
   include SoftDeletable
+
   belongs_to :offer
 
   validates :name, :value, presence: true

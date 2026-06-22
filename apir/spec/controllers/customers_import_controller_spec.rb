@@ -16,9 +16,9 @@ RSpec.describe V2::CustomersImportController, type: :controller do
 
   describe "#template" do
     it "requires token param for xlsx format" do
-      expect {
+      expect do
         get :template, format: :xlsx
-      }.to raise_error(ActionController::ParameterMissing)
+      end.to raise_error(ActionController::ParameterMissing)
     end
   end
 end

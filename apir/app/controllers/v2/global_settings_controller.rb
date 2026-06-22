@@ -15,7 +15,7 @@ module V2
         if @global_setting.update(global_setting_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @global_setting.errors, status: :unprocessable_entity }
+          format.json { render json: @global_setting.errors, status: :unprocessable_content }
         end
       end
     end

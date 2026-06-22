@@ -24,7 +24,7 @@ RSpec.describe V2::CustomerTagsController, type: :controller do
         customer_tag_b = create(:customer_tag, name: "Tag B")
         customer_tag_c = create(:customer_tag, name: "Tag C")
 
-        expect(assigns(:customer_tags)).to match_array([customer_tag_a, customer_tag_b, customer_tag_c])
+        expect(assigns(:customer_tags)).to contain_exactly(customer_tag_a, customer_tag_b, customer_tag_c)
       end
     end
 

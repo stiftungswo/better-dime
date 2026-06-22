@@ -23,7 +23,7 @@ module V2
         if @person.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @person.errors, status: :unprocessable_entity }
+          format.json { render json: @person.errors, status: :unprocessable_content }
         end
       end
     end
@@ -38,7 +38,7 @@ module V2
         if @person.update(person_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @person.errors, status: :unprocessable_entity }
+          format.json { render json: @person.errors, status: :unprocessable_content }
         end
       end
     end
@@ -50,7 +50,7 @@ module V2
         if @person.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @person.errors, status: :unprocessable_entity }
+          format.json { render json: @person.errors, status: :unprocessable_content }
         end
       end
     end
@@ -63,7 +63,7 @@ module V2
         if @person.update(hidden: params[:hidden])
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @person.errors, status: :unprocessable_entity }
+          format.json { render json: @person.errors, status: :unprocessable_content }
         end
       end
     end
@@ -75,7 +75,7 @@ module V2
         if @person.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @person.errors, status: :unprocessable_entity }
+          format.json { render json: @person.errors, status: :unprocessable_content }
         end
       end
     end

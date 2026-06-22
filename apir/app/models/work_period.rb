@@ -6,6 +6,7 @@
 
 class WorkPeriod < ApplicationRecord
   include SoftDeletable
+
   belongs_to :employee
 
   validates :beginning, :ending, :pensum, :yearly_vacation_budget, presence: true

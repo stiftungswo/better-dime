@@ -24,7 +24,7 @@ module V2
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_content }
         end
       end
     end
@@ -39,7 +39,7 @@ module V2
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_content }
         end
       end
     end
@@ -51,7 +51,7 @@ module V2
         if @employee.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_content }
         end
       end
     end
@@ -65,7 +65,7 @@ module V2
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_content }
         end
       end
     end
@@ -78,14 +78,14 @@ module V2
           @work_periods = WorkPeriodCalculator.new(@employee.work_periods).calculate
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @employee.errors, status: :unprocessable_entity }
+          format.json { render json: @employee.errors, status: :unprocessable_content }
         end
       end
     end
 
     # :nocov:
     def effort_report
-      @employee = Employee.includes(project_efforts: [project_position: [:rate_unit, :service, :project]]).find(params[:id])
+      @employee = Employee.includes(project_efforts: [{ project_position: [:rate_unit, :service, :project] }]).find(params[:id])
       @from = params[:start].blank? ? DateTime.now - 1.month : DateTime.parse(params[:start])
       @to = params[:end].blank? ? DateTime.now : DateTime.parse(params[:end])
       pdf = Pdfs::EmployeeEffortReportPdf.new GlobalSetting.first, @employee, @from, @to
