@@ -303,6 +303,7 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/controllers/employee_groups_controller_spec.rb'
+    - 'spec/controllers/project_efforts_controller_spec.rb'
     - 'spec/controllers/services_controller_spec.rb'
     - 'spec/requests/**/*'
     - 'spec/services/**/*'

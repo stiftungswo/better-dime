@@ -20,18 +20,18 @@ RSpec.describe V2::ProjectEffortsController, type: :controller do
       let(:costgroup) { create(:costgroup) }
 
       it "creates an effort with valid params" do
-        expect {
+        expect do
           post :create, format: :json, params: {
             date: "2026-01-15", value: 120, employee_id: employee.id,
             position_id: position.id, costgroup_number: costgroup.number
           }
-        }.to change(ProjectEffort, :count).by(1)
+        end.to change(ProjectEffort, :count).by(1)
       end
 
       it "raises ValidationError with invalid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { date: "", value: nil, position_id: position.id }
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
     end
 
@@ -59,6 +59,7 @@ RSpec.describe V2::ProjectEffortsController, type: :controller do
       it "soft-deletes the effort" do
         delete :destroy, format: :json, params: { id: effort.id }
         expect(response).to have_http_status(:success)
+        expect(effort.reload.discarded?).to be true
       end
     end
   end

@@ -15,15 +15,15 @@ RSpec.describe V2::HolidaysController, type: :controller do
 
     describe "#create" do
       it "creates a holiday with valid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { name: "Christmas", date: "2026-12-25", duration: 504 }
-        }.to change(Holiday, :count).by(1)
+        end.to change(Holiday, :count).by(1)
       end
 
       it "raises ValidationError with invalid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { name: "", date: "", duration: nil }
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
     end
 
@@ -40,9 +40,9 @@ RSpec.describe V2::HolidaysController, type: :controller do
       let!(:holiday) { create(:holiday) }
 
       it "duplicates the holiday" do
-        expect {
+        expect do
           post :duplicate, format: :json, params: { id: holiday.id }
-        }.to change(Holiday, :count).by(1)
+        end.to change(Holiday, :count).by(1)
       end
     end
 
@@ -52,6 +52,7 @@ RSpec.describe V2::HolidaysController, type: :controller do
       it "soft-deletes the holiday" do
         delete :destroy, format: :json, params: { id: holiday.id }
         expect(response).to have_http_status(:success)
+        expect(holiday.reload.discarded?).to be true
       end
     end
   end

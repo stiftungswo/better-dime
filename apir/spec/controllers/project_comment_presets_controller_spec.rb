@@ -15,9 +15,9 @@ RSpec.describe V2::ProjectCommentPresetsController, type: :controller do
 
     describe "#create" do
       it "creates a preset" do
-        expect {
+        expect do
           post :create, format: :json, params: { comment_preset: "Weekly update" }
-        }.to change(ProjectCommentPreset, :count).by(1)
+        end.to change(ProjectCommentPreset, :count).by(1)
       end
     end
 
@@ -36,6 +36,7 @@ RSpec.describe V2::ProjectCommentPresetsController, type: :controller do
       it "soft-deletes the preset" do
         delete :destroy, format: :json, params: { id: preset.id }
         expect(response).to have_http_status(:success)
+        expect(preset.reload.discarded?).to be true
       end
     end
   end

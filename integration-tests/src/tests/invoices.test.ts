@@ -88,6 +88,7 @@ describe("Invoices", () => {
 
   it("PUT /v2/invoices/:id updates an invoice", async () => {
     const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    expect(costgroups.length).toBeGreaterThan(0);
     const { status, body } = await apiJson<{ name: string }>(`/v2/invoices/${invoiceId}`, {
       method: "PUT",
       body: JSON.stringify({

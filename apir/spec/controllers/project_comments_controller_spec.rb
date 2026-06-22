@@ -17,15 +17,15 @@ RSpec.describe V2::ProjectCommentsController, type: :controller do
 
     describe "#create" do
       it "creates a comment with valid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { comment: "Test comment", date: "2026-01-15", project_id: project.id }
-        }.to change(ProjectComment, :count).by(1)
+        end.to change(ProjectComment, :count).by(1)
       end
 
       it "raises ValidationError with invalid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { comment: "", date: "", project_id: project.id }
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
     end
 
@@ -53,6 +53,7 @@ RSpec.describe V2::ProjectCommentsController, type: :controller do
       it "soft-deletes the comment" do
         delete :destroy, format: :json, params: { id: comment.id }
         expect(response).to have_http_status(:success)
+        expect(comment.reload.discarded?).to be true
       end
     end
   end

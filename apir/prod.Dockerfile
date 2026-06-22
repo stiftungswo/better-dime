@@ -16,5 +16,8 @@ COPY . /apir
 
 RUN bundle install --jobs=8
 
+RUN useradd --create-home appuser
+USER appuser
+
 EXPOSE 3000
 CMD ["bin/rails", "server", "-p", "3000", "-b", "0.0.0.0"]

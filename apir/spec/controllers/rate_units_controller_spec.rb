@@ -15,15 +15,15 @@ RSpec.describe V2::RateUnitsController, type: :controller do
 
     describe "#create" do
       it "creates a rate unit with valid params" do
-        expect {
+        expect do
           post :create, format: :json, params: { name: "Days", billing_unit: "CHF/d", effort_unit: "d", factor: 504, is_time: true, archived: false }
-        }.to change(RateUnit, :count).by(1)
+        end.to change(RateUnit, :count).by(1)
       end
 
       it "raises ValidationError with missing params" do
-        expect {
+        expect do
           post :create, format: :json, params: { name: "" }
-        }.to raise_error(ValidationError)
+        end.to raise_error(ValidationError)
       end
     end
 
@@ -42,6 +42,7 @@ RSpec.describe V2::RateUnitsController, type: :controller do
       it "soft-deletes the rate unit" do
         delete :destroy, format: :json, params: { id: rate_unit.id }
         expect(response).to have_http_status(:success)
+        expect(rate_unit.reload.discarded?).to be true
       end
     end
   end

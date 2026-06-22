@@ -121,7 +121,7 @@ describe("PDF exports", () => {
       const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
       const employees = await apiPaginated<{ id: number }>("/v2/employees");
       const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
-      if (costgroups.length === 0 || employees.data.length === 0) return;
+      if (rateGroups.length === 0 || costgroups.length === 0 || employees.data.length === 0) return;
 
       const personRes = await api("/v2/people", {
         method: "POST",
