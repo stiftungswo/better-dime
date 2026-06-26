@@ -16,7 +16,7 @@ COPY . /apir
 
 RUN bundle install --jobs=8
 
-RUN useradd --create-home appuser
+RUN useradd --create-home appuser && chown -R appuser:appuser /apir
 USER appuser
 
 EXPOSE 3000
