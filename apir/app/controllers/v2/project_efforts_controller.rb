@@ -21,16 +21,16 @@ module V2
       @effort
     end
 
-    def update
-      raise ValidationError, @effort.errors unless @effort.update(update_params)
-
-      render :show
-    end
-
     def create
       @effort = ProjectEffort.new(update_params)
 
       raise ValidationError, @effort.errors unless @effort.save
+
+      render :show
+    end
+
+    def update
+      raise ValidationError, @effort.errors unless @effort.update(update_params)
 
       render :show
     end

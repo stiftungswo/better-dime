@@ -23,7 +23,7 @@ RSpec.describe V2::ServiceCategoriesController, type: :controller do
         service_category_a = create(:service_category, name: "Category A", french_name: "A", number: 12)
         service_category_b = create(:service_category, name: "Category B", french_name: "B", number: 34)
 
-        expect(assigns(:service_categories)).to match_array([service_category_a, service_category_b])
+        expect(assigns(:service_categories)).to contain_exactly(service_category_a, service_category_b)
       end
 
       it "renders the :index template" do

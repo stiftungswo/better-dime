@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
-ERROR_FORMAT = ValidatesTimeliness::Validator::DEFAULT_ERROR_VALUE_FORMATS[:datetime]
-
 RSpec.shared_examples_for "ending is after beginning" do
   describe "#ending" do
     subject { described_class.new(beginning: beginning, ending: ending).tap(&:validate) }
 
     let(:beginning) { Time.zone.today }
-    let(:formatted_beginning) { beginning.strftime(ERROR_FORMAT) }
-    let(:added_error) { subject.errors.added?(:ending, :on_or_after, restriction: formatted_beginning) }
+    let(:has_error) { subject.errors.of_kind?(:ending, :on_or_after) }
 
     context "when ending is before beginning" do
       let(:ending) { beginning - 1.day }
 
       it "is invalid" do
-        expect(added_error).to be true
+        expect(has_error).to be true
       end
     end
 
@@ -22,7 +19,7 @@ RSpec.shared_examples_for "ending is after beginning" do
       let(:ending) { beginning + 1.day }
 
       it "is valid" do
-        expect(added_error).to be false
+        expect(has_error).to be false
       end
     end
 
@@ -30,7 +27,7 @@ RSpec.shared_examples_for "ending is after beginning" do
       let(:ending) { beginning }
 
       it "is valid" do
-        expect(added_error).to be false
+        expect(has_error).to be false
       end
     end
   end
@@ -39,13 +36,13 @@ end
 RSpec.shared_examples_for "only accepts dates" do |attribute|
   subject { described_class.new(attribute => value).tap(&:validate) }
 
-  let(:added_error) { subject.errors.added?(attribute, :invalid_date, restriction: nil) }
+  let(:has_error) { subject.errors.of_kind?(attribute, :invalid_date) }
 
   context "when it receives a date" do
     let(:value) { Time.zone.today }
 
     it "is valid" do
-      expect(added_error).to be false
+      expect(has_error).to be false
     end
   end
 
@@ -53,7 +50,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "invalid" }
 
     it "is invalid" do
-      expect(added_error).to be true
+      expect(has_error).to be true
     end
   end
 
@@ -61,7 +58,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "28454" }
 
     it "is invalid" do
-      expect(added_error).to be true
+      expect(has_error).to be true
     end
   end
 
@@ -69,7 +66,7 @@ RSpec.shared_examples_for "only accepts dates" do |attribute|
     let(:value) { "true" }
 
     it "is invalid" do
-      expect(added_error).to be true
+      expect(has_error).to be true
     end
   end
 end

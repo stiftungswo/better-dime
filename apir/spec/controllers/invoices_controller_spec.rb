@@ -25,7 +25,7 @@ RSpec.describe V2::InvoicesController, type: :controller do
         invoice_c = create(:invoice, name: "Invoice C")
         invoice_d = create(:invoice, name: "Invoice D")
 
-        expect(assigns(:invoices)).to match_array([invoice_a, invoice_b, invoice_c, invoice_d])
+        expect(assigns(:invoices)).to contain_exactly(invoice_a, invoice_b, invoice_c, invoice_d)
       end
 
       it "renders the :index template" do

@@ -17,6 +17,14 @@ module V2
       @offer
     end
 
+    def create
+      @offer = Offer.new(update_params)
+
+      raise ValidationError, @offer.errors unless @offer.save
+
+      render :show
+    end
+
     def update
       # destroy offer positions which were not passed along to the params
       ParamsModifier.destroy_missing(params, @offer.offer_positions, :positions)
@@ -32,14 +40,6 @@ module V2
 
       # replace shared position groups by new ones to enable modification in the frontend
       raise ValidationError, @offer.errors if PositionGroupRemapper.remap_shared_groups(@offer.position_groupings, @offer.offer_positions) && !@offer.save
-
-      render :show
-    end
-
-    def create
-      @offer = Offer.new(update_params)
-
-      raise ValidationError, @offer.errors unless @offer.save
 
       render :show
     end

@@ -25,7 +25,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
         project_c = create(:project, name: "Project C")
         project_d = create(:project, name: "Project D")
 
-        expect(assigns(:projects)).to match_array([project_a, project_b, project_c, project_d])
+        expect(assigns(:projects)).to contain_exactly(project_a, project_b, project_c, project_d)
       end
 
       it "renders the :index template" do

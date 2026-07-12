@@ -20,7 +20,7 @@ module V2
         if @company.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       end
     end
@@ -35,7 +35,7 @@ module V2
         if @company.update(company_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       end
     end
@@ -47,7 +47,7 @@ module V2
         if @company.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       end
     end
@@ -60,7 +60,7 @@ module V2
         if @company.update(hidden: params[:hidden])
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       end
     end
@@ -72,7 +72,7 @@ module V2
         if @company.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @company.errors, status: :unprocessable_entity }
+          format.json { render json: @company.errors, status: :unprocessable_content }
         end
       end
     end

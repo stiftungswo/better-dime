@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Employee < ApplicationRecord
-  include Devise::JWT::RevocationStrategies::Whitelist
+  include Devise::JWT::RevocationStrategies::Allowlist
   include SoftDeletable
 
   belongs_to :employee_group

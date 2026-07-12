@@ -25,7 +25,7 @@ RSpec.describe V2::PeopleController, type: :controller do
         person_c = create(:person, first_name: "person C")
         person_d = create(:person, first_name: "person D")
 
-        expect(assigns(:people)).to match_array([person_a, person_b, person_c, person_d])
+        expect(assigns(:people)).to contain_exactly(person_a, person_b, person_c, person_d)
       end
 
       it "renders the :index template" do

@@ -23,7 +23,7 @@ RSpec.describe V2::EmployeeGroupsController, type: :controller do
         employee_group_a = create(:employee_group, name: "Group A")
         employee_group_b = create(:employee_group, name: "Group B")
 
-        expect(assigns(:employee_groups)).to match_array([employee.employee_group, employee_group_a, employee_group_b])
+        expect(assigns(:employee_groups)).to contain_exactly(employee.employee_group, employee_group_a, employee_group_b)
       end
 
       it "renders the :index template" do

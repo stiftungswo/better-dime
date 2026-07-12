@@ -2,6 +2,7 @@
 
 class Phone < ApplicationRecord
   include SoftDeletable
+
   belongs_to :customer
 
   validates :category, :number, presence: true
@@ -13,7 +14,7 @@ class Phone < ApplicationRecord
   end
 
   def format_number
-    case number&.gsub(" ", "")
+    case number&.delete(" ")
     when /\A0\d{9}\z/
       self.number = number.delete(" ").scan(/(\d{3})(\d{3})(\d\d)(\d\d)/).flatten.join(" ")
     when /\A(00|\+)\d{11}\z/

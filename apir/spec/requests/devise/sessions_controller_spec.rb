@@ -13,7 +13,7 @@ RSpec.describe Devise::SessionsController, type: :request do
       let(:request) { post employee_session_path(params: { employee: params }) }
 
       it "creates a new user" do
-        expect { request }.to change(WhitelistedJwt, :count).by(1)
+        expect { request }.to change(AllowlistedJwt, :count).by(1)
       end
     end
   end

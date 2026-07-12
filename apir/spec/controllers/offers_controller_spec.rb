@@ -26,7 +26,7 @@ RSpec.describe V2::OffersController, type: :controller do
         offer_c = create(:offer, name: "Offer C")
         offer_d = create(:offer, name: "Offer D")
 
-        expect(assigns(:offers)).to match_array([offer_a, offer_b, offer_c, offer_d])
+        expect(assigns(:offers)).to contain_exactly(offer_a, offer_b, offer_c, offer_d)
       end
 
       it "renders the :index template" do

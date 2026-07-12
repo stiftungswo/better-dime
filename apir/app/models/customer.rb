@@ -2,6 +2,7 @@
 
 class Customer < ApplicationRecord
   include SoftDeletable
+
   belongs_to :rate_group
   has_and_belongs_to_many :customer_tags, join_table: :customer_taggable, autosave: true
 

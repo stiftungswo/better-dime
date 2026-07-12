@@ -20,7 +20,7 @@ module V2
         if @location.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @location.errors, status: :unprocessable_entity }
+          format.json { render json: @location.errors, status: :unprocessable_content }
         end
       end
     end
@@ -32,7 +32,7 @@ module V2
         if @location.update(location_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @location.errors, status: :unprocessable_entity }
+          format.json { render json: @location.errors, status: :unprocessable_content }
         end
       end
     end
@@ -44,7 +44,7 @@ module V2
         if @location.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @location.errors, status: :unprocessable_entity }
+          format.json { render json: @location.errors, status: :unprocessable_content }
         end
       end
     end
@@ -57,7 +57,7 @@ module V2
         if @location.update(archived: params[:archived])
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @location.errors, status: :unprocessable_entity }
+          format.json { render json: @location.errors, status: :unprocessable_content }
         end
       end
     end

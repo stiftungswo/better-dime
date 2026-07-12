@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# :nocov:
 class ProjectServiceCostReportService
   attr_accessor :range, :with_vat, :projects, :project_efforts, :project_positions, :services, :effort_costs, :effort_costs_by_service
 
-  def initialize(range = Date.today.all_year, selected_services, with_vat)
+  def initialize(range = Date.today.all_year, selected_services = [], with_vat = false)
+    selected_services ||= []
     raise StandardError, "Non-integer service IDs." unless selected_services.all? { |i| i =~ /^[0-9]+$/ }
 
     self.range = range
@@ -61,7 +61,7 @@ class ProjectServiceCostReportService
 
   def footers
     total_costs = services.map do |service|
-      (effort_costs_by_service[service.id] || 0.0)
+      effort_costs_by_service[service.id] || 0.0
     end
     [
       ["", "", "", "Total"] + total_costs.map { |cost| to_francs(cost) } + [to_francs(total_costs.sum)],
@@ -82,4 +82,3 @@ class ProjectServiceCostReportService
     Rails.logger.debug TTY::Table.new rows: rows
   end
 end
-# :nocov:

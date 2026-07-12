@@ -5,6 +5,10 @@ module V2
     include V2::Concerns::ParamsExtractableEmployeeLocale
     include V2::Concerns::ParamsAuthenticatable
 
+    rescue_from ActionController::UnknownFormat do
+      head :no_content
+    end
+
     before_action :activate, unless: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
     before_action :authenticate_from_params!, if: -> { request.format.pdf? || request.format.xlsx? || request.format.text? }
 
@@ -22,7 +26,7 @@ module V2
       current_employee&.id
     end
 
-    def switch_locale(&action)
+    def switch_locale(&)
       locale = locale_params[:locale]
 
       locale = current_employee.try(:locale) if locale.blank?
@@ -31,7 +35,7 @@ module V2
 
       locale = I18n.default_locale if locale.blank?
 
-      I18n.with_locale(locale, &action)
+      I18n.with_locale(locale, &)
     end
 
     def locale_params

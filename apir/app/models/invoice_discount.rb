@@ -2,6 +2,7 @@
 
 class InvoiceDiscount < ApplicationRecord
   include SoftDeletable
+
   belongs_to :invoice
 
   validates :name, :value, presence: true

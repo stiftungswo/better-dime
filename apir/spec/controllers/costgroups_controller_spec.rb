@@ -24,7 +24,7 @@ RSpec.describe V2::CostgroupsController, type: :controller do
         costgroup_b = create(:costgroup, number: 200)
         costgroup_c = create(:costgroup, number: 300)
 
-        expect(assigns(:costgroups)).to match_array([costgroup_a, costgroup_b, costgroup_c])
+        expect(assigns(:costgroups)).to contain_exactly(costgroup_a, costgroup_b, costgroup_c)
       end
     end
   end

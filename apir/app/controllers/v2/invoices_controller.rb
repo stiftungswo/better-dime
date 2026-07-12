@@ -17,6 +17,14 @@ module V2
       @invoice
     end
 
+    def create
+      @invoice = Invoice.new(update_params)
+
+      raise ValidationError, @invoice.errors unless @invoice.save
+
+      render :show
+    end
+
     def update
       # destroy invoice positions which were not passed along to the params
       ParamsModifier.destroy_missing params, @invoice.invoice_positions, :positions
@@ -37,14 +45,6 @@ module V2
 
     def update_timespan
       @invoice = InvoiceCreator.update_timespan @invoice, params[:beginning], params[:ending]
-
-      raise ValidationError, @invoice.errors unless @invoice.save
-
-      render :show
-    end
-
-    def create
-      @invoice = Invoice.new(update_params)
 
       raise ValidationError, @invoice.errors unless @invoice.save
 

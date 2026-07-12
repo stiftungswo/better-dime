@@ -2,6 +2,7 @@
 
 class ServiceRate < ApplicationRecord
   include SoftDeletable
+
   belongs_to :rate_group
   belongs_to :service
   belongs_to :rate_unit

@@ -115,21 +115,52 @@ describe("PDF exports", () => {
   });
 
   describe("Invoice print", () => {
+    let printableInvoiceId: number | null = null;
+
+    beforeAll(async () => {
+      const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
+      const employees = await apiPaginated<{ id: number }>("/v2/employees");
+      const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+      if (rateGroups.length === 0 || costgroups.length === 0 || employees.data.length === 0) return;
+
+      const personRes = await api("/v2/people", {
+        method: "POST",
+        body: JSON.stringify({
+          person: { type: "Person", first_name: "InvPDF", last_name: "Test", email: `inv-pdf-${Date.now()}@example.com`, rate_group_id: rateGroups[0].id, hidden: false, comment: "" },
+          tags: [], phone_numbers: [], addresses: [{ city: "Teststadt", country: "CH", zip: 8000, street: "PDFstr 1" }],
+        }),
+      });
+      const person = (await personRes.json()) as { id: number; addresses: { id: number }[] };
+
+      const projRes = await api("/v2/projects", {
+        method: "POST",
+        body: JSON.stringify({
+          accountant_id: employees.data[0].id, address_id: person.addresses[0].id, customer_id: person.id,
+          description: "inv pdf proj", name: `InvPDFProj ${Date.now()}`, rate_group_id: rateGroups[0].id,
+          positions: [], costgroup_distributions: [], category_distributions: [], position_groupings: [],
+        }),
+      });
+      const proj = (await projRes.json()) as { id: number };
+
+      const invRes = await api("/v2/invoices", {
+        method: "POST",
+        body: JSON.stringify({
+          accountant_id: employees.data[0].id, address_id: person.addresses[0].id, customer_id: person.id,
+          project_id: proj.id, description: "PDF test invoice", name: `InvPDF ${Date.now()}`,
+          beginning: "2026-01-01", ending: "2026-01-31",
+          positions: [], discounts: [],
+          costgroup_distributions: [{ costgroup_number: costgroups[0].number, weight: 100 }],
+        }),
+      });
+      if (invRes.status === 200) {
+        const inv = (await invRes.json()) as { id: number };
+        printableInvoiceId = inv.id;
+      }
+    });
+
     it("GET /v2/invoices/:id/print.pdf returns a PDF if invoice has cost groups", async () => {
-      const invoices = await apiPaginated<{
-        id: number;
-        costgroup_distributions: unknown[];
-      }>("/v2/invoices");
-
-      const printable = invoices.data.find(
-        (inv) =>
-          Array.isArray(inv.costgroup_distributions) &&
-          inv.costgroup_distributions.length > 0,
-      );
-      expect(printable).toBeDefined();
-
-      const res = await fetch(exportUrl(`/v2/invoices/${printable!.id}/print.pdf`));
-
+      expect(printableInvoiceId).not.toBeNull();
+      const res = await fetch(exportUrl(`/v2/invoices/${printableInvoiceId}/print.pdf`));
       expect(res.status).toBe(200);
       expect(res.headers.get("content-type")).toContain("application/pdf");
     });

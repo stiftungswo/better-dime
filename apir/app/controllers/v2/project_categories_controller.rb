@@ -20,7 +20,7 @@ module V2
         if @project_category.save
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @project_category.errors, status: :unprocessable_entity }
+          format.json { render json: @project_category.errors, status: :unprocessable_content }
         end
       end
     end
@@ -32,7 +32,7 @@ module V2
         if @project_category.update(project_category_params)
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @project_category.errors, status: :unprocessable_entity }
+          format.json { render json: @project_category.errors, status: :unprocessable_content }
         end
       end
     end
@@ -44,7 +44,7 @@ module V2
         if @project_category.destroy
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @project_category.errors, status: :unprocessable_entity }
+          format.json { render json: @project_category.errors, status: :unprocessable_content }
         end
       end
     end
@@ -57,7 +57,7 @@ module V2
         if @project_category.update(archived: params[:archived])
           format.json { render :show, status: :ok }
         else
-          format.json { render json: @project_category.errors, status: :unprocessable_entity }
+          format.json { render json: @project_category.errors, status: :unprocessable_content }
         end
       end
     end

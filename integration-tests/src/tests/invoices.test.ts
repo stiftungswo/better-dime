@@ -18,6 +18,8 @@ describe("Invoices", () => {
     employeeId = employees.data[0].id;
     const rateGroups = await apiArray<{ id: number }>("/v2/rate_groups");
     rateGroupId = rateGroups[0].id;
+    const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    const categories = await apiArray<{ id: number }>("/v2/project_categories");
 
     const personRes = await api("/v2/people", {
       method: "POST",
@@ -36,7 +38,10 @@ describe("Invoices", () => {
         accountant_id: employeeId, address_id: addressId, customer_id: customerId,
         description: "inv proj", name: `InvProj ${Date.now()}`, rate_group_id: rateGroupId,
         location_id: null, deadline: null, fixed_price: null, archived: false, chargeable: true, vacation_project: false,
-        positions: [], costgroup_distributions: [], category_distributions: [], position_groupings: [],
+        positions: [],
+        costgroup_distributions: costgroups.length > 0 ? [{ costgroup_number: costgroups[0].number, weight: 100 }] : [],
+        category_distributions: categories.length > 0 ? [{ category_id: categories[0].id, weight: 100 }] : [],
+        position_groupings: [],
       }),
     });
     const proj = (await projRes.json()) as { id: number };
@@ -82,13 +87,15 @@ describe("Invoices", () => {
   });
 
   it("PUT /v2/invoices/:id updates an invoice", async () => {
+    const costgroups = await apiArray<{ number: number }>("/v2/costgroups");
+    expect(costgroups.length).toBeGreaterThan(0);
     const { status, body } = await apiJson<{ name: string }>(`/v2/invoices/${invoiceId}`, {
       method: "PUT",
       body: JSON.stringify({
         name: "Updated Invoice",
         positions: [],
         discounts: [],
-        costgroup_distributions: [],
+        costgroup_distributions: [{ costgroup_number: costgroups[0].number, weight: 100 }],
       }),
     });
     expect(status).toBe(200);
