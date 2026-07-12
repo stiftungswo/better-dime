@@ -5,6 +5,9 @@ on:
     branches: [ master, develop ]
   pull_request:
 
+env:
+  NODE_IMAGE: node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2
+
 jobs:
   frontend-lint:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
           persist-credentials: false
 
       - name: Frontend Lint
-        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" node:20@sha256:8f693eaa7e0a8e71560c9a82b55fd54c2ae920a2ba5d2cde28bac7d1c01c9ba5 bash -c "yarn install && yarn run lint"
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} bash -c "yarn install && yarn run lint"
 
   frontend-build:
     runs-on: ubuntu-latest
@@ -32,7 +35,7 @@ jobs:
           persist-credentials: false
 
       - name: Frontend Build
-        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" node:20@sha256:8f693eaa7e0a8e71560c9a82b55fd54c2ae920a2ba5d2cde28bac7d1c01c9ba5 bash -c "yarn install && yarn run build"
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} bash -c "yarn install && yarn run build"
 
   backend:
     runs-on: ubuntu-latest
@@ -100,7 +103,7 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Generate TypeScript types from OpenAPI schema
         run: cd frontend && npm run generate:types
