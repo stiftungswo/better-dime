@@ -27,6 +27,10 @@ COPY --from=building-stage /frontend/build /usr/local/apache2/htdocs/
 COPY htaccess.dist /usr/local/apache2/htdocs/.htaccess
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /usr/local/apache2/conf/httpd.conf
+    sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /usr/local/apache2/conf/httpd.conf && \
+    sed -i 's#^Listen 80#Listen 8080#' /usr/local/apache2/conf/httpd.conf && \
+    chown -R daemon:daemon /usr/local/apache2/htdocs/ /usr/local/apache2/logs/
 
-EXPOSE 80
+USER daemon
+
+EXPOSE 8080
