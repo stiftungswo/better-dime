@@ -88,7 +88,8 @@ export default class CompanyForm extends React.Component<Props> {
         id: '_',
         label: intlText('street'),
         format: (p: Person) => {
-          return <>{p.addresses ? (p.addresses.length > 0 ? p.addresses[0].street : '') : ''}</>;
+          const a = p.addresses && p.addresses.length > 0 ? p.addresses[0] : null;
+          return <>{a ? [a.street, a.street_number].filter(Boolean).join(' ') : ''}</>;
         },
       },
     ];

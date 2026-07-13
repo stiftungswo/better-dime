@@ -30,7 +30,7 @@ export class AddressSelect extends React.Component<Props> {
         .filter(a => this.props.value === a.id || !a.hidden)
         .map((a: Address) => ({
           value: a.id,
-          label: [a.street, a.supplement, a.zip, a.city, a.country].filter(x => Boolean(x)).join(', '),
+          label: [[a.street, a.street_number].filter(Boolean).join(' '), a.supplement, a.zip, a.city, a.country].filter(x => Boolean(x)).join(', '),
         }))
       : [];
   }

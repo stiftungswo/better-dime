@@ -326,6 +326,7 @@
   "view.offer.update.update_offer": "Offerte bearbeiten",
 
   "view.person.addresses_subform_inline.street": "Strasse",
+  "view.person.addresses_subform_inline.street_number": "Hausnr.",
   "view.person.addresses_subform_inline.supplement": "Addresszusatz",
   "view.person.addresses_subform_inline.zip": "PLZ",
   "view.person.addresses_subform_inline.city": "Stadt",

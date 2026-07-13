@@ -40,7 +40,10 @@ export default class CompanyOverview extends React.Component<Props> {
         id: 'street',
         noSort: true,
         label: intlText('street'),
-        format: c => <>{c.addresses ? (c.addresses.length > 0 ? c.addresses[0].street : '') : ''}</>,
+        format: c => {
+          const a = c.addresses && c.addresses.length > 0 ? c.addresses[0] : null;
+          return <>{a ? [a.street, a.street_number].filter(Boolean).join(' ') : ''}</>;
+        },
       },
       {
         id: 'zip',

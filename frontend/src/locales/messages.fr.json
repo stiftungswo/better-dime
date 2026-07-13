@@ -325,6 +325,7 @@
   "view.offer.update.update_offer": "Modifier une offre",
 
   "view.person.addresses_subform_inline.street": "Rue",
+  "view.person.addresses_subform_inline.street_number": "No de bâtiment",
   "view.person.addresses_subform_inline.supplement": "Complément d'adresse",
   "view.person.addresses_subform_inline.zip": "Code Postal",
   "view.person.addresses_subform_inline.city": "Ville",
