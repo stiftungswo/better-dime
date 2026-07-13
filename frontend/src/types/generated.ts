@@ -427,7 +427,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a customer */
+                /** @description returns a customer with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -437,7 +437,7 @@ export interface paths {
                             id: number;
                             type: string;
                             comment: string;
-                            company_id: number;
+                            company_id: number | null;
                             department: string;
                             department_in_address: boolean;
                             email: string;
@@ -446,12 +446,12 @@ export interface paths {
                             hidden: boolean;
                             archived: boolean;
                             name: unknown;
-                            accountant_id: number;
+                            accountant_id: number | null;
                             rate_group_id: number;
                             salutation: string;
                             created_at: string;
                             updated_at: string;
-                            company: {
+                            company?: {
                                 id: number;
                                 type: string;
                                 comment: string;
@@ -475,7 +475,7 @@ export interface paths {
                                 city: string;
                                 country: string;
                                 customer_id: number;
-                                description: string;
+                                description: string | null;
                                 zip: number;
                                 street: string;
                                 supplement: string;
@@ -739,7 +739,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns an employee */
+                /** @description returns an employee with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -836,7 +836,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns global settings */
+                /** @description returns global settings with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1901,7 +1901,7 @@ export interface paths {
                                 city: string;
                                 country: string;
                                 customer_id: number;
-                                description: string;
+                                description: string | null;
                                 zip: number;
                                 street: string;
                                 supplement: string;

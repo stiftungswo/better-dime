@@ -34,7 +34,7 @@ RSpec.describe "V2::Companies", type: :request do
 
     it "returns a company with nullable fields null" do
       company = create(:company)
-      create(:address, :with_company_customer, customer: company, description: nil)
+      create(:address, :with_company_customer, customer: company, description: nil, street_number: nil)
       get "/v2/companies/#{company.id}"
       expect(response).to have_http_status(:ok)
     end

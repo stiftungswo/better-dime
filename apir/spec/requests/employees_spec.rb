@@ -25,5 +25,12 @@ RSpec.describe "V2::Employees", type: :request do
       get "/v2/employees/#{target.id}"
       expect(response).to have_http_status(:ok)
     end
+
+    it "returns an employee with nullable fields null" do
+      target = create(:employee)
+      create(:address, employee: target, customer: nil, street_number: nil)
+      get "/v2/employees/#{target.id}"
+      expect(response).to have_http_status(:ok)
+    end
   end
 end
