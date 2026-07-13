@@ -54,7 +54,7 @@ module Pdfs
         # stroke_bounds
 
         text @global_setting.sender_name, size: 9, style: :bold, character_spacing: @spacing
-        text @global_setting.sender_street, size: 10, character_spacing: @spacing
+        text @global_setting.full_sender_street, size: 10, character_spacing: @spacing
         text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: 10, character_spacing: @spacing
       end
     end
@@ -71,7 +71,7 @@ module Pdfs
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.full_street + supplement, size: font_size, character_spacing: @spacing, leading: leading
         text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, character_spacing: @spacing, leading: leading
       end
     end
@@ -112,7 +112,7 @@ module Pdfs
         # stroke_bounds
 
         text @global_setting.sender_name, size: 9, style: :bold, character_spacing: @spacing
-        text @global_setting.sender_street, size: 10, character_spacing: @spacing
+        text @global_setting.full_sender_street, size: 10, character_spacing: @spacing
         text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: 10, character_spacing: @spacing
       end
     end
@@ -162,7 +162,7 @@ module Pdfs
         move_down 5
         text @invoice.customer.company.name, size: font_size, character_spacing: @spacing, leading: leading if @invoice.customer.company
         text @invoice.customer.full_name, size: font_size, character_spacing: @spacing, leading: leading
-        text @invoice.address.street + supplement, size: font_size, character_spacing: @spacing, leading: leading
+        text @invoice.address.full_street + supplement, size: font_size, character_spacing: @spacing, leading: leading
         text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, character_spacing: @spacing, leading: leading
       end
     end
@@ -197,7 +197,7 @@ module Pdfs
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
-          text "#{@global_setting.sender_name}, #{@global_setting.sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
+          text "#{@global_setting.sender_name}, #{@global_setting.full_sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
           text "#{I18n.t(:invoice_nr)} #{@invoice.id}", size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_iban, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_bic, size: info_size, character_spacing: @spacing, leading: leading

@@ -6,7 +6,8 @@ FactoryBot.define do
     country { "Schweiz" }
     description { nil }
     zip { 8400 }
-    street { "Bahnhofstrasse 12" }
+    street { "Bahnhofstrasse" }
+    street_number { "12" }
     supplement { "Postfach 1230" }
     association :customer, factory: :person
 

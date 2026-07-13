@@ -105,6 +105,8 @@ paths:
                                 type: string
                               updated_at:
                                 type: string
+                              street_number:
+                                type: string
                             required:
                             - id
                             - city
@@ -370,6 +372,8 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
                       required:
                       - id
                       - city
@@ -784,6 +788,8 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
                       required:
                       - id
                       - city
@@ -1246,6 +1252,8 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
                       required:
                       - id
                       - city
@@ -1320,6 +1328,8 @@ paths:
                   sender_bank_iban:
                     type: string
                   sender_bank_bic:
+                    type: string
+                  sender_street_number:
                     type: string
                 required:
                 - id
@@ -3361,6 +3371,8 @@ paths:
                         created_at:
                           type: string
                         updated_at:
+                          type: string
+                        street_number:
                           type: string
                       required:
                       - id

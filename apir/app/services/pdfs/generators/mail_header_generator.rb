@@ -97,7 +97,7 @@ module Pdfs
             # @document.stroke_bounds
 
             @document.transparent(0.5) do
-              @document.draw_text @global_setting.sender_street, @default_text_settings.merge(at: [0, 94])
+              @document.draw_text @global_setting.full_sender_street, @default_text_settings.merge(at: [0, 94])
               @document.draw_text "CH-#{@global_setting.sender_zip} #{@global_setting.sender_city}", @default_text_settings.merge(at: [0, 81])
               @document.fill_color "007DC2"
               @document.draw_text "T ", @default_text_settings.merge(at: [0, 68], style: :bold)
@@ -118,7 +118,7 @@ module Pdfs
           # @document.stroke_bounds
 
           @document.text @global_setting.sender_name, @default_text_settings.merge(size: 10, leading: 6)
-          @document.text @global_setting.sender_street, @default_text_settings.merge(size: 10, leading: 6)
+          @document.text @global_setting.full_sender_street, @default_text_settings.merge(size: 10, leading: 6)
           @document.text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", @default_text_settings.merge(size: 10, leading: 6)
           @document.text @global_setting.sender_phone, @default_text_settings.merge(size: 10, leading: 6)
           @document.text @accountant.email, @default_text_settings.merge(size: 10, leading: 20) if @accountant&.email
@@ -135,7 +135,7 @@ module Pdfs
           @document.text @data.customer.department, @default_text_settings.merge(size: 10, leading: 6) if @data.customer.department.present?
           @document.text "#{@data.customer.salutation || ""} #{@data.customer.full_name}", @default_text_settings.merge(size: 10, leading: 6)
           # use text_box to avoid line-wrapping long addresses
-          @document.text_box @data.address.street, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
+          @document.text_box @data.address.full_street, @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)
           @document.move_down 16
           @document.text @data.address.supplement, @default_text_settings.merge(size: 10, leading: 6) if @data.address.supplement.present?
           @document.text_box "#{@data.address.zip} #{@data.address.city}", @default_text_settings.merge(size: 10, leading: 6, overflow: :shrink_to_fit, at: [0, @document.cursor], height: 12)

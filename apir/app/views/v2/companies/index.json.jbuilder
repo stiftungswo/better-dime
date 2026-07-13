@@ -6,7 +6,7 @@ json.set! :data do
     json.extract! company.decorate, :id, :type, :comment, :company_id, :department, :department_in_address, :email, :first_name, :last_name, :hidden, :archived, :name, :accountant_id, :rate_group_id, :salutation, :created_at, :updated_at
     json.set! :addresses do
       json.array! company.addresses do |address|
-        json.extract! address, :id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :created_at, :updated_at
+        json.extract! address, :id, :city, :country, :customer_id, :description, :zip, :street, :street_number, :supplement, :created_at, :updated_at
       end
     end
     json.set! :people do
