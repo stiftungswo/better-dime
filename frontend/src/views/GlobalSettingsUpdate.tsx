@@ -27,6 +27,7 @@ const settingsSchema = localizeSchema(() =>
   yup.object({
     sender_name: yup.string().required(),
     sender_street: yup.string().required(),
+    sender_street_number: yup.string().nullable(true),
     sender_zip: yup.string().required(),
     sender_city: yup.string().required(),
     sender_phone: yup.string().required(),
@@ -75,6 +76,7 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                       <FormHeader>Dokumente</FormHeader>
                       <DimeField required component={TextField} name={'sender_name'} label={'Name'} />
                       <DimeField required component={TextField} name={'sender_street'} label={'Strasse'} />
+                      <DimeField component={TextField} name={'sender_street_number'} label={'Hausnr.'} />
                       <DimeField required component={TextField} name={'sender_zip'} label={'PLZ'} />
                       <DimeField required component={TextField} name={'sender_city'} label={'Ort'} />
                       <DimeField required component={TextField} name={'sender_phone'} label={'Telefon'} />

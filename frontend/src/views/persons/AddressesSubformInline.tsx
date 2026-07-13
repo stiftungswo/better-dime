@@ -25,6 +25,7 @@ const template = () => ({
   formikKey: Math.random(),
   zip: 0,
   street: '',
+  street_number: '',
   hidden: false,
   supplement: '',
 });
@@ -64,8 +65,9 @@ export default class AddressesSubformInline extends React.Component<Props> {
             <Table size="small" style={{ minWidth: '1000px' }}>
               <TableHead>
                 <TableRow>
-                  <DimeTableCell style={{ width: '20%' }}> <FormattedMessage id={idPrefix + '.street'} /> </DimeTableCell>
-                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.supplement'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.street'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '8%' }}> <FormattedMessage id={idPrefix + '.street_number'} /> </DimeTableCell>
+                  <DimeTableCell style={{ width: '12%' }}> <FormattedMessage id={idPrefix + '.supplement'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '10%' }}> <FormattedMessage id={idPrefix + '.zip'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.city'} /> </DimeTableCell>
                   <DimeTableCell style={{ width: '15%' }}> <FormattedMessage id={idPrefix + '.country'} /> </DimeTableCell>
@@ -78,6 +80,7 @@ export default class AddressesSubformInline extends React.Component<Props> {
                 {inherited.map((a: Address) => (
                   <TableRow key={a.id}>
                     <DimeTableCell>{a.street}</DimeTableCell>
+                    <DimeTableCell>{a.street_number}</DimeTableCell>
                     <DimeTableCell>{a.supplement}</DimeTableCell>
                     <DimeTableCell>{a.zip}</DimeTableCell>
                     <DimeTableCell>{a.city}</DimeTableCell>
@@ -93,6 +96,9 @@ export default class AddressesSubformInline extends React.Component<Props> {
                     <TableRow key={a.id || a.formikKey}>
                       <DimeTableCell>
                         <DimeField delayed component={TextField} name={name('street')} margin={'none'} />
+                      </DimeTableCell>
+                      <DimeTableCell>
+                        <DimeField delayed component={TextField} name={name('street_number')} margin={'none'} />
                       </DimeTableCell>
                       <DimeTableCell>
                         <DimeField delayed component={TextField} name={name('supplement')} margin={'none'} />

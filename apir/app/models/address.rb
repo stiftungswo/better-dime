@@ -17,6 +17,10 @@ class Address < ApplicationRecord
     self[:supplement] || ""
   end
 
+  def full_street
+    [street, street_number].compact_blank.join(" ")
+  end
+
   def self.params
     attribute_names.map(&:to_sym) - [:created_at, :updated_at, :deleted_at]
   end

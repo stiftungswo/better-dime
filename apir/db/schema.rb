@@ -2,17 +2,16 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_14_193505) do
-
-  create_table "addresses", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[8.0].define(version: 2026_07_13_000000) do
+  create_table "addresses", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
     t.string "country"
     t.integer "customer_id", unsigned: true
@@ -28,11 +27,12 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
     t.boolean "hidden", default: false, null: false
     t.integer "employee_id", unsigned: true
+    t.string "street_number"
     t.index ["customer_id"], name: "addresses_customer_id_foreign"
     t.index ["employee_id"], name: "fk_rails_1c4d4ea1f4"
   end
 
-  create_table "costgroups", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "costgroups", id: false, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "number", null: false, unsigned: true
     t.string "name", null: false
     t.timestamp "deleted_at"
@@ -41,12 +41,12 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["number"], name: "costgroups_number_unique", unique: true
   end
 
-  create_table "customer_taggable", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "customer_taggable", id: false, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "customer_tag_id", null: false
     t.integer "customer_id", null: false
   end
 
-  create_table "customer_tags", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "customer_tags", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.boolean "archived", default: false, null: false
     t.string "name", null: false
     t.timestamp "created_at"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
   end
 
-  create_table "customers", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "customers", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "type", null: false
     t.text "comment"
     t.integer "company_id", unsigned: true
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["rate_group_id"], name: "customers_rate_group_id_foreign"
   end
 
-  create_table "employee_groups", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "employee_groups", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.timestamp "created_at"
     t.timestamp "updated_at"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
   end
 
-  create_table "employee_settings", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "employee_settings", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "employee_id", unsigned: true
     t.timestamp "deleted_at"
     t.timestamp "created_at"
@@ -101,7 +101,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["employee_id"], name: "employee_settings_employee_id_unique", unique: true
   end
 
-  create_table "employees", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "employees", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", null: false
     t.string "encrypted_password", limit: 60, null: false
     t.boolean "is_admin", default: false, null: false
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["employee_group_id"], name: "employees_employee_group_id_foreign"
   end
 
-  create_table "global_settings", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "global_settings", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "sender_name", default: "Example Company", null: false
     t.string "sender_street", default: "Test street 1", null: false
     t.string "sender_zip", default: "1234", null: false
@@ -136,9 +136,10 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.string "sender_bank_detail", default: "Example Bank, 0000 Example", null: false
     t.string "sender_bank_iban", default: "CH00 0000 0000 0000 0000 0", null: false
     t.string "sender_bank_bic", default: "EXABANK00000", null: false
+    t.string "sender_street_number"
   end
 
-  create_table "holidays", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "holidays", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.date "date", null: false
     t.integer "duration", null: false
@@ -150,7 +151,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
   end
 
-  create_table "invoice_costgroup_distributions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "invoice_costgroup_distributions", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "costgroup_number", unsigned: true
     t.integer "invoice_id", null: false, unsigned: true
     t.integer "weight", null: false
@@ -164,7 +165,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["invoice_id"], name: "invoice_costgroup_distributions_invoice_id_foreign"
   end
 
-  create_table "invoice_discounts", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "invoice_discounts", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "invoice_id", unsigned: true
     t.string "name", null: false
     t.boolean "percentage", default: false, null: false
@@ -178,7 +179,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["invoice_id"], name: "invoice_discounts_invoice_id_foreign"
   end
 
-  create_table "invoice_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "invoice_positions", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.decimal "amount", precision: 8, scale: 2, null: false
     t.string "description", null: false
     t.integer "invoice_id", unsigned: true
@@ -200,7 +201,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["rate_unit_id"], name: "invoice_positions_rate_unit_id_foreign"
   end
 
-  create_table "invoices", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "invoices", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "accountant_id", unsigned: true
     t.integer "customer_id", unsigned: true
     t.integer "address_id", unsigned: true
@@ -224,37 +225,37 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["project_id"], name: "invoices_project_id_foreign"
   end
 
-  create_table "locations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "locations", charset: "utf8mb3", force: :cascade do |t|
     t.boolean "archived", null: false
     t.integer "order", default: 9999, null: false
     t.string "name", null: false
     t.string "url", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "migrations", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "migrations", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "migration", null: false
     t.integer "batch", null: false
   end
 
-  create_table "offer_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "offer_category_distributions", charset: "utf8mb3", force: :cascade do |t|
     t.integer "category_id", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
     t.integer "offer_id", null: false, unsigned: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.timestamp "deleted_at"
     t.index ["category_id"], name: "fk_rails_6c9b6a4033"
     t.index ["offer_id"], name: "fk_rails_462bd91ec2"
   end
 
-  create_table "offer_costgroup_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "offer_costgroup_distributions", charset: "utf8mb3", force: :cascade do |t|
     t.integer "costgroup_number", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
     t.integer "offer_id", null: false, unsigned: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.timestamp "deleted_at"
     t.integer "created_by"
     t.integer "updated_by"
@@ -263,7 +264,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["offer_id"], name: "fk_rails_fab8c874f8"
   end
 
-  create_table "offer_discounts", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "offer_discounts", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.integer "offer_id", null: false, unsigned: true
     t.boolean "percentage", default: false, null: false
@@ -277,7 +278,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["offer_id"], name: "offer_discounts_offer_id_foreign"
   end
 
-  create_table "offer_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "offer_positions", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.decimal "amount", precision: 8, scale: 2, null: false
     t.string "description"
     t.integer "offer_id", null: false, unsigned: true
@@ -299,7 +300,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["service_id"], name: "offer_positions_service_id_foreign"
   end
 
-  create_table "offers", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "offers", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "accountant_id", unsigned: true
     t.integer "customer_id", unsigned: true
     t.integer "address_id", unsigned: true
@@ -323,7 +324,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["rate_group_id"], name: "offers_rate_group_id_foreign"
   end
 
-  create_table "phones", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "phones", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "category", null: false
     t.integer "customer_id", null: false, unsigned: true
     t.string "number", null: false
@@ -336,7 +337,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["customer_id"], name: "phones_customer_id_foreign"
   end
 
-  create_table "position_groups", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "position_groups", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
@@ -348,7 +349,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "order"
   end
 
-  create_table "project_categories", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_categories", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.boolean "archived", default: false, null: false
     t.string "name", null: false
     t.timestamp "deleted_at"
@@ -359,19 +360,19 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
   end
 
-  create_table "project_category_distributions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "project_category_distributions", charset: "utf8mb3", force: :cascade do |t|
     t.integer "category_id", null: false, unsigned: true
     t.integer "weight", default: 100, null: false
     t.integer "project_id", null: false, unsigned: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
     t.index ["category_id"], name: "fk_rails_c9f8aca5e7"
     t.index ["deleted_at"], name: "index_project_category_distributions_on_deleted_at"
     t.index ["project_id"], name: "fk_rails_dfe1a93a72"
   end
 
-  create_table "project_comment_presets", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_comment_presets", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "comment_preset", limit: 200, null: false
     t.timestamp "deleted_at"
     t.timestamp "created_at"
@@ -382,7 +383,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["comment_preset"], name: "project_comment_presets_comment_preset_unique", unique: true
   end
 
-  create_table "project_comments", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_comments", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "comment", null: false
     t.date "date", null: false
     t.integer "project_id", unsigned: true
@@ -395,7 +396,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["project_id"], name: "project_comments_project_id_foreign"
   end
 
-  create_table "project_costgroup_distributions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_costgroup_distributions", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "costgroup_number", unsigned: true
     t.integer "project_id", null: false, unsigned: true
     t.integer "weight"
@@ -409,7 +410,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["project_id"], name: "project_costgroup_distributions_project_id_foreign"
   end
 
-  create_table "project_efforts", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_efforts", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.date "date", null: false
     t.integer "employee_id", unsigned: true
     t.integer "position_id", unsigned: true
@@ -426,7 +427,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["position_id"], name: "project_efforts_position_id_foreign"
   end
 
-  create_table "project_positions", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "project_positions", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "description"
     t.integer "price_per_rate", null: false
     t.integer "project_id", unsigned: true
@@ -447,7 +448,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["service_id"], name: "project_positions_service_id_foreign"
   end
 
-  create_table "projects", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "projects", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "accountant_id", unsigned: true
     t.integer "customer_id", unsigned: true
     t.integer "address_id", unsigned: true
@@ -474,12 +475,12 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["rate_group_id"], name: "projects_rate_group_id_foreign"
   end
 
-  create_table "rate_groups", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "rate_groups", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
   end
 
-  create_table "rate_units", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "rate_units", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "billing_unit", null: false
     t.string "effort_unit"
     t.decimal "factor", precision: 4, default: "1", null: false
@@ -494,19 +495,19 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.integer "deleted_by"
   end
 
-  create_table "service_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "service_categories", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "parent_category_id"
     t.string "name", null: false
     t.integer "number", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at", precision: nil
     t.string "french_name", null: false
     t.index ["deleted_at"], name: "index_service_categories_on_deleted_at"
     t.index ["parent_category_id"], name: "index_service_categories_on_parent_category_id"
   end
 
-  create_table "service_rates", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "service_rates", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "rate_group_id", null: false, unsigned: true
     t.integer "service_id", null: false, unsigned: true
     t.integer "rate_unit_id", null: false, unsigned: true
@@ -522,7 +523,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["service_id", "rate_group_id"], name: "service_rates_service_id_rate_group_id_unique", unique: true
   end
 
-  create_table "services", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "services", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
     t.decimal "vat", precision: 4, scale: 3, null: false
@@ -539,7 +540,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.index ["service_category_id"], name: "index_services_on_service_category_id"
   end
 
-  create_table "versions", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "versions", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "item_type", limit: 191, null: false
     t.bigint "item_id", null: false
     t.string "event", null: false
@@ -548,17 +549,17 @@ ActiveRecord::Schema.define(version: 2024_02_14_193505) do
     t.timestamp "created_at"
   end
 
-  create_table "whitelisted_jwts", id: :bigint, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "whitelisted_jwts", id: { type: :bigint, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "jti", null: false
     t.string "aud"
-    t.datetime "exp", null: false
+    t.datetime "exp", precision: nil, null: false
     t.integer "employee_id", unsigned: true
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at"
     t.index ["employee_id"], name: "whitelisted_jwts_employee_id_foreign"
   end
 
-  create_table "work_periods", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "work_periods", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "employee_id", null: false, unsigned: true
     t.date "ending", null: false
     t.integer "pensum", null: false

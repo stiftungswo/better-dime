@@ -31,6 +31,7 @@ RSpec.describe "V2::People", type: :request do
 
     it "returns a person with nullable fields null" do
       person = create(:person, company: nil, accountant: nil)
+      create(:address, customer: person, street_number: nil)
       get "/v2/people/#{person.id}"
       expect(response).to have_http_status(:ok)
     end

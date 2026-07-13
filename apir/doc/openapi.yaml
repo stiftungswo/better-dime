@@ -105,6 +105,9 @@ paths:
                                 type: string
                               updated_at:
                                 type: string
+                              street_number:
+                                type: string
+                                nullable: true
                             required:
                             - id
                             - city
@@ -370,6 +373,9 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -662,7 +668,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns a customer
+          description: returns a customer with nullable fields null
           content:
             application/json:
               schema:
@@ -676,6 +682,7 @@ paths:
                     type: string
                   company_id:
                     type: integer
+                    nullable: true
                   department:
                     type: string
                   department_in_address:
@@ -694,6 +701,7 @@ paths:
                     nullable: true
                   accountant_id:
                     type: integer
+                    nullable: true
                   rate_group_id:
                     type: integer
                   salutation:
@@ -772,6 +780,7 @@ paths:
                           type: integer
                         description:
                           type: string
+                          nullable: true
                         zip:
                           type: integer
                         street:
@@ -784,6 +793,9 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -842,7 +854,6 @@ paths:
                 - salutation
                 - created_at
                 - updated_at
-                - company
                 - addresses
                 - phone_numbers
                 - tags
@@ -1107,7 +1118,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns an employee
+          description: returns an employee with nullable fields null
           content:
             application/json:
               schema:
@@ -1246,6 +1257,9 @@ paths:
                           type: string
                         hidden:
                           type: boolean
+                        street_number:
+                          type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -1283,7 +1297,7 @@ paths:
       - V2::GlobalSetting
       responses:
         '200':
-          description: returns global settings
+          description: returns global settings with nullable fields null
           content:
             application/json:
               schema:
@@ -1321,6 +1335,9 @@ paths:
                     type: string
                   sender_bank_bic:
                     type: string
+                  sender_street_number:
+                    type: string
+                    nullable: true
                 required:
                 - id
                 - sender_name
@@ -3350,6 +3367,7 @@ paths:
                           type: integer
                         description:
                           type: string
+                          nullable: true
                         zip:
                           type: integer
                         street:
@@ -3362,6 +3380,9 @@ paths:
                           type: string
                         updated_at:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                       required:
                       - id
                       - city

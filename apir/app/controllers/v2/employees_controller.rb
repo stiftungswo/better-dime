@@ -122,7 +122,7 @@ module V2
         work_periods_attributes: [
           :id, :ending, :pensum, :beginning, :yearly_vacation_budget, :hourly_paid
         ],
-        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :hidden]
+        addresses_attributes: [:id, :city, :country, :customer_id, :description, :zip, :street, :street_number, :supplement, :hidden]
       )
     end
 

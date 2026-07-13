@@ -64,6 +64,7 @@ export const newEmployeeSchema = localizeSchema(() =>
           .required()
           .min(1000, 'general.schema.plz_digits'),
         street: yup.string().required(),
+        street_number: yup.string().nullable(true),
         supplement: yup.string().nullable(true),
       }),
     ),

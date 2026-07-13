@@ -58,30 +58,34 @@ module Pdfs
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
-      params[:bill_params][:creditor][:address][:type]        = "S"
-      params[:bill_params][:creditor][:address][:name]        = @global_setting.sender_name
-      params[:bill_params][:creditor][:address][:line1]       = @global_setting.sender_street
-      params[:bill_params][:creditor][:address][:postal_code] = @global_setting.sender_zip.to_s
-      params[:bill_params][:creditor][:address][:town]        = @global_setting.sender_city
-      params[:bill_params][:creditor][:address][:country]     = "CH"
-      params[:bill_params][:amount]                           = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, unit: "", separator: ".", delimiter: "")
-      params[:bill_params][:currency]                         = "CHF"
-      params[:bill_params][:debtor][:address][:type]          = "S"
+      raise "QR-Bill requires a building number. Please update the address in settings and on the invoice." if @global_setting.sender_street_number.blank? || @invoice.address.street_number.blank?
+
+      params[:bill_params][:creditor][:address][:type]            = "S"
+      params[:bill_params][:creditor][:address][:name]            = @global_setting.sender_name
+      params[:bill_params][:creditor][:address][:street_name]     = @global_setting.sender_street
+      params[:bill_params][:creditor][:address][:building_number] = @global_setting.sender_street_number
+      params[:bill_params][:creditor][:address][:postal_code]     = @global_setting.sender_zip.to_s
+      params[:bill_params][:creditor][:address][:town]            = @global_setting.sender_city
+      params[:bill_params][:creditor][:address][:country]         = "CH"
+      params[:bill_params][:amount]                               = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, unit: "", separator: ".", delimiter: "")
+      params[:bill_params][:currency]                             = "CHF"
+      params[:bill_params][:debtor][:address][:type]              = "S"
       if @invoice.customer.company
         printname = @invoice.customer.company.name
         printname.concat(", ")
         printname.concat(@invoice.customer.full_name)
-        params[:bill_params][:debtor][:address][:name]          = printname
+        params[:bill_params][:debtor][:address][:name]            = printname
       else
-        params[:bill_params][:debtor][:address][:name]          = @invoice.customer.full_name
+        params[:bill_params][:debtor][:address][:name]            = @invoice.customer.full_name
       end
-      params[:bill_params][:debtor][:address][:line1]         = @invoice.address.street
-      params[:bill_params][:debtor][:address][:postal_code]   = @invoice.address.zip.to_s
-      params[:bill_params][:debtor][:address][:town]          = @invoice.address.city
-      params[:bill_params][:debtor][:address][:country]       = get_country_abbr(@invoice.address.country)
+      params[:bill_params][:debtor][:address][:street_name]       = @invoice.address.street
+      params[:bill_params][:debtor][:address][:building_number]   = @invoice.address.street_number
+      params[:bill_params][:debtor][:address][:postal_code]       = @invoice.address.zip.to_s
+      params[:bill_params][:debtor][:address][:town]              = @invoice.address.city
+      params[:bill_params][:debtor][:address][:country]           = get_country_abbr(@invoice.address.country)
 
-      params[:bill_params][:reference_type]                   = "NON"
-      params[:bill_params][:additionally_information]         = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
+      params[:bill_params][:reference_type]                       = "NON"
+      params[:bill_params][:additionally_information]             = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
 
       @bill = QRBills.generate(params)
     end
@@ -113,7 +117,7 @@ module Pdfs
           text I18n.t(:payable_to), size: 6, style: :bold, leading: 3
           text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
-          text @global_setting.sender_street, size: font_size, leading: leading
+          text @global_setting.full_sender_street, size: font_size, leading: leading
           text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
           move_down 9
@@ -126,7 +130,7 @@ module Pdfs
           else
             text @invoice.customer.full_name, size: font_size, leading: leading
           end
-          text @invoice.address.street + supplement, size: font_size, leading: leading
+          text @invoice.address.full_street + supplement, size: font_size, leading: leading
           text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, leading: leading
           text @invoice.address.country, size: font_size, leading: leading
         end
@@ -187,7 +191,7 @@ module Pdfs
           text I18n.t(:payable_to), size: h_font_size, style: :bold, leading: h_leading
           text @global_setting.sender_bank_iban, size: font_size, leading: leading
           text @global_setting.sender_name, size: font_size, leading: leading
-          text @global_setting.sender_street, size: font_size, leading: leading
+          text @global_setting.full_sender_street, size: font_size, leading: leading
           text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
           move_down 11
@@ -205,7 +209,7 @@ module Pdfs
           else
             text @invoice.customer.full_name, size: font_size, leading: leading
           end
-          text @invoice.address.street + supplement, size: font_size, leading: leading
+          text @invoice.address.full_street + supplement, size: font_size, leading: leading
           text "#{@invoice.address.zip} #{@invoice.address.city}", size: font_size, leading: leading
           text @invoice.address.country, size: font_size, leading: leading
         end
@@ -242,7 +246,7 @@ module Pdfs
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading
-          text "#{@global_setting.sender_name}, #{@global_setting.sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
+          text "#{@global_setting.sender_name}, #{@global_setting.full_sender_street}, #{@global_setting.sender_zip} #{@global_setting.sender_city}", size: info_size, character_spacing: @spacing, leading: leading
           text "#{I18n.t(:invoice_nr)} #{@invoice.id}", size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_iban, size: info_size, character_spacing: @spacing, leading: leading
           text @global_setting.sender_bank_bic, size: info_size, character_spacing: @spacing, leading: leading

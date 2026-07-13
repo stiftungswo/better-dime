@@ -6,7 +6,7 @@ json.extract! @company, :id, :type, :comment, :company_id, :department, :departm
 
 json.set! :addresses do
   json.array! @company.addresses do |address|
-    json.extract! address, :id, :city, :country, :customer_id, :description, :zip, :street, :supplement, :created_at, :updated_at, :hidden
+    json.extract! address, :id, :city, :country, :customer_id, :description, :zip, :street, :street_number, :supplement, :created_at, :updated_at, :hidden
   end
 end
 

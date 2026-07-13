@@ -68,6 +68,7 @@ export interface paths {
                                     supplement: string;
                                     created_at: string;
                                     updated_at: string;
+                                    street_number?: string | null;
                                 }[];
                                 people: {
                                     id: number;
@@ -184,6 +185,7 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -425,7 +427,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a customer */
+                /** @description returns a customer with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -435,7 +437,7 @@ export interface paths {
                             id: number;
                             type: string;
                             comment: string;
-                            company_id: number;
+                            company_id: number | null;
                             department: string;
                             department_in_address: boolean;
                             email: string;
@@ -444,12 +446,12 @@ export interface paths {
                             hidden: boolean;
                             archived: boolean;
                             name: unknown;
-                            accountant_id: number;
+                            accountant_id: number | null;
                             rate_group_id: number;
                             salutation: string;
                             created_at: string;
                             updated_at: string;
-                            company: {
+                            company?: {
                                 id: number;
                                 type: string;
                                 comment: string;
@@ -473,13 +475,14 @@ export interface paths {
                                 city: string;
                                 country: string;
                                 customer_id: number;
-                                description: string;
+                                description: string | null;
                                 zip: number;
                                 street: string;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -736,7 +739,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns an employee */
+                /** @description returns an employee with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -801,6 +804,7 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
+                                street_number?: string | null;
                             }[];
                         };
                     };
@@ -832,7 +836,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns global settings */
+                /** @description returns global settings with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -855,6 +859,7 @@ export interface paths {
                             sender_bank_detail: string;
                             sender_bank_iban: string;
                             sender_bank_bic: string;
+                            sender_street_number?: string | null;
                         };
                     };
                 };
@@ -1896,13 +1901,14 @@ export interface paths {
                                 city: string;
                                 country: string;
                                 customer_id: number;
-                                description: string;
+                                description: string | null;
                                 zip: number;
                                 street: string;
                                 supplement: string;
                                 hidden: boolean;
                                 created_at: string;
                                 updated_at: string;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;

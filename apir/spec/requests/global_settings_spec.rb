@@ -15,5 +15,11 @@ RSpec.describe "V2::GlobalSettings", type: :request do
       get "/v2/global_settings"
       expect(response).to have_http_status(:ok)
     end
+
+    it "returns global settings with nullable fields null" do
+      create(:global_setting, sender_street_number: nil)
+      get "/v2/global_settings"
+      expect(response).to have_http_status(:ok)
+    end
   end
 end

@@ -14,7 +14,7 @@ class CustomerXlsxDecorator < ApplicationDecorator
   def addresses
     object.addresses.map do |address|
       [
-        [address.street, address.supplement].reject(&:blank?).join(" "),
+        [address.full_street, address.supplement].reject(&:blank?).join(" "),
         [address.zip, address.city].reject(&:blank?).join(" ")
       ]
     end
