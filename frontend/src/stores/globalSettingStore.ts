@@ -5,7 +5,7 @@ import { MainStore } from './mainStore';
 export interface GlobalSettings {
   sender_name: string;
   sender_street: string;
-  sender_street_number: string;
+  sender_street_number: string | null;
   sender_zip: string;
   sender_city: string;
   sender_phone: string;

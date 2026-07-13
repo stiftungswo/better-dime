@@ -11,5 +11,5 @@ json.array! @customers do |customer|
   json.set! :fax, customer.phones.find(&:fax?)&.number
   json.set! :rate_group_name, customer.rate_group&.name
   json.set! :customer_tag_name, customer.customer_tags&.first&.name
-  json.extract! customer.addresses.first, :street, :street_number, :supplement, :city, :supplement, :zip, :country, :description
+  json.extract! customer.addresses.first, :street, :street_number, :supplement, :city, :zip, :country, :description
 end

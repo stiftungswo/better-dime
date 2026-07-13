@@ -107,6 +107,7 @@ paths:
                                 type: string
                               street_number:
                                 type: string
+                                nullable: true
                             required:
                             - id
                             - city
@@ -374,6 +375,7 @@ paths:
                           type: boolean
                         street_number:
                           type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -790,6 +792,7 @@ paths:
                           type: boolean
                         street_number:
                           type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -1254,6 +1257,7 @@ paths:
                           type: boolean
                         street_number:
                           type: string
+                          nullable: true
                       required:
                       - id
                       - city
@@ -1331,6 +1335,7 @@ paths:
                     type: string
                   sender_street_number:
                     type: string
+                    nullable: true
                 required:
                 - id
                 - sender_name
@@ -3374,6 +3379,7 @@ paths:
                           type: string
                         street_number:
                           type: string
+                          nullable: true
                       required:
                       - id
                       - city

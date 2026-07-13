@@ -68,7 +68,7 @@ export interface paths {
                                     supplement: string;
                                     created_at: string;
                                     updated_at: string;
-                                    street_number?: string;
+                                    street_number?: string | null;
                                 }[];
                                 people: {
                                     id: number;
@@ -185,7 +185,7 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -482,7 +482,7 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -804,7 +804,7 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string;
+                                street_number?: string | null;
                             }[];
                         };
                     };
@@ -859,7 +859,7 @@ export interface paths {
                             sender_bank_detail: string;
                             sender_bank_iban: string;
                             sender_bank_bic: string;
-                            sender_street_number?: string;
+                            sender_street_number?: string | null;
                         };
                     };
                 };
@@ -1908,7 +1908,7 @@ export interface paths {
                                 hidden: boolean;
                                 created_at: string;
                                 updated_at: string;
-                                street_number?: string;
+                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
