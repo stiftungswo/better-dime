@@ -1,4 +1,4 @@
-FROM node:20-alpine as building-stage
+FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 as building-stage
 
 WORKDIR 'frontend'
 
@@ -18,7 +18,7 @@ RUN sed -i'' "s,BASE_APIR_URL,${APIR_URL},g" build/static/js/main.*.js
 RUN sed -i'' "s,SENTRY_DSN,${SENTRY_DSN_PUBLIC},g" build/static/js/main.*.js
 
 # Serving
-FROM httpd:2.4-alpine as production-stage
+FROM httpd:2.4-alpine@sha256:1b766f17b84026429b7cb243317b142921b24432336e798bc881c43f45ed9567 as production-stage
 LABEL maintainer="Philipp Fehr, Lukas Bischof"
 LABEL version="1.0"
 LABEL description="betterDime frontend web docker container"
@@ -27,6 +27,10 @@ COPY --from=building-stage /frontend/build /usr/local/apache2/htdocs/
 COPY htaccess.dist /usr/local/apache2/htdocs/.htaccess
 
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf && \
-    sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /usr/local/apache2/conf/httpd.conf
+    sed -i 's#AllowOverride [Nn]one#AllowOverride All#' /usr/local/apache2/conf/httpd.conf && \
+    sed -i 's#^Listen 80#Listen 8080#' /usr/local/apache2/conf/httpd.conf && \
+    chown -R daemon:daemon /usr/local/apache2/htdocs/ /usr/local/apache2/logs/
 
-EXPOSE 80
+USER daemon
+
+EXPOSE 8080
