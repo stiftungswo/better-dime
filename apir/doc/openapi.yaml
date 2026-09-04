@@ -99,15 +99,14 @@ paths:
                                 type: integer
                               street:
                                 type: string
+                              street_number:
+                                type: string
                               supplement:
                                 type: string
                               created_at:
                                 type: string
                               updated_at:
                                 type: string
-                              street_number:
-                                type: string
-                                nullable: true
                             required:
                             - id
                             - city
@@ -116,6 +115,7 @@ paths:
                             - description
                             - zip
                             - street
+                            - street_number
                             - supplement
                             - created_at
                             - updated_at
@@ -365,6 +365,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         created_at:
@@ -373,9 +376,6 @@ paths:
                           type: string
                         hidden:
                           type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -384,6 +384,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - created_at
                       - updated_at
@@ -668,7 +669,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns a customer with nullable fields null
+          description: returns a customer
           content:
             application/json:
               schema:
@@ -681,8 +682,8 @@ paths:
                   comment:
                     type: string
                   company_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   department:
                     type: string
                   department_in_address:
@@ -700,8 +701,8 @@ paths:
                   name:
                     nullable: true
                   accountant_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   rate_group_id:
                     type: integer
                   salutation:
@@ -710,6 +711,78 @@ paths:
                     type: string
                   updated_at:
                     type: string
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        city:
+                          type: string
+                        country:
+                          type: string
+                        customer_id:
+                          type: integer
+                        description:
+                          nullable: true
+                          type: string
+                        zip:
+                          type: integer
+                        street:
+                          type: string
+                        street_number:
+                          nullable: true
+                          type: string
+                        supplement:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        hidden:
+                          type: boolean
+                      required:
+                      - id
+                      - city
+                      - country
+                      - customer_id
+                      - description
+                      - zip
+                      - street
+                      - street_number
+                      - supplement
+                      - created_at
+                      - updated_at
+                      - hidden
+                  phone_numbers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        category:
+                          type: integer
+                        customer_id:
+                          type: integer
+                        number:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                      required:
+                      - id
+                      - category
+                      - customer_id
+                      - number
+                      - created_at
+                      - updated_at
+                  tags:
+                    type: array
+                    items:
+                      type: integer
                   company:
                     type: object
                     properties:
@@ -765,77 +838,6 @@ paths:
                     - salutation
                     - created_at
                     - updated_at
-                  addresses:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        city:
-                          type: string
-                        country:
-                          type: string
-                        customer_id:
-                          type: integer
-                        description:
-                          type: string
-                          nullable: true
-                        zip:
-                          type: integer
-                        street:
-                          type: string
-                        supplement:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
-                        hidden:
-                          type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
-                      required:
-                      - id
-                      - city
-                      - country
-                      - customer_id
-                      - description
-                      - zip
-                      - street
-                      - supplement
-                      - created_at
-                      - updated_at
-                      - hidden
-                  phone_numbers:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        category:
-                          type: integer
-                        customer_id:
-                          type: integer
-                        number:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
-                      required:
-                      - id
-                      - category
-                      - customer_id
-                      - number
-                      - created_at
-                      - updated_at
-                  tags:
-                    type: array
-                    items:
-                      type: integer
                 required:
                 - id
                 - type
@@ -1249,6 +1251,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         created_at:
@@ -1257,9 +1262,6 @@ paths:
                           type: string
                         hidden:
                           type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -1268,6 +1270,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - created_at
                       - updated_at
@@ -1309,6 +1312,9 @@ paths:
                     type: string
                   sender_street:
                     type: string
+                  sender_street_number:
+                    type: string
+                    nullable: true
                   sender_zip:
                     type: string
                   sender_city:
@@ -1335,13 +1341,13 @@ paths:
                     type: string
                   sender_bank_bic:
                     type: string
-                  sender_street_number:
-                    type: string
-                    nullable: true
+                  qr_bill_reference_enabled:
+                    type: boolean
                 required:
                 - id
                 - sender_name
                 - sender_street
+                - sender_street_number
                 - sender_zip
                 - sender_city
                 - sender_phone
@@ -1355,6 +1361,7 @@ paths:
                 - sender_bank_detail
                 - sender_bank_iban
                 - sender_bank_bic
+                - qr_bill_reference_enabled
   "/v2/holidays":
     get:
       summary: index
@@ -1794,7 +1801,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns an invoice with nullable fields null
+          description: returns an invoice
           content:
             application/json:
               schema:
@@ -1811,12 +1818,12 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    type: integer
                     nullable: true
+                    type: integer
                   fixed_price_vat:
+                    nullable: true
                     type: number
                     format: float
-                    nullable: true
                   name:
                     type: string
                   beginning:
@@ -1830,8 +1837,8 @@ paths:
                   created_at:
                     type: string
                   location_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   project_id:
                     type: integer
                   offer_id:
@@ -1936,8 +1943,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          type: integer
                           nullable: true
+                          type: integer
                         rate_unit_archived:
                           type: boolean
                         calculated_total:
@@ -3372,6 +3379,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         hidden:
@@ -3380,9 +3390,6 @@ paths:
                           type: string
                         updated_at:
                           type: string
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -3391,6 +3398,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - hidden
                       - created_at
@@ -3903,14 +3911,14 @@ paths:
                 rate_group_id:
                   type: integer
                 location_id:
-                  nullable: true
                   type: integer
+                  nullable: true
                 deadline:
-                  nullable: true
                   type: string
-                fixed_price:
                   nullable: true
+                fixed_price:
                   type: integer
+                  nullable: true
                 archived:
                   type: boolean
                 chargeable:
@@ -3927,8 +3935,8 @@ paths:
                       order:
                         type: integer
                       position_group_id:
-                        nullable: true
                         type: integer
+                        nullable: true
                       price_per_rate:
                         type: integer
                       rate_unit_id:
@@ -4007,7 +4015,7 @@ paths:
               - position_groupings
       responses:
         '200':
-          description: creates a project with non-null optional fields
+          description: creates a project
           content:
             application/json:
               schema:
@@ -4026,22 +4034,22 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    nullable: true
                     type: integer
+                    nullable: true
                   name:
                     type: string
                   rate_group_id:
                     type: integer
                   location_id:
-                    nullable: true
                     type: integer
+                    nullable: true
                   created_at:
                     type: string
                   chargeable:
                     type: boolean
                   deadline:
-                    nullable: true
                     type: string
+                    nullable: true
                   vacation_project:
                     type: boolean
                   budget_price:
@@ -4116,8 +4124,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          nullable: true
                           type: integer
+                          nullable: true
                         efforts_value_with_unit:
                           type: string
                         charge:
@@ -4233,8 +4241,7 @@ paths:
           type: integer
       responses:
         '200':
-          description: returns a project with costgroup distributions calculated including
-            uncategorized
+          description: returns a project
           content:
             application/json:
               schema:
@@ -4253,22 +4260,22 @@ paths:
                   description:
                     type: string
                   fixed_price:
-                    type: integer
                     nullable: true
+                    type: integer
                   name:
                     type: string
                   rate_group_id:
                     type: integer
                   location_id:
-                    type: integer
                     nullable: true
+                    type: integer
                   created_at:
                     type: string
                   chargeable:
                     type: boolean
                   deadline:
-                    type: string
                     nullable: true
+                    type: string
                   vacation_project:
                     type: boolean
                   budget_price:
@@ -4279,7 +4286,7 @@ paths:
                     type: number
                     format: float
                   current_time:
-                    type: number
+                    type: integer
                     format: float
                   offer_id:
                     type: integer
@@ -4347,8 +4354,8 @@ paths:
                         order:
                           type: integer
                         position_group_id:
-                          type: integer
                           nullable: true
+                          type: integer
                         efforts_value_with_unit:
                           type: string
                         charge:
@@ -4379,8 +4386,8 @@ paths:
                             archived:
                               type: boolean
                             service_category_id:
-                              type: integer
                               nullable: true
+                              type: integer
                           required:
                           - id
                           - name

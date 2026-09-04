@@ -65,10 +65,10 @@ export interface paths {
                                     description: unknown;
                                     zip: number;
                                     street: string;
+                                    street_number: string;
                                     supplement: string;
                                     created_at: string;
                                     updated_at: string;
-                                    street_number?: string | null;
                                 }[];
                                 people: {
                                     id: number;
@@ -181,11 +181,11 @@ export interface paths {
                                 description: string | null;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -427,7 +427,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a customer with nullable fields null */
+                /** @description returns a customer */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -451,6 +451,29 @@ export interface paths {
                             salutation: string;
                             created_at: string;
                             updated_at: string;
+                            addresses: {
+                                id: number;
+                                city: string;
+                                country: string;
+                                customer_id: number;
+                                description: string | null;
+                                zip: number;
+                                street: string;
+                                street_number: string | null;
+                                supplement: string;
+                                created_at: string;
+                                updated_at: string;
+                                hidden: boolean;
+                            }[];
+                            phone_numbers: {
+                                id: number;
+                                category: number;
+                                customer_id: number;
+                                number: string;
+                                created_at: string;
+                                updated_at: string;
+                            }[];
+                            tags: number[];
                             company?: {
                                 id: number;
                                 type: string;
@@ -470,29 +493,6 @@ export interface paths {
                                 created_at: string;
                                 updated_at: string;
                             };
-                            addresses: {
-                                id: number;
-                                city: string;
-                                country: string;
-                                customer_id: number;
-                                description: string | null;
-                                zip: number;
-                                street: string;
-                                supplement: string;
-                                created_at: string;
-                                updated_at: string;
-                                hidden: boolean;
-                                street_number?: string | null;
-                            }[];
-                            phone_numbers: {
-                                id: number;
-                                category: number;
-                                customer_id: number;
-                                number: string;
-                                created_at: string;
-                                updated_at: string;
-                            }[];
-                            tags: number[];
                         };
                     };
                 };
@@ -800,11 +800,11 @@ export interface paths {
                                 description: unknown;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string | null;
                             }[];
                         };
                     };
@@ -846,6 +846,7 @@ export interface paths {
                             id: number;
                             sender_name: string;
                             sender_street: string;
+                            sender_street_number: string | null;
                             sender_zip: string;
                             sender_city: string;
                             sender_phone: string;
@@ -859,7 +860,7 @@ export interface paths {
                             sender_bank_detail: string;
                             sender_bank_iban: string;
                             sender_bank_bic: string;
-                            sender_street_number?: string | null;
+                            qr_bill_reference_enabled: boolean;
                         };
                     };
                 };
@@ -1118,7 +1119,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns an invoice with nullable fields null */
+                /** @description returns an invoice */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -1904,11 +1905,11 @@ export interface paths {
                                 description: string | null;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 hidden: boolean;
                                 created_at: string;
                                 updated_at: string;
-                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -2446,7 +2447,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates a project with non-null optional fields */
+                /** @description creates a project */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2552,7 +2553,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a project with costgroup distributions calculated including uncategorized */
+                /** @description returns a project */
                 200: {
                     headers: {
                         [name: string]: unknown;

@@ -52,6 +52,10 @@ module Pdfs
       end
     end
 
+    def reference_present?
+      @bill[:params][:bill_params][:reference_type] != "NON"
+    end
+
     def draw
       generate_qr
 
@@ -65,9 +69,9 @@ module Pdfs
 
     def generate_qr
       params = QRBills.get_qr_params
-      iban_type = QRBills.iban_type(@global_setting.sender_bank_iban)
+      reference_kind = determine_reference_kind
 
-      params[:bill_type]                                      = iban_type == :qr ? QRBills.get_qrbill_with_qr_reference_type : QRBills.get_qrbill_with_creditor_reference_type
+      params[:bill_type]                                      = bill_type_for(reference_kind)
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
@@ -97,16 +101,39 @@ module Pdfs
       params[:bill_params][:debtor][:address][:town]              = @invoice.address.city
       params[:bill_params][:debtor][:address][:country]           = get_country_abbr(@invoice.address.country)
 
-      if iban_type == :qr
-        params[:bill_params][:reference_type]                     = "QRR"
-        params[:bill_params][:reference]                          = qrr_reference
-      else
-        params[:bill_params][:reference_type]                     = "SCOR"
-        params[:bill_params][:reference]                          = QRBills.create_creditor_reference(@invoice.id.to_s.rjust(10, "0"))
-      end
+      set_reference_params(params, reference_kind)
       params[:bill_params][:additionally_information] = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
 
       @bill = QRBills.generate(params)
+    end
+
+    # :none when the opt-in Global Settings toggle is off (keeps the previous no-reference
+    # behaviour); otherwise :qrr or :scor depending on whether the creditor IBAN is a QR-IBAN.
+    def determine_reference_kind
+      return :none unless @global_setting.qr_bill_reference_enabled?
+
+      QRBills.iban_type(@global_setting.sender_bank_iban) == :qr ? :qrr : :scor
+    end
+
+    def bill_type_for(reference_kind)
+      case reference_kind
+      when :qrr then QRBills.get_qrbill_with_qr_reference_type
+      when :scor then QRBills.get_qrbill_with_creditor_reference_type
+      else QRBills.get_qrbill_without_reference_type
+      end
+    end
+
+    def set_reference_params(params, reference_kind)
+      case reference_kind
+      when :qrr
+        params[:bill_params][:reference_type] = "QRR"
+        params[:bill_params][:reference]      = qrr_reference
+      when :scor
+        params[:bill_params][:reference_type] = "SCOR"
+        params[:bill_params][:reference]      = QRBills.create_creditor_reference(@invoice.id.to_s.rjust(10, "0"))
+      else
+        params[:bill_params][:reference_type] = "NON"
+      end
     end
 
     QRR_REFERENCE_PREFIX = "SWO"
@@ -154,12 +181,14 @@ module Pdfs
           text @global_setting.full_sender_street, size: font_size, leading: leading
           text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
-          move_down 6
+          move_down reference_present? ? 6 : 9
 
-          text I18n.t(:reference), size: 6, style: :bold, leading: 3
-          text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
+          if reference_present?
+            text I18n.t(:reference), size: 6, style: :bold, leading: 3
+            text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
 
-          move_down 6
+            move_down 6
+          end
 
           supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
@@ -235,10 +264,12 @@ module Pdfs
 
           move_down 11
 
-          text I18n.t(:reference), size: h_font_size, style: :bold, leading: h_leading
-          text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
+          if reference_present?
+            text I18n.t(:reference), size: h_font_size, style: :bold, leading: h_leading
+            text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
 
-          move_down 11
+            move_down 11
+          end
 
           text I18n.t(:additional_information), size: h_font_size, style: :bold, leading: h_leading
           text I18n.t(:invoice_nr_esr) + @invoice.id.to_s, size: font_size, leading: leading
