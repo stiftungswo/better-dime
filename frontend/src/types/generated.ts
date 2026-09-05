@@ -65,7 +65,7 @@ export interface paths {
                                     description: unknown;
                                     zip: number;
                                     street: string;
-                                    street_number: string;
+                                    street_number: string | null;
                                     supplement: string;
                                     created_at: string;
                                     updated_at: string;
