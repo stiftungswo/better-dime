@@ -427,7 +427,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a customer */
+                /** @description returns a customer with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -451,6 +451,25 @@ export interface paths {
                             salutation: string;
                             created_at: string;
                             updated_at: string;
+                            company?: {
+                                id: number;
+                                type: string;
+                                comment: string;
+                                company_id: unknown;
+                                department: unknown;
+                                email: unknown;
+                                department_in_address: boolean;
+                                first_name: unknown;
+                                last_name: unknown;
+                                hidden: boolean;
+                                archived: boolean;
+                                name: string;
+                                accountant_id: unknown;
+                                rate_group_id: number;
+                                salutation: unknown;
+                                created_at: string;
+                                updated_at: string;
+                            };
                             addresses: {
                                 id: number;
                                 city: string;
@@ -474,25 +493,6 @@ export interface paths {
                                 updated_at: string;
                             }[];
                             tags: number[];
-                            company?: {
-                                id: number;
-                                type: string;
-                                comment: string;
-                                company_id: unknown;
-                                department: unknown;
-                                email: unknown;
-                                department_in_address: boolean;
-                                first_name: unknown;
-                                last_name: unknown;
-                                hidden: boolean;
-                                archived: boolean;
-                                name: string;
-                                accountant_id: unknown;
-                                rate_group_id: number;
-                                salutation: unknown;
-                                created_at: string;
-                                updated_at: string;
-                            };
                         };
                     };
                 };
@@ -1119,7 +1119,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns an invoice */
+                /** @description returns an invoice with nullable fields null */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2447,7 +2447,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description creates a project */
+                /** @description creates a project with non-null optional fields */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2553,7 +2553,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description returns a project */
+                /** @description returns a project with costgroup distributions calculated including uncategorized */
                 200: {
                     headers: {
                         [name: string]: unknown;
