@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_13_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_04_175330) do
   create_table "addresses", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
     t.string "country"
@@ -137,6 +137,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_13_000000) do
     t.string "sender_bank_iban", default: "CH00 0000 0000 0000 0000 0", null: false
     t.string "sender_bank_bic", default: "EXABANK00000", null: false
     t.string "sender_street_number"
+    t.boolean "qr_bill_reference_enabled", default: false, null: false
   end
 
   create_table "holidays", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
