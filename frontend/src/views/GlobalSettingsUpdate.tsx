@@ -5,7 +5,7 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import * as yup from 'yup';
-import { TextField } from '../form/fields/common';
+import { SwitchField, TextField } from '../form/fields/common';
 import { DimeField } from '../form/fields/formik';
 import { MarkdownField } from '../form/fields/MarkdownField';
 import { FormView } from '../form/FormView';
@@ -38,6 +38,7 @@ const settingsSchema = localizeSchema(() =>
     sender_bank_iban: yup.string().required(),
     sender_bank_bic: yup.string().required(),
     sender_web: yup.string().required(),
+    qr_bill_reference_enabled: yup.boolean(),
   }),
 );
 
@@ -87,6 +88,12 @@ export class GlobalSettingsUpdate extends React.Component<Props> {
                       <DimeField required component={TextField} name={'sender_bank_iban'} label={'IBAN'} />
                       <DimeField required component={TextField} name={'sender_bank_bic'} label={'BIC'} />
                       <DimeField required component={TextField} name={'sender_web'} label={'Website'} />
+                      <DimeField
+                        component={SwitchField}
+                        name={'qr_bill_reference_enabled'}
+                        label={'QR-Referenz auf QR-Rechnungen aktivieren (Beta)'}
+                        fullWidth={true}
+                      />
                     </DimePaper>
                     <DimePaper>
                       <FormHeader>Allgemein</FormHeader>

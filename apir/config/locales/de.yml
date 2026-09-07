@@ -93,6 +93,7 @@ de:
   currency: "Währung"
   acceptance_point: "Annahmestelle"
   additional_information: "Zusätzliche Informationen"
+  reference: "Referenz"
   project_description: "Projektbeschrieb"
   current_language: "de"
   effort_period: "Aufwandszeitraum"

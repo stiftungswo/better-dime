@@ -40,6 +40,22 @@ module Pdfs
       number_to_currency(amount, unit: "", separator: ".", delimiter: ",").tr(",", "'")
     end
 
+    def format_reference(reference, reference_type)
+      return "" if reference.blank?
+
+      # Per the Swiss QR-bill style guide, QRR references are grouped in blocks of 5 from the
+      # right, SCOR (ISO-11649) references in blocks of 4 from the left.
+      if reference_type == "QRR"
+        reference.reverse.scan(/.{1,5}/).map(&:reverse).reverse.join(" ")
+      else
+        reference.scan(/.{1,4}/).join(" ")
+      end
+    end
+
+    def reference_present?
+      @bill[:params][:bill_params][:reference_type] != "NON"
+    end
+
     def draw
       generate_qr
 
@@ -53,8 +69,9 @@ module Pdfs
 
     def generate_qr
       params = QRBills.get_qr_params
+      reference_kind = determine_reference_kind
 
-      params[:bill_type]                                      = "red_without_reference"
+      params[:bill_type]                                      = bill_type_for(reference_kind)
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
@@ -84,10 +101,54 @@ module Pdfs
       params[:bill_params][:debtor][:address][:town]              = @invoice.address.city
       params[:bill_params][:debtor][:address][:country]           = get_country_abbr(@invoice.address.country)
 
-      params[:bill_params][:reference_type]                       = "NON"
-      params[:bill_params][:additionally_information]             = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
+      set_reference_params(params, reference_kind)
+      params[:bill_params][:additionally_information] = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
 
       @bill = QRBills.generate(params)
+    end
+
+    # :none when the opt-in Global Settings toggle is off (keeps the previous no-reference
+    # behaviour); otherwise :qrr or :scor depending on whether the creditor IBAN is a QR-IBAN.
+    def determine_reference_kind
+      return :none unless @global_setting.qr_bill_reference_enabled?
+
+      QRBills.iban_type(@global_setting.sender_bank_iban) == :qr ? :qrr : :scor
+    end
+
+    def bill_type_for(reference_kind)
+      case reference_kind
+      when :qrr then QRBills.get_qrbill_with_qr_reference_type
+      when :scor then QRBills.get_qrbill_with_creditor_reference_type
+      else QRBills.get_qrbill_without_reference_type
+      end
+    end
+
+    def set_reference_params(params, reference_kind)
+      case reference_kind
+      when :qrr
+        params[:bill_params][:reference_type] = "QRR"
+        params[:bill_params][:reference]      = qrr_reference
+      when :scor
+        params[:bill_params][:reference_type] = "SCOR"
+        params[:bill_params][:reference]      = QRBills.create_creditor_reference(@invoice.id.to_s.rjust(10, "0"))
+      else
+        params[:bill_params][:reference_type] = "NON"
+      end
+    end
+
+    QRR_REFERENCE_PREFIX = "SWO"
+
+    # Builds the legacy 27-digit QRR reference (26-digit base + 1 check digit) required for
+    # creditors whose bank still uses a QR-IBAN (institute id 30000-31999). The base is prefixed
+    # with QRR_REFERENCE_PREFIX encoded as its letters' alphabet positions (A=01 ... Z=26) so the
+    # reference is recognizable rather than an arbitrary digit; this also keeps it non-zero-led,
+    # which QRBills.create_esr_creditor_reference requires (it round-trips the base through
+    # Integer, which would silently strip a leading zero and fail its own length check).
+    def qrr_reference
+      prefix = QRR_REFERENCE_PREFIX.chars.map { |char| (char.ord - "A".ord + 1).to_s.rjust(2, "0") }.join
+      base = "#{prefix}#{@invoice.id.to_s.rjust(26 - prefix.length, "0")}"
+
+      "#{base}#{QRBills.create_esr_creditor_reference(base)}"
     end
 
     def get_country_abbr(country)
@@ -120,7 +181,14 @@ module Pdfs
           text @global_setting.full_sender_street, size: font_size, leading: leading
           text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
-          move_down 9
+          move_down reference_present? ? 6 : 9
+
+          if reference_present?
+            text I18n.t(:reference), size: 6, style: :bold, leading: 3
+            text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
+
+            move_down 6
+          end
 
           supplement = @invoice.address.supplement.blank? ? "" : ", #{@invoice.address.supplement}"
 
@@ -195,6 +263,13 @@ module Pdfs
           text "#{@global_setting.sender_zip} #{@global_setting.sender_city}", size: font_size, leading: leading
 
           move_down 11
+
+          if reference_present?
+            text I18n.t(:reference), size: h_font_size, style: :bold, leading: h_leading
+            text format_reference(@bill[:params][:bill_params][:reference], @bill[:params][:bill_params][:reference_type]), size: font_size, leading: leading
+
+            move_down 11
+          end
 
           text I18n.t(:additional_information), size: h_font_size, style: :bold, leading: h_leading
           text I18n.t(:invoice_nr_esr) + @invoice.id.to_s, size: font_size, leading: leading

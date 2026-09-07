@@ -15,6 +15,10 @@ RSpec.describe "V2::Companies", type: :request do
       create(:address, :with_company_customer, customer: company)
       Phone.create!(number: "0433555844", category: 1, customer_id: company.id)
       create(:person, company: company)
+
+      company_without_street_number = create(:company, name: "Test GmbH ohne Hausnummer")
+      create(:address, :with_company_customer, customer: company_without_street_number, street_number: nil)
+
       get "/v2/companies"
       expect(response).to have_http_status(:ok)
     end

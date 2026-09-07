@@ -99,15 +99,15 @@ paths:
                                 type: integer
                               street:
                                 type: string
+                              street_number:
+                                type: string
+                                nullable: true
                               supplement:
                                 type: string
                               created_at:
                                 type: string
                               updated_at:
                                 type: string
-                              street_number:
-                                type: string
-                                nullable: true
                             required:
                             - id
                             - city
@@ -116,6 +116,7 @@ paths:
                             - description
                             - zip
                             - street
+                            - street_number
                             - supplement
                             - created_at
                             - updated_at
@@ -365,6 +366,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         created_at:
@@ -373,9 +377,6 @@ paths:
                           type: string
                         hidden:
                           type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -384,6 +385,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - created_at
                       - updated_at
@@ -785,6 +787,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         created_at:
@@ -793,9 +798,6 @@ paths:
                           type: string
                         hidden:
                           type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -804,6 +806,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - created_at
                       - updated_at
@@ -1249,6 +1252,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         created_at:
@@ -1257,9 +1263,6 @@ paths:
                           type: string
                         hidden:
                           type: boolean
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -1268,6 +1271,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - created_at
                       - updated_at
@@ -1309,6 +1313,9 @@ paths:
                     type: string
                   sender_street:
                     type: string
+                  sender_street_number:
+                    type: string
+                    nullable: true
                   sender_zip:
                     type: string
                   sender_city:
@@ -1335,13 +1342,13 @@ paths:
                     type: string
                   sender_bank_bic:
                     type: string
-                  sender_street_number:
-                    type: string
-                    nullable: true
+                  qr_bill_reference_enabled:
+                    type: boolean
                 required:
                 - id
                 - sender_name
                 - sender_street
+                - sender_street_number
                 - sender_zip
                 - sender_city
                 - sender_phone
@@ -1355,6 +1362,7 @@ paths:
                 - sender_bank_detail
                 - sender_bank_iban
                 - sender_bank_bic
+                - qr_bill_reference_enabled
   "/v2/holidays":
     get:
       summary: index
@@ -3372,6 +3380,9 @@ paths:
                           type: integer
                         street:
                           type: string
+                        street_number:
+                          type: string
+                          nullable: true
                         supplement:
                           type: string
                         hidden:
@@ -3380,9 +3391,6 @@ paths:
                           type: string
                         updated_at:
                           type: string
-                        street_number:
-                          type: string
-                          nullable: true
                       required:
                       - id
                       - city
@@ -3391,6 +3399,7 @@ paths:
                       - description
                       - zip
                       - street
+                      - street_number
                       - supplement
                       - hidden
                       - created_at

@@ -17,6 +17,7 @@ export interface GlobalSettings {
   sender_bank_bic: string;
   sender_web: string;
   service_order_comment: string;
+  qr_bill_reference_enabled: boolean;
 }
 
 export class GlobalSettingStore extends AbstractStore<GlobalSettings> {

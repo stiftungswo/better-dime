@@ -65,10 +65,10 @@ export interface paths {
                                     description: unknown;
                                     zip: number;
                                     street: string;
+                                    street_number: string | null;
                                     supplement: string;
                                     created_at: string;
                                     updated_at: string;
-                                    street_number?: string | null;
                                 }[];
                                 people: {
                                     id: number;
@@ -181,11 +181,11 @@ export interface paths {
                                 description: string | null;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -478,11 +478,11 @@ export interface paths {
                                 description: string | null;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
@@ -800,11 +800,11 @@ export interface paths {
                                 description: unknown;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 created_at: string;
                                 updated_at: string;
                                 hidden: boolean;
-                                street_number?: string | null;
                             }[];
                         };
                     };
@@ -846,6 +846,7 @@ export interface paths {
                             id: number;
                             sender_name: string;
                             sender_street: string;
+                            sender_street_number: string | null;
                             sender_zip: string;
                             sender_city: string;
                             sender_phone: string;
@@ -859,7 +860,7 @@ export interface paths {
                             sender_bank_detail: string;
                             sender_bank_iban: string;
                             sender_bank_bic: string;
-                            sender_street_number?: string | null;
+                            qr_bill_reference_enabled: boolean;
                         };
                     };
                 };
@@ -1904,11 +1905,11 @@ export interface paths {
                                 description: string | null;
                                 zip: number;
                                 street: string;
+                                street_number: string | null;
                                 supplement: string;
                                 hidden: boolean;
                                 created_at: string;
                                 updated_at: string;
-                                street_number?: string | null;
                             }[];
                             phone_numbers: {
                                 id: number;
