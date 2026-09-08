@@ -130,22 +130,30 @@ module Pdfs
         params[:bill_params][:reference]      = qrr_reference
       when :scor
         params[:bill_params][:reference_type] = "SCOR"
-        params[:bill_params][:reference]      = QRBills.create_creditor_reference(@invoice.id.to_s.rjust(10, "0"))
+        params[:bill_params][:reference]      = scor_reference
       else
         params[:bill_params][:reference_type] = "NON"
       end
     end
 
-    QRR_REFERENCE_PREFIX = "SWO"
+    REFERENCE_PREFIX = "SWO"
+
+    # Builds the ISO-11649 creditor reference for creditors with a regular (non-QR) IBAN. SCOR
+    # references are alphanumeric, so REFERENCE_PREFIX is used literally to keep the reference
+    # recognizable.
+    def scor_reference
+      QRBills.create_creditor_reference("#{REFERENCE_PREFIX}#{@invoice.id}")
+    end
 
     # Builds the legacy 27-digit QRR reference (26-digit base + 1 check digit) required for
-    # creditors whose bank still uses a QR-IBAN (institute id 30000-31999). The base is prefixed
-    # with QRR_REFERENCE_PREFIX encoded as its letters' alphabet positions (A=01 ... Z=26) so the
-    # reference is recognizable rather than an arbitrary digit; this also keeps it non-zero-led,
-    # which QRBills.create_esr_creditor_reference requires (it round-trips the base through
-    # Integer, which would silently strip a leading zero and fail its own length check).
+    # creditors whose bank still uses a QR-IBAN (institute id 30000-31999). QRR references are
+    # numeric-only, so REFERENCE_PREFIX is encoded as its letters' alphabet positions (A=01 ...
+    # Z=26) so the reference is still recognizable rather than an arbitrary digit; this also keeps
+    # it non-zero-led, which QRBills.create_esr_creditor_reference requires (it round-trips the
+    # base through Integer, which would silently strip a leading zero and fail its own length
+    # check).
     def qrr_reference
-      prefix = QRR_REFERENCE_PREFIX.chars.map { |char| (char.ord - "A".ord + 1).to_s.rjust(2, "0") }.join
+      prefix = REFERENCE_PREFIX.chars.map { |char| (char.ord - "A".ord + 1).to_s.rjust(2, "0") }.join
       base = "#{prefix}#{@invoice.id.to_s.rjust(26 - prefix.length, "0")}"
 
       "#{base}#{QRBills.create_esr_creditor_reference(base)}"
