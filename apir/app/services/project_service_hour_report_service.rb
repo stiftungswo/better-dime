@@ -39,10 +39,7 @@ class ProjectServiceHourReportService
     effort.map do |project, service_effort|
       names = project.project_categories.map(&:name)
       project.project_categories.map do |category|
-        if project.project_categories.length > 1 then category.name << " (#{((project.project_category_distributions.find do |i|
-          i.category_id == category.id
-        end.weight.to_f / project.project_category_distributions.sum(&:weight)) * 100).round }%)"
-        end
+        category.name << " (#{(category_ratio(project, category) * 100).round}%)" if project.project_categories.length > 1
       end
       row = [project.id || 0, project.name, project.project_categories&.ids&.join(", "), names.join(", ")]
       row += services.map { |service| service_effort[service] || 0.0 }
@@ -71,6 +68,18 @@ class ProjectServiceHourReportService
   # some love for console developers
   def tty
     Rails.logger.debug TTY::Table.new rows: rows
+  end
+
+  private
+
+  # a project whose category weights all sum to zero has no meaningful split; treat it as 0%
+  # rather than blowing up on a 0/0 division.
+  def category_ratio(project, category)
+    weight_sum = project.project_category_distributions.sum(&:weight)
+    return 0.0 if weight_sum.zero?
+
+    category_weight = project.project_category_distributions.find { |i| i.category_id == category.id }.weight.to_f
+    category_weight / weight_sum
   end
 end
 # :nocov:
