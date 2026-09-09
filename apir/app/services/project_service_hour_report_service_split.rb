@@ -42,13 +42,11 @@ class ProjectServiceHourReportServiceSplit
       if project.project_categories.length > 1
         project.project_categories.map do |category|
           row = []
-          category_weight = project.project_category_distributions.find { |i| i.category_id == category.id }.weight.to_f
-          weight_sum = project.project_category_distributions.sum(&:weight)
-          category_ratio = (category_weight / weight_sum).to_f
-          category.name << " (#{(category_ratio * 100).round}%)"
+          ratio = category_ratio(project, category)
+          category.name << " (#{(ratio * 100).round}%)"
 
           row += [project.id || 0, project.name, category.id, category.name]
-          row += services.map { |service| (service_effort[service].to_f * category_ratio) || 0.0 }
+          row += services.map { |service| service_effort[service].to_f * ratio }
           table_rows.push(row)
         end
       else
@@ -74,6 +72,18 @@ class ProjectServiceHourReportServiceSplit
   # some love for console developers
   def tty
     TTY::Table.new rows: rows
+  end
+
+  private
+
+  # a project whose category weights all sum to zero has no meaningful split; treat it as 0%
+  # rather than blowing up on a 0/0 division.
+  def category_ratio(project, category)
+    weight_sum = project.project_category_distributions.sum(&:weight)
+    return 0.0 if weight_sum.zero?
+
+    category_weight = project.project_category_distributions.find { |i| i.category_id == category.id }.weight.to_f
+    category_weight / weight_sum
   end
 end
 # :nocov:
