@@ -21,7 +21,7 @@ jobs:
           persist-credentials: false
 
       - name: Frontend Lint
-        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} bash -c "yarn install && yarn run lint"
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} sh -c "yarn install && yarn run lint"
 
   frontend-build:
     runs-on: ubuntu-latest
@@ -35,7 +35,7 @@ jobs:
           persist-credentials: false
 
       - name: Frontend Build
-        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} bash -c "yarn install && yarn run build"
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} sh -c "yarn install && yarn run build"
 
   backend:
     runs-on: ubuntu-latest
