@@ -123,9 +123,9 @@ jobs:
           persist-credentials: false
 
       - name: Build frontend production image
-        run: docker build -f frontend/prod.Dockerfile -t dime-frontend-prod-ci --build-arg ENVIRONMENT=ci --build-arg API_URL=http://localhost --build-arg APIR_URL=http://localhost --build-arg SENTRY_DSN_PUBLIC= frontend
+        run: docker build -f frontend/prod.Dockerfile -t dime-frontend-prod-ci --build-arg ENVIRONMENT=ci --build-arg API_URL=http://localhost --build-arg APIR_URL=http://apir-under-test --build-arg SENTRY_DSN_PUBLIC= frontend
 
-      - name: Verify it runs as a non-root user and serves on port 8080
+      - name: Verify it runs as a non-root user and actually serves the app
         run: |
           docker run -d --name frontend-prod-ci -p 8080:8080 dime-frontend-prod-ci
           trap 'docker logs frontend-prod-ci; docker rm -f frontend-prod-ci' EXIT
@@ -135,7 +135,17 @@ jobs:
             sleep 1
           done
 
-          curl -sf -o /dev/null -w "HTTP %{http_code}\n" http://localhost:8080/
+          # not just a 200 - it has to be the built React app, not e.g. httpd's default page
+          curl -sf http://localhost:8080/ | grep -q 'id="root"'
+
+          # unknown client-side routes must rewrite to index.html (AllowOverride/mod_rewrite)
+          curl -sf http://localhost:8080/some/deep/client/route | grep -q 'id="root"'
+
+          # the build-arg substitution into the JS bundle must have actually happened
+          bundle_path=$(curl -sf http://localhost:8080/ | grep -o '/static/js/main\.[a-z0-9]*\.js' | head -1)
+          curl -sf "http://localhost:8080$bundle_path" -o /tmp/main.js
+          grep -q "apir-under-test" /tmp/main.js
+          ! grep -q "BASE_APIR_URL" /tmp/main.js
 
           [ "$(docker exec frontend-prod-ci whoami)" = "daemon" ]
           ! docker exec frontend-prod-ci ps aux | grep -v grep | grep -qw root
