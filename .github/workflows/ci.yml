@@ -110,3 +110,32 @@ jobs:
 
       - name: Verify generated types are committed
         run: git diff --exit-code frontend/src/types/generated.ts
+
+  frontend-prod-image:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+
+      - name: Build frontend production image
+        run: docker build -f frontend/prod.Dockerfile -t dime-frontend-prod-ci --build-arg ENVIRONMENT=ci --build-arg API_URL=http://localhost --build-arg APIR_URL=http://localhost --build-arg SENTRY_DSN_PUBLIC= frontend
+
+      - name: Verify it runs as a non-root user and serves on port 8080
+        run: |
+          docker run -d --name frontend-prod-ci -p 8080:8080 dime-frontend-prod-ci
+          trap 'docker logs frontend-prod-ci; docker rm -f frontend-prod-ci' EXIT
+
+          for i in $(seq 1 10); do
+            curl -sf -o /dev/null http://localhost:8080/ && break
+            sleep 1
+          done
+
+          curl -sf -o /dev/null -w "HTTP %{http_code}\n" http://localhost:8080/
+
+          [ "$(docker exec frontend-prod-ci whoami)" = "daemon" ]
+          ! docker exec frontend-prod-ci ps aux | grep -v grep | grep -qw root
