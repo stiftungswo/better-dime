@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "digest"
 require "prawn"
 require "prawn/measurement_extensions"
 require "qr-bills"
@@ -138,11 +139,27 @@ module Pdfs
 
     REFERENCE_PREFIX = "SWO"
 
+    # Width, in digits, reserved for the invoice id resp. the edit-version hash within the 20
+    # digits available in a QRR base after REFERENCE_PREFIX (6 digits). 10 digits comfortably
+    # covers any realistic invoice id; the remaining 10 digits give the version hash enough space
+    # that a same-invoice collision across edits is practically impossible.
+    QRR_ID_WIDTH = 10
+    QRR_VERSION_WIDTH = 10
+
+    # A hash of the invoice's updated_at, so the reference changes whenever the invoice (or one of
+    # its positions/discounts/costgroup distributions, via touch: true) is edited, without baking
+    # the raw, human-readable timestamp into a bank reference. Deterministic for a given
+    # updated_at, so re-rendering the same, unedited invoice keeps producing the same reference.
+    def edit_version_hash
+      Digest::MD5.hexdigest("#{@invoice.id}-#{@invoice.updated_at.to_f}")
+    end
+
     # Builds the ISO-11649 creditor reference for creditors with a regular (non-QR) IBAN. SCOR
     # references are alphanumeric, so REFERENCE_PREFIX is used literally to keep the reference
-    # recognizable.
+    # recognizable; hex digits are alphanumeric-safe as-is. "V" separates the invoice id from the
+    # version hash so that different (id, hash) pairs can't concatenate into the same string.
     def scor_reference
-      QRBills.create_creditor_reference("#{REFERENCE_PREFIX}#{@invoice.id}")
+      QRBills.create_creditor_reference("#{REFERENCE_PREFIX}#{@invoice.id}V#{edit_version_hash[0, 8]}")
     end
 
     # Builds the legacy 27-digit QRR reference (26-digit base + 1 check digit) required for
@@ -151,10 +168,13 @@ module Pdfs
     # Z=26) so the reference is still recognizable rather than an arbitrary digit; this also keeps
     # it non-zero-led, which QRBills.create_esr_creditor_reference requires (it round-trips the
     # base through Integer, which would silently strip a leading zero and fail its own length
-    # check).
+    # check). The id and version-hash fields are fixed-width and zero-padded, so no separator is
+    # needed between them.
     def qrr_reference
       prefix = REFERENCE_PREFIX.chars.map { |char| (char.ord - "A".ord + 1).to_s.rjust(2, "0") }.join
-      base = "#{prefix}#{@invoice.id.to_s.rjust(26 - prefix.length, "0")}"
+      id_part = @invoice.id.to_s.rjust(QRR_ID_WIDTH, "0")
+      version_part = (edit_version_hash.to_i(16) % (10**QRR_VERSION_WIDTH)).to_s.rjust(QRR_VERSION_WIDTH, "0")
+      base = "#{prefix}#{id_part}#{version_part}"
 
       "#{base}#{QRBills.create_esr_creditor_reference(base)}"
     end

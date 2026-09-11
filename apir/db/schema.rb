@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_04_175330) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_11_171404) do
   create_table "addresses", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "city", null: false
     t.string "country"
@@ -214,7 +214,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_04_175330) do
     t.date "beginning"
     t.timestamp "deleted_at"
     t.timestamp "created_at"
-    t.timestamp "updated_at"
+    t.datetime "updated_at"
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "deleted_by"
