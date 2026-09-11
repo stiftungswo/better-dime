@@ -144,6 +144,7 @@
   "layout.breakdown_table.final_cost": "Total",
 
   "layout.print_button.print": "Drucken",
+  "layout.print_button.failed": "Der Druck ist fehlgeschlagen.",
 
   "layout.navigation.timetrack": "Zeiterfassung",
   "layout.navigation.offers": "Offerten",

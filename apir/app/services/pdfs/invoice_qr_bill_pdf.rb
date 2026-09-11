@@ -76,7 +76,7 @@ module Pdfs
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
-      raise "QR-Bill requires a building number. Please update the address in settings and on the invoice." if @global_setting.sender_street_number.blank? || @invoice.address.street_number.blank?
+      raise ValidationError, I18n.t(:qr_bill_missing_building_number) if @global_setting.sender_street_number.blank? || @invoice.address.street_number.blank?
 
       params[:bill_params][:creditor][:address][:type]            = "S"
       params[:bill_params][:creditor][:address][:name]            = @global_setting.sender_name

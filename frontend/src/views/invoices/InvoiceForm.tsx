@@ -141,6 +141,7 @@ export default class InvoiceForm extends React.Component<Props> {
                     : intlText('missing_cost_group_qr')}
                 icon={ESRIcon}
                 disabled={!costGroupsExist}
+                handleErrors
               />
               <PrintButton
                 path={`invoices/${invoice.id}/print`}
@@ -153,6 +154,7 @@ export default class InvoiceForm extends React.Component<Props> {
                 }
                 icon={InvoiceIcon}
                 disabled={!costGroupsExist}
+                handleErrors
               />
             </>
           ) : (

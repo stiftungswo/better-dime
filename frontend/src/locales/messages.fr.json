@@ -143,6 +143,7 @@
   "layout.breakdown_table.final_cost": "Total",
 
   "layout.print_button.print": "Imprimer",
+  "layout.print_button.failed": "L'impression a échoué.",
 
   "layout.navigation.timetrack": "Saisie de temps",
   "layout.navigation.offers": "Offres",

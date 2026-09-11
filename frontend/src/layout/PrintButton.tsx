@@ -1,5 +1,6 @@
 import { PropTypes } from '@mui/material';
 import { SvgIconProps } from '@mui/material/SvgIcon';
+import axios from 'axios';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
@@ -22,6 +23,10 @@ interface Props {
   mainStore?: MainStore;
   title?: string;
   urlParams?: object;
+  // Fetches the PDF as a blob via XHR instead of a plain <a target="_blank"> navigation, so a
+  // backend failure (e.g. a validation error) shows as an in-app message instead of a raw,
+  // unstyled error response in a blank new tab.
+  handleErrors?: boolean;
 }
 
 @compose(
@@ -32,7 +37,56 @@ interface Props {
 export default class PrintButton extends React.Component<Props> {
   state = {
     cityDialogOpen: false,
+    printing: false,
   };
+
+  print = async () => {
+    const { mainStore, path, urlParams, intl } = this.props;
+    const url = mainStore!.apiV2URL_localized(path, urlParams);
+    // Open the tab synchronously, within the click handler, so popup blockers (Safari in
+    // particular) don't treat the later window.open-equivalent redirect - which happens only
+    // after the async fetch resolves - as an unsolicited popup.
+    const newTab = window.open('', '_blank');
+
+    this.setState({ printing: true });
+
+    try {
+      const response = await axios.get<Blob>(url, { responseType: 'blob' });
+      const objectUrl = URL.createObjectURL(response.data);
+
+      if (newTab) {
+        newTab.location.href = objectUrl;
+      }
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+    } catch (error) {
+      if (newTab) {
+        newTab.close();
+      }
+      mainStore!.displayError(await this.extractErrorMessage(error));
+    } finally {
+      this.setState({ printing: false });
+    }
+  }
+
+  extractErrorMessage = async (error: any): Promise<string> => {
+    const fallback = this.props.intl!.formatMessage({ id: 'layout.print_button.failed' });
+    const data = error?.response?.data;
+
+    if (!(data instanceof Blob)) {
+      return fallback;
+    }
+
+    try {
+      const parsed = JSON.parse(await data.text());
+      if (Array.isArray(parsed.human_readable_descriptions) && parsed.human_readable_descriptions.length > 0) {
+        return parsed.human_readable_descriptions.join(' ');
+      }
+    } catch {
+      // not JSON (e.g. an HTML error page) - fall through to the generic message
+    }
+
+    return fallback;
+  }
 
   render() {
     const BadgeIcon = this.props.icon;
@@ -56,6 +110,17 @@ export default class PrintButton extends React.Component<Props> {
             <CitySelectDialog open path={this.props.path} onClose={() => this.setState({ cityDialogOpen: false })} saveCallback={this.props.citySelectionSaveCallback}/>
           )}
        </>
+      );
+    } else if (this.props.handleErrors) {
+      return (
+        <ActionButton
+          icon={PrintIcon}
+          secondaryIcon={BadgeIcon}
+          title={this.props.title || printLabel}
+          color={this.props.color}
+          action={this.print}
+          disabled={this.state.printing}
+        />
       );
     } else {
       return (
