@@ -20,10 +20,11 @@ RSpec.describe V2::HolidaysController, type: :controller do
         end.to change(Holiday, :count).by(1)
       end
 
-      it "raises ValidationError with invalid params" do
-        expect do
-          post :create, format: :json, params: { name: "", date: "", duration: nil }
-        end.to raise_error(ValidationError)
+      it "returns unprocessable with invalid params" do
+        post :create, format: :json, params: { name: "", date: "", duration: nil }
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
 

@@ -66,14 +66,15 @@ RSpec.describe V2::ServicesController, type: :controller do
       end
 
       it "doesn't allow creation with invalid parameter" do
-        expect do
-          post :create, format: :json, params: {
-            name: service.name,
-            vat: 3_123_123,
-            archived: false,
-            service: service.as_json.merge(name: service.name, vat: service.vat, archived: false)
-          }
-        end.to raise_error(ValidationError)
+        post :create, format: :json, params: {
+          name: service.name,
+          vat: 3_123_123,
+          archived: false,
+          service: service.as_json.merge(name: service.name, vat: service.vat, archived: false)
+        }
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
 
       it "assigns the created company" do

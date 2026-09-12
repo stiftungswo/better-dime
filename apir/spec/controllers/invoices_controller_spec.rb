@@ -71,9 +71,10 @@ RSpec.describe V2::InvoicesController, type: :controller do
       end
 
       it "returns unprocessable for an invalid param" do
-        expect do
-          post :create, format: :json, params: invoice_invalid.as_json
-        end.to raise_error(ValidationError)
+        post :create, format: :json, params: invoice_invalid.as_json
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
   end

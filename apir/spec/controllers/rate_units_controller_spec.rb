@@ -20,10 +20,11 @@ RSpec.describe V2::RateUnitsController, type: :controller do
         end.to change(RateUnit, :count).by(1)
       end
 
-      it "raises ValidationError with missing params" do
-        expect do
-          post :create, format: :json, params: { name: "" }
-        end.to raise_error(ValidationError)
+      it "returns unprocessable with missing params" do
+        post :create, format: :json, params: { name: "" }
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
 

@@ -87,9 +87,10 @@ RSpec.describe V2::ProjectsController, type: :controller do
       end
 
       it "returns unprocessable for an invalid param" do
-        expect do
-          post :create, format: :json, params: project_invalid.as_json
-        end.to raise_error(ValidationError)
+        post :create, format: :json, params: project_invalid.as_json
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
 
       it "assigns the created project" do
@@ -134,9 +135,10 @@ RSpec.describe V2::ProjectsController, type: :controller do
 
       describe "with invalid params" do
         it "returns unprocessable" do
-          expect do
-            put :update, format: :json, params: project.as_json.except(:fixed_price, :name).merge({ name: "Project U", fixed_price: 3.2 })
-          end.to raise_error(ValidationError)
+          put :update, format: :json, params: project.as_json.except(:fixed_price, :name).merge({ name: "Project U", fixed_price: 3.2 })
+
+          expect(response).to have_http_status(:unprocessable_content)
+          expect(response.parsed_body).to include("errors", "human_readable_descriptions")
         end
       end
     end

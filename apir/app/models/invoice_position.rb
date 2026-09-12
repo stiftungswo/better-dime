@@ -3,7 +3,7 @@
 class InvoicePosition < ApplicationRecord
   include SoftDeletable
 
-  belongs_to :invoice
+  belongs_to :invoice, touch: true
   belongs_to :rate_unit
   belongs_to :project_position, optional: true
   belongs_to :position_group, optional: true

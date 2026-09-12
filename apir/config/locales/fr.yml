@@ -77,6 +77,7 @@ fr:
   outstanding_amount: "Montant à régler"
   invoice_nr: "Facture Nr."
   invoice_nr_esr: "Facture   Nr. "
+  qr_bill_missing_building_number: "Le numéro de maison est requis pour la facture QR. Veuillez le compléter dans les paramètres et/ou dans l'adresse de la facture."
   fix_price_excl_vat: "Prix ​​fixe hors TVA"
   fix_price_total: "Prix ​​fixe"
   date:
