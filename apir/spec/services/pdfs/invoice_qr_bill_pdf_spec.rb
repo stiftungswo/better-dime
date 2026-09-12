@@ -106,6 +106,38 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
     end
   end
 
+  describe "building number validation" do
+    # Regression test for a real client complaint: the original guard combined both checks into
+    # one generic message ("check settings and/or the invoice address"), leaving the user to guess
+    # which of the two was actually broken. Each case now raises its own specific message.
+    let(:global_setting) { create(:global_setting) }
+
+    def missing_building_number_error(global_setting, invoice)
+      described_class.new(global_setting, invoice, Time.zone.today)
+      nil
+    rescue ValidationError => error
+      error
+    end
+
+    it "names the sender when the global settings building number is missing" do
+      global_setting.update!(sender_street_number: nil)
+
+      error = missing_building_number_error(global_setting, invoice)
+
+      expect(error).not_to be_nil
+      expect(error.human_readable_descriptions.join).to include("Absenders")
+    end
+
+    it "names the customer when the invoice address building number is missing" do
+      invoice.address.update!(street_number: nil)
+
+      error = missing_building_number_error(global_setting, invoice)
+
+      expect(error).not_to be_nil
+      expect(error.human_readable_descriptions.join).to include("Kunden")
+    end
+  end
+
   describe "known limitation: same invoice, same instant" do
     # Unlike the cross-invoice case above, this is NOT protected: the reference is a pure
     # function of (id, updated_at), so if the exact same invoice were somehow saved twice with an

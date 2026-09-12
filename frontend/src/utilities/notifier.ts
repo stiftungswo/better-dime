@@ -43,7 +43,10 @@ export class Notifier {
 
   @action
   error = (message: string) => {
-    this.enqueue(message, { variant: 'error' });
+    // Errors stay until manually dismissed - unlike info/success, an error can arrive at the same
+    // moment as something else visually distracting (e.g. a popup tab opening and closing), so a
+    // 6s auto-hide risks the user never actually reading it.
+    this.enqueue(message, { variant: 'error', autoHideDuration: null });
   }
 
   @action

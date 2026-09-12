@@ -55,7 +55,8 @@ export default class PrintButton extends React.Component<Props> {
     const url = mainStore!.apiV2URL_localized(path, urlParams);
     // Open the tab synchronously, within the click handler, so popup blockers (Safari in
     // particular) don't treat the later window.open-equivalent redirect - which happens only
-    // after the async fetch resolves - as an unsolicited popup.
+    // after the async fetch resolves - as an unsolicited popup. The trade-off (a brief open-then-
+    // close flicker on failure) is preferable to a PDF silently failing to open on the success path.
     const newTab = window.open('', '_blank');
 
     this.setState({ printing: true });
