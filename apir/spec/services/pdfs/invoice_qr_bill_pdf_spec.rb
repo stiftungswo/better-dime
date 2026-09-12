@@ -38,6 +38,16 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
 
       expect(reference_generator(invoice).send(:scor_reference)).not_to eq(before_reference)
     end
+
+    it "zero-pads the invoice id to a fixed width" do
+      # Without zero-padding, ids that are prefixes of one another (1, 10, 100, ...) print
+      # identically in the first 4-character block of the grouped display (format_reference),
+      # since the shared leading digit(s) land there and the rest spill into the next block -
+      # not a data collision, but genuinely misleading on a printed QR-bill.
+      reference = reference_generator(invoice).send(:scor_reference)
+
+      expect(reference).to match(/\ARF\d{2}SWO\d{6}V[0-9a-f]{8}\z/)
+    end
   end
 
   describe "#qrr_reference" do

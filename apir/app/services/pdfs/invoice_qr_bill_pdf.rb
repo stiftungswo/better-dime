@@ -146,6 +146,14 @@ module Pdfs
     QRR_ID_WIDTH = 10
     QRR_VERSION_WIDTH = 10
 
+    # Width, in digits, reserved for the invoice id within a SCOR reference. Without zero-padding,
+    # invoice ids that are prefixes of one another (1, 10, 100, 1000, ...) print identically in the
+    # first 4-character display block (see format_reference's grouping), since the shared leading
+    # "1" lands there and the trailing zeros spill into the next block - not a data collision (the
+    # full strings differ), but genuinely misleading on a printed QR-bill. 6 digits leaves ample
+    # room under the 21-char ISO-11649 budget (3 prefix + 6 id + 1 separator + 8 hash = 18).
+    SCOR_ID_WIDTH = 6
+
     # A hash of the invoice's updated_at, so the reference changes whenever the invoice (or one of
     # its positions/discounts/costgroup distributions, via touch: true) is edited, without baking
     # the raw, human-readable timestamp into a bank reference. Deterministic for a given
@@ -156,10 +164,12 @@ module Pdfs
 
     # Builds the ISO-11649 creditor reference for creditors with a regular (non-QR) IBAN. SCOR
     # references are alphanumeric, so REFERENCE_PREFIX is used literally to keep the reference
-    # recognizable; hex digits are alphanumeric-safe as-is. "V" separates the invoice id from the
-    # version hash so that different (id, hash) pairs can't concatenate into the same string.
+    # recognizable; hex digits are alphanumeric-safe as-is. The id is zero-padded to a fixed width
+    # (see SCOR_ID_WIDTH) so different invoice ids never look alike in the printed, grouped
+    # display; "V" separates it from the version hash so the two fields stay visually distinct.
     def scor_reference
-      QRBills.create_creditor_reference("#{REFERENCE_PREFIX}#{@invoice.id}V#{edit_version_hash[0, 8]}")
+      id_part = @invoice.id.to_s.rjust(SCOR_ID_WIDTH, "0")
+      QRBills.create_creditor_reference("#{REFERENCE_PREFIX}#{id_part}V#{edit_version_hash[0, 8]}")
     end
 
     # Builds the legacy 27-digit QRR reference (26-digit base + 1 check digit) required for
