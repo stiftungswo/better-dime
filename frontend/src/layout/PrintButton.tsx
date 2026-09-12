@@ -41,8 +41,8 @@ export default class PrintButton extends React.Component<Props> {
   };
 
   // A plain instance field, not this.state.printing: the disabled prop derived from state only
-  // takes effect after the next render, but print() calls window.open synchronously before that,
-  // so a rapid double-click could otherwise fire it twice and open two tabs.
+  // takes effect after the next render, so a rapid double-click before that render could otherwise
+  // fire two overlapping requests.
   printInFlight = false;
 
   print = async () => {
@@ -53,10 +53,6 @@ export default class PrintButton extends React.Component<Props> {
 
     const { mainStore, path, urlParams, intl } = this.props;
     const url = mainStore!.apiV2URL_localized(path, urlParams);
-    // Open the tab synchronously, within the click handler, so popup blockers (Safari in
-    // particular) don't treat the later window.open-equivalent redirect - which happens only
-    // after the async fetch resolves - as an unsolicited popup.
-    const newTab = window.open('', '_blank');
 
     this.setState({ printing: true });
 
@@ -64,14 +60,17 @@ export default class PrintButton extends React.Component<Props> {
       const response = await axios.get<Blob>(url, { responseType: 'blob' });
       const objectUrl = URL.createObjectURL(response.data);
 
-      if (newTab) {
-        newTab.location.href = objectUrl;
+      // Only open the tab once we actually have a PDF to show it. A validation failure is common
+      // enough here (unlike most other backend calls) that opening a tab just to immediately close
+      // it on error was its own distracting flicker, competing with the error toast for attention.
+      // Trade-off: some browsers (Safari in particular) may block this as an unsolicited popup
+      // since it no longer happens synchronously within the click handler.
+      const newTab = window.open(objectUrl, '_blank');
+      if (!newTab) {
+        mainStore!.displayError(this.props.intl!.formatMessage({ id: 'layout.print_button.popup_blocked' }));
       }
       setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
     } catch (error) {
-      if (newTab) {
-        newTab.close();
-      }
       mainStore!.displayError(await this.extractErrorMessage(error));
     } finally {
       this.printInFlight = false;
