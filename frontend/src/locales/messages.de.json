@@ -145,7 +145,6 @@
 
   "layout.print_button.print": "Drucken",
   "layout.print_button.failed": "Der Druck ist fehlgeschlagen.",
-  "layout.print_button.popup_blocked": "Das PDF wurde erstellt, aber vom Browser als Popup blockiert. Bitte Popups für diese Seite erlauben und erneut versuchen.",
 
   "layout.navigation.timetrack": "Zeiterfassung",
   "layout.navigation.offers": "Offerten",

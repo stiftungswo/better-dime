@@ -144,7 +144,6 @@
 
   "layout.print_button.print": "Imprimer",
   "layout.print_button.failed": "L'impression a échoué.",
-  "layout.print_button.popup_blocked": "Le PDF a été généré mais bloqué en tant que popup par le navigateur. Veuillez autoriser les popups pour ce site et réessayer.",
 
   "layout.navigation.timetrack": "Saisie de temps",
   "layout.navigation.offers": "Offres",
