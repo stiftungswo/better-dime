@@ -74,4 +74,55 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
       expect(reference_generator(invoice).send(:qrr_reference)).not_to eq(before_reference)
     end
   end
+
+  describe "collision safety across different invoices" do
+    # This is a multi-user app: two different invoices can genuinely be saved in the same
+    # microsecond under concurrent load (a bulk operation, or just two employees saving at once).
+    # update_column forces that exact coincidence deterministically instead of hoping a race
+    # happens to reproduce it. The reference must still differ, because the invoice id is embedded
+    # directly (fixed-width) rather than folded only into the hash - if it were only in the hash,
+    # an identical updated_at would produce an identical hash and, without the id also being
+    # embedded, an identical reference for two unrelated invoices.
+    let(:other_invoice) { create(:invoice) }
+    let(:shared_timestamp) { Time.zone.parse("2026-01-01 12:00:00.123456") }
+
+    before do
+      invoice.update_column(:updated_at, shared_timestamp)
+      other_invoice.update_column(:updated_at, shared_timestamp)
+    end
+
+    it "produces different SCOR references for different invoices sharing the same updated_at" do
+      reference_a = reference_generator(invoice).send(:scor_reference)
+      reference_b = reference_generator(other_invoice).send(:scor_reference)
+
+      expect(reference_a).not_to eq(reference_b)
+    end
+
+    it "produces different QRR references for different invoices sharing the same updated_at" do
+      reference_a = reference_generator(invoice).send(:qrr_reference)
+      reference_b = reference_generator(other_invoice).send(:qrr_reference)
+
+      expect(reference_a).not_to eq(reference_b)
+    end
+  end
+
+  describe "known limitation: same invoice, same instant" do
+    # Unlike the cross-invoice case above, this is NOT protected: the reference is a pure
+    # function of (id, updated_at), so if the exact same invoice were somehow saved twice with an
+    # identical updated_at, it would produce the identical reference both times - the edit
+    # wouldn't "count". This is expected/documented rather than fixed: it requires the same
+    # invoice to be written twice at the same microsecond, which - unlike two different invoices
+    # merely overlapping under load - would mean two saves of one record resolved with no
+    # observable time difference at all, not something normal concurrent usage produces.
+    it "reuses the reference if the same invoice's updated_at is forced to repeat" do
+      shared_timestamp = Time.zone.parse("2026-01-01 12:00:00.123456")
+      invoice.update_column(:updated_at, shared_timestamp)
+      first = reference_generator(invoice).send(:scor_reference)
+
+      invoice.update_column(:updated_at, shared_timestamp)
+      second = reference_generator(invoice).send(:scor_reference)
+
+      expect(first).to eq(second)
+    end
+  end
 end
