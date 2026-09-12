@@ -87,8 +87,8 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
     let(:shared_timestamp) { Time.zone.parse("2026-01-01 12:00:00.123456") }
 
     before do
-      invoice.update_column(:updated_at, shared_timestamp)
-      other_invoice.update_column(:updated_at, shared_timestamp)
+      invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
+      other_invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
     end
 
     it "produces different SCOR references for different invoices sharing the same updated_at" do
@@ -116,10 +116,10 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
     # observable time difference at all, not something normal concurrent usage produces.
     it "reuses the SCOR reference if the same invoice's updated_at is forced to repeat" do
       shared_timestamp = Time.zone.parse("2026-01-01 12:00:00.123456")
-      invoice.update_column(:updated_at, shared_timestamp)
+      invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
       first = reference_generator(invoice).send(:scor_reference)
 
-      invoice.update_column(:updated_at, shared_timestamp)
+      invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
       second = reference_generator(invoice).send(:scor_reference)
 
       expect(first).to eq(second)
@@ -127,10 +127,10 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
 
     it "reuses the QRR reference if the same invoice's updated_at is forced to repeat" do
       shared_timestamp = Time.zone.parse("2026-01-01 12:00:00.123456")
-      invoice.update_column(:updated_at, shared_timestamp)
+      invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
       first = reference_generator(invoice).send(:qrr_reference)
 
-      invoice.update_column(:updated_at, shared_timestamp)
+      invoice.update_column(:updated_at, shared_timestamp) # rubocop:disable Rails/SkipsModelValidations
       second = reference_generator(invoice).send(:qrr_reference)
 
       expect(first).to eq(second)
