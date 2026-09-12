@@ -114,13 +114,24 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
     # invoice to be written twice at the same microsecond, which - unlike two different invoices
     # merely overlapping under load - would mean two saves of one record resolved with no
     # observable time difference at all, not something normal concurrent usage produces.
-    it "reuses the reference if the same invoice's updated_at is forced to repeat" do
+    it "reuses the SCOR reference if the same invoice's updated_at is forced to repeat" do
       shared_timestamp = Time.zone.parse("2026-01-01 12:00:00.123456")
       invoice.update_column(:updated_at, shared_timestamp)
       first = reference_generator(invoice).send(:scor_reference)
 
       invoice.update_column(:updated_at, shared_timestamp)
       second = reference_generator(invoice).send(:scor_reference)
+
+      expect(first).to eq(second)
+    end
+
+    it "reuses the QRR reference if the same invoice's updated_at is forced to repeat" do
+      shared_timestamp = Time.zone.parse("2026-01-01 12:00:00.123456")
+      invoice.update_column(:updated_at, shared_timestamp)
+      first = reference_generator(invoice).send(:qrr_reference)
+
+      invoice.update_column(:updated_at, shared_timestamp)
+      second = reference_generator(invoice).send(:qrr_reference)
 
       expect(first).to eq(second)
     end
