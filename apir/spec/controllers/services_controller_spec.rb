@@ -74,6 +74,7 @@ RSpec.describe V2::ServicesController, type: :controller do
         }
 
         expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
 
       it "assigns the created company" do

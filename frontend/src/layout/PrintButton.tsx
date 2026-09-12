@@ -40,7 +40,17 @@ export default class PrintButton extends React.Component<Props> {
     printing: false,
   };
 
+  // A plain instance field, not this.state.printing: the disabled prop derived from state only
+  // takes effect after the next render, but print() calls window.open synchronously before that,
+  // so a rapid double-click could otherwise fire it twice and open two tabs.
+  printInFlight = false;
+
   print = async () => {
+    if (this.printInFlight) {
+      return;
+    }
+    this.printInFlight = true;
+
     const { mainStore, path, urlParams, intl } = this.props;
     const url = mainStore!.apiV2URL_localized(path, urlParams);
     // Open the tab synchronously, within the click handler, so popup blockers (Safari in
@@ -64,6 +74,7 @@ export default class PrintButton extends React.Component<Props> {
       }
       mainStore!.displayError(await this.extractErrorMessage(error));
     } finally {
+      this.printInFlight = false;
       this.setState({ printing: false });
     }
   }

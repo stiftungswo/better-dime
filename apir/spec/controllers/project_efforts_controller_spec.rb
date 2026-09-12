@@ -32,6 +32,7 @@ RSpec.describe V2::ProjectEffortsController, type: :controller do
         post :create, format: :json, params: { date: "", value: nil, position_id: position.id }
 
         expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
 

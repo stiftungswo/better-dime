@@ -90,6 +90,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
         post :create, format: :json, params: project_invalid.as_json
 
         expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
 
       it "assigns the created project" do
@@ -137,6 +138,7 @@ RSpec.describe V2::ProjectsController, type: :controller do
           put :update, format: :json, params: project.as_json.except(:fixed_price, :name).merge({ name: "Project U", fixed_price: 3.2 })
 
           expect(response).to have_http_status(:unprocessable_content)
+          expect(response.parsed_body).to include("errors", "human_readable_descriptions")
         end
       end
     end

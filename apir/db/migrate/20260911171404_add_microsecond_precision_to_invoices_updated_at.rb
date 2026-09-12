@@ -6,6 +6,6 @@ class AddMicrosecondPrecisionToInvoicesUpdatedAt < ActiveRecord::Migration[8.0]
   end
 
   def down
-    change_column :invoices, :updated_at, :datetime, precision: nil
+    change_column :invoices, :updated_at, :timestamp
   end
 end

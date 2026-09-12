@@ -26,6 +26,7 @@ RSpec.describe V2::ProjectCommentsController, type: :controller do
         post :create, format: :json, params: { comment: "", date: "", project_id: project.id }
 
         expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
 
