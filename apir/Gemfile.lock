@@ -325,7 +325,7 @@ GEM
       date
       stringio
     public_suffix (7.0.5)
-    puma (6.6.1)
+    puma (7.2.1)
       nio4r (~> 2.0)
     qr-bills (2.0.0)
       i18n (>= 1.8.3, < 2)
@@ -556,7 +556,7 @@ DEPENDENCIES
   prawn
   prawn-table
   pry-rails
-  puma (~> 6.4)
+  puma (~> 7.0)
   qr-bills
   rack-cors (~> 2.0)
   rails (~> 8.0.0)
