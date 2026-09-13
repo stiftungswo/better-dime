@@ -83,6 +83,9 @@ export default class PrintButton extends React.Component<Props> {
               window.open(objectUrl, '_blank');
               setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
             },
+            // If the user dismisses this without ever clicking "open", nothing else will ever
+            // revoke the URL - it would otherwise leak for the rest of the page's lifetime.
+            onDismiss: () => URL.revokeObjectURL(objectUrl),
           },
         });
       }

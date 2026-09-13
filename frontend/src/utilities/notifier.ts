@@ -4,6 +4,10 @@ import { Variant } from '../layout/Snackbar';
 export interface NotifyAction {
   label: string;
   onClick: () => void;
+  // Fired when the notification is dismissed via the close button *without* the action having
+  // been clicked - e.g. to release a resource (like a blob URL) that onClick would otherwise have
+  // taken responsibility for. Not fired when the action itself is clicked (see closeAfterAction).
+  onDismiss?: () => void;
 }
 
 interface MessageInfo {
@@ -61,6 +65,15 @@ export class Notifier {
     if (reason === 'clickaway') {
       return;
     }
+    this.messageInfo.action?.onDismiss?.();
+    this.open = false;
+  }
+
+  // Used by the action button itself (not the close button): the action's own onClick already
+  // took responsibility for any cleanup (e.g. scheduling a delayed revoke), so this closes the
+  // notification without also firing onDismiss.
+  @action
+  closeAfterAction = () => {
     this.open = false;
   }
 

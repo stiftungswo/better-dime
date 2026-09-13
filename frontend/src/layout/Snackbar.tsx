@@ -56,7 +56,7 @@ class DimeSnackbarInner extends React.Component<Props> {
                 size="small"
                 onClick={() => {
                   messageInfo.action!.onClick();
-                  notifier.handleClose({}, undefined);
+                  notifier.closeAfterAction();
                 }}
               >
                 {messageInfo.action.label}
