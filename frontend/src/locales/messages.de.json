@@ -145,6 +145,8 @@
 
   "layout.print_button.print": "Drucken",
   "layout.print_button.failed": "Der Druck ist fehlgeschlagen.",
+  "layout.print_button.popup_blocked": "Das PDF wurde erstellt, konnte aber vom Browser nicht automatisch geöffnet werden.",
+  "layout.print_button.open_pdf": "PDF öffnen",
 
   "layout.navigation.timetrack": "Zeiterfassung",
   "layout.navigation.offers": "Offerten",

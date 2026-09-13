@@ -144,6 +144,8 @@
 
   "layout.print_button.print": "Imprimer",
   "layout.print_button.failed": "L'impression a échoué.",
+  "layout.print_button.popup_blocked": "Le PDF a été généré mais n'a pas pu être ouvert automatiquement par le navigateur.",
+  "layout.print_button.open_pdf": "Ouvrir le PDF",
 
   "layout.navigation.timetrack": "Saisie de temps",
   "layout.navigation.offers": "Offres",

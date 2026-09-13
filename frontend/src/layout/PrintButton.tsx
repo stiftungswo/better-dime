@@ -67,8 +67,25 @@ export default class PrintButton extends React.Component<Props> {
 
       if (newTab) {
         newTab.location.href = objectUrl;
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+      } else {
+        // The popup was blocked even though window.open was called synchronously in the click
+        // handler (e.g. a strict "block all popups" browser setting). The PDF was generated
+        // successfully, so don't just silently drop it: offer a manual open via a real click,
+        // which - unlike a programmatic window.open from here - always carries user activation
+        // and can't itself be blocked. Only start the revoke countdown once actually opened, since
+        // this toast is persistent and the user may not click it right away.
+        mainStore!.notifier.info(intl!.formatMessage({ id: 'layout.print_button.popup_blocked' }), {
+          autoHideDuration: null,
+          action: {
+            label: intl!.formatMessage({ id: 'layout.print_button.open_pdf' }),
+            onClick: () => {
+              window.open(objectUrl, '_blank');
+              setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+            },
+          },
+        });
       }
-      setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
     } catch (error) {
       if (newTab) {
         newTab.close();

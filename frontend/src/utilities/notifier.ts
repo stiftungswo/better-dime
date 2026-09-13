@@ -1,16 +1,23 @@
 import { action, makeObservable, observable } from 'mobx';
 import { Variant } from '../layout/Snackbar';
 
+export interface NotifyAction {
+  label: string;
+  onClick: () => void;
+}
+
 interface MessageInfo {
   key: number;
   message: string;
   autoHideDuration: number | null;
   variant: Variant;
+  action?: NotifyAction;
 }
 
 interface NotifyOptions {
   autoHideDuration?: number | null;
   variant?: Variant;
+  action?: NotifyAction;
 }
 
 export class Notifier {
@@ -62,12 +69,14 @@ export class Notifier {
     this.processQueue();
   }
 
-  private enqueue = (message: string, { variant = 'info', autoHideDuration = 6000 }: NotifyOptions = {}) => {
+  private enqueue = (message: string, options: NotifyOptions = {}) => {
+    const { variant = 'info', autoHideDuration = 6000, action: notifyAction } = options;
     this.queue.push({
       message,
       key: new Date().getTime(),
       variant,
       autoHideDuration,
+      action: notifyAction,
     });
 
     if (this.open) {
