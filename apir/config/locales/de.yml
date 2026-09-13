@@ -78,7 +78,8 @@ de:
   outstanding_amount: "Betrag offen"
   invoice_nr: "Rechnung Nr."
   invoice_nr_esr: "Rechnung  Nr. "
-  qr_bill_missing_building_number: "Für die QR-Rechnung wird eine Hausnummer benötigt. Bitte ergänzen Sie die Hausnummer in den Einstellungen und/oder bei der Rechnungsadresse."
+  qr_bill_missing_sender_building_number: "Für die QR-Rechnung wird eine Hausnummer benötigt. Bitte ergänzen Sie die Hausnummer des Absenders in den Einstellungen."
+  qr_bill_missing_customer_building_number: "Für die QR-Rechnung wird eine Hausnummer benötigt. Bitte ergänzen Sie die Hausnummer in der Rechnungsadresse des Kunden."
   fix_price_excl_vat: "Fixpreis exkl. MwSt."
   fix_price_total: "Fixpreis"
   date:

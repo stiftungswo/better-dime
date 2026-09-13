@@ -1,4 +1,4 @@
-import { IconButton, Theme } from '@mui/material';
+import { Button, IconButton, Theme } from '@mui/material';
 import { green } from '@mui/material/colors';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
@@ -49,6 +49,19 @@ class DimeSnackbarInner extends React.Component<Props> {
           className={this.props.classes[messageInfo.variant]}
           message={<span id="message-id">{messageInfo.message}</span>}
           action={[
+            ...(messageInfo.action ? [
+              <Button
+                key="action"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  messageInfo.action!.onClick();
+                  notifier.closeAfterAction();
+                }}
+              >
+                {messageInfo.action.label}
+              </Button>,
+            ] : []),
             <IconButton
               key="close"
               aria-label="Close"

@@ -55,7 +55,8 @@ export default class PrintButton extends React.Component<Props> {
     const url = mainStore!.apiV2URL_localized(path, urlParams);
     // Open the tab synchronously, within the click handler, so popup blockers (Safari in
     // particular) don't treat the later window.open-equivalent redirect - which happens only
-    // after the async fetch resolves - as an unsolicited popup.
+    // after the async fetch resolves - as an unsolicited popup. The trade-off (a brief open-then-
+    // close flicker on failure) is preferable to a PDF silently failing to open on the success path.
     const newTab = window.open('', '_blank');
 
     this.setState({ printing: true });
@@ -66,8 +67,28 @@ export default class PrintButton extends React.Component<Props> {
 
       if (newTab) {
         newTab.location.href = objectUrl;
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+      } else {
+        // The popup was blocked even though window.open was called synchronously in the click
+        // handler (e.g. a strict "block all popups" browser setting). The PDF was generated
+        // successfully, so don't just silently drop it: offer a manual open via a real click,
+        // which - unlike a programmatic window.open from here - always carries user activation
+        // and can't itself be blocked. Only start the revoke countdown once actually opened, since
+        // this toast is persistent and the user may not click it right away.
+        mainStore!.notifier.info(intl!.formatMessage({ id: 'layout.print_button.popup_blocked' }), {
+          autoHideDuration: null,
+          action: {
+            label: intl!.formatMessage({ id: 'layout.print_button.open_pdf' }),
+            onClick: () => {
+              window.open(objectUrl, '_blank');
+              setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+            },
+            // If the user dismisses this without ever clicking "open", nothing else will ever
+            // revoke the URL - it would otherwise leak for the rest of the page's lifetime.
+            onDismiss: () => URL.revokeObjectURL(objectUrl),
+          },
+        });
       }
-      setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
     } catch (error) {
       if (newTab) {
         newTab.close();
