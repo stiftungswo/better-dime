@@ -30,6 +30,7 @@ import compose from '../../utilities/compose';
 import { captureException } from '../../utilities/helpers';
 import { dimeDate, localizeSchema, requiredNumber, selector } from '../../utilities/validation';
 import { withFullScreen } from '../../utilities/withFullScreen';
+import { carryOverWithoutComment } from './carryOver';
 
 interface Props {
   onClose: () => void;
@@ -127,7 +128,8 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
 
     await effortStore.fetchWithProjectEffortFilter(filter);
     formikProps.setSubmitting(false);
-    this.setState({ lastEntry: entity });
+    // keep the other fields for "save and continue", but never carry the comment over to the next entry
+    this.setState({ lastEntry: carryOverWithoutComment(entity) });
     if (this.state.closeAfterSubmit) {
       this.props.effortStore!.editing = false;
     }
