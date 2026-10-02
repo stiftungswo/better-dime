@@ -1,4 +1,7 @@
 import '@testing-library/jest-dom';
+import { resetApiResponses } from './testUtils/mockAxios';
+
+afterEach(resetApiResponses);
 
 // DimeTheme still uses the deprecated adaptV4Theme(); the warning would otherwise be printed by every test file.
 const originalWarn = console.warn; // tslint:disable-line:no-console

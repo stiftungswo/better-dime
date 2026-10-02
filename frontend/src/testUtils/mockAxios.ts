@@ -1,12 +1,22 @@
 // Replacement for the axios instance created by ApiStore: no network access.
 // Requests resolve with an empty page unless a response was registered with `mockApiResponse`.
 // Use via `jest.mock('axios', () => require('<path>/testUtils/mockAxios').axiosMock)`.
-const emptyPage = { data: { data: [], meta: {} }, status: 200 };
+interface MockResponse {
+  data: unknown;
+  status: number;
+}
 
-const routes: { [url: string]: unknown } = {};
+const emptyPage: MockResponse = { data: { data: [], meta: {} }, status: 200 };
+
+const routes: { [url: string]: MockResponse } = {};
 
 export const mockApiResponse = (url: string, data: unknown) => {
   routes[url] = { data, status: 200 };
+};
+
+// Called after every test (see setupTests.ts) so responses registered by one test never leak into the next.
+export const resetApiResponses = () => {
+  Object.keys(routes).forEach(url => delete routes[url]);
 };
 
 const respond = (url: string) => Promise.resolve(url in routes ? routes[url] : emptyPage);
