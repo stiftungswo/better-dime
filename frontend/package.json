@@ -44,7 +44,7 @@
   "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider CHOKIDAR_USEPOLLING=true react-scripts-ts start",
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts-ts eject",
     "format": "tslint --project . -t verbose --fix",
     "lint": "tslint --project . -t verbose --config ./tslint.prod.json",
@@ -52,13 +52,20 @@
   },
   "devDependencies": {
     "@sentry/typescript": "^4.0.1",
+    "@swc/core": "^1.16.13",
+    "@swc/jest": "^0.2.39",
+    "@testing-library/jest-dom": "5",
+    "@testing-library/react": "12",
+    "@testing-library/user-event": "13",
     "@types/history": "^4.7.0",
-    "@types/jest": "^23.3.4",
+    "@types/jest": "29",
     "@types/node": "^20.0.0",
     "@types/react": "^16.4.16",
     "@types/react-dom": "^16.0.9",
     "@types/react-router-dom": "^4.3.1",
     "@types/yup": "^0.26.4",
+    "jest": "29",
+    "jest-environment-jsdom": "29",
     "tslint": "^5.16.0",
     "typescript": "^3.1.1"
   }

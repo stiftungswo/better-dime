@@ -16,7 +16,8 @@
     "exclude": [
       "*.json",
       "**/*.json",
-      "src/types/generated.ts"
+      "src/types/generated.ts",
+      "jest.config.js"
     ]
   }
 }
