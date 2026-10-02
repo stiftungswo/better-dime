@@ -1,9 +1,8 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import App from './App';
+import { renderWithProviders } from './testUtils/renderWithProviders';
 
 it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
+  const { container } = renderWithProviders(<App />);
+  expect(container).toBeTruthy();
 });
