@@ -20,7 +20,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-select": "^2.0.6",
     "@types/showdown": "^1.7.5",
-    "axios": "^0.21.2",
+    "axios": "^0.33.0",
     "classnames": "^2.2.6",
     "formik": "^2.2.9",
     "history": "^4.7.2",
