@@ -41,9 +41,15 @@ class Invoice < ApplicationRecord
     # weights that don't belong to the invoice and push the total far above 100%.
     return costgroups_override if costgroups_override.any?
 
-    cost_group_breakdown.costgroup_sums.keys.compact.index_with do |cg|
-      cost_group_breakdown.costgroup_distribution(cg)
-    end
+    effort_based_cost_group_distribution
+  end
+
+  def effort_based_cost_group_distribution
+    assigned_sums = cost_group_breakdown.costgroup_sums.except(nil)
+    total = assigned_sums.values.sum
+    return {} if total.zero?
+
+    assigned_sums.transform_values { |sum| sum * 100.0 / total }
   end
 
   def cost_group_breakdown

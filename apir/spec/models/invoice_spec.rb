@@ -68,7 +68,23 @@ RSpec.describe Invoice, type: :model do
       it "ignores the unassigned efforts in the fallback" do
         allow(invoice.cost_group_breakdown).to receive(:costgroup_sums).and_return(nil => 10, invoiced_costgroup.number => 10)
 
-        expect(invoice.final_cost_group_distribution.keys).to eq([invoiced_costgroup.number])
+        expect(invoice.final_cost_group_distribution).to eq(invoiced_costgroup.number => 100.0)
+      end
+
+      it "distributes 100% over the assigned cost groups only" do
+        allow(invoice.cost_group_breakdown).to receive(:costgroup_sums).and_return(
+          nil => 50, invoiced_costgroup.number => 10, other_costgroup.number => 30
+        )
+
+        expect(invoice.final_cost_group_distribution).to eq(invoiced_costgroup.number => 25.0, other_costgroup.number => 75.0)
+      end
+    end
+
+    context "when there are no assigned efforts" do
+      it "returns an empty distribution" do
+        allow(invoice.cost_group_breakdown).to receive(:costgroup_sums).and_return(nil => 10)
+
+        expect(invoice.final_cost_group_distribution).to eq({})
       end
     end
   end
