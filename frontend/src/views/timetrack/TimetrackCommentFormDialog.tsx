@@ -21,6 +21,7 @@ import { ProjectComment } from '../../types';
 import compose from '../../utilities/compose';
 import { dimeDate, localizeSchema, selector } from '../../utilities/validation';
 import { withFullScreen } from '../../utilities/withFullScreen';
+import { carryOverWithoutComment } from './carryOver';
 
 interface Props {
   onClose: () => void;
@@ -69,7 +70,7 @@ export class TimetrackCommentFormDialog extends React.Component<Props, State> {
       }
     }
     await projectCommentStore.fetchWithProjectEffortFilter(this.props.timetrackFilterStore!.filter);
-    this.setState({ lastEntry: values });
+    this.setState({ lastEntry: carryOverWithoutComment(values) });
     if (this.state.closeAfterSubmit) {
       projectCommentStore.editing = false;
     }
