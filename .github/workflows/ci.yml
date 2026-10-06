@@ -23,6 +23,20 @@ jobs:
       - name: Frontend Lint
         run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} sh -c "yarn install && yarn run lint"
 
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+
+      - name: Frontend Tests
+        run: docker run --rm -v ./frontend:/var/frontend -w /var/frontend --entrypoint "" ${{ env.NODE_IMAGE }} sh -c "yarn install && yarn run test"
+
   frontend-build:
     runs-on: ubuntu-latest
 
