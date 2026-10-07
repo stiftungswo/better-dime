@@ -120,7 +120,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     if ('comment' in entity && entity.comment != null && entity.comment !== '') {
       const newProjectComment = {
         ...entity,
-        date: entity.date.format(apiDateFormat),
+        date: moment(entity.date).format(apiDateFormat),
       } as unknown as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
       await this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter);
@@ -196,9 +196,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={intl.formatMessage({id: 'general.value'})} />
-                    {!formikProps.values.id && (
-                      <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'view.timetrack.form_dialog.comment_label'})} />
-                    )}
+                    <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'view.timetrack.form_dialog.comment_label'})} />
                   </>
                 )}
               </DialogContent>
