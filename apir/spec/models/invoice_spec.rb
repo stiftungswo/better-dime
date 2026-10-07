@@ -89,6 +89,16 @@ RSpec.describe Invoice, type: :model do
     end
   end
 
+  describe "#payable_total" do
+    it "rounds up to 5 Rappen so it matches the total printed on the invoice" do
+      invoice = described_class.new
+      { 10_001 => 100.05, 10_002 => 100.05, 10_005 => 100.05, 10_006 => 100.10, 10_000 => 100.0 }.each do |rappen, expected|
+        allow(invoice).to receive(:breakdown).and_return({ final_total: rappen })
+        expect(invoice.payable_total).to eq(expected)
+      end
+    end
+  end
+
   # this applies to all text fields as it is defined in ApplicationRecord
   it "normalizes unicode fields" do
     invoice = described_class.new
