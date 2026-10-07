@@ -21,7 +21,7 @@ module Pdfs
     end
 
     def filename
-      "ProjektRaport_#{@project.id}"
+      "ProjektRapport_#{@project.id}"
     end
 
     def subtitle
