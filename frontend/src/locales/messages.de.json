@@ -489,6 +489,7 @@
   "view.timetrack.form_dialog.record_effort": "Aufwand erfassen",
   "view.timetrack.form_dialog.edit_effort": "Aufwand bearbeiten",
   "view.timetrack.form_dialog.comment_label": "Kommentar zu Projekt und Tag",
+  "view.timetrack.form_dialog.existing_comments": "Bestehende Kommentare für Projekt und Tag:",
 
   "view.timetrack.service_group.description": "Beschreibung",
   "view.timetrack.service_group.recorded_value": "Gebuchter Wert",

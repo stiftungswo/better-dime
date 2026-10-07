@@ -38,6 +38,11 @@ const EditHarness: React.FunctionComponent = () => {
   React.useEffect(() => {
     Object.assign(stores, ctx);
     ctx.effortStore.effort = { id: 9, employee_id: 5, project_id: 1, position_id: 2, costgroup_number: 100, value: 60, date: '2026-01-10' };
+    ctx.projectCommentStore.projectComments = [
+      { id: 1, project_id: 1, date: '2026-01-10', comment: 'Already noted' },
+      { id: 2, project_id: 1, date: '2026-01-11', comment: 'Other day' },
+      { id: 3, project_id: 2, date: '2026-01-10', comment: 'Other project' },
+    ];
     jest.spyOn(ctx.effortStore, 'put').mockResolvedValue(undefined);
     jest.spyOn(ctx.effortStore, 'fetchWithProjectEffortFilter').mockResolvedValue(undefined);
     jest.spyOn(ctx.projectCommentStore, 'post').mockResolvedValue(undefined);
@@ -86,5 +91,13 @@ describe('TimetrackFormDialog', () => {
     await waitFor(() => expect(stores.projectCommentStore!.post).toHaveBeenCalledWith(
       expect.objectContaining({ comment: 'Korrektur', project_id: 1, date: '2026-01-10' }),
     ));
+  });
+
+  it('lists the comments that already exist for the entry\'s project and day', async () => {
+    renderWithProviders(<EditHarness />);
+
+    expect(await screen.findByText('Already noted')).toBeInTheDocument();
+    expect(screen.queryByText('Other day')).not.toBeInTheDocument();
+    expect(screen.queryByText('Other project')).not.toBeInTheDocument();
   });
 });
