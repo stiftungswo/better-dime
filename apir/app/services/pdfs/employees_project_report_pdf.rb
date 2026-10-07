@@ -16,9 +16,9 @@ module Pdfs
 
     def filename
       if @employees.length == 1
-        "Mitarbeiter_#{@employees[0].full_name}_Aufwandsrapport"
+        "Mitarbeitende_#{@employees[0].full_name}_Aufwandsrapport"
       else
-        "Mitarbeiter_Projekt_Aufwandsrapport"
+        "Mitarbeitende_Projekt_Aufwandsrapport"
       end
     end
 
@@ -55,7 +55,7 @@ module Pdfs
       text "#{@global_setting.sender_city}, #{Time.current.to_date.strftime("%d.%m.%Y")}", @default_text_settings
 
       move_down 5
-      text "Mitarbeiterraport", @default_text_settings.merge(size: 14, style: :bold)
+      text "Mitarbeitendenrapport", @default_text_settings.merge(size: 14, style: :bold)
       text "Aufwände von #{@employees.map(&:full_name).join(", ")}", @default_text_settings
       text "Aufwände vom #{@from_date.strftime("%d.%m.%Y")} bis #{@to_date.strftime("%d.%m.%Y")}", @default_text_settings
     end

@@ -3,8 +3,8 @@
 
   "general.has_selected": "{count} ausgewählt",
   "general.date": "Datum",
-  "general.employee": "Mitarbeiter",
-  "general.employee.plural": "Mitarbeiter",
+  "general.employee": "Mitarbeitende",
+  "general.employee.plural": "Mitarbeitende",
   "general.company": "Firma",
   "general.company.plural": "Firmen",
   "general.person": "Person",
@@ -43,7 +43,7 @@
   "general.rate.plural": "Tarife",
   "general.rate_group": "Tarif-Gruppe",
   "general.rate_group.plural": "Tarif-Gruppen",
-  "general.accountant": "Verantwortlicher Mitarbeiter",
+  "general.accountant": "Verantwortliche Person",
   "general.is_archived": "Archiviert?",
   "general.vat": "MwSt.",
   "general.number": "Nummer",
@@ -154,7 +154,7 @@
   "layout.navigation.projects.all": "Alle",
   "layout.navigation.projects.invoiceless": "Nicht verrechnet",
   "layout.navigation.invoices": "Rechnungen",
-  "layout.navigation.employees": "Mitarbeiter",
+  "layout.navigation.employees": "Mitarbeitende",
   "layout.navigation.customers": "Kunden",
   "layout.navigation.customers.persons": "Personen",
   "layout.navigation.customers.companies": "Firmen",
@@ -165,7 +165,7 @@
   "layout.navigation.reports.service_hour": "Servicestunden-Rapport",
   "layout.navigation.reports.service_cost": "Servicekosten-Rapport",
   "layout.navigation.reports.revenue": "Umsatzrapport",
-  "layout.navigation.reports.employees": "Mitarbeiterrapport",
+  "layout.navigation.reports.employees": "Mitarbeitendenrapport",
   "layout.navigation.reports.project": "Projektrapport",
   "layout.navigation.reports.costgroup": "Kostenstellenrapport",
   "layout.navigation.data": "Stammdaten",
@@ -173,7 +173,7 @@
   "layout.navigation.data.service_categories": "Service-Kategorien",
   "layout.navigation.data.rate_groups": "Tarif-Gruppen",
   "layout.navigation.data.rate_units": "Tarif-Typen",
-  "layout.navigation.data.employee_groups": "Mitarbeiter-Gruppen",
+  "layout.navigation.data.employee_groups": "Mitarbeitenden-Gruppen",
   "layout.navigation.data.comment_presets": "Kommentarvorlagen",
   "layout.navigation.data.holidays": "Feiertage",
   "layout.navigation.data.project_categories": "Tätigkeitsbereiche",
@@ -227,7 +227,7 @@
   "view.employee.schema.short_password": "Passwort zu kurz.",
   "view.employee.schema.nonmachting_password": "Passwort muss mit neuem Passwort übereinstimmen.",
 
-  "view.employee.update.update_employee": "Mitarbeiter bearbeiten",
+  "view.employee.update.update_employee": "Mitarbeitende bearbeiten",
 
   "view.employee.work_period_subform.work_period": "Arbeitsperioden",
   "view.employee.work_period_subform.start": "Start",
@@ -249,10 +249,10 @@
   "view.employee.work_period_subform.yearly_vacation_budget.tooltip": "Das jährliche Ferienbudget ist immer auf ein 100% zu verstehen.",
   "view.employee.work_period_subform.hourly_pay": "Stundenlohn",
 
-  "view.employee_group.overview.title": "Mitarbeiter Gruppen",
+  "view.employee_group.overview.title": "Mitarbeitenden-Gruppen",
 
   "view.holiday.overview.title": "Feiertage",
-  "view.holiday.overview.delete_warning": "Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitern abgezogen!",
+  "view.holiday.overview.delete_warning": "Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitenden abgezogen!",
   "view.holiday.overview.duration": "Dauer",
 
   "view.invoice.create.create_invoice": "Rechnung erstellen",
@@ -431,7 +431,7 @@
   "view.report.date_span_picker.from": "Von",
   "view.report.date_span_picker.to": "Bis",
 
-  "view.report.project.excluded_employees": "Exklusive Mitarbeiter",
+  "view.report.project.excluded_employees": "Exklusive Mitarbeitende",
   "view.report.project.description": "Beschreibung",
   "view.report.project.price": "Preis",
   "view.report.project.additional_costs": "Zusätzliche Kosten",
