@@ -43,7 +43,7 @@
   "general.rate.plural": "Tarife",
   "general.rate_group": "Tarif-Gruppe",
   "general.rate_group.plural": "Tarif-Gruppen",
-  "general.accountant": "Verantwortliche Mitarbeitende",
+  "general.accountant": "Verantwortliche Person",
   "general.is_archived": "Archiviert?",
   "general.vat": "MwSt.",
   "general.number": "Nummer",
@@ -249,7 +249,7 @@
   "view.employee.work_period_subform.yearly_vacation_budget.tooltip": "Das jährliche Ferienbudget ist immer auf ein 100% zu verstehen.",
   "view.employee.work_period_subform.hourly_pay": "Stundenlohn",
 
-  "view.employee_group.overview.title": "Mitarbeitenden Gruppen",
+  "view.employee_group.overview.title": "Mitarbeitenden-Gruppen",
 
   "view.holiday.overview.title": "Feiertage",
   "view.holiday.overview.delete_warning": "Möchtest du diesen Feiertag wirklich löschen? Die Zeit, welche vorher durch den Feiertag gutgeschrieben wurde, wird allen Mitarbeitenden abgezogen!",
