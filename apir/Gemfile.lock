@@ -482,7 +482,8 @@ GEM
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
     strscan (3.1.8)
-    test-prof (1.6.1)
+    test-prof (1.6.3)
+      logger
     thor (1.5.0)
     timeliness (0.5.3)
     timeout (0.6.1)
