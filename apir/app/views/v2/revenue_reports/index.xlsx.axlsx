@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 wb = xlsx_package.workbook
-wb.add_worksheet(name: "Kostenstellenraport") do |sheet|
+wb.add_worksheet(name: "Kostenstellenrapport") do |sheet|
   sheet.add_row @report.header
   @report.rows.map { |row| sheet.add_row row }
   sheet.add_row @report.footer

@@ -135,7 +135,7 @@ export default class CompanyForm extends React.Component<Props> {
                         <DimeField isMulti delayed component={CustomerTagSelect} name={'tags'} label={intlText('general.tag.plural', true)} />
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortlicher Mitarbeiter'} />
+                        <DimeField delayed component={EmployeeSelect} name={'accountant_id'} label={'Verantwortliche Mitarbeitende'} />
                       </Grid>
                     </Grid>
                   </DimePaper>

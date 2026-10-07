@@ -13,8 +13,8 @@ export class EmployeeStore extends AbstractPaginatedStore<Employee, EmployeeList
 
   protected get entityName(): { singular: string; plural: string } {
     return {
-      singular: 'Der Mitarbeiter',
-      plural: 'Die Mitarbeiter',
+      singular: 'Die mitarbeitende Person',
+      plural: 'Die Mitarbeitenden',
     };
   }
 

@@ -94,7 +94,7 @@ module Pdfs
 
       table_data = [
         {
-          data: ["Datum", "Anzahl", "Einheit", "Arbeit", "Mitarbeiter"],
+          data: ["Datum", "Anzahl", "Einheit", "Arbeit", "Mitarbeitende"],
           style: {
             padding: [12, 10, 5, 0],
             font_style: :bold
@@ -140,7 +140,7 @@ module Pdfs
     def draw_cost
       table_data = [
         {
-          data: ["Mitarbeiter", "Service", "Berechnung", "Total CHF"],
+          data: ["Mitarbeitende", "Service", "Berechnung", "Total CHF"],
           style: {
             padding: [12, 10, 9, 0],
             font_style: :bold
@@ -200,7 +200,7 @@ module Pdfs
         }
       )
 
-      table_title("Mitarbeiter Kosten")
+      table_title("Mitarbeitende Kosten")
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
