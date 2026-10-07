@@ -200,7 +200,7 @@ module Pdfs
         }
       )
 
-      table_title("Mitarbeitende Kosten")
+      table_title("Kosten der Mitarbeitenden")
 
       Pdfs::Generators::TableGenerator.new(@document).render(
         table_data,
