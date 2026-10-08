@@ -1,4 +1,4 @@
-import { DialogContent, DialogTitle } from '@mui/material';
+import { DialogContent, DialogTitle, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import { Formik, FormikProps } from 'formik';
@@ -120,7 +120,7 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
     if ('comment' in entity && entity.comment != null && entity.comment !== '') {
       const newProjectComment = {
         ...entity,
-        date: entity.date.format(apiDateFormat),
+        date: moment(entity.date).format(apiDateFormat),
       } as unknown as ProjectComment;
       await this.props.projectCommentStore!.post(newProjectComment);
       await this.props.projectCommentStore!.fetchWithProjectEffortFilter(filter);
@@ -196,9 +196,8 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
                 {formikProps.values.project_id && formikProps.values.position_id && (
                   <>
                     <DimeField component={EffortValueField} positionId={formikProps.values.position_id} name={'value'} label={intl.formatMessage({id: 'general.value'})} />
-                    {!formikProps.values.id && (
-                      <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'view.timetrack.form_dialog.comment_label'})} />
-                    )}
+                    <DimeField component={ProjectCommentPresetSelect} name={'comment'} label={intl.formatMessage({id: 'view.timetrack.form_dialog.comment_label'})} />
+                    {formikProps.values.id && this.renderExistingComments(formikProps.values)}
                   </>
                 )}
               </DialogContent>
@@ -226,6 +225,22 @@ export class TimetrackFormDialog extends React.Component<Props, State> {
           </FormikSubmitDetector>
         )}
       </Formik>
+    );
+  }
+
+  // A new comment is a separate record per project and day. Listing the ones that already exist keeps users from
+  // adding the same comment twice or assuming the empty field edits the existing one.
+  private renderExistingComments = (values: ProjectEffort) => {
+    const day = moment(values.date).format(apiDateFormat);
+    const existing = this.props.projectCommentStore!.projectComments.filter(c => c.project_id === values.project_id && c.date === day);
+    if (existing.length === 0) {
+      return null;
+    }
+    return (
+      <Typography variant="caption" component="div" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
+        <FormattedMessage id={'view.timetrack.form_dialog.existing_comments'} />
+        {existing.map(c => <div key={c.id}>{c.comment}</div>)}
+      </Typography>
     );
   }
 
