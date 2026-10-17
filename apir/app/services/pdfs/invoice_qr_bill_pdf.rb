@@ -29,7 +29,7 @@ module Pdfs
     end
 
     def document
-      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, margin: [0, 0, 0, 5])
+      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, margin: [0, 0, 0, 5], info: pdf_info)
     end
 
     def format_money_qr_bill(amount)
