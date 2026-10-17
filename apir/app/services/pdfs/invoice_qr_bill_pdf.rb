@@ -15,6 +15,12 @@ module Pdfs
     include Pdfs::PrawnHelper
     include ActionView::Helpers::NumberHelper
 
+    # The preconditions that make a QR-bill printable, without rendering anything.
+    def self.validate!(global_setting, invoice)
+      raise ValidationError, I18n.t(:qr_bill_missing_sender_building_number) if global_setting.sender_street_number.blank?
+      raise ValidationError, I18n.t(:qr_bill_missing_customer_building_number) if invoice.address.street_number.blank?
+    end
+
     def initialize(global_setting, invoice, date)
       @global_setting = global_setting
       @invoice = invoice
@@ -76,8 +82,7 @@ module Pdfs
       params[:qrcode_filepath]                                = "#{Dir.pwd}/tmp/qrcode-#{@invoice.id}.png"
       params[:output_params][:format]                         = "qrcode_png"
       params[:bill_params][:creditor][:iban]                  = @global_setting.sender_bank_iban
-      raise ValidationError, I18n.t(:qr_bill_missing_sender_building_number) if @global_setting.sender_street_number.blank?
-      raise ValidationError, I18n.t(:qr_bill_missing_customer_building_number) if @invoice.address.street_number.blank?
+      self.class.validate!(@global_setting, @invoice)
 
       params[:bill_params][:creditor][:address][:type]            = "S"
       params[:bill_params][:creditor][:address][:name]            = @global_setting.sender_name
