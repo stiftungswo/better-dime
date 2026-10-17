@@ -53,7 +53,7 @@ module Pdfs
     end
 
     def document
-      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait)
+      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :portrait, info: pdf_info)
     end
   end
 end
