@@ -90,7 +90,7 @@ class RevenueReportService
       .map { |row| row.map { |column| column.is_a?(Numeric) && (column.zero? || (column.is_a?(Float) && column.nan?)) ? nil : column } }
   end
 
-  HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortlicher Mitarbeiter", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
+  HEADER = ["Typ", "Status", "Name", "Kategorie (Tätigkeitsbereich)", "Auftraggeber", "Start", "Verantwortliche Person", "Aufwand CHF (Projekt)", "Umsatz CHF (Rechnung)", "Umsatz erwartet CHF (Offerte)"].freeze
   def header
     HEADER + cost_groups.map { |cost_group| "#{cost_group.number}, #{cost_group.name}" } + ["Keine Kostenstelle"]
   end

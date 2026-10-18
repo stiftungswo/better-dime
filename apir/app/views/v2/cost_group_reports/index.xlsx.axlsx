@@ -4,7 +4,7 @@ wb = xlsx_package.workbook
 
 @report.define_styles(wb) if @report.respond_to?(:define_styles)
 
-wb.add_worksheet(name: "Kostenstellenraport") do |sheet|
+wb.add_worksheet(name: "Kostenstellenrapport") do |sheet|
   sheet.add_row @report.header
   @report.rows.each do |row|
     if @report.respond_to?(:row_style)

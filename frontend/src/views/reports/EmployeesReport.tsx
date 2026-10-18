@@ -36,7 +36,7 @@ const template = {
 const schema = yup.object({
   from: dimeDate(),
   to: dimeDate(),
-  employee_ids: yup.array().of(yup.number()).typeError('Es muss mindestens ein Mitarbeiter ausgewählt sein.'),
+  employee_ids: yup.array().of(yup.number()).typeError('Es muss mindestens eine mitarbeitende Person ausgewählt sein.'),
 });
 
 @compose(
