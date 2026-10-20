@@ -90,9 +90,9 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe "#payable_total" do
-    it "rounds up to 5 Rappen so it matches the total printed on the invoice" do
+    it "rounds to the nearest 5 Rappen so it matches the total printed on the invoice" do
       invoice = described_class.new
-      { 10_001 => 100.05, 10_002 => 100.05, 10_005 => 100.05, 10_006 => 100.10, 10_000 => 100.0 }.each do |rappen, expected|
+      { 10_001 => 100.0, 10_002 => 100.0, 10_003 => 100.05, 10_005 => 100.05, 10_007 => 100.05, 10_008 => 100.10, 10_000 => 100.0 }.each do |rappen, expected|
         allow(invoice).to receive(:breakdown).and_return({ final_total: rappen })
         expect(invoice.payable_total).to eq(expected)
       end

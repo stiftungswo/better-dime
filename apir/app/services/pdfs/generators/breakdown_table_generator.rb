@@ -242,7 +242,7 @@ module Pdfs
         )
 
         data.push(
-          data: [has_fixed_price ? I18n.t(:fix_price_total) : I18n.t(:total), format_money(total, :ceil)],
+          data: [has_fixed_price ? I18n.t(:fix_price_total) : I18n.t(:total), format_money(total)],
           style: {
             font_style: :bold,
             padding: padding,

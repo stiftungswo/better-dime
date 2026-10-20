@@ -28,14 +28,10 @@ class Invoice < ApplicationRecord
     @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, final_cost_group_distribution, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
   end
 
-  # Amount in CHF as printed on the invoice's total line and the payment slips: rounded up to 5 Rappen.
-  # Must stay in sync with the :ceil used for the total in BreakdownTableGenerator.
-  #
-  # TODO: DECISION NEEDED (Mantis 0000359) - round UP (current) or to the NEAREST 5 Rappen?
-  # Switching to nearest means changing :ceil to :round for the total in BreakdownTableGenerator#render_total
-  # AND .ceil to .round here, so invoice and payment slips keep agreeing.
+  # Amount in CHF as printed on the invoice's total line and the payment slips: rounded to the nearest 5 Rappen.
+  # Must stay in sync with the rounding used for the total in BreakdownTableGenerator#render_total.
   def payable_total
-    (breakdown[:final_total] / 5.0).ceil * 5 / 100.0
+    (breakdown[:final_total] / 5.0).round * 5 / 100.0
   end
 
   def final_cost_group_distribution
