@@ -41,6 +41,7 @@ fr:
   amount: "Montant"
   vat: "TVA"
   total_vat: "total TVA"
+  rounding: "Arrondi"
   offer: "Offre"
   range_of_services: "N° de l'offre"
   clerk: "Personne chargée du dossier"

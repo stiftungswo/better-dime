@@ -106,29 +106,75 @@ RSpec.describe CostBreakdown do
     describe "reconciliation of the printed amounts" do
       let(:position_class) { Struct.new(:calculated_total, :vat, :order, :position_group_id, :amount) }
       let(:discount_class) { Struct.new(:name, :value, :percentage) }
+      let(:costgroups) { { 100 => 60.0, 200 => 25.0, 300 => 15.0 } }
 
-      def round_to_five(amount)
-        (amount / 5.0).round * 5
+      def position(total, vat, order = 0)
+        position_class.new(total, vat, order, nil, 1.0)
       end
 
       def random_breakdown(random)
         positions = Array.new(random.rand(1..6)) do |i|
-          position_class.new(random.rand(100..500_000) + random.rand.round(2), [0.077, 0.081, 0.0].sample(random: random), i, nil, 1.0)
+          position(random.rand(-5_000..500_000) + random.rand.round(2), [0.077, 0.081, 0.026, 0.0].sample(random: random), i)
         end
         discounts = random.rand < 0.5 ? [discount_class.new("discount", [0.05, 0.1].sample(random: random), true)] : []
-        described_class.new(positions, discounts, { 100 => 60.0, 200 => 25.0, 300 => 15.0 }, [], nil, nil).calculate
+        [positions, described_class.new(positions, discounts, costgroups, [], nil, nil).calculate]
       end
 
-      it "makes subtotal excl. VAT plus total VAT equal the total, and the cost group rows add up to both" do
+      it "makes net + VAT + rounding equal the payable total and every row add up to its total" do
         random = Random.new(42)
 
         500.times do
-          result = random_breakdown(random)
+          _positions, result = random_breakdown(random)
           rows = result[:vats_by_costgroup].values.flatten
 
-          expect(result[:raw_total] + round_to_five(result[:vat_total])).to eq(round_to_five(result[:total]))
+          expect(result[:raw_total] + result[:vat_total] + result[:rounding]).to eq((result[:total] / 5.0).round * 5)
           expect(rows.sum { |row| row[:subtotal] }).to eq(result[:raw_total])
-          expect(rows.sum { |row| row[:value] }).to eq(round_to_five(result[:vat_total]))
+          expect(rows.sum { |row| row[:value] }).to eq(result[:vat_total])
+        end
+      end
+
+      it "calculates the VAT of every rate on that rate's net amount, rounded half up to the Rappen" do
+        random = Random.new(7)
+
+        200.times do
+          _positions, result = random_breakdown(random)
+
+          result[:vats_by_costgroup].each do |rate, rows|
+            expect(rows.sum { |row| row[:value] }).to eq((rows.sum { |row| row[:subtotal] } * rate.to_r).round)
+          end
+        end
+      end
+
+      it "does not lose VAT to truncation" do
+        result = described_class.new([position(1005, 0.077)], [], { 100 => 100.0 }, [], nil, nil).calculate
+
+        # 1005 * 7.7% = 77.385 Rappen
+        expect(result).to include(raw_total: 1005, vat_total: 77, total: 1082, rounding: -2)
+      end
+
+      it "splits an amount that is left over when the VAT rate shares cancel out" do
+        positions = [position(1000, 0.077, 0), position(-1000, 0.0, 1)]
+        discounts = [discount_class.new("fixed", 100, false)]
+        result = described_class.new(positions, discounts, { 100 => 100.0 }, [], nil, nil).calculate
+        rows = result[:vats_by_costgroup].values.flatten
+
+        expect(result[:raw_total]).to eq(-100)
+        expect(rows.sum { |row| row[:subtotal] }).to eq(-100)
+      end
+
+      it "splits a fixed price exactly and keeps the difference to the payable total as rounding" do
+        result = described_class.new([], [], {}, [], 12_343, 0.077).calculate
+
+        # 12'343 / 1.077 = 11'460.53
+        expect(result).to include(fixed_price_excl_vat: 11_461, vat_total: 882, total: 12_343, rounding: 2, final_total: 12_343)
+      end
+
+      it "ignores a fixed price that is not positive" do
+        [0, -500].each do |fixed_price|
+          result = described_class.new([position(10_000, 0.077)], [], costgroups, [], fixed_price, 0.077).calculate
+
+          expect(result).to include(fixed_price: nil, final_total: result[:total])
+          expect(result[:final_total]).to eq(10_000 + 770)
         end
       end
     end

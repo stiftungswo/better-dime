@@ -16,24 +16,34 @@ class CostBreakdown
     discounts = @discounts.map { |discount| apply_discount subtotal, discount }
     discounts_total = discounts.inject(0) { |sum, d| sum + ((d[:value] / 5.0).floor * 5) }
     total_with_discounts = subtotal + discounts_total
-    vats_total = calculate_vat_total positions, total_with_discounts
-    vats_by_costgroup = calculate_vats_by_costgroup positions, total_with_discounts, vats_total
-    total = total_with_discounts + vats_total
-    grouped_positions = get_grouped_positions @positions, @position_groupings
+    vat = VatBreakdown.new(calculate_vat_distribution(positions), total_with_discounts, @costgroups).calculate
+    fixed = fixed_price_amounts
+    vats_total = fixed ? fixed[:vat] : vat[:total]
+    total = fixed ? @fixed_price : total_with_discounts + vats_total
 
     {
       discounts: discounts,
       discount_total: discounts_total,
-      grouped_positions: grouped_positions,
+      grouped_positions: get_grouped_positions(@positions, @position_groupings),
       subtotal: subtotal,
       raw_total: total_with_discounts,
       total: total,
-      vats_by_costgroup: vats_by_costgroup,
+      rounding: ((total / 5.0).round * 5) - total,
+      vats_by_costgroup: vat[:by_costgroup],
       vat_total: vats_total,
-      fixed_price: @fixed_price,
+      fixed_price: fixed && @fixed_price,
+      fixed_price_excl_vat: fixed&.dig(:excl_vat),
       fixed_price_vat: @fixed_price_vat,
-      final_total: @fixed_price || total
+      final_total: total
     }
+  end
+
+  # A fixed price (in Rappen) includes VAT: split it exactly, the VAT is whatever is not net.
+  def fixed_price_amounts
+    return unless @fixed_price&.positive?
+
+    excl_vat = (@fixed_price.to_r / (1 + @fixed_price_vat.to_s.to_r)).round
+    { excl_vat: excl_vat, vat: @fixed_price - excl_vat }
   end
 
   # return the list of groups with their respective positions
@@ -64,35 +74,6 @@ class CostBreakdown
 
   def calculate_subtotal(positions)
     positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5.0) }
-  end
-
-  # Splits the discounted total and its VAT per VAT rate and cost group. The amounts are rounded to 5 Rappen with the
-  # largest remainder method, so the rows add up exactly to the printed "subtotal excl. VAT" and "total VAT".
-  def calculate_vats_by_costgroup(positions, total_with_discounts, vats_total)
-    cells = []
-    calculate_vat_distribution(positions).each do |vat, details|
-      @costgroups.each do |cg_id, percentage|
-        share = (total_with_discounts.to_f * details[:factor].to_f * (percentage.to_f / 100.0)).then { |v| v.finite? ? v : 0.0 }
-        cells << { vat: vat, cg: cg_id, factor: details[:factor], net: share, vat_value: share * vat.to_f }
-      end
-    end
-
-    complete = (@costgroups.values.sum(&:to_f) - 100.0).abs < 0.01
-    nets = FiveRappenAllocator.allocate(cells.pluck(:net), cells.sum { |c| c[:net] }.then { |sum| complete ? total_with_discounts : sum })
-    vats = FiveRappenAllocator.allocate(cells.pluck(:vat_value), cells.sum { |c| c[:vat_value] }.then { |sum| complete ? vats_total : sum })
-
-    cells.each_with_index.group_by { |cell, _| cell[:vat] }.transform_values do |group|
-      group.map do |cell, index|
-        { cg: cell[:cg], subtotal: nets[index], factor: cell[:factor], value: vats[index] }
-      end
-    end
-  end
-
-  def calculate_vat_total(positions, total_with_discounts)
-    calculate_vat_distribution(positions).reduce(0) do |sum, position|
-      vat, details = position
-      sum + (total_with_discounts.to_i * vat.to_f * details[:factor]).to_i
-    end
   end
 
   def vat_distributions(positions)

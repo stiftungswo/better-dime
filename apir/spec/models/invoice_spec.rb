@@ -51,7 +51,7 @@ RSpec.describe Invoice, type: :model do
         vats = invoice.reload.breakdown[:vats_by_costgroup]
 
         expect(vats.values.flatten.pluck(:cg)).to eq([invoiced_costgroup.number])
-        expect(vats["0.081"].first).to include(subtotal: 8370, value: 675)
+        expect(vats["0.081"].first).to include(subtotal: 8370, value: 678)
       end
     end
 

@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-# Rounds amounts (in Rappen) to multiples of 5 so that they add up exactly to a given target, using the largest
-# remainder method. This keeps printed lines consistent with the printed total.
+# Rounds amounts (in Rappen) to multiples of a step (5 Rappen by default, 1 for exact Rappen) so that they add up
+# exactly to a given target, using the largest remainder method. This keeps printed lines consistent with the
+# printed totals.
 class FiveRappenAllocator
-  def self.allocate(values, target)
-    steps = values.map { |v| v / 5.0 }
+  def self.allocate(values, target, step: 5)
+    steps = values.map { |v| v / step.to_f }
     floors = steps.map(&:floor)
-    adjust(floors, steps, (target / 5.0).round - floors.sum).map { |f| f * 5 }
+    adjust(floors, steps, (target / step.to_f).round - floors.sum).map { |f| f * step }
   end
 
   # Hands out (or takes back) the missing steps, starting with the largest remainders

@@ -18,6 +18,10 @@ RSpec.describe FiveRappenAllocator do
     expect(described_class.allocate([10.0, 10.0], 15)).to eq([10, 5])
   end
 
+  it "allocates exact Rappen with a step of 1" do
+    expect(described_class.allocate([33.3, 33.3, 33.4], 100, step: 1)).to eq([33, 33, 34])
+  end
+
   it "returns an empty list for no values" do
     expect(described_class.allocate([], 0)).to eq([])
   end
