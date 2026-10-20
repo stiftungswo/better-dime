@@ -13,6 +13,10 @@ module Pdfs
         @report = report
       end
 
+      def round_to_five_rappen(amount)
+        (amount / 5.0).round * 5
+      end
+
       def format_money(amount, rounding_method = :round)
         rounded = (amount / 5.0).round * 5 / 100.0 if rounding_method == :round
         rounded = (amount / 5.0).ceil * 5 / 100.0 if rounding_method == :ceil
@@ -127,7 +131,7 @@ module Pdfs
 
             discounts.each do |discount|
               data.push(
-                data: [discount[:name], format_money(discount[:value])],
+                data: [discount[:name], format_money(discount[:value], :floor)],
                 style: {
                   padding: padding
                 }
@@ -223,7 +227,8 @@ module Pdfs
         render_vat_subtotals unless has_fixed_price
 
         total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
-        vat_total = has_fixed_price ? (total - (fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
+        # Derive the fixed price VAT from the two printed amounts so that "excl. VAT" + VAT always equals the total
+        vat_total = has_fixed_price ? (round_to_five_rappen(total) - round_to_five_rappen(fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
 
         if has_fixed_price
           data.push(
