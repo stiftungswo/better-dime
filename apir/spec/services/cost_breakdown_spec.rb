@@ -102,5 +102,35 @@ RSpec.describe CostBreakdown do
         expect(result[:vats_by_costgroup].keys.length).to eq(2)
       end
     end
+
+    describe "reconciliation of the printed amounts" do
+      let(:position_class) { Struct.new(:calculated_total, :vat, :order, :position_group_id, :amount) }
+      let(:discount_class) { Struct.new(:name, :value, :percentage) }
+
+      def round_to_five(amount)
+        (amount / 5.0).round * 5
+      end
+
+      def random_breakdown(random)
+        positions = Array.new(random.rand(1..6)) do |i|
+          position_class.new(random.rand(100..500_000) + random.rand.round(2), [0.077, 0.081, 0.0].sample(random: random), i, nil, 1.0)
+        end
+        discounts = random.rand < 0.5 ? [discount_class.new("discount", [0.05, 0.1].sample(random: random), true)] : []
+        described_class.new(positions, discounts, { 100 => 60.0, 200 => 25.0, 300 => 15.0 }, [], nil, nil).calculate
+      end
+
+      it "makes subtotal excl. VAT plus total VAT equal the total, and the cost group rows add up to both" do
+        random = Random.new(42)
+
+        500.times do
+          result = random_breakdown(random)
+          rows = result[:vats_by_costgroup].values.flatten
+
+          expect(result[:raw_total] + round_to_five(result[:vat_total])).to eq(round_to_five(result[:total]))
+          expect(rows.sum { |row| row[:subtotal] }).to eq(result[:raw_total])
+          expect(rows.sum { |row| row[:value] }).to eq(round_to_five(result[:vat_total]))
+        end
+      end
+    end
   end
 end

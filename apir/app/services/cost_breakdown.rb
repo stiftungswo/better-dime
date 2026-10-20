@@ -16,8 +16,8 @@ class CostBreakdown
     discounts = @discounts.map { |discount| apply_discount subtotal, discount }
     discounts_total = discounts.inject(0) { |sum, d| sum + ((d[:value] / 5.0).floor * 5) }
     total_with_discounts = subtotal + discounts_total
-    vats_by_costgroup = calculate_vats_by_costgroup positions, total_with_discounts
     vats_total = calculate_vat_total positions, total_with_discounts
+    vats_by_costgroup = calculate_vats_by_costgroup positions, total_with_discounts, vats_total
     total = total_with_discounts + vats_total
     grouped_positions = get_grouped_positions @positions, @position_groupings
 
@@ -66,24 +66,26 @@ class CostBreakdown
     positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5.0) }
   end
 
-  def calculate_vats_by_costgroup(positions, total_with_discounts)
-    vat_costgroups = {}
-
+  # Splits the discounted total and its VAT per VAT rate and cost group. The amounts are rounded to 5 Rappen with the
+  # largest remainder method, so the rows add up exactly to the printed "subtotal excl. VAT" and "total VAT".
+  def calculate_vats_by_costgroup(positions, total_with_discounts, vats_total)
+    cells = []
     calculate_vat_distribution(positions).each do |vat, details|
-      vat_costgroups[vat] = @costgroups.map do |cg_id, percentage|
-        pct = percentage.to_f
-        factor = details[:factor].to_f
-        v = total_with_discounts.to_i * vat.to_f * factor * (pct / 100.0)
-        {
-          cg: cg_id,
-          subtotal: details[:subtotal] * (pct / 100.0),
-          factor: details[:factor],
-          value: v.finite? ? v.to_i : 0
-        }
+      @costgroups.each do |cg_id, percentage|
+        share = (total_with_discounts.to_f * details[:factor].to_f * (percentage.to_f / 100.0)).then { |v| v.finite? ? v : 0.0 }
+        cells << { vat: vat, cg: cg_id, factor: details[:factor], net: share, vat_value: share * vat.to_f }
       end
     end
 
-    vat_costgroups
+    complete = (@costgroups.values.sum(&:to_f) - 100.0).abs < 0.01
+    nets = FiveRappenAllocator.allocate(cells.pluck(:net), cells.sum { |c| c[:net] }.then { |sum| complete ? total_with_discounts : sum })
+    vats = FiveRappenAllocator.allocate(cells.pluck(:vat_value), cells.sum { |c| c[:vat_value] }.then { |sum| complete ? vats_total : sum })
+
+    cells.each_with_index.group_by { |cell, _| cell[:vat] }.transform_values do |group|
+      group.map do |cell, index|
+        { cg: cell[:cg], subtotal: nets[index], factor: cell[:factor], value: vats[index] }
+      end
+    end
   end
 
   def calculate_vat_total(positions, total_with_discounts)
