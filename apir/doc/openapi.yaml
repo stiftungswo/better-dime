@@ -1656,7 +1656,7 @@ paths:
                         type: number
                         format: float
                       total:
-                        type: number
+                        type: integer
                         format: float
                       vatTotal:
                         type: integer
@@ -2498,7 +2498,7 @@ paths:
                         type: number
                         format: float
                       total:
-                        type: number
+                        type: integer
                         format: float
                       vatTotal:
                         type: integer
