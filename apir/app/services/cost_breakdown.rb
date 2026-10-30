@@ -73,7 +73,7 @@ class CostBreakdown
   end
 
   def calculate_subtotal(positions)
-    positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5.0) }
+    positions.inject(0) { |sum, p| sum + ((p.calculated_total / 5.0).round * 5) }
   end
 
   def vat_distributions(positions)
@@ -85,7 +85,7 @@ class CostBreakdown
     vat_subtotals = vat_groups.transform_values { |vat_positions| calculate_subtotal(vat_positions) }
     vat_total = vat_subtotals.inject(0) { |sum, (_vat, vat_subtotal)| sum + vat_subtotal }
     # calculate the vat distribution by dividing each subtotal by the total
-    vat_subtotals.transform_values { |subtotal| { factor: vat_total.zero? ? 0 : subtotal / vat_total, subtotal: subtotal } }
+    vat_subtotals.transform_values { |subtotal| { factor: vat_total.zero? ? 0 : subtotal.to_f / vat_total, subtotal: subtotal } }
   end
 
   def group_by_vat(positions)
