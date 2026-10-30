@@ -13,6 +13,11 @@ module Pdfs
         @report = report
       end
 
+      # Exact amount in Rappen, used for VAT and rounding lines that must add up to the Rappen
+      def format_rappen(amount)
+        number_to_currency(amount.round / 100.0, unit: "", separator: ".", delimiter: ",").tr(",", "'")
+      end
+
       def format_money(amount, rounding_method = :round)
         rounded = (amount / 5.0).round * 5 / 100.0 if rounding_method == :round
         rounded = (amount / 5.0).ceil * 5 / 100.0 if rounding_method == :ceil
@@ -127,7 +132,7 @@ module Pdfs
 
             discounts.each do |discount|
               data.push(
-                data: [discount[:name], format_money(discount[:value])],
+                data: [discount[:name], format_money(discount[:value], :floor)],
                 style: {
                   padding: padding
                 }
@@ -152,7 +157,7 @@ module Pdfs
 
         if fixed_price&.positive?
           data.push(
-            data: [I18n.t(:fix_price_excl_vat), format_money(fixed_price / (@breakdown[:fixed_price_vat] + 1))],
+            data: [I18n.t(:fix_price_excl_vat), format_rappen(@breakdown[:fixed_price_excl_vat])],
             style: {
               font_style: :bold,
               padding: padding
@@ -222,12 +227,11 @@ module Pdfs
 
         render_vat_subtotals unless has_fixed_price
 
-        total = has_fixed_price ? @breakdown[:fixed_price] : @breakdown[:total]
-        vat_total = has_fixed_price ? (total - (fixed_price / (@breakdown[:fixed_price_vat] + 1))) : @breakdown[:vat_total]
+        vat_total = @breakdown[:vat_total]
 
         if has_fixed_price
           data.push(
-            data: ["#{@breakdown[:fixed_price_vat] * 100}%", format_money(vat_total)],
+            data: ["#{@breakdown[:fixed_price_vat] * 100}%", format_rappen(vat_total)],
             style: {
               padding: padding
             }
@@ -235,14 +239,24 @@ module Pdfs
         end
 
         data.push(
-          data: [(I18n.t :total_vat), format_money(vat_total)],
+          data: [(I18n.t :total_vat), format_rappen(vat_total)],
           style: {
             padding: padding
           }
         )
 
+        # The amounts above are exact; the payable total is rounded to 5 Rappen, the difference is shown separately
+        unless @breakdown[:rounding].zero?
+          data.push(
+            data: [I18n.t(:rounding), format_rappen(@breakdown[:rounding])],
+            style: {
+              padding: padding
+            }
+          )
+        end
+
         data.push(
-          data: [has_fixed_price ? I18n.t(:fix_price_total) : I18n.t(:total), format_money(total, :ceil)],
+          data: [has_fixed_price ? I18n.t(:fix_price_total) : I18n.t(:total), format_money(@breakdown[:total])],
           style: {
             font_style: :bold,
             padding: padding,
@@ -273,14 +287,14 @@ module Pdfs
 
           if first_position.present?
             data.push(
-              data: [vat_rate, first_position[:cg], format_money(first_position[:subtotal]), format_money(first_position[:value])],
+              data: [vat_rate, first_position[:cg], format_rappen(first_position[:subtotal]), format_rappen(first_position[:value])],
               style: { padding: padding }
             )
           end
 
           other_positions.each do |position|
             data.push(
-              data: ["", position[:cg], format_money(position[:subtotal]), format_money(position[:value])],
+              data: ["", position[:cg], format_rappen(position[:subtotal]), format_rappen(position[:value])],
               style: { padding: padding }
             )
           end

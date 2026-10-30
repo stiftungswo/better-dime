@@ -42,6 +42,7 @@ de:
   vat_rate: "Satz"
   vat: "MwSt."
   total_vat: "MwSt. Total"
+  rounding: "Rundung"
   offer: "Offerte"
   range_of_services: "Leistungsangebot"
   clerk: "Sachbearbeiter*in"

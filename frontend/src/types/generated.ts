@@ -1045,11 +1045,8 @@ export interface paths {
                                     value: number;
                                 }[];
                                 discountTotal: number;
-                                /** Format: float */
                                 rawTotal: number;
-                                /** Format: float */
                                 subtotal: number;
-                                /** Format: float */
                                 total: number;
                                 vatTotal: number;
                             };
@@ -1148,11 +1145,8 @@ export interface paths {
                                     value: number;
                                 }[];
                                 discountTotal: number;
-                                /** Format: float */
                                 rawTotal: number;
-                                /** Format: float */
                                 subtotal: number;
-                                /** Format: float */
                                 total: number;
                                 vatTotal: number;
                             };
@@ -1492,11 +1486,8 @@ export interface paths {
                                     value: number;
                                 }[];
                                 discountTotal: number;
-                                /** Format: float */
                                 rawTotal: number;
-                                /** Format: float */
                                 subtotal: number;
-                                /** Format: float */
                                 total: number;
                                 vatTotal: number;
                             };
@@ -1617,11 +1608,8 @@ export interface paths {
                                     value: number;
                                 }[];
                                 discountTotal: number;
-                                /** Format: float */
                                 rawTotal: number;
-                                /** Format: float */
                                 subtotal: number;
-                                /** Format: float */
                                 total: number;
                                 vatTotal: number;
                             };

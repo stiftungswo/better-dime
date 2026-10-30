@@ -1650,14 +1650,11 @@ paths:
                       discountTotal:
                         type: integer
                       rawTotal:
-                        type: number
-                        format: float
+                        type: integer
                       subtotal:
-                        type: number
-                        format: float
+                        type: integer
                       total:
-                        type: number
-                        format: float
+                        type: integer
                       vatTotal:
                         type: integer
                     required:
@@ -1862,14 +1859,11 @@ paths:
                       discountTotal:
                         type: integer
                       rawTotal:
-                        type: number
-                        format: float
+                        type: integer
                       subtotal:
-                        type: number
-                        format: float
+                        type: integer
                       total:
-                        type: number
-                        format: float
+                        type: integer
                       vatTotal:
                         type: integer
                     required:
@@ -2492,14 +2486,11 @@ paths:
                       discountTotal:
                         type: integer
                       rawTotal:
-                        type: number
-                        format: float
+                        type: integer
                       subtotal:
-                        type: number
-                        format: float
+                        type: integer
                       total:
-                        type: number
-                        format: float
+                        type: integer
                       vatTotal:
                         type: integer
                     required:
@@ -2769,14 +2760,11 @@ paths:
                       discountTotal:
                         type: integer
                       rawTotal:
-                        type: number
-                        format: float
+                        type: integer
                       subtotal:
-                        type: number
-                        format: float
+                        type: integer
                       total:
-                        type: number
-                        format: float
+                        type: integer
                       vatTotal:
                         type: integer
                     required:
