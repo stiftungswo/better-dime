@@ -31,6 +31,27 @@ const Harness: React.FunctionComponent = () => {
   return ready ? <TimetrackFormDialog onClose={jest.fn()} /> : null;
 };
 
+// Opens the dialog on an existing effort, like clicking a row does
+const EditHarness: React.FunctionComponent = () => {
+  const ctx = React.useContext(MobXProviderContext);
+  const [ready, setReady] = React.useState(false);
+  React.useEffect(() => {
+    Object.assign(stores, ctx);
+    ctx.effortStore.effort = { id: 9, employee_id: 5, project_id: 1, position_id: 2, costgroup_number: 100, value: 60, date: '2026-01-10' };
+    ctx.projectCommentStore.projectComments = [
+      { id: 1, project_id: 1, date: '2026-01-10', comment: 'Already noted' },
+      { id: 2, project_id: 1, date: '2026-01-11', comment: 'Other day' },
+      { id: 3, project_id: 2, date: '2026-01-10', comment: 'Other project' },
+    ];
+    jest.spyOn(ctx.effortStore, 'put').mockResolvedValue(undefined);
+    jest.spyOn(ctx.effortStore, 'fetchWithProjectEffortFilter').mockResolvedValue(undefined);
+    jest.spyOn(ctx.projectCommentStore, 'post').mockResolvedValue(undefined);
+    jest.spyOn(ctx.projectCommentStore, 'fetchWithProjectEffortFilter').mockResolvedValue(undefined);
+    setReady(true);
+  }, []);
+  return ready ? <TimetrackFormDialog onClose={jest.fn()} /> : null;
+};
+
 describe('TimetrackFormDialog', () => {
   beforeEach(() => {
     mockApiResponse('/costgroups', [{ number: 100, name: 'Costs' }]);
@@ -56,5 +77,27 @@ describe('TimetrackFormDialog', () => {
 
     await waitFor(() => expect(stores.projectCommentStore!.post).toHaveBeenCalledWith(expect.objectContaining({ comment: 'Meeting' })));
     await waitFor(() => expect(screen.queryByText('Meeting')).not.toBeInTheDocument());
+  });
+
+  it('lets you add a comment to an existing entry', async () => {
+    renderWithProviders(<EditHarness />);
+
+    const label = await screen.findByText('Kommentar zu Projekt und Tag');
+    const commentInput = document.getElementById(label.getAttribute('for')!)!.querySelector('input')!;
+    await userEvent.type(commentInput, 'Korrektur{enter}');
+    fireEvent.click(screen.getByRole('button', { name: 'Speichern' }));
+
+    await waitFor(() => expect(stores.effortStore!.put).toHaveBeenCalled());
+    await waitFor(() => expect(stores.projectCommentStore!.post).toHaveBeenCalledWith(
+      expect.objectContaining({ comment: 'Korrektur', project_id: 1, date: '2026-01-10' }),
+    ));
+  });
+
+  it('lists the comments that already exist for the entry\'s project and day', async () => {
+    renderWithProviders(<EditHarness />);
+
+    expect(await screen.findByText('Already noted')).toBeInTheDocument();
+    expect(screen.queryByText('Other day')).not.toBeInTheDocument();
+    expect(screen.queryByText('Other project')).not.toBeInTheDocument();
   });
 });

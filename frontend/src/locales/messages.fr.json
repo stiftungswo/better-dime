@@ -490,6 +490,7 @@
   "view.timetrack.form_dialog.record_effort": "Saisir l'effort",
   "view.timetrack.form_dialog.edit_effort": "Modifier les charges",
   "view.timetrack.form_dialog.comment_label": "Commentaire sur le projet et le jour",
+  "view.timetrack.form_dialog.existing_comments": "Commentaires existants pour le projet et le jour :",
 
   "view.timetrack.service_group.description": "Description",
   "view.timetrack.service_group.recorded_value": "Valeur saisie",

@@ -16,7 +16,7 @@ import {ProjectStore} from '../../stores/projectStore';
 import {RateUnitStore} from '../../stores/rateUnitStore';
 import {ServiceStore} from '../../stores/serviceStore';
 import {TimetrackFilterStore} from '../../stores/timetrackFilterStore';
-import {ProjectEffortListing} from '../../types';
+import {ProjectCommentListing, ProjectEffortListing} from '../../types';
 import compose from '../../utilities/compose';
 import EffortMoveDialog from './EffortMoveDialog';
 import {TimetrackCommentFormDialog} from './TimetrackCommentFormDialog';
@@ -130,7 +130,12 @@ export default class Timetrack extends React.Component<Props> {
     });
   }
 
-  onClickRow = async (entity: ProjectEffortListing) => {
+  onClickRow = async (entity: ProjectEffortListing | ProjectCommentListing) => {
+    if ('comment' in entity) {
+      await this.props.projectCommentStore!.fetchOne(entity.id);
+      runInAction(() => this.props.projectCommentStore!.editing = true);
+      return;
+    }
     await this.props.effortStore!.fetchOne(entity.id);
     runInAction(() => this.props.effortStore!.editing = true);
   }

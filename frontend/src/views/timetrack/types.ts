@@ -1,11 +1,11 @@
 import { EffortStore } from '../../stores/effortStore';
-import { ProjectEffortListing } from '../../types';
+import { ProjectCommentListing, ProjectEffortListing } from '../../types';
 import { Formatter } from '../../utilities/formatter';
 
 export interface EntityGroup {
   effortStore?: EffortStore;
   formatter?: Formatter;
-  onClickRow: (entity: ProjectEffortListing) => void;
+  onClickRow: (entity: ProjectEffortListing | ProjectCommentListing) => void;
 }
 
 export interface WithEfforts {

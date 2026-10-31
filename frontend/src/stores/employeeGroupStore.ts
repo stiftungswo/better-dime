@@ -6,8 +6,8 @@ import { MainStore } from './mainStore';
 export class EmployeeGroupStore extends AbstractSimpleStore<EmployeeGroup> {
   protected get employeeName(): { singular: string; plural: string } {
     return {
-      singular: 'Die Mitarbeiter-Gruppe',
-      plural: 'Die Mitarbeiter-Gruppen',
+      singular: 'Die Mitarbeitenden-Gruppe',
+      plural: 'Die Mitarbeitenden-Gruppen',
     };
   }
   protected get entityUrlName(): string {

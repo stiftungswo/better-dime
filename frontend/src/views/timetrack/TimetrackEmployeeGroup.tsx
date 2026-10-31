@@ -5,8 +5,9 @@ import { ActionButton } from '../../layout/ActionButton';
 import { AddEffortIcon } from '../../layout/icons';
 import { Column } from '../../layout/Overview';
 import PrintButton from '../../layout/PrintButton';
+import { ProjectCommentStore } from '../../stores/projectCommentStore';
 import { TimetrackFilterStore } from '../../stores/timetrackFilterStore';
-import { EmployeeListing, ProjectEffortListing } from '../../types';
+import { EmployeeListing, ProjectCommentListing, ProjectEffortListing } from '../../types';
 import compose from '../../utilities/compose';
 import {defaultPositionGroup, sum} from '../../utilities/helpers';
 import { TimetrackEntityGroup } from './TimetrackEntityGroup';
@@ -16,12 +17,13 @@ interface Props extends EntityGroup {
   loading: boolean;
   entity: EmployeeListing & WithEfforts;
   timetrackFilterStore?: TimetrackFilterStore;
+  projectCommentStore?: ProjectCommentStore;
   intl?: IntlShape;
 }
 
 @compose(
   injectIntl,
-  inject('effortStore', 'formatter', 'timetrackFilterStore'),
+  inject('effortStore', 'formatter', 'timetrackFilterStore', 'projectCommentStore'),
   observer,
 )
 export default class TimetrackEmployeeGroup extends React.Component<Props> {
@@ -44,6 +46,16 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
     this.props.effortStore!.editing = true;
   }
 
+  // Comments have no employee. Show the ones that belong to a project/day this employee booked hours on,
+  // so they stay visible (and editable) while reviewing one's own hours.
+  get comments(): ProjectCommentListing[] {
+    if (!this.props.timetrackFilterStore!.filter.showProjectComments) {
+      return [];
+    }
+    const bookedDays = new Set(this.props.entity.efforts.map(e => `${e.project_id}|${e.date}`));
+    return this.props.projectCommentStore!.projectComments.filter(c => bookedDays.has(`${c.project_id}|${c.date}`));
+  }
+
   render() {
     const { entity } = this.props;
     const efforts = entity.efforts;
@@ -51,25 +63,32 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
 
     const formatter = this.props.formatter!;
     const intl = this.props.intl!;
+    const projectNames = new Map(efforts.map(e => [e.project_id, e.project_name] as [number, string]));
+    const commentStyle = { fontStyle: 'italic', color: 'rgb(100,100,100)' };
+    const isComment = (e: object) => 'comment' in e;
     // tslint:disable:no-implicit-any
     const columns: Array<Column<ProjectEffortListing>> = [
       {
         id: 'date',
         numeric: false,
         label: intl.formatMessage({id: 'general.date'}),
-        format: (e: any) => formatter.formatDate(e.date),
+        format: (e: any) => isComment(e) ? <span style={commentStyle}>{formatter.formatDate(e.date)}</span> : formatter.formatDate(e.date),
         defaultSort: 'desc',
       },
       {
         id: 'project_name',
         numeric: false,
         label: intl.formatMessage({id: 'general.project'}),
+        format: (e: any) => isComment(e) ? <span style={commentStyle}>{projectNames.get(e.project_id)}</span> : e.project_name,
       },
       {
         id: 'service_name',
         numeric: false,
         label: intl.formatMessage({id: 'general.service'}),
         format: (projectEffortListing: any) => {
+          if (isComment(projectEffortListing)) {
+            return <span style={commentStyle}>{projectEffortListing.comment}</span>;
+          }
           const group = ' [' + (projectEffortListing.group_name ? projectEffortListing.group_name : defaultPositionGroup().name) + ']';
 
           return (projectEffortListing.position_description
@@ -81,12 +100,13 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
         id: 'costgroup_name',
         numeric: false,
         label: intl.formatMessage({id: 'general.cost_group'}),
+        format: (e: any) => isComment(e) ? '' : e.costgroup_name,
       },
       {
         id: 'effort_value',
         numeric: true,
         label: intl.formatMessage({id: 'general.effort_value'}),
-        format: (h: any) => formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
+        format: (h: any) => isComment(h) ? '' : formatter.formatRateEntry(h.effort_value, h.rate_unit_factor, h.effort_unit),
       },
     ];
     // tslint:enable:no-implicit-any
@@ -95,6 +115,7 @@ export default class TimetrackEmployeeGroup extends React.Component<Props> {
       <TimetrackEntityGroup
         columns={columns}
         efforts={efforts}
+        comments={this.comments}
         title={`${entity.first_name} ${entity.last_name}`}
         onClickRow={this.props.onClickRow}
         actions={

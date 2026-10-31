@@ -6,6 +6,11 @@ on:
       - develop
       - master
   workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment (secrets and base URLs) to build with
+        type: environment
+        default: develop
 
 env:
   REGISTRY: ghcr.io
@@ -15,7 +20,7 @@ env:
 jobs:
   build-push-api:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
+    environment: ${{ inputs.environment || github.ref_name }}
 
     permissions:
       contents: read
@@ -57,7 +62,7 @@ jobs:
 
   build-push-frontend:
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name }}
+    environment: ${{ inputs.environment || github.ref_name }}
 
     permissions:
       contents: read

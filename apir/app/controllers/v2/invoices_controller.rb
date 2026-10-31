@@ -67,15 +67,14 @@ module V2
       render :show
     end
 
+    # Both print actions accept `check=1`: they run only the validations (cheap, no rendering) and
+    # answer 204, so the frontend can surface errors as in-app messages and then open the real URL
+    # for the single actual render - which keeps the Content-Disposition filename.
     def print
-      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
-      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice, date
+      require_costgroups!("Cannot print invoice without assigning cost groups")
+      return head :no_content if check_only?
 
-      if @invoice.invoice_costgroup_distributions.blank?
-        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print invoice without assigning cost groups")
-
-        raise ValidationError, @invoice.errors
-      end
+      pdf = Pdfs::InvoicePdf.new GlobalSetting.first, @invoice, print_date
 
       respond_to do |format|
         format.pdf do
@@ -85,14 +84,11 @@ module V2
     end
 
     def print_qr_bill
-      date = params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
-      pdf = Pdfs::InvoiceQrBillPdf.new GlobalSetting.first, @invoice, date
+      require_costgroups!("Cannot print QR-Bills's for invoices without cost groups")
+      Pdfs::InvoiceQrBillPdf.validate!(GlobalSetting.first, @invoice)
+      return head :no_content if check_only?
 
-      if @invoice.invoice_costgroup_distributions.blank?
-        @invoice.errors.add(:invoice_costgroup_distributions, "Cannot print QR-Bills's for invoices without cost groups")
-
-        raise ValidationError, @invoice.errors
-      end
+      pdf = Pdfs::InvoiceQrBillPdf.new GlobalSetting.first, @invoice, print_date
 
       respond_to do |format|
         format.pdf do
@@ -112,6 +108,22 @@ module V2
     end
 
     private
+
+    def check_only?
+      params[:check].present?
+    end
+
+    def print_date
+      params[:date].blank? ? DateTime.now : DateTime.parse(params[:date])
+    end
+
+    def require_costgroups!(message)
+      return if @invoice.invoice_costgroup_distributions.present?
+
+      @invoice.errors.add(:invoice_costgroup_distributions, message)
+
+      raise ValidationError, @invoice.errors
+    end
 
     def set_invoice
       @invoice = Invoice.includes({ project: [:project_efforts] }).find(params[:id])

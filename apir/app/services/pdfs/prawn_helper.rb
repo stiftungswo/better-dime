@@ -2,6 +2,12 @@
 
 module Pdfs
   module PrawnHelper
+    # Embeds the filename as the PDF title. Browsers opening the PDF from a blob: URL (no
+    # Content-Disposition available) use it as the suggested name when saving.
+    def pdf_info
+      respond_to?(:filename) ? { Title: filename } : {}
+    end
+
     def cursor_save
       cursor.tap do |old_cursor|
         yield

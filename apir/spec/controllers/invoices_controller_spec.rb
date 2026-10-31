@@ -77,5 +77,42 @@ RSpec.describe V2::InvoicesController, type: :controller do
         expect(response.parsed_body).to include("errors", "human_readable_descriptions")
       end
     end
+
+    describe "#print / #print_qr_bill with check=1" do
+      let(:invoice) { create(:invoice) }
+
+      before do
+        create(:global_setting)
+        # PDF requests authenticate via a JWT in the params; the employee is already signed in above.
+        allow(controller).to receive(:authenticate_from_params!)
+      end
+
+      it "answers 204 without rendering the PDF once the invoice is printable" do
+        create(:invoice_costgroup_distribution, invoice: invoice)
+        allow(Pdfs::InvoicePdf).to receive(:new)
+
+        get :print, params: { id: invoice.id, check: 1 }, format: :pdf
+
+        expect(response).to have_http_status(:no_content)
+        expect(Pdfs::InvoicePdf).not_to have_received(:new)
+      end
+
+      it "returns the validation error when the invoice has no cost groups" do
+        get :print, params: { id: invoice.id, check: 1 }, format: :pdf
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body).to include("human_readable_descriptions")
+      end
+
+      it "names the missing customer building number for the QR-bill check" do
+        create(:invoice_costgroup_distribution, invoice: invoice)
+        invoice.address.update!(street_number: nil)
+
+        get :print_qr_bill, params: { id: invoice.id, check: 1 }, format: :pdf
+
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response.parsed_body["human_readable_descriptions"].join).to include("Kunden")
+      end
+    end
   end
 end
