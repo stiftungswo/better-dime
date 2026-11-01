@@ -44,6 +44,17 @@ RSpec.describe Pdfs::Generators::BreakdownTableGenerator do
     end
   end
 
+  describe "a fixed price of 0" do
+    it "prints a free invoice" do
+      render_amounts(CostBreakdown.new([], [], {}, [], 0, 0.077).calculate)
+
+      expect(printed(I18n.t(:fix_price_excl_vat))).to eq("0.00")
+      expect(printed(I18n.t(:total_vat))).to eq("0.00")
+      expect(printed(I18n.t(:rounding))).to be_nil
+      expect(printed(I18n.t(:fix_price_total))).to eq("0.00")
+    end
+  end
+
   describe "invoices without fixed price" do
     it "prints VAT and rounding so that net + VAT + rounding equals the total" do
       # 10.05 net, VAT 77.385 Rappen -> 0.77, exact total 10.82, payable total 10.80

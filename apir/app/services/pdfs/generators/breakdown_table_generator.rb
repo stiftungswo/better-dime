@@ -118,7 +118,7 @@ module Pdfs
         discounts = @breakdown[:discounts]
         data = []
 
-        unless fixed_price&.positive?
+        if fixed_price.nil?
 
           unless discounts.empty?
 
@@ -147,7 +147,7 @@ module Pdfs
           end
 
           data.push(
-            data: [(I18n.t :subtotal_excl_vat), format_money(@breakdown[:raw_total], :ceil)],
+            data: [(I18n.t :subtotal_excl_vat), format_rappen(@breakdown[:raw_total])],
             style: {
               font_style: :bold,
               padding: padding
@@ -155,7 +155,7 @@ module Pdfs
           )
         end
 
-        if fixed_price&.positive?
+        if fixed_price
           data.push(
             data: [I18n.t(:fix_price_excl_vat), format_rappen(@breakdown[:fixed_price_excl_vat])],
             style: {
@@ -213,7 +213,7 @@ module Pdfs
       def render_total
         padding = [6, 10, 6, 0]
         fixed_price = @breakdown[:fixed_price]
-        has_fixed_price = fixed_price&.positive?
+        has_fixed_price = fixed_price
 
         data = [
           {

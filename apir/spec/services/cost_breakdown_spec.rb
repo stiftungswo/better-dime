@@ -169,13 +169,17 @@ RSpec.describe CostBreakdown do
         expect(result).to include(fixed_price_excl_vat: 11_461, vat_total: 882, total: 12_343, rounding: 2, final_total: 12_343)
       end
 
-      it "ignores a fixed price that is not positive" do
-        [0, -500].each do |fixed_price|
-          result = described_class.new([position(10_000, 0.077)], [], costgroups, [], fixed_price, 0.077).calculate
+      it "bills a fixed price of 0 as a free invoice" do
+        result = described_class.new([position(10_000, 0.077)], [], costgroups, [], 0, 0.077).calculate
 
-          expect(result).to include(fixed_price: nil, final_total: result[:total])
-          expect(result[:final_total]).to eq(10_000 + 770)
-        end
+        expect(result).to include(fixed_price: 0, fixed_price_excl_vat: 0, vat_total: 0, total: 0, rounding: 0, final_total: 0)
+      end
+
+      it "ignores a negative fixed price" do
+        result = described_class.new([position(10_000, 0.077)], [], costgroups, [], -500, 0.077).calculate
+
+        expect(result).to include(fixed_price: nil, final_total: result[:total])
+        expect(result[:final_total]).to eq(10_000 + 770)
       end
     end
   end

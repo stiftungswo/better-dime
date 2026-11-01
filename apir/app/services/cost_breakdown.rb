@@ -40,7 +40,7 @@ class CostBreakdown
 
   # A fixed price (in Rappen) includes VAT: split it exactly, the VAT is whatever is not net.
   def fixed_price_amounts
-    return unless @fixed_price&.positive?
+    return if @fixed_price.nil? || @fixed_price.negative?
 
     excl_vat = (@fixed_price.to_r / (1 + @fixed_price_vat.to_s.to_r)).round
     { excl_vat: excl_vat, vat: @fixed_price - excl_vat }
