@@ -141,6 +141,7 @@
 
   "layout.breakdown_table.subtotal": "Subtotal",
   "layout.breakdown_table.discount_total": "Total Abzüge",
+  "layout.breakdown_table.fixed_price_adjustment": "Anpassung auf Fixpreis",
   "layout.breakdown_table.rounding": "Rundung",
   "layout.breakdown_table.final_cost": "Total",
 
