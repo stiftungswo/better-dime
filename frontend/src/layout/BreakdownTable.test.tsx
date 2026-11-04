@@ -13,6 +13,7 @@ describe('BreakdownTable', () => {
     renderWithProviders(<BreakdownTable breakdown={breakdown({ subtotal: 1005, vatTotal: 77, total: 1082, rounding: -2 })} />);
 
     expect(screen.getByText('Rundung')).toBeInTheDocument();
+    expect(screen.getByText(/-0\.02/)).toBeInTheDocument();
     expect(screen.queryByText('Anpassung auf Fixpreis')).not.toBeInTheDocument();
     expect(screen.getByText(/10\.80/)).toBeInTheDocument();
   });
@@ -22,6 +23,8 @@ describe('BreakdownTable', () => {
     renderWithProviders(<BreakdownTable breakdown={breakdown({ subtotal: 10000, vatTotal: 573, total: 8001, rounding: -1 })} />);
 
     expect(screen.getByText('Anpassung auf Fixpreis')).toBeInTheDocument();
+    expect(screen.getByText('Rundung')).toBeInTheDocument();
+    expect(screen.getByText(/-0\.01/)).toBeInTheDocument();
     expect(screen.getByText(/-25\.72/)).toBeInTheDocument();
     expect(screen.getByText(/80\.00/)).toBeInTheDocument();
   });
