@@ -22,7 +22,7 @@ interface BTProps {
 export class BreakdownTable extends React.Component<BTProps> {
   render() {
     const format = (amount: number) => this.props.mainStore!.formatCurrency(amount, true);
-    const { subtotal, vatTotal, discountTotal, total } = this.props.breakdown;
+    const { subtotal, vatTotal, discountTotal, total, rounding } = this.props.breakdown;
 
     // if (this.props.fixedPrice && this.props.fixedPrice > 0) {
     //   total = this.props.fixedPrice;
@@ -46,9 +46,15 @@ export class BreakdownTable extends React.Component<BTProps> {
             <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.discount_total'} /> </DimeTableCell>
             <DimeTableCell numeric>{format(discountTotal)}</DimeTableCell>
           </TableRow>
+          {rounding ? (
+            <TableRow>
+              <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.rounding'} /> </DimeTableCell>
+              <DimeTableCell numeric>{format(rounding)}</DimeTableCell>
+            </TableRow>
+          ) : null}
           <TableRow>
             <DimeTableCell> <FormattedMessage id={'layout.breakdown_table.final_cost'} /> </DimeTableCell>
-            <DimeTableCell numeric>{format(total)}</DimeTableCell>
+            <DimeTableCell numeric>{format(total + (rounding || 0))}</DimeTableCell>
           </TableRow>
         </TableBody>
       </Table>

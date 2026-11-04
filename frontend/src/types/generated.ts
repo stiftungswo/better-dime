@@ -1049,6 +1049,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             costgroup_distributions: {
                                 costgroup_number: number;
@@ -1149,6 +1150,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             costgroup_distributions: {
                                 costgroup_number: number;
@@ -1251,6 +1253,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             costgroup_distributions: unknown[];
                             discounts: unknown[];
@@ -1490,6 +1493,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             invoice_ids: unknown[];
                             project_id: unknown;
@@ -1612,6 +1616,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             invoice_ids: number[];
                             discounts: {
@@ -1736,6 +1741,7 @@ export interface paths {
                                 subtotal: number;
                                 total: number;
                                 vatTotal: number;
+                                rounding: number;
                             };
                             invoice_ids: unknown[];
                             project_id: unknown;

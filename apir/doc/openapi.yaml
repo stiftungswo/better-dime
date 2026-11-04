@@ -1657,6 +1657,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -1664,6 +1666,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   costgroup_distributions:
                     type: array
                     items:
@@ -1866,6 +1869,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -1873,6 +1878,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   costgroup_distributions:
                     type: array
                     items:
@@ -2113,6 +2119,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -2120,6 +2128,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   costgroup_distributions:
                     type: array
                     items: {}
@@ -2493,6 +2502,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -2500,6 +2511,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   invoice_ids:
                     type: array
                     items: {}
@@ -2767,6 +2779,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -2774,6 +2788,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   invoice_ids:
                     type: array
                     items:
@@ -3084,6 +3099,8 @@ paths:
                         type: integer
                       vatTotal:
                         type: integer
+                      rounding:
+                        type: integer
                     required:
                     - discounts
                     - discountTotal
@@ -3091,6 +3108,7 @@ paths:
                     - subtotal
                     - total
                     - vatTotal
+                    - rounding
                   invoice_ids:
                     type: array
                     items: {}

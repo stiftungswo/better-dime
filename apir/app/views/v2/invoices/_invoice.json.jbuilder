@@ -13,6 +13,7 @@ json.breakdown do
   json.subtotal invoice.breakdown[:subtotal]
   json.total invoice.breakdown[:total]
   json.vatTotal invoice.breakdown[:vat_total]
+  json.rounding invoice.breakdown[:rounding]
 end
 
 json.costgroup_distributions invoice.invoice_costgroup_distributions.map do |ic|
