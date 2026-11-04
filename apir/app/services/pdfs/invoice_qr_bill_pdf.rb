@@ -109,9 +109,17 @@ module Pdfs
       params[:bill_params][:debtor][:address][:country]           = get_country_abbr(@invoice.address.country)
 
       set_reference_params(params, reference_kind)
-      params[:bill_params][:additionally_information] = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
+      params[:bill_params][:additionally_information] = additional_information
 
       @bill = QRBills.generate(params)
+    end
+
+    # A QR-bill over CHF 0.00 is a notification: the Swiss implementation guidelines (4.4) prescribe the
+    # capitalised "do not use for payment" text in the additional information instead of the invoice number.
+    def additional_information
+      return I18n.t(:qr_bill_no_payment) if @invoice.payable_total.zero?
+
+      I18n.t(:invoice_nr_esr) + @invoice.id.to_s
     end
 
     # :none when the opt-in Global Settings toggle is off (keeps the previous no-reference
@@ -316,7 +324,7 @@ module Pdfs
           end
 
           text I18n.t(:additional_information), size: h_font_size, style: :bold, leading: h_leading
-          text I18n.t(:invoice_nr_esr) + @invoice.id.to_s, size: font_size, leading: leading
+          text additional_information, size: font_size, leading: leading
 
           move_down 11
 

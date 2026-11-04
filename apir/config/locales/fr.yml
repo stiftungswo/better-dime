@@ -78,6 +78,7 @@ fr:
   outstanding_amount: "Montant à régler"
   invoice_nr: "Facture Nr."
   invoice_nr_esr: "Facture   Nr. "
+  qr_bill_no_payment: "NE PAS UTILISER POUR LE PAIEMENT"
   qr_bill_missing_sender_building_number: "Le numéro de maison est requis pour la facture QR. Veuillez compléter le numéro de maison de l'expéditeur dans les paramètres."
   qr_bill_missing_customer_building_number: "Le numéro de maison est requis pour la facture QR. Veuillez compléter le numéro de maison dans l'adresse de facturation du client."
   fix_price_excl_vat: "Prix ​​fixe hors TVA"
