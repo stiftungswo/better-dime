@@ -28,6 +28,12 @@ class Invoice < ApplicationRecord
     @breakdown ||= CostBreakdown.new(invoice_positions, invoice_discounts, final_cost_group_distribution, position_groupings, fixed_price, fixed_price_vat || 0.077).calculate
   end
 
+  # Amount in CHF as printed on the invoice's total line and the payment slips: rounded to the nearest 5 Rappen.
+  # Must stay in sync with the rounding used for the total in BreakdownTableGenerator#render_total.
+  def payable_total
+    (breakdown[:final_total] / 5.0).round * 5 / 100.0
+  end
+
   def final_cost_group_distribution
     @final_cost_group_distribution ||= calculate_final_cost_group_distribution
   end
