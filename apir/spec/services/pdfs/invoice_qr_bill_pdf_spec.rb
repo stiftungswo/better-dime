@@ -14,6 +14,28 @@ RSpec.describe Pdfs::InvoiceQrBillPdf do
     pdf
   end
 
+  describe "#additional_information" do
+    it "names the invoice number for a payable amount" do
+      allow(invoice).to receive(:payable_total).and_return(10.8)
+
+      expect(reference_generator(invoice).send(:additional_information)).to eq(I18n.t(:invoice_nr_esr) + invoice.id.to_s)
+    end
+
+    it "prints the prescribed do-not-use-for-payment text for an amount of 0.00" do
+      allow(invoice).to receive(:payable_total).and_return(0.0)
+
+      expect(reference_generator(invoice).send(:additional_information)).to eq("NICHT ZUR ZAHLUNG VERWENDEN")
+    end
+
+    it "uses the french wording in french" do
+      allow(invoice).to receive(:payable_total).and_return(0.0)
+
+      I18n.with_locale(:fr) do
+        expect(reference_generator(invoice).send(:additional_information)).to eq("NE PAS UTILISER POUR LE PAIEMENT")
+      end
+    end
+  end
+
   describe "#scor_reference" do
     it "is stable across renders when the invoice hasn't changed" do
       first = reference_generator(invoice).send(:scor_reference)

@@ -91,7 +91,7 @@ module Pdfs
       params[:bill_params][:creditor][:address][:postal_code]     = @global_setting.sender_zip.to_s
       params[:bill_params][:creditor][:address][:town]            = @global_setting.sender_city
       params[:bill_params][:creditor][:address][:country]         = "CH"
-      params[:bill_params][:amount]                               = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, unit: "", separator: ".", delimiter: "")
+      params[:bill_params][:amount]                               = number_to_currency(@invoice.payable_total, unit: "", separator: ".", delimiter: "")
       params[:bill_params][:currency]                             = "CHF"
       params[:bill_params][:debtor][:address][:type]              = "S"
       if @invoice.customer.company
@@ -109,9 +109,17 @@ module Pdfs
       params[:bill_params][:debtor][:address][:country]           = get_country_abbr(@invoice.address.country)
 
       set_reference_params(params, reference_kind)
-      params[:bill_params][:additionally_information] = I18n.t(:invoice_nr_esr) + @invoice.id.to_s
+      params[:bill_params][:additionally_information] = additional_information
 
       @bill = QRBills.generate(params)
+    end
+
+    # A QR-bill over CHF 0.00 is a notification: the Swiss implementation guidelines (4.4) prescribe the
+    # capitalised "do not use for payment" text in the additional information instead of the invoice number.
+    def additional_information
+      return I18n.t(:qr_bill_no_payment) if @invoice.payable_total.zero?
+
+      I18n.t(:invoice_nr_esr) + @invoice.id.to_s
     end
 
     # :none when the opt-in Global Settings toggle is off (keeps the previous no-reference
@@ -255,7 +263,7 @@ module Pdfs
           end
           bounding_box([2.6.cm, 1.4.cm], width: 2.6.cm, height: 1.4.cm) do
             text I18n.t(:amount), size: 6, style: :bold, leading: 3
-            text format_money_qr_bill((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0), size: font_size, leading: 3
+            text format_money_qr_bill(@invoice.payable_total), size: font_size, leading: 3
           end
         end
 
@@ -294,7 +302,7 @@ module Pdfs
           end
           bounding_box([2.5.cm, 2.2.cm], width: 2.6.cm, height: 2.2.cm) do
             text I18n.t(:amount), size: h_font_size, style: :bold, leading: h_leading
-            text format_money_qr_bill((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0), size: 10, leading: 3
+            text format_money_qr_bill(@invoice.payable_total), size: 10, leading: 3
           end
         end
 
@@ -316,7 +324,7 @@ module Pdfs
           end
 
           text I18n.t(:additional_information), size: h_font_size, style: :bold, leading: h_leading
-          text I18n.t(:invoice_nr_esr) + @invoice.id.to_s, size: font_size, leading: leading
+          text additional_information, size: font_size, leading: leading
 
           move_down 11
 
@@ -361,7 +369,7 @@ module Pdfs
         bounding_box([info_label_width.cm, 4.4.cm], width: (13.5.cm + (5.cm - info_label_width.cm)), height: 4.cm) do
           # stroke_bounds
 
-          total = number_to_currency((@invoice.breakdown[:final_total] / 5.0).round * 5 / 100.0, format: "%n")
+          total = number_to_currency(@invoice.payable_total, format: "%n")
           total_formated = format_money(total)
 
           text @global_setting.sender_bank_detail, size: info_size, character_spacing: @spacing, leading: leading

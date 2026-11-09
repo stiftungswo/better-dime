@@ -36,7 +36,7 @@ class Offer < ApplicationRecord
     count = offer_costgroup_distributions.count
 
     offer_costgroup_distributions.to_h do |ocd|
-      [ocd.costgroup_number, 100 / count]
+      [ocd.costgroup_number, 100.0 / count]
     end
   end
 

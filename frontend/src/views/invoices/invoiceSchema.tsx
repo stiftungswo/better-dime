@@ -52,7 +52,7 @@ export const invoiceTemplate = () => ({
   positions: [],
   discounts: [],
   costgroup_distributions: [],
-  fixed_price: 0,
+  fixed_price: null,
   fixed_price_vat: 0,
   beginning: '',
   ending: '',
