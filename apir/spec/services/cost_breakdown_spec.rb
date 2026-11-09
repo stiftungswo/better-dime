@@ -162,6 +162,14 @@ RSpec.describe CostBreakdown do
         expect(rows.sum { |row| row[:subtotal] }).to eq(-100)
       end
 
+      it "keeps the VAT of a taxable position that is cancelled out by a credit at another rate" do
+        positions = [position(1000, 0.077, 0), position(-1000, 0.0, 1)]
+        result = described_class.new(positions, [], { 100 => 100.0 }, [], nil, nil).calculate
+
+        expect(result).to include(raw_total: 0, vat_total: 77)
+        expect(result[:vats_by_costgroup].values.flatten.sum { |row| row[:subtotal] }).to eq(0)
+      end
+
       it "splits a fixed price exactly and keeps the difference to the payable total as rounding" do
         result = described_class.new([], [], {}, [], 12_343, 0.077).calculate
 

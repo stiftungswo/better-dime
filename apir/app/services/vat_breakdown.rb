@@ -21,14 +21,26 @@ class VatBreakdown
   private
 
   def rate_amounts
-    nets = split(weights.map { |weight| @net_total * weight }, @net_total)
+    nets = cancelled? ? cancelled_nets : split(factors.map { |factor| @net_total * factor }, @net_total)
     @distribution.keys.zip(nets).map { |rate, net| { rate: rate, net: net, vat: (net * rate.to_s.to_r).round } }
   end
 
-  # The share of every VAT rate. If the shares cancel out (e.g. credits against charges) split evenly.
-  def weights
-    factors = @distribution.values.map { |details| details[:factor].to_f }
-    factors.sum.zero? ? Array.new(factors.size) { 1.0 / factors.size } : factors
+  def factors
+    @distribution.values.map { |details| details[:factor].to_f }
+  end
+
+  # The shares are undefined if the rates' subtotals cancel out (e.g. credits against charges).
+  def cancelled?
+    factors.sum.zero?
+  end
+
+  # Every rate keeps its own signed subtotal, so the VAT of a taxable position is still due. Only what is left over
+  # (the discounts) is split evenly.
+  def cancelled_nets
+    subtotals = @distribution.values.map { |details| details[:subtotal].to_i }
+    leftover = @net_total - subtotals.sum
+    even = split(Array.new(subtotals.size) { leftover.to_f / subtotals.size }, leftover)
+    subtotals.zip(even).map(&:sum)
   end
 
   def costgroup_rows(amounts)
