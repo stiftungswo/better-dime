@@ -59,6 +59,10 @@ jobs:
           push: true
           tags: ${{ steps.meta-api.outputs.tags }}
           labels: ${{ steps.meta-api.outputs.labels }}
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            GIT_BRANCH=${{ github.ref_name }}
+            BUILD_TIME=${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
 
   build-push-frontend:
     runs-on: ubuntu-latest

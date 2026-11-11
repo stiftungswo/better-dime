@@ -4,6 +4,11 @@ ENV BUNDLER_VERSION=2.6.2
 ENV RAILS_ENV=production
 ENV RACK_ENV=production
 
+ARG GIT_SHA=unknown
+ARG GIT_BRANCH=unknown
+ARG BUILD_TIME=unknown
+ENV GIT_SHA=$GIT_SHA GIT_BRANCH=$GIT_BRANCH BUILD_TIME=$BUILD_TIME
+
 RUN wget -O /tmp/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
 RUN chmod +x /tmp/wait-for-it.sh
 
