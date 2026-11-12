@@ -170,6 +170,14 @@ RSpec.describe CostBreakdown do
         expect(result[:vats_by_costgroup].values.flatten.sum { |row| row[:subtotal] }).to eq(0)
       end
 
+      it "splits evenly over cost groups whose shares are NaN (all weights 0)" do
+        result = described_class.new([position(10_000, 0.077)], [], { 100 => Float::NAN, 200 => Float::NAN }, [], nil, nil).calculate
+        rows = result[:vats_by_costgroup].values.flatten
+
+        expect(rows.sum { |row| row[:subtotal] }).to eq(10_000)
+        expect(rows.sum { |row| row[:value] }).to eq(770)
+      end
+
       it "splits a fixed price exactly and keeps the difference to the payable total as rounding" do
         result = described_class.new([], [], {}, [], 12_343, 0.077).calculate
 

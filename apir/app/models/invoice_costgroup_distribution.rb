@@ -14,6 +14,8 @@ class InvoiceCostgroupDistribution < ApplicationRecord
       sum + cost_dist.weight
     end
 
+    return 0.0 if weight_sum.zero?
+
     weight / weight_sum * 100.0
   end
 end
