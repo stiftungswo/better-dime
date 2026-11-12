@@ -52,9 +52,17 @@ class VatBreakdown
   end
 
   def split_by_costgroup(amount)
-    percentages = @costgroups.values.map { |percentage| percentage.to_f / 100.0 }
+    percentages = costgroup_shares
     complete = (percentages.sum - 1.0).abs < 0.0001
     split(percentages.map { |p| amount * p }, complete ? amount : (amount * percentages.sum).round)
+  end
+
+  # Cost groups without a usable share (all weights 0, resulting in NaN) split evenly.
+  def costgroup_shares
+    shares = @costgroups.values.map { |percentage| percentage.to_f / 100.0 }
+    return shares if shares.empty? || (shares.all?(&:finite?) && shares.sum.positive?)
+
+    Array.new(shares.size) { 1.0 / shares.size }
   end
 
   def split(values, target)
