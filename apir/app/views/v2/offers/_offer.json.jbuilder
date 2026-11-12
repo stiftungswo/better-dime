@@ -13,6 +13,7 @@ json.breakdown do
   json.subtotal offer.breakdown[:subtotal]
   json.total offer.breakdown[:total]
   json.vatTotal offer.breakdown[:vat_total]
+  json.rounding offer.breakdown[:rounding]
 end
 json.invoice_ids offer.invoice_ids
 json.project_id offer.project&.id

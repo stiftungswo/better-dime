@@ -20,7 +20,7 @@ class ProjectCalculator
   def budget_price
     if @project.offer.nil?
       nil
-    elsif @project.offer.fixed_price.nil?
+    elsif @project.offer.fixed_price.nil? || @project.offer.fixed_price.negative?
       CostBreakdown.new(
         @project.offer.offer_positions,
         @project.offer.offer_discounts,

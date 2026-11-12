@@ -51,7 +51,7 @@ RSpec.describe Invoice, type: :model do
         vats = invoice.reload.breakdown[:vats_by_costgroup]
 
         expect(vats.values.flatten.pluck(:cg)).to eq([invoiced_costgroup.number])
-        expect(vats["0.081"].first).to include(subtotal: 8370.0, value: 677)
+        expect(vats["0.081"].first).to include(subtotal: 8370, value: 678)
       end
     end
 
@@ -85,6 +85,16 @@ RSpec.describe Invoice, type: :model do
         allow(invoice.cost_group_breakdown).to receive(:costgroup_sums).and_return(nil => 10)
 
         expect(invoice.final_cost_group_distribution).to eq({})
+      end
+    end
+  end
+
+  describe "#payable_total" do
+    it "rounds to the nearest 5 Rappen so it matches the total printed on the invoice" do
+      invoice = described_class.new
+      { 10_001 => 100.0, 10_002 => 100.0, 10_003 => 100.05, 10_005 => 100.05, 10_007 => 100.05, 10_008 => 100.10, 10_000 => 100.0 }.each do |rappen, expected|
+        allow(invoice).to receive(:breakdown).and_return({ final_total: rappen })
+        expect(invoice.payable_total).to eq(expected)
       end
     end
   end
